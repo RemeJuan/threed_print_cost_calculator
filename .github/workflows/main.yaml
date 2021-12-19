@@ -27,8 +27,3 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
         with:
           min_coverage: 50
-
-      - name: Deploy to GH Pages
-        uses: bluefireteam/flutter-gh-pages@v7
-        with:
-          customArgs: --target lib/main_production.dart
