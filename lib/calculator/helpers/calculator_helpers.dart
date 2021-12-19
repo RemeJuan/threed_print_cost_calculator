@@ -16,7 +16,10 @@ class CalculatorHelpers {
   }
 
   static double filamentCost(
-      String itemWeight, String spoolWeight, String cost) {
+    String itemWeight,
+    String spoolWeight,
+    String cost,
+  ) {
     //Weight in grams / 1,000 × Cost per kg = Cost of filament
 
     final w = double.parse(itemWeight) / double.parse(spoolWeight);

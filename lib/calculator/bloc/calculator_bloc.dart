@@ -54,6 +54,7 @@ class CalculatorBloc extends FormBloc<String, num> {
   );
 
   @override
+  // ignore: avoid_void_async
   void onSubmitting() async {
     await Future<void>.delayed(const Duration(seconds: 1));
     final electricityCost = CalculatorHelpers.electricityCost(
