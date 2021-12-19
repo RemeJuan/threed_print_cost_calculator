@@ -7,6 +7,7 @@ void main() {
   group('CalculatorPage', () {
     testWidgets('renders CalculatorView', (tester) async {
       await tester.pumpApp(const CalculatorPage());
+      await tester.pumpAndSettle();
       expect(find.byType(CalculatorPage), findsOneWidget);
     });
   });
