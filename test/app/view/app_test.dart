@@ -7,13 +7,13 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
-import 'package:threed_print_cost_calculator/counter/counter.dart';
+import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 
 void main() {
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
       await tester.pumpWidget(const App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(CalculatorPage), findsOneWidget);
     });
   });
 }
