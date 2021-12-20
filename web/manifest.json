@@ -1,11 +1,11 @@
 {
-    "name": "Threed Print Cost Calculator",
-    "short_name": "Threed Print Cost Calculator",
+    "name": "3D Print Cost Calculator",
+    "short_name": "3D Print Cost Calculator",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A Very Good Project created by Very Good CLI.",
+    "background_color": "#001726",
+    "theme_color": "#001726",
+    "description": "A simple 3d Print cost calculator",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
