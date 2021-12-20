@@ -82,7 +82,9 @@ class CalculatorPage extends HookWidget {
                       ),
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.kwCost,
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         decoration: InputDecoration(
                           labelText: l10n.electricityCostLabel,
                         ),
