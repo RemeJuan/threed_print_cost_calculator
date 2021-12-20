@@ -75,7 +75,9 @@ class CalculatorPage extends HookWidget {
                       ),
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.spoolCost,
-                        keyboardType: TextInputType.number,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         decoration: InputDecoration(
                           labelText: l10n.spoolCostLabel,
                         ),

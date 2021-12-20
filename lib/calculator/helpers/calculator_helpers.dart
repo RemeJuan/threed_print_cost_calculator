@@ -8,7 +8,7 @@ class CalculatorHelpers {
 
     final w = int.parse(watts) / 1000;
     final m = int.parse(minutes) / 60;
-    final c = double.parse(cost);
+    final c = double.parse(cost.replaceAll(',', '.'));
 
     final totalFixed = (w * m * c).toStringAsFixed(2);
 
@@ -23,7 +23,7 @@ class CalculatorHelpers {
     //Weight in grams / 1,000 × Cost per kg = Cost of filament
 
     final w = double.parse(itemWeight) / double.parse(spoolWeight);
-    final c = double.parse(cost);
+    final c = double.parse(cost.replaceAll(',', '.'));
 
     final totalFixed = (w * c).toStringAsFixed(2);
 
