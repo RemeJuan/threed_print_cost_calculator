@@ -1,5 +1,5 @@
 name: threed_print_cost_calculator
-description: A Very Good Project created by Very Good CLI.
+description: A simple 3D Print cost calculator.
 version: 1.0.0+1
 publish_to: none
 
