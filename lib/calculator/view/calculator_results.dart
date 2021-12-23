@@ -13,17 +13,37 @@ class CalculatorResults extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    final electricity =
-        "${l10n.resultElectricityPrefix}${results['electricity']}";
-    final filament = "${l10n.resultFilamentPrefix}${results['filament']}";
-    final total = "${l10n.resultTotalPrefix}${results['total']}";
+    return SizedBox(
+      width: 220,
+      child: Column(
+        children: [
+          _itemRow(
+            l10n.resultElectricityPrefix,
+            results['electricity'].toString(),
+          ),
+          _itemRow(
+            l10n.resultFilamentPrefix,
+            results['filament'].toString(),
+          ),
+          _itemRow(
+            l10n.resultTotalPrefix,
+            results['total'].toString(),
+          ),
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
+  }
 
-    return Column(
+  Row _itemRow(String prefix, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(electricity),
-        Text(filament),
-        Text(total),
-        const SizedBox(height: 16),
+        Text(
+          prefix,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text(value)
       ],
     );
   }
