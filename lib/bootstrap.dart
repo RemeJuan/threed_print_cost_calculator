@@ -28,6 +28,7 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+  WidgetsFlutterBinding.ensureInitialized();
   // Register services
   initServices();
   // Wait for the [Database] service to be ready;
