@@ -9,11 +9,11 @@ class DatabaseStorageImpl implements DatabaseStorage {
   Future<Database> openDb() async {
     // get the application documents directory
     final dir = await getApplicationDocumentsDirectory();
-// make sure it exists
+    // make sure it exists
     await dir.create(recursive: true);
-// build the database path
+    // build the database path
     final dbPath = join(dir.path, '$DB_NAME.db');
-// open the database
+    // open the database
     return databaseFactoryIo.openDatabase(dbPath);
   }
 }
