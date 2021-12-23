@@ -10,22 +10,29 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/locator.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    log('onChange(${bloc.runtimeType}, $change)');
+    // log('onChange(${bloc.runtimeType}, $change)');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    log('onError(${bloc.runtimeType}, $error, $stackTrace)');
+    // log('onError(${bloc.runtimeType}, $error, $stackTrace)');
     super.onError(bloc, error, stackTrace);
   }
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+  // Register services
+  initServices();
+  // Wait for the [Database] service to be ready;
+  await sl.isReady<Database>();
+
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
