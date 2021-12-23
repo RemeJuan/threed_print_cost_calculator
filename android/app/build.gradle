@@ -85,17 +85,17 @@ android {
         production {
             dimension "default"
             applicationIdSuffix ""
-            manifestPlaceholders = [appName: "Threed Print Cost Calculator"]
+            manifestPlaceholders = [appName: "3D PC Calc"]
         }
         staging {
             dimension "default"
             applicationIdSuffix ".stg"
-            manifestPlaceholders = [appName: "[STG] Threed Print Cost Calculator"]
+            manifestPlaceholders = [appName: "[STG] 3D PC Calc"]
         }        
         development {
             dimension "default"
             applicationIdSuffix ".dev"
-            manifestPlaceholders = [appName: "[DEV] Threed Print Cost Calculator"]
+            manifestPlaceholders = [appName: "[DEV] 3D PC Calc"]
         }
     }
 
