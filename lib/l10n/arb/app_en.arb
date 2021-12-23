@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "calculatorAppBarTitle": "3D print cost calculator",
+    "calculatorAppBarTitle": "3D Print Cost Calculator",
     "@calculatorAppBarTitle": {
         "description": "Text shown in the AppBar of the Counter Page"
     },
