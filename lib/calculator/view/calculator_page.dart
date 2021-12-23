@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:threed_print_cost_calculator/locator.dart';
 
 class CalculatorPage extends HookWidget {
   const CalculatorPage({Key? key}) : super(key: key);
@@ -15,8 +17,11 @@ class CalculatorPage extends HookWidget {
     final showResults = useState<bool>(false);
     final results = useState<Map>(<dynamic, dynamic>{});
 
+    final db = sl<Database>();
+    final store = stringMapStoreFactory.store();
+
     return BlocProvider<CalculatorBloc>(
-      create: (_) => CalculatorBloc(),
+      create: (_) => CalculatorBloc(db, store),
       child: Builder(
         builder: (context) {
           final bloc = context.read<CalculatorBloc>();
@@ -51,6 +56,9 @@ class CalculatorPage extends HookWidget {
                         decoration: InputDecoration(
                           labelText: l10n.wattLabel,
                         ),
+                        onChanged: (value) async {
+                          await _addOrUpdateRecord(db, store, 'watt', value);
+                        },
                       ),
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.printWeight,
@@ -72,6 +80,14 @@ class CalculatorPage extends HookWidget {
                         decoration: InputDecoration(
                           labelText: l10n.spoolWeightLabel,
                         ),
+                        onChanged: (value) async {
+                          await _addOrUpdateRecord(
+                            db,
+                            store,
+                            'spoolWeight',
+                            value,
+                          );
+                        },
                       ),
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.spoolCost,
@@ -81,6 +97,14 @@ class CalculatorPage extends HookWidget {
                         decoration: InputDecoration(
                           labelText: l10n.spoolCostLabel,
                         ),
+                        onChanged: (value) async {
+                          await _addOrUpdateRecord(
+                            db,
+                            store,
+                            'spoolCost',
+                            value,
+                          );
+                        },
                       ),
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.kwCost,
@@ -90,6 +114,14 @@ class CalculatorPage extends HookWidget {
                         decoration: InputDecoration(
                           labelText: l10n.electricityCostLabel,
                         ),
+                        onChanged: (value) async {
+                          await _addOrUpdateRecord(
+                            db,
+                            store,
+                            'kwCost',
+                            value,
+                          );
+                        },
                       ),
                       const SizedBox(height: 16),
                       if (showResults.value)
@@ -107,5 +139,25 @@ class CalculatorPage extends HookWidget {
         },
       ),
     );
+  }
+
+  Future<void> _addOrUpdateRecord(
+    Database db,
+    StoreRef store,
+    String key,
+    String value,
+  ) async {
+    // Check if the record exists before adding or updating it.
+    await db.transaction((txn) async {
+      // Look of existing record
+      final existing = await store.record(key).getSnapshot(txn);
+      if (existing == null) {
+        // code not found, add
+        await store.record(key).add(txn, {'value': value});
+      } else {
+        // Update existing
+        await existing.ref.update(txn, {'value': value});
+      }
+    });
   }
 }
