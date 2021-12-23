@@ -4,5 +4,11 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
+import 'package:threed_print_cost_calculator/locator.dart' as di;
 
 export 'pump_app.dart';
+
+void setupTest() {
+  di.initServices();
+  di.sl.allowReassignment = true;
+}
