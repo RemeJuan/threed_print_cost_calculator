@@ -1,6 +1,6 @@
 {
-    "name": "3D Print Cost Calculator",
-    "short_name": "3D Print Cost Calculator",
+    "name": "3D Print Calculator",
+    "short_name": "3D Print Calculator",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#001726",
