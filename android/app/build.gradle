@@ -56,6 +56,15 @@ android {
         versionName flutterVersionName
     }
 
+    splits {
+        abi {
+            enable true //enables the ABIs split mechanism
+            reset()
+            include 'arm64-v8a', 'armeabi-v7a', 'x86'
+            universalApk  true
+        }
+    }
+
     // TODO: Remove when below fix is available in stable channel.
     // https://github.com/flutter/flutter/pull/82309
     lintOptions {
