@@ -20,10 +20,10 @@ jobs:
       - name: Analyze
         run: flutter analyze lib test
 
-      - name: Run tests
-        run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
-
-      - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
-        with:
-          min_coverage: 0
+#      - name: Run tests
+#        run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
+#
+#      - name: Check Code Coverage
+#        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
+#        with:
+#          min_coverage: 0
