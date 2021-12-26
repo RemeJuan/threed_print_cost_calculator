@@ -1,4 +1,4 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 
-class MockDatabase extends Mock implements Database {}
+class MockCalculatorBloc extends Mock implements CalculatorBloc {}
