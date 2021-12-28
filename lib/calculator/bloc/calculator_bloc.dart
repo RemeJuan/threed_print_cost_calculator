@@ -21,55 +21,46 @@ class CalculatorBloc extends FormBloc<String, num> {
   final Database database;
   final StoreRef store;
 
-  final watt = TextFieldBloc<int>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
+  final watt = TextFieldBloc<int>();
 
-  final printWeight = TextFieldBloc<double>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
+  final printWeight = TextFieldBloc<double>();
 
-  final time = TextFieldBloc<int>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
+  final time = TextFieldBloc<int>();
 
-  final spoolWeight = TextFieldBloc<int>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
+  final spoolWeight = TextFieldBloc<int>();
 
-  final spoolCost = TextFieldBloc<double>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
+  final spoolCost = TextFieldBloc<double>();
 
-  final kwCost = TextFieldBloc<double>(
-    validators: [
-      FieldBlocValidators.required,
-    ],
-  );
+  final kwCost = TextFieldBloc<double>();
 
   @override
   // ignore: avoid_void_async
   void onSubmitting() async {
-    final electricityCost = CalculatorHelpers.electricityCost(
-      watt.value,
-      time.value,
-      kwCost.value,
-    );
-    final filamentCost = CalculatorHelpers.filamentCost(
-      printWeight.value,
-      spoolWeight.value,
-      spoolCost.value,
-    );
+    var electricityCost = 0.0;
+    var filamentCost = 0.0;
+
+    final w = watt.value;
+    final t = time.value;
+    final kw = kwCost.value;
+    final pw = printWeight.value;
+    final sw = spoolWeight.value;
+    final sc = spoolCost.value;
+
+    if (w.isNotEmpty && t.isNotEmpty && kw.isNotEmpty) {
+      electricityCost = CalculatorHelpers.electricityCost(
+        watt.value,
+        time.value,
+        kwCost.value,
+      );
+    }
+
+    if (pw.isNotEmpty && sw.isNotEmpty && sc.isNotEmpty) {
+      filamentCost = CalculatorHelpers.filamentCost(
+        printWeight.value,
+        spoolWeight.value,
+        spoolCost.value,
+      );
+    }
 
     emitSuccess(
       successResponse: jsonEncode({
@@ -77,6 +68,7 @@ class CalculatorBloc extends FormBloc<String, num> {
         'filament': filamentCost,
         'total': (electricityCost + filamentCost).toStringAsFixed(2),
       }),
+      canSubmitAgain: true,
     );
   }
 

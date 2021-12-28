@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 
@@ -12,22 +13,23 @@ class CalculatorResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final width = kIsWeb ? 250.0 : null;
 
     return SizedBox(
-      width: 220,
+      width: width,
       child: Column(
         children: [
           _itemRow(
             l10n.resultElectricityPrefix,
-            results['electricity'].toString(),
+            (results['electricity'] ?? '0').toString(),
           ),
           _itemRow(
             l10n.resultFilamentPrefix,
-            results['filament'].toString(),
+            (results['filament'] ?? '0').toString(),
           ),
           _itemRow(
             l10n.resultTotalPrefix,
-            results['total'].toString(),
+            (results['total'] ?? '0').toString(),
           ),
           const SizedBox(height: 16),
         ],

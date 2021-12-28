@@ -14,7 +14,6 @@ class CalculatorPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showResults = useState<bool>(false);
     final results = useState<Map>(<dynamic, dynamic>{});
 
     final db = sl<Database>();
@@ -31,16 +30,11 @@ class CalculatorPage extends HookWidget {
             resizeToAvoidBottomInset: true,
             appBar: AppBar(title: Text(l10n.calculatorAppBarTitle)),
             body: FormBlocListener<CalculatorBloc, String, num>(
-              onSubmitting: (context, state) {
-                showResults.value = false;
-              },
+              onSubmitting: (context, state) {},
               onSuccess: (context, state) {
-                showResults.value = true;
                 results.value = jsonDecode(state.successResponse!) as Map;
               },
-              onFailure: (context, state) {
-                showResults.value = false;
-              },
+              onFailure: (context, state) {},
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
@@ -50,6 +44,7 @@ class CalculatorPage extends HookWidget {
                 child: AutofillGroup(
                   child: Column(
                     children: [
+                      // Printer Wattage
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.watt,
                         keyboardType: TextInputType.number,
@@ -57,55 +52,11 @@ class CalculatorPage extends HookWidget {
                           labelText: l10n.wattLabel,
                         ),
                         onChanged: (value) async {
+                          bloc.submit();
                           await _addOrUpdateRecord(db, store, 'watt', value);
                         },
                       ),
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.printWeight,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: l10n.printWeightLabel,
-                        ),
-                      ),
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.time,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: l10n.timeLabel,
-                        ),
-                      ),
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.spoolWeight,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: l10n.spoolWeightLabel,
-                        ),
-                        onChanged: (value) async {
-                          await _addOrUpdateRecord(
-                            db,
-                            store,
-                            'spoolWeight',
-                            value,
-                          );
-                        },
-                      ),
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.spoolCost,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: l10n.spoolCostLabel,
-                        ),
-                        onChanged: (value) async {
-                          await _addOrUpdateRecord(
-                            db,
-                            store,
-                            'spoolCost',
-                            value,
-                          );
-                        },
-                      ),
+                      // Electricity Cost
                       TextFieldBlocBuilder(
                         textFieldBloc: bloc.kwCost,
                         keyboardType: const TextInputType.numberWithOptions(
@@ -115,6 +66,7 @@ class CalculatorPage extends HookWidget {
                           labelText: l10n.electricityCostLabel,
                         ),
                         onChanged: (value) async {
+                          bloc.submit();
                           await _addOrUpdateRecord(
                             db,
                             store,
@@ -123,13 +75,62 @@ class CalculatorPage extends HookWidget {
                           );
                         },
                       ),
-                      const SizedBox(height: 16),
-                      if (showResults.value)
-                        CalculatorResults(results: results.value),
-                      ElevatedButton(
-                        onPressed: bloc.submit,
-                        child: Text(l10n.submitButton),
+                      // Spool Weight
+                      TextFieldBlocBuilder(
+                        textFieldBloc: bloc.spoolWeight,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: l10n.spoolWeightLabel,
+                        ),
+                        onChanged: (value) async {
+                          bloc.submit();
+                          await _addOrUpdateRecord(
+                            db,
+                            store,
+                            'spoolWeight',
+                            value,
+                          );
+                        },
                       ),
+                      // Spool cost
+                      TextFieldBlocBuilder(
+                        textFieldBloc: bloc.spoolCost,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        decoration: InputDecoration(
+                          labelText: l10n.spoolCostLabel,
+                        ),
+                        onChanged: (value) async {
+                          bloc.submit();
+                          await _addOrUpdateRecord(
+                            db,
+                            store,
+                            'spoolCost',
+                            value,
+                          );
+                        },
+                      ),
+                      // Print Weight
+                      TextFieldBlocBuilder(
+                        textFieldBloc: bloc.printWeight,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: l10n.printWeightLabel,
+                        ),
+                        onChanged: (_) => bloc.submit(),
+                      ),
+                      //Print Time
+                      TextFieldBlocBuilder(
+                        textFieldBloc: bloc.time,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: l10n.timeLabel,
+                        ),
+                        onChanged: (_) => bloc.submit(),
+                      ),
+                      const SizedBox(height: 16),
+                      CalculatorResults(results: results.value),
                     ],
                   ),
                 ),
