@@ -13,7 +13,7 @@ class CalculatorResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final width = kIsWeb ? 250.0 : null;
+    const width = kIsWeb ? 250.0 : null;
 
     return SizedBox(
       width: width,
