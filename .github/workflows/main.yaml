@@ -1,36 +1,26 @@
-name: threed_print_cost_calculator
-
-on: [pull_request, push]
-
+name: Build App
+permissions: write-all
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        include:
-          - os: ubuntu-latest
-            flutter_path: /opt/hostedtoolcache/flutter
+  build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: kuhnroyal/flutter-fvm-config-action@v1
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: '3.0.2'
+          cache: true
 
-      - uses: actions/cache@v1
+      - run: flutter pub get
+      #     - run: flutter test
+      - run: flutter build web
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
-          path: ${{ matrix.flutter_path }}
-          key: ${{ runner.os }}-flutter-install-cache-${{ env.FLUTTER_VERSION }}
-
-      - name: Install Dependencies
-        run: flutter packages get
-
-      - name: Run tests
-        run: flutter test test --no-pub --test-randomize-ordering-seed random
-
-      - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
-        with:
-          min_coverage: 60
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build/web # The folder the action should deploy.
