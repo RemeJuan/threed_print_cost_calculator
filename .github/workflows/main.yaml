@@ -27,14 +27,6 @@ jobs:
       - name: Install Dependencies
         run: flutter packages get
 
-      - name: Run tests
-        run: flutter test test --no-pub --test-randomize-ordering-seed random
-
-      - name: Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.0
-        with:
-          min_coverage: 60
-
       - run: flutter build web
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.3
