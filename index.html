@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <!--
@@ -19,34 +19,37 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A Very Good new Flutter project.">
+  <meta name="description" content="A simple 3D printing cost calculator">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Threed Print Cost Calculator">
+  <meta name="apple-mobile-web-app-title" content="3D Print Cost Calculator">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" />
 
-  <title>Threed Print Cost Calculator</title>
+  <title>3D Print Cost Calculator</title>
   <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
+<div class="loading">
+  <div class="loader"></div>
+</div>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = '2264242388';
-    var scriptLoaded = false;
+      let serviceWorkerVersion = null;
+      let scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
         return;
       }
       scriptLoaded = true;
-      var scriptTag = document.createElement('script');
+      let scriptTag = document.createElement('script');
       scriptTag.src = 'main.dart.js';
       scriptTag.type = 'application/javascript';
       document.body.append(scriptTag);
@@ -58,12 +61,12 @@
         // Wait for registration to finish before dropping the <script> tag.
         // Otherwise, the browser will load the script multiple times,
         // potentially different versions.
-        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        let serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
         navigator.serviceWorker.register(serviceWorkerUrl)
           .then((reg) => {
             function waitForActivation(serviceWorker) {
               serviceWorker.addEventListener('statechange', () => {
-                if (serviceWorker.state == 'activated') {
+                if (serviceWorker.state === 'activated') {
                   console.log('Installed new service worker.');
                   loadMainDartJs();
                 }
@@ -103,5 +106,51 @@
     }
   </script>
 </body>
+<style>
+    html, body {
+        background: rgb(26,28,43);
+        background: linear-gradient(90deg, rgba(26,28,43,1) 50%, rgba(12,13,22,1) 50%);
+    }
 
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    .loader {
+        border-radius: 50%;
+        border: 16px solid white;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 </html>
