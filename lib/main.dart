@@ -7,7 +7,8 @@
 
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
+import 'package:upgrader/upgrader.dart';
 
 void main() {
-  bootstrap(() => const App());
+  bootstrap(() => UpgradeAlert(child: const App()));
 }
