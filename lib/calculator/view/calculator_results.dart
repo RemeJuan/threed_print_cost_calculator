@@ -37,16 +37,19 @@ class CalculatorResults extends StatelessWidget {
     );
   }
 
-  Row _itemRow(String prefix, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          prefix,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Text(value)
-      ],
+  Padding _itemRow(String prefix, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            prefix,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Text(value)
+        ],
+      ),
     );
   }
 }
