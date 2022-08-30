@@ -7,8 +7,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:platform_info/platform_info.dart';
 import 'package:threed_print_cost_calculator/calculator/calculator.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:upgrader/upgrader.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -36,7 +38,14 @@ class App extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CalculatorPage(),
+      home: UpgradeAlert(
+        upgrader: Upgrader(
+          minAppVersion: '1.0.4',
+          dialogStyle: Platform.I.operatingSystem == OperatingSystem.iOS ?
+          UpgradeDialogStyle.cupertino : UpgradeDialogStyle.material,
+        ),
+        child: const CalculatorPage(),
+      ),
     );
   }
 }

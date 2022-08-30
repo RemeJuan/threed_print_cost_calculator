@@ -16,8 +16,8 @@ import 'package:threed_print_cost_calculator/locator.dart';
 class AppBlocObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
     log('onChange(${bloc.runtimeType}, $change)');
+    super.onChange(bloc, change);
   }
 
   @override

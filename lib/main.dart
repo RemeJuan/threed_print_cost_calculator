@@ -5,10 +5,15 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:flutter/widgets.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
 import 'package:upgrader/upgrader.dart';
 
-void main() {
-  bootstrap(() => UpgradeAlert(child: const App()));
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Upgrader.clearSavedSettings();
+
+  return bootstrap(() =>  const App());
 }
