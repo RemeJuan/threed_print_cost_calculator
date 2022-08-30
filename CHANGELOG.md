@@ -1,3 +1,7 @@
+## 1.0.5+1 - 2022-08-30
+### Fixed
+- fixed upgrade dialog not displaying
+
 ## 1.0.5 - 2022-08-29
 ### Fixed
 - under the hood cleanup

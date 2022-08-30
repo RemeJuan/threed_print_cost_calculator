@@ -1,6 +1,6 @@
 name: threed_print_cost_calculator
 description: A simple 3D Print cost calculator.
-version: 1.0.5
+version: 1.0.5+1
 publish_to: none
 
 environment:
