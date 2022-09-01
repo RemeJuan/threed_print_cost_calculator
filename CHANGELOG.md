@@ -1,3 +1,7 @@
+## [1.0.7] - 2022-09-01
+### Changed
+- fixed deprecated bloc method
+
 ## 1.0.6 - 2022-09-01
 ### Changed
 - updagrded flutter to V3.3.0
@@ -17,3 +21,5 @@
 ## 1.0.3 - 2022-08-29
 ### Added
 - Added in-app update checker
+
+[1.0.7]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.6...1.0.7
