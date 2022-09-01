@@ -1,3 +1,7 @@
+## 1.0.6 - 2022-09-01
+### Changed
+- updagrded flutter to V3.3.0
+
 ## 1.0.5+1 - 2022-08-30
 ### Fixed
 - fixed upgrade dialog not displaying
