@@ -34,5 +34,5 @@ flutter:
 
 cider:
   link_template:
-    tag: https://github.com/example/project/releases/tag/%tag% # initial release link template
-    diff: https://github.com/example/project/compare/%from%...%to% # subsequent releases link template
+    tag: https://github.com/RemeJuan/threed_print_cost_calculator/releases/tag/%tag% # initial release link template
+    diff: https://github.com/RemeJuan/threed_print_cost_calculator/compare/%from%...%to% # subsequent releases link template
