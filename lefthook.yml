@@ -5,7 +5,7 @@
 pre-push:
   commands:
     lint:
-      run: flutter analyze lib test
+      run: fvm flutter analyze lib test
 # pre-commit:
 #   parallel: true
 #   commands:

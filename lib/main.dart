@@ -8,12 +8,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
-import 'package:upgrader/upgrader.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Upgrader.clearSavedSettings();
 
   return bootstrap(() =>  const App());
 }
