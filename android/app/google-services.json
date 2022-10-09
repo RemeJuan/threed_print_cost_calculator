@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "476308766683",
+    "project_id": "d-print-cost-calculator-cf650",
+    "storage_bucket": "d-print-cost-calculator-cf650.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476308766683:android:7fc07cf44f4526bc0c31fe",
+        "android_client_info": {
+          "package_name": "com.threed_print_calculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476308766683-fjbc2figbiidthl82bh5ahgelgf86fg1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw_U7lC1SREVirU29Y_ZpuPOT0e0hmPfo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476308766683-fjbc2figbiidthl82bh5ahgelgf86fg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

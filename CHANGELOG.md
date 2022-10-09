@@ -1,3 +1,7 @@
+## [1.0.8] - 2022-10-09
+### Fixed
+- upgrading or core frameworks and implementation of additional security
+
 ## [1.0.7] - 2022-09-01
 ### Changed
 - fixed deprecated bloc method
@@ -22,4 +26,5 @@
 ### Added
 - Added in-app update checker
 
+[1.0.8]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.6...1.0.7
