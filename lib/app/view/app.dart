@@ -65,7 +65,7 @@ class App extends StatelessWidget {
             home: const CalculatorPage(),
           ),
         );
-      }
+      },
     );
   }
 }
