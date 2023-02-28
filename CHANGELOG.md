@@ -1,3 +1,7 @@
+## [1.0.9+1] - 2023-02-28
+### Changed
+- core and package updates
+
 ## [1.0.9] - 2022-11-05
 ### Fixed
 - ensure keyboard collapses when tapping outside input field
@@ -30,6 +34,7 @@
 ### Added
 - Added in-app update checker
 
+[1.0.9+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9...1.0.9+1
 [1.0.9]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.6...1.0.7
