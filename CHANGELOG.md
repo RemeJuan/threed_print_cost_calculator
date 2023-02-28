@@ -1,14 +1,8 @@
-## [1.0.9+3] - 2023-02-28
-### Changed
-- manifest file updates
-
-## [1.0.9+2] - 2023-02-28
-### Changed
-- update target gradle version
-
-## [1.0.9+1] - 2023-02-28
+## [1.0.10] - 2023-02-28
 ### Changed
 - core and package updates
+- update target gradle version
+- manifest file updates
 
 ## [1.0.9] - 2022-11-05
 ### Fixed
@@ -24,7 +18,7 @@
 
 ## 1.0.6 - 2022-09-01
 ### Changed
-- updagrded flutter to V3.3.0
+- upgraded flutter to V3.3.0
 
 ## 1.0.5+1 - 2022-08-30
 ### Fixed
