@@ -10,11 +10,11 @@ import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 
 class CalculatorPage extends HookWidget {
-  const CalculatorPage({Key? key}) : super(key: key);
+  const CalculatorPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final results = useState<Map>(<dynamic, dynamic>{});
+    final results = useState<Map<dynamic, dynamic>>({});
 
     final db = sl<Database>();
     final store = stringMapStoreFactory.store();

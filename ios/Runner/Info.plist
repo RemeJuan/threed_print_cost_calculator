@@ -54,5 +54,7 @@
   <array>
       <string>itms</string>
   </array>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>
