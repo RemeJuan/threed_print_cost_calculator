@@ -1,3 +1,7 @@
+## [1.0.9+3] - 2023-02-28
+### Changed
+- manifest file updates
+
 ## [1.0.9+2] - 2023-02-28
 ### Changed
 - update target gradle version
@@ -38,6 +42,7 @@
 ### Added
 - Added in-app update checker
 
+[1.0.9+3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9+2...1.0.9+3
 [1.0.9+2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9+1...1.0.9+2
 [1.0.9+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9...1.0.9+1
 [1.0.9]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.8...1.0.9
