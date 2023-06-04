@@ -5,6 +5,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
+import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
@@ -131,6 +132,7 @@ class CalculatorPage extends HookWidget {
                       ),
                       const SizedBox(height: 16),
                       CalculatorResults(results: results.value),
+                      const AdContainer(),
                     ],
                   ),
                 ),
