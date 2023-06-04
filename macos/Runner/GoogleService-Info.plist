@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>476308766683-ro40nk28e2qp7br4bm5aq26h3ijct017.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.476308766683-ro40nk28e2qp7br4bm5aq26h3ijct017</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAc1le-IkbKaQ4SV2jDZfFdCBwCpyo_XHo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>476308766683</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.threedprintcalculator.threedPrintCostCalculator</string>
+	<key>PROJECT_ID</key>
+	<string>d-print-cost-calculator-cf650</string>
+	<key>STORAGE_BUCKET</key>
+	<string>d-print-cost-calculator-cf650.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:476308766683:ios:5e23f3fd8e51e8580c31fe</string>
+</dict>
+</plist>
