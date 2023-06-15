@@ -15,8 +15,8 @@ class AdContainer extends HookWidget {
     useEffect(
       () {
         final adUnitId = Platform.isAndroid
-            ? 'ca-app-pub-3940256099942544/2247696110'
-            : 'ca-app-pub-3940256099942544/3986624511';
+            ? 'ca-app-pub-5128251160825100~3090465798'
+            : 'ca-app-pub-5128251160825100~7730385740';
 
         nativeAd.value = NativeAd(
           adUnitId: adUnitId,
