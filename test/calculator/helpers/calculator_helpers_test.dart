@@ -6,10 +6,12 @@ void main() {
     //arrange
     const watts = '200';
     const minutes = '60';
+    const hours = '1';
     const cost = '2';
     //act
     final result = CalculatorHelpers.electricityCost(
       watts,
+      hours,
       minutes,
       cost,
     );
