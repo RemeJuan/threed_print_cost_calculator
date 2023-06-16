@@ -1,47 +1,51 @@
 {
-    "@@locale": "en",
-    "calculatorAppBarTitle": "3D Print Calculator",
-    "@calculatorAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
-    },
-    "wattLabel": "Watt (3D Printer)",
-    "@wattLabel": {
-    		"description": "Label for the Watt input field"
-    },
-    "printWeightLabel": "Weight of the print (g)",
-    "@printWeightLabel": {
-    		"description": "Label for the print weight input field"
-    },
-    "timeLabel": "Printing time (min)",
-    "@timeLabel": {
-    		"description": "Label for the print time input field"
-    },
-    "spoolWeightLabel": "Weight of the filament spool (g)",
-    "@spoolWeightLabel": {
-    		"description": "Label for the spool weight input field"
-    },
-    "spoolCostLabel": "Cost of the filament spool",
-    "@spoolCostLabel": {
-    		"description": "Label for the spool cost input field"
-    },
-    "electricityCostLabel": "Electricity cost (kw/h)",
-    "@electricityCostLabel": {
-    		"description": "Label for the electricity cost input field"
-    },
-    "submitButton": "Calculate",
-    "@submitButton": {
-    		"description": "Text for the calculate button"
-    },
-    "resultElectricityPrefix": "Total cost for Electricity: ",
-    "@resultElectricityPrefix": {
-    		"description": "Text shown before the electricity cost"
-    },
-    "resultFilamentPrefix": "Total cost for filament: ",
-    "@resultFilamentPrefix": {
-    		"description": "Text shown before the filament cost"
-    },
-    "resultTotalPrefix": "Total cost: ",
-    "@resultTotalPrefix": {
-    		"description": "Text shown before the total cost"
-    }
+  "@@locale": "en",
+  "calculatorAppBarTitle": "3D Print Calculator",
+  "@calculatorAppBarTitle": {
+    "description": "Text shown in the AppBar of the Counter Page"
+  },
+  "wattLabel": "Watt (3D Printer)",
+  "@wattLabel": {
+    "description": "Label for the Watt input field"
+  },
+  "printWeightLabel": "Weight of the print (g)",
+  "@printWeightLabel": {
+    "description": "Label for the print weight input field"
+  },
+  "hoursLabel": "Printing time (hours)",
+  "@hoursLabel": {
+    "description": "Label for the print minutes input field"
+  },
+  "minutesLabel": "Minutes",
+  "@minutesLabel": {
+    "description": "Label for the print hours input field"
+  },
+  "spoolWeightLabel": "Weight of the filament spool (g)",
+  "@spoolWeightLabel": {
+    "description": "Label for the spool weight input field"
+  },
+  "spoolCostLabel": "Cost of the filament spool",
+  "@spoolCostLabel": {
+    "description": "Label for the spool cost input field"
+  },
+  "electricityCostLabel": "Electricity cost (kw/h)",
+  "@electricityCostLabel": {
+    "description": "Label for the electricity cost input field"
+  },
+  "submitButton": "Calculate",
+  "@submitButton": {
+    "description": "Text for the calculate button"
+  },
+  "resultElectricityPrefix": "Total cost for Electricity: ",
+  "@resultElectricityPrefix": {
+    "description": "Text shown before the electricity cost"
+  },
+  "resultFilamentPrefix": "Total cost for filament: ",
+  "@resultFilamentPrefix": {
+    "description": "Text shown before the filament cost"
+  },
+  "resultTotalPrefix": "Total cost: ",
+  "@resultTotalPrefix": {
+    "description": "Text shown before the total cost"
+  }
 }

@@ -44,6 +44,8 @@ class CalculatorPage extends HookWidget {
                 physics: const ClampingScrollPhysics(),
                 child: AutofillGroup(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Printer Wattage
                       TextFieldBlocBuilder(
@@ -122,13 +124,31 @@ class CalculatorPage extends HookWidget {
                         onChanged: (_) => bloc.submit(),
                       ),
                       //Print Time
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.time,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: l10n.timeLabel,
-                        ),
-                        onChanged: (_) => bloc.submit(),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: TextFieldBlocBuilder(
+                              textFieldBloc: bloc.hours,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: l10n.hoursLabel,
+                              ),
+                              onChanged: (_) => bloc.submit(),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextFieldBlocBuilder(
+                              textFieldBloc: bloc.minutes,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: l10n.minutesLabel,
+                              ),
+                              onChanged: (_) => bloc.submit(),
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
                       CalculatorResults(results: results.value),

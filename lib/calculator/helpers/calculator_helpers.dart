@@ -1,13 +1,18 @@
+import 'package:flutter/cupertino.dart';
+
 class CalculatorHelpers {
   static double electricityCost(
     String watts,
+    String hours,
     String minutes,
     String cost,
   ) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
+    final hrs = int.tryParse(hours, radix: 10) ?? 0;
+    final mins = int.tryParse(minutes, radix: 10) ?? 0;
 
     final w = int.parse(watts) / 1000;
-    final m = int.parse(minutes) / 60;
+    final m = hrs + (mins / 60);
     final c = double.parse(cost.replaceAll(',', '.'));
 
     final totalFixed = (w * m * c).toStringAsFixed(2);

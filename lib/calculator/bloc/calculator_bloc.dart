@@ -1,6 +1,7 @@
 // ignore_for_file: cast_nullable_to_non_nullable
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
@@ -11,7 +12,8 @@ class CalculatorBloc extends FormBloc<String, num> {
       fieldBlocs: [
         watt,
         printWeight,
-        time,
+        hours,
+        minutes,
         spoolWeight,
         spoolCost,
         kwCost,
@@ -26,7 +28,9 @@ class CalculatorBloc extends FormBloc<String, num> {
 
   final printWeight = TextFieldBloc<double>();
 
-  final time = TextFieldBloc<int>();
+  final hours = TextFieldBloc<int>();
+
+  final minutes = TextFieldBloc<int>();
 
   final spoolWeight = TextFieldBloc<int>();
 
@@ -41,16 +45,19 @@ class CalculatorBloc extends FormBloc<String, num> {
     var filamentCost = 0.0;
 
     final w = watt.value;
-    final t = time.value;
+
     final kw = kwCost.value;
     final pw = printWeight.value;
     final sw = spoolWeight.value;
     final sc = spoolCost.value;
+    final h = hours.value;
+    final m = minutes.value;
 
-    if (w.isNotEmpty && t.isNotEmpty && kw.isNotEmpty) {
+    if (w.isNotEmpty && (h.isNotEmpty || m.isNotEmpty) && kw.isNotEmpty) {
       electricityCost = CalculatorHelpers.electricityCost(
         watt.value,
-        time.value,
+        hours.value,
+        minutes.value,
         kwCost.value,
       );
     }
