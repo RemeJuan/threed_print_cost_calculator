@@ -5,6 +5,8 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:io';
+
 import 'package:device_check/device_check.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,10 +39,13 @@ Future<void> main() async {
     return true;
   };
 
-  final isSupported = await DeviceCheck.instance.isSupported();
+  if (Platform.isIOS) {
+    final deviceCheck = DeviceCheck.instance;
+    final isSupported = await deviceCheck.isSupported();
 
-  if (isSupported) {
-    await DeviceCheck.instance.generateToken();
+    if (isSupported) {
+      await DeviceCheck.instance.generateToken();
+    }
   }
 
   return bootstrap(() => const App());
