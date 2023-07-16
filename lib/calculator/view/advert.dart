@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -9,79 +10,60 @@ class AdContainer extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nativeAd = useState<NativeAd?>(null);
-    final nativeAdIsLoaded = useState(false);
+    final bannerAd = useState<BannerAd?>(null);
+    final bannerAdIsLoaded = useState(false);
 
     useEffect(
       () {
-        final adUnitId = Platform.isAndroid
-            ? 'ca-app-pub-5128251160825100~3090465798'
-            : 'ca-app-pub-5128251160825100~7730385740';
+        const android = kDebugMode
+            ? 'ca-app-pub-3940256099942544/6300978111'
+            : 'ca-app-pub-5128251160825100/5787545814';
+        const ios = kDebugMode
+            ? 'ca-app-pub-3940256099942544/2934735716'
+            : 'ca-app-pub-5128251160825100/8919037816';
 
-        nativeAd.value = NativeAd(
-          adUnitId: adUnitId,
-          listener: NativeAdListener(
-            onAdLoaded: (ad) {
-              debugPrint('$NativeAd loaded.');
-              nativeAdIsLoaded.value = true;
-            },
-            onAdFailedToLoad: (ad, error) {
-              // Dispose the ad here to free resources.
-              debugPrint('$NativeAd failed to load: $error');
-              ad.dispose();
-            },
-          ),
-          request: const AdRequest(),
-          // Styling
-          nativeTemplateStyle: NativeTemplateStyle(
-            // Required: Choose a template.
-            templateType: TemplateType.small,
-            // Optional: Customize the ad's style.
-            mainBackgroundColor: Colors.purple,
-            cornerRadius: 10,
-            callToActionTextStyle: NativeTemplateTextStyle(
-              textColor: Colors.cyan,
-              backgroundColor: Colors.red,
-              style: NativeTemplateFontStyle.monospace,
-              size: 16,
-            ),
-            primaryTextStyle: NativeTemplateTextStyle(
-              textColor: Colors.red,
-              backgroundColor: Colors.cyan,
-              style: NativeTemplateFontStyle.italic,
-              size: 16,
-            ),
-            secondaryTextStyle: NativeTemplateTextStyle(
-              textColor: Colors.green,
-              backgroundColor: Colors.black,
-              style: NativeTemplateFontStyle.bold,
-              size: 16,
-            ),
-            tertiaryTextStyle: NativeTemplateTextStyle(
-              textColor: Colors.brown,
-              backgroundColor: Colors.amber,
-              style: NativeTemplateFontStyle.normal,
-              size: 16,
-            ),
-          ),
-        )..load();
+        final adUnitId = Platform.isAndroid ? android : ios;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await Future.delayed(const Duration(seconds: 5), () {
+            bannerAd.value = BannerAd(
+              adUnitId: adUnitId,
+              request: const AdRequest(),
+              size: AdSize.banner,
+              listener: BannerAdListener(
+                // Called when an ad is successfully received.
+                onAdLoaded: (ad) {
+                  debugPrint('$ad loaded.');
+                  bannerAdIsLoaded.value = true;
+                },
+                // Called when an ad request failed.
+                onAdFailedToLoad: (ad, error) {
+                  debugPrint('BannerAd failed to load: $error');
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+              ),
+            )..load();
+          });
+        });
+
         return null;
       },
       [],
     );
 
-    if (!nativeAdIsLoaded.value) {
+    if (!bannerAdIsLoaded.value) {
       return const SizedBox.shrink();
     }
 
     return ConstrainedBox(
       constraints: const BoxConstraints(
         minWidth: 320, // minimum recommended width
-        minHeight: 90, // minimum recommended height
-        maxWidth: 400,
-        maxHeight: 200,
+        minHeight: 50, // minimum recommended height
+        maxWidth: 320,
+        maxHeight: 50,
       ),
-      child: AdWidget(ad: nativeAd.value!),
+      child: AdWidget(ad: bannerAd.value!),
     );
   }
 }
