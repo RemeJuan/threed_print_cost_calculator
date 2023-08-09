@@ -32,4 +32,13 @@ class CalculatorHelpers {
 
     return double.parse(totalFixed);
   }
+
+  static double labourCost(
+    double labourRate,
+    double labourTime,
+  ) {
+    //Labour Rate * Labour Time = Labour Cost
+    final totalFixed = (labourRate * labourTime).toStringAsFixed(2);
+    return double.parse(totalFixed);
+  }
 }

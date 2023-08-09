@@ -5,10 +5,12 @@ import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 class CalculatorResults extends StatelessWidget {
   const CalculatorResults({
     required this.results,
+    required this.premium,
     super.key,
   });
 
   final Map<dynamic, dynamic> results;
+  final bool premium;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,11 @@ class CalculatorResults extends StatelessWidget {
             l10n.resultTotalPrefix,
             (results['total'] ?? '0').toString(),
           ),
+          if (premium)
+            _itemRow(
+              l10n.riskTotalPrefix,
+              (results['risk'] ?? '0').toString(),
+            ),
           const SizedBox(height: 16),
         ],
       ),
