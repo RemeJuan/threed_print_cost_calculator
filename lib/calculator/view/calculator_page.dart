@@ -23,15 +23,9 @@ class CalculatorPage extends HookWidget {
     final db = sl<Database>();
     final store = stringMapStoreFactory.store();
 
-    useEffect(
-      () {
-        return () async {
-          final info = await Purchases.getCustomerInfo();
-          premium.value = info.entitlements.all['Premium']?.isActive ?? false;
-        };
-      },
-      const [],
-    );
+    Purchases.addCustomerInfoUpdateListener((info) {
+      premium.value = info.entitlements.all['Premium']?.isActive ?? false;
+    });
 
     return BlocProvider<CalculatorBloc>(
       create: (_) => CalculatorBloc(db, store),
