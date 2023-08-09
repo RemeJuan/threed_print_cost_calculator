@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
@@ -17,9 +18,20 @@ class CalculatorPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final results = useState<Map<dynamic, dynamic>>({});
+    final premium = useState<bool>(false);
 
     final db = sl<Database>();
     final store = stringMapStoreFactory.store();
+
+    useEffect(
+      () {
+        return () async {
+          final info = await Purchases.getCustomerInfo();
+          premium.value = info.entitlements.all['Premium']?.isActive ?? false;
+        };
+      },
+      const [],
+    );
 
     return BlocProvider<CalculatorBloc>(
       create: (_) => CalculatorBloc(db, store),
@@ -52,72 +64,101 @@ class CalculatorPage extends HookWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Printer Wattage
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.watt,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: l10n.wattLabel,
-                        ),
-                        onChanged: (value) async {
-                          bloc.submit();
-                          await _addOrUpdateRecord(db, store, 'watt', value);
-                        },
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Printer Wattage
+                          Expanded(
+                            child: TextFieldBlocBuilder(
+                              textFieldBloc: bloc.watt,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: l10n.wattLabel,
+                                suffixText: 'watt',
+                              ),
+                              onChanged: (value) async {
+                                bloc.submit();
+                                await _addOrUpdateRecord(
+                                  db,
+                                  store,
+                                  'watt',
+                                  value,
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // Electricity Cost
+                          Expanded(
+                            child: TextFieldBlocBuilder(
+                              textFieldBloc: bloc.kwCost,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                decimal: true,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: l10n.electricityCostLabel,
+                                suffixText: 'kW/h',
+                              ),
+                              onChanged: (value) async {
+                                bloc.submit();
+                                await _addOrUpdateRecord(
+                                  db,
+                                  store,
+                                  'kwCost',
+                                  value,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      // Electricity Cost
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.kwCost,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: l10n.electricityCostLabel,
-                        ),
-                        onChanged: (value) async {
-                          bloc.submit();
-                          await _addOrUpdateRecord(
-                            db,
-                            store,
-                            'kwCost',
-                            value,
-                          );
-                        },
-                      ),
-                      // Spool Weight
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.spoolWeight,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: l10n.spoolWeightLabel,
-                        ),
-                        onChanged: (value) async {
-                          bloc.submit();
-                          await _addOrUpdateRecord(
-                            db,
-                            store,
-                            'spoolWeight',
-                            value,
-                          );
-                        },
-                      ),
-                      // Spool cost
-                      TextFieldBlocBuilder(
-                        textFieldBloc: bloc.spoolCost,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        decoration: InputDecoration(
-                          labelText: l10n.spoolCostLabel,
-                        ),
-                        onChanged: (value) async {
-                          bloc.submit();
-                          await _addOrUpdateRecord(
-                            db,
-                            store,
-                            'spoolCost',
-                            value,
-                          );
-                        },
+                      Row(
+                        children: [
+                          // Spool Weight
+                          Expanded(
+                            child: TextFieldBlocBuilder(
+                              textFieldBloc: bloc.spoolWeight,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                labelText: l10n.spoolWeightLabel,
+                                suffixText: 'g',
+                              ),
+                              onChanged: (value) async {
+                                bloc.submit();
+                                await _addOrUpdateRecord(
+                                  db,
+                                  store,
+                                  'spoolWeight',
+                                  value,
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // Spool cost
+                          Expanded(
+                            child: TextFieldBlocBuilder(
+                              textFieldBloc: bloc.spoolCost,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                decimal: true,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: l10n.spoolCostLabel,
+                              ),
+                              onChanged: (value) async {
+                                bloc.submit();
+                                await _addOrUpdateRecord(
+                                  db,
+                                  store,
+                                  'spoolCost',
+                                  value,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                       // Print Weight
                       TextFieldBlocBuilder(
@@ -155,9 +196,17 @@ class CalculatorPage extends HookWidget {
                           ),
                         ],
                       ),
+                      if (premium.value) ..._premiumWidgets(context, premium),
                       const SizedBox(height: 16),
-                      CalculatorResults(results: results.value),
-                      const AdContainer(),
+                      CalculatorResults(
+                        results: results.value,
+                        premium: premium.value,
+                      ),
+                      if (!premium.value) ...[
+                        Text(l10n.premiumHeader),
+                        ..._premiumWidgets(context, premium),
+                      ],
+                      if (!premium.value) const AdContainer(),
                     ],
                   ),
                 ),
@@ -187,5 +236,98 @@ class CalculatorPage extends HookWidget {
         await existing.ref.update(txn, {'value': value});
       }
     });
+  }
+
+  List<Widget> _premiumWidgets(
+    BuildContext context,
+    ValueNotifier<bool> premium,
+  ) {
+    final db = sl<Database>();
+    final store = stringMapStoreFactory.store();
+    final bloc = context.read<CalculatorBloc>();
+    final l10n = context.l10n;
+
+    return [
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: TextFieldBlocBuilder(
+              textFieldBloc: bloc.labourRate,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.labourRateLabel,
+              ),
+              onChanged: (value) async {
+                bloc.submit();
+                await _addOrUpdateRecord(
+                  db,
+                  store,
+                  'labourRate',
+                  value,
+                );
+              },
+              isEnabled: premium.value,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: TextFieldBlocBuilder(
+              textFieldBloc: bloc.labourTime,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.labourTimeLabel,
+              ),
+              onChanged: (_) => bloc.submit(),
+              isEnabled: premium.value,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: TextFieldBlocBuilder(
+              textFieldBloc: bloc.wearAndTear,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.wearAndTearLabel,
+              ),
+              onChanged: (value) async {
+                bloc.submit();
+                await _addOrUpdateRecord(
+                  db,
+                  store,
+                  'wearAndTear',
+                  value,
+                );
+              },
+              isEnabled: premium.value,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: TextFieldBlocBuilder(
+              textFieldBloc: bloc.failureRisk,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.failureRiskLabel,
+              ),
+              onChanged: (value) async {
+                bloc.submit();
+                await _addOrUpdateRecord(
+                  db,
+                  store,
+                  'failureRisk',
+                  value,
+                );
+              },
+              isEnabled: premium.value,
+            ),
+          ),
+        ],
+      ),
+    ];
   }
 }

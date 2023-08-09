@@ -8,7 +8,7 @@
   "@wattLabel": {
     "description": "Label for the Watt input field"
   },
-  "printWeightLabel": "Weight of the print (g)",
+  "printWeightLabel": "Weight of the print",
   "@printWeightLabel": {
     "description": "Label for the print weight input field"
   },
@@ -16,19 +16,35 @@
   "@hoursLabel": {
     "description": "Label for the print minutes input field"
   },
+    "wearAndTearLabel": "Materials/Wear + tear",
+    "@wearAndTearLabel": {
+      "description": "Label for the print minutes input field"
+    },
+    "labourRateLabel": "Hourly rate",
+           "@labourRateLabel": {
+             "description": "Label for the print minutes input field"
+           },
+       "labourTimeLabel": "Processing time",
+       "@labourTimeLabel": {
+         "description": "Label for the print minutes input field"
+       },
+   "failureRiskLabel": "Failure risk (%)",
+      "@failureRiskLabel": {
+        "description": "Label for the print minutes input field"
+      },
   "minutesLabel": "Minutes",
   "@minutesLabel": {
     "description": "Label for the print hours input field"
   },
-  "spoolWeightLabel": "Weight of the filament spool (g)",
+  "spoolWeightLabel": "Spool/Resin weight",
   "@spoolWeightLabel": {
     "description": "Label for the spool weight input field"
   },
-  "spoolCostLabel": "Cost of the filament spool",
+  "spoolCostLabel": "Spool/Resin cost",
   "@spoolCostLabel": {
     "description": "Label for the spool cost input field"
   },
-  "electricityCostLabel": "Electricity cost (kw/h)",
+  "electricityCostLabel": "Electricity cost",
   "@electricityCostLabel": {
     "description": "Label for the electricity cost input field"
   },
@@ -47,5 +63,13 @@
   "resultTotalPrefix": "Total cost: ",
   "@resultTotalPrefix": {
     "description": "Text shown before the total cost"
-  }
+  },
+    "riskTotalPrefix": "Risk cost: ",
+    "@riskTotalPrefix": {
+      "description": "Text shown before the total cost"
+    },
+         "premiumHeader": "Premium users only:",
+         "@premiumHeader": {
+           "description": "Text shown before the total cost"
+         }
 }
