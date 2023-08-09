@@ -7,6 +7,7 @@ import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
+import 'package:threed_print_cost_calculator/calculator/view/header_actions.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 
@@ -29,7 +30,11 @@ class CalculatorPage extends HookWidget {
 
           return Scaffold(
             resizeToAvoidBottomInset: true,
-            appBar: AppBar(title: Text(l10n.calculatorAppBarTitle)),
+            appBar: AppBar(
+              centerTitle: true,
+              title: Text(l10n.calculatorAppBarTitle),
+              actions: const [HeaderActions()],
+            ),
             body: FormBlocListener<CalculatorBloc, String, num>(
               onSubmitting: (context, state) {},
               onSuccess: (context, state) {
