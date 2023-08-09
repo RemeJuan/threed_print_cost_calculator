@@ -1,12 +1,16 @@
-## [1.0.13] - 2023-02-28
+## \[1.0.13\] - 2023-02-28
 ### Changed
 - updated adverts to use banner
 
-## [1.0.10] - 2023-02-28
+## \[1.0.10\] - 2023-02-28
 ### Changed
 - core and package updates
 - update target gradle version
 - manifest file updates
+
+## [1.0.14] - 2023-08-09
+### Fixed
+- package management
 
 ## [1.0.9] - 2022-11-05
 ### Fixed
@@ -40,9 +44,7 @@
 ### Added
 - Added in-app update checker
 
-[1.0.9+3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9+2...1.0.9+3
-[1.0.9+2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9+1...1.0.9+2
-[1.0.9+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9...1.0.9+1
+[1.0.14]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9...1.0.14
 [1.0.9]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.7...1.0.8
 [1.0.7]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.6...1.0.7
