@@ -14,9 +14,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
-
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 
 Future<void> main() async {
@@ -32,6 +32,8 @@ Future<void> main() async {
   );
 
   await MobileAds.instance.initialize();
+
+  await revenueCat();
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
@@ -49,4 +51,16 @@ Future<void> main() async {
   }
 
   return bootstrap(() => const App());
+}
+
+Future<void> revenueCat() async {
+  await Purchases.setLogLevel(LogLevel.debug);
+
+  late PurchasesConfiguration configuration;
+  if (Platform.isAndroid) {
+    configuration = PurchasesConfiguration('goog_JuJbmwmKhkyRSsswDqoVyMDlGdM');
+  } else if (Platform.isIOS) {
+    configuration = PurchasesConfiguration('appl_pKHoxoNodCJqGiKMyPkOzCNtcyF');
+  }
+  await Purchases.configure(configuration);
 }
