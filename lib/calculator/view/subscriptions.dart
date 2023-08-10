@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,6 +9,8 @@ class Subscriptions extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final processing = useState<bool>(false);
+
     return FutureBuilder<Offerings>(
       builder: (_, offerings) {
         if (offerings.connectionState == ConnectionState.done) {
@@ -20,9 +23,25 @@ class Subscriptions extends HookWidget {
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'Current Offerings',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Current Offerings',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        if (processing.value)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 8),
+                            child: SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),
@@ -35,14 +54,23 @@ class Subscriptions extends HookWidget {
                         title: Text(package.storeProduct.title),
                         subtitle: Text(package.storeProduct.description),
                         trailing: Text(package.storeProduct.priceString),
+                        enabled: !processing.value,
                         onTap: () async {
+                          processing.value = true;
                           try {
-                            final purchaserInfo =
-                                await Purchases.purchasePackage(package);
-                            debugPrint(purchaserInfo.toString());
+                            await Purchases.purchasePackage(package)
+                                .then((value) => Navigator.pop(context));
                           } on PlatformException catch (e) {
                             debugPrint(e.toString());
+                            BotToast.showSimpleNotification(
+                              title:
+                                  'There was an error processing your purchase. '
+                                  'Please try again later.',
+                              duration: const Duration(seconds: 5),
+                              align: Alignment.bottomCenter,
+                            );
                           }
+                          processing.value = false;
                         },
                       );
                     },
