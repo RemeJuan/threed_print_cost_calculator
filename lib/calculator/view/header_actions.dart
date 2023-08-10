@@ -16,14 +16,17 @@ class HeaderActions extends HookWidget {
       });
     }, []);
 
-    return premium.value
-        ? const Icon(Icons.check_circle)
-        : IconButton(
-            onPressed: () async => showModalBottomSheet(
-              context: context,
-              builder: (_) => const Subscriptions(),
+    return Container(
+      margin: const EdgeInsets.only(right: 16),
+      child: premium.value
+          ? const Icon(Icons.check_circle)
+          : IconButton(
+              onPressed: () async => showModalBottomSheet(
+                context: context,
+                builder: (_) => const Subscriptions(),
+              ),
+              icon: const Icon(Icons.attach_money_sharp),
             ),
-            icon: const Icon(Icons.attach_money_sharp),
-          );
+    );
   }
 }

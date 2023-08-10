@@ -5,13 +5,13 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:threed_print_cost_calculator/calculator/calculator.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
-
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -24,24 +24,26 @@ class App extends StatelessWidget {
     ]);
 
     return RateMyAppBuilder(
-        rateMyApp: RateMyApp(
-          minDays: 3,
-          minLaunches: 7,
-          remindDays: 2,
-          remindLaunches: 5,
-          googlePlayIdentifier: 'com.threed_print_calculator',
-          appStoreIdentifier: 'com.threed-print-calculator',
-        ),
-        onInitialized: (context, rateMyApp) {
-          if (rateMyApp.shouldOpenDialog) {
-            rateMyApp.showRateDialog(context);
-          }
-        },
-        builder: (context) {
+      rateMyApp: RateMyApp(
+        minDays: 3,
+        minLaunches: 7,
+        remindDays: 2,
+        remindLaunches: 5,
+        googlePlayIdentifier: 'com.threed_print_calculator',
+        appStoreIdentifier: 'com.threed-print-calculator',
+      ),
+      onInitialized: (context, rateMyApp) {
+        if (rateMyApp.shouldOpenDialog) {
+          rateMyApp.showRateDialog(context);
+        }
+      },
+      builder: (context) {
         return GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: MaterialApp(
+            builder: BotToastInit(),
             debugShowCheckedModeBanner: false,
+            navigatorObservers: [BotToastNavigatorObserver()],
             theme: ThemeData.dark().copyWith(
               useMaterial3: true,
               elevatedButtonTheme: ElevatedButtonThemeData(
