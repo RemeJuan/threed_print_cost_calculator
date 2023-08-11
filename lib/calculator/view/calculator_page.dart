@@ -6,9 +6,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
+import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/calculator/view/header_actions.dart';
+import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
+import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 
@@ -19,6 +22,7 @@ class CalculatorPage extends HookWidget {
   Widget build(BuildContext context) {
     final results = useState<Map<dynamic, dynamic>>({});
     final premium = useState<bool>(false);
+    final showSave = useState<bool>(false);
 
     final db = sl<Database>();
     final store = stringMapStoreFactory.store();
@@ -74,9 +78,7 @@ class CalculatorPage extends HookWidget {
                               ),
                               onChanged: (value) async {
                                 bloc.submit();
-                                await _addOrUpdateRecord(
-                                  db,
-                                  store,
+                                await CalculatorHelpers.addOrUpdateRecord(
                                   'watt',
                                   value,
                                 );
@@ -98,9 +100,7 @@ class CalculatorPage extends HookWidget {
                               ),
                               onChanged: (value) async {
                                 bloc.submit();
-                                await _addOrUpdateRecord(
-                                  db,
-                                  store,
+                                await CalculatorHelpers.addOrUpdateRecord(
                                   'kwCost',
                                   value,
                                 );
@@ -122,9 +122,7 @@ class CalculatorPage extends HookWidget {
                               ),
                               onChanged: (value) async {
                                 bloc.submit();
-                                await _addOrUpdateRecord(
-                                  db,
-                                  store,
+                                await CalculatorHelpers.addOrUpdateRecord(
                                   'spoolWeight',
                                   value,
                                 );
@@ -145,9 +143,7 @@ class CalculatorPage extends HookWidget {
                               ),
                               onChanged: (value) async {
                                 bloc.submit();
-                                await _addOrUpdateRecord(
-                                  db,
-                                  store,
+                                await CalculatorHelpers.addOrUpdateRecord(
                                   'spoolCost',
                                   value,
                                 );
@@ -192,15 +188,27 @@ class CalculatorPage extends HookWidget {
                           ),
                         ],
                       ),
-                      if (premium.value) ..._premiumWidgets(context, premium),
+                      if (premium.value) PremiumWidgets(premium: premium.value),
                       const SizedBox(height: 16),
                       CalculatorResults(
                         results: results.value,
                         premium: premium.value,
                       ),
+                      if (!premium.value && !showSave.value)
+                        MaterialButton(
+                          onPressed: () {
+                            showSave.value = true;
+                          },
+                          child: const Text('Save Print'),
+                        ),
+                      if (showSave.value)
+                        SaveForm(
+                          data: results.value,
+                          showSave: showSave,
+                        ),
                       if (!premium.value) ...[
                         Text(l10n.premiumHeader),
-                        ..._premiumWidgets(context, premium),
+                        PremiumWidgets(premium: premium.value),
                       ],
                       if (!premium.value) const AdContainer(),
                     ],
@@ -212,118 +220,5 @@ class CalculatorPage extends HookWidget {
         },
       ),
     );
-  }
-
-  Future<void> _addOrUpdateRecord(
-    Database db,
-    StoreRef store,
-    String key,
-    String value,
-  ) async {
-    // Check if the record exists before adding or updating it.
-    await db.transaction((txn) async {
-      // Look of existing record
-      final existing = await store.record(key).getSnapshot(txn);
-      if (existing == null) {
-        // code not found, add
-        await store.record(key).add(txn, {'value': value});
-      } else {
-        // Update existing
-        await existing.ref.update(txn, {'value': value});
-      }
-    });
-  }
-
-  List<Widget> _premiumWidgets(
-    BuildContext context,
-    ValueNotifier<bool> premium,
-  ) {
-    final db = sl<Database>();
-    final store = stringMapStoreFactory.store();
-    final bloc = context.read<CalculatorBloc>();
-    final l10n = context.l10n;
-
-    return [
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: TextFieldBlocBuilder(
-              textFieldBloc: bloc.labourRate,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: l10n.labourRateLabel,
-              ),
-              onChanged: (value) async {
-                bloc.submit();
-                await _addOrUpdateRecord(
-                  db,
-                  store,
-                  'labourRate',
-                  value,
-                );
-              },
-              isEnabled: premium.value,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: TextFieldBlocBuilder(
-              textFieldBloc: bloc.labourTime,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: l10n.labourTimeLabel,
-              ),
-              onChanged: (_) => bloc.submit(),
-              isEnabled: premium.value,
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: TextFieldBlocBuilder(
-              textFieldBloc: bloc.wearAndTear,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: l10n.wearAndTearLabel,
-              ),
-              onChanged: (value) async {
-                bloc.submit();
-                await _addOrUpdateRecord(
-                  db,
-                  store,
-                  'wearAndTear',
-                  value,
-                );
-              },
-              isEnabled: premium.value,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: TextFieldBlocBuilder(
-              textFieldBloc: bloc.failureRisk,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: l10n.failureRiskLabel,
-              ),
-              onChanged: (value) async {
-                bloc.submit();
-                await _addOrUpdateRecord(
-                  db,
-                  store,
-                  'failureRisk',
-                  value,
-                );
-              },
-              isEnabled: premium.value,
-            ),
-          ),
-        ],
-      ),
-    ];
   }
 }
