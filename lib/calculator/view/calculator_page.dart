@@ -194,7 +194,7 @@ class CalculatorPage extends HookWidget {
                         results: results.value,
                         premium: premium.value,
                       ),
-                      if (!premium.value && !showSave.value)
+                      if (premium.value && !showSave.value)
                         MaterialButton(
                           onPressed: () {
                             showSave.value = true;

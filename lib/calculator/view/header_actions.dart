@@ -19,12 +19,12 @@ class HeaderActions extends HookWidget {
 
     return Container(
       margin: const EdgeInsets.only(right: 16),
-      child: !premium.value
+      child: premium.value
           ? IconButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => HistoryPage()),
+                  MaterialPageRoute(builder: (_) => const HistoryPage()),
                 );
               },
               icon: const Icon(Icons.list),
