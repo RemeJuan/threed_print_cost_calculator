@@ -95,6 +95,7 @@ class CalculatorBloc extends FormBloc<String, num> {
         'electricity': electricityCost,
         'filament': filamentCost,
         'risk': frCost,
+        'labour': labourCost,
         'total': totalCost.toStringAsFixed(2),
       }),
       canSubmitAgain: true,
