@@ -33,11 +33,16 @@ class CalculatorResults extends StatelessWidget {
             l10n.resultTotalPrefix,
             (results['total'] ?? '0').toString(),
           ),
-          if (premium)
+          if (premium) ...[
             _itemRow(
               l10n.riskTotalPrefix,
               (results['risk'] ?? '0').toString(),
             ),
+            _itemRow(
+              l10n.labourCostPrefix,
+              (results['labour'] ?? '0').toString(),
+            ),
+          ],
           const SizedBox(height: 16),
         ],
       ),
