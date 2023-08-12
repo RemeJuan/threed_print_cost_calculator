@@ -90,10 +90,11 @@ class PremiumWidgets extends StatelessWidget {
             ),
           ],
         ),
-        const MaterialButton(
-          onPressed: null,
-          child: Text('Save Print'),
-        ),
+        if (!premium)
+          const MaterialButton(
+            onPressed: null,
+            child: Text('Save Print'),
+          ),
       ],
     );
   }
