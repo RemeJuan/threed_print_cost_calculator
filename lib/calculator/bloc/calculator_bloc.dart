@@ -92,10 +92,10 @@ class CalculatorBloc extends FormBloc<String, num> {
 
     emitSuccess(
       successResponse: jsonEncode({
-        'electricity': electricityCost,
-        'filament': filamentCost,
-        'risk': frCost,
-        'labour': labourCost,
+        'electricity': electricityCost.toStringAsFixed(2),
+        'filament': filamentCost.toStringAsFixed(2),
+        'risk': frCost.toStringAsFixed(2),
+        'labour': labourCost.toStringAsFixed(2),
         'total': totalCost.toStringAsFixed(2),
       }),
       canSubmitAgain: true,
