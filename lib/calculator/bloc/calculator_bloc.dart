@@ -16,6 +16,10 @@ class CalculatorBloc extends FormBloc<String, num> {
         spoolWeight,
         spoolCost,
         kwCost,
+        wearAndTear,
+        failureRisk,
+        labourRate,
+        labourTime,
       ],
     );
   }
@@ -37,11 +41,20 @@ class CalculatorBloc extends FormBloc<String, num> {
 
   final kwCost = TextFieldBloc<double>();
 
+  final wearAndTear = TextFieldBloc<double>();
+
+  final failureRisk = TextFieldBloc<double>();
+
+  final labourRate = TextFieldBloc<double>();
+
+  final labourTime = TextFieldBloc<double>();
+
   @override
   // ignore: avoid_void_async
   void onSubmitting() async {
     var electricityCost = 0.0;
     var filamentCost = 0.0;
+    var labourCost = 0.0;
 
     final w = watt.value;
 
@@ -51,6 +64,11 @@ class CalculatorBloc extends FormBloc<String, num> {
     final sc = spoolCost.value;
     final h = hours.value;
     final m = minutes.value;
+
+    final wt = double.tryParse(wearAndTear.value) ?? 0.0;
+    final lr = double.tryParse(labourRate.value) ?? 0.0;
+    final lt = double.tryParse(labourTime.value) ?? 0.0;
+    final fr = double.tryParse(failureRisk.value) ?? 0.0;
 
     if (w.isNotEmpty && (h.isNotEmpty || m.isNotEmpty) && kw.isNotEmpty) {
       electricityCost = CalculatorHelpers.electricityCost(
@@ -62,18 +80,23 @@ class CalculatorBloc extends FormBloc<String, num> {
     }
 
     if (pw.isNotEmpty && sw.isNotEmpty && sc.isNotEmpty) {
-      filamentCost = CalculatorHelpers.filamentCost(
-        printWeight.value,
-        spoolWeight.value,
-        spoolCost.value,
-      );
+      filamentCost = CalculatorHelpers.filamentCost(pw, sw, sc);
     }
+
+    if (lt > 0 && lr > 0) {
+      labourCost = CalculatorHelpers.labourCost(lr, lt);
+    }
+
+    final totalCost = electricityCost + filamentCost + wt + labourCost;
+    final frCost = fr / 100 * totalCost;
 
     emitSuccess(
       successResponse: jsonEncode({
-        'electricity': electricityCost,
-        'filament': filamentCost,
-        'total': (electricityCost + filamentCost).toStringAsFixed(2),
+        'electricity': electricityCost.toStringAsFixed(2),
+        'filament': filamentCost.toStringAsFixed(2),
+        'risk': frCost.toStringAsFixed(2),
+        'labour': labourCost.toStringAsFixed(2),
+        'total': totalCost.toStringAsFixed(2),
       }),
       canSubmitAgain: true,
     );
@@ -86,11 +109,17 @@ class CalculatorBloc extends FormBloc<String, num> {
     final spoolWeightVal = await _getValue('spoolWeight');
     final spoolCostVal = await _getValue('spoolCost');
     final kwCostVal = await _getValue('kwCost');
+    final wearAndTearVal = await _getValue('wearAndTear');
+    final failureRiskVal = await _getValue('failureRisk');
+    final labourRateVal = await _getValue('labourRate');
 
     watt.updateValue(wattVal['value'].toString());
     spoolWeight.updateValue(spoolWeightVal['value'].toString());
     spoolCost.updateValue(spoolCostVal['value'].toString());
     kwCost.updateValue(kwCostVal['value'].toString());
+    wearAndTear.updateValue(wearAndTearVal['value'].toString());
+    failureRisk.updateValue(failureRiskVal['value'].toString());
+    labourRate.updateValue(labourRateVal['value'].toString());
 
     emitLoaded();
   }

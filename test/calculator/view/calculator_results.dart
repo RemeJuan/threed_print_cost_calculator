@@ -19,6 +19,7 @@ void main() {
               'filament': '0.00',
               'total': '0.00',
             },
+            premium: true,
           ),
         );
         await tester.pumpAndSettle();
