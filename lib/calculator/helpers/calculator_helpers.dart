@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
@@ -75,7 +76,7 @@ class CalculatorHelpers {
     try {
       await store.add(db, value.toMap());
     } catch (e) {
-      print("Couldn't save print: $e");
+      BotToast.showText(text: 'Error saving print');
     }
   }
 }
