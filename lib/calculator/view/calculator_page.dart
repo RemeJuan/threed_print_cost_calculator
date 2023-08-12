@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -12,6 +13,7 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_results.
 import 'package:threed_print_cost_calculator/calculator/view/header_actions.dart';
 import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
+import 'package:threed_print_cost_calculator/calculator/view/support_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 
@@ -23,6 +25,7 @@ class CalculatorPage extends HookWidget {
     final results = useState<Map<dynamic, dynamic>>({});
     final premium = useState<bool>(false);
     final showSave = useState<bool>(false);
+    final userId = useState<String>('');
 
     final db = sl<Database>();
     final store = stringMapStoreFactory.store();
@@ -30,6 +33,7 @@ class CalculatorPage extends HookWidget {
     useEffect(() {
       Purchases.addCustomerInfoUpdateListener((info) {
         premium.value = info.entitlements.active.isNotEmpty;
+        userId.value = info.originalAppUserId;
       });
     }, []);
 
@@ -46,6 +50,15 @@ class CalculatorPage extends HookWidget {
               centerTitle: true,
               title: Text(l10n.calculatorAppBarTitle),
               actions: const [HeaderActions()],
+              leading: IconButton(
+                icon: const Icon(Icons.help_outline),
+                onPressed: () {
+                  BotToast.showCustomNotification(
+                    duration: const Duration(minutes: 5),
+                    toastBuilder: (_) => SupportDialog(userID: userId.value),
+                  );
+                },
+              ),
             ),
             body: FormBlocListener<CalculatorBloc, String, num>(
               onSubmitting: (context, state) {},
