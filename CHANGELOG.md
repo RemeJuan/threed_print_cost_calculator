@@ -8,6 +8,10 @@
 - update target gradle version
 - manifest file updates
 
+## [1.2.0+1] - 2023-08-12
+### Added
+- added support dialog
+
 ## [1.2.0] - 2023-08-11
 ### Added
 - added save pring feature for premium users
@@ -52,6 +56,7 @@
 ### Added
 - Added in-app update checker
 
+[1.2.0+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.2.0...1.2.0+1
 [1.2.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.14...1.1.0
 [1.0.14]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.9...1.0.14
