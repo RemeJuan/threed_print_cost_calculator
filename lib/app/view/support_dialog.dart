@@ -26,9 +26,9 @@ class SupportDialog extends StatelessWidget {
             RichText(
               text: TextSpan(
                 children: [
-                  const TextSpan(text: 'Please log all support issues '),
+                  const TextSpan(text: 'For any issues, please mail me at '),
                   TextSpan(
-                    text: 'HERE',
+                    text: 'google@remej.dev',
                     style: const TextStyle(
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -36,15 +36,11 @@ class SupportDialog extends StatelessWidget {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
                         final uri =
-                            'https://github.com/RemeJuan/threed_print_cost_calculator/issues/new';
+                            'mailto:google@remej.dev?subject=3D%20Print%20Cost%20Calculator%20Support&body=Support%20ID:%20$userID';
                         try {
                           await launchUrl(Uri.parse(uri));
                         } catch (e) {
-                          ClipboardData(text: uri);
-                          BotToast.showText(
-                            text:
-                                'Could not open link, it has been copied to your clipboard',
-                          );
+                          BotToast.showText(text: 'Could not open mail client');
                         }
                       },
                   )
@@ -68,7 +64,7 @@ class SupportDialog extends StatelessWidget {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
-                      ClipboardData(text: userID);
+                      await Clipboard.setData(ClipboardData(text: userID));
                       BotToast.showText(
                         text: 'Support ID Copied',
                       );

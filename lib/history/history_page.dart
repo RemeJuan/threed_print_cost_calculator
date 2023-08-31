@@ -19,10 +19,6 @@ class HistoryPage extends StatelessWidget {
           if (snapshot.hasData) {
             return CustomScrollView(
               slivers: [
-                const SliverAppBar(
-                  centerTitle: true,
-                  title: Text('History'),
-                ),
                 SliverList.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (_, index) {

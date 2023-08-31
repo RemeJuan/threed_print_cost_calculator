@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:rate_my_app/rate_my_app.dart';
-import 'package:threed_print_cost_calculator/calculator/calculator.dart';
+import 'package:threed_print_cost_calculator/app/view/app_page.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -65,7 +65,7 @@ class App extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
             ],
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const CalculatorPage(),
+            home: const AppPage(),
           ),
         );
       },
