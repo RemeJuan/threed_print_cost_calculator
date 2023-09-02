@@ -57,50 +57,6 @@ class CalculatorPage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Printer Wattage
-                        Expanded(
-                          child: TextFieldBlocBuilder(
-                            textFieldBloc: bloc.watt,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: l10n.wattLabel,
-                              suffixText: 'watt',
-                            ),
-                            onChanged: (value) async {
-                              bloc.submit();
-                              await CalculatorHelpers.addOrUpdateRecord(
-                                'watt',
-                                value,
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        // Electricity Cost
-                        Expanded(
-                          child: TextFieldBlocBuilder(
-                            textFieldBloc: bloc.kwCost,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                            decoration: InputDecoration(
-                              labelText: l10n.electricityCostLabel,
-                              suffixText: 'kW/h',
-                            ),
-                            onChanged: (value) async {
-                              bloc.submit();
-                              await CalculatorHelpers.addOrUpdateRecord(
-                                'kwCost',
-                                value,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
                       children: [
                         // Spool Weight
                         Expanded(
