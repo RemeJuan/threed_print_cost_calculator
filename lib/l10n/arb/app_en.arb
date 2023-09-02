@@ -5,71 +5,22 @@
   "settingsAppBarTitle": "Settings",
   "wattLabel": "Watt (3D Printer)",
   "printWeightLabel": "Weight of the print",
-  "@printWeightLabel": {
-    "description": "Label for the print weight input field"
-  },
   "hoursLabel": "Printing time (hours)",
-  "@hoursLabel": {
-    "description": "Label for the print minutes input field"
-  },
   "wearAndTearLabel": "Materials/Wear + tear",
-  "@wearAndTearLabel": {
-    "description": "Label for the print minutes input field"
-  },
   "labourRateLabel": "Hourly rate",
-  "@labourRateLabel": {
-    "description": "Label for the print minutes input field"
-  },
   "labourTimeLabel": "Processing time",
-  "@labourTimeLabel": {
-    "description": "Label for the print minutes input field"
-  },
   "failureRiskLabel": "Failure risk (%)",
-  "@failureRiskLabel": {
-    "description": "Label for the print minutes input field"
-  },
   "minutesLabel": "Minutes",
-  "@minutesLabel": {
-    "description": "Label for the print hours input field"
-  },
   "spoolWeightLabel": "Spool/Resin weight",
-  "@spoolWeightLabel": {
-    "description": "Label for the spool weight input field"
-  },
   "spoolCostLabel": "Spool/Resin cost",
-  "@spoolCostLabel": {
-    "description": "Label for the spool cost input field"
-  },
   "electricityCostLabel": "Electricity cost",
-  "@electricityCostLabel": {
-    "description": "Label for the electricity cost input field"
-  },
   "submitButton": "Calculate",
-  "@submitButton": {
-    "description": "Text for the calculate button"
-  },
   "resultElectricityPrefix": "Total cost for Electricity: ",
-  "@resultElectricityPrefix": {
-    "description": "Text shown before the electricity cost"
-  },
   "resultFilamentPrefix": "Total cost for filament: ",
-  "@resultFilamentPrefix": {
-    "description": "Text shown before the filament cost"
-  },
   "resultTotalPrefix": "Total cost: ",
-  "@resultTotalPrefix": {
-    "description": "Text shown before the total cost"
-  },
   "riskTotalPrefix": "Risk cost: ",
-  "@riskTotalPrefix": {
-    "description": "Text shown before the total cost"
-  },
   "premiumHeader": "Premium users only:",
-  "@premiumHeader": {
-    "description": "Text shown before the total cost"
-  },
   "labourCostPrefix": "Labour cost: ",
-  "@labourCostPrefix": {
-    "description": "Text shown before the total cost"
-  }
+  "watt": "Watt",
+  "kwh": "kW/h"
 }
