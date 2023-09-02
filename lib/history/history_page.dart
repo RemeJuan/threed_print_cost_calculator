@@ -38,9 +38,9 @@ class HistoryPage extends StatelessWidget {
                             .record(snapshot.data![index].key)
                             .delete(db);
                       },
-                      background: Container(
+                      background: const ColoredBox(
                         color: Colors.red,
-                        child: const Align(
+                        child: Align(
                           alignment: Alignment.centerRight,
                           child: Padding(
                             padding: EdgeInsets.only(right: 16),
@@ -110,7 +110,9 @@ class HistoryPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 _row(
-                                    'Electricity Cost: ', data.electricityCost),
+                                  'Electricity Cost: ',
+                                  data.electricityCost,
+                                ),
                                 _row('Filament Cost: ', data.filamentCost),
                                 _row('Labour Cost: ', data.labourCost),
                                 _row('Risk Cost: ', data.riskCost),
@@ -123,7 +125,7 @@ class HistoryPage extends StatelessWidget {
                       ),
                     );
                   },
-                )
+                ),
               ],
             );
           }

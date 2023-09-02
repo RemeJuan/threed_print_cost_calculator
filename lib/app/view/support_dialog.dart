@@ -43,35 +43,36 @@ class SupportDialog extends StatelessWidget {
                           BotToast.showText(text: 'Could not open mail client');
                         }
                       },
-                  )
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
             RichText(
-                text: TextSpan(
-              children: [
-                const TextSpan(text: 'Please include your Support ID: '),
-                const TextSpan(
-                  text: '(click to copy) \n',
-                  style: TextStyle(fontSize: 12),
-                ),
-                TextSpan(
-                  text: userID,
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
+              text: TextSpan(
+                children: [
+                  const TextSpan(text: 'Please include your Support ID: '),
+                  const TextSpan(
+                    text: '(click to copy) \n',
+                    style: TextStyle(fontSize: 12),
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      await Clipboard.setData(ClipboardData(text: userID));
-                      BotToast.showText(
-                        text: 'Support ID Copied',
-                      );
-                    },
-                )
-              ],
-            )),
+                  TextSpan(
+                    text: userID,
+                    style: const TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        await Clipboard.setData(ClipboardData(text: userID));
+                        BotToast.showText(
+                          text: 'Support ID Copied',
+                        );
+                      },
+                  ),
+                ],
+              ),
+            ),
             Container(
               alignment: Alignment.center,
               child: const TextButton(
