@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
@@ -27,6 +28,20 @@ class DataBaseHelpers {
         await existing.ref.update(txn, {'value': value});
       }
     });
+  }
+
+  Future<void> updateDb(
+    Map<String, dynamic> data,
+    DBName dbName,
+  ) async {
+    final db = sl<Database>();
+    final store = StoreRef.main();
+
+    try {
+      await store.record(describeEnum(dbName)).put(db, data);
+    } catch (e) {
+      BotToast.showText(text: 'Error saving print');
+    }
   }
 
   Future<Map<String, Object?>> getValue(String key) async {
