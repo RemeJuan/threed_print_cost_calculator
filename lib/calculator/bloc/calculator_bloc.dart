@@ -29,6 +29,7 @@ class CalculatorBloc extends FormBloc<String, num> {
   final StoreRef store;
 
   final watt = TextFieldBloc<int>();
+  final kwCost = TextFieldBloc<double>();
 
   final printWeight = TextFieldBloc<double>();
 
@@ -39,8 +40,6 @@ class CalculatorBloc extends FormBloc<String, num> {
   final spoolWeight = TextFieldBloc<int>();
 
   final spoolCost = TextFieldBloc<double>();
-
-  final kwCost = TextFieldBloc<double>();
 
   final wearAndTear = TextFieldBloc<double>();
 
