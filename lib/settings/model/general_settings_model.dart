@@ -7,16 +7,16 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
     return GeneralSettingsModel(
-      electricityCost: (map['electricityCost'] ?? '0.0').toString(),
-      wattage: (map['wattage'] ?? '0').toString(),
+      electricityCost: (map['electricityCost'] ?? '').toString(),
+      wattage: (map['wattage'] ?? '').toString(),
       activePrinter: (map['activePrinter'] ?? '').toString(),
     );
   }
 
   factory GeneralSettingsModel.initial() {
     return const GeneralSettingsModel(
-      electricityCost: '0',
-      wattage: '0',
+      electricityCost: '',
+      wattage: '',
       activePrinter: '',
     );
   }
