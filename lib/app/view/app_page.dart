@@ -30,13 +30,13 @@ class AppPage extends HookWidget {
 
     final pages = <Widget>[
       const CalculatorPage(),
-      const HistoryPage(),
+      if (premium.value) const HistoryPage(),
       const SettingsPage()
     ];
 
     final headings = [
       l10n.calculatorAppBarTitle,
-      l10n.historyAppBarTitle,
+      if (premium.value) l10n.historyAppBarTitle,
       l10n.settingsAppBarTitle
     ];
 
@@ -71,16 +71,17 @@ class AppPage extends HookWidget {
             curve: Curves.ease,
           );
         },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
             label: 'Calculator',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
+          if (premium.value)
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'History',
+            ),
+          const BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
           ),
