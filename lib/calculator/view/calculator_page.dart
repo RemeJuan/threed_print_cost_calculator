@@ -26,11 +26,14 @@ class CalculatorPage extends HookWidget {
     final db = sl<Database>();
     final store = stringMapStoreFactory.store();
 
-    useEffect(() {
-      Purchases.addCustomerInfoUpdateListener((info) {
-        premium.value = info.entitlements.active.isNotEmpty;
-      });
-    }, []);
+    useEffect(
+      () {
+        Purchases.addCustomerInfoUpdateListener((info) {
+          premium.value = info.entitlements.active.isNotEmpty;
+        });
+      },
+      [],
+    );
 
     return BlocProvider<CalculatorBloc>(
       create: (_) => CalculatorBloc(db, store),

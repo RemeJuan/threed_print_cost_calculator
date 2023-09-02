@@ -59,7 +59,7 @@ class CalculatorResults extends StatelessWidget {
             prefix,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          Text(value)
+          Text(value),
         ],
       ),
     );

@@ -11,11 +11,14 @@ class HeaderActions extends HookWidget {
   Widget build(BuildContext context) {
     final premium = useState<bool>(false);
 
-    useEffect(() {
-      Purchases.addCustomerInfoUpdateListener((info) {
-        premium.value = info.entitlements.active.isNotEmpty;
-      });
-    }, []);
+    useEffect(
+      () {
+        Purchases.addCustomerInfoUpdateListener((info) {
+          premium.value = info.entitlements.active.isNotEmpty;
+        });
+      },
+      [],
+    );
 
     return Container(
       margin: const EdgeInsets.only(right: 16),

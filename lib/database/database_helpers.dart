@@ -49,7 +49,7 @@ class DataBaseHelpers {
     final store = stringMapStoreFactory.store(describeEnum(dbName));
 
     if (await store.record(key).exists(db)) {
-      return await store.record(key).get(db) as Map<String, Object?>;
+      return await store.record(key).get(db) as Map<String, Object>;
     }
 
     return {'value': ''};

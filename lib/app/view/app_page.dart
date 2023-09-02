@@ -19,25 +19,28 @@ class AppPage extends HookWidget {
     final userId = useState<String>('');
     final l10n = context.l10n;
 
-    useEffect(() {
-      Purchases.addCustomerInfoUpdateListener((info) {
-        premium.value = info.entitlements.active.isNotEmpty;
-        userId.value = info.originalAppUserId;
-      });
-    }, []);
+    useEffect(
+      () {
+        Purchases.addCustomerInfoUpdateListener((info) {
+          premium.value = info.entitlements.active.isNotEmpty;
+          userId.value = info.originalAppUserId;
+        });
+      },
+      [],
+    );
 
     final pageController = usePageController(initialPage: selectedIndex.value);
 
     final pages = <Widget>[
       const CalculatorPage(),
       if (premium.value) const HistoryPage(),
-      const SettingsPage()
+      const SettingsPage(),
     ];
 
     final headings = [
       l10n.calculatorAppBarTitle,
       if (premium.value) l10n.historyAppBarTitle,
-      l10n.settingsAppBarTitle
+      l10n.settingsAppBarTitle,
     ];
 
     return Scaffold(

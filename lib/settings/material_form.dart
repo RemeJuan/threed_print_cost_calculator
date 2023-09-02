@@ -29,9 +29,11 @@ class MaterialForm extends StatelessWidget {
             return FormBlocListener<MaterialBloc, String, dynamic>(
               onSubmitting: (context, state) {},
               onSuccess: (context, state) {
-                SettingsHelpers.saveMaterial(MaterialModel.fromMap(
-                  jsonDecode(state.successResponse!) as Map<String, dynamic>,
-                ));
+                SettingsHelpers.saveMaterial(
+                  MaterialModel.fromMap(
+                    jsonDecode(state.successResponse!) as Map<String, dynamic>,
+                  ),
+                );
                 Navigator.pop(context);
               },
               onFailure: (context, state) {
