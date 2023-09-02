@@ -26,6 +26,8 @@ class AppPage extends HookWidget {
       });
     }, []);
 
+    final pageController = usePageController(initialPage: selectedIndex.value);
+
     final pages = <Widget>[
       const CalculatorPage(),
       const HistoryPage(),
@@ -54,10 +56,21 @@ class AppPage extends HookWidget {
           },
         ),
       ),
-      body: pages[selectedIndex.value],
+      body: PageView(
+        onPageChanged: (index) => selectedIndex.value = index,
+        controller: pageController,
+        children: pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex.value,
-        onTap: (index) => selectedIndex.value = index,
+        onTap: (index) {
+          selectedIndex.value = index;
+          pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+          );
+        },
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
