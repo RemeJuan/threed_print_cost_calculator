@@ -1,3 +1,5 @@
+
+
 class GeneralSettingsModel {
   const GeneralSettingsModel({
     required this.electricityCost,
@@ -6,23 +8,28 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
     return GeneralSettingsModel(
-      electricityCost: map['electricityCost'] as double,
-      wattage: map['wattage'] as int,
+      electricityCost: (map['electricityCost'] ?? '0.0').toString(),
+      wattage: (map['wattage'] ?? '0').toString(),
     );
   }
 
-  final double electricityCost;
-  final int wattage;
+  factory GeneralSettingsModel.initial() {
+    return const GeneralSettingsModel(electricityCost: '0', wattage: '0');
+  }
+
+  final String electricityCost;
+  final String wattage;
 
   Map<String, dynamic> toMap() {
     return {
       'electricityCost': electricityCost,
+      'wattage': wattage,
     };
   }
 
   GeneralSettingsModel copyWith({
-    double? electricityCost,
-    int? wattage,
+    String? electricityCost,
+    String? wattage,
   }) {
     return GeneralSettingsModel(
       electricityCost: electricityCost ?? this.electricityCost,
