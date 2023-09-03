@@ -46,6 +46,9 @@ class GeneralSettingsModel {
   }
 
   @override
-  String toString() =>
-      'GeneralSettingsModel(electricityCost: $electricityCost, wattage: $wattage, activePrinter: $activePrinter)';
+  String toString() => 'GeneralSettingsModel('
+      'electricityCost: $electricityCost, '
+      'wattage: $wattage, '
+      'activePrinter: $activePrinter'
+      ')';
 }

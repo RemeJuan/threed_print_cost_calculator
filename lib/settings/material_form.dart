@@ -4,7 +4,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/bloc/material_bloc.dart';
 import 'package:threed_print_cost_calculator/settings/helpers/settings_helpers.dart';
@@ -24,7 +23,7 @@ class MaterialForm extends StatelessWidget {
         child: Builder(
           builder: (context) {
             final bloc = context.read<MaterialBloc>();
-            final l10n = context.l10n;
+            // final l10n = context.l10n;
 
             return FormBlocListener<MaterialBloc, String, dynamic>(
               onSubmitting: (context, state) {},
