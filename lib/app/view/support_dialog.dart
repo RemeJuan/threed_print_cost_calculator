@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:threed_print_cost_calculator/app/view/app.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupportDialog extends StatelessWidget {
@@ -18,19 +19,22 @@ class SupportDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            Text(
               'Need Help?',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: Theme.of(context).textTheme.displayMedium,
             ),
             const SizedBox(height: 16),
             RichText(
               text: TextSpan(
                 children: [
-                  const TextSpan(text: 'For any issues, please mail me at '),
+                  TextSpan(
+                    text: 'For any issues, please mail me at ',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
                   TextSpan(
                     text: 'google@remej.dev',
                     style: const TextStyle(
-                      color: Colors.blue,
+                      color: LIGHT_BLUE,
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: TapGestureRecognizer()
@@ -47,11 +51,14 @@ class SupportDialog extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             RichText(
               text: TextSpan(
                 children: [
-                  const TextSpan(text: 'Please include your Support ID: '),
+                  TextSpan(
+                    text: 'Please include your Support ID: ',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
                   const TextSpan(
                     text: '(click to copy) \n',
                     style: TextStyle(fontSize: 12),
@@ -59,7 +66,7 @@ class SupportDialog extends StatelessWidget {
                   TextSpan(
                     text: userID,
                     style: const TextStyle(
-                      color: Colors.blue,
+                      color: LIGHT_BLUE,
                       decoration: TextDecoration.underline,
                     ),
                     recognizer: TapGestureRecognizer()
@@ -73,11 +80,17 @@ class SupportDialog extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
             Container(
               alignment: Alignment.center,
-              child: const TextButton(
+              child: RawMaterialButton(
                 onPressed: BotToast.cleanAll,
-                child: Text('Close'),
+                child: Text(
+                  'Close',
+                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        fontSize: 16,
+                      ),
+                ),
               ),
             ),
           ],
