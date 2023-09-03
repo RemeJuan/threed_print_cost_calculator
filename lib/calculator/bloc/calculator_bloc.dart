@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 
 class CalculatorBloc extends FormBloc<String, num> {
   CalculatorBloc(this.database, this.store) : super(isLoading: true) {
@@ -28,6 +29,7 @@ class CalculatorBloc extends FormBloc<String, num> {
   final StoreRef store;
 
   final watt = TextFieldBloc<int>();
+  final kwCost = TextFieldBloc<double>();
 
   final printWeight = TextFieldBloc<double>();
 
@@ -38,8 +40,6 @@ class CalculatorBloc extends FormBloc<String, num> {
   final spoolWeight = TextFieldBloc<int>();
 
   final spoolCost = TextFieldBloc<double>();
-
-  final kwCost = TextFieldBloc<double>();
 
   final wearAndTear = TextFieldBloc<double>();
 
@@ -105,10 +105,13 @@ class CalculatorBloc extends FormBloc<String, num> {
   @override
 // ignore: avoid_void_async
   void onLoading() async {
-    final wattVal = await _getValue('watt');
+    final dbHelpers = DataBaseHelpers(DBName.settings);
+
+    final wattVal = await dbHelpers.getValue('wattage');
+    final kwCostVal = await dbHelpers.getValue('electricityCost');
+
     final spoolWeightVal = await _getValue('spoolWeight');
     final spoolCostVal = await _getValue('spoolCost');
-    final kwCostVal = await _getValue('kwCost');
     final wearAndTearVal = await _getValue('wearAndTear');
     final failureRiskVal = await _getValue('failureRisk');
     final labourRateVal = await _getValue('labourRate');

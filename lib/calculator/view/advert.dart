@@ -25,7 +25,7 @@ class AdContainer extends HookWidget {
         final adUnitId = Platform.isAndroid ? android : ios;
 
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await Future.delayed(const Duration(seconds: 5), () {
+          await Future.delayed(const Duration(seconds: 1), () {
             bannerAd.value = BannerAd(
               adUnitId: adUnitId,
               request: const AdRequest(),

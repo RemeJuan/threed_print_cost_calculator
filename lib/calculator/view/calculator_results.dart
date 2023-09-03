@@ -22,23 +22,28 @@ class CalculatorResults extends StatelessWidget {
       child: Column(
         children: [
           _itemRow(
+            context,
             l10n.resultElectricityPrefix,
             (results['electricity'] ?? '0').toString(),
           ),
           _itemRow(
+            context,
             l10n.resultFilamentPrefix,
             (results['filament'] ?? '0').toString(),
           ),
           _itemRow(
+            context,
             l10n.resultTotalPrefix,
             (results['total'] ?? '0').toString(),
           ),
           if (premium) ...[
             _itemRow(
+              context,
               l10n.riskTotalPrefix,
               (results['risk'] ?? '0').toString(),
             ),
             _itemRow(
+              context,
               l10n.labourCostPrefix,
               (results['labour'] ?? '0').toString(),
             ),
@@ -49,7 +54,7 @@ class CalculatorResults extends StatelessWidget {
     );
   }
 
-  Padding _itemRow(String prefix, String value) {
+  Padding _itemRow(BuildContext context, String prefix, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -57,9 +62,9 @@ class CalculatorResults extends StatelessWidget {
         children: [
           Text(
             prefix,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
-          Text(value)
+          Text(value),
         ],
       ),
     );
