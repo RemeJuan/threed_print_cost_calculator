@@ -96,9 +96,9 @@ class Printers extends StatelessWidget {
                               Text(
                                 '${data.wattage}w',
                                 style: Theme.of(context).textTheme.titleSmall,
-                              )
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     );
