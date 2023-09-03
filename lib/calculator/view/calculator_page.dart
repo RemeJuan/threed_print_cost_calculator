@@ -156,7 +156,10 @@ class CalculatorPage extends HookWidget {
                         showSave: showSave,
                       ),
                     if (!premium.value) ...[
-                      Text(l10n.premiumHeader),
+                      Text(
+                        l10n.premiumHeader,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
                       PremiumWidgets(premium: premium.value),
                     ],
                     if (!premium.value) const AdContainer(),

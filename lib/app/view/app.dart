@@ -109,5 +109,14 @@ ThemeData _theme() {
       selectedItemColor: LIGHT_BLUE,
       unselectedItemColor: Colors.white54,
     ),
+    dialogTheme: const DialogTheme(backgroundColor: DEEP_BLUE),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: DARK_BLUE,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16),
+        ),
+      ),
+    ),
   );
 }
