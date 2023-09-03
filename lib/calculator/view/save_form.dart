@@ -52,7 +52,7 @@ class SaveForm extends HookWidget {
               showSave.value = false;
             },
             icon: const Icon(Icons.cancel),
-          )
+          ),
         ],
       ),
     );

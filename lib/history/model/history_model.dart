@@ -63,6 +63,12 @@ class HistoryModel {
 
   @override
   String toString() {
-    return 'HistoryModel{name: $name, totalCost: $totalCost, riskCost: $riskCost, filamentCost: $filamentCost, electricityCost: $electricityCost}';
+    return 'HistoryModel{'
+        'name: $name, '
+        'totalCost: $totalCost, '
+        'riskCost: $riskCost, '
+        'filamentCost: $filamentCost, '
+        'electricityCost: $electricityCost'
+        '}';
   }
 }
