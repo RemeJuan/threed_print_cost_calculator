@@ -1,9 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' hide Key;
 import 'package:sembast/sembast.dart';
+// ignore: implementation_imports
+import 'package:sembast/src/type.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 
-enum DBName { materials, history, settings }
+enum DBName { materials, history, settings, printers }
 
 class DataBaseHelpers {
   DataBaseHelpers(this.dbName);
@@ -30,9 +32,53 @@ class DataBaseHelpers {
     });
   }
 
-  Future<void> updateDb(
+  Future<void> insertRecord(Map<String, dynamic> data) async {
+    final db = sl<Database>();
+    final store = stringMapStoreFactory.store(describeEnum(dbName));
+
+    try {
+      await store.add(db, data);
+    } catch (e) {
+      BotToast.showText(text: 'Error saving print');
+    }
+  }
+
+  Future<void> updateRecord(String key, Map<String, dynamic> data) async {
+    final db = sl<Database>();
+    final store = stringMapStoreFactory.store(describeEnum(dbName));
+
+    try {
+      await store.record(key).update(db, data);
+    } catch (e) {
+      BotToast.showText(text: 'Error saving print');
+    }
+  }
+
+  Future<void> deleteRecord(String key) async {
+    final db = sl<Database>();
+    final store = stringMapStoreFactory.store(describeEnum(dbName));
+
+    try {
+      await store.record(key).delete(db);
+    } catch (e) {
+      BotToast.showText(text: 'Error saving print');
+    }
+  }
+
+  Future<RecordSnapshot<Key?, Value?>?> getRecord(String key) async {
+    final db = sl<Database>();
+    final store = stringMapStoreFactory.store(describeEnum(dbName));
+
+    try {
+      return await store.record(key).getSnapshot(db);
+    } catch (e) {
+      BotToast.showText(text: 'Error saving print');
+    }
+    return null;
+  }
+
+  Future<void> putRecord(
     Map<String, dynamic> data,
-    DBName dbName,
   ) async {
     final db = sl<Database>();
     final store = StoreRef.main();
