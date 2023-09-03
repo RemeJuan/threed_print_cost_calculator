@@ -28,7 +28,7 @@ class Subscriptions extends HookWidget {
                       children: [
                         Text(
                           'Current Offerings',
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                         if (processing.value)
                           const Padding(
@@ -51,9 +51,18 @@ class Subscriptions extends HookWidget {
                       final package = offerings.data!.current!.availablePackages
                           .elementAt(index);
                       return ListTile(
-                        title: Text(package.storeProduct.title),
-                        subtitle: Text(package.storeProduct.description),
-                        trailing: Text(package.storeProduct.priceString),
+                        title: Text(
+                          package.storeProduct.title,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        subtitle: Text(
+                          package.storeProduct.description,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        trailing: Text(
+                          package.storeProduct.priceString,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
                         enabled: !processing.value,
                         onTap: () async {
                           processing.value = true;
@@ -76,6 +85,23 @@ class Subscriptions extends HookWidget {
                     },
                     childCount:
                         offerings.data!.current!.availablePackages.length,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: RawMaterialButton(
+                      onPressed: () async {
+                        await Purchases.restorePurchases();
+                      },
+                      child: Text(
+                        'Restore Purchases',
+                        style:
+                            Theme.of(context).textTheme.displayMedium?.copyWith(
+                                  fontSize: 16,
+                                ),
+                      ),
+                    ),
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),

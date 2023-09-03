@@ -50,7 +50,10 @@ class AppPage extends HookWidget {
         title: Text(headings[selectedIndex.value]),
         actions: const [HeaderActions()],
         leading: IconButton(
-          icon: const Icon(Icons.help_outline),
+          icon: const Icon(
+            Icons.help_outline,
+            color: Colors.white54,
+          ),
           onPressed: () {
             BotToast.showCustomNotification(
               duration: const Duration(minutes: 5),
