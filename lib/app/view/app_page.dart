@@ -25,6 +25,8 @@ class AppPage extends HookWidget {
           premium.value = info.entitlements.active.isNotEmpty;
           userId.value = info.originalAppUserId;
         });
+
+        return null;
       },
       [],
     );

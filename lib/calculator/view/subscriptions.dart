@@ -73,6 +73,7 @@ class Subscriptions extends HookWidget {
                             debugPrint(e.toString());
                             BotToast.showSimpleNotification(
                               title:
+                                  // ignore: lines_longer_than_80_chars
                                   'There was an error processing your purchase. '
                                   'Please try again later.',
                               duration: const Duration(seconds: 5),
