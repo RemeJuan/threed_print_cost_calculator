@@ -49,6 +49,7 @@ class DataBaseHelpers {
     final store = stringMapStoreFactory.store(describeEnum(dbName));
 
     if (await store.record(key).exists(db)) {
+      // ignore: cast_nullable_to_non_nullable
       return await store.record(key).get(db) as Map<String, Object>;
     }
 
