@@ -1,9 +1,10 @@
 class PrinterModel {
-  PrinterModel(
-      {required this.name,
-      required this.bedSize,
-      required this.wattage,
-      required this.archived});
+  PrinterModel({
+    required this.name,
+    required this.bedSize,
+    required this.wattage,
+    required this.archived,
+  });
 
   factory PrinterModel.fromMap(Map<String, dynamic> map) {
     return PrinterModel(
@@ -38,7 +39,7 @@ class PrinterModel {
       'name': name,
       'bedSize': bedSize,
       'wattage': wattage,
-      'archived': archived
+      'archived': archived,
     };
   }
 
