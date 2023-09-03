@@ -38,7 +38,7 @@ class GeneralSettings extends HookWidget {
                 initialValue: data.electricityCost,
                 onChanged: (value) async {
                   final updated = data.copyWith(electricityCost: value);
-                  await dbHelper.updateDb(updated.toMap(), DBName.settings);
+                  await dbHelper.putRecord(updated.toMap());
                 },
                 decoration: InputDecoration(
                   labelText: l10n.electricityCostLabel,
@@ -52,7 +52,7 @@ class GeneralSettings extends HookWidget {
                 initialValue: data.wattage,
                 onChanged: (value) async {
                   final updated = data.copyWith(wattage: value);
-                  await dbHelper.updateDb(updated.toMap(), DBName.settings);
+                  await dbHelper.putRecord(updated.toMap());
                 },
                 decoration: InputDecoration(
                   labelText: l10n.wattLabel,

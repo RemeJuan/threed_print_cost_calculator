@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
+import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -11,6 +12,7 @@ class SettingsPage extends StatelessWidget {
       children: const [
         GeneralSettings(),
         SizedBox(height: 16),
+        Printers(),
         // Materials(),
       ],
     );

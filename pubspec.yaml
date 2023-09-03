@@ -21,6 +21,7 @@ dependencies:
   flutter_hooks: 0.20.1
   flutter_localizations:
     sdk: flutter
+  flutter_slidable: 3.0.0
   get_it: 7.6.2
   google_fonts: 5.1.0
   google_mobile_ads: 3.0.0
