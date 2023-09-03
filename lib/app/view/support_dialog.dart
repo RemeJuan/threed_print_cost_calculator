@@ -40,7 +40,9 @@ class SupportDialog extends StatelessWidget {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
                         final uri =
-                            'mailto:google@remej.dev?subject=3D%20Print%20Cost%20Calculator%20Support&body=Support%20ID:%20$userID';
+                            'mailto:google@remej.dev?subject=3D%20Print%20Cost'
+                            '%20Calculator%20Support&body=Support%20ID:'
+                            '%20$userID';
                         try {
                           await launchUrl(Uri.parse(uri));
                         } catch (e) {

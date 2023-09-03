@@ -31,6 +31,7 @@ class CalculatorPage extends HookWidget {
         Purchases.addCustomerInfoUpdateListener((info) {
           premium.value = info.entitlements.active.isNotEmpty;
         });
+        return null;
       },
       [],
     );
