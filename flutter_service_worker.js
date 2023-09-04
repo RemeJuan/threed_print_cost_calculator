@@ -9,7 +9,7 @@ const RESOURCES = {"assets/fonts/MaterialIcons-Regular.otf": "632d78f99e713bfaca
 "assets/AssetManifest.bin": "0b0a3415aad49b6e9bf965ff578614f9",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/NOTICES": "8cf6ad8ddc704eb83f1ac973091e2ca2",
-"version.json": "381e7abeb93f737eeb9ee0ee7c0821fb",
+"version.json": "179876e657869ce090064ffad431e3a5",
 "manifest.json": "7cdd4f52f0985266b85468459365ff5e",
 "index.html": "f4c0a2bba8e77fa4d03a5781d2e67f5e",
 "/": "f4c0a2bba8e77fa4d03a5781d2e67f5e",
