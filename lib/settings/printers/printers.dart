@@ -51,7 +51,7 @@ class Printers extends StatelessWidget {
                   itemBuilder: (_, index) {
                     final item = snapshot.data![index].value;
                     final key = snapshot.data![index].key;
-                    final data = PrinterModel.fromMap(item);
+                    final data = PrinterModel.fromMap(item, key);
 
                     return Slidable(
                       key: ValueKey(key),
