@@ -4,6 +4,7 @@ import 'package:sembast/sembast.dart';
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
 enum DBName { materials, history, settings, printers }
 
@@ -88,6 +89,18 @@ class DataBaseHelpers {
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
     }
+  }
+
+  Future<GeneralSettingsModel> getSettings() async {
+    final store = StoreRef.main();
+    final settings = await store
+        .record(describeEnum(DBName.settings))
+        .getSnapshot(sl<Database>());
+
+    return GeneralSettingsModel.fromMap(
+      // ignore: cast_nullable_to_non_nullable
+      settings!.value as Map<String, dynamic>,
+    );
   }
 
   Future<Map<String, Object?>> getValue(String key) async {
