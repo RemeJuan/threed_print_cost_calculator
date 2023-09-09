@@ -1,10 +1,12 @@
 // ignore_for_file: cast_nullable_to_non_nullable
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 class CalculatorBloc extends FormBloc<String, num> {
   CalculatorBloc(this.database, this.store) : super(isLoading: true) {
@@ -107,7 +109,9 @@ class CalculatorBloc extends FormBloc<String, num> {
   void onLoading() async {
     final dbHelpers = DataBaseHelpers(DBName.settings);
 
-    final wattVal = await dbHelpers.getValue('wattage');
+    final settings = await dbHelpers.getSettings();
+    final printerKey = settings.activePrinter;
+
     final kwCostVal = await dbHelpers.getValue('electricityCost');
 
     final spoolWeightVal = await _getValue('spoolWeight');
@@ -116,7 +120,18 @@ class CalculatorBloc extends FormBloc<String, num> {
     final failureRiskVal = await _getValue('failureRisk');
     final labourRateVal = await _getValue('labourRate');
 
-    watt.updateValue(wattVal['value'].toString());
+    if (printerKey.isNotEmpty) {
+      final store = stringMapStoreFactory.store(describeEnum(DBName.printers));
+      final data = await store
+          .query(finder: Finder(filter: Filter.byKey(printerKey)))
+          .getSnapshot(database);
+
+      final printer = PrinterModel.fromMap(data!.value, printerKey);
+
+      watt.updateValue(printer.wattage);
+    } else {
+      watt.updateValue(settings.wattage);
+    }
     spoolWeight.updateValue(spoolWeightVal['value'].toString());
     spoolCost.updateValue(spoolCostVal['value'].toString());
     kwCost.updateValue(kwCostVal['value'].toString());
