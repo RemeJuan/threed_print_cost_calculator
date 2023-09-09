@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
@@ -46,10 +45,11 @@ class PrinterBloc extends FormBloc<String, dynamic> {
 
     if (key != null) {
       final record = await dbHelpers.getRecord(key!);
-      debugPrint(record.toString());
+
       final printer = PrinterModel.fromMap(
         // ignore: cast_nullable_to_non_nullable
         record!.value as Map<String, dynamic>,
+        key!,
       );
 
       name.updateValue(printer.name);
