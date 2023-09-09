@@ -61,7 +61,7 @@ class CalculatorPage extends HookWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const PrinterSelect(),
+                    if (premium.value) const PrinterSelect(),
                     Row(
                       children: [
                         // Spool Weight
