@@ -112,8 +112,6 @@ class CalculatorBloc extends FormBloc<String, num> {
     final settings = await dbHelpers.getSettings();
     final printerKey = settings.activePrinter;
 
-    final kwCostVal = await dbHelpers.getValue('electricityCost');
-
     final spoolWeightVal = await _getValue('spoolWeight');
     final spoolCostVal = await _getValue('spoolCost');
     final wearAndTearVal = await _getValue('wearAndTear');
@@ -134,7 +132,7 @@ class CalculatorBloc extends FormBloc<String, num> {
     }
     spoolWeight.updateValue(spoolWeightVal['value'].toString());
     spoolCost.updateValue(spoolCostVal['value'].toString());
-    kwCost.updateValue(kwCostVal['value'].toString());
+    kwCost.updateValue(settings.electricityCost);
     wearAndTear.updateValue(wearAndTearVal['value'].toString());
     failureRisk.updateValue(failureRiskVal['value'].toString());
     labourRate.updateValue(labourRateVal['value'].toString());
