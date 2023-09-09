@@ -24,7 +24,6 @@ class GeneralSettings extends HookWidget {
         var data = GeneralSettingsModel.initial();
 
         if (snapshot.hasData) {
-          debugPrint(snapshot.data!.value.toString());
           data = GeneralSettingsModel.fromMap(
             // ignore: cast_nullable_to_non_nullable
             snapshot.data!.value as Map<String, dynamic>,
