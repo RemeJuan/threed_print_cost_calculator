@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpe
 import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
+import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
@@ -40,7 +41,7 @@ class CalculatorPage extends HookWidget {
       create: (_) => CalculatorBloc(db, store),
       child: Builder(
         builder: (context) {
-          final bloc = context.read<CalculatorBloc>();
+          final bloc = context.watch<CalculatorBloc>();
           final l10n = context.l10n;
 
           return FormBlocListener<CalculatorBloc, String, num>(
@@ -60,6 +61,7 @@ class CalculatorPage extends HookWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const PrinterSelect(),
                     Row(
                       children: [
                         // Spool Weight
