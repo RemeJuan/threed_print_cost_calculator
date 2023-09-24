@@ -27,7 +27,6 @@ Future<void> main() async {
   );
 
   await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: '6LeUF2kmAAAAAMT-4LpABsnWEklBRLjX6xo7M0UQ',
     appleProvider: AppleProvider.appAttest,
   );
 
