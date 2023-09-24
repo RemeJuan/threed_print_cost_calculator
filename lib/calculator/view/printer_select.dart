@@ -40,7 +40,7 @@ class PrinterSelect extends HookWidget {
     return StreamBuilder(
       stream: query.onSnapshots(db),
       builder: (context, snapshot) {
-        if (snapshot.hasData && !loading.value) {
+        if (snapshot.hasData && snapshot.data!.isNotEmpty && !loading.value) {
           final data = snapshot.data!.map(
             (e) => PrinterModel.fromMap(e.value, e.key),
           );
