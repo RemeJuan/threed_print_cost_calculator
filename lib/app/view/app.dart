@@ -96,7 +96,6 @@ ThemeData _theme() {
   );
 
   return themeData.copyWith(
-    useMaterial3: true,
     textTheme: GoogleFonts.montserratTextTheme(themeData.textTheme),
     scaffoldBackgroundColor: DARK_BLUE,
     appBarTheme: AppBarTheme(

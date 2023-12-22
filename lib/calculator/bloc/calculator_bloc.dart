@@ -1,5 +1,6 @@
 // ignore_for_file: cast_nullable_to_non_nullable
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
@@ -119,7 +120,8 @@ class CalculatorBloc extends FormBloc<String, num> {
     final labourRateVal = await _getValue('labourRate');
 
     if (printerKey.isNotEmpty) {
-      final store = stringMapStoreFactory.store(describeEnum(DBName.printers));
+      final store = stringMapStoreFactory.store(DBName.printers.name);
+
       final data = await store
           .query(finder: Finder(filter: Filter.byKey(printerKey)))
           .getSnapshot(database);

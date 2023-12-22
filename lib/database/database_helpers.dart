@@ -18,7 +18,7 @@ class DataBaseHelpers {
     String value,
   ) async {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(dbName));
+    final store = stringMapStoreFactory.store(dbName.name);
     // Check if the record exists before adding or updating it.
     await db.transaction((txn) async {
       // Look of existing record
@@ -35,7 +35,7 @@ class DataBaseHelpers {
 
   Future<void> insertRecord(Map<String, dynamic> data) async {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(dbName));
+    final store = stringMapStoreFactory.store(dbName.name);
 
     try {
       await store.add(db, data);
@@ -46,7 +46,7 @@ class DataBaseHelpers {
 
   Future<void> updateRecord(String key, Map<String, dynamic> data) async {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(dbName));
+    final store = stringMapStoreFactory.store(dbName.name);
 
     try {
       await store.record(key).update(db, data);
@@ -57,7 +57,7 @@ class DataBaseHelpers {
 
   Future<void> deleteRecord(String key) async {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(dbName));
+    final store = stringMapStoreFactory.store(dbName.name);
 
     try {
       await store.record(key).delete(db);
@@ -68,7 +68,7 @@ class DataBaseHelpers {
 
   Future<RecordSnapshot<Key?, Value?>?> getRecord(String key) async {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(dbName));
+    final store = stringMapStoreFactory.store(dbName.name);
 
     try {
       return await store.record(key).getSnapshot(db);
@@ -85,7 +85,7 @@ class DataBaseHelpers {
     final store = StoreRef.main();
 
     try {
-      await store.record(describeEnum(dbName)).put(db, data);
+      await store.record(dbName.name).put(db, data);
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
     }
@@ -93,9 +93,8 @@ class DataBaseHelpers {
 
   Future<GeneralSettingsModel> getSettings() async {
     final store = StoreRef.main();
-    final settings = await store
-        .record(describeEnum(DBName.settings))
-        .getSnapshot(sl<Database>());
+    final settings =
+        await store.record(DBName.settings).getSnapshot(sl<Database>());
 
     return GeneralSettingsModel.fromMap(
       // ignore: cast_nullable_to_non_nullable
@@ -105,7 +104,7 @@ class DataBaseHelpers {
 
   Future<Map<String, Object?>> getValue(String key) async {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(dbName));
+    final store = stringMapStoreFactory.store(dbName.name);
 
     if (await store.record(key).exists(db)) {
       // ignore: cast_nullable_to_non_nullable
