@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,7 +15,7 @@ class PrinterSelect extends HookWidget {
   Widget build(BuildContext context) {
     final loading = useState<bool>(true);
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(DBName.printers));
+    final store = stringMapStoreFactory.store(DBName.printers.name);
     final dbHelpers = DataBaseHelpers(DBName.settings);
     final generalSettings = useState(GeneralSettingsModel.initial());
 

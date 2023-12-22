@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sembast/sembast.dart';
@@ -14,7 +13,7 @@ class Printers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(describeEnum(DBName.printers));
+    final store = stringMapStoreFactory.store(DBName.printers.name);
     final dbHelpers = DataBaseHelpers(DBName.printers);
 
     final query = store.query();
