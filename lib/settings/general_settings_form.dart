@@ -20,46 +20,47 @@ class GeneralSettings extends HookWidget {
     return StreamBuilder(
       stream: store.record(DBName.settings.name).onSnapshot(db),
       builder: (context, snapshot) {
-        var data = GeneralSettingsModel.initial();
-
-        if (snapshot.hasData) {
-          data = GeneralSettingsModel.fromMap(
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            !snapshot.hasData) {
+          return const SizedBox.shrink();
+        } else {
+          final data = GeneralSettingsModel.fromMap(
             // ignore: cast_nullable_to_non_nullable
             snapshot.data!.value as Map<String, dynamic>,
           );
-        }
 
-        return Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                initialValue: data.electricityCost,
-                onChanged: (value) async {
-                  final updated = data.copyWith(electricityCost: value);
-                  await dbHelper.putRecord(updated.toMap());
-                },
-                decoration: InputDecoration(
-                  labelText: l10n.electricityCostLabel,
-                  suffixText: l10n.kwh,
+          return Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  initialValue: data.electricityCost,
+                  onChanged: (value) async {
+                    final updated = data.copyWith(electricityCost: value);
+                    await dbHelper.putRecord(updated.toMap());
+                  },
+                  decoration: InputDecoration(
+                    labelText: l10n.electricityCostLabel,
+                    suffixText: l10n.kwh,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: TextFormField(
-                initialValue: data.wattage,
-                onChanged: (value) async {
-                  final updated = data.copyWith(wattage: value);
-                  await dbHelper.putRecord(updated.toMap());
-                },
-                decoration: InputDecoration(
-                  labelText: l10n.wattLabel,
-                  suffixText: l10n.watt,
+              const SizedBox(width: 16),
+              Expanded(
+                child: TextFormField(
+                  initialValue: data.wattage,
+                  onChanged: (value) async {
+                    final updated = data.copyWith(wattage: value);
+                    await dbHelper.putRecord(updated.toMap());
+                  },
+                  decoration: InputDecoration(
+                    labelText: l10n.wattLabel,
+                    suffixText: l10n.watt,
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
+            ],
+          );
+        }
       },
     );
   }
