@@ -1,5 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart' hide Key;
+import 'package:flutter/cupertino.dart' hide Key;
 import 'package:sembast/sembast.dart';
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
@@ -83,7 +83,7 @@ class DataBaseHelpers {
   ) async {
     final db = sl<Database>();
     final store = StoreRef.main();
-
+debugPrint("the data: $data");
     try {
       await store.record(dbName.name).put(db, data);
     } catch (e) {
@@ -94,7 +94,7 @@ class DataBaseHelpers {
   Future<GeneralSettingsModel> getSettings() async {
     final store = StoreRef.main();
     final settings =
-        await store.record(DBName.settings).getSnapshot(sl<Database>());
+        await store.record(DBName.settings.name).getSnapshot(sl<Database>());
 
     return GeneralSettingsModel.fromMap(
       // ignore: cast_nullable_to_non_nullable
