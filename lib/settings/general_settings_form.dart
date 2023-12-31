@@ -20,14 +20,15 @@ class GeneralSettings extends HookWidget {
     return StreamBuilder(
       stream: store.record(DBName.settings.name).onSnapshot(db),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            !snapshot.hasData) {
+        late GeneralSettingsModel data;
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox.shrink();
         } else {
-          final data = GeneralSettingsModel.fromMap(
-            // ignore: cast_nullable_to_non_nullable
-            snapshot.data!.value as Map<String, dynamic>,
-          );
+          if (snapshot.hasData) {
+            data = GeneralSettingsModel.fromMap(snapshot.data!.value as Map<String, dynamic>);
+          } else {
+            data = GeneralSettingsModel.initial();
+          }
 
           return Row(
             children: [

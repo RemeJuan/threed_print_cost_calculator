@@ -131,6 +131,7 @@ class CalculatorBloc extends FormBloc<String, num> {
     } else {
       watt.updateValue(settings.wattage);
     }
+
     spoolWeight.updateValue(spoolWeightVal['value'].toString());
     spoolCost.updateValue(spoolCostVal['value'].toString());
     kwCost.updateValue(settings.electricityCost);

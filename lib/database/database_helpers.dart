@@ -96,9 +96,12 @@ debugPrint("the data: $data");
     final settings =
         await store.record(DBName.settings.name).getSnapshot(sl<Database>());
 
+    if (settings == null) {
+      return GeneralSettingsModel.initial();
+    }
+
     return GeneralSettingsModel.fromMap(
-      // ignore: cast_nullable_to_non_nullable
-      settings!.value as Map<String, dynamic>,
+      settings.value as Map<String, dynamic>,
     );
   }
 
