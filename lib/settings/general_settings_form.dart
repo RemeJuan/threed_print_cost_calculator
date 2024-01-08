@@ -21,11 +21,13 @@ class GeneralSettings extends HookWidget {
       stream: store.record(DBName.settings.name).onSnapshot(db),
       builder: (context, snapshot) {
         late GeneralSettingsModel data;
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox.shrink();
         } else {
           if (snapshot.hasData) {
-            data = GeneralSettingsModel.fromMap(snapshot.data!.value as Map<String, dynamic>);
+            data = GeneralSettingsModel.fromMap(
+                snapshot.data!.value as Map<String, dynamic>);
           } else {
             data = GeneralSettingsModel.initial();
           }

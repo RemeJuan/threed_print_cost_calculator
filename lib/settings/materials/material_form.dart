@@ -4,22 +4,25 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/app/view/app.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/bloc/material_bloc.dart';
-import 'package:threed_print_cost_calculator/settings/helpers/settings_helpers.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 class MaterialForm extends StatelessWidget {
-  const MaterialForm({super.key});
+  const MaterialForm({this.ref, super.key});
+
+  final String? ref;
 
   @override
   Widget build(BuildContext context) {
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store();
+    final store = stringMapStoreFactory.store(DBName.materials.name);
+    final dbHelper = DataBaseHelpers(DBName.materials);
 
     return Dialog(
       child: BlocProvider(
-        create: (_) => MaterialBloc(db, store),
+        create: (_) => MaterialBloc(db, store, ref),
         child: Builder(
           builder: (context) {
             final bloc = context.read<MaterialBloc>();
@@ -28,11 +31,15 @@ class MaterialForm extends StatelessWidget {
             return FormBlocListener<MaterialBloc, String, dynamic>(
               onSubmitting: (context, state) {},
               onSuccess: (context, state) {
-                SettingsHelpers.saveMaterial(
-                  MaterialModel.fromMap(
-                    jsonDecode(state.successResponse!) as Map<String, dynamic>,
-                  ),
-                );
+                final data =
+                    jsonDecode(state.successResponse!) as Map<String, dynamic>;
+
+                if (ref != null) {
+                  dbHelper.updateRecord(ref!, data);
+                } else {
+                  dbHelper.insertRecord(data);
+                }
+
                 Navigator.pop(context);
               },
               onFailure: (context, state) {
@@ -71,6 +78,15 @@ class MaterialForm extends StatelessWidget {
                         ),
                       ),
                       TextFieldBlocBuilder(
+                        textFieldBloc: bloc.weight,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Weight *',
+                          prefixIcon: Icon(Icons.scale),
+                          suffix: Text('g'),
+                        ),
+                      ),
+                      TextFieldBlocBuilder(
                         textFieldBloc: bloc.cost,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
@@ -81,7 +97,13 @@ class MaterialForm extends StatelessWidget {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: DEEP_BLUE,
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(
+                                fontSize: 16,
+                              ),
                         ),
                         onPressed: bloc.submit,
                         child: const Text('Save'),
