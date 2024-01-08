@@ -83,25 +83,26 @@ class DataBaseHelpers {
   ) async {
     final db = sl<Database>();
     final store = StoreRef.main();
-debugPrint("the data: $data");
+    debugPrint("the put data: $data - ${dbName.name}");
     try {
       await store.record(dbName.name).put(db, data);
     } catch (e) {
-      BotToast.showText(text: 'Error saving print');
+      BotToast.showText(text: 'Error saving material');
     }
   }
 
   Future<GeneralSettingsModel> getSettings() async {
+    final db = sl<Database>();
     final store = StoreRef.main();
-    final settings =
-        await store.record(DBName.settings.name).getSnapshot(sl<Database>());
+    final settings = await store.record(DBName.settings.name).get(db);
 
+    debugPrint("the settings: $settings - ${DBName.settings.name}");
     if (settings == null) {
       return GeneralSettingsModel.initial();
     }
 
     return GeneralSettingsModel.fromMap(
-      settings.value as Map<String, dynamic>,
+      settings as Map<String, dynamic>,
     );
   }
 

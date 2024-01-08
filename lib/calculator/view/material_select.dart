@@ -6,17 +6,17 @@ import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dar
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
-class PrinterSelect extends HookWidget {
-  const PrinterSelect({super.key});
+class MaterialSelect extends HookWidget {
+  const MaterialSelect({super.key});
 
   @override
   Widget build(BuildContext context) {
     final loading = useState<bool>(true);
     final db = sl<Database>();
-    final store = stringMapStoreFactory.store(DBName.printers.name);
-    final dbHelpers = DataBaseHelpers(DBName.settings);
+    final store = stringMapStoreFactory.store(DBName.materials.name);
+    final dbHelpers = DataBaseHelpers(DBName.materials);
     final generalSettings = useState(GeneralSettingsModel.initial());
 
     final query = store.query();
@@ -40,16 +40,29 @@ class PrinterSelect extends HookWidget {
       stream: query.onSnapshots(db),
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data!.isNotEmpty && !loading.value) {
-          final data = snapshot.data!.map(
-            (e) => PrinterModel.fromMap(e.value, e.key),
+          final none = MaterialModel(
+            name: 'None',
+            color: 'None',
+            cost: '0',
+            weight: '0',
+            id: 'none',
+            archived: false,
           );
 
+          final data = [
+            none,
+            ...snapshot.data!.map(
+              (e) => MaterialModel.fromMap(e.value, e.key),
+            )
+          ];
+
           return DropdownButton<String>(
-            alignment: AlignmentDirectional.centerEnd,
+            hint: const Text('Select Material'),
+            alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
-            value: generalSettings.value.activePrinter.isEmpty
+            value: generalSettings.value.selectedMaterial.isEmpty
                 ? null
-                : generalSettings.value.activePrinter,
+                : generalSettings.value.selectedMaterial,
             items: data.map((e) {
               return DropdownMenuItem(
                 value: e.id,
@@ -57,18 +70,30 @@ class PrinterSelect extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(e.name),
-                    Text('${e.wattage}w'),
+                    Text(e.color),
                   ],
                 ),
               );
             }).toList(),
             onChanged: (v) async {
-              final updated = generalSettings.value.copyWith(activePrinter: v);
+              final updated =
+                  generalSettings.value.copyWith(selectedMaterial: v);
               generalSettings.value = updated;
+
+              final dbHelpers = DataBaseHelpers(DBName.settings);
               await dbHelpers.putRecord(updated.toMap());
 
-              final wattage = data.firstWhere((e) => e.id == v).wattage;
-              context.read<CalculatorBloc>().watt.updateInitialValue(wattage);
+              final materialWeight = data.firstWhere((e) => e.id == v).weight;
+              final materialCost = data.firstWhere((e) => e.id == v).cost;
+
+              context
+                  .read<CalculatorBloc>()
+                  .spoolWeight
+                  .updateInitialValue(materialWeight);
+              context
+                  .read<CalculatorBloc>()
+                  .spoolCost
+                  .updateInitialValue(materialCost);
             },
           );
         } else {

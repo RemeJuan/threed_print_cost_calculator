@@ -3,6 +3,7 @@ class GeneralSettingsModel {
     required this.electricityCost,
     required this.wattage,
     required this.activePrinter,
+    required this.selectedMaterial,
   });
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
@@ -10,6 +11,7 @@ class GeneralSettingsModel {
       electricityCost: (map['electricityCost'] ?? '').toString(),
       wattage: (map['wattage'] ?? '').toString(),
       activePrinter: (map['activePrinter'] ?? '').toString(),
+      selectedMaterial: (map['selectedMaterial'] ?? '').toString(),
     );
   }
 
@@ -18,18 +20,21 @@ class GeneralSettingsModel {
       electricityCost: '',
       wattage: '',
       activePrinter: '',
+      selectedMaterial: '',
     );
   }
 
   final String electricityCost;
   final String wattage;
   final String activePrinter;
+  final String selectedMaterial;
 
   Map<String, dynamic> toMap() {
     return {
       'electricityCost': electricityCost,
       'wattage': wattage,
       'activePrinter': activePrinter,
+      'selectedMaterial': selectedMaterial,
     };
   }
 
@@ -37,11 +42,13 @@ class GeneralSettingsModel {
     String? electricityCost,
     String? wattage,
     String? activePrinter,
+    String? selectedMaterial,
   }) {
     return GeneralSettingsModel(
       electricityCost: electricityCost ?? this.electricityCost,
       wattage: wattage ?? this.wattage,
       activePrinter: activePrinter ?? this.activePrinter,
+      selectedMaterial: selectedMaterial ?? this.selectedMaterial,
     );
   }
 
@@ -50,5 +57,6 @@ class GeneralSettingsModel {
       'electricityCost: $electricityCost, '
       'wattage: $wattage, '
       'activePrinter: $activePrinter'
+      'selectedMaterial: $selectedMaterial'
       ')';
 }

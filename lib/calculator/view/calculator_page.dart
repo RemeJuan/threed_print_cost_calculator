@@ -5,15 +5,18 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sembast/sembast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
-import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
+
+import 'material_select.dart';
+import 'printer_select.dart';
 
 class CalculatorPage extends HookWidget {
   const CalculatorPage({super.key});
@@ -29,8 +32,21 @@ class CalculatorPage extends HookWidget {
 
     useEffect(
       () {
-        Purchases.addCustomerInfoUpdateListener((info) {
+        Purchases.addCustomerInfoUpdateListener((info) async {
+          final prefs = await SharedPreferences.getInstance();
+          final paywall = prefs.getBool('paywall') ?? false;
+
           premium.value = info.entitlements.active.isNotEmpty;
+
+          if (info.entitlements.active.isEmpty && !paywall) {
+            try {
+              await prefs.setBool('paywall', true);
+              await Future.delayed(const Duration(seconds: 2));
+              await Purchases.presentPaywallIfNeeded("pro");
+            } catch (e) {
+              debugPrint(e.toString());
+            }
+          }
         });
         return null;
       },
@@ -62,6 +78,7 @@ class CalculatorPage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     if (premium.value) const PrinterSelect(),
+                    if (premium.value) const MaterialSelect(),
                     Row(
                       children: [
                         // Spool Weight
