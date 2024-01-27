@@ -27,7 +27,6 @@ class HistoryPage extends StatelessWidget {
                     final data = HistoryModel.fromMap(
                       {
                         ...item,
-                        'labourCost': '0',
                         'date': DateTime.now().toString(),
                       },
                     );
