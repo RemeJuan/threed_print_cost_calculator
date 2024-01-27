@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Subscriptions extends HookWidget {
   const Subscriptions({super.key});
@@ -10,6 +11,9 @@ class Subscriptions extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final processing = useState<bool>(false);
+    final linkFont = Theme.of(context).textTheme.displayMedium?.copyWith(
+          fontSize: 12,
+        );
 
     return FutureBuilder<Offerings>(
       builder: (_, offerings) {
@@ -104,6 +108,43 @@ class Subscriptions extends HookWidget {
                       ),
                     ),
                   ),
+                ),
+                SliverToBoxAdapter(
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          child: RawMaterialButton(
+                            onPressed: () async {
+                              await launchUrl(Uri.parse(
+                                  'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md'));
+                            },
+                            child: Text(
+                              'Privacy Policy',
+                              style: linkFont,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          ' | ',
+                          style: linkFont,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          child: RawMaterialButton(
+                            onPressed: () async {
+                              await launchUrl(Uri.parse(
+                                  'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'));
+                            },
+                            child: Text(
+                              'Terms of Use',
+                              style: linkFont,
+                            ),
+                          ),
+                        ),
+                      ]),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
               ],
