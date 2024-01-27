@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/view/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/view/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
@@ -9,7 +10,7 @@ import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 
-class AppPage extends HookWidget {
+class AppPage extends HookWidget with WidgetsBindingObserver {
   const AppPage({super.key});
 
   @override
@@ -21,9 +22,13 @@ class AppPage extends HookWidget {
 
     useEffect(
       () {
-        Purchases.addCustomerInfoUpdateListener((info) {
+        Purchases.addCustomerInfoUpdateListener((info) async {
           premium.value = info.entitlements.active.isNotEmpty;
           userId.value = info.originalAppUserId;
+
+          final prefs = await SharedPreferences.getInstance();
+          final runCount = prefs.getInt('run_count') ?? 0;
+          await prefs.setInt('run_count', runCount + 1);
         });
 
         return null;
@@ -96,5 +101,20 @@ class AppPage extends HookWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.resumed:
+        break;
+      case AppLifecycleState.detached:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.paused:
+        break;
+    }
   }
 }

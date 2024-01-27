@@ -35,16 +35,16 @@ class CalculatorPage extends HookWidget {
         Purchases.addCustomerInfoUpdateListener((info) async {
           final prefs = await SharedPreferences.getInstance();
           final paywall = prefs.getBool('paywall') ?? false;
-
+          final runCount = prefs.getInt('run_count') ?? 0;
           premium.value = info.entitlements.active.isNotEmpty;
 
-          if (info.entitlements.active.isEmpty && !paywall) {
+          if (runCount > 2 && info.entitlements.active.isEmpty && !paywall) {
             try {
               await prefs.setBool('paywall', true);
               await Future.delayed(const Duration(seconds: 2));
               await Purchases.presentPaywallIfNeeded("pro");
             } catch (e) {
-              debugPrint(e.toString());
+              debugPrint('paywall failed ${e.toString()}');
             }
           }
         });
