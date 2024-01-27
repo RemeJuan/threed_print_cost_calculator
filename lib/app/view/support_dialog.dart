@@ -12,6 +12,9 @@ class SupportDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final linkFont = Theme.of(context).textTheme.displayMedium?.copyWith(
+          fontSize: 12,
+        );
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -82,6 +85,42 @@ class SupportDialog extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: RawMaterialButton(
+                      onPressed: () async {
+                        await launchUrl(Uri.parse(
+                            'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md'));
+                      },
+                      child: Text(
+                        'Privacy Policy',
+                        style: linkFont,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    ' | ',
+                    style: linkFont,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: RawMaterialButton(
+                      onPressed: () async {
+                        await launchUrl(Uri.parse(
+                            'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'));
+                      },
+                      child: Text(
+                        'Terms of Use',
+                        style: linkFont,
+                      ),
+                    ),
+                  ),
+                ]),
             const SizedBox(height: 16),
             Container(
               alignment: Alignment.center,
