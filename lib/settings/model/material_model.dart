@@ -14,7 +14,7 @@ class MaterialModel {
       name: map['name'] as String,
       cost: map['cost'] as String,
       color: map['color'] as String,
-      weight: map['weight'] ?? '0' as String,
+      weight: map['weight'] ?? '0',
       archived: false, //map['archived'] as bool,
     );
   }

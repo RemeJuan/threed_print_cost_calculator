@@ -125,4 +125,6 @@ app.*.map.json
 !.idea/codeStyles/
 !.idea/dictionaries/
 !.idea/runConfigurations/
-.fvm/flutter_sdk
+
+# FVM Version Cache
+.fvm/
