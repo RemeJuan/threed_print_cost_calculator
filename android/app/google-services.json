@@ -29,10 +29,18 @@
             {
               "client_id": "476308766683-fjbc2figbiidthl82bh5ahgelgf86fg1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "476308766683-67bs8unk224gqs08rno46jie8mrdv5hk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.threed-print-calculator"
+              }
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-5128251160825100~3090465798"
     }
   ],
   "configuration_version": "1"
