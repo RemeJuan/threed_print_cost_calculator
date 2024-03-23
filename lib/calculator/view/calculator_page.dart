@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:sembast/sembast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
@@ -42,7 +43,7 @@ class CalculatorPage extends HookWidget {
             try {
               await prefs.setBool('paywall', true);
               await Future.delayed(const Duration(seconds: 2));
-              await Purchases.presentPaywallIfNeeded("pro");
+              await RevenueCatUI.presentPaywallIfNeeded("pro");
             } catch (e) {
               debugPrint('paywall failed ${e.toString()}');
             }
