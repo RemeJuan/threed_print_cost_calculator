@@ -28,37 +28,39 @@ class App extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    return RateMyAppBuilder(
-      rateMyApp: RateMyApp(
-        minDays: 3,
-        minLaunches: 7,
-        remindDays: 2,
-        remindLaunches: 5,
-        googlePlayIdentifier: 'com.threed_print_calculator',
-        appStoreIdentifier: 'com.threed-print-calculator',
-      ),
-      onInitialized: (context, rateMyApp) {
-        if (rateMyApp.shouldOpenDialog) {
-          rateMyApp.showRateDialog(context);
-        }
-      },
-      builder: (context) {
-        return GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: MaterialApp(
-            builder: BotToastInit(),
-            debugShowCheckedModeBanner: false,
-            navigatorObservers: [BotToastNavigatorObserver()],
-            theme: _theme(),
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-            ],
-            supportedLocales: AppLocalizations.supportedLocales,
-            home: const AppPage(),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: MaterialApp(
+        builder: BotToastInit(),
+        debugShowCheckedModeBanner: false,
+        navigatorObservers: [BotToastNavigatorObserver()],
+        theme: _theme(),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: RateMyAppBuilder(
+          rateMyApp: RateMyApp(
+            minDays: 3,
+            minLaunches: 7,
+            remindDays: 2,
+            remindLaunches: 5,
+            googlePlayIdentifier: 'com.threed_print_calculator',
+            appStoreIdentifier: 'com.threed-print-calculator',
           ),
-        );
-      },
+          onInitialized: (context, rateMyApp) async {
+            if (rateMyApp.shouldOpenDialog) {
+              try {
+                rateMyApp.showRateDialog(context);
+              } catch (e) {
+                debugPrint(e.toString());
+              }
+            }
+          },
+          builder: (_) => const AppPage(),
+        ),
+      ),
     );
   }
 }
