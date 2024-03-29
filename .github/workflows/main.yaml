@@ -1,6 +1,7 @@
 name: threed_print_cost_calculator
 
-on: [pull_request, push]
+on:
+  workflow_dispatch:
 
 jobs:
   test:
