@@ -10,6 +10,8 @@
 		056F7BE25F9407EF1AE22A62 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D3653051889179E36E3E27 /* Pods_Runner.framework */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
+		571C819C2BB7003F002C7AF6 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 571C819B2BB7003F002C7AF6 /* RevenueCat */; };
+		571C819E2BB7003F002C7AF6 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 571C819D2BB7003F002C7AF6 /* RevenueCatUI */; };
 		5721A4AD2A84078E0013FA40 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5721A4AC2A84078E0013FA40 /* StoreKit.framework */; };
 		63C7414E61225A3A6059DE84 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 149EB97A0E0C2629E0E57D65 /* GoogleService-Info.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
@@ -65,8 +67,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				571C819E2BB7003F002C7AF6 /* RevenueCatUI in Frameworks */,
 				056F7BE25F9407EF1AE22A62 /* Pods_Runner.framework in Frameworks */,
 				5721A4AD2A84078E0013FA40 /* StoreKit.framework in Frameworks */,
+				571C819C2BB7003F002C7AF6 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +172,10 @@
 			dependencies = (
 			);
 			name = Runner;
+			packageProductDependencies = (
+				571C819B2BB7003F002C7AF6 /* RevenueCat */,
+				571C819D2BB7003F002C7AF6 /* RevenueCatUI */,
+			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
@@ -196,6 +204,9 @@
 				Base,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
+			packageReferences = (
+				571C819A2BB7003F002C7AF6 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1151,6 +1162,30 @@
 			defaultConfigurationName = "Release-production";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		571C819A2BB7003F002C7AF6 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.39.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		571C819B2BB7003F002C7AF6 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 571C819A2BB7003F002C7AF6 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCat;
+		};
+		571C819D2BB7003F002C7AF6 /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 571C819A2BB7003F002C7AF6 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = RevenueCatUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }
