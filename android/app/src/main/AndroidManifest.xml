@@ -2,7 +2,7 @@
           package="com.threed_print_calculator">
     <uses-permission android:name="com.android.vending.BILLING"/>
     <application
-            android:label="${appName}"
+            android:label="${applicationName}"
             android:icon="@mipmap/ic_launcher">
         <activity
                 android:name=".MainActivity"
