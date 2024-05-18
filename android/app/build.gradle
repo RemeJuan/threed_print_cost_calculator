@@ -90,15 +90,6 @@ android {
         }
     }
 
-    flavorDimensions "default"
-    productFlavors {
-        production {
-            dimension "default"
-            applicationIdSuffix ""
-            manifestPlaceholders = [appName: "3D PC Calc"]
-        }
-    }
-
     buildTypes {
         release {
             signingConfig signingConfigs.release
