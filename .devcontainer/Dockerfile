@@ -1,4 +1,4 @@
-FROM dart
+FROM ubuntu:jammy
 
 ENV TZ=Africa/Johannesburg
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -25,6 +25,3 @@ ENV PATH "$PATH:/home/user/flutter/bin"
 RUN flutter channel stable
 RUN flutter upgrade
 RUN flutter doctor
-
-RUN git clone GIT_REPO_URL
-RUN cd FILE_NAME && flutter test
