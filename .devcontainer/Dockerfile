@@ -14,7 +14,7 @@ ENV ANDROID_SDK_ROOT /home/user/Android/sdk
 RUN mkdir -p .android && touch .android/repositories.cfg
 RUN wget -O sdk-tools.zip https://dl.google.com/android/repository/platform-tools-latest-linux.zip
 RUN unzip sdk-tools.zip && rm sdk-tools.zip
-RUN mv tools Android/sdk/tools
+RUN mv platform-tools Android/sdk/tools
 RUN cd Android/sdk/tools/bin && yes | ./sdkmanager --licenses
 RUN cd Android/sdk/tools/bin && ./sdkmanager "build-tools;latest" "patcher;v4" "platform-tools" "platforms;android-33" "sources;android-33"
 ENV PATH "$PATH:/home/user/Android/sdk/platform-tools"
