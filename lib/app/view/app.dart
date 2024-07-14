@@ -8,11 +8,10 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:threed_print_cost_calculator/app/view/app_page.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:flutter_gen/gen_l10n/localizely_localizations.dart';
 
 const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
 const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
@@ -35,11 +34,8 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorObservers: [BotToastNavigatorObserver()],
         theme: _theme(),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: LocalizelyLocalizations.localizationsDelegates,
+        supportedLocales: LocalizelyLocalizations.supportedLocales,
         home: RateMyAppBuilder(
           rateMyApp: RateMyApp(
             minDays: 3,
