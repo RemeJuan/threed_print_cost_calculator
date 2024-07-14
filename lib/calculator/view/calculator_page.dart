@@ -9,7 +9,6 @@ import 'package:sembast/sembast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
-import 'package:threed_print_cost_calculator/calculator/view/advert.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
@@ -183,7 +182,6 @@ class CalculatorPage extends HookWidget {
                       ),
                       PremiumWidgets(premium: premium.value),
                     ],
-                    if (!premium.value) const AdContainer(),
                   ],
                 ),
               ),
