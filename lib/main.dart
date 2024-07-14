@@ -13,7 +13,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
@@ -29,8 +29,6 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     appleProvider: AppleProvider.appAttest,
   );
-
-  await MobileAds.instance.initialize();
 
   await revenueCat();
 
@@ -48,6 +46,11 @@ Future<void> main() async {
       await DeviceCheck.instance.generateToken();
     }
   }
+
+  Localizely.init(
+    '8e7a9d1398e34b6cb58a2a16cc6954368b062836',
+    'bfa0278e4ce9434e92abf8fc74aa6790',
+  );
 
   return bootstrap(() => const App());
 }
