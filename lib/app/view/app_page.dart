@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/view/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/view/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 
 class AppPage extends HookWidget with WidgetsBindingObserver {
@@ -18,7 +18,7 @@ class AppPage extends HookWidget with WidgetsBindingObserver {
     final selectedIndex = useState(0);
     final premium = useState<bool>(false);
     final userId = useState<String>('');
-    final l10n = context.l10n;
+    final l10n = S.of(context);
 
     useEffect(
       () {

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
 class CalculatorResults extends StatelessWidget {
   const CalculatorResults({
@@ -14,7 +14,7 @@ class CalculatorResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final l10n = S.of(context);
     const width = kIsWeb ? 250.0 : null;
 
     return SizedBox(

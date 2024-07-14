@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
 class PremiumWidgets extends StatelessWidget {
   const PremiumWidgets({required this.premium, super.key});
@@ -12,7 +12,7 @@ class PremiumWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CalculatorBloc>();
-    final l10n = context.l10n;
+    final l10n = S.of(context);
 
     return Column(
       children: [

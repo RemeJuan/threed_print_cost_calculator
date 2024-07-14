@@ -12,7 +12,7 @@ import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpe
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 
 import 'material_select.dart';
@@ -58,7 +58,7 @@ class CalculatorPage extends HookWidget {
       child: Builder(
         builder: (context) {
           final bloc = context.watch<CalculatorBloc>();
-          final l10n = context.l10n;
+          final l10n = S.of(context);
 
           return FormBlocListener<CalculatorBloc, String, num>(
             onSubmitting: (context, state) {},
