@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/l10n/l10n.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
@@ -11,7 +11,7 @@ class GeneralSettings extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
+    final l10n = S.of(context);
 
     final db = sl<Database>();
     final store = StoreRef.main();
