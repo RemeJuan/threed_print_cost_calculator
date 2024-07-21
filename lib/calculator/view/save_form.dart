@@ -1,17 +1,19 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
-class SaveForm extends HookWidget {
-  const SaveForm({required this.data, required this.showSave, super.key});
-
-  final Map<dynamic, dynamic> data;
+class SaveForm extends HookConsumerWidget {
+  final CalculationResult data;
   final ValueNotifier<bool> showSave;
 
+  const SaveForm({required this.data, required this.showSave, super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
     final name = useState<String>('');
 
     return Container(
@@ -32,16 +34,16 @@ class SaveForm extends HookWidget {
             onPressed: name.value.isEmpty
                 ? null
                 : () async {
-                    final model = HistoryModel.fromMap({
-                      'name': name.value,
-                      'totalCost': data['total'] ?? '0',
-                      'riskCost': data['risk'] ?? '0',
-                      'filamentCost': data['filament'] ?? '0',
-                      'electricityCost': data['electricity'] ?? '0',
-                      'labourCost': data['labour'] ?? '0',
-                      'date': DateTime.now().toString(),
-                    });
-                    await CalculatorHelpers.savePrint(model);
+                    final model = HistoryModel(
+                      name: name.value,
+                      electricityCost: data.electricity,
+                      filamentCost: data.filament,
+                      totalCost: data.total,
+                      riskCost: data.risk,
+                      labourCost: data.labour,
+                      date: DateTime.now(),
+                    );
+                    await ref.read(calculatorHelpersProvider).savePrint(model);
                     showSave.value = false;
                     BotToast.showText(text: 'Print saved');
                   },

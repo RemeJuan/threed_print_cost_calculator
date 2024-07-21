@@ -1,23 +1,32 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart' hide Key;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sembast/sembast.dart';
+
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+
+final dbHelpersProvider = Provider.family<DataBaseHelpers, DBName>(
+  (ref, name) => DataBaseHelpers(ref, name),
+);
 
 enum DBName { materials, history, settings, printers }
 
 class DataBaseHelpers {
-  DataBaseHelpers(this.dbName);
+  final Ref ref;
+
+  DataBaseHelpers(this.ref, this.dbName);
 
   final DBName dbName;
+
+  Database get db => ref.read(databaseProvider);
 
   Future<void> addOrUpdateRecord(
     String key,
     String value,
   ) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store(dbName.name);
     // Check if the record exists before adding or updating it.
     await db.transaction((txn) async {
@@ -34,7 +43,6 @@ class DataBaseHelpers {
   }
 
   Future<void> insertRecord(Map<String, dynamic> data) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
@@ -45,7 +53,6 @@ class DataBaseHelpers {
   }
 
   Future<void> updateRecord(String key, Map<String, dynamic> data) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
@@ -56,7 +63,6 @@ class DataBaseHelpers {
   }
 
   Future<void> deleteRecord(String key) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
@@ -67,7 +73,6 @@ class DataBaseHelpers {
   }
 
   Future<RecordSnapshot<Key?, Value?>?> getRecord(String key) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
@@ -81,7 +86,6 @@ class DataBaseHelpers {
   Future<void> putRecord(
     Map<String, dynamic> data,
   ) async {
-    final db = sl<Database>();
     final store = StoreRef.main();
     debugPrint("the put data: $data - ${dbName.name}");
     try {
@@ -92,11 +96,8 @@ class DataBaseHelpers {
   }
 
   Future<GeneralSettingsModel> getSettings() async {
-    final db = sl<Database>();
     final store = StoreRef.main();
     final settings = await store.record(DBName.settings.name).get(db);
-
-    debugPrint("the settings: $settings - ${DBName.settings.name}");
     if (settings == null) {
       return GeneralSettingsModel.initial();
     }
@@ -107,7 +108,6 @@ class DataBaseHelpers {
   }
 
   Future<Map<String, Object?>> getValue(String key) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store(dbName.name);
 
     if (await store.record(key).exists(db)) {

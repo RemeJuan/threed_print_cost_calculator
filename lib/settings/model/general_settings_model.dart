@@ -1,4 +1,9 @@
 class GeneralSettingsModel {
+  final int electricityCost;
+  final double wattage;
+  final String activePrinter;
+  final String selectedMaterial;
+
   const GeneralSettingsModel({
     required this.electricityCost,
     required this.wattage,
@@ -8,8 +13,8 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
     return GeneralSettingsModel(
-      electricityCost: (map['electricityCost'] ?? '').toString(),
-      wattage: (map['wattage'] ?? '').toString(),
+      electricityCost: int.parse(map['electricityCost'] ?? ''),
+      wattage: double.parse(map['wattage'] ?? ''),
       activePrinter: (map['activePrinter'] ?? '').toString(),
       selectedMaterial: (map['selectedMaterial'] ?? '').toString(),
     );
@@ -17,17 +22,12 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.initial() {
     return const GeneralSettingsModel(
-      electricityCost: '',
-      wattage: '',
+      electricityCost: -1,
+      wattage: -1,
       activePrinter: '',
       selectedMaterial: '',
     );
   }
-
-  final String electricityCost;
-  final String wattage;
-  final String activePrinter;
-  final String selectedMaterial;
 
   Map<String, dynamic> toMap() {
     return {
@@ -39,8 +39,8 @@ class GeneralSettingsModel {
   }
 
   GeneralSettingsModel copyWith({
-    String? electricityCost,
-    String? wattage,
+    int? electricityCost,
+    double? wattage,
     String? activePrinter,
     String? selectedMaterial,
   }) {

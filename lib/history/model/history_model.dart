@@ -1,4 +1,12 @@
 class HistoryModel {
+  final String name;
+  final double totalCost;
+  final double riskCost;
+  final double filamentCost;
+  final double electricityCost;
+  final double labourCost;
+  final DateTime date;
+
   const HistoryModel({
     required this.name,
     required this.totalCost,
@@ -12,23 +20,23 @@ class HistoryModel {
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
     return HistoryModel(
       name: map['name'] as String,
-      totalCost: map['totalCost'] as String,
-      riskCost: map['riskCost'] as String,
-      filamentCost: map['filamentCost'] as String,
-      electricityCost: map['electricityCost'] as String,
-      labourCost: map['labourCost'] as String,
-      date: map['date'] as String,
+      totalCost: map['totalCost'] as double,
+      riskCost: map['riskCost'] as double,
+      filamentCost: map['filamentCost'] as double,
+      electricityCost: map['electricityCost'] as double,
+      labourCost: map['labourCost'] as double,
+      date: map['date'] as DateTime,
     );
   }
 
   HistoryModel copyWith({
     String? name,
-    String? totalCost,
-    String? riskCost,
-    String? filamentCost,
-    String? electricityCost,
-    String? labourCost,
-    String? date,
+    double? totalCost,
+    double? riskCost,
+    double? filamentCost,
+    double? electricityCost,
+    double? labourCost,
+    DateTime? date,
   }) {
     return HistoryModel(
       name: name ?? this.name,
@@ -40,14 +48,6 @@ class HistoryModel {
       date: date ?? this.date,
     );
   }
-
-  final String name;
-  final String totalCost;
-  final String riskCost;
-  final String filamentCost;
-  final String electricityCost;
-  final String labourCost;
-  final String date;
 
   Map<String, dynamic> toMap() {
     return {

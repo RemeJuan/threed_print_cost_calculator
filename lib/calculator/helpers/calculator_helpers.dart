@@ -1,39 +1,45 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
+
+final calculatorHelpersProvider = Provider<CalculatorHelpers>(
+  CalculatorHelpers.new,
+);
 
 class CalculatorHelpers {
-  static double electricityCost(
-    String watts,
-    String hours,
-    String minutes,
-    String cost,
+  final Ref ref;
+
+  CalculatorHelpers(this.ref);
+
+  Database get db => ref.read(databaseProvider);
+
+  double electricityCost(
+    int watts,
+    int hours,
+    int minutes,
+    int cost,
   ) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
-    final hrs = int.tryParse(hours, radix: 10) ?? 0;
-    final mins = int.tryParse(minutes, radix: 10) ?? 0;
 
-    final w = int.parse(watts) / 1000;
-    final m = hrs + (mins / 60);
-    final c = double.parse(cost.replaceAll(',', '.'));
+    final w = watts / 1000;
+    final m = hours + (minutes / 60);
 
-    final totalFixed = (w * m * c).toStringAsFixed(2);
+    final totalFixed = (w * m * cost).toStringAsFixed(2);
 
     return double.parse(totalFixed);
   }
 
-  static double filamentCost(
-    String itemWeight,
-    String spoolWeight,
-    String cost,
+  double filamentCost(
+    int itemWeight,
+    int spoolWeight,
+    int cost,
   ) {
     //Weight in grams / 1,000 × Cost per kg = Cost of filament
+    final w = itemWeight / spoolWeight;
 
-    final w = double.parse(itemWeight) / double.parse(spoolWeight);
-    final c = double.parse(cost.replaceAll(',', '.'));
-
-    final totalFixed = (w * c).toStringAsFixed(2);
+    final totalFixed = (w * cost).toStringAsFixed(2);
 
     return double.parse(totalFixed);
   }
@@ -47,11 +53,10 @@ class CalculatorHelpers {
     return double.parse(totalFixed);
   }
 
-  static Future<void> addOrUpdateRecord(
+  Future<void> addOrUpdateRecord(
     String key,
     String value,
   ) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store();
     // Check if the record exists before adding or updating it.
     await db.transaction((txn) async {
@@ -67,10 +72,9 @@ class CalculatorHelpers {
     });
   }
 
-  static Future<void> savePrint(
+  Future<void> savePrint(
     HistoryModel value,
   ) async {
-    final db = sl<Database>();
     final store = stringMapStoreFactory.store('history');
 
     try {
