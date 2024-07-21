@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
-class PrinterSelect extends HookWidget {
+class PrinterSelect extends HookConsumerWidget {
   const PrinterSelect({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final loading = useState<bool>(true);
-    final db = sl<Database>();
+    final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store(DBName.printers.name);
-    final dbHelpers = DataBaseHelpers(DBName.settings);
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
     final generalSettings = useState(GeneralSettingsModel.initial());
 
     final query = store.query();
@@ -68,7 +68,10 @@ class PrinterSelect extends HookWidget {
               await dbHelpers.putRecord(updated.toMap());
 
               final wattage = data.firstWhere((e) => e.id == v).wattage;
-              context.read<CalculatorBloc>().watt.updateInitialValue(wattage);
+
+              ref
+                  .read(calculatorProvider.notifier)
+                  .updateWatt(wattage.toString());
             },
           );
         } else {

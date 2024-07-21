@@ -90,10 +90,10 @@ class S {
     );
   }
 
-  /// `Weight of the print`
+  /// `Print Weight`
   String get printWeightLabel {
     return Intl.message(
-      'Weight of the print',
+      'Print Weight',
       name: 'printWeightLabel',
       desc: '',
       args: [],
@@ -160,20 +160,20 @@ class S {
     );
   }
 
-  /// `Spool/Resin weight`
+  /// `Material weight`
   String get spoolWeightLabel {
     return Intl.message(
-      'Spool/Resin weight',
+      'Material weight',
       name: 'spoolWeightLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Spool/Resin cost`
+  /// `Material cost`
   String get spoolCostLabel {
     return Intl.message(
-      'Spool/Resin cost',
+      'Material cost',
       name: 'spoolCostLabel',
       desc: '',
       args: [],

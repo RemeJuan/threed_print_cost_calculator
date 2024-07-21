@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 
 import '../../helpers/helpers.dart';
@@ -14,11 +15,13 @@ void main() {
       testWidgets('renders CalculatorView', (tester) async {
         await tester.pumpApp(
           const CalculatorResults(
-            results: <String, String>{
-              'electricity': '0.00',
-              'filament': '0.00',
-              'total': '0.00',
-            },
+            results: CalculationResult(
+              electricity: 0.0,
+              filament: 0.0,
+              risk: 0.0,
+              labour: 0.0,
+              total: 0.0,
+            ),
             premium: true,
           ),
         );

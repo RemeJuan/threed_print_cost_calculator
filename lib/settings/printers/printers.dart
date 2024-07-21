@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 
-class Printers extends StatelessWidget {
+class Printers extends HookConsumerWidget {
   const Printers({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final db = sl<Database>();
+  Widget build(context, ref) {
+    final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store(DBName.printers.name);
-    final dbHelpers = DataBaseHelpers(DBName.printers);
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.printers));
 
     final query = store.query();
 
@@ -69,7 +70,7 @@ class Printers extends StatelessWidget {
                             onPressed: (_) {
                               showDialog<void>(
                                 context: context,
-                                builder: (_) => AddPrinter(ref: key),
+                                builder: (_) => AddPrinter(dbRef: key),
                               );
                             },
                             backgroundColor: LIGHT_BLUE,

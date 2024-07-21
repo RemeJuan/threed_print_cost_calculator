@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/app/view/app.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
-class Materials extends StatelessWidget {
+class Materials extends HookConsumerWidget {
   const Materials({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final db = sl<Database>();
+  Widget build(context, ref) {
+    final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store(DBName.materials.name);
-    final dbHelpers = DataBaseHelpers(DBName.materials);
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
 
     final query = store.query(
       finder: Finder(
@@ -75,7 +76,7 @@ class Materials extends StatelessWidget {
                             onPressed: (_) {
                               showDialog<void>(
                                 context: context,
-                                builder: (_) => MaterialForm(ref: key),
+                                builder: (_) => MaterialForm(dbRef: key),
                               );
                             },
                             backgroundColor: LIGHT_BLUE,

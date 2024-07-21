@@ -15,9 +15,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'app/providers/app_providers.dart';
+import 'database/database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +36,8 @@ Future<void> main() async {
   );
 
   await revenueCat();
+  final prefs = await SharedPreferences.getInstance();
+  final db = await DatabaseStorageImpl().openDb();
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
@@ -52,7 +59,15 @@ Future<void> main() async {
     'bfa0278e4ce9434e92abf8fc74aa6790',
   );
 
-  return bootstrap(() => const App());
+  return bootstrap(
+    () => ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        databaseProvider.overrideWithValue(db),
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 Future<void> revenueCat() async {

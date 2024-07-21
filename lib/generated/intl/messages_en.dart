@@ -41,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "premiumHeader":
             MessageLookupByLibrary.simpleMessage("Premium users only:"),
         "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Weight of the print"),
+            MessageLookupByLibrary.simpleMessage("Print Weight"),
         "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
             "Total cost for Electricity: "),
         "resultFilamentPrefix":
@@ -50,10 +50,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Total cost: "),
         "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risk cost: "),
         "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Settings"),
-        "spoolCostLabel":
-            MessageLookupByLibrary.simpleMessage("Spool/Resin cost"),
+        "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Material cost"),
         "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Spool/Resin weight"),
+            MessageLookupByLibrary.simpleMessage("Material weight"),
         "submitButton": MessageLookupByLibrary.simpleMessage("Calculate"),
         "watt": MessageLookupByLibrary.simpleMessage("Watt"),
         "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D Printer)"),
