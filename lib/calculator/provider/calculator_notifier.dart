@@ -145,19 +145,19 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
     var filamentCost = 0.0;
     var labourCost = 0.0;
 
-    final w = state.watt.value;
+    final w = state.watt.value ?? 0;
 
-    final kw = state.kwCost.value;
-    final pw = state.printWeight.value;
-    final sw = state.spoolWeight.value;
-    final sc = state.spoolCost.value;
-    final h = state.hours.value;
-    final m = state.minutes.value;
+    final kw = state.kwCost.value ?? 0;
+    final pw = state.printWeight.value ?? 0;
+    final sw = state.spoolWeight.value ?? 0;
+    final sc = state.spoolCost.value ?? 0;
+    final h = state.hours.value ?? 0;
+    final m = state.minutes.value ?? 0;
 
-    final wt = state.wearAndTear.value;
-    final lr = state.labourRate.value;
-    final lt = state.labourTime.value;
-    final fr = state.failureRisk.value;
+    final wt = state.wearAndTear.value ?? 0;
+    final lr = state.labourRate.value ?? 0;
+    final lt = state.labourTime.value ?? 0;
+    final fr = state.failureRisk.value ?? 0;
 
     if (w > -1 && (h > -1 || m > -1) && kw > -1) {
       electricityCost = ref.read(calculatorHelpersProvider).electricityCost(
