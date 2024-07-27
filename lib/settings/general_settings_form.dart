@@ -26,6 +26,7 @@ class GeneralSettings extends HookConsumerWidget {
           return const SizedBox.shrink();
         } else {
           if (snapshot.hasData) {
+            debugPrint('snapshot.data!.value: ${snapshot.data!.value}');
             data = GeneralSettingsModel.fromMap(
               snapshot.data!.value as Map<String, dynamic>,
             );
@@ -40,7 +41,7 @@ class GeneralSettings extends HookConsumerWidget {
                   initialValue: data.electricityCost.toString(),
                   onChanged: (value) async {
                     final updated = data.copyWith(
-                      electricityCost: int.parse(value),
+                      electricityCost: double.parse(value),
                     );
                     await dbHelper.putRecord(updated.toMap());
                   },
@@ -55,7 +56,7 @@ class GeneralSettings extends HookConsumerWidget {
                 child: TextFormField(
                   initialValue: data.wattage.toString(),
                   onChanged: (value) async {
-                    final updated = data.copyWith(wattage: double.parse(value));
+                    final updated = data.copyWith(wattage: int.parse(value));
                     await dbHelper.putRecord(updated.toMap());
                   },
                   decoration: InputDecoration(
