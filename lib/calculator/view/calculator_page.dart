@@ -66,7 +66,9 @@ class CalculatorPage extends HookConsumerWidget {
                 // Spool Weight
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.spoolWeight.toString(),
+                    initialValue: state.spoolWeight.value != null
+                        ? state.spoolWeight.value.toString()
+                        : '',
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.spoolWeightLabel,
@@ -83,7 +85,9 @@ class CalculatorPage extends HookConsumerWidget {
                 // Spool cost
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.spoolCost.toString(),
+                    initialValue: state.spoolCost.value != null
+                        ? state.spoolCost.value.toString()
+                        : '',
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
@@ -101,7 +105,9 @@ class CalculatorPage extends HookConsumerWidget {
               ],
             ),
             TextFormField(
-              initialValue: state.printWeight.toString(),
+              initialValue: state.printWeight.value != null
+                  ? state.printWeight.value.toString()
+                  : '',
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: l10n.printWeightLabel,
@@ -117,7 +123,9 @@ class CalculatorPage extends HookConsumerWidget {
               children: [
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.hours.toString(),
+                    initialValue: state.hours.value != null
+                        ? state.hours.value.toString()
+                        : '',
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.hoursLabel,
@@ -132,7 +140,9 @@ class CalculatorPage extends HookConsumerWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.minutes.toString(),
+                    initialValue: state.minutes.value != null
+                        ? state.minutes.value.toString()
+                        : '',
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.minutesLabel,

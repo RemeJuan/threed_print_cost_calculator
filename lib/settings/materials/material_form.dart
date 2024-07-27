@@ -44,7 +44,9 @@ class MaterialForm extends HookConsumerWidget {
                 onChanged: notifier.updateColor,
               ),
               TextFormField(
-                initialValue: state.weight.value.toString(),
+                initialValue: state.weight.value != null
+                    ? state.weight.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Weight *',
@@ -54,7 +56,8 @@ class MaterialForm extends HookConsumerWidget {
                 onChanged: notifier.updateWeight,
               ),
               TextFormField(
-                initialValue: state.cost.value.toString(),
+                initialValue:
+                    state.cost.value != null ? state.cost.value.toString() : '',
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Cost *',

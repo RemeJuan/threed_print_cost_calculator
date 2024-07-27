@@ -21,7 +21,8 @@ class PremiumWidgets extends HookConsumerWidget {
           children: [
             Expanded(
               child: TextFormField(
-                initialValue: state.watt.value.toString(),
+                initialValue:
+                    state.watt.value != null ? state.watt.value.toString() : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.labourRateLabel,
@@ -36,7 +37,9 @@ class PremiumWidgets extends HookConsumerWidget {
             const SizedBox(width: 16),
             Expanded(
               child: TextFormField(
-                initialValue: state.labourTime.value.toString(),
+                initialValue: state.labourTime.value != null
+                    ? state.labourTime.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.labourTimeLabel,
@@ -55,7 +58,9 @@ class PremiumWidgets extends HookConsumerWidget {
           children: [
             Expanded(
               child: TextFormField(
-                initialValue: state.spoolCost.value.toString(),
+                initialValue: state.spoolCost.value != null
+                    ? state.spoolCost.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.wearAndTearLabel,
@@ -70,7 +75,9 @@ class PremiumWidgets extends HookConsumerWidget {
             const SizedBox(width: 16),
             Expanded(
               child: TextFormField(
-                initialValue: state.failureRisk.value.toString(),
+                initialValue: state.failureRisk.value != null
+                    ? state.failureRisk.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.failureRiskLabel,
