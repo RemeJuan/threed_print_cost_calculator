@@ -22,8 +22,8 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.initial() {
     return const GeneralSettingsModel(
-      electricityCost: -1,
-      wattage: -1,
+      electricityCost: 0,
+      wattage: 0,
       activePrinter: '',
       selectedMaterial: '',
     );

@@ -35,7 +35,9 @@ class AddPrinter extends HookConsumerWidget {
                 onChanged: notifier.updateName,
               ),
               TextFormField(
-                initialValue: state.bedSize.value.toString(),
+                initialValue: state.bedSize.value != null
+                    ? state.bedSize.value.toString()
+                    : '',
                 keyboardType: TextInputType.text,
                 decoration: const InputDecoration(
                   labelText: 'Bed Size *',
