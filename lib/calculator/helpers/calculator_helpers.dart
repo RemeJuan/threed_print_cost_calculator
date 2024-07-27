@@ -19,7 +19,7 @@ class CalculatorHelpers {
     int watts,
     int hours,
     int minutes,
-    int cost,
+    double cost,
   ) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
 

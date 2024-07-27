@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
+
 class GeneralSettingsModel {
-  final int electricityCost;
-  final double wattage;
+  final double electricityCost;
+  final int wattage;
   final String activePrinter;
   final String selectedMaterial;
 
@@ -13,16 +15,16 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
     return GeneralSettingsModel(
-      electricityCost: int.parse(map['electricityCost'] ?? ''),
-      wattage: double.parse(map['wattage'] ?? ''),
-      activePrinter: (map['activePrinter'] ?? '').toString(),
-      selectedMaterial: (map['selectedMaterial'] ?? '').toString(),
+      electricityCost: map['electricityCost'] ?? 0.0,
+      wattage: map['wattage'] ?? 0,
+      activePrinter: map['activePrinter'],
+      selectedMaterial: map['selectedMaterial'],
     );
   }
 
   factory GeneralSettingsModel.initial() {
     return const GeneralSettingsModel(
-      electricityCost: 0,
+      electricityCost: 0.0,
       wattage: 0,
       activePrinter: '',
       selectedMaterial: '',
@@ -39,8 +41,8 @@ class GeneralSettingsModel {
   }
 
   GeneralSettingsModel copyWith({
-    int? electricityCost,
-    double? wattage,
+    double? electricityCost,
+    int? wattage,
     String? activePrinter,
     String? selectedMaterial,
   }) {

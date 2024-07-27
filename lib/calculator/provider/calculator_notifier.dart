@@ -53,7 +53,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
 
     state = CalculatorState(
       watt: IntInput.dirty(value: state.watt.value),
-      kwCost: IntInput.dirty(value: settings.electricityCost),
+      kwCost: DoubleInput.dirty(value: settings.electricityCost),
       printWeight: IntInput.dirty(value: state.printWeight.value),
       hours: IntInput.dirty(value: state.hours.value),
       minutes: IntInput.dirty(value: state.minutes.value),
@@ -72,7 +72,9 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
   }
 
   void updateKwCost(String value) {
-    state = state.copyWith(kwCost: IntInput.dirty(value: int.parse(value)));
+    state = state.copyWith(
+      kwCost: DoubleInput.dirty(value: double.parse(value)),
+    );
   }
 
   void updatePrintWeight(String value) {

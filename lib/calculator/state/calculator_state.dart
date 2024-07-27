@@ -5,7 +5,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 
 class CalculatorState with FormzMixin {
   final IntInput watt;
-  final IntInput kwCost;
+  final DoubleInput kwCost;
   final IntInput printWeight;
   final IntInput hours;
   final IntInput minutes;
@@ -19,7 +19,7 @@ class CalculatorState with FormzMixin {
 
   CalculatorState({
     this.watt = const IntInput.pure(),
-    this.kwCost = const IntInput.pure(),
+    this.kwCost = const DoubleInput.pure(),
     this.printWeight = const IntInput.pure(),
     this.hours = const IntInput.pure(),
     this.minutes = const IntInput.pure(),
@@ -40,7 +40,7 @@ class CalculatorState with FormzMixin {
 
   CalculatorState copyWith({
     IntInput? watt,
-    IntInput? kwCost,
+    DoubleInput? kwCost,
     IntInput? printWeight,
     IntInput? hours,
     IntInput? minutes,

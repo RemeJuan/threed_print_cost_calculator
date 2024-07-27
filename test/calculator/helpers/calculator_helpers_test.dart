@@ -14,7 +14,7 @@ void main() {
     const watts = 200;
     const minutes = 60;
     const hours = 1;
-    const cost = 1;
+    const cost = 1.0;
     //act
     final result = container.read(calculatorHelpersProvider).electricityCost(
           watts,
