@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
-
 class GeneralSettingsModel {
-  final double electricityCost;
-  final int wattage;
+  final num electricityCost;
+  final num wattage;
   final String activePrinter;
   final String selectedMaterial;
 
@@ -41,8 +39,8 @@ class GeneralSettingsModel {
   }
 
   GeneralSettingsModel copyWith({
-    double? electricityCost,
-    int? wattage,
+    num? electricityCost,
+    num? wattage,
     String? activePrinter,
     String? selectedMaterial,
   }) {

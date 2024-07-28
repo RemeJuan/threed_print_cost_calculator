@@ -1,10 +1,10 @@
 class HistoryModel {
   final String name;
-  final double totalCost;
-  final double riskCost;
-  final double filamentCost;
-  final double electricityCost;
-  final double labourCost;
+  final num totalCost;
+  final num riskCost;
+  final num filamentCost;
+  final num electricityCost;
+  final num labourCost;
   final DateTime date;
 
   const HistoryModel({

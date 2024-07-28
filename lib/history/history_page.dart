@@ -135,7 +135,7 @@ class HistoryPage extends HookConsumerWidget {
     );
   }
 
-  Widget _row(String label, double value, [double border = 1]) {
+  Widget _row(String label, num value, [double border = 1]) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
