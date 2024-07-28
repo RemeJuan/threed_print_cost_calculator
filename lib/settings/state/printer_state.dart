@@ -1,21 +1,21 @@
 import 'package:formz/formz.dart';
-import 'package:threed_print_cost_calculator/app/components/double_input.dart';
+import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/app/components/string_input.dart';
 
 class PrinterState with FormzMixin {
   final StringInput name;
-  final DoubleInput bedSize;
+  final NumberInput bedSize;
   final StringInput wattage;
 
   PrinterState({
     this.name = const StringInput.pure(),
-    this.bedSize = const DoubleInput.pure(),
+    this.bedSize = const NumberInput.pure(),
     this.wattage = const StringInput.pure(),
   });
 
   PrinterState copyWith({
     StringInput? name,
-    DoubleInput? bedSize,
+    NumberInput? bedSize,
     StringInput? wattage,
   }) {
     return PrinterState(

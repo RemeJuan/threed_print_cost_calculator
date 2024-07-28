@@ -1,34 +1,33 @@
 import 'package:formz/formz.dart';
-import 'package:threed_print_cost_calculator/app/components/double_input.dart';
-import 'package:threed_print_cost_calculator/app/components/int_input.dart';
+import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
 class CalculatorState with FormzMixin {
-  final IntInput watt;
-  final DoubleInput kwCost;
-  final IntInput printWeight;
-  final IntInput hours;
-  final IntInput minutes;
-  final IntInput spoolWeight;
-  final IntInput spoolCost;
-  final DoubleInput wearAndTear;
-  final DoubleInput failureRisk;
-  final DoubleInput labourRate;
-  final DoubleInput labourTime;
+  final NumberInput watt;
+  final NumberInput kwCost;
+  final NumberInput printWeight;
+  final NumberInput hours;
+  final NumberInput minutes;
+  final NumberInput spoolWeight;
+  final NumberInput spoolCost;
+  final NumberInput wearAndTear;
+  final NumberInput failureRisk;
+  final NumberInput labourRate;
+  final NumberInput labourTime;
   final CalculationResult results;
 
   CalculatorState({
-    this.watt = const IntInput.pure(),
-    this.kwCost = const DoubleInput.pure(),
-    this.printWeight = const IntInput.pure(),
-    this.hours = const IntInput.pure(),
-    this.minutes = const IntInput.pure(),
-    this.spoolWeight = const IntInput.pure(),
-    this.spoolCost = const IntInput.pure(),
-    this.wearAndTear = const DoubleInput.pure(),
-    this.failureRisk = const DoubleInput.pure(),
-    this.labourRate = const DoubleInput.pure(),
-    this.labourTime = const DoubleInput.pure(),
+    this.watt = const NumberInput.pure(),
+    this.kwCost = const NumberInput.pure(),
+    this.printWeight = const NumberInput.pure(),
+    this.hours = const NumberInput.pure(),
+    this.minutes = const NumberInput.pure(),
+    this.spoolWeight = const NumberInput.pure(),
+    this.spoolCost = const NumberInput.pure(),
+    this.wearAndTear = const NumberInput.pure(),
+    this.failureRisk = const NumberInput.pure(),
+    this.labourRate = const NumberInput.pure(),
+    this.labourTime = const NumberInput.pure(),
     this.results = const CalculationResult(
       electricity: 0.0,
       filament: 0.0,
@@ -39,17 +38,17 @@ class CalculatorState with FormzMixin {
   });
 
   CalculatorState copyWith({
-    IntInput? watt,
-    DoubleInput? kwCost,
-    IntInput? printWeight,
-    IntInput? hours,
-    IntInput? minutes,
-    IntInput? spoolWeight,
-    IntInput? spoolCost,
-    DoubleInput? wearAndTear,
-    DoubleInput? failureRisk,
-    DoubleInput? labourRate,
-    DoubleInput? labourTime,
+    NumberInput? watt,
+    NumberInput? kwCost,
+    NumberInput? printWeight,
+    NumberInput? hours,
+    NumberInput? minutes,
+    NumberInput? spoolWeight,
+    NumberInput? spoolCost,
+    NumberInput? wearAndTear,
+    NumberInput? failureRisk,
+    NumberInput? labourRate,
+    NumberInput? labourTime,
     CalculationResult? results,
   }) {
     return CalculatorState(

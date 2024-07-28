@@ -1,26 +1,25 @@
 import 'package:formz/formz.dart';
-import 'package:threed_print_cost_calculator/app/components/double_input.dart';
-import 'package:threed_print_cost_calculator/app/components/int_input.dart';
+import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/app/components/string_input.dart';
 
 class MaterialState with FormzMixin {
   final StringInput name;
-  final DoubleInput cost;
+  final NumberInput cost;
   final StringInput color;
-  final IntInput weight;
+  final NumberInput weight;
 
   MaterialState({
     this.name = const StringInput.pure(),
-    this.cost = const DoubleInput.pure(),
+    this.cost = const NumberInput.pure(),
     this.color = const StringInput.pure(),
-    this.weight = const IntInput.pure(),
+    this.weight = const NumberInput.pure(),
   });
 
   MaterialState copyWith({
     StringInput? name,
-    DoubleInput? cost,
+    NumberInput? cost,
     StringInput? color,
-    IntInput? weight,
+    NumberInput? weight,
   }) {
     return MaterialState(
       name: name ?? this.name,

@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 class CalculationResult extends Equatable {
-  final double electricity;
-  final double filament;
-  final double risk;
-  final double labour;
-  final double total;
+  final num electricity;
+  final num filament;
+  final num risk;
+  final num labour;
+  final num total;
 
   const CalculationResult({
     required this.electricity,

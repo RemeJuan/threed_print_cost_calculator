@@ -1,7 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/app/components/double_input.dart';
-import 'package:threed_print_cost_calculator/app/components/int_input.dart';
+import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
@@ -50,52 +50,65 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
     } else {
       updateWatt(settings.wattage.toString());
     }
-
+    debugPrint('spoolWeightVal: $spoolWeightVal');
     state = CalculatorState(
-      watt: IntInput.dirty(value: state.watt.value),
-      kwCost: DoubleInput.dirty(value: settings.electricityCost),
-      printWeight: IntInput.dirty(value: state.printWeight.value),
-      hours: IntInput.dirty(value: state.hours.value),
-      minutes: IntInput.dirty(value: state.minutes.value),
-      spoolWeight: IntInput.dirty(value: spoolWeightVal['value'] as int),
-      spoolCost: IntInput.dirty(value: spoolCostVal['value'] as int),
-      wearAndTear: DoubleInput.dirty(value: wearAndTearVal['value'] as double),
-      failureRisk: DoubleInput.dirty(value: failureRiskVal['value'] as double),
-      labourRate: DoubleInput.dirty(value: labourRateVal['value'] as double),
-      labourTime: DoubleInput.dirty(value: state.labourTime.value),
+      watt: NumberInput.dirty(value: state.watt.value),
+      kwCost: NumberInput.dirty(value: settings.electricityCost),
+      printWeight: NumberInput.dirty(value: state.printWeight.value),
+      hours: NumberInput.dirty(value: state.hours.value),
+      minutes: NumberInput.dirty(value: state.minutes.value),
+      spoolWeight: NumberInput.dirty(
+        value: num.tryParse(spoolWeightVal['value'] as String),
+      ),
+      spoolCost: NumberInput.dirty(
+        value: num.tryParse(spoolCostVal['value'] as String),
+      ),
+      wearAndTear: NumberInput.dirty(
+        value: num.tryParse(wearAndTearVal['value'] as String),
+      ),
+      failureRisk: NumberInput.dirty(
+        value: num.tryParse(failureRiskVal['value'] as String),
+      ),
+      labourRate: NumberInput.dirty(
+        value: num.tryParse(labourRateVal['value'] as String),
+      ),
+      labourTime: NumberInput.dirty(value: state.labourTime.value),
       results: state.results,
     );
+    debugPrint(
+        'CalculatorProvider init completed - ${state.spoolWeight.value}');
   }
 
   void updateWatt(String value) {
-    state = state.copyWith(watt: IntInput.dirty(value: int.parse(value)));
+    state = state.copyWith(
+        watt: NumberInput.dirty(value: num.tryParse(value) ?? 0));
   }
 
   void updateKwCost(String value) {
     state = state.copyWith(
-      kwCost: DoubleInput.dirty(value: double.parse(value)),
+      kwCost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
     );
   }
 
   void updatePrintWeight(String value) {
-    state =
-        state.copyWith(printWeight: IntInput.dirty(value: int.parse(value)));
+    state = state.copyWith(
+        printWeight: NumberInput.dirty(value: num.tryParse(value) ?? 0));
   }
 
-  void updateHours(int value) {
-    state = state.copyWith(hours: IntInput.dirty(value: value));
+  void updateHours(num value) {
+    state = state.copyWith(hours: NumberInput.dirty(value: value));
   }
 
-  void updateMinutes(int value) {
-    state = state.copyWith(minutes: IntInput.dirty(value: value));
+  void updateMinutes(num value) {
+    state = state.copyWith(minutes: NumberInput.dirty(value: value));
   }
 
-  void updateSpoolWeight(int value) {
+  void updateSpoolWeight(num value) {
     ref.read(calculatorHelpersProvider).addOrUpdateRecord(
           'spoolWeight',
           value.toString(),
         );
-    state = state.copyWith(spoolWeight: IntInput.dirty(value: value));
+    state = state.copyWith(spoolWeight: NumberInput.dirty(value: value));
   }
 
   void updateSpoolCost(String value) {
@@ -103,39 +116,40 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
           'spoolCost',
           value.toString(),
         );
-    state = state.copyWith(spoolCost: IntInput.dirty(value: int.parse(value)));
+    state = state.copyWith(
+        spoolCost: NumberInput.dirty(value: num.tryParse(value) ?? 0));
   }
 
-  void updateWearAndTear(double value) {
+  void updateWearAndTear(num value) {
     ref.read(calculatorHelpersProvider).addOrUpdateRecord(
           'wearAndTear',
           value.toString(),
         );
-    state = state.copyWith(wearAndTear: DoubleInput.dirty(value: value));
+    state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
   }
 
-  void updateFailureRisk(double value) {
+  void updateFailureRisk(num value) {
     ref.read(calculatorHelpersProvider).addOrUpdateRecord(
           'failureRisk',
           value.toString(),
         );
-    state = state.copyWith(failureRisk: DoubleInput.dirty(value: value));
+    state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
   }
 
-  void updateLabourRate(double value) {
+  void updateLabourRate(num value) {
     ref.read(calculatorHelpersProvider).addOrUpdateRecord(
           'labourRate',
           value.toString(),
         );
-    state = state.copyWith(labourRate: DoubleInput.dirty(value: value));
+    state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
-  void updateLabourTime(double value) {
+  void updateLabourTime(num value) {
     ref.read(calculatorHelpersProvider).addOrUpdateRecord(
           'labourTime',
           value.toString(),
         );
-    state = state.copyWith(labourTime: DoubleInput.dirty(value: value));
+    state = state.copyWith(labourTime: NumberInput.dirty(value: value));
   }
 
   void updateResults(CalculationResult results) {
@@ -143,9 +157,9 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
   }
 
   void submit() {
-    var electricityCost = 0.0;
-    var filamentCost = 0.0;
-    var labourCost = 0.0;
+    num electricityCost = 0;
+    num filamentCost = 0;
+    num labourCost = 0;
 
     final w = state.watt.value ?? 0;
 

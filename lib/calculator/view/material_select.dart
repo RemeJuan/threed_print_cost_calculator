@@ -87,7 +87,7 @@ class MaterialSelect extends HookConsumerWidget {
               final materialCost = data.firstWhere((e) => e.id == v).cost;
 
               ref.read(calculatorProvider.notifier)
-                ..updateSpoolWeight(int.parse(materialWeight))
+                ..updateSpoolWeight(num.parse(materialWeight))
                 ..updateSpoolCost(materialCost)
                 ..submit();
             },

@@ -48,6 +48,31 @@ class CalculatorPage extends HookConsumerWidget {
     final notifier = ref.watch(calculatorProvider.notifier);
     final l10n = S.of(context);
 
+    final spoolWeightController = useTextEditingController(
+      text: state.spoolWeight.value?.toString() ?? '',
+    );
+    final spoolCostController = useTextEditingController(
+      text: state.spoolCost.value?.toString() ?? '',
+    );
+    final printWeightController = useTextEditingController(
+      text: state.printWeight.value?.toString() ?? '',
+    );
+    final hoursController = useTextEditingController(
+      text: state.hours.value?.toString() ?? '',
+    );
+    final minutesController = useTextEditingController(
+      text: state.minutes.value?.toString() ?? '',
+    );
+
+    useEffect(() {
+      spoolWeightController.text = state.spoolWeight.value?.toString() ?? '';
+      spoolCostController.text = state.spoolCost.value?.toString() ?? '';
+      printWeightController.text = state.printWeight.value?.toString() ?? '';
+      hoursController.text = state.hours.value?.toString() ?? '';
+      minutesController.text = state.minutes.value?.toString() ?? '';
+      return null;
+    }, [state]);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 32,
@@ -66,9 +91,7 @@ class CalculatorPage extends HookConsumerWidget {
                 // Spool Weight
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.spoolWeight.value != null
-                        ? state.spoolWeight.value.toString()
-                        : '',
+                    controller: spoolWeightController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.spoolWeightLabel,
@@ -76,7 +99,7 @@ class CalculatorPage extends HookConsumerWidget {
                     ),
                     onChanged: (value) async {
                       notifier
-                        ..updateSpoolWeight(int.parse(value))
+                        ..updateSpoolWeight(num.tryParse(value) ?? 0)
                         ..submit();
                     },
                   ),
@@ -85,9 +108,7 @@ class CalculatorPage extends HookConsumerWidget {
                 // Spool cost
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.spoolCost.value != null
-                        ? state.spoolCost.value.toString()
-                        : '',
+                    controller: spoolCostController,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
@@ -105,9 +126,7 @@ class CalculatorPage extends HookConsumerWidget {
               ],
             ),
             TextFormField(
-              initialValue: state.printWeight.value != null
-                  ? state.printWeight.value.toString()
-                  : '',
+              controller: printWeightController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 labelText: l10n.printWeightLabel,
@@ -123,16 +142,14 @@ class CalculatorPage extends HookConsumerWidget {
               children: [
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.hours.value != null
-                        ? state.hours.value.toString()
-                        : '',
+                    controller: hoursController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.hoursLabel,
                     ),
                     onChanged: (value) {
                       notifier
-                        ..updateHours(int.parse(value))
+                        ..updateHours(num.tryParse(value) ?? 0)
                         ..submit();
                     },
                   ),
@@ -140,16 +157,14 @@ class CalculatorPage extends HookConsumerWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextFormField(
-                    initialValue: state.minutes.value != null
-                        ? state.minutes.value.toString()
-                        : '',
+                    controller: minutesController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.minutesLabel,
                     ),
                     onChanged: (value) {
                       notifier
-                        ..updateMinutes(int.parse(value))
+                        ..updateMinutes(num.tryParse(value) ?? 0)
                         ..submit();
                     },
                   ),
@@ -174,13 +189,6 @@ class CalculatorPage extends HookConsumerWidget {
                 data: state.results,
                 showSave: showSave,
               ),
-            if (!premium.value) ...[
-              Text(
-                l10n.premiumHeader,
-                style: Theme.of(context).textTheme.titleSmall,
-              ),
-              PremiumWidgets(premium: premium.value),
-            ],
           ],
         ),
       ),

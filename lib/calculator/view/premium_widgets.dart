@@ -21,15 +21,13 @@ class PremiumWidgets extends HookConsumerWidget {
           children: [
             Expanded(
               child: TextFormField(
-                initialValue:
-                    state.watt.value != null ? state.watt.value.toString() : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.labourRateLabel,
                 ),
                 onChanged: (value) async {
                   notifier
-                    ..updateLabourRate(double.parse(value))
+                    ..updateLabourRate(num.tryParse(value) ?? 0)
                     ..submit();
                 },
               ),
@@ -46,7 +44,7 @@ class PremiumWidgets extends HookConsumerWidget {
                 ),
                 onChanged: (value) async {
                   notifier
-                    ..updateLabourTime(double.parse(value))
+                    ..updateLabourTime(num.tryParse(value) ?? 0)
                     ..submit();
                 },
               ),
@@ -67,7 +65,7 @@ class PremiumWidgets extends HookConsumerWidget {
                 ),
                 onChanged: (value) async {
                   notifier
-                    ..updateWearAndTear(double.parse(value))
+                    ..updateWearAndTear(num.tryParse(value) ?? 0)
                     ..submit();
                 },
               ),
@@ -84,7 +82,7 @@ class PremiumWidgets extends HookConsumerWidget {
                 ),
                 onChanged: (value) async {
                   notifier
-                    ..updateFailureRisk(double.parse(value))
+                    ..updateFailureRisk(num.tryParse(value) ?? 0)
                     ..submit;
                 },
               ),

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:threed_print_cost_calculator/app/components/double_input.dart';
-import 'package:threed_print_cost_calculator/app/components/int_input.dart';
+import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/app/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -41,7 +40,8 @@ class MaterialsProvider extends StateNotifier<MaterialState> {
   }
 
   void updateCost(String value) {
-    state = state.copyWith(cost: DoubleInput.dirty(value: double.parse(value)));
+    state = state.copyWith(
+        cost: NumberInput.dirty(value: num.tryParse(value) ?? 0));
   }
 
   void updateColor(String value) {
@@ -49,7 +49,8 @@ class MaterialsProvider extends StateNotifier<MaterialState> {
   }
 
   void updateWeight(String value) {
-    state = state.copyWith(weight: IntInput.dirty(value: int.parse(value)));
+    state = state.copyWith(
+        weight: NumberInput.dirty(value: num.tryParse(value) ?? 0));
   }
 
   void submit(String? dbRef) {

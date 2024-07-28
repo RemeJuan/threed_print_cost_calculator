@@ -55,7 +55,7 @@ class CalculatorResults extends StatelessWidget {
     );
   }
 
-  Padding _itemRow(BuildContext context, String prefix, double value) {
+  Padding _itemRow(BuildContext context, String prefix, num value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
