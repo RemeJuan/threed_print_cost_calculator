@@ -23,7 +23,6 @@ class CalculatorHelpers {
     num cost,
   ) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
-    debugPrint('watts: $watts, hours: $hours, minutes: $minutes, cost: $cost');
     final w = watts / 1000;
     final m = hours + (minutes / 60);
 
