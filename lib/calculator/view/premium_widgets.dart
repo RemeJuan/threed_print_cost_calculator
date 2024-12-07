@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:threed_print_cost_calculator/calculator/bloc/calculator_bloc.dart';
-import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
-class PremiumWidgets extends StatelessWidget {
+class PremiumWidgets extends HookConsumerWidget {
   const PremiumWidgets({required this.premium, super.key});
 
   final bool premium;
 
   @override
-  Widget build(BuildContext context) {
-    final bloc = context.read<CalculatorBloc>();
+  Widget build(context, ref) {
+    final state = ref.watch(calculatorProvider);
+    final notifier = ref.watch(calculatorProvider.notifier);
     final l10n = S.of(context);
 
     return Column(
@@ -20,32 +20,33 @@ class PremiumWidgets extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: TextFieldBlocBuilder(
-                textFieldBloc: bloc.labourRate,
+              child: TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.labourRateLabel,
                 ),
                 onChanged: (value) async {
-                  bloc.submit();
-                  await CalculatorHelpers.addOrUpdateRecord(
-                    'labourRate',
-                    value,
-                  );
+                  notifier
+                    ..updateLabourRate(num.tryParse(value) ?? 0)
+                    ..submit();
                 },
-                isEnabled: premium,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFieldBlocBuilder(
-                textFieldBloc: bloc.labourTime,
+              child: TextFormField(
+                initialValue: state.labourTime.value != null
+                    ? state.labourTime.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.labourTimeLabel,
                 ),
-                onChanged: (_) => bloc.submit(),
-                isEnabled: premium,
+                onChanged: (value) async {
+                  notifier
+                    ..updateLabourTime(num.tryParse(value) ?? 0)
+                    ..submit();
+                },
               ),
             ),
           ],
@@ -54,38 +55,36 @@ class PremiumWidgets extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
-              child: TextFieldBlocBuilder(
-                textFieldBloc: bloc.wearAndTear,
+              child: TextFormField(
+                initialValue: state.spoolCost.value != null
+                    ? state.spoolCost.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.wearAndTearLabel,
                 ),
                 onChanged: (value) async {
-                  bloc.submit();
-                  await CalculatorHelpers.addOrUpdateRecord(
-                    'wearAndTear',
-                    value,
-                  );
+                  notifier
+                    ..updateWearAndTear(num.tryParse(value) ?? 0)
+                    ..submit();
                 },
-                isEnabled: premium,
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: TextFieldBlocBuilder(
-                textFieldBloc: bloc.failureRisk,
+              child: TextFormField(
+                initialValue: state.failureRisk.value != null
+                    ? state.failureRisk.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.failureRiskLabel,
                 ),
                 onChanged: (value) async {
-                  bloc.submit();
-                  await CalculatorHelpers.addOrUpdateRecord(
-                    'failureRisk',
-                    value,
-                  );
+                  notifier
+                    ..updateFailureRisk(num.tryParse(value) ?? 0)
+                    ..submit;
                 },
-                isEnabled: premium,
               ),
             ),
           ],

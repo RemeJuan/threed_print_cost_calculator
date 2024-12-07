@@ -7,20 +7,29 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() async {
-    await setupTest();
+  late MockCalculatorNotifier mockCalculatorProvider;
+
+  setUp(() {
+    mockCalculatorProvider = MockCalculatorNotifier();
   });
 
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
-      await tester.pumpApp(const App());
+      await tester.pumpApp(
+        const App(),
+        [
+          calculatorProvider.overrideWith((_) => mockCalculatorProvider),
+        ],
+      );
       await tester.pumpAndSettle();
       expect(find.byType(CalculatorPage), findsOneWidget);
     });

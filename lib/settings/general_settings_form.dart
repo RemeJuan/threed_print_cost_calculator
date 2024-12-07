@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
-class GeneralSettings extends HookWidget {
+class GeneralSettings extends HookConsumerWidget {
   const GeneralSettings({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context, ref) {
     final l10n = S.of(context);
 
-    final db = sl<Database>();
+    final db = ref.read(databaseProvider);
     final store = StoreRef.main();
-    final dbHelper = DataBaseHelpers(DBName.settings);
+    final dbHelper = ref.read(dbHelpersProvider(DBName.settings));
 
     return StreamBuilder(
       stream: store.record(DBName.settings.name).onSnapshot(db),
@@ -27,7 +27,8 @@ class GeneralSettings extends HookWidget {
         } else {
           if (snapshot.hasData) {
             data = GeneralSettingsModel.fromMap(
-                snapshot.data!.value as Map<String, dynamic>);
+              snapshot.data!.value as Map<String, dynamic>,
+            );
           } else {
             data = GeneralSettingsModel.initial();
           }
@@ -36,9 +37,11 @@ class GeneralSettings extends HookWidget {
             children: [
               Expanded(
                 child: TextFormField(
-                  initialValue: data.electricityCost,
+                  initialValue: data.electricityCost.toString(),
                   onChanged: (value) async {
-                    final updated = data.copyWith(electricityCost: value);
+                    final updated = data.copyWith(
+                      electricityCost: num.tryParse(value) ?? 0,
+                    );
                     await dbHelper.putRecord(updated.toMap());
                   },
                   decoration: InputDecoration(
@@ -50,9 +53,10 @@ class GeneralSettings extends HookWidget {
               const SizedBox(width: 16),
               Expanded(
                 child: TextFormField(
-                  initialValue: data.wattage,
+                  initialValue: data.wattage.toString(),
                   onChanged: (value) async {
-                    final updated = data.copyWith(wattage: value);
+                    final updated =
+                        data.copyWith(wattage: num.tryParse(value) ?? 0);
                     await dbHelper.putRecord(updated.toMap());
                   },
                   decoration: InputDecoration(

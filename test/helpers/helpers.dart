@@ -4,19 +4,39 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
-import 'package:sembast/sembast.dart';
-import 'package:sembast/sembast_memory.dart';
-import 'package:threed_print_cost_calculator/locator.dart' as di;
-import 'package:threed_print_cost_calculator/locator.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
-export 'pump_app.dart';
+Future<void> setupTest() async {}
 
-Future<void> setupTest() async {
-  di.initServices();
-  di.sl.allowReassignment = true;
-
-  sl.registerSingletonAsync<Database>(
-    () async => databaseFactoryMemory.openDatabase('database'),
-  );
-  await sl.allReady();
+extension PumpApp on WidgetTester {
+  Future<void> pumpApp(
+    Widget widget, [
+    List<Override> overrides = const [],
+    List<NavigatorObserver> observers = const [],
+  ]) async {
+    return pumpWidget(
+      ProviderScope(
+        overrides: overrides,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          home: Scaffold(
+            body: widget,
+          ),
+          navigatorObservers: [
+            ...observers,
+          ],
+        ),
+      ),
+    );
+  }
 }
