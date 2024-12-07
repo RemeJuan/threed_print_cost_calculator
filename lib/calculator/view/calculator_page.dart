@@ -45,7 +45,7 @@ class CalculatorPage extends HookConsumerWidget {
     );
 
     final state = ref.watch(calculatorProvider);
-    final notifier = ref.watch(calculatorProvider.notifier);
+    final notifier = ref.read(calculatorProvider.notifier);
     final l10n = S.of(context);
 
     final spoolWeightController = useTextEditingController(
@@ -72,6 +72,15 @@ class CalculatorPage extends HookConsumerWidget {
       minutesController.text = state.minutes.value?.toString() ?? '';
       return null;
     }, [state]);
+
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifier
+          ..init()
+          ..submit();
+      });
+      return null;
+    }, []);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(

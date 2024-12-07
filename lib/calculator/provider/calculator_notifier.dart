@@ -50,7 +50,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
     } else {
       updateWatt(settings.wattage.toString());
     }
-    debugPrint('spoolWeightVal: $spoolWeightVal');
+
     state = CalculatorState(
       watt: NumberInput.dirty(value: state.watt.value),
       kwCost: NumberInput.dirty(value: settings.electricityCost),
@@ -76,7 +76,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
       results: state.results,
     );
     debugPrint(
-        'CalculatorProvider init completed - ${state.spoolWeight.value}');
+        'CalculatorProvider init completed - ${settings.electricityCost}');
   }
 
   void updateWatt(String value) {
@@ -201,7 +201,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
       filament: filamentCost,
       risk: frCost,
       labour: labourCost,
-      total: totalCost,
+      total: num.parse(totalCost.toStringAsFixed(2)),
     );
 
     updateResults(results);
