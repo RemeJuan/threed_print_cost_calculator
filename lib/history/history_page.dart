@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
-import 'package:threed_print_cost_calculator/locator.dart';
 
-class HistoryPage extends StatelessWidget {
+class HistoryPage extends HookConsumerWidget {
   const HistoryPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final db = sl<Database>();
+  Widget build(context, ref) {
+    final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store('history');
 
     return Scaffold(
@@ -100,7 +101,7 @@ class HistoryPage extends StatelessWidget {
                                     // Format date string
                                     Text(
                                       DateFormat('dd MMM yyyy')
-                                          .format(DateTime.parse(data.date)),
+                                          .format(data.date),
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
@@ -134,7 +135,7 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _row(String label, String value, [double border = 1]) {
+  Widget _row(String label, num value, [double border = 1]) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
@@ -147,7 +148,7 @@ class HistoryPage extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text(label), Text(value)],
+        children: [Text(label), Text(value.toString())],
       ),
     );
   }

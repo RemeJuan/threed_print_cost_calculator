@@ -1,16 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
 class CalculatorResults extends StatelessWidget {
+  final CalculationResult results;
+  final bool premium;
+
   const CalculatorResults({
     required this.results,
     required this.premium,
     super.key,
   });
-
-  final Map<dynamic, dynamic> results;
-  final bool premium;
 
   @override
   Widget build(BuildContext context) {
@@ -24,28 +25,28 @@ class CalculatorResults extends StatelessWidget {
           _itemRow(
             context,
             l10n.resultElectricityPrefix,
-            (results['electricity'] ?? '0').toString(),
+            results.electricity,
           ),
           _itemRow(
             context,
             l10n.resultFilamentPrefix,
-            (results['filament'] ?? '0').toString(),
+            results.filament,
           ),
           _itemRow(
             context,
             l10n.resultTotalPrefix,
-            (results['total'] ?? '0').toString(),
+            results.total,
           ),
           if (premium) ...[
             _itemRow(
               context,
               l10n.riskTotalPrefix,
-              (results['risk'] ?? '0').toString(),
+              results.risk,
             ),
             _itemRow(
               context,
               l10n.labourCostPrefix,
-              (results['labour'] ?? '0').toString(),
+              results.labour,
             ),
           ],
           const SizedBox(height: 16),
@@ -54,7 +55,7 @@ class CalculatorResults extends StatelessWidget {
     );
   }
 
-  Padding _itemRow(BuildContext context, String prefix, String value) {
+  Padding _itemRow(BuildContext context, String prefix, num value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -64,7 +65,7 @@ class CalculatorResults extends StatelessWidget {
             prefix,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          Text(value),
+          Text(value.toString()),
         ],
       ),
     );

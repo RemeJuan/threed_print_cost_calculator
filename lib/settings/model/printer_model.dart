@@ -1,4 +1,10 @@
 class PrinterModel {
+  String id;
+  String name;
+  String bedSize;
+  num wattage;
+  bool archived;
+
   PrinterModel({
     required this.id,
     required this.name,
@@ -12,22 +18,16 @@ class PrinterModel {
       id: key,
       name: map['name'] as String,
       bedSize: map['bedSize'] as String,
-      wattage: map['wattage'] as String,
+      wattage: map['wattage'] as num,
       archived: false, //map['archived'] as bool,
     );
   }
-
-  String id;
-  String name;
-  String bedSize;
-  String wattage;
-  bool archived;
 
   PrinterModel copyWith({
     String? id,
     String? name,
     String? bedSize,
-    String? wattage,
+    num? wattage,
     bool? archived,
   }) {
     return PrinterModel(
