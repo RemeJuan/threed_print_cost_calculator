@@ -9,8 +9,11 @@ ENV TZ=Africa/Johannesburg
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #Installing Flutter SDK
-RUN git clone https://github.com/flutter/flutter.git -b stable --depth 1 /flutter
-ENV PATH="/flutter/bin:$PATH"
-RUN flutter channel stable
-RUN flutter upgrade
-RUN flutter doctor
+RUN curl -fsSL https://fvm.app/install.sh | bash
+RUN fvm install
+RUN fvm use
+#RUN git clone https://github.com/flutter/flutter.git -b stable --depth 1 /flutter
+#ENV PATH="/flutter/bin:$PATH"
+#RUN flutter channel stable
+#RUN flutter upgrade
+#RUN flutter doctor
