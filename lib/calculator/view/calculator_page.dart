@@ -23,21 +23,23 @@ class CalculatorPage extends HookConsumerWidget {
 
     useEffect(
       () {
-        Purchases.addCustomerInfoUpdateListener((info) async {
-          final prefs = ref.read(sharedPreferencesProvider);
-          final paywall = prefs.getBool('paywall') ?? false;
-          final runCount = prefs.getInt('run_count') ?? 0;
-          premium.value = info.entitlements.active.isNotEmpty;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Purchases.addCustomerInfoUpdateListener((info) async {
+            final prefs = ref.read(sharedPreferencesProvider);
+            final paywall = prefs.getBool('paywall') ?? false;
+            final runCount = prefs.getInt('run_count') ?? 0;
+            premium.value = info.entitlements.active.isNotEmpty;
 
-          if (runCount > 2 && info.entitlements.active.isEmpty && !paywall) {
-            try {
-              await prefs.setBool('paywall', true);
-              await Future.delayed(const Duration(seconds: 2));
-              await RevenueCatUI.presentPaywallIfNeeded("pro");
-            } catch (e) {
-              debugPrint('paywall failed ${e.toString()}');
+            if (runCount > 2 && info.entitlements.active.isEmpty && !paywall) {
+              try {
+                await prefs.setBool('paywall', true);
+                await Future.delayed(const Duration(seconds: 2));
+                await RevenueCatUI.presentPaywallIfNeeded("pro");
+              } catch (e) {
+                debugPrint('paywall failed ${e.toString()}');
+              }
             }
-          }
+          });
         });
         return null;
       },

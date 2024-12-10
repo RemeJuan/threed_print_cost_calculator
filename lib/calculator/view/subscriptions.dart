@@ -89,7 +89,7 @@ class Subscriptions extends HookWidget {
                       );
                     },
                     childCount:
-                        offerings.data!.current!.availablePackages.length,
+                        offerings.data?.current?.availablePackages.length ?? 0,
                   ),
                 ),
                 SliverToBoxAdapter(
