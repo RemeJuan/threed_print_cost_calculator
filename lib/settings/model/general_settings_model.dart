@@ -13,8 +13,8 @@ class GeneralSettingsModel {
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
     return GeneralSettingsModel(
-      electricityCost: num.parse(map['electricityCost'].toString()) ?? 0.0,
-      wattage: num.parse(map['wattage'].toString()) ?? 0,
+      electricityCost: num.tryParse(map['electricityCost'].toString()) ?? 0.0,
+      wattage: num.tryParse(map['wattage'].toString()) ?? 0,
       activePrinter: map['activePrinter'],
       selectedMaterial: map['selectedMaterial'],
     );
