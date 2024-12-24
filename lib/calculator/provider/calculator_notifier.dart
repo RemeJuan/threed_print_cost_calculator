@@ -53,7 +53,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
 
     state = CalculatorState(
       watt: NumberInput.dirty(value: state.watt.value),
-      kwCost: NumberInput.dirty(value: settings.electricityCost),
+      kwCost: NumberInput.dirty(value: num.tryParse(settings.electricityCost)),
       printWeight: NumberInput.dirty(value: state.printWeight.value),
       hours: NumberInput.dirty(value: state.hours.value),
       minutes: NumberInput.dirty(value: state.minutes.value),
