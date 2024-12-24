@@ -40,7 +40,7 @@ class GeneralSettings extends HookConsumerWidget {
                   initialValue: data.electricityCost.toString(),
                   onChanged: (value) async {
                     final updated = data.copyWith(
-                      electricityCost: num.tryParse(value) ?? 0,
+                      electricityCost: value,
                     );
                     await dbHelper.putRecord(updated.toMap());
                   },
@@ -55,8 +55,7 @@ class GeneralSettings extends HookConsumerWidget {
                 child: TextFormField(
                   initialValue: data.wattage.toString(),
                   onChanged: (value) async {
-                    final updated =
-                        data.copyWith(wattage: num.tryParse(value) ?? 0);
+                    final updated = data.copyWith(wattage: value);
                     await dbHelper.putRecord(updated.toMap());
                   },
                   decoration: InputDecoration(
