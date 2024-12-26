@@ -2,7 +2,7 @@ class PrinterModel {
   String id;
   String name;
   String bedSize;
-  num wattage;
+  String wattage;
   bool archived;
 
   PrinterModel({
@@ -18,7 +18,7 @@ class PrinterModel {
       id: key,
       name: map['name'] as String,
       bedSize: map['bedSize'] as String,
-      wattage: map['wattage'] as num,
+      wattage: map['wattage'] as String,
       archived: false, //map['archived'] as bool,
     );
   }
@@ -27,7 +27,7 @@ class PrinterModel {
     String? id,
     String? name,
     String? bedSize,
-    num? wattage,
+    String? wattage,
     bool? archived,
   }) {
     return PrinterModel(
