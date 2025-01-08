@@ -2,7 +2,7 @@ class PrinterModel {
   String id;
   String name;
   String bedSize;
-  num wattage;
+  String wattage;
   bool archived;
 
   PrinterModel({
@@ -16,9 +16,9 @@ class PrinterModel {
   factory PrinterModel.fromMap(Map<String, dynamic> map, String key) {
     return PrinterModel(
       id: key,
-      name: map['name'] as String,
-      bedSize: map['bedSize'] as String,
-      wattage: map['wattage'] as num,
+      name: map['name'].toString(),
+      bedSize: map['bedSize'].toString(),
+      wattage: map['wattage'].toString(),
       archived: false, //map['archived'] as bool,
     );
   }
@@ -27,7 +27,7 @@ class PrinterModel {
     String? id,
     String? name,
     String? bedSize,
-    num? wattage,
+    String? wattage,
     bool? archived,
   }) {
     return PrinterModel(
