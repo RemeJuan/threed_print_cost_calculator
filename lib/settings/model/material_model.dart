@@ -11,10 +11,10 @@ class MaterialModel {
   factory MaterialModel.fromMap(Map<String, dynamic> map, String key) {
     return MaterialModel(
       id: key,
-      name: map['name'] as String,
-      cost: map['cost'] as String,
-      color: map['color'] as String,
-      weight: map['weight'] ?? '0',
+      name: map['name'].toString(),
+      cost: map['cost'].toString(),
+      color: map['color'].toString(),
+      weight: (map['weight'] ?? 0).toString(),
       archived: false, //map['archived'] as bool,
     );
   }
