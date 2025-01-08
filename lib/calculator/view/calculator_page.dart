@@ -20,17 +20,19 @@ class CalculatorPage extends HookConsumerWidget {
   Widget build(context, ref) {
     final premium = useState<bool>(false);
     final showSave = useState<bool>(false);
+    final prefs = ref.read(sharedPreferencesProvider);
 
     useEffect(
       () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Purchases.addCustomerInfoUpdateListener((info) async {
-            final prefs = ref.read(sharedPreferencesProvider);
+            if (info.entitlements.active.isEmpty) return;
+
             final paywall = prefs.getBool('paywall') ?? false;
             final runCount = prefs.getInt('run_count') ?? 0;
             premium.value = info.entitlements.active.isNotEmpty;
 
-            if (runCount > 2 && info.entitlements.active.isEmpty && !paywall) {
+            if (runCount > 2 && !paywall) {
               try {
                 await prefs.setBool('paywall', true);
                 await Future.delayed(const Duration(seconds: 2));
