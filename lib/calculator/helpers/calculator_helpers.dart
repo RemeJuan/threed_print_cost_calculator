@@ -81,7 +81,12 @@ class CalculatorHelpers {
     final store = stringMapStoreFactory.store('history');
 
     try {
-      await store.add(db, value.toMap());
+      final data = {
+        ...value.toMap(),
+        'date': value.date.toString(),
+      };
+      await store.add(db, data);
+      BotToast.showText(text: 'Print saved');
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
     }
