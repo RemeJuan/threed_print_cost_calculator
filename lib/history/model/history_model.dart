@@ -25,7 +25,7 @@ class HistoryModel {
       filamentCost: map['filamentCost'] as double,
       electricityCost: map['electricityCost'] as double,
       labourCost: map['labourCost'] as double,
-      date: map['date'] as DateTime,
+      date: DateTime.parse(map['date']),
     );
   }
 

@@ -45,7 +45,6 @@ class SaveForm extends HookConsumerWidget {
                     );
                     await ref.read(calculatorHelpersProvider).savePrint(model);
                     showSave.value = false;
-                    BotToast.showText(text: 'Print saved');
                   },
             icon: const Icon(Icons.save),
           ),
