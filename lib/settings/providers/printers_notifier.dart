@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/app/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -26,8 +25,8 @@ class PrintersNotifier extends StateNotifier<PrinterState> {
       );
 
       updateName(printer.name);
-      updateBedSize(printer.bedSize.toString());
-      updateWattage(printer.wattage.toString());
+      updateBedSize(printer.bedSize);
+      updateWattage(printer.wattage);
     }
   }
 
@@ -37,7 +36,7 @@ class PrintersNotifier extends StateNotifier<PrinterState> {
 
   void updateBedSize(String value) {
     state = state.copyWith(
-      bedSize: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+      bedSize: StringInput.dirty(value: value),
     );
   }
 
