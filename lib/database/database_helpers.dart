@@ -68,7 +68,7 @@ class DataBaseHelpers {
     try {
       await store.record(key).delete(db);
     } catch (e) {
-      BotToast.showText(text: 'Error saving print');
+      BotToast.showText(text: 'Error removing printer');
     }
   }
 
@@ -101,10 +101,23 @@ class DataBaseHelpers {
     if (settings == null) {
       return GeneralSettingsModel.initial();
     }
+    final printers = await store.record(DBName.printers.name).get(db);
+    final printerIds = printers != null
+        ? (printers as Map<String, dynamic>).keys.toList()
+        : <String>[];
 
-    return GeneralSettingsModel.fromMap(
+    final generalSettings = GeneralSettingsModel.fromMap(
       settings as Map<String, dynamic>,
     );
+
+    if (printerIds.isEmpty) {
+      return generalSettings.copyWith(activePrinter: '');
+    }
+
+    if (!printerIds.contains(generalSettings.activePrinter)) {
+      return generalSettings.copyWith(activePrinter: printerIds.first);
+    }
+    return generalSettings;
   }
 
   Future<Map<String, Object?>> getValue(String key) async {
