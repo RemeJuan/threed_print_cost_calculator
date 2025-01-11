@@ -44,9 +44,13 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
           .query(finder: Finder(filter: Filter.byKey(printerKey)))
           .getSnapshot(database);
 
-      final printer = PrinterModel.fromMap(data!.value, printerKey);
+      if (data != null) {
+        final printer = PrinterModel.fromMap(data.value, printerKey);
 
-      updateWatt(printer.wattage.toString());
+        updateWatt(printer.wattage.toString());
+      } else {
+        updateWatt(settings.wattage.toString());
+      }
     } else {
       updateWatt(settings.wattage.toString());
     }
