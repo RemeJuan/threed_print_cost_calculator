@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/components/num_input.dart';
@@ -57,7 +56,9 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
 
     state = CalculatorState(
       watt: NumberInput.dirty(value: state.watt.value),
-      kwCost: NumberInput.dirty(value: num.tryParse(settings.electricityCost)),
+      kwCost: NumberInput.dirty(
+        value: num.tryParse(settings.electricityCost.replaceAll(',', '.')),
+      ),
       printWeight: NumberInput.dirty(value: state.printWeight.value),
       hours: NumberInput.dirty(value: state.hours.value),
       minutes: NumberInput.dirty(value: state.minutes.value),
@@ -79,24 +80,27 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
       labourTime: NumberInput.dirty(value: state.labourTime.value),
       results: state.results,
     );
-    debugPrint(
-        'CalculatorProvider init completed - ${settings.electricityCost}');
   }
 
   void updateWatt(String value) {
     state = state.copyWith(
-        watt: NumberInput.dirty(value: num.tryParse(value) ?? 0));
+      watt: NumberInput.dirty(
+          value: num.tryParse(value.replaceAll(',', '.')) ?? 0),
+    );
   }
 
   void updateKwCost(String value) {
     state = state.copyWith(
-      kwCost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+      kwCost: NumberInput.dirty(
+        value: num.tryParse(value.replaceAll(',', '.')) ?? 0,
+      ),
     );
   }
 
   void updatePrintWeight(String value) {
     state = state.copyWith(
-        printWeight: NumberInput.dirty(value: num.tryParse(value) ?? 0));
+      printWeight: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+    );
   }
 
   void updateHours(num value) {
@@ -121,7 +125,8 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
           value.toString(),
         );
     state = state.copyWith(
-        spoolCost: NumberInput.dirty(value: num.tryParse(value) ?? 0));
+      spoolCost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+    );
   }
 
   void updateWearAndTear(num value) {
