@@ -18,17 +18,20 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
+    final name =
+        (locale.countryCode?.isEmpty ?? false)
+            ? locale.languageCode
+            : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -41,8 +44,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -152,12 +157,7 @@ class S {
 
   /// `Minutes`
   String get minutesLabel {
-    return Intl.message(
-      'Minutes',
-      name: 'minutesLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Minutes', name: 'minutesLabel', desc: '', args: []);
   }
 
   /// `Material weight`
@@ -192,12 +192,7 @@ class S {
 
   /// `Calculate`
   String get submitButton {
-    return Intl.message(
-      'Calculate',
-      name: 'submitButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Calculate', name: 'submitButton', desc: '', args: []);
   }
 
   /// `Total cost for Electricity: `
@@ -262,22 +257,12 @@ class S {
 
   /// `Watt`
   String get watt {
-    return Intl.message(
-      'Watt',
-      name: 'watt',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Watt', name: 'watt', desc: '', args: []);
   }
 
   /// `kW/h`
   String get kwh {
-    return Intl.message(
-      'kW/h',
-      name: 'kwh',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('kW/h', name: 'kwh', desc: '', args: []);
   }
 }
 

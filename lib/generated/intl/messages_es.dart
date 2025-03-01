@@ -22,45 +22,54 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Calculadora de impresión 3D"),
-        "electricityCostLabel":
-            MessageLookupByLibrary.simpleMessage("Costo de electricidad"),
-        "failureRiskLabel":
-            MessageLookupByLibrary.simpleMessage("Riesgo de falla (%)"),
-        "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Historia"),
-        "hoursLabel":
-            MessageLookupByLibrary.simpleMessage("Tiempo de impresión (horas)"),
-        "kwh": MessageLookupByLibrary.simpleMessage("kilovatios/h"),
-        "labourCostPrefix":
-            MessageLookupByLibrary.simpleMessage("Costo laboral: "),
-        "labourRateLabel":
-            MessageLookupByLibrary.simpleMessage("Tarifa por hora"),
-        "labourTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Tiempo de procesamiento"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutos"),
-        "premiumHeader":
-            MessageLookupByLibrary.simpleMessage("Sólo usuarios premium:"),
-        "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Peso de la impresión"),
-        "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
-            "Costo total de Electricidad: "),
-        "resultFilamentPrefix":
-            MessageLookupByLibrary.simpleMessage("Costo total del filamento: "),
-        "resultTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Coste total: "),
-        "riskTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Costo del riesgo: "),
-        "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Ajustes"),
-        "spoolCostLabel":
-            MessageLookupByLibrary.simpleMessage("Costo del carrete/resina"),
-        "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Peso del carrete/resina"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Calcular"),
-        "watt": MessageLookupByLibrary.simpleMessage("Vatio"),
-        "wattLabel":
-            MessageLookupByLibrary.simpleMessage("Vatio (impresora 3D)"),
-        "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
-            "Materiales/Desgaste + desgaste")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "Calculadora de impresión 3D",
+    ),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Costo de electricidad",
+    ),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
+      "Riesgo de falla (%)",
+    ),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Historia"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage(
+      "Tiempo de impresión (horas)",
+    ),
+    "kwh": MessageLookupByLibrary.simpleMessage("kilovatios/h"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Costo laboral: "),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarifa por hora"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
+      "Tiempo de procesamiento",
+    ),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutos"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage(
+      "Sólo usuarios premium:",
+    ),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Peso de la impresión",
+    ),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
+      "Costo total de Electricidad: ",
+    ),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "Costo total del filamento: ",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Coste total: "),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
+      "Costo del riesgo: ",
+    ),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Ajustes"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Costo del carrete/resina",
+    ),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Peso del carrete/resina",
+    ),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Calcular"),
+    "watt": MessageLookupByLibrary.simpleMessage("Vatio"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("Vatio (impresora 3D)"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
+      "Materiales/Desgaste + desgaste",
+    ),
+  };
 }
