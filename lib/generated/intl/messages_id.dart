@@ -22,45 +22,48 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Kalkulator Cetak 3D"),
-        "electricityCostLabel":
-            MessageLookupByLibrary.simpleMessage("Biaya listrik"),
-        "failureRiskLabel":
-            MessageLookupByLibrary.simpleMessage("Risiko kegagalan (%)"),
-        "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Sejarah"),
-        "hoursLabel":
-            MessageLookupByLibrary.simpleMessage("Waktu pencetakan (jam)"),
-        "kwh": MessageLookupByLibrary.simpleMessage("kW/jam"),
-        "labourCostPrefix":
-            MessageLookupByLibrary.simpleMessage("Biaya tenaga kerja: "),
-        "labourRateLabel":
-            MessageLookupByLibrary.simpleMessage("Tarif per jam"),
-        "labourTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Waktu pengerjaan"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("Menit"),
-        "premiumHeader":
-            MessageLookupByLibrary.simpleMessage("Khusus pengguna premium:"),
-        "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Berat cetakan"),
-        "resultElectricityPrefix":
-            MessageLookupByLibrary.simpleMessage("Total biaya Listrik: "),
-        "resultFilamentPrefix":
-            MessageLookupByLibrary.simpleMessage("Total biaya untuk filamen: "),
-        "resultTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Total biaya: "),
-        "riskTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
-        "settingsAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Pengaturan"),
-        "spoolCostLabel":
-            MessageLookupByLibrary.simpleMessage("Biaya Spul/Resin"),
-        "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Berat kumparan/Resin"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Menghitung"),
-        "watt": MessageLookupByLibrary.simpleMessage("Watt"),
-        "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (Printer 3D)"),
-        "wearAndTearLabel":
-            MessageLookupByLibrary.simpleMessage("Bahan/Keausan + sobek")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "Kalkulator Cetak 3D",
+    ),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Biaya listrik",
+    ),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
+      "Risiko kegagalan (%)",
+    ),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Sejarah"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage(
+      "Waktu pencetakan (jam)",
+    ),
+    "kwh": MessageLookupByLibrary.simpleMessage("kW/jam"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
+      "Biaya tenaga kerja: ",
+    ),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarif per jam"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Waktu pengerjaan"),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("Menit"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage(
+      "Khusus pengguna premium:",
+    ),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage("Berat cetakan"),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
+      "Total biaya Listrik: ",
+    ),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "Total biaya untuk filamen: ",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Total biaya: "),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Pengaturan"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Biaya Spul/Resin"),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Berat kumparan/Resin",
+    ),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Menghitung"),
+    "watt": MessageLookupByLibrary.simpleMessage("Watt"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (Printer 3D)"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
+      "Bahan/Keausan + sobek",
+    ),
+  };
 }

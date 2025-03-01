@@ -22,31 +22,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("3Dプリント計算機"),
-        "electricityCostLabel": MessageLookupByLibrary.simpleMessage("電気代"),
-        "failureRiskLabel": MessageLookupByLibrary.simpleMessage("失敗リスク（％）"),
-        "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("歴史"),
-        "hoursLabel": MessageLookupByLibrary.simpleMessage("印刷時間（時間）"),
-        "kwh": MessageLookupByLibrary.simpleMessage("キロワット時"),
-        "labourCostPrefix": MessageLookupByLibrary.simpleMessage("人件費： "),
-        "labourRateLabel": MessageLookupByLibrary.simpleMessage("時給"),
-        "labourTimeLabel": MessageLookupByLibrary.simpleMessage("処理時間"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("分"),
-        "premiumHeader": MessageLookupByLibrary.simpleMessage("プレミアムユーザーのみ:"),
-        "printWeightLabel": MessageLookupByLibrary.simpleMessage("プリントの重さ"),
-        "resultElectricityPrefix":
-            MessageLookupByLibrary.simpleMessage("電気代合計:"),
-        "resultFilamentPrefix":
-            MessageLookupByLibrary.simpleMessage("フィラメントの合計コスト:"),
-        "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("総費用： "),
-        "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("リスクコスト:"),
-        "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("設定"),
-        "spoolCostLabel": MessageLookupByLibrary.simpleMessage("スプール/樹脂コスト"),
-        "spoolWeightLabel": MessageLookupByLibrary.simpleMessage("スプール/樹脂重量"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("計算する"),
-        "watt": MessageLookupByLibrary.simpleMessage("ワット"),
-        "wattLabel": MessageLookupByLibrary.simpleMessage("ワット（3Dプリンター）"),
-        "wearAndTearLabel": MessageLookupByLibrary.simpleMessage("材質/摩耗")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage("3Dプリント計算機"),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage("電気代"),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage("失敗リスク（％）"),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("歴史"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage("印刷時間（時間）"),
+    "kwh": MessageLookupByLibrary.simpleMessage("キロワット時"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("人件費： "),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("時給"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage("処理時間"),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("分"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage("プレミアムユーザーのみ:"),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage("プリントの重さ"),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage("電気代合計:"),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "フィラメントの合計コスト:",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("総費用： "),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("リスクコスト:"),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("設定"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("スプール/樹脂コスト"),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage("スプール/樹脂重量"),
+    "submitButton": MessageLookupByLibrary.simpleMessage("計算する"),
+    "watt": MessageLookupByLibrary.simpleMessage("ワット"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("ワット（3Dプリンター）"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage("材質/摩耗"),
+  };
 }

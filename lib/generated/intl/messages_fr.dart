@@ -22,45 +22,56 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
-            "Calculateur d\'impression 3D"),
-        "electricityCostLabel":
-            MessageLookupByLibrary.simpleMessage("Coût de l\'électricité"),
-        "failureRiskLabel":
-            MessageLookupByLibrary.simpleMessage("Risque d\'échec (%)"),
-        "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Histoire"),
-        "hoursLabel": MessageLookupByLibrary.simpleMessage(
-            "Temps d\'impression (heures)"),
-        "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
-        "labourCostPrefix":
-            MessageLookupByLibrary.simpleMessage("Coût du travail: "),
-        "labourRateLabel": MessageLookupByLibrary.simpleMessage("Taux horaire"),
-        "labourTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Temps de traitement"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
-        "premiumHeader": MessageLookupByLibrary.simpleMessage(
-            "Utilisateurs Premium uniquement :"),
-        "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Poids de l\'impression"),
-        "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
-            "Coût total de l\'électricité : "),
-        "resultFilamentPrefix":
-            MessageLookupByLibrary.simpleMessage("Coût total du filament : "),
-        "resultTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Coût total: "),
-        "riskTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Coût du risque : "),
-        "settingsAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Paramètres"),
-        "spoolCostLabel":
-            MessageLookupByLibrary.simpleMessage("Coût de la bobine/résine"),
-        "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Poids de la bobine/résine"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Calculer"),
-        "watt": MessageLookupByLibrary.simpleMessage("Watt"),
-        "wattLabel":
-            MessageLookupByLibrary.simpleMessage("Watts (Imprimante 3D)"),
-        "wearAndTearLabel":
-            MessageLookupByLibrary.simpleMessage("Matières/Usures + déchirures")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "Calculateur d\'impression 3D",
+    ),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Coût de l\'électricité",
+    ),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
+      "Risque d\'échec (%)",
+    ),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Histoire"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage(
+      "Temps d\'impression (heures)",
+    ),
+    "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
+      "Coût du travail: ",
+    ),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("Taux horaire"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
+      "Temps de traitement",
+    ),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage(
+      "Utilisateurs Premium uniquement :",
+    ),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Poids de l\'impression",
+    ),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
+      "Coût total de l\'électricité : ",
+    ),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "Coût total du filament : ",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Coût total: "),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
+      "Coût du risque : ",
+    ),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Paramètres"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Coût de la bobine/résine",
+    ),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Poids de la bobine/résine",
+    ),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Calculer"),
+    "watt": MessageLookupByLibrary.simpleMessage("Watt"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("Watts (Imprimante 3D)"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
+      "Matières/Usures + déchirures",
+    ),
+  };
 }

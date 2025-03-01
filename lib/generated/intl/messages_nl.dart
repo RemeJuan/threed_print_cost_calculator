@@ -22,44 +22,46 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("3D-printcalculator"),
-        "electricityCostLabel":
-            MessageLookupByLibrary.simpleMessage("Elektriciteitskosten"),
-        "failureRiskLabel":
-            MessageLookupByLibrary.simpleMessage("Risico op falen (%)"),
-        "historyAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Geschiedenis"),
-        "hoursLabel": MessageLookupByLibrary.simpleMessage("Afdruktijd (uren)"),
-        "kwh": MessageLookupByLibrary.simpleMessage("kW/uur"),
-        "labourCostPrefix":
-            MessageLookupByLibrary.simpleMessage("Arbeidskosten:"),
-        "labourRateLabel": MessageLookupByLibrary.simpleMessage("Uurtarief"),
-        "labourTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Verwerkingstijd"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("Notulen"),
-        "premiumHeader": MessageLookupByLibrary.simpleMessage(
-            "Alleen voor Premium-gebruikers:"),
-        "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Gewicht van de afdruk"),
-        "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
-            "Totale kosten voor elektriciteit:"),
-        "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
-            "Totale kosten voor filament:"),
-        "resultTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Totale kosten:"),
-        "riskTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Risicokosten:"),
-        "settingsAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Instellingen"),
-        "spoolCostLabel":
-            MessageLookupByLibrary.simpleMessage("Spoel/hars kosten"),
-        "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Spoel/harsgewicht"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Berekenen"),
-        "watt": MessageLookupByLibrary.simpleMessage("Watt"),
-        "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D-printer)"),
-        "wearAndTearLabel":
-            MessageLookupByLibrary.simpleMessage("Materialen/Slijtage")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "3D-printcalculator",
+    ),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Elektriciteitskosten",
+    ),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
+      "Risico op falen (%)",
+    ),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Geschiedenis"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage("Afdruktijd (uren)"),
+    "kwh": MessageLookupByLibrary.simpleMessage("kW/uur"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Arbeidskosten:"),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("Uurtarief"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Verwerkingstijd"),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("Notulen"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage(
+      "Alleen voor Premium-gebruikers:",
+    ),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Gewicht van de afdruk",
+    ),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
+      "Totale kosten voor elektriciteit:",
+    ),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "Totale kosten voor filament:",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Totale kosten:"),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risicokosten:"),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Instellingen"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Spoel/hars kosten"),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Spoel/harsgewicht",
+    ),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Berekenen"),
+    "watt": MessageLookupByLibrary.simpleMessage("Watt"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D-printer)"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
+      "Materialen/Slijtage",
+    ),
+  };
 }

@@ -22,41 +22,42 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("3D Print Calculator"),
-        "electricityCostLabel":
-            MessageLookupByLibrary.simpleMessage("Electricity cost"),
-        "failureRiskLabel":
-            MessageLookupByLibrary.simpleMessage("Failure risk (%)"),
-        "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("History"),
-        "hoursLabel":
-            MessageLookupByLibrary.simpleMessage("Printing time (hours)"),
-        "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
-        "labourCostPrefix":
-            MessageLookupByLibrary.simpleMessage("Labour cost: "),
-        "labourRateLabel": MessageLookupByLibrary.simpleMessage("Hourly rate"),
-        "labourTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Processing time"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
-        "premiumHeader":
-            MessageLookupByLibrary.simpleMessage("Premium users only:"),
-        "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Print Weight"),
-        "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
-            "Total cost for Electricity: "),
-        "resultFilamentPrefix":
-            MessageLookupByLibrary.simpleMessage("Total cost for filament: "),
-        "resultTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Total cost: "),
-        "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risk cost: "),
-        "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Settings"),
-        "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Material cost"),
-        "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Material weight"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Calculate"),
-        "watt": MessageLookupByLibrary.simpleMessage("Watt"),
-        "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D Printer)"),
-        "wearAndTearLabel":
-            MessageLookupByLibrary.simpleMessage("Materials/Wear + tear")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "3D Print Calculator",
+    ),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Electricity cost",
+    ),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
+      "Failure risk (%)",
+    ),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("History"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage("Printing time (hours)"),
+    "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Labour cost: "),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("Hourly rate"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Processing time"),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage(
+      "Premium users only:",
+    ),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage("Print Weight"),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
+      "Total cost for Electricity: ",
+    ),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "Total cost for filament: ",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Total cost: "),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risk cost: "),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Settings"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Material cost"),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage("Material weight"),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Calculate"),
+    "watt": MessageLookupByLibrary.simpleMessage("Watt"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D Printer)"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
+      "Materials/Wear + tear",
+    ),
+  };
 }

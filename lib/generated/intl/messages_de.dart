@@ -22,45 +22,48 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "calculatorAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("3D-Druck-Rechner"),
-        "electricityCostLabel":
-            MessageLookupByLibrary.simpleMessage("Stromkosten"),
-        "failureRiskLabel":
-            MessageLookupByLibrary.simpleMessage("Ausfallrisiko (%)"),
-        "historyAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Geschichte"),
-        "hoursLabel":
-            MessageLookupByLibrary.simpleMessage("Druckzeit (Stunden)"),
-        "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
-        "labourCostPrefix":
-            MessageLookupByLibrary.simpleMessage("Arbeitskosten: "),
-        "labourRateLabel": MessageLookupByLibrary.simpleMessage("Stundensatz"),
-        "labourTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Bearbeitungszeit"),
-        "minutesLabel": MessageLookupByLibrary.simpleMessage("Protokoll"),
-        "premiumHeader":
-            MessageLookupByLibrary.simpleMessage("Nur Premium-Benutzer:"),
-        "printWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Gewicht des Drucks"),
-        "resultElectricityPrefix":
-            MessageLookupByLibrary.simpleMessage("Gesamtkosten für Strom:"),
-        "resultFilamentPrefix":
-            MessageLookupByLibrary.simpleMessage("Gesamtkosten für Filament:"),
-        "resultTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Gesamtkosten: "),
-        "riskTotalPrefix":
-            MessageLookupByLibrary.simpleMessage("Risikokosten:"),
-        "settingsAppBarTitle":
-            MessageLookupByLibrary.simpleMessage("Einstellungen"),
-        "spoolCostLabel":
-            MessageLookupByLibrary.simpleMessage("Spulen-/Harzkosten"),
-        "spoolWeightLabel":
-            MessageLookupByLibrary.simpleMessage("Spule/Harzgewicht"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Berechnung"),
-        "watt": MessageLookupByLibrary.simpleMessage("Watt"),
-        "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D-Drucker)"),
-        "wearAndTearLabel":
-            MessageLookupByLibrary.simpleMessage("Materialien/Verschleiß")
-      };
+    "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "3D-Druck-Rechner",
+    ),
+    "electricityCostLabel": MessageLookupByLibrary.simpleMessage("Stromkosten"),
+    "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
+      "Ausfallrisiko (%)",
+    ),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Geschichte"),
+    "hoursLabel": MessageLookupByLibrary.simpleMessage("Druckzeit (Stunden)"),
+    "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Arbeitskosten: "),
+    "labourRateLabel": MessageLookupByLibrary.simpleMessage("Stundensatz"),
+    "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Bearbeitungszeit"),
+    "minutesLabel": MessageLookupByLibrary.simpleMessage("Protokoll"),
+    "premiumHeader": MessageLookupByLibrary.simpleMessage(
+      "Nur Premium-Benutzer:",
+    ),
+    "printWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Gewicht des Drucks",
+    ),
+    "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
+      "Gesamtkosten für Strom:",
+    ),
+    "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
+      "Gesamtkosten für Filament:",
+    ),
+    "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Gesamtkosten: "),
+    "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risikokosten:"),
+    "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage(
+      "Einstellungen",
+    ),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Spulen-/Harzkosten",
+    ),
+    "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Spule/Harzgewicht",
+    ),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Berechnung"),
+    "watt": MessageLookupByLibrary.simpleMessage("Watt"),
+    "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D-Drucker)"),
+    "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
+      "Materialien/Verschleiß",
+    ),
+  };
 }
