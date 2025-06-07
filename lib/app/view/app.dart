@@ -112,7 +112,7 @@ ThemeData _theme() {
       selectedItemColor: LIGHT_BLUE,
       unselectedItemColor: Colors.white54,
     ),
-    dialogTheme: const DialogTheme(backgroundColor: DEEP_BLUE),
+    dialogTheme: const DialogThemeData(backgroundColor: DEEP_BLUE),
     bottomSheetTheme: const BottomSheetThemeData(
       backgroundColor: DARK_BLUE,
       shape: RoundedRectangleBorder(
