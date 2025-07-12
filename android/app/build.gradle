@@ -72,15 +72,13 @@ android {
     }
 
     signingConfigs {
-        if (System.getenv("ANDROID_KEYSTORE_PATH")) {
-            release {
+        release {
+            if (System.getenv("ANDROID_KEYSTORE_PATH")) {
                 storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
                 keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
                 keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
                 storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            }
-        } else {
-            release {
+            } else {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
                 storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
@@ -93,7 +91,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             signingConfig signingConfigs.debug
@@ -109,8 +107,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"
     implementation 'com.revenuecat.purchases:purchases:8.17.1'
     implementation 'com.revenuecat.purchases:purchases-ui:8.17.1'
-}
-
-configurations.all {
-    exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
 }
