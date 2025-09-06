@@ -1,6 +1,6 @@
 name: threed_print_cost_calculator
 description: A simple 3D Print cost calculator.
-version: 2.2.11
+version: 2.2.12
 publish_to: none
 
 environment:
@@ -12,27 +12,27 @@ dependencies:
   cider: 0.2.8
   device_check: 1.0.0
   equatable: 2.0.7
-  firebase_analytics: 11.5.2
-  firebase_app_check: 0.3.2+9
-  firebase_core: 3.15.1
-  firebase_crashlytics: 4.3.9
+  firebase_analytics: 12.0.1
+  firebase_app_check: 0.4.0+1
+  firebase_core: 4.1.0
+  firebase_crashlytics: 5.0.1
   flutter:
     sdk: flutter
   formz: 0.8.0
-  flutter_hooks: 0.21.2
+  flutter_hooks: 0.21.3+1
   flutter_localizations:
     sdk: flutter
   flutter_riverpod: 2.6.1
-  flutter_slidable: 4.0.0
-  google_fonts: 6.2.1
+  flutter_slidable: 4.0.1
+  google_fonts: 6.3.1
   hooks_riverpod: 2.6.1
   intl: 0.20.2
-  localizely_sdk: 2.7.1
+  localizely_sdk: 2.7.2
   path:
   path_provider: 2.1.5
   platform_info: 5.0.0
-  purchases_flutter: 8.10.6
-  purchases_ui_flutter: 8.10.6
+  purchases_flutter: 9.5.0
+  purchases_ui_flutter: 9.5.0
   rate_my_app: 2.3.2
   riverpod: 2.6.1
   sembast: 3.8.5+1
