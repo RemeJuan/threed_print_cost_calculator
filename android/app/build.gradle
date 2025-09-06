@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace 'com.threed_print_calculator'
-    compileSdkVersion 35
+    compileSdkVersion 36
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,7 +51,7 @@ android {
     defaultConfig {
         applicationId "com.threed_print_calculator"
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -60,16 +60,13 @@ android {
         abi {
             enable true //enables the ABIs split mechanism
             reset()
-            include 'arm64-v8a', 'armeabi-v7a', 'x86'
+//            include 'arm64-v8a', 'armeabi-v7a', 'x86'
             universalApk true
         }
     }
 
     // TODO: Remove when below fix is available in stable channel.
     // https://github.com/flutter/flutter/pull/82309
-    lintOptions {
-        checkReleaseBuilds false
-    }
 
     signingConfigs {
         release {
@@ -97,6 +94,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    lint {
+        checkReleaseBuilds false
+    }
 }
 
 flutter {
@@ -104,7 +104,7 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22"
-    implementation 'com.revenuecat.purchases:purchases:8.17.1'
-    implementation 'com.revenuecat.purchases:purchases-ui:8.17.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.20"
+    implementation 'com.revenuecat.purchases:purchases:9.5.0'
+    implementation 'com.revenuecat.purchases:purchases-ui:9.5.0'
 }
