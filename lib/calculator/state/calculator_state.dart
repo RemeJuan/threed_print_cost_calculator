@@ -10,6 +10,7 @@ class CalculatorState with FormzMixin {
   final NumberInput minutes;
   final NumberInput spoolWeight;
   final NumberInput spoolCost;
+  final String spoolCostText; // Raw text input for spool cost
   final NumberInput wearAndTear;
   final NumberInput failureRisk;
   final NumberInput labourRate;
@@ -24,6 +25,7 @@ class CalculatorState with FormzMixin {
     this.minutes = const NumberInput.pure(),
     this.spoolWeight = const NumberInput.pure(),
     this.spoolCost = const NumberInput.pure(),
+    this.spoolCostText = '',
     this.wearAndTear = const NumberInput.pure(),
     this.failureRisk = const NumberInput.pure(),
     this.labourRate = const NumberInput.pure(),
@@ -45,6 +47,7 @@ class CalculatorState with FormzMixin {
     NumberInput? minutes,
     NumberInput? spoolWeight,
     NumberInput? spoolCost,
+    String? spoolCostText,
     NumberInput? wearAndTear,
     NumberInput? failureRisk,
     NumberInput? labourRate,
@@ -59,6 +62,7 @@ class CalculatorState with FormzMixin {
       minutes: minutes ?? this.minutes,
       spoolWeight: spoolWeight ?? this.spoolWeight,
       spoolCost: spoolCost ?? this.spoolCost,
+      spoolCostText: spoolCostText ?? this.spoolCostText,
       wearAndTear: wearAndTear ?? this.wearAndTear,
       failureRisk: failureRisk ?? this.failureRisk,
       labourRate: labourRate ?? this.labourRate,
