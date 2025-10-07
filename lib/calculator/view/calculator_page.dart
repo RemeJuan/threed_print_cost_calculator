@@ -56,7 +56,7 @@ class CalculatorPage extends HookConsumerWidget {
       text: state.spoolWeight.value?.toString() ?? '',
     );
     final spoolCostController = useTextEditingController(
-      text: state.spoolCost.value?.toString() ?? '',
+      text: state.spoolCostText.isNotEmpty ? state.spoolCostText : (state.spoolCost.value?.toString() ?? ''),
     );
     final printWeightController = useTextEditingController(
       text: state.printWeight.value?.toString() ?? '',
@@ -70,7 +70,7 @@ class CalculatorPage extends HookConsumerWidget {
 
     useEffect(() {
       spoolWeightController.text = state.spoolWeight.value?.toString() ?? '';
-      spoolCostController.text = state.spoolCost.value?.toString() ?? '';
+      spoolCostController.text = state.spoolCostText.isNotEmpty ? state.spoolCostText : (state.spoolCost.value?.toString() ?? '');
       printWeightController.text = state.printWeight.value?.toString() ?? '';
       hoursController.text = state.hours.value?.toString() ?? '';
       minutesController.text = state.minutes.value?.toString() ?? '';
