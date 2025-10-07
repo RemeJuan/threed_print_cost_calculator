@@ -68,6 +68,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
       spoolCost: NumberInput.dirty(
         value: num.tryParse(spoolCostVal['value'] as String),
       ),
+      spoolCostText: spoolCostVal['value'] as String,
       wearAndTear: NumberInput.dirty(
         value: num.tryParse(wearAndTearVal['value'] as String),
       ),
@@ -126,6 +127,7 @@ class CalculatorProvider extends StateNotifier<CalculatorState> {
         );
     state = state.copyWith(
       spoolCost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+      spoolCostText: value,
     );
   }
 
