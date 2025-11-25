@@ -8,9 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
+import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
-Future<void> setupTest() async {}
+Future<void> setupTest() async {
+  SharedPreferences.setMockInitialValues({});
+  SharedPreferencesAsyncPlatform.instance =
+      InMemorySharedPreferencesAsync.withData({});
+}
 
 extension PumpApp on WidgetTester {
   Future<void> pumpApp(
