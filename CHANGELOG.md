@@ -1,3 +1,7 @@
+## [2.2.14] - 2025-11-25
+### Changed
+- Version bump for release
+
 ## \[1.0.13\] - 2023-02-28
 ### Changed
 - updated adverts to use banner
@@ -56,6 +60,7 @@
 ### Added
 - Added in-app update checker
 
+[2.2.14]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.2.13...2.2.14
 [1.2.0+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.2.0...1.2.0+1
 [1.2.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.0.14...1.1.0
