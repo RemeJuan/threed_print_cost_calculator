@@ -6,7 +6,7 @@ void main() {
   group('Spool Cost Input Test', () {
     test('should preserve decimal point input as raw text', () {
       // Arrange
-      const initialState = CalculatorState();
+      final initialState = CalculatorState();
       
       // Act - Simulate user typing "10."
       final updatedState = initialState.copyWith(
@@ -21,7 +21,7 @@ void main() {
 
     test('should handle empty input correctly', () {
       // Arrange
-      const initialState = CalculatorState();
+      final initialState = CalculatorState();
       
       // Act
       final updatedState = initialState.copyWith(
@@ -36,7 +36,7 @@ void main() {
 
     test('should handle complete decimal input correctly', () {
       // Arrange
-      const initialState = CalculatorState();
+      final initialState = CalculatorState();
       
       // Act
       final updatedState = initialState.copyWith(
@@ -51,7 +51,7 @@ void main() {
 
     test('should handle material selection with decimal cost', () {
       // Arrange
-      const initialState = CalculatorState();
+      final initialState = CalculatorState();
       
       // Act - Simulate material selection setting cost to "15.99"
       final updatedState = initialState.copyWith(
@@ -66,7 +66,7 @@ void main() {
 
     test('should handle initialization from saved data', () {
       // Arrange
-      const initialState = CalculatorState();
+      final initialState = CalculatorState();
       const savedValue = '12.5';
       
       // Act - Simulate loading from saved data
