@@ -7,36 +7,36 @@ environment:
   sdk: ">=3.10.0 <4.0.0"
 
 dependencies:
-  bloc:
+  bloc: 9.2.0
   bot_toast: 4.1.3
-  cider: 0.2.8
+  cider: 0.2.9
   device_check: 1.0.0
-  equatable: 2.0.7
-  firebase_analytics: 12.0.4
-  firebase_app_check: 0.4.0+1
-  firebase_core: 4.2.1
-  firebase_crashlytics: 5.0.5
+  equatable: 2.0.8
+  firebase_analytics: 12.1.1
+  firebase_app_check: 0.4.1+4
+  firebase_core: 4.4.0
+  firebase_crashlytics: 5.0.7
   flutter:
     sdk: flutter
   formz: 0.8.0
   flutter_hooks: 0.21.3+1
   flutter_localizations:
     sdk: flutter
-  flutter_riverpod: 2.6.1
+  flutter_riverpod: 3.2.1
   flutter_slidable: 4.0.3
-  google_fonts: 6.3.1
-  hooks_riverpod: 2.6.1
+  google_fonts: 8.0.0
+  hooks_riverpod: 3.2.1
   intl: 0.20.2
-  localizely_sdk: 2.7.2
+  localizely_sdk: 2.7.5
   path:
   path_provider: 2.1.5
   platform_info: 5.0.0
-  purchases_flutter: 9.9.7
-  purchases_ui_flutter: 9.9.7
+  purchases_flutter: 9.11.0
+  purchases_ui_flutter: 9.11.0
   rate_my_app: 2.3.2
-  riverpod: 2.6.1
-  sembast: 3.8.5+1
-  shared_preferences: 2.5.3
+  riverpod: 3.2.1
+  sembast: 3.8.6
+  shared_preferences: 2.5.4
   url_launcher: 6.3.2
 
 dev_dependencies:
