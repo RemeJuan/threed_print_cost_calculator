@@ -11,9 +11,9 @@ class Subscriptions extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final processing = useState<bool>(false);
-    final linkFont = Theme.of(context).textTheme.displayMedium?.copyWith(
-          fontSize: 12,
-        );
+    final linkFont = Theme.of(
+      context,
+    ).textTheme.displayMedium?.copyWith(fontSize: 12);
 
     return FutureBuilder<Offerings>(
       builder: (_, offerings) {
@@ -40,9 +40,7 @@ class Subscriptions extends HookWidget {
                             child: SizedBox(
                               height: 24,
                               width: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
+                              child: CircularProgressIndicator(strokeWidth: 2),
                             ),
                           ),
                       ],
@@ -71,20 +69,48 @@ class Subscriptions extends HookWidget {
                         onTap: () async {
                           processing.value = true;
                           try {
-                            await Purchases.purchasePackage(package)
-                                .then((value) => Navigator.pop(context));
+                            final purchaseParams = PurchaseParams.package(
+                              package,
+                            );
+
+                            final result = await Purchases.purchase(
+                              purchaseParams,
+                            );
+
+                            dynamic customerInfo;
+
+                            try {
+                              customerInfo =
+                                  (result as dynamic).customerInfo ??
+                                  (result as dynamic).purchaserInfo ??
+                                  result;
+                            } catch (_) {
+                              customerInfo = result;
+                            }
+
+                            if (customerInfo != null) {
+                              Navigator.pop(context);
+                            }
                           } on PlatformException catch (e) {
                             debugPrint(e.toString());
-                            BotToast.showSimpleNotification(
-                              title:
-                                  // ignore: lines_longer_than_80_chars
-                                  'There was an error processing your purchase. '
-                                  'Please try again later.',
-                              duration: const Duration(seconds: 5),
-                              align: Alignment.bottomCenter,
-                            );
+
+                            final lowerMessage = (e.message ?? '')
+                                .toString()
+                                .toLowerCase();
+                            final isCancelled = lowerMessage.contains('cancel');
+
+                            if (!isCancelled) {
+                              BotToast.showSimpleNotification(
+                                title:
+                                    'There was an error processing your purchase. '
+                                    'Please try again later.',
+                                duration: const Duration(seconds: 5),
+                                align: Alignment.bottomCenter,
+                              );
+                            }
+                          } finally {
+                            processing.value = false;
                           }
-                          processing.value = false;
                         },
                       );
                     },
@@ -101,50 +127,47 @@ class Subscriptions extends HookWidget {
                       },
                       child: Text(
                         'Restore Purchases',
-                        style:
-                            Theme.of(context).textTheme.displayMedium?.copyWith(
-                                  fontSize: 16,
-                                ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.displayMedium?.copyWith(fontSize: 16),
                       ),
                     ),
                   ),
                 ),
                 SliverToBoxAdapter(
                   child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          child: RawMaterialButton(
-                            onPressed: () async {
-                              await launchUrl(Uri.parse(
-                                  'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md'));
-                            },
-                            child: Text(
-                              'Privacy Policy',
-                              style: linkFont,
-                            ),
-                          ),
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: RawMaterialButton(
+                          onPressed: () async {
+                            await launchUrl(
+                              Uri.parse(
+                                'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md',
+                              ),
+                            );
+                          },
+                          child: Text('Privacy Policy', style: linkFont),
                         ),
-                        Text(
-                          ' | ',
-                          style: linkFont,
+                      ),
+                      Text(' | ', style: linkFont),
+                      Container(
+                        alignment: Alignment.center,
+                        child: RawMaterialButton(
+                          onPressed: () async {
+                            await launchUrl(
+                              Uri.parse(
+                                'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
+                              ),
+                            );
+                          },
+                          child: Text('Terms of Use', style: linkFont),
                         ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: RawMaterialButton(
-                            onPressed: () async {
-                              await launchUrl(Uri.parse(
-                                  'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'));
-                            },
-                            child: Text(
-                              'Terms of Use',
-                              style: linkFont,
-                            ),
-                          ),
-                        ),
-                      ]),
+                      ),
+                    ],
+                  ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: 24)),
               ],

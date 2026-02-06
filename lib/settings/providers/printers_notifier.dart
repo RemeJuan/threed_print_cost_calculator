@@ -1,16 +1,17 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/printer_state.dart';
 
 final printersProvider =
-    StateNotifierProvider<PrintersNotifier, PrinterState>(PrintersNotifier.new);
+    NotifierProvider<PrintersNotifier, PrinterState>(PrintersNotifier.new);
 
-class PrintersNotifier extends StateNotifier<PrinterState> {
-  final Ref ref;
-
-  PrintersNotifier(this.ref) : super(PrinterState());
+class PrintersNotifier extends Notifier<PrinterState> {
+  @override
+  PrinterState build() {
+    return PrinterState();
+  }
 
   DataBaseHelpers get dbHelpers => ref.read(dbHelpersProvider(DBName.printers));
 

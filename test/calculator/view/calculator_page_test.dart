@@ -26,7 +26,7 @@ void main() {
       await tester.pumpApp(
         const CalculatorPage(),
         [
-          calculatorProvider.overrideWith((_) => mockCalculatorProvider),
+          calculatorProvider.overrideWith(() => mockCalculatorProvider),
           sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
         ],
       );
