@@ -8,22 +8,20 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
-final calculatorProvider =
-    StateNotifierProvider<CalculatorProvider, CalculatorState>(
-  (ref) {
-    final db = ref.read(databaseProvider);
-    final store = stringMapStoreFactory.store();
-    return CalculatorProvider(ref, db, store);
-  },
+final calculatorProvider = NotifierProvider<CalculatorProvider, CalculatorState>(
+  CalculatorProvider.new,
 );
 
-class CalculatorProvider extends StateNotifier<CalculatorState> {
-  final Ref ref;
-  final Database database;
-  final StoreRef store;
+class CalculatorProvider extends Notifier<CalculatorState> {
+  late final Database database;
+  late final StoreRef store;
 
-  CalculatorProvider(this.ref, this.database, this.store)
-      : super(CalculatorState());
+  @override
+  CalculatorState build() {
+    database = ref.read(databaseProvider);
+    store = stringMapStoreFactory.store();
+    return CalculatorState();
+  }
 
   void init() async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));

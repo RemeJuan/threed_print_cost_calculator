@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/num_input.dart';
 import 'package:threed_print_cost_calculator/app/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
@@ -6,14 +6,13 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/settings/state/material_state.dart';
 
 final materialsProvider =
-    StateNotifierProvider<MaterialsProvider, MaterialState>(
-  MaterialsProvider.new,
-);
+    NotifierProvider<MaterialsProvider, MaterialState>(MaterialsProvider.new);
 
-class MaterialsProvider extends StateNotifier<MaterialState> {
-  final Ref ref;
-
-  MaterialsProvider(this.ref) : super(MaterialState());
+class MaterialsProvider extends Notifier<MaterialState> {
+  @override
+  MaterialState build() {
+    return MaterialState();
+  }
 
   DataBaseHelpers get dbHelpers =>
       ref.read(dbHelpersProvider(DBName.materials));

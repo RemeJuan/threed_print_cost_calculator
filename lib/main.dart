@@ -32,7 +32,7 @@ Future<void> main() async {
   );
 
   await FirebaseAppCheck.instance.activate(
-    appleProvider: AppleProvider.appAttest,
+    providerApple: AppleAppAttestProvider(),
   );
 
   await revenueCat();
