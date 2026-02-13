@@ -204,10 +204,10 @@ class S {
     );
   }
 
-  /// `Electricity Cost: `
+  /// `Electricity`
   String get electricityCostLabel {
     return Intl.message(
-      'Electricity Cost: ',
+      'Electricity',
       name: 'electricityCostLabel',
       desc: '',
       args: [],
@@ -219,44 +219,39 @@ class S {
     return Intl.message('Calculate', name: 'submitButton', desc: '', args: []);
   }
 
-  /// `Total cost for Electricity: `
+  /// `Electricity`
   String get resultElectricityPrefix {
     return Intl.message(
-      'Total cost for Electricity: ',
+      'Electricity',
       name: 'resultElectricityPrefix',
       desc: '',
       args: [],
     );
   }
 
-  /// `Total cost for filament: `
+  /// `Filament`
   String get resultFilamentPrefix {
     return Intl.message(
-      'Total cost for filament: ',
+      'Filament',
       name: 'resultFilamentPrefix',
       desc: '',
       args: [],
     );
   }
 
-  /// `Total cost: `
+  /// `Total `
   String get resultTotalPrefix {
     return Intl.message(
-      'Total cost: ',
+      'Total ',
       name: 'resultTotalPrefix',
       desc: '',
       args: [],
     );
   }
 
-  /// `Risk cost: `
+  /// `Risk`
   String get riskTotalPrefix {
-    return Intl.message(
-      'Risk cost: ',
-      name: 'riskTotalPrefix',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Risk', name: 'riskTotalPrefix', desc: '', args: []);
   }
 
   /// `Premium users only:`
@@ -269,14 +264,9 @@ class S {
     );
   }
 
-  /// `Labour cost: `
+  /// `Labour`
   String get labourCostPrefix {
-    return Intl.message(
-      'Labour cost: ',
-      name: 'labourCostPrefix',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Labour', name: 'labourCostPrefix', desc: '', args: []);
   }
 
   /// `Watt`
@@ -559,44 +549,29 @@ class S {
     );
   }
 
-  /// `Filament Cost: `
+  /// `Filament`
   String get filamentCostLabel {
     return Intl.message(
-      'Filament Cost: ',
+      'Filament',
       name: 'filamentCostLabel',
       desc: '',
       args: [],
     );
   }
 
-  /// `Labour Cost: `
+  /// `Labour`
   String get labourCostLabel {
-    return Intl.message(
-      'Labour Cost: ',
-      name: 'labourCostLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Labour', name: 'labourCostLabel', desc: '', args: []);
   }
 
-  /// `Risk Cost: `
+  /// `Risk`
   String get riskCostLabel {
-    return Intl.message(
-      'Risk Cost: ',
-      name: 'riskCostLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Risk', name: 'riskCostLabel', desc: '', args: []);
   }
 
-  /// `Total Cost: `
+  /// `Total`
   String get totalCostLabel {
-    return Intl.message(
-      'Total Cost: ',
-      name: 'totalCostLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Total', name: 'totalCostLabel', desc: '', args: []);
   }
 }
 
