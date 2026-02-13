@@ -121,5 +121,13 @@
   "printersHeader": "Printers",
   "@printersHeader": {},
   "materialsHeader": "Materials",
-  "@materialsHeader": {}
+  "@materialsHeader": {},
+  "filamentCostLabel": "Filament",
+  "@filamentCostLabel": {},
+  "labourCostLabel": "Arbeitskosten",
+  "@labourCostLabel": {},
+  "riskCostLabel": "Risikokosten",
+  "@riskCostLabel": {},
+  "totalCostLabel": "Gesamtkosten",
+  "@totalCostLabel": {}
 }
