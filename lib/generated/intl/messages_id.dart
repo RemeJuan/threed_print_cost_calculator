@@ -22,16 +22,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Kalkulator Cetak 3D",
     ),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy) \\n"),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "currentOfferings": MessageLookupByLibrary.simpleMessage(
+      "Current Offerings",
+    ),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this item?",
+    ),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Biaya listrik",
     ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risiko kegagalan (%)",
     ),
+    "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Sejarah"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Waktu pencetakan (jam)",
     ),
@@ -41,11 +58,29 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarif per jam"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Waktu pengerjaan"),
+    "mailClientError": MessageLookupByLibrary.simpleMessage(
+      "Could not open mail client",
+    ),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Menit"),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Khusus pengguna premium:",
     ),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage("Berat cetakan"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "purchaseError": MessageLookupByLibrary.simpleMessage(
+      "There was an error processing your purchase. Please try again later.",
+    ),
+    "restorePurchases": MessageLookupByLibrary.simpleMessage(
+      "Restore Purchases",
+    ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Total biaya Listrik: ",
     ),
@@ -54,16 +89,37 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Total biaya: "),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "Select Material",
+    ),
+    "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Pengaturan"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Biaya Spul/Resin"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Berat kumparan/Resin",
     ),
     "submitButton": MessageLookupByLibrary.simpleMessage("Menghitung"),
+    "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
+    "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
+      "For any issues, please mail me at ",
+    ),
+    "supportIdCopied": MessageLookupByLibrary.simpleMessage(
+      "Support ID Copied",
+    ),
+    "supportIdLabel": MessageLookupByLibrary.simpleMessage(
+      "Please include your Support ID: ",
+    ),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (Printer 3D)"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Bahan/Keausan + sobek",
     ),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
   };
 }

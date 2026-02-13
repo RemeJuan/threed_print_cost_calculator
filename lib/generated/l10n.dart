@@ -28,10 +28,9 @@ class S {
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<S> load(Locale locale) {
-    final name =
-        (locale.countryCode?.isEmpty ?? false)
-            ? locale.languageCode
-            : locale.toString();
+    final name = (locale.countryCode?.isEmpty ?? false)
+        ? locale.languageCode
+        : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -80,6 +79,31 @@ class S {
     return Intl.message(
       'Settings',
       name: 'settingsAppBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Calculator`
+  String get calculatorNavLabel {
+    return Intl.message(
+      'Calculator',
+      name: 'calculatorNavLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get historyNavLabel {
+    return Intl.message('History', name: 'historyNavLabel', desc: '', args: []);
+  }
+
+  /// `Settings`
+  String get settingsNavLabel {
+    return Intl.message(
+      'Settings',
+      name: 'settingsNavLabel',
       desc: '',
       args: [],
     );
@@ -180,10 +204,10 @@ class S {
     );
   }
 
-  /// `Electricity cost`
+  /// `Electricity Cost: `
   String get electricityCostLabel {
     return Intl.message(
-      'Electricity cost',
+      'Electricity Cost: ',
       name: 'electricityCostLabel',
       desc: '',
       args: [],
@@ -263,6 +287,316 @@ class S {
   /// `kW/h`
   String get kwh {
     return Intl.message('kW/h', name: 'kwh', desc: '', args: []);
+  }
+
+  /// `Save Print`
+  String get savePrintButton {
+    return Intl.message(
+      'Save Print',
+      name: 'savePrintButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Print Name`
+  String get printNameHint {
+    return Intl.message(
+      'Print Name',
+      name: 'printNameHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name *`
+  String get printerNameLabel {
+    return Intl.message('Name *', name: 'printerNameLabel', desc: '', args: []);
+  }
+
+  /// `Bed Size *`
+  String get bedSizeLabel {
+    return Intl.message('Bed Size *', name: 'bedSizeLabel', desc: '', args: []);
+  }
+
+  /// `Wattage *`
+  String get wattageLabel {
+    return Intl.message('Wattage *', name: 'wattageLabel', desc: '', args: []);
+  }
+
+  /// `Name *`
+  String get materialNameLabel {
+    return Intl.message(
+      'Name *',
+      name: 'materialNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Color *`
+  String get colorLabel {
+    return Intl.message('Color *', name: 'colorLabel', desc: '', args: []);
+  }
+
+  /// `Weight *`
+  String get weightLabel {
+    return Intl.message('Weight *', name: 'weightLabel', desc: '', args: []);
+  }
+
+  /// `Cost *`
+  String get costLabel {
+    return Intl.message('Cost *', name: 'costLabel', desc: '', args: []);
+  }
+
+  /// `Save`
+  String get saveButton {
+    return Intl.message('Save', name: 'saveButton', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get deleteDialogTitle {
+    return Intl.message(
+      'Delete',
+      name: 'deleteDialogTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this item?`
+  String get deleteDialogContent {
+    return Intl.message(
+      'Are you sure you want to delete this item?',
+      name: 'deleteDialogContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancelButton {
+    return Intl.message('Cancel', name: 'cancelButton', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get deleteButton {
+    return Intl.message('Delete', name: 'deleteButton', desc: '', args: []);
+  }
+
+  /// `Select Material`
+  String get selectMaterialHint {
+    return Intl.message(
+      'Select Material',
+      name: 'selectMaterialHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `None`
+  String get materialNone {
+    return Intl.message('None', name: 'materialNone', desc: '', args: []);
+  }
+
+  /// `g`
+  String get gramsSuffix {
+    return Intl.message('g', name: 'gramsSuffix', desc: '', args: []);
+  }
+
+  /// `w`
+  String get wattsSuffix {
+    return Intl.message('w', name: 'wattsSuffix', desc: '', args: []);
+  }
+
+  /// `Need Help?`
+  String get needHelpTitle {
+    return Intl.message(
+      'Need Help?',
+      name: 'needHelpTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For any issues, please mail me at `
+  String get supportEmailPrefix {
+    return Intl.message(
+      'For any issues, please mail me at ',
+      name: 'supportEmailPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `google@remej.dev`
+  String get supportEmail {
+    return Intl.message(
+      'google@remej.dev',
+      name: 'supportEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please include your Support ID: `
+  String get supportIdLabel {
+    return Intl.message(
+      'Please include your Support ID: ',
+      name: 'supportIdLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `(click to copy) \n`
+  String get clickToCopy {
+    return Intl.message(
+      '(click to copy) \n',
+      name: 'clickToCopy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Support ID Copied`
+  String get supportIdCopied {
+    return Intl.message(
+      'Support ID Copied',
+      name: 'supportIdCopied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy Policy`
+  String get privacyPolicyLink {
+    return Intl.message(
+      'Privacy Policy',
+      name: 'privacyPolicyLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms of Use`
+  String get termsOfUseLink {
+    return Intl.message(
+      'Terms of Use',
+      name: 'termsOfUseLink',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` | `
+  String get separator {
+    return Intl.message(' | ', name: 'separator', desc: '', args: []);
+  }
+
+  /// `Close`
+  String get closeButton {
+    return Intl.message('Close', name: 'closeButton', desc: '', args: []);
+  }
+
+  /// `Could not open mail client`
+  String get mailClientError {
+    return Intl.message(
+      'Could not open mail client',
+      name: 'mailClientError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error: `
+  String get offeringsError {
+    return Intl.message('Error: ', name: 'offeringsError', desc: '', args: []);
+  }
+
+  /// `Current Offerings`
+  String get currentOfferings {
+    return Intl.message(
+      'Current Offerings',
+      name: 'currentOfferings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `There was an error processing your purchase. Please try again later.`
+  String get purchaseError {
+    return Intl.message(
+      'There was an error processing your purchase. Please try again later.',
+      name: 'purchaseError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Restore Purchases`
+  String get restorePurchases {
+    return Intl.message(
+      'Restore Purchases',
+      name: 'restorePurchases',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Printers`
+  String get printersHeader {
+    return Intl.message('Printers', name: 'printersHeader', desc: '', args: []);
+  }
+
+  /// `Materials`
+  String get materialsHeader {
+    return Intl.message(
+      'Materials',
+      name: 'materialsHeader',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filament Cost: `
+  String get filamentCostLabel {
+    return Intl.message(
+      'Filament Cost: ',
+      name: 'filamentCostLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Labour Cost: `
+  String get labourCostLabel {
+    return Intl.message(
+      'Labour Cost: ',
+      name: 'labourCostLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Risk Cost: `
+  String get riskCostLabel {
+    return Intl.message(
+      'Risk Cost: ',
+      name: 'riskCostLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Cost: `
+  String get totalCostLabel {
+    return Intl.message(
+      'Total Cost: ',
+      name: 'totalCostLabel',
+      desc: '',
+      args: [],
+    );
   }
 }
 

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
 class HistoryPage extends HookConsumerWidget {
@@ -12,6 +13,7 @@ class HistoryPage extends HookConsumerWidget {
   Widget build(context, ref) {
     final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store('history');
+    final l10n = S.of(context);
 
     return Scaffold(
       body: FutureBuilder(
@@ -55,22 +57,20 @@ class HistoryPage extends HookConsumerWidget {
                         return showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                            title: const Text('Delete'),
-                            content: const Text(
-                              'Are you sure you want to delete this item?',
-                            ),
+                            title: Text(l10n.deleteDialogTitle),
+                            content: Text(l10n.deleteDialogContent),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context, false);
                                 },
-                                child: const Text('Cancel'),
+                                child: Text(l10n.cancelButton),
                               ),
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context, true);
                                 },
-                                child: const Text('Delete'),
+                                child: Text(l10n.deleteButton),
                               ),
                             ],
                           ),
@@ -110,13 +110,13 @@ class HistoryPage extends HookConsumerWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 _row(
-                                  'Electricity Cost: ',
+                                  l10n.electricityCostLabel,
                                   data.electricityCost,
                                 ),
-                                _row('Filament Cost: ', data.filamentCost),
-                                _row('Labour Cost: ', data.labourCost),
-                                _row('Risk Cost: ', data.riskCost),
-                                _row('Total Cost: ', data.totalCost, 0),
+                                _row(l10n.filamentCostLabel, data.filamentCost),
+                                _row(l10n.labourCostLabel, data.labourCost),
+                                _row(l10n.riskCostLabel, data.riskCost),
+                                _row(l10n.totalCostLabel, data.totalCost, 0),
                               ],
                             ),
                           ),

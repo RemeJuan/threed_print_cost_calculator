@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 
 class AddPrinter extends HookConsumerWidget {
@@ -12,6 +13,7 @@ class AddPrinter extends HookConsumerWidget {
   Widget build(context, ref) {
     final notifier = ref.read(printersProvider.notifier)..init(dbRef);
     final state = ref.watch(printersProvider);
+    final l10n = S.of(context);
 
     return Dialog(
       child: SingleChildScrollView(
@@ -25,19 +27,19 @@ class AddPrinter extends HookConsumerWidget {
               TextFormField(
                 initialValue: state.name.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(labelText: 'Name *'),
+                decoration: InputDecoration(labelText: l10n.printerNameLabel),
                 onChanged: notifier.updateName,
               ),
               TextFormField(
                 initialValue: state.bedSize.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(labelText: 'Bed Size *'),
+                decoration: InputDecoration(labelText: l10n.bedSizeLabel),
                 onChanged: notifier.updateBedSize,
               ),
               TextFormField(
                 initialValue: state.wattage.value,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Wattage *'),
+                decoration: InputDecoration(labelText: l10n.wattageLabel),
                 onChanged: notifier.updateWattage,
               ),
               const SizedBox(height: 16),
@@ -49,7 +51,7 @@ class AddPrinter extends HookConsumerWidget {
                   ).textTheme.displayMedium?.copyWith(fontSize: 16),
                 ),
                 onPressed: () => notifier.submit(dbRef),
-                child: const Text('Save'),
+                child: Text(l10n.saveButton),
               ),
             ],
           ),

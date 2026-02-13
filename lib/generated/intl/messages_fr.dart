@@ -22,16 +22,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Calculateur d\'impression 3D",
     ),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy) \\n"),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "currentOfferings": MessageLookupByLibrary.simpleMessage(
+      "Current Offerings",
+    ),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this item?",
+    ),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Coût de l\'électricité",
     ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risque d\'échec (%)",
     ),
+    "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Histoire"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Temps d\'impression (heures)",
     ),
@@ -43,12 +60,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
       "Temps de traitement",
     ),
+    "mailClientError": MessageLookupByLibrary.simpleMessage(
+      "Could not open mail client",
+    ),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Utilisateurs Premium uniquement :",
     ),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Poids de l\'impression",
+    ),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "purchaseError": MessageLookupByLibrary.simpleMessage(
+      "There was an error processing your purchase. Please try again later.",
+    ),
+    "restorePurchases": MessageLookupByLibrary.simpleMessage(
+      "Restore Purchases",
     ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Coût total de l\'électricité : ",
@@ -60,7 +95,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
       "Coût du risque : ",
     ),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "Select Material",
+    ),
+    "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Paramètres"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
       "Coût de la bobine/résine",
     ),
@@ -68,10 +110,24 @@ class MessageLookup extends MessageLookupByLibrary {
       "Poids de la bobine/résine",
     ),
     "submitButton": MessageLookupByLibrary.simpleMessage("Calculer"),
+    "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
+    "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
+      "For any issues, please mail me at ",
+    ),
+    "supportIdCopied": MessageLookupByLibrary.simpleMessage(
+      "Support ID Copied",
+    ),
+    "supportIdLabel": MessageLookupByLibrary.simpleMessage(
+      "Please include your Support ID: ",
+    ),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watts (Imprimante 3D)"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Matières/Usures + déchirures",
     ),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
   };
 }
