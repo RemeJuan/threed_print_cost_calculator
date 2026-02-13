@@ -72,7 +72,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         value: num.tryParse(settings.failureRisk.replaceAll(',', '.')),
       ),
       labourRate: NumberInput.dirty(
-        value: num.tryParse(settings.hourlyRate.replaceAll(',', '.')),
+        value: num.tryParse(settings.labourRate.replaceAll(',', '.')),
       ),
       labourTime: NumberInput.dirty(value: state.labourTime.value),
       results: state.results,
@@ -145,7 +145,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void updateLabourRate(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
     final settings = await dbHelpers.getSettings();
-    final updated = settings.copyWith(hourlyRate: value.toString());
+    final updated = settings.copyWith(labourRate: value.toString());
     await dbHelpers.putRecord(updated.toMap());
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }

@@ -25,6 +25,9 @@ class AdjustmentsSection extends HookConsumerWidget {
           child: TextFormField(
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.labourRateLabel),
+            initialValue: state.labourRate.value != null
+                ? state.labourRate.value.toString()
+                : '',
             onChanged: (value) async {
               notifier
                 ..updateLabourRate(num.tryParse(value) ?? 0)

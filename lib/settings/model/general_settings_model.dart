@@ -6,7 +6,7 @@ class GeneralSettingsModel {
     required this.selectedMaterial,
     required this.wearAndTear,
     required this.failureRisk,
-    required this.hourlyRate,
+    required this.labourRate,
   });
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
@@ -17,7 +17,7 @@ class GeneralSettingsModel {
       selectedMaterial: (map['selectedMaterial'] ?? '').toString(),
       wearAndTear: (map['wearAndTear'] ?? '').toString(),
       failureRisk: (map['failureRisk'] ?? '').toString(),
-      hourlyRate: (map['hourlyRate'] ?? '').toString(),
+      labourRate: (map['labourRate'] ?? '').toString(),
     );
   }
 
@@ -29,7 +29,7 @@ class GeneralSettingsModel {
       selectedMaterial: '',
       wearAndTear: '',
       failureRisk: '',
-      hourlyRate: '',
+      labourRate: '',
     );
   }
 
@@ -39,7 +39,7 @@ class GeneralSettingsModel {
   final String selectedMaterial;
   final String wearAndTear;
   final String failureRisk;
-  final String hourlyRate;
+  final String labourRate;
 
   Map<String, dynamic> toMap() {
     return {
@@ -49,7 +49,7 @@ class GeneralSettingsModel {
       'selectedMaterial': selectedMaterial,
       'wearAndTear': wearAndTear,
       'failureRisk': failureRisk,
-      'hourlyRate': hourlyRate,
+      'labourRate': labourRate,
     };
   }
 
@@ -60,7 +60,7 @@ class GeneralSettingsModel {
     String? selectedMaterial,
     String? wearAndTear,
     String? failureRisk,
-    String? hourlyRate,
+    String? labourRate,
   }) {
     return GeneralSettingsModel(
       electricityCost: electricityCost ?? this.electricityCost,
@@ -69,18 +69,19 @@ class GeneralSettingsModel {
       selectedMaterial: selectedMaterial ?? this.selectedMaterial,
       wearAndTear: wearAndTear ?? this.wearAndTear,
       failureRisk: failureRisk ?? this.failureRisk,
-      hourlyRate: hourlyRate ?? this.hourlyRate,
+      labourRate: labourRate ?? this.labourRate,
     );
   }
 
   @override
-  String toString() => 'GeneralSettingsModel('
+  String toString() =>
+      'GeneralSettingsModel('
       'electricityCost: $electricityCost, '
       'wattage: $wattage, '
       'activePrinter: $activePrinter, '
       'selectedMaterial: $selectedMaterial, '
       'wearAndTear: $wearAndTear, '
       'failureRisk: $failureRisk, '
-      'hourlyRate: $hourlyRate'
+      'labourRate: $labourRate'
       ')';
 }
