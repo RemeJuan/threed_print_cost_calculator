@@ -22,26 +22,65 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "3D Print Calculator",
     ),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy) \n"),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "currentOfferings": MessageLookupByLibrary.simpleMessage(
+      "Current Offerings",
+    ),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this item?",
+    ),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
-      "Electricity cost",
+      "Electricity Cost: ",
     ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Failure risk (%)",
     ),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage(
+      "Filament Cost: ",
+    ),
+    "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("History"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Printing time (hours)"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
+    "labourCostLabel": MessageLookupByLibrary.simpleMessage("Labour Cost: "),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Labour cost: "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Hourly rate"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Processing time"),
+    "mailClientError": MessageLookupByLibrary.simpleMessage(
+      "Could not open mail client",
+    ),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Premium users only:",
     ),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage("Print Weight"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "purchaseError": MessageLookupByLibrary.simpleMessage(
+      "There was an error processing your purchase. Please try again later.",
+    ),
+    "restorePurchases": MessageLookupByLibrary.simpleMessage(
+      "Restore Purchases",
+    ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Total cost for Electricity: ",
     ),
@@ -49,15 +88,38 @@ class MessageLookup extends MessageLookupByLibrary {
       "Total cost for filament: ",
     ),
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Total cost: "),
+    "riskCostLabel": MessageLookupByLibrary.simpleMessage("Risk Cost: "),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risk cost: "),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "Select Material",
+    ),
+    "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Settings"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Material cost"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage("Material weight"),
     "submitButton": MessageLookupByLibrary.simpleMessage("Calculate"),
+    "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
+    "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
+      "For any issues, please mail me at ",
+    ),
+    "supportIdCopied": MessageLookupByLibrary.simpleMessage(
+      "Support ID Copied",
+    ),
+    "supportIdLabel": MessageLookupByLibrary.simpleMessage(
+      "Please include your Support ID: ",
+    ),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total Cost: "),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D Printer)"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Materials/Wear + tear",
     ),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
   };
 }

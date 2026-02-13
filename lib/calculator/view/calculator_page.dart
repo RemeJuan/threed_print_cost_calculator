@@ -108,7 +108,7 @@ class CalculatorPage extends HookConsumerWidget {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText: l10n.spoolWeightLabel,
-                      suffixText: 'g',
+                      suffixText: l10n.gramsSuffix,
                     ),
                     onChanged: (value) async {
                       notifier
@@ -195,7 +195,7 @@ class CalculatorPage extends HookConsumerWidget {
                 onPressed: () {
                   showSave.value = true;
                 },
-                child: const Text('Save Print'),
+                child: Text(l10n.savePrintButton),
               ),
             if (showSave.value)
               SaveForm(

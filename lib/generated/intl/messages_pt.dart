@@ -22,16 +22,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Calculadora de impressão 3D",
     ),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy) \\n"),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "currentOfferings": MessageLookupByLibrary.simpleMessage(
+      "Current Offerings",
+    ),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this item?",
+    ),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Custo de eletricidade",
     ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risco de falha (%)",
     ),
+    "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("História"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Tempo de impressão (horas)",
     ),
@@ -43,12 +60,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
       "Tempo de processamento",
     ),
+    "mailClientError": MessageLookupByLibrary.simpleMessage(
+      "Could not open mail client",
+    ),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutos"),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Apenas usuários premium:",
     ),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Peso da impressão",
+    ),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "purchaseError": MessageLookupByLibrary.simpleMessage(
+      "There was an error processing your purchase. Please try again later.",
+    ),
+    "restorePurchases": MessageLookupByLibrary.simpleMessage(
+      "Restore Purchases",
     ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Custo total de eletricidade: ",
@@ -58,9 +93,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo total: "),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo do risco: "),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "Select Material",
+    ),
+    "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Configurações",
     ),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
       "Custo do carretel/resina",
     ),
@@ -68,10 +110,24 @@ class MessageLookup extends MessageLookupByLibrary {
       "Peso do carretel/resina",
     ),
     "submitButton": MessageLookupByLibrary.simpleMessage("Calcular"),
+    "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
+    "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
+      "For any issues, please mail me at ",
+    ),
+    "supportIdCopied": MessageLookupByLibrary.simpleMessage(
+      "Support ID Copied",
+    ),
+    "supportIdLabel": MessageLookupByLibrary.simpleMessage(
+      "Please include your Support ID: ",
+    ),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (impressora 3D)"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Materiais/desgaste + rasgo",
     ),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
   };
 }

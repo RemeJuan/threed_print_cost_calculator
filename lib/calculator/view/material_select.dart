@@ -5,6 +5,7 @@ import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
@@ -18,6 +19,7 @@ class MaterialSelect extends HookConsumerWidget {
     final store = stringMapStoreFactory.store(DBName.materials.name);
     final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
     final generalSettings = useState(GeneralSettingsModel.initial());
+    final l10n = S.of(context);
 
     final query = store.query();
 
@@ -41,8 +43,8 @@ class MaterialSelect extends HookConsumerWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData && snapshot.data!.isNotEmpty && !loading.value) {
           final none = MaterialModel(
-            name: 'None',
-            color: 'None',
+            name: l10n.materialNone,
+            color: l10n.materialNone,
             cost: '0',
             weight: '0',
             id: 'none',
@@ -57,7 +59,7 @@ class MaterialSelect extends HookConsumerWidget {
           ];
 
           return DropdownButton<String>(
-            hint: const Text('Select Material'),
+            hint: Text(l10n.selectMaterialHint),
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
             value: generalSettings.value.selectedMaterial.isEmpty
