@@ -46,11 +46,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Rischio di guasto (%)",
     ),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamento"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Storia"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Tempo di stampa (ore)"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/ora"),
+    "labourCostLabel": MessageLookupByLibrary.simpleMessage("Lavoro"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
       "Costo del lavoro: ",
     ),
@@ -90,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Costo totale per il filamento: ",
     ),
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Costo totale: "),
+    "riskCostLabel": MessageLookupByLibrary.simpleMessage("Rischio"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
       "Costo del rischio: ",
     ),
@@ -119,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please include your Support ID: ",
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Totale"),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (stampante 3D)"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),

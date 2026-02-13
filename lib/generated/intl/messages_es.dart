@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Riesgo de falla (%)",
     ),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamento"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Historia"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
@@ -53,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tiempo de impresión (horas)",
     ),
     "kwh": MessageLookupByLibrary.simpleMessage("kilovatios/h"),
+    "labourCostLabel": MessageLookupByLibrary.simpleMessage("Costo laboral"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Costo laboral: "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarifa por hora"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
@@ -90,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Costo total del filamento: ",
     ),
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Coste total: "),
+    "riskCostLabel": MessageLookupByLibrary.simpleMessage("Riesgo"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
       "Costo del riesgo: ",
     ),
@@ -119,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please include your Support ID: ",
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
     "watt": MessageLookupByLibrary.simpleMessage("Vatio"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Vatio (impresora 3D)"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),

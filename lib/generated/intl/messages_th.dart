@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "ความเสี่ยงจากความล้มเหลว (%)",
     ),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("เส้นใย"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("ประวัติศาสตร์"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
@@ -51,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "เวลาในการพิมพ์ (ชั่วโมง)",
     ),
     "kwh": MessageLookupByLibrary.simpleMessage("กิโลวัตต์/ชม"),
+    "labourCostLabel": MessageLookupByLibrary.simpleMessage("ค่าแรง"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง: "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("อัตราชั่วโมง"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
@@ -90,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage(
       "ค่าใช้จ่ายทั้งหมด: ",
     ),
+    "riskCostLabel": MessageLookupByLibrary.simpleMessage("ความเสี่ยง"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
       "ต้นทุนความเสี่ยง: ",
     ),
@@ -117,6 +120,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please include your Support ID: ",
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("ทั้งหมด"),
     "watt": MessageLookupByLibrary.simpleMessage("วัตต์"),
     "wattLabel": MessageLookupByLibrary.simpleMessage(
       "วัตต์ (เครื่องพิมพ์ 3D)",
