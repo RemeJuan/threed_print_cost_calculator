@@ -573,6 +573,16 @@ class S {
   String get totalCostLabel {
     return Intl.message('Total', name: 'totalCostLabel', desc: '', args: []);
   }
+
+  /// `Work Costs`
+  String get workCostsLabel {
+    return Intl.message(
+      'Work Costs',
+      name: 'workCostsLabel',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -115,5 +115,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materials/Wear + tear",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Work Costs"),
   };
 }

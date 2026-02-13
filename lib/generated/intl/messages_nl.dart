@@ -123,5 +123,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materialen/Slijtage",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Werkkosten"),
   };
 }
