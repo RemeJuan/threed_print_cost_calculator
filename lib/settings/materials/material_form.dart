@@ -15,10 +15,7 @@ class MaterialForm extends HookConsumerWidget {
 
     return Dialog(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 32,
-          vertical: 16,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         physics: const ClampingScrollPhysics(),
         child: AutofillGroup(
           child: Column(
@@ -28,19 +25,13 @@ class MaterialForm extends HookConsumerWidget {
               TextFormField(
                 initialValue: state.name.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Name *',
-                  prefixIcon: Icon(Icons.text_fields),
-                ),
+                decoration: const InputDecoration(labelText: 'Name *'),
                 onChanged: notifier.updateName,
               ),
               TextFormField(
                 initialValue: state.color.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Color *',
-                  prefixIcon: Icon(Icons.color_lens),
-                ),
+                decoration: const InputDecoration(labelText: 'Color *'),
                 onChanged: notifier.updateColor,
               ),
               TextFormField(
@@ -50,29 +41,25 @@ class MaterialForm extends HookConsumerWidget {
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Weight *',
-                  prefixIcon: Icon(Icons.scale),
                   suffix: Text('g'),
                 ),
                 onChanged: notifier.updateWeight,
               ),
               TextFormField(
-                initialValue:
-                    state.cost.value != null ? state.cost.value.toString() : '',
+                initialValue: state.cost.value != null
+                    ? state.cost.value.toString()
+                    : '',
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Cost *',
-                  prefixIcon: Icon(Icons.attach_money),
-                ),
+                decoration: const InputDecoration(labelText: 'Cost *'),
                 onChanged: notifier.updateCost,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DEEP_BLUE,
-                  textStyle:
-                      Theme.of(context).textTheme.displayMedium?.copyWith(
-                            fontSize: 16,
-                          ),
+                  textStyle: Theme.of(
+                    context,
+                  ).textTheme.displayMedium?.copyWith(fontSize: 16),
                 ),
                 onPressed: () => notifier.submit(dbRef),
                 child: const Text('Save'),
