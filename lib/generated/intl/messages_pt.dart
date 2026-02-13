@@ -46,6 +46,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risco de falha (%)",
     ),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamento"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("História"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
@@ -53,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tempo de impressão (horas)",
     ),
     "kwh": MessageLookupByLibrary.simpleMessage("kWh"),
+    "labourCostLabel": MessageLookupByLibrary.simpleMessage("Trabalho"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
       "Custo do trabalho: ",
     ),
@@ -92,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Custo total do filamento: ",
     ),
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo total: "),
+    "riskCostLabel": MessageLookupByLibrary.simpleMessage("Risco"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo do risco: "),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
@@ -121,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Please include your Support ID: ",
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (impressora 3D)"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
