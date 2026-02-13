@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:threed_print_cost_calculator/app/view/app.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupportDialog extends StatelessWidget {
@@ -12,6 +13,7 @@ class SupportDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
     final linkFont = Theme.of(context).textTheme.displayMedium?.copyWith(
           fontSize: 12,
         );
@@ -23,7 +25,7 @@ class SupportDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Need Help?',
+              l10n.needHelpTitle,
               style: Theme.of(context).textTheme.displayMedium,
             ),
             const SizedBox(height: 16),
@@ -31,11 +33,11 @@ class SupportDialog extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'For any issues, please mail me at ',
+                    text: l10n.supportEmailPrefix,
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   TextSpan(
-                    text: 'google@remej.dev',
+                    text: l10n.supportEmail,
                     style: const TextStyle(
                       color: LIGHT_BLUE,
                       decoration: TextDecoration.underline,
@@ -43,13 +45,13 @@ class SupportDialog extends StatelessWidget {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
                         final uri =
-                            'mailto:google@remej.dev?subject=3D%20Print%20Cost'
+                            'mailto:${l10n.supportEmail}?subject=3D%20Print%20Cost'
                             '%20Calculator%20Support&body=Support%20ID:'
                             '%20$userID';
                         try {
                           await launchUrl(Uri.parse(uri));
                         } catch (e) {
-                          BotToast.showText(text: 'Could not open mail client');
+                          BotToast.showText(text: l10n.mailClientError);
                         }
                       },
                   ),
@@ -61,12 +63,12 @@ class SupportDialog extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Please include your Support ID: ',
+                    text: l10n.supportIdLabel,
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
-                  const TextSpan(
-                    text: '(click to copy) \n',
-                    style: TextStyle(fontSize: 12),
+                  TextSpan(
+                    text: l10n.clickToCopy,
+                    style: const TextStyle(fontSize: 12),
                   ),
                   TextSpan(
                     text: userID,
@@ -78,7 +80,7 @@ class SupportDialog extends StatelessWidget {
                       ..onTap = () async {
                         await Clipboard.setData(ClipboardData(text: userID));
                         BotToast.showText(
-                          text: 'Support ID Copied',
+                          text: l10n.supportIdCopied,
                         );
                       },
                   ),
@@ -98,13 +100,13 @@ class SupportDialog extends StatelessWidget {
                             'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md'));
                       },
                       child: Text(
-                        'Privacy Policy',
+                        l10n.privacyPolicyLink,
                         style: linkFont,
                       ),
                     ),
                   ),
                   Text(
-                    ' | ',
+                    l10n.separator,
                     style: linkFont,
                   ),
                   Container(
@@ -115,7 +117,7 @@ class SupportDialog extends StatelessWidget {
                             'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'));
                       },
                       child: Text(
-                        'Terms of Use',
+                        l10n.termsOfUseLink,
                         style: linkFont,
                       ),
                     ),
@@ -127,7 +129,7 @@ class SupportDialog extends StatelessWidget {
               child: RawMaterialButton(
                 onPressed: BotToast.cleanAll,
                 child: Text(
-                  'Close',
+                  l10n.closeButton,
                   style: Theme.of(context).textTheme.displayMedium?.copyWith(
                         fontSize: 16,
                       ),

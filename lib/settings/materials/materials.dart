@@ -5,6 +5,7 @@ import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/app/view/app.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
@@ -16,6 +17,7 @@ class Materials extends HookConsumerWidget {
     final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store(DBName.materials.name);
     final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
+    final l10n = S.of(context);
 
     final query = store.query(
       finder: Finder(
@@ -35,7 +37,7 @@ class Materials extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Materials',
+                    l10n.materialsHeader,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   IconButton(
@@ -109,7 +111,7 @@ class Materials extends HookConsumerWidget {
                                 style: Theme.of(context).textTheme.titleLarge,
                               ),
                               Text(
-                                '${data.weight}g',
+                                '${data.weight}${l10n.gramsSuffix}',
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ],

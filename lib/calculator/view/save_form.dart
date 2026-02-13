@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
 class SaveForm extends HookConsumerWidget {
@@ -14,6 +15,7 @@ class SaveForm extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final name = useState<String>('');
+    final l10n = S.of(context);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -21,8 +23,8 @@ class SaveForm extends HookConsumerWidget {
         children: [
           Expanded(
             child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Print Name',
+              decoration: InputDecoration(
+                hintText: l10n.printNameHint,
               ),
               onChanged: (value) {
                 name.value = value;
