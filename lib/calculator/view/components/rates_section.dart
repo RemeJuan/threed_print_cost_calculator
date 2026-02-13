@@ -23,8 +23,8 @@ class RatesSection extends HookConsumerWidget {
       children: [
         Expanded(
           child: TextFormField(
-            initialValue: state.spoolCost.value != null
-                ? state.spoolCost.value.toString()
+            initialValue: state.wearAndTear.value != null
+                ? state.wearAndTear.value.toString()
                 : '',
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
