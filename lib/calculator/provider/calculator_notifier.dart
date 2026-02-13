@@ -139,7 +139,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void updateFailureRisk(num value) {
     ref
         .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('failureRisk', value.toString());
+        .addOrUpdateRecord('failureRisk', value.toStringAsFixed(2));
     state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
   }
 
@@ -202,7 +202,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final results = CalculationResult(
       electricity: electricityCost,
       filament: filamentCost,
-      risk: num.parse(frCost.toStringAsFixed(2)),
+      risk: frCost,
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
