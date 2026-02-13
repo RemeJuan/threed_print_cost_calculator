@@ -5,6 +5,7 @@ import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 
@@ -16,6 +17,7 @@ class Printers extends HookConsumerWidget {
     final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store(DBName.printers.name);
     final dbHelpers = ref.read(dbHelpersProvider(DBName.printers));
+    final l10n = S.of(context);
 
     final query = store.query();
 
@@ -29,7 +31,7 @@ class Printers extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Printers',
+                    l10n.printersHeader,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   IconButton(
@@ -94,7 +96,7 @@ class Printers extends HookConsumerWidget {
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
                               Text(
-                                '${data.wattage}w',
+                                '${data.wattage}${l10n.wattsSuffix}',
                                 style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ],
