@@ -124,10 +124,10 @@
   "@materialsHeader": {},
   "filamentCostLabel": "Filament",
   "@filamentCostLabel": {},
-  "labourCostLabel": "Labour",
+  "labourCostLabel": "Arbeitskosten",
   "@labourCostLabel": {},
-  "riskCostLabel": "Risk",
+  "riskCostLabel": "Risikokosten",
   "@riskCostLabel": {},
-  "totalCostLabel": "Total",
+  "totalCostLabel": "Gesamtkosten",
   "@totalCostLabel": {}
 }

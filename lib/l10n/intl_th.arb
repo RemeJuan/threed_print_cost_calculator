@@ -122,12 +122,12 @@
   "@printersHeader": {},
   "materialsHeader": "Materials",
   "@materialsHeader": {},
-  "filamentCostLabel": "Filament",
+  "filamentCostLabel": "เส้นใย",
   "@filamentCostLabel": {},
-  "labourCostLabel": "Labour",
+  "labourCostLabel": "ค่าแรง",
   "@labourCostLabel": {},
-  "riskCostLabel": "Risk",
+  "riskCostLabel": "ความเสี่ยง",
   "@riskCostLabel": {},
-  "totalCostLabel": "Total",
+  "totalCostLabel": "ทั้งหมด",
   "@totalCostLabel": {}
 }
