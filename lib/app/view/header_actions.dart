@@ -10,15 +10,12 @@ class HeaderActions extends HookWidget {
   Widget build(BuildContext context) {
     final premium = useState<bool>(false);
 
-    useEffect(
-      () {
-        Purchases.addCustomerInfoUpdateListener((info) {
-          premium.value = info.entitlements.active.isNotEmpty;
-        });
-        return null;
-      },
-      [],
-    );
+    useEffect(() {
+      Purchases.addCustomerInfoUpdateListener((info) {
+        premium.value = info.entitlements.active.isNotEmpty;
+      });
+      return null;
+    }, []);
 
     return Container(
       margin: const EdgeInsets.only(right: 16),
@@ -29,10 +26,7 @@ class HeaderActions extends HookWidget {
                 context: context,
                 builder: (_) => const Subscriptions(),
               ),
-              icon: const Icon(
-                Icons.attach_money_sharp,
-                color: Colors.white54,
-              ),
+              icon: const Icon(Icons.shopping_cart, color: Colors.white54),
             ),
     );
   }

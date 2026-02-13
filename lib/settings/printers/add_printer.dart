@@ -15,10 +15,7 @@ class AddPrinter extends HookConsumerWidget {
 
     return Dialog(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 32,
-          vertical: 16,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         physics: const ClampingScrollPhysics(),
         child: AutofillGroup(
           child: Column(
@@ -28,38 +25,28 @@ class AddPrinter extends HookConsumerWidget {
               TextFormField(
                 initialValue: state.name.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Name *',
-                  prefixIcon: Icon(Icons.text_fields),
-                ),
+                decoration: const InputDecoration(labelText: 'Name *'),
                 onChanged: notifier.updateName,
               ),
               TextFormField(
                 initialValue: state.bedSize.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Bed Size *',
-                  prefixIcon: Icon(Icons.fullscreen),
-                ),
+                decoration: const InputDecoration(labelText: 'Bed Size *'),
                 onChanged: notifier.updateBedSize,
               ),
               TextFormField(
                 initialValue: state.wattage.value,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Wattage *',
-                  prefixIcon: Icon(Icons.power),
-                ),
+                decoration: const InputDecoration(labelText: 'Wattage *'),
                 onChanged: notifier.updateWattage,
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DEEP_BLUE,
-                  textStyle:
-                      Theme.of(context).textTheme.displayMedium?.copyWith(
-                            fontSize: 16,
-                          ),
+                  textStyle: Theme.of(
+                    context,
+                  ).textTheme.displayMedium?.copyWith(fontSize: 16),
                 ),
                 onPressed: () => notifier.submit(dbRef),
                 child: const Text('Save'),
