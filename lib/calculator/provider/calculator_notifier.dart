@@ -8,9 +8,10 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
-final calculatorProvider = NotifierProvider<CalculatorProvider, CalculatorState>(
-  CalculatorProvider.new,
-);
+final calculatorProvider =
+    NotifierProvider<CalculatorProvider, CalculatorState>(
+      CalculatorProvider.new,
+    );
 
 class CalculatorProvider extends Notifier<CalculatorState> {
   late final Database database;
@@ -84,7 +85,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void updateWatt(String value) {
     state = state.copyWith(
       watt: NumberInput.dirty(
-          value: num.tryParse(value.replaceAll(',', '.')) ?? 0),
+        value: num.tryParse(value.replaceAll(',', '.')) ?? 0,
+      ),
     );
   }
 
@@ -111,18 +113,16 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void updateSpoolWeight(num value) {
-    ref.read(calculatorHelpersProvider).addOrUpdateRecord(
-          'spoolWeight',
-          value.toString(),
-        );
+    ref
+        .read(calculatorHelpersProvider)
+        .addOrUpdateRecord('spoolWeight', value.toString());
     state = state.copyWith(spoolWeight: NumberInput.dirty(value: value));
   }
 
   void updateSpoolCost(String value) {
-    ref.read(calculatorHelpersProvider).addOrUpdateRecord(
-          'spoolCost',
-          value.toString(),
-        );
+    ref
+        .read(calculatorHelpersProvider)
+        .addOrUpdateRecord('spoolCost', value.toString());
     state = state.copyWith(
       spoolCost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
       spoolCostText: value,
@@ -130,34 +130,30 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void updateWearAndTear(num value) {
-    ref.read(calculatorHelpersProvider).addOrUpdateRecord(
-          'wearAndTear',
-          value.toString(),
-        );
+    ref
+        .read(calculatorHelpersProvider)
+        .addOrUpdateRecord('wearAndTear', value.toString());
     state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
   }
 
   void updateFailureRisk(num value) {
-    ref.read(calculatorHelpersProvider).addOrUpdateRecord(
-          'failureRisk',
-          value.toString(),
-        );
+    ref
+        .read(calculatorHelpersProvider)
+        .addOrUpdateRecord('failureRisk', value.toString());
     state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
   }
 
   void updateLabourRate(num value) {
-    ref.read(calculatorHelpersProvider).addOrUpdateRecord(
-          'labourRate',
-          value.toString(),
-        );
+    ref
+        .read(calculatorHelpersProvider)
+        .addOrUpdateRecord('labourRate', value.toString());
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
   void updateLabourTime(num value) {
-    ref.read(calculatorHelpersProvider).addOrUpdateRecord(
-          'labourTime',
-          value.toString(),
-        );
+    ref
+        .read(calculatorHelpersProvider)
+        .addOrUpdateRecord('labourTime', value.toString());
     state = state.copyWith(labourTime: NumberInput.dirty(value: value));
   }
 
@@ -185,17 +181,15 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final fr = state.failureRisk.value ?? 0;
 
     if (w > -1 && (h > -1 || m > -1) && kw > -1) {
-      electricityCost = ref.read(calculatorHelpersProvider).electricityCost(
-            w,
-            h,
-            m,
-            kw,
-          );
+      electricityCost = ref
+          .read(calculatorHelpersProvider)
+          .electricityCost(w, h, m, kw);
     }
 
     if (pw > -1 && sw > -1 && sc > -1) {
-      filamentCost =
-          ref.read(calculatorHelpersProvider).filamentCost(pw, sw, sc);
+      filamentCost = ref
+          .read(calculatorHelpersProvider)
+          .filamentCost(pw, sw, sc);
     }
 
     if (lt > -1 && lr > -1) {
@@ -208,7 +202,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final results = CalculationResult(
       electricity: electricityCost,
       filament: filamentCost,
-      risk: frCost,
+      risk: num.parse(frCost.toStringAsFixed(2)),
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
