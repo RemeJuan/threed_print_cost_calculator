@@ -99,18 +99,18 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           );
         },
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.calculate),
-            label: 'Calculator',
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.calculate),
+            label: l10n.calculatorNavLabel,
           ),
           if (premium.value)
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: 'History',
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.history),
+              label: l10n.historyNavLabel,
             ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings),
+            label: l10n.settingsNavLabel,
           ),
         ],
       ),

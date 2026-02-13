@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/view/app.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 
 class MaterialForm extends HookConsumerWidget {
@@ -12,6 +13,7 @@ class MaterialForm extends HookConsumerWidget {
   Widget build(context, ref) {
     final notifier = ref.read(materialsProvider.notifier)..init(dbRef);
     final state = ref.watch(materialsProvider);
+    final l10n = S.of(context);
 
     return Dialog(
       child: SingleChildScrollView(
@@ -28,18 +30,18 @@ class MaterialForm extends HookConsumerWidget {
               TextFormField(
                 initialValue: state.name.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Name *',
-                  prefixIcon: Icon(Icons.text_fields),
+                decoration: InputDecoration(
+                  labelText: l10n.materialNameLabel,
+                  prefixIcon: const Icon(Icons.text_fields),
                 ),
                 onChanged: notifier.updateName,
               ),
               TextFormField(
                 initialValue: state.color.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Color *',
-                  prefixIcon: Icon(Icons.color_lens),
+                decoration: InputDecoration(
+                  labelText: l10n.colorLabel,
+                  prefixIcon: const Icon(Icons.color_lens),
                 ),
                 onChanged: notifier.updateColor,
               ),
@@ -48,10 +50,10 @@ class MaterialForm extends HookConsumerWidget {
                     ? state.weight.value.toString()
                     : '',
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Weight *',
-                  prefixIcon: Icon(Icons.scale),
-                  suffix: Text('g'),
+                decoration: InputDecoration(
+                  labelText: l10n.weightLabel,
+                  prefixIcon: const Icon(Icons.scale),
+                  suffix: Text(l10n.gramsSuffix),
                 ),
                 onChanged: notifier.updateWeight,
               ),
@@ -59,9 +61,9 @@ class MaterialForm extends HookConsumerWidget {
                 initialValue:
                     state.cost.value != null ? state.cost.value.toString() : '',
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Cost *',
-                  prefixIcon: Icon(Icons.attach_money),
+                decoration: InputDecoration(
+                  labelText: l10n.costLabel,
+                  prefixIcon: const Icon(Icons.attach_money),
                 ),
                 onChanged: notifier.updateCost,
               ),
@@ -75,7 +77,7 @@ class MaterialForm extends HookConsumerWidget {
                           ),
                 ),
                 onPressed: () => notifier.submit(dbRef),
-                child: const Text('Save'),
+                child: Text(l10n.saveButton),
               ),
             ],
           ),
