@@ -121,5 +121,13 @@
   "printersHeader": "Printers",
   "@printersHeader": {},
   "materialsHeader": "Materials",
-  "@materialsHeader": {}
+  "@materialsHeader": {},
+  "filamentCostLabel": "フィラメント",
+  "@filamentCostLabel": {},
+  "labourCostLabel": "人件費",
+  "@labourCostLabel": {},
+  "riskCostLabel": "リスク",
+  "@riskCostLabel": {},
+  "totalCostLabel": "総費用",
+  "@totalCostLabel": {}
 }
