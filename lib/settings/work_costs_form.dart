@@ -40,42 +40,30 @@ class WorkCostsSettings extends HookConsumerWidget {
                 TextFormField(
                   initialValue: data.wearAndTear.toString(),
                   onChanged: (value) async {
-                    final updated = data.copyWith(
-                      wearAndTear: value,
-                    );
+                    final updated = data.copyWith(wearAndTear: value);
                     await dbHelper.putRecord(updated.toMap());
                   },
-                  decoration: InputDecoration(
-                    labelText: l10n.wearAndTearLabel,
-                  ),
+                  decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   initialValue: data.failureRisk.toString(),
                   onChanged: (value) async {
-                    final updated = data.copyWith(
-                      failureRisk: value,
-                    );
+                    final updated = data.copyWith(failureRisk: value);
                     await dbHelper.putRecord(updated.toMap());
                   },
-                  decoration: InputDecoration(
-                    labelText: l10n.failureRiskLabel,
-                  ),
+                  decoration: InputDecoration(labelText: l10n.failureRiskLabel),
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  initialValue: data.hourlyRate.toString(),
+                  initialValue: data.labourRate.toString(),
                   onChanged: (value) async {
-                    final updated = data.copyWith(
-                      hourlyRate: value,
-                    );
+                    final updated = data.copyWith(labourRate: value);
                     await dbHelper.putRecord(updated.toMap());
                   },
-                  decoration: InputDecoration(
-                    labelText: l10n.labourRateLabel,
-                  ),
+                  decoration: InputDecoration(labelText: l10n.labourRateLabel),
                   keyboardType: TextInputType.number,
                 ),
               ],
