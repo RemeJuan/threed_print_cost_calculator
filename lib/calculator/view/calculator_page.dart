@@ -4,13 +4,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/app/view/app.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/calculator/view/premium_widgets.dart';
+import 'package:threed_print_cost_calculator/calculator/view/components/adjustments_section.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
 import 'calculator_results.dart';
+import 'components/materials_section.dart';
+import 'components/rates_section.dart';
+import 'components/time_section.dart';
 import 'material_select.dart';
 
 class CalculatorPage extends HookConsumerWidget {
@@ -22,31 +26,28 @@ class CalculatorPage extends HookConsumerWidget {
     final showSave = useState<bool>(false);
     final prefs = ref.read(sharedPreferencesProvider);
 
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Purchases.addCustomerInfoUpdateListener((info) async {
-            if (info.entitlements.active.isEmpty) return;
+    useEffect(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Purchases.addCustomerInfoUpdateListener((info) async {
+          if (info.entitlements.active.isEmpty) return;
 
-            final paywall = prefs.getBool('paywall') ?? false;
-            final runCount = prefs.getInt('run_count') ?? 0;
-            premium.value = info.entitlements.active.isNotEmpty;
+          final paywall = prefs.getBool('paywall') ?? false;
+          final runCount = prefs.getInt('run_count') ?? 0;
+          premium.value = info.entitlements.active.isNotEmpty;
 
-            if (runCount > 2 && !paywall) {
-              try {
-                await prefs.setBool('paywall', true);
-                await Future.delayed(const Duration(seconds: 2));
-                await RevenueCatUI.presentPaywallIfNeeded("pro");
-              } catch (e) {
-                debugPrint('paywall failed ${e.toString()}');
-              }
+          if (runCount > 2 && !paywall) {
+            try {
+              await prefs.setBool('paywall', true);
+              await Future.delayed(const Duration(seconds: 2));
+              await RevenueCatUI.presentPaywallIfNeeded("pro");
+            } catch (e) {
+              debugPrint('paywall failed ${e.toString()}');
             }
-          });
+          }
         });
-        return null;
-      },
-      [],
-    );
+      });
+      return null;
+    }, []);
 
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
@@ -56,24 +57,20 @@ class CalculatorPage extends HookConsumerWidget {
       text: state.spoolWeight.value?.toString() ?? '',
     );
     final spoolCostController = useTextEditingController(
-      text: state.spoolCostText.isNotEmpty ? state.spoolCostText : (state.spoolCost.value?.toString() ?? ''),
+      text: state.spoolCostText.isNotEmpty
+          ? state.spoolCostText
+          : (state.spoolCost.value?.toString() ?? ''),
     );
     final printWeightController = useTextEditingController(
       text: state.printWeight.value?.toString() ?? '',
     );
-    final hoursController = useTextEditingController(
-      text: state.hours.value?.toString() ?? '',
-    );
-    final minutesController = useTextEditingController(
-      text: state.minutes.value?.toString() ?? '',
-    );
 
     useEffect(() {
       spoolWeightController.text = state.spoolWeight.value?.toString() ?? '';
-      spoolCostController.text = state.spoolCostText.isNotEmpty ? state.spoolCostText : (state.spoolCost.value?.toString() ?? '');
+      spoolCostController.text = state.spoolCostText.isNotEmpty
+          ? state.spoolCostText
+          : (state.spoolCost.value?.toString() ?? '');
       printWeightController.text = state.printWeight.value?.toString() ?? '';
-      hoursController.text = state.hours.value?.toString() ?? '';
-      minutesController.text = state.minutes.value?.toString() ?? '';
       return null;
     }, [state]);
 
@@ -87,10 +84,7 @@ class CalculatorPage extends HookConsumerWidget {
     }, []);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 16,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       physics: const ClampingScrollPhysics(),
       child: AutofillGroup(
         child: Column(
@@ -99,109 +93,41 @@ class CalculatorPage extends HookConsumerWidget {
           children: [
             if (premium.value) const PrinterSelect(),
             if (premium.value) const MaterialSelect(),
-            Row(
-              children: [
-                // Spool Weight
-                Expanded(
-                  child: TextFormField(
-                    controller: spoolWeightController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: l10n.spoolWeightLabel,
-                      suffixText: l10n.gramsSuffix,
-                    ),
-                    onChanged: (value) async {
-                      notifier
-                        ..updateSpoolWeight(num.tryParse(value) ?? 0)
-                        ..submit();
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16),
-                // Spool cost
-                Expanded(
-                  child: TextFormField(
-                    controller: spoolCostController,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: l10n.spoolCostLabel,
-                    ),
-                    onChanged: (value) async {
-                      // bloc.submit();
-                      notifier
-                        ..updateSpoolCost(value)
-                        ..submit();
-                    },
-                  ),
-                ),
-              ],
+            MaterailsSection(
+              printWeightController: printWeightController,
+              spoolCostController: spoolCostController,
+              spoolWeightController: spoolWeightController,
             ),
-            TextFormField(
-              controller: printWeightController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: l10n.printWeightLabel,
-              ),
-              onChanged: (value) {
-                notifier
-                  ..updatePrintWeight(value)
-                  ..submit();
-              },
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: hoursController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: l10n.hoursLabel,
-                    ),
-                    onChanged: (value) {
-                      notifier
-                        ..updateHours(num.tryParse(value) ?? 0)
-                        ..submit();
-                    },
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: TextFormField(
-                    controller: minutesController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: l10n.minutesLabel,
-                    ),
-                    onChanged: (value) {
-                      notifier
-                        ..updateMinutes(num.tryParse(value) ?? 0)
-                        ..submit();
-                    },
-                  ),
-                ),
-              ],
-            ),
-            if (premium.value) PremiumWidgets(premium: premium.value),
+            const SizedBox(height: 8),
+            TimeSection(),
+            const SizedBox(height: 8),
+            RatesSection(premium: premium.value),
+            const SizedBox(height: 8),
+            AdjustmentsSection(premium: premium.value),
             const SizedBox(height: 16),
-            CalculatorResults(
-              results: state.results,
-              premium: premium.value,
-            ),
+            CalculatorResults(results: state.results, premium: premium.value),
             if (premium.value && !showSave.value)
-              MaterialButton(
+              ElevatedButton.icon(
                 onPressed: () {
                   showSave.value = true;
                 },
-                child: Text(l10n.savePrintButton),
+                icon: const Icon(Icons.save),
+                label: Text(l10n.savePrintButton),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: DEEP_BLUE,
+                  foregroundColor: LIGHT_BLUE,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
               ),
             if (showSave.value)
-              SaveForm(
-                data: state.results,
-                showSave: showSave,
-              ),
+              SaveForm(data: state.results, showSave: showSave),
+            const SizedBox(height: 32),
           ],
         ),
       ),

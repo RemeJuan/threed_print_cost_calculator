@@ -18,38 +18,45 @@ class CalculatorResults extends StatelessWidget {
     final l10n = S.of(context);
     const width = kIsWeb ? 250.0 : null;
 
-    return SizedBox(
+    return Container(
+      padding: EdgeInsets.all(8),
+      margin: EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color.fromRGBO(8, 8, 18, 1),
+        borderRadius: BorderRadius.circular(8),
+      ),
       width: width,
       child: Column(
         children: [
-          _itemRow(
-            context,
-            l10n.resultElectricityPrefix,
-            results.electricity,
-          ),
-          _itemRow(
-            context,
-            l10n.resultFilamentPrefix,
-            results.filament,
-          ),
-          _itemRow(
-            context,
-            l10n.resultTotalPrefix,
-            results.total,
-          ),
+          _itemRow(context, l10n.resultElectricityPrefix, results.electricity),
+          _itemRow(context, l10n.resultFilamentPrefix, results.filament),
           if (premium) ...[
-            _itemRow(
-              context,
-              l10n.riskTotalPrefix,
-              results.risk,
-            ),
-            _itemRow(
-              context,
-              l10n.labourCostPrefix,
-              results.labour,
-            ),
+            _itemRow(context, l10n.riskTotalPrefix, results.risk),
+            _itemRow(context, l10n.labourCostPrefix, results.labour),
           ],
-          const SizedBox(height: 16),
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.resultTotalPrefix,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  results.total.toString(),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -63,7 +70,11 @@ class CalculatorResults extends StatelessWidget {
         children: [
           Text(
             prefix,
-            style: Theme.of(context).textTheme.titleMedium,
+            style:
+                Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Colors.white70) ??
+                const TextStyle(color: Colors.white70),
           ),
           Text(value.toString()),
         ],
