@@ -26,26 +26,8 @@ class Printers extends HookConsumerWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.printersHeader,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => const AddPrinter(),
-                      );
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-              const Divider(color: Colors.white54),
               SizedBox(
                 height: MediaQuery.sizeOf(context).height / 4,
                 child: ListView.builder(
@@ -86,20 +68,12 @@ class Printers extends HookConsumerWidget {
                         children: [
                           Text(
                             data.name,
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: Colors.white),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                data.bedSize,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                              Text(
-                                '${data.wattage}${l10n.wattsSuffix}',
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ],
+                          Text(
+                            '${data.bedSize} (${data.wattage}${l10n.wattsSuffix})',
+                            style: Theme.of(context).textTheme.titleSmall,
                           ),
                         ],
                       ),

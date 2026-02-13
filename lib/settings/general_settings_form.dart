@@ -33,38 +33,39 @@ class GeneralSettings extends HookConsumerWidget {
             data = GeneralSettingsModel.initial();
           }
 
-          return Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  initialValue: data.electricityCost.toString(),
-                  onChanged: (value) async {
-                    final updated = data.copyWith(
-                      electricityCost: value,
-                    );
-                    await dbHelper.putRecord(updated.toMap());
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.electricityCostLabel,
-                    suffixText: l10n.kwh,
+          return Container(
+            padding: EdgeInsets.only(bottom: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    initialValue: data.electricityCost.toString(),
+                    onChanged: (value) async {
+                      final updated = data.copyWith(electricityCost: value);
+                      await dbHelper.putRecord(updated.toMap());
+                    },
+                    decoration: InputDecoration(
+                      labelText: l10n.electricityCostLabel,
+                      suffixText: l10n.kwh,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: TextFormField(
-                  initialValue: data.wattage.toString(),
-                  onChanged: (value) async {
-                    final updated = data.copyWith(wattage: value);
-                    await dbHelper.putRecord(updated.toMap());
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.wattLabel,
-                    suffixText: l10n.watt,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextFormField(
+                    initialValue: data.wattage.toString(),
+                    onChanged: (value) async {
+                      final updated = data.copyWith(wattage: value);
+                      await dbHelper.putRecord(updated.toMap());
+                    },
+                    decoration: InputDecoration(
+                      labelText: l10n.wattLabel,
+                      suffixText: l10n.watt,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }
       },

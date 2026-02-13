@@ -19,13 +19,7 @@ class Materials extends HookConsumerWidget {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
     final l10n = S.of(context);
 
-    final query = store.query(
-      finder: Finder(
-        sortOrders: [
-          SortOrder('name'),
-        ],
-      ),
-    );
+    final query = store.query(finder: Finder(sortOrders: [SortOrder('name')]));
 
     return StreamBuilder(
       stream: query.onSnapshots(db),
@@ -33,25 +27,6 @@ class Materials extends HookConsumerWidget {
         if (snapshot.hasData) {
           return Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    l10n.materialsHeader,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => const MaterialForm(),
-                      );
-                    },
-                    icon: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-              const Divider(color: Colors.white54),
               SizedBox(
                 height: 100,
                 child: ListView.builder(
@@ -95,11 +70,14 @@ class Materials extends HookConsumerWidget {
                             children: [
                               Text(
                                 data.name,
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(color: Colors.white),
                               ),
                               Text(
                                 data.color,
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleSmall?.copyWith(fontSize: 12),
                               ),
                             ],
                           ),
@@ -108,11 +86,14 @@ class Materials extends HookConsumerWidget {
                             children: [
                               Text(
                                 data.cost,
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(color: Colors.white),
                               ),
                               Text(
                                 '${data.weight}${l10n.gramsSuffix}',
-                                style: Theme.of(context).textTheme.titleSmall,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.titleSmall?.copyWith(fontSize: 12),
                               ),
                             ],
                           ),
