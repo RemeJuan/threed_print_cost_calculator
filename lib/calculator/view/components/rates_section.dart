@@ -46,7 +46,7 @@ class RatesSection extends HookConsumerWidget {
             onChanged: (value) async {
               notifier
                 ..updateFailureRisk(num.tryParse(value) ?? 0)
-                ..submit;
+                ..submit();
             },
           ),
         ),
