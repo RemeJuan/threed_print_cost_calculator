@@ -129,5 +129,7 @@
   "riskCostLabel": "Risico",
   "@riskCostLabel": {},
   "totalCostLabel": "Totaal",
-  "@totalCostLabel": {}
+  "@totalCostLabel": {},
+  "workCostsLabel": "Werkkosten",
+  "@workCostsLabel": {}
 }

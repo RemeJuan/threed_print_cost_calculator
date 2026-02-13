@@ -129,5 +129,7 @@
   "riskCostLabel": "Risikokosten",
   "@riskCostLabel": {},
   "totalCostLabel": "Gesamtkosten",
-  "@totalCostLabel": {}
+  "@totalCostLabel": {},
+  "workCostsLabel": "Arbeitskosten",
+  "@workCostsLabel": {}
 }
