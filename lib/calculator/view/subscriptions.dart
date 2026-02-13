@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Subscriptions extends HookWidget {
@@ -14,12 +15,13 @@ class Subscriptions extends HookWidget {
     final linkFont = Theme.of(
       context,
     ).textTheme.displayMedium?.copyWith(fontSize: 12);
+    final l10n = S.of(context);
 
     return FutureBuilder<Offerings>(
       builder: (_, offerings) {
         if (offerings.connectionState == ConnectionState.done) {
           if (offerings.hasError || offerings.data?.current == null) {
-            return Text('Error: ${offerings.error}');
+            return Text('${l10n.offeringsError}${offerings.error}');
           } else {
             return CustomScrollView(
               shrinkWrap: true,
@@ -31,7 +33,7 @@ class Subscriptions extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Current Offerings',
+                          l10n.currentOfferings,
                           style: Theme.of(context).textTheme.displayMedium,
                         ),
                         if (processing.value)
@@ -101,9 +103,7 @@ class Subscriptions extends HookWidget {
 
                             if (!isCancelled) {
                               BotToast.showSimpleNotification(
-                                title:
-                                    'There was an error processing your purchase. '
-                                    'Please try again later.',
+                                title: l10n.purchaseError,
                                 duration: const Duration(seconds: 5),
                                 align: Alignment.bottomCenter,
                               );
@@ -126,7 +126,7 @@ class Subscriptions extends HookWidget {
                         await Purchases.restorePurchases();
                       },
                       child: Text(
-                        'Restore Purchases',
+                        l10n.restorePurchases,
                         style: Theme.of(
                           context,
                         ).textTheme.displayMedium?.copyWith(fontSize: 16),
@@ -149,10 +149,10 @@ class Subscriptions extends HookWidget {
                               ),
                             );
                           },
-                          child: Text('Privacy Policy', style: linkFont),
+                          child: Text(l10n.privacyPolicyLink, style: linkFont),
                         ),
                       ),
-                      Text(' | ', style: linkFont),
+                      Text(l10n.separator, style: linkFont),
                       Container(
                         alignment: Alignment.center,
                         child: RawMaterialButton(
@@ -163,7 +163,7 @@ class Subscriptions extends HookWidget {
                               ),
                             );
                           },
-                          child: Text('Terms of Use', style: linkFont),
+                          child: Text(l10n.termsOfUseLink, style: linkFont),
                         ),
                       ),
                     ],

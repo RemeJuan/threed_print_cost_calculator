@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 
 class AddPrinter extends HookConsumerWidget {
@@ -12,6 +13,7 @@ class AddPrinter extends HookConsumerWidget {
   Widget build(context, ref) {
     final notifier = ref.read(printersProvider.notifier)..init(dbRef);
     final state = ref.watch(printersProvider);
+    final l10n = S.of(context);
 
     return Dialog(
       child: SingleChildScrollView(
@@ -28,27 +30,27 @@ class AddPrinter extends HookConsumerWidget {
               TextFormField(
                 initialValue: state.name.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Name *',
-                  prefixIcon: Icon(Icons.text_fields),
+                decoration: InputDecoration(
+                  labelText: l10n.printerNameLabel,
+                  prefixIcon: const Icon(Icons.text_fields),
                 ),
                 onChanged: notifier.updateName,
               ),
               TextFormField(
                 initialValue: state.bedSize.value,
                 keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Bed Size *',
-                  prefixIcon: Icon(Icons.fullscreen),
+                decoration: InputDecoration(
+                  labelText: l10n.bedSizeLabel,
+                  prefixIcon: const Icon(Icons.fullscreen),
                 ),
                 onChanged: notifier.updateBedSize,
               ),
               TextFormField(
                 initialValue: state.wattage.value,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Wattage *',
-                  prefixIcon: Icon(Icons.power),
+                decoration: InputDecoration(
+                  labelText: l10n.wattageLabel,
+                  prefixIcon: const Icon(Icons.power),
                 ),
                 onChanged: notifier.updateWattage,
               ),
@@ -62,7 +64,7 @@ class AddPrinter extends HookConsumerWidget {
                           ),
                 ),
                 onPressed: () => notifier.submit(dbRef),
-                child: const Text('Save'),
+                child: Text(l10n.saveButton),
               ),
             ],
           ),

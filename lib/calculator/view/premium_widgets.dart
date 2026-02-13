@@ -90,9 +90,9 @@ class PremiumWidgets extends HookConsumerWidget {
           ],
         ),
         if (!premium)
-          const MaterialButton(
+          MaterialButton(
             onPressed: null,
-            child: Text('Save Print'),
+            child: Text(l10n.savePrintButton),
           ),
       ],
     );
