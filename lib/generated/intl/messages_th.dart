@@ -131,5 +131,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "วัสดุ/การสึกหรอ + ฉีกขาด",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage(
+      "ค่าใช้จ่ายในการทำงาน",
+    ),
   };
 }

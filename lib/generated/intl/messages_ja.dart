@@ -107,5 +107,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage("材質/摩耗"),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("作業コスト"),
   };
 }

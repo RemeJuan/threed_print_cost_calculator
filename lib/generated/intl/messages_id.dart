@@ -125,5 +125,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bahan/Keausan + sobek",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Biaya Kerja"),
   };
 }
