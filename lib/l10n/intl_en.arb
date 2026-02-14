@@ -23,7 +23,8 @@
   "resultTotalPrefix": "Total ",
   "riskTotalPrefix": "Risk",
   "premiumHeader": "Premium users only:",
-  "labourCostPrefix": "Labour",
+  "labourCostPrefix": "Labour/Materials",
+  "selectPrinterHint": "Select Printer",
   "watt": "Watt",
   "kwh": "kW/h",
   "savePrintButton": "Save Print",
@@ -61,9 +62,9 @@
   "restorePurchases": "Restore Purchases",
   "printersHeader": "Printers",
   "materialsHeader": "Materials",
-  "electricityCostLabel": "Electricity",
   "filamentCostLabel": "Filament",
   "labourCostLabel": "Labour",
   "riskCostLabel": "Risk",
-  "totalCostLabel": "Total"
+  "totalCostLabel": "Total",
+  "workCostsLabel": "Work Costs"
 }

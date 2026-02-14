@@ -12,8 +12,10 @@
   "@hoursLabel": {},
   "kwh": "kW/h",
   "@kwh": {},
-  "labourCostPrefix": "Coût du travail: ",
+  "labourCostPrefix": "Main-d'œuvre/Matières: ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "Sélectionner l'imprimante",
+  "@selectPrinterHint": {},
   "labourRateLabel": "Taux horaire",
   "@labourRateLabel": {},
   "labourTimeLabel": "Temps de traitement",
@@ -129,5 +131,7 @@
   "riskCostLabel": "Risque",
   "@riskCostLabel": {},
   "totalCostLabel": "Total",
-  "@totalCostLabel": {}
+  "@totalCostLabel": {},
+  "workCostsLabel": "Coûts de Travail",
+  "@workCostsLabel": {}
 }

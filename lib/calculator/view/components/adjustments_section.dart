@@ -25,10 +25,13 @@ class AdjustmentsSection extends HookConsumerWidget {
           child: TextFormField(
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.labourRateLabel),
+            initialValue: state.labourRate.value != null
+                ? state.labourRate.value.toString()
+                : '',
             onChanged: (value) async {
-              notifier
-                ..updateLabourRate(num.tryParse(value) ?? 0)
-                ..submit();
+              // Local-only change for calculator; do not persist to settings
+              notifier.setLabourRate(num.tryParse(value) ?? 0);
+              notifier.submit();
             },
           ),
         ),

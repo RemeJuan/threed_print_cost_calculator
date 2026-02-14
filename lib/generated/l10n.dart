@@ -264,9 +264,24 @@ class S {
     );
   }
 
-  /// `Labour`
+  /// `Labour/Materials`
   String get labourCostPrefix {
-    return Intl.message('Labour', name: 'labourCostPrefix', desc: '', args: []);
+    return Intl.message(
+      'Labour/Materials',
+      name: 'labourCostPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Printer`
+  String get selectPrinterHint {
+    return Intl.message(
+      'Select Printer',
+      name: 'selectPrinterHint',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Watt`
@@ -572,6 +587,16 @@ class S {
   /// `Total`
   String get totalCostLabel {
     return Intl.message('Total', name: 'totalCostLabel', desc: '', args: []);
+  }
+
+  /// `Work Costs`
+  String get workCostsLabel {
+    return Intl.message(
+      'Work Costs',
+      name: 'workCostsLabel',
+      desc: '',
+      args: [],
+    );
   }
 }
 

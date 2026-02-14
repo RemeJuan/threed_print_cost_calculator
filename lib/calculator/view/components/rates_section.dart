@@ -23,15 +23,15 @@ class RatesSection extends HookConsumerWidget {
       children: [
         Expanded(
           child: TextFormField(
-            initialValue: state.spoolCost.value != null
-                ? state.spoolCost.value.toString()
+            initialValue: state.wearAndTear.value != null
+                ? state.wearAndTear.value.toString()
                 : '',
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
             onChanged: (value) async {
-              notifier
-                ..updateWearAndTear(num.tryParse(value) ?? 0)
-                ..submit();
+              // Local-only change for calculator; do not persist to settings
+              notifier.setWearAndTear(num.tryParse(value) ?? 0);
+              notifier.submit();
             },
           ),
         ),
@@ -44,9 +44,9 @@ class RatesSection extends HookConsumerWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.failureRiskLabel),
             onChanged: (value) async {
-              notifier
-                ..updateFailureRisk(num.tryParse(value) ?? 0)
-                ..submit;
+              // Local-only change for calculator; do not persist to settings
+              notifier.setFailureRisk(num.tryParse(value) ?? 0);
+              notifier.submit();
             },
           ),
         ),

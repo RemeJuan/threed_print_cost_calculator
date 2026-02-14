@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "kwh": MessageLookupByLibrary.simpleMessage("กิโลวัตต์/ชม"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("ค่าแรง"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง: "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง/วัสดุ: "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("อัตราชั่วโมง"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
       "ระยะเวลาดำเนินการ",
@@ -101,6 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
+    "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
+      "เลือกเครื่องพิมพ์",
+    ),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("การตั้งค่า"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -131,5 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "วัสดุ/การสึกหรอ + ฉีกขาด",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage(
+      "ค่าใช้จ่ายในการทำงาน",
+    ),
   };
 }

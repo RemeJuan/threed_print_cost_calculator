@@ -12,8 +12,10 @@
   "@hoursLabel": {},
   "kwh": "キロワット時",
   "@kwh": {},
-  "labourCostPrefix": "人件費： ",
+  "labourCostPrefix": "人件費/材料： ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "プリンターを選択",
+  "@selectPrinterHint": {},
   "labourRateLabel": "時給",
   "@labourRateLabel": {},
   "labourTimeLabel": "処理時間",
@@ -129,5 +131,7 @@
   "riskCostLabel": "リスク",
   "@riskCostLabel": {},
   "totalCostLabel": "総費用",
-  "@totalCostLabel": {}
+  "@totalCostLabel": {},
+  "workCostsLabel": "作業コスト",
+  "@workCostsLabel": {}
 }

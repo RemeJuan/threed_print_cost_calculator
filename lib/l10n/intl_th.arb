@@ -12,8 +12,10 @@
   "@hoursLabel": {},
   "kwh": "กิโลวัตต์/ชม",
   "@kwh": {},
-  "labourCostPrefix": "ค่าแรง: ",
+  "labourCostPrefix": "ค่าแรง/วัสดุ: ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "เลือกเครื่องพิมพ์",
+  "@selectPrinterHint": {},
   "labourRateLabel": "อัตราชั่วโมง",
   "@labourRateLabel": {},
   "labourTimeLabel": "ระยะเวลาดำเนินการ",
@@ -129,5 +131,7 @@
   "riskCostLabel": "ความเสี่ยง",
   "@riskCostLabel": {},
   "totalCostLabel": "ทั้งหมด",
-  "@totalCostLabel": {}
+  "@totalCostLabel": {},
+  "workCostsLabel": "ค่าใช้จ่ายในการทำงาน",
+  "@workCostsLabel": {}
 }

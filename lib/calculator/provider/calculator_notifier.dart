@@ -31,9 +31,6 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     final spoolWeightVal = await _getValue('spoolWeight');
     final spoolCostVal = await _getValue('spoolCost');
-    final wearAndTearVal = await _getValue('wearAndTear');
-    final failureRiskVal = await _getValue('failureRisk');
-    final labourRateVal = await _getValue('labourRate');
 
     if (printerKey.isNotEmpty) {
       final store = stringMapStoreFactory.store(DBName.printers.name);
@@ -69,13 +66,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       ),
       spoolCostText: spoolCostVal['value'] as String,
       wearAndTear: NumberInput.dirty(
-        value: num.tryParse(wearAndTearVal['value'] as String),
+        value: num.tryParse(settings.wearAndTear.replaceAll(',', '.')),
       ),
       failureRisk: NumberInput.dirty(
-        value: num.tryParse(failureRiskVal['value'] as String),
+        value: num.tryParse(settings.failureRisk.replaceAll(',', '.')),
       ),
       labourRate: NumberInput.dirty(
-        value: num.tryParse(labourRateVal['value'] as String),
+        value: num.tryParse(settings.labourRate.replaceAll(',', '.')),
       ),
       labourTime: NumberInput.dirty(value: state.labourTime.value),
       results: state.results,
@@ -129,24 +126,66 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
   }
 
-  void updateWearAndTear(num value) {
-    ref
-        .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('wearAndTear', value.toString());
+  Future<void> updateWearAndTear(num value) async {
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
+
+    try {
+      final settings = await dbHelpers.getSettings();
+      final updated = settings.copyWith(wearAndTear: value.toString());
+      await dbHelpers.putRecord(updated.toMap());
+
+      // Only update local state after successful DB write
+      state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
+    } catch (e, st) {
+      // Log and rethrow so callers can handle or await the failure
+      // Using print for logging to avoid adding new logging dependencies
+      print('Error updating wearAndTear: $e\n$st');
+      rethrow;
+    }
+  }
+
+  Future<void> updateFailureRisk(num value) async {
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
+
+    try {
+      final settings = await dbHelpers.getSettings();
+      final updated = settings.copyWith(failureRisk: value.toStringAsFixed(2));
+      await dbHelpers.putRecord(updated.toMap());
+
+      // Only update local state after successful DB write
+      state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
+    } catch (e, st) {
+      print('Error updating failureRisk: $e\n$st');
+      rethrow;
+    }
+  }
+
+  Future<void> updateLabourRate(num value) async {
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
+
+    try {
+      final settings = await dbHelpers.getSettings();
+      final updated = settings.copyWith(labourRate: value.toString());
+      await dbHelpers.putRecord(updated.toMap());
+
+      // Only update local state after successful DB write
+      state = state.copyWith(labourRate: NumberInput.dirty(value: value));
+    } catch (e, st) {
+      print('Error updating labourRate: $e\n$st');
+      rethrow;
+    }
+  }
+
+  // Local-only setters for calculator UI (do not persist to DB)
+  void setWearAndTear(num value) {
     state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
   }
 
-  void updateFailureRisk(num value) {
-    ref
-        .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('failureRisk', value.toStringAsFixed(2));
+  void setFailureRisk(num value) {
     state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
   }
 
-  void updateLabourRate(num value) {
-    ref
-        .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('labourRate', value.toString());
+  void setLabourRate(num value) {
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
@@ -202,7 +241,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final results = CalculationResult(
       electricity: electricityCost,
       filament: filamentCost,
-      risk: frCost,
+      risk: num.parse(totalCost.toStringAsFixed(2)),
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
