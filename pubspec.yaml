@@ -1,6 +1,6 @@
 name: threed_print_cost_calculator
 description: A simple 3D Print cost calculator.
-version: 2.2.18
+version: 2.3.0
 publish_to: none
 
 environment:
@@ -37,6 +37,7 @@ dependencies:
   riverpod: 3.2.1
   sembast: 3.8.6
   shared_preferences: 2.5.4
+  share_plus: 12.0.1
   url_launcher: 6.3.2
 
 dev_dependencies:

@@ -41,6 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("Electricity"),
+    "enterNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter a number",
+    ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Failure risk (%)",
     ),
@@ -49,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("History"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Printing time (hours)"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Labour"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(

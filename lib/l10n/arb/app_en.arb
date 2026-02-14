@@ -23,5 +23,7 @@
   "labourCostPrefix": "Labour/Materials: ",
   "selectPrinterHint": "Select Printer",
   "watt": "Watt",
-  "kwh": "kW/h"
+  "kwh": "kW/h",
+  "enterNumber": "Please enter a number",
+  "invalidNumber": "Invalid number"
 }

@@ -43,6 +43,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Costo dell\'elettricità",
     ),
+    "enterNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter a number",
+    ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Rischio di guasto (%)",
     ),
@@ -51,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Storia"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Tempo di stampa (ore)"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/ora"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Lavoro"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(

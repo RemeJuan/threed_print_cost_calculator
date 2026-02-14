@@ -598,6 +598,51 @@ class S {
       args: [],
     );
   }
+
+  /// `Export`
+  String get exportButton {
+    return Intl.message('Export', name: 'exportButton', desc: '', args: []);
+  }
+
+  /// `Export successful`
+  String get exportSuccess {
+    return Intl.message(
+      'Export successful',
+      name: 'exportSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export failed`
+  String get exportError {
+    return Intl.message(
+      'Export failed',
+      name: 'exportError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a number`
+  String get enterNumber {
+    return Intl.message(
+      'Please enter a number',
+      name: 'enterNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid number`
+  String get invalidNumber {
+    return Intl.message(
+      'Invalid number',
+      name: 'invalidNumber',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -620,8 +665,10 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
+
   @override
   Future<S> load(Locale locale) => S.load(locale);
+
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 

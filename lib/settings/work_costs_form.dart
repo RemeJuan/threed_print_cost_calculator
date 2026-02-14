@@ -58,8 +58,8 @@ class WorkCostsSettings extends HookConsumerWidget {
                   ],
                   validator: (value) {
                     final v = value?.replaceAll(',', '.') ?? '';
-                    if (v.isEmpty) return 'Please enter a number';
-                    if (num.tryParse(v) == null) return 'Invalid number';
+                    if (v.isEmpty) return l10n.enterNumber;
+                    if (num.tryParse(v) == null) return l10n.invalidNumber;
                     return null;
                   },
                   onChanged: (value) async {
@@ -85,8 +85,8 @@ class WorkCostsSettings extends HookConsumerWidget {
                   ],
                   validator: (value) {
                     final v = value?.replaceAll(',', '.') ?? '';
-                    if (v.isEmpty) return 'Please enter a number';
-                    if (num.tryParse(v) == null) return 'Invalid number';
+                    if (v.isEmpty) return l10n.enterNumber;
+                    if (num.tryParse(v) == null) return l10n.invalidNumber;
                     return null;
                   },
                   onChanged: (value) async {
@@ -111,8 +111,8 @@ class WorkCostsSettings extends HookConsumerWidget {
                   ],
                   validator: (value) {
                     final v = value?.replaceAll(',', '.') ?? '';
-                    if (v.isEmpty) return 'Please enter a number';
-                    if (num.tryParse(v) == null) return 'Invalid number';
+                    if (v.isEmpty) return l10n.enterNumber;
+                    if (num.tryParse(v) == null) return l10n.invalidNumber;
                     return null;
                   },
                   onChanged: (value) async {

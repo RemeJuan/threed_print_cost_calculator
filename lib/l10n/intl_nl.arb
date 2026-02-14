@@ -133,5 +133,9 @@
   "totalCostLabel": "Totaal",
   "@totalCostLabel": {},
   "workCostsLabel": "Werkkosten",
-  "@workCostsLabel": {}
+  "@workCostsLabel": {},
+  "enterNumber": "Voer een getal in",
+  "@enterNumber": {},
+  "invalidNumber": "Ongeldig getal",
+  "@invalidNumber": {}
 }

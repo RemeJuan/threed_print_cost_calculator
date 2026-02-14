@@ -15,17 +15,21 @@ final calculatorProvider =
     );
 
 class CalculatorProvider extends Notifier<CalculatorState> {
-  late final Database database;
-  late final StoreRef store;
+  // Avoid storing late/nullable fields that may not be initialized when tests
+  // override the provider. Use on-demand getters that read the required
+  // resources from `ref` so they are always available.
+  Database get _database => ref.read(databaseProvider);
+
+  StoreRef get _store => stringMapStoreFactory.store();
 
   @override
   CalculatorState build() {
-    database = ref.read(databaseProvider);
-    store = stringMapStoreFactory.store();
     return CalculatorState();
   }
 
   void init() async {
+    // Nothing to initialize here; _database and _store are getters that read
+    // from ref on demand.
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
     final settings = await dbHelpers.getSettings();
     final printerKey = settings.activePrinter;
@@ -34,11 +38,11 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final spoolCostVal = await _getValue('spoolCost');
 
     if (printerKey.isNotEmpty) {
-      final store = stringMapStoreFactory.store(DBName.printers.name);
+      final printersStore = stringMapStoreFactory.store(DBName.printers.name);
 
-      final data = await store
+      final data = await printersStore
           .query(finder: Finder(filter: Filter.byKey(printerKey)))
-          .getSnapshot(database);
+          .getSnapshot(_database);
 
       if (data != null) {
         final printer = PrinterModel.fromMap(data.value, printerKey);
@@ -251,8 +255,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<Map<String, Object?>> _getValue(String key) async {
-    if (await store.record(key).exists(database)) {
-      return await store.record(key).get(database) as Map<String, Object?>;
+    if (await _store.record(key).exists(_database)) {
+      return await _store.record(key).get(_database) as Map<String, Object?>;
     }
 
     return {'value': ''};
