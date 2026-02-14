@@ -241,7 +241,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final results = CalculationResult(
       electricity: electricityCost,
       filament: filamentCost,
-      risk: frCost,
+      risk: num.parse(totalCost.toStringAsFixed(2)),
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
