@@ -22,13 +22,10 @@ class PremiumWidgets extends HookConsumerWidget {
             Expanded(
               child: TextFormField(
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: l10n.labourRateLabel,
-                ),
+                decoration: InputDecoration(labelText: l10n.labourRateLabel),
                 onChanged: (value) async {
-                  notifier
-                    ..updateLabourRate(num.tryParse(value) ?? 0)
-                    ..submit();
+                  await notifier.updateLabourRate(num.tryParse(value) ?? 0);
+                  notifier.submit();
                 },
               ),
             ),
@@ -39,9 +36,7 @@ class PremiumWidgets extends HookConsumerWidget {
                     ? state.labourTime.value.toString()
                     : '',
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: l10n.labourTimeLabel,
-                ),
+                decoration: InputDecoration(labelText: l10n.labourTimeLabel),
                 onChanged: (value) async {
                   notifier
                     ..updateLabourTime(num.tryParse(value) ?? 0)
@@ -60,13 +55,10 @@ class PremiumWidgets extends HookConsumerWidget {
                     ? state.spoolCost.value.toString()
                     : '',
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: l10n.wearAndTearLabel,
-                ),
+                decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
                 onChanged: (value) async {
-                  notifier
-                    ..updateWearAndTear(num.tryParse(value) ?? 0)
-                    ..submit();
+                  await notifier.updateWearAndTear(num.tryParse(value) ?? 0);
+                  notifier.submit();
                 },
               ),
             ),
@@ -77,23 +69,17 @@ class PremiumWidgets extends HookConsumerWidget {
                     ? state.failureRisk.value.toString()
                     : '',
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: l10n.failureRiskLabel,
-                ),
+                decoration: InputDecoration(labelText: l10n.failureRiskLabel),
                 onChanged: (value) async {
-                  notifier
-                    ..updateFailureRisk(num.tryParse(value) ?? 0)
-                    ..submit;
+                  await notifier.updateFailureRisk(num.tryParse(value) ?? 0);
+                  notifier.submit();
                 },
               ),
             ),
           ],
         ),
         if (!premium)
-          MaterialButton(
-            onPressed: null,
-            child: Text(l10n.savePrintButton),
-          ),
+          MaterialButton(onPressed: null, child: Text(l10n.savePrintButton)),
       ],
     );
   }
