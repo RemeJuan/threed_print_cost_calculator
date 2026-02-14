@@ -2,8 +2,8 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:threed_print_cost_calculator/app/view/app.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupportDialog extends StatelessWidget {
@@ -14,9 +14,9 @@ class SupportDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = S.of(context);
-    final linkFont = Theme.of(context).textTheme.displayMedium?.copyWith(
-          fontSize: 12,
-        );
+    final linkFont = Theme.of(
+      context,
+    ).textTheme.displayMedium?.copyWith(fontSize: 12);
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -79,9 +79,7 @@ class SupportDialog extends StatelessWidget {
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
                         await Clipboard.setData(ClipboardData(text: userID));
-                        BotToast.showText(
-                          text: l10n.supportIdCopied,
-                        );
+                        BotToast.showText(text: l10n.supportIdCopied);
                       },
                   ),
                 ],
@@ -89,40 +87,38 @@ class SupportDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: RawMaterialButton(
-                      onPressed: () async {
-                        await launchUrl(Uri.parse(
-                            'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md'));
-                      },
-                      child: Text(
-                        l10n.privacyPolicyLink,
-                        style: linkFont,
-                      ),
-                    ),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: RawMaterialButton(
+                    onPressed: () async {
+                      await launchUrl(
+                        Uri.parse(
+                          'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md',
+                        ),
+                      );
+                    },
+                    child: Text(l10n.privacyPolicyLink, style: linkFont),
                   ),
-                  Text(
-                    l10n.separator,
-                    style: linkFont,
+                ),
+                Text(l10n.separator, style: linkFont),
+                Container(
+                  alignment: Alignment.center,
+                  child: RawMaterialButton(
+                    onPressed: () async {
+                      await launchUrl(
+                        Uri.parse(
+                          'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
+                        ),
+                      );
+                    },
+                    child: Text(l10n.termsOfUseLink, style: linkFont),
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: RawMaterialButton(
-                      onPressed: () async {
-                        await launchUrl(Uri.parse(
-                            'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'));
-                      },
-                      child: Text(
-                        l10n.termsOfUseLink,
-                        style: linkFont,
-                      ),
-                    ),
-                  ),
-                ]),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             Container(
               alignment: Alignment.center,
@@ -130,9 +126,9 @@ class SupportDialog extends StatelessWidget {
                 onPressed: BotToast.cleanAll,
                 child: Text(
                   l10n.closeButton,
-                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        fontSize: 16,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.displayMedium?.copyWith(fontSize: 16),
                 ),
               ),
             ),

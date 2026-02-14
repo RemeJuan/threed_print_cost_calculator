@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:threed_print_cost_calculator/app/components/accordion_menu/providers/accordion_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/components/accordion_menu/providers/accordion_notifier.dart';
 
 import 'model/accordion_item_model.dart';
 

@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
 final calculatorHelpersProvider = Provider<CalculatorHelpers>(
@@ -15,12 +15,7 @@ class CalculatorHelpers {
 
   Database get db => ref.read(databaseProvider);
 
-  num electricityCost(
-    num watts,
-    num hours,
-    num minutes,
-    num cost,
-  ) {
+  num electricityCost(num watts, num hours, num minutes, num cost) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
     final w = watts / 1000;
     final m = hours + (minutes / 60);
@@ -30,11 +25,7 @@ class CalculatorHelpers {
     return num.parse(totalFixed);
   }
 
-  num filamentCost(
-    num itemWeight,
-    num spoolWeight,
-    num cost,
-  ) {
+  num filamentCost(num itemWeight, num spoolWeight, num cost) {
     //Weight in grams / 1,000 × Cost per kg = Cost of filament
     if (spoolWeight == 0 && itemWeight == 0) {
       return 0.0;
@@ -47,19 +38,13 @@ class CalculatorHelpers {
     return num.parse(totalFixed);
   }
 
-  static num labourCost(
-    num labourRate,
-    num labourTime,
-  ) {
+  static num labourCost(num labourRate, num labourTime) {
     //Labour Rate * Labour Time = Labour Cost
     final totalFixed = (labourRate * labourTime).toStringAsFixed(2);
     return num.parse(totalFixed);
   }
 
-  Future<void> addOrUpdateRecord(
-    String key,
-    String value,
-  ) async {
+  Future<void> addOrUpdateRecord(String key, String value) async {
     final store = stringMapStoreFactory.store();
     // Check if the record exists before adding or updating it.
     await db.transaction((txn) async {
@@ -75,16 +60,11 @@ class CalculatorHelpers {
     });
   }
 
-  Future<void> savePrint(
-    HistoryModel value,
-  ) async {
+  Future<void> savePrint(HistoryModel value) async {
     final store = stringMapStoreFactory.store('history');
 
     try {
-      final data = {
-        ...value.toMap(),
-        'date': value.date.toString(),
-      };
+      final data = {...value.toMap(), 'date': value.date.toString()};
       await store.add(db, data);
       BotToast.showText(text: 'Print saved');
     } catch (e) {
