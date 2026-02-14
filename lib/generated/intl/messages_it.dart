@@ -131,6 +131,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materiali/Usura + strappo",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
-    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Costi del Lavoro"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Costi del lavoro"),
   };
 }
