@@ -47,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage("印刷時間（時間）"),
     "kwh": MessageLookupByLibrary.simpleMessage("キロワット時"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("人件費"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("人件費： "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("人件費/材料： "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("時給"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("処理時間"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(

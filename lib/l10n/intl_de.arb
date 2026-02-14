@@ -12,7 +12,7 @@
   "@hoursLabel": {},
   "kwh": "kW/h",
   "@kwh": {},
-  "labourCostPrefix": "Arbeitskosten: ",
+  "labourCostPrefix": "Arbeits-/Materialkosten: ",
   "@labourCostPrefix": {},
   "labourRateLabel": "Stundensatz",
   "@labourRateLabel": {},

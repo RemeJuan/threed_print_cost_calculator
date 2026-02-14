@@ -53,7 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "kwh": MessageLookupByLibrary.simpleMessage("กิโลวัตต์/ชม"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("ค่าแรง"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง: "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง/วัสดุ: "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("อัตราชั่วโมง"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
       "ระยะเวลาดำเนินการ",

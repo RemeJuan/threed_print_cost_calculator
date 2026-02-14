@@ -55,7 +55,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "kwh": MessageLookupByLibrary.simpleMessage("kilovatios/h"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Costo laboral"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Costo laboral: "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
+      "Costo laboral/Materiales: ",
+    ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarifa por hora"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
       "Tiempo de procesamiento",
