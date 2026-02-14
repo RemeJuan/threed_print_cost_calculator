@@ -133,5 +133,9 @@
   "totalCostLabel": "ทั้งหมด",
   "@totalCostLabel": {},
   "workCostsLabel": "ค่าใช้จ่ายในการทำงาน",
-  "@workCostsLabel": {}
+  "@workCostsLabel": {},
+  "enterNumber": "Please enter a number",
+  "@enterNumber": {},
+  "invalidNumber": "Invalid number",
+  "@invalidNumber": {}
 }

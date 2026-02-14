@@ -6,6 +6,10 @@ class HistoryModel {
   final num electricityCost;
   final num labourCost;
   final DateTime date;
+  final String printer;
+  final String material;
+  final num weight; // grams
+  final String timeHours; // stored as "hh:mm"
 
   const HistoryModel({
     required this.name,
@@ -15,28 +19,51 @@ class HistoryModel {
     required this.electricityCost,
     required this.labourCost,
     required this.date,
+    required this.printer,
+    required this.material,
+    required this.weight,
+    required this.timeHours,
   });
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
+    // robust date parsing: accept String or DateTime
+    final dynamic dateValue = map['date'];
+    DateTime parsedDate;
+    if (dateValue is DateTime) {
+      parsedDate = dateValue;
+    } else if (dateValue is String) {
+      parsedDate = DateTime.parse(dateValue);
+    } else {
+      parsedDate = DateTime.parse(dateValue.toString());
+    }
+
     return HistoryModel(
-      name: map['name'] as String,
-      totalCost: map['totalCost'] as double,
-      riskCost: map['riskCost'] as double,
-      filamentCost: map['filamentCost'] as double,
-      electricityCost: map['electricityCost'] as double,
-      labourCost: map['labourCost'] as double,
-      date: DateTime.parse(map['date']),
+      name: map['name']?.toString() ?? '',
+      totalCost: map['totalCost'] as num,
+      riskCost: map['riskCost'] as num,
+      filamentCost: map['filamentCost'] as num,
+      electricityCost: map['electricityCost'] as num,
+      labourCost: map['labourCost'] as num,
+      date: parsedDate,
+      printer: map['printer']?.toString() ?? 'NotSelected',
+      material: map['material']?.toString() ?? 'NotSelected',
+      weight: map['weight'] as num? ?? 0.0,
+      timeHours: map['timeHours']?.toString() ?? '00:00',
     );
   }
 
   HistoryModel copyWith({
     String? name,
-    double? totalCost,
-    double? riskCost,
-    double? filamentCost,
-    double? electricityCost,
-    double? labourCost,
+    num? totalCost,
+    num? riskCost,
+    num? filamentCost,
+    num? electricityCost,
+    num? labourCost,
     DateTime? date,
+    String? printer,
+    String? material,
+    num? weight,
+    String? timeHours,
   }) {
     return HistoryModel(
       name: name ?? this.name,
@@ -46,6 +73,10 @@ class HistoryModel {
       electricityCost: electricityCost ?? this.electricityCost,
       labourCost: labourCost ?? this.labourCost,
       date: date ?? this.date,
+      printer: printer ?? this.printer,
+      material: material ?? this.material,
+      weight: weight ?? this.weight,
+      timeHours: timeHours ?? this.timeHours,
     );
   }
 
@@ -57,7 +88,11 @@ class HistoryModel {
       'filamentCost': filamentCost,
       'electricityCost': electricityCost,
       'labourCost': labourCost,
-      'date': date,
+      'date': date.toIso8601String(),
+      'printer': printer,
+      'material': material,
+      'weight': weight,
+      'timeHours': timeHours,
     };
   }
 
@@ -68,7 +103,11 @@ class HistoryModel {
         'totalCost: $totalCost, '
         'riskCost: $riskCost, '
         'filamentCost: $filamentCost, '
-        'electricityCost: $electricityCost'
+        'electricityCost: $electricityCost, '
+        'printer: $printer, '
+        'material: $material, '
+        'weight: $weight, '
+        'timeHours: $timeHours'
         '}';
   }
 }

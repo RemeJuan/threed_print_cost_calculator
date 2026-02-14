@@ -43,6 +43,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Biaya listrik",
     ),
+    "enterNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter a number",
+    ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risiko kegagalan (%)",
     ),
@@ -53,6 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Waktu pencetakan (jam)",
     ),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/jam"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Tenaga kerja"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(

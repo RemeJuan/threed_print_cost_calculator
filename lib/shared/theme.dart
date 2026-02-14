@@ -37,12 +37,16 @@ ThemeData theme() {
     ),
   );
 
+  // Create the final text theme with GoogleFonts applied
+  final appliedTextTheme = GoogleFonts.montserratTextTheme(themeData.textTheme);
+
   return themeData.copyWith(
-    textTheme: GoogleFonts.montserratTextTheme(themeData.textTheme),
+    textTheme: appliedTextTheme,
     scaffoldBackgroundColor: DARK_BLUE,
     appBarTheme: AppBarTheme(
       backgroundColor: DEEP_BLUE,
-      titleTextStyle: themeData.textTheme.displayMedium,
+      // Use the final (GoogleFonts-applied) text theme so AppBar title picks up Montserrat
+      titleTextStyle: appliedTextTheme.displayMedium,
       elevation: 0,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(

@@ -96,9 +96,13 @@ class DataBaseHelpers {
     if (settings == null) {
       return GeneralSettingsModel.initial();
     }
-    final printers = await store.record(DBName.printers.name).get(db);
-    final printerIds = printers != null
-        ? (printers as Map<String, dynamic>).keys.toList()
+
+    // Read printer IDs from the dedicated 'printers' store so we validate
+    // activePrinter against actual stored printer records.
+    final printersStore = stringMapStoreFactory.store(DBName.printers.name);
+    final printerSnapshots = await printersStore.find(db);
+    final printerIds = printerSnapshots.isNotEmpty
+        ? printerSnapshots.map((r) => r.key.toString()).toList()
         : <String>[];
 
     final generalSettings = GeneralSettingsModel.fromMap(

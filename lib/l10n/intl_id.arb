@@ -133,5 +133,9 @@
   "totalCostLabel": "Total",
   "@totalCostLabel": {},
   "workCostsLabel": "Biaya Kerja",
-  "@workCostsLabel": {}
+  "@workCostsLabel": {},
+  "enterNumber": "Please enter a number",
+  "@enterNumber": {},
+  "invalidNumber": "Invalid number",
+  "@invalidNumber": {}
 }

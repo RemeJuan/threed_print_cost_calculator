@@ -41,6 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("ค่าไฟฟ้า"),
+    "enterNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter a number",
+    ),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "ความเสี่ยงจากความล้มเหลว (%)",
     ),
@@ -51,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "เวลาในการพิมพ์ (ชั่วโมง)",
     ),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
     "kwh": MessageLookupByLibrary.simpleMessage("กิโลวัตต์/ชม"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("ค่าแรง"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง/วัสดุ: "),

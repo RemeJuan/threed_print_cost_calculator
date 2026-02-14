@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Elektriciteitskosten",
     ),
+    "enterNumber": MessageLookupByLibrary.simpleMessage("Voer een getal in"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risico op falen (%)",
     ),
@@ -51,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Geschiedenis"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Afdruktijd (uren)"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Ongeldig getal"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/uur"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Arbeidskosten"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(

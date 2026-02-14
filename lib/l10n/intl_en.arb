@@ -66,5 +66,7 @@
   "labourCostLabel": "Labour",
   "riskCostLabel": "Risk",
   "totalCostLabel": "Total",
-  "workCostsLabel": "Work Costs"
+  "workCostsLabel": "Work Costs",
+  "enterNumber": "Please enter a number",
+  "invalidNumber": "Invalid number"
 }

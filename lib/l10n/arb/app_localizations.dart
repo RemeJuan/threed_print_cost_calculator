@@ -237,6 +237,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'kW/h'**
   String get kwh;
+
+  /// No description provided for @enterNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a number'**
+  String get enterNumber;
+
+  /// No description provided for @invalidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number'**
+  String get invalidNumber;
 }
 
 class _AppLocalizationsDelegate

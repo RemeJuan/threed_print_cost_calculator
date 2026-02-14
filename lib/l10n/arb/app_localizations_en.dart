@@ -79,4 +79,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kwh => 'kW/h';
+
+  @override
+  String get enterNumber => 'Please enter a number';
+
+  @override
+  String get invalidNumber => 'Invalid number';
 }

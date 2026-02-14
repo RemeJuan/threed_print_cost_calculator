@@ -133,5 +133,9 @@
   "totalCostLabel": "Totale",
   "@totalCostLabel": {},
   "workCostsLabel": "Costi del lavoro",
-  "@workCostsLabel": {}
+  "@workCostsLabel": {},
+  "enterNumber": "Please enter a number",
+  "@enterNumber": {},
+  "invalidNumber": "Invalid number",
+  "@invalidNumber": {}
 }
