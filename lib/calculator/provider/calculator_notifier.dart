@@ -126,23 +126,33 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
   }
 
-  void updateWearAndTear(num value) async {
+  Future updateWearAndTear(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
-    final settings = await dbHelpers.getSettings();
-    final updated = settings.copyWith(wearAndTear: value.toString());
-    await dbHelpers.putRecord(updated.toMap());
-    state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
+
+    try {
+      final settings = await dbHelpers.getSettings();
+      final updated = settings.copyWith(wearAndTear: value.toString());
+      await dbHelpers.putRecord(updated.toMap());
+
+      // Only update local state after successful DB write
+      state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
+    } catch (e, st) {
+      // Log and rethrow so callers can handle or await the failure
+      // Using print for logging to avoid adding new logging dependencies
+      print('Error updating wearAndTear: $e\n$st');
+      rethrow;
+    }
   }
 
-  void updateFailureRisk(num value) async {
+  Future updateFailureRisk(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
     final settings = await dbHelpers.getSettings();
-    final updated = settings.copyWith(failureRisk: value.toStringAsFixed(2));
+    final updated = settings.copyWith(failureRisk: value.toString());
     await dbHelpers.putRecord(updated.toMap());
     state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
   }
 
-  void updateLabourRate(num value) async {
+  Future updateLabourRate(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
     final settings = await dbHelpers.getSettings();
     final updated = settings.copyWith(labourRate: value.toString());
