@@ -14,6 +14,8 @@
   "@kwh": {},
   "labourCostPrefix": "Arbeid/Materialen:",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "Selecteer printer",
+  "@selectPrinterHint": {},
   "labourRateLabel": "Uurtarief",
   "@labourRateLabel": {},
   "labourTimeLabel": "Verwerkingstijd",

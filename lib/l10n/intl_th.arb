@@ -14,6 +14,8 @@
   "@kwh": {},
   "labourCostPrefix": "ค่าแรง/วัสดุ: ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "เลือกเครื่องพิมพ์",
+  "@selectPrinterHint": {},
   "labourRateLabel": "อัตราชั่วโมง",
   "@labourRateLabel": {},
   "labourTimeLabel": "ระยะเวลาดำเนินการ",

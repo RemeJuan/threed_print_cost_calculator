@@ -14,6 +14,8 @@
   "@kwh": {},
   "labourCostPrefix": "Arbeits-/Materialkosten: ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "Drucker auswählen",
+  "@selectPrinterHint": {},
   "labourRateLabel": "Stundensatz",
   "@labourRateLabel": {},
   "labourTimeLabel": "Bearbeitungszeit",

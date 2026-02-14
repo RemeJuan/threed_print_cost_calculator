@@ -274,6 +274,16 @@ class S {
     );
   }
 
+  /// `Select Printer`
+  String get selectPrinterHint {
+    return Intl.message(
+      'Select Printer',
+      name: 'selectPrinterHint',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Watt`
   String get watt {
     return Intl.message('Watt', name: 'watt', desc: '', args: []);

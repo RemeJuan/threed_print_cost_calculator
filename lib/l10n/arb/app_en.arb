@@ -21,6 +21,7 @@
   "riskTotalPrefix": "Risk cost: ",
   "premiumHeader": "Premium users only:",
   "labourCostPrefix": "Labour/Materials: ",
+  "selectPrinterHint": "Select Printer",
   "watt": "Watt",
   "kwh": "kW/h"
 }

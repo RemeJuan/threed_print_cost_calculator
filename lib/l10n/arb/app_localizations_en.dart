@@ -72,6 +72,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labourCostPrefix => 'Labour/Materials: ';
 
   @override
+  String get selectPrinterHint => 'Select Printer';
+
+  @override
   String get watt => 'Watt';
 
   @override
