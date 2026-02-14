@@ -217,7 +217,7 @@ abstract class AppLocalizations {
   /// No description provided for @labourCostPrefix.
   ///
   /// In en, this message translates to:
-  /// **'Labour cost: '**
+  /// **'Labour/Materials: '**
   String get labourCostPrefix;
 
   /// No description provided for @watt.

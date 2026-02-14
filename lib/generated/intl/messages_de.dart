@@ -51,7 +51,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Druckzeit (Stunden)"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Arbeitskosten"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Arbeitskosten: "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
+      "Arbeits-/Materialkosten: ",
+    ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Stundensatz"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Bearbeitungszeit"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(

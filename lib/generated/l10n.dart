@@ -264,9 +264,14 @@ class S {
     );
   }
 
-  /// `Labour`
+  /// `Labour/Materials`
   String get labourCostPrefix {
-    return Intl.message('Labour', name: 'labourCostPrefix', desc: '', args: []);
+    return Intl.message(
+      'Labour/Materials',
+      name: 'labourCostPrefix',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Watt`

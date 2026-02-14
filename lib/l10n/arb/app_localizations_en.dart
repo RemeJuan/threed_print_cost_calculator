@@ -69,7 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get premiumHeader => 'Premium users only:';
 
   @override
-  String get labourCostPrefix => 'Labour cost: ';
+  String get labourCostPrefix => 'Labour/Materials: ';
 
   @override
   String get watt => 'Watt';

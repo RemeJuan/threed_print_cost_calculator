@@ -12,7 +12,7 @@
   "@hoursLabel": {},
   "kwh": "kilovatios/h",
   "@kwh": {},
-  "labourCostPrefix": "Costo laboral: ",
+  "labourCostPrefix": "Costo laboral/Materiales: ",
   "@labourCostPrefix": {},
   "labourRateLabel": "Tarifa por hora",
   "@labourRateLabel": {},

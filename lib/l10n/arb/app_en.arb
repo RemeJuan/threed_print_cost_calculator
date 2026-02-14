@@ -20,7 +20,7 @@
   "resultTotalPrefix": "Total cost: ",
   "riskTotalPrefix": "Risk cost: ",
   "premiumHeader": "Premium users only:",
-  "labourCostPrefix": "Labour cost: ",
+  "labourCostPrefix": "Labour/Materials: ",
   "watt": "Watt",
   "kwh": "kW/h"
 }
