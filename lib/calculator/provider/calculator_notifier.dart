@@ -126,7 +126,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
   }
 
-  Future updateWearAndTear(num value) async {
+  Future<void> updateWearAndTear(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
 
     try {
@@ -144,20 +144,36 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     }
   }
 
-  Future updateFailureRisk(num value) async {
+  Future<void> updateFailureRisk(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
-    final settings = await dbHelpers.getSettings();
-    final updated = settings.copyWith(failureRisk: value.toString());
-    await dbHelpers.putRecord(updated.toMap());
-    state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
+
+    try {
+      final settings = await dbHelpers.getSettings();
+      final updated = settings.copyWith(failureRisk: value.toStringAsFixed(2));
+      await dbHelpers.putRecord(updated.toMap());
+
+      // Only update local state after successful DB write
+      state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
+    } catch (e, st) {
+      print('Error updating failureRisk: $e\n$st');
+      rethrow;
+    }
   }
 
-  Future updateLabourRate(num value) async {
+  Future<void> updateLabourRate(num value) async {
     final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
-    final settings = await dbHelpers.getSettings();
-    final updated = settings.copyWith(labourRate: value.toString());
-    await dbHelpers.putRecord(updated.toMap());
-    state = state.copyWith(labourRate: NumberInput.dirty(value: value));
+
+    try {
+      final settings = await dbHelpers.getSettings();
+      final updated = settings.copyWith(labourRate: value.toString());
+      await dbHelpers.putRecord(updated.toMap());
+
+      // Only update local state after successful DB write
+      state = state.copyWith(labourRate: NumberInput.dirty(value: value));
+    } catch (e, st) {
+      print('Error updating labourRate: $e\n$st');
+      rethrow;
+    }
   }
 
   // Local-only setters for calculator UI (do not persist to DB)
