@@ -14,6 +14,8 @@
   "@kwh": {},
   "labourCostPrefix": "人件費/材料： ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "プリンターを選択",
+  "@selectPrinterHint": {},
   "labourRateLabel": "時給",
   "@labourRateLabel": {},
   "labourTimeLabel": "処理時間",

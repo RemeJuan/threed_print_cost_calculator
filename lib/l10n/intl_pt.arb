@@ -14,6 +14,8 @@
   "@kwh": {},
   "labourCostPrefix": "Mão de obra/Materiais: ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "Selecionar impressora",
+  "@selectPrinterHint": {},
   "labourRateLabel": "Taxa horária",
   "@labourRateLabel": {},
   "labourTimeLabel": "Tempo de processamento",
