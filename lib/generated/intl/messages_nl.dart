@@ -53,7 +53,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Afdruktijd (uren)"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/uur"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Arbeidskosten"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Arbeidskosten:"),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
+      "Arbeid/Materialen:",
+    ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Uurtarief"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Verwerkingstijd"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
@@ -95,6 +97,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
+    "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
+      "Selecteer printer",
+    ),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Instellingen"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -123,5 +128,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materialen/Slijtage",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Werkkosten"),
   };
 }

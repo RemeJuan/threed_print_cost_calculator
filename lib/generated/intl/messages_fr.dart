@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Travail"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
-      "Coût du travail: ",
+      "Main-d\'œuvre/Matières: ",
     ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Taux horaire"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage(
@@ -103,6 +103,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
+    "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
+      "Sélectionner l\'imprimante",
+    ),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Paramètres"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -133,5 +136,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Matières/Usures + déchirures",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Coûts de Travail"),
   };
 }

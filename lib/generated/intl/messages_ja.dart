@@ -47,7 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage("印刷時間（時間）"),
     "kwh": MessageLookupByLibrary.simpleMessage("キロワット時"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("人件費"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("人件費： "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("人件費/材料： "),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("時給"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("処理時間"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
@@ -83,6 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
+    "selectPrinterHint": MessageLookupByLibrary.simpleMessage("プリンターを選択"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("設定"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -107,5 +108,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage("材質/摩耗"),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("作業コスト"),
   };
 }

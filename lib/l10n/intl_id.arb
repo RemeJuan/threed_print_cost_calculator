@@ -12,8 +12,10 @@
   "@hoursLabel": {},
   "kwh": "kW/jam",
   "@kwh": {},
-  "labourCostPrefix": "Biaya tenaga kerja: ",
+  "labourCostPrefix": "Biaya tenaga kerja/Bahan: ",
   "@labourCostPrefix": {},
+  "selectPrinterHint": "Pilih printer",
+  "@selectPrinterHint": {},
   "labourRateLabel": "Tarif per jam",
   "@labourRateLabel": {},
   "labourTimeLabel": "Waktu pengerjaan",
@@ -129,5 +131,7 @@
   "riskCostLabel": "Risiko",
   "@riskCostLabel": {},
   "totalCostLabel": "Total",
-  "@totalCostLabel": {}
+  "@totalCostLabel": {},
+  "workCostsLabel": "Biaya Kerja",
+  "@workCostsLabel": {}
 }

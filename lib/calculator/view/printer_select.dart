@@ -28,15 +28,12 @@ class PrinterSelect extends HookConsumerWidget {
       loading.value = false;
     }
 
-    useEffect(
-      () {
-        // ignore: unnecessary_statements
-        getSettings();
+    useEffect(() {
+      // ignore: unnecessary_statements
+      getSettings();
 
-        return null;
-      },
-      [],
-    );
+      return null;
+    }, []);
 
     return StreamBuilder(
       stream: query.onSnapshots(db),
@@ -47,7 +44,8 @@ class PrinterSelect extends HookConsumerWidget {
           );
 
           return DropdownButton<String>(
-            alignment: AlignmentDirectional.centerEnd,
+            hint: Text(l10n.selectPrinterHint),
+            alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
             value: generalSettings.value.activePrinter.isEmpty
                 ? null

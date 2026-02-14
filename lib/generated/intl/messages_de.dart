@@ -51,7 +51,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Druckzeit (Stunden)"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Arbeitskosten"),
-    "labourCostPrefix": MessageLookupByLibrary.simpleMessage("Arbeitskosten: "),
+    "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
+      "Arbeits-/Materialkosten: ",
+    ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Stundensatz"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Bearbeitungszeit"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
@@ -93,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
+    "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
+      "Drucker auswählen",
+    ),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Einstellungen",
@@ -125,5 +130,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materialien/Verschleiß",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Arbeitskosten"),
   };
 }

@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/settings/general_settings_form.dart
 import 'package:threed_print_cost_calculator/settings/materials/materials.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
+import 'package:threed_print_cost_calculator/settings/work_costs_form.dart';
 
 import 'materials/material_form.dart';
 
@@ -60,6 +61,10 @@ class SettingsPage extends HookWidget {
                   const Icon(Icons.add),
                 ),
               ),
+            AccordionItem(
+              header: Text(l10n.workCostsLabel, style: style),
+              body: const WorkCostsSettings(),
+            ),
           ],
         ),
       ],

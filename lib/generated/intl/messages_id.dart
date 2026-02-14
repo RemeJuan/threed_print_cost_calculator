@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "kwh": MessageLookupByLibrary.simpleMessage("kW/jam"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Tenaga kerja"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
-      "Biaya tenaga kerja: ",
+      "Biaya tenaga kerja/Bahan: ",
     ),
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarif per jam"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Waktu pengerjaan"),
@@ -97,6 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
+    "selectPrinterHint": MessageLookupByLibrary.simpleMessage("Pilih printer"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Pengaturan"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
@@ -125,5 +126,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Bahan/Keausan + sobek",
     ),
     "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Biaya Kerja"),
   };
 }
