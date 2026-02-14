@@ -41,7 +41,7 @@ class SettingsPage extends HookWidget {
               initiallyExpanded: true,
               isLocked: !premium.value,
             ),
-            if (premium.value)
+            if (premium.value) ...[
               AccordionItem(
                 header: Text(l10n.printersHeader, style: style),
                 body: const Printers(),
@@ -51,7 +51,6 @@ class SettingsPage extends HookWidget {
                   const Icon(Icons.add),
                 ),
               ),
-            if (premium.value)
               AccordionItem(
                 header: Text(l10n.materialsHeader, style: style),
                 body: const Materials(),
@@ -61,10 +60,11 @@ class SettingsPage extends HookWidget {
                   const Icon(Icons.add),
                 ),
               ),
-            AccordionItem(
-              header: Text(l10n.workCostsLabel, style: style),
-              body: const WorkCostsSettings(),
-            ),
+              AccordionItem(
+                header: Text(l10n.workCostsLabel, style: style),
+                body: const WorkCostsSettings(),
+              ),
+            ],
           ],
         ),
       ],
