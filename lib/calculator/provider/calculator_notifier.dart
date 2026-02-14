@@ -1,12 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/app/components/num_input.dart';
-import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
 final calculatorProvider =
     NotifierProvider<CalculatorProvider, CalculatorState>(
@@ -139,7 +140,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     } catch (e, st) {
       // Log and rethrow so callers can handle or await the failure
       // Using print for logging to avoid adding new logging dependencies
-      print('Error updating wearAndTear: $e\n$st');
+      if (kDebugMode) print('Error updating wearAndTear: $e\n$st');
       rethrow;
     }
   }
@@ -155,7 +156,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       // Only update local state after successful DB write
       state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
     } catch (e, st) {
-      print('Error updating failureRisk: $e\n$st');
+      if (kDebugMode) print('Error updating failureRisk: $e\n$st');
       rethrow;
     }
   }
@@ -171,7 +172,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       // Only update local state after successful DB write
       state = state.copyWith(labourRate: NumberInput.dirty(value: value));
     } catch (e, st) {
-      print('Error updating labourRate: $e\n$st');
+      if (kDebugMode) print('Error updating labourRate: $e\n$st');
       rethrow;
     }
   }
@@ -241,7 +242,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final results = CalculationResult(
       electricity: electricityCost,
       filament: filamentCost,
-      risk: num.parse(totalCost.toStringAsFixed(2)),
+      risk: num.parse(frCost.toStringAsFixed(2)),
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
     );

@@ -7,7 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
-import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 
@@ -31,13 +31,10 @@ void main() {
 
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
-      await tester.pumpApp(
-        const App(),
-        [
-          calculatorProvider.overrideWith(() => mockCalculatorProvider),
-          sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
-        ],
-      );
+      await tester.pumpApp(const App(), [
+        calculatorProvider.overrideWith(() => mockCalculatorProvider),
+        sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+      ]);
       await tester.pumpAndSettle();
       expect(find.byType(CalculatorPage), findsOneWidget);
     });
