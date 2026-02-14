@@ -29,7 +29,8 @@ class AdjustmentsSection extends HookConsumerWidget {
                 ? state.labourRate.value.toString()
                 : '',
             onChanged: (value) async {
-              await notifier.updateLabourRate(num.tryParse(value) ?? 0);
+              // Local-only change for calculator; do not persist to settings
+              notifier.setLabourRate(num.tryParse(value) ?? 0);
               notifier.submit();
             },
           ),

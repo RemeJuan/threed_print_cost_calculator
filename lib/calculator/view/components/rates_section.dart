@@ -29,7 +29,8 @@ class RatesSection extends HookConsumerWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
             onChanged: (value) async {
-              await notifier.updateWearAndTear(num.tryParse(value) ?? 0);
+              // Local-only change for calculator; do not persist to settings
+              notifier.setWearAndTear(num.tryParse(value) ?? 0);
               notifier.submit();
             },
           ),
@@ -43,7 +44,8 @@ class RatesSection extends HookConsumerWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.failureRiskLabel),
             onChanged: (value) async {
-              await notifier.updateFailureRisk(num.tryParse(value) ?? 0);
+              // Local-only change for calculator; do not persist to settings
+              notifier.setFailureRisk(num.tryParse(value) ?? 0);
               notifier.submit();
             },
           ),

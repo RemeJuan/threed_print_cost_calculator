@@ -160,6 +160,19 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
+  // Local-only setters for calculator UI (do not persist to DB)
+  void setWearAndTear(num value) {
+    state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
+  }
+
+  void setFailureRisk(num value) {
+    state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
+  }
+
+  void setLabourRate(num value) {
+    state = state.copyWith(labourRate: NumberInput.dirty(value: value));
+  }
+
   void updateLabourTime(num value) {
     ref
         .read(calculatorHelpersProvider)
