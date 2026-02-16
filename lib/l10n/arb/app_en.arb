@@ -14,6 +14,7 @@
   "spoolWeightLabel": "Spool/Resin weight",
   "spoolCostLabel": "Spool/Resin cost",
   "electricityCostLabel": "Electricity cost",
+  "electricityCostSettingsLabel": "Electricity cost",
   "submitButton": "Calculate",
   "resultElectricityPrefix": "Total cost for Electricity: ",
   "resultFilamentPrefix": "Total cost for filament: ",
@@ -23,5 +24,27 @@
   "labourCostPrefix": "Labour/Materials: ",
   "selectPrinterHint": "Select Printer",
   "watt": "Watt",
-  "kwh": "kW/h"
+  "kwh": "kW/h",
+  "enterNumber": "Please enter a number",
+  "invalidNumber": "Invalid number",
+  "supportEmailPrefix": "For any issues, please mail me at ",
+  "supportEmail": "google@remej.dev",
+  "supportIdLabel": "Please include your Support ID: ",
+  "clickToCopy": "(click to copy)",
+  "materialWeightExplanation": "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+  "@materialWeightExplanation": {
+    "description": "Explanation shown in the support/help dialog about what 'Material weight' and 'Material cost' refer to."
+  },
+  "exportSuccess": "Export successful",
+  "@exportSuccess": {
+    "description": "Shown when a history export completes successfully"
+  },
+  "exportError": "Export failed",
+  "@exportError": {
+    "description": "Shown when a history export fails"
+  },
+  "exportButton": "Export",
+  "@exportButton": {
+    "description": "Label for export action in history list"
+  }
 }

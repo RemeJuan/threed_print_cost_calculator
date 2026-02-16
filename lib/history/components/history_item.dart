@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;
@@ -18,44 +21,70 @@ class HistoryItem extends HookConsumerWidget {
     final store = stringMapStoreFactory.store('history');
     final l10n = S.of(context);
 
-    return Dismissible(
-      onDismissed: (_) async {
-        await store.record(dbKey).delete(db);
-      },
-      background: const ColoredBox(
-        color: Colors.red,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: Icon(Icons.delete, color: Colors.white),
+    return Slidable(
+      key: ValueKey(dbKey),
+      startActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        extentRatio: 0.25,
+        children: [
+          SlidableAction(
+            onPressed: (context) async {
+              // export this single entry with error handling and user feedback
+              try {
+                await exportCSVFile([data]);
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
+              } catch (e, st) {
+                debugPrint('Export failed: $e\n$st');
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(l10n.exportError)));
+              }
+            },
+            backgroundColor: LIGHT_BLUE,
+            foregroundColor: Colors.white,
+            icon: Icons.share,
+            label: l10n.exportButton,
           ),
-        ),
+        ],
       ),
-      confirmDismiss: (_) async {
-        return showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: Text(l10n.deleteDialogTitle),
-            content: Text(l10n.deleteDialogContent),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context, false);
-                },
-                child: Text(l10n.cancelButton),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context, true);
-                },
-                child: Text(l10n.deleteButton),
-              ),
-            ],
+      endActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        extentRatio: 0.25,
+        children: [
+          SlidableAction(
+            onPressed: (context) async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (dialogContext) => AlertDialog(
+                  title: Text(l10n.deleteDialogTitle),
+                  content: Text(l10n.deleteDialogContent),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(dialogContext, false),
+                      child: Text(l10n.cancelButton),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.pop(dialogContext, true),
+                      child: Text(l10n.deleteButton),
+                    ),
+                  ],
+                ),
+              );
+
+              if (confirm == true) {
+                await store.record(dbKey).delete(db);
+              }
+            },
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: l10n.deleteButton,
           ),
-        );
-      },
-      key: ValueKey(data.date),
+        ],
+      ),
       child: Column(
         children: [
           Container(
@@ -114,6 +143,32 @@ class HistoryItem extends HookConsumerWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 8),
+                // Additional summary line: weight (kg) • time (e.g. 6h 20m) • printer • material
+                Builder(
+                  builder: (context) {
+                    final weightKg = (data.weight / 1000);
+                    // parse timeHours which should be in "hh:mm" format
+                    String timeLabel;
+                    try {
+                      final parts = data.timeHours.split(':');
+                      final h = int.tryParse(parts[0]) ?? 0;
+                      final m =
+                          int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
+                      timeLabel = '${h}h ${m}m';
+                    } catch (_) {
+                      timeLabel = data.timeHours;
+                    }
+
+                    final summary =
+                        '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer} • ${data.material}';
+
+                    return Text(
+                      summary,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    );
+                  },
                 ),
               ],
             ),

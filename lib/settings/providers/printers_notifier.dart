@@ -1,11 +1,12 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:threed_print_cost_calculator/app/components/string_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/printer_state.dart';
 
-final printersProvider =
-    NotifierProvider<PrintersNotifier, PrinterState>(PrintersNotifier.new);
+final printersProvider = NotifierProvider<PrintersNotifier, PrinterState>(
+  PrintersNotifier.new,
+);
 
 class PrintersNotifier extends Notifier<PrinterState> {
   @override
@@ -36,9 +37,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
   }
 
   void updateBedSize(String value) {
-    state = state.copyWith(
-      bedSize: StringInput.dirty(value: value),
-    );
+    state = state.copyWith(bedSize: StringInput.dirty(value: value));
   }
 
   void updateWattage(String value) {

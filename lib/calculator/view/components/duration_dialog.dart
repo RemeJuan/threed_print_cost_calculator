@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
 /// A dialog that lets the user input hours (free numeric) and minutes (0-59).
-/// Returns a Map<String,int> via Navigator.pop: {'hours': hours, 'minutes': minutes}.
+/// Returns a `Map<String,int>` via Navigator.pop: {'hours': hours, 'minutes': minutes}.
 class DurationDialog extends StatefulWidget {
   final int initialHours;
   final int initialMinutes;

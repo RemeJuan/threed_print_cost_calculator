@@ -28,7 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy) \\n"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
     "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
     "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
     "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
@@ -41,6 +41,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("ค่าไฟฟ้า"),
+    "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
+      "Electricity cost",
+    ),
+    "enterNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter a number",
+    ),
+    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
+    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "ความเสี่ยงจากความล้มเหลว (%)",
     ),
@@ -51,6 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "เวลาในการพิมพ์ (ชั่วโมง)",
     ),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
     "kwh": MessageLookupByLibrary.simpleMessage("กิโลวัตต์/ชม"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("ค่าแรง"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง/วัสดุ: "),
@@ -63,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
+      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+    ),
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("นาที"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
@@ -107,9 +120,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("การตั้งค่า"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
-    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("ค่าสปูล/เรซิน"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("ค่าเส้น/เรซิน"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
-      "น้ำหนักสปูล/เรซิน",
+      "น้ำหนักเส้น/เรซิน",
     ),
     "submitButton": MessageLookupByLibrary.simpleMessage("คำนวณ"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),

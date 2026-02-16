@@ -51,6 +51,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get electricityCostLabel => 'Electricity cost';
 
   @override
+  String get electricityCostSettingsLabel => 'Electricity cost';
+
+  @override
   String get submitButton => 'Calculate';
 
   @override
@@ -79,4 +82,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kwh => 'kW/h';
+
+  @override
+  String get enterNumber => 'Please enter a number';
+
+  @override
+  String get invalidNumber => 'Invalid number';
+
+  @override
+  String get supportEmailPrefix => 'For any issues, please mail me at ';
+
+  @override
+  String get supportEmail => 'google@remej.dev';
+
+  @override
+  String get supportIdLabel => 'Please include your Support ID: ';
+
+  @override
+  String get clickToCopy => '(click to copy)';
+
+  @override
+  String get materialWeightExplanation =>
+      'Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.';
+
+  @override
+  String get exportSuccess => 'Export successful';
+
+  @override
+  String get exportError => 'Export failed';
+
+  @override
+  String get exportButton => 'Export';
 }

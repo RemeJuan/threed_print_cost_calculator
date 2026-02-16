@@ -214,6 +214,16 @@ class S {
     );
   }
 
+  /// `Electricity cost`
+  String get electricityCostSettingsLabel {
+    return Intl.message(
+      'Electricity cost',
+      name: 'electricityCostSettingsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Calculate`
   String get submitButton {
     return Intl.message('Calculate', name: 'submitButton', desc: '', args: []);
@@ -454,12 +464,23 @@ class S {
     );
   }
 
-  /// `(click to copy) \n`
+  /// `(click to copy)`
   String get clickToCopy {
     return Intl.message(
-      '(click to copy) \n',
+      '(click to copy)',
       name: 'clickToCopy',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.`
+  String get materialWeightExplanation {
+    return Intl.message(
+      'Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.',
+      name: 'materialWeightExplanation',
+      desc:
+          'Explanation shown in the support/help dialog about what \'Material weight\' and \'Material cost\' refer to.',
       args: [],
     );
   }
@@ -470,6 +491,36 @@ class S {
       'Support ID Copied',
       name: 'supportIdCopied',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export successful`
+  String get exportSuccess {
+    return Intl.message(
+      'Export successful',
+      name: 'exportSuccess',
+      desc: 'Shown when a history export completes successfully',
+      args: [],
+    );
+  }
+
+  /// `Export failed`
+  String get exportError {
+    return Intl.message(
+      'Export failed',
+      name: 'exportError',
+      desc: 'Shown when a history export fails',
+      args: [],
+    );
+  }
+
+  /// `Export`
+  String get exportButton {
+    return Intl.message(
+      'Export',
+      name: 'exportButton',
+      desc: 'Label for export action in history list',
       args: [],
     );
   }
@@ -594,6 +645,26 @@ class S {
     return Intl.message(
       'Work Costs',
       name: 'workCostsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a number`
+  String get enterNumber {
+    return Intl.message(
+      'Please enter a number',
+      name: 'enterNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid number`
+  String get invalidNumber {
+    return Intl.message(
+      'Invalid number',
+      name: 'invalidNumber',
       desc: '',
       args: [],
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/app/view/app.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class MaterialForm extends HookConsumerWidget {
   final String? dbRef;
