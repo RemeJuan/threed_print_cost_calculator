@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// Provider that stores the currently open panel indices as a Set<int>.
+/// Provider that stores the currently open panel indices as a `Set<int>`.
 /// Implemented as a Riverpod v3 `NotifierProvider` so it matches the
 /// project's Riverpod 3 usage.
 final accordionOpenPanelProvider =
