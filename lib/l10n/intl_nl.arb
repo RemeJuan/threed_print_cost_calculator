@@ -40,6 +40,8 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "Spoel/harsgewicht",
   "@spoolWeightLabel": {},
+  "electricityCostSettingsLabel": "Electricity cost",
+  "@electricityCostSettingsLabel": {},
   "submitButton": "Berekenen",
   "@submitButton": {},
   "watt": "Watt",

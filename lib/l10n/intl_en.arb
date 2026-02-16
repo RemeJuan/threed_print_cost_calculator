@@ -17,6 +17,7 @@
   "spoolWeightLabel": "Material weight",
   "spoolCostLabel": "Material cost",
   "electricityCostLabel": "Electricity",
+  "electricityCostSettingsLabel": "Electricity cost",
   "submitButton": "Calculate",
   "resultElectricityPrefix": "Electricity",
   "resultFilamentPrefix": "Filament",

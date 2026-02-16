@@ -43,6 +43,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Costo dell\'elettricità",
     ),
+    "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
+      "Electricity cost",
+    ),
     "enterNumber": MessageLookupByLibrary.simpleMessage(
       "Please enter a number",
     ),

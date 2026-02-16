@@ -41,6 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("Electricity"),
+    "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
+      "Electricity cost",
+    ),
     "enterNumber": MessageLookupByLibrary.simpleMessage(
       "Please enter a number",
     ),

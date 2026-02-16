@@ -14,6 +14,7 @@
   "spoolWeightLabel": "Spool/Resin weight",
   "spoolCostLabel": "Spool/Resin cost",
   "electricityCostLabel": "Electricity cost",
+  "electricityCostSettingsLabel": "Electricity cost",
   "submitButton": "Calculate",
   "resultElectricityPrefix": "Total cost for Electricity: ",
   "resultFilamentPrefix": "Total cost for filament: ",

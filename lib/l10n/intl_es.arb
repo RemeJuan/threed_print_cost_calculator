@@ -40,6 +40,7 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "Peso del carrete/resina",
   "@spoolWeightLabel": {},
+  "electricityCostSettingsLabel": "Electricity cost",
   "submitButton": "Calcular",
   "@submitButton": {},
   "watt": "Vatio",
