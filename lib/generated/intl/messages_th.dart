@@ -28,7 +28,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy) \\n"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
     "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
     "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
     "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
@@ -44,6 +44,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterNumber": MessageLookupByLibrary.simpleMessage(
       "Please enter a number",
     ),
+    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
+    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "ความเสี่ยงจากความล้มเหลว (%)",
     ),
@@ -67,6 +70,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
+      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+    ),
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("นาที"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),

@@ -454,12 +454,23 @@ class S {
     );
   }
 
-  /// `(click to copy) \n`
+  /// `(click to copy)`
   String get clickToCopy {
     return Intl.message(
-      '(click to copy) \n',
+      '(click to copy)',
       name: 'clickToCopy',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.`
+  String get materialWeightExplanation {
+    return Intl.message(
+      'Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.',
+      name: 'materialWeightExplanation',
+      desc:
+          'Explanation shown in the support/help dialog about what \'Material weight\' and \'Material cost\' refer to.',
       args: [],
     );
   }
@@ -470,6 +481,36 @@ class S {
       'Support ID Copied',
       name: 'supportIdCopied',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export successful`
+  String get exportSuccess {
+    return Intl.message(
+      'Export successful',
+      name: 'exportSuccess',
+      desc: 'Shown when a history export completes successfully',
+      args: [],
+    );
+  }
+
+  /// `Export failed`
+  String get exportError {
+    return Intl.message(
+      'Export failed',
+      name: 'exportError',
+      desc: 'Shown when a history export fails',
+      args: [],
+    );
+  }
+
+  /// `Export`
+  String get exportButton {
+    return Intl.message(
+      'Export',
+      name: 'exportButton',
+      desc: 'Label for export action in history list',
       args: [],
     );
   }
@@ -599,31 +640,6 @@ class S {
     );
   }
 
-  /// `Export`
-  String get exportButton {
-    return Intl.message('Export', name: 'exportButton', desc: '', args: []);
-  }
-
-  /// `Export successful`
-  String get exportSuccess {
-    return Intl.message(
-      'Export successful',
-      name: 'exportSuccess',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Export failed`
-  String get exportError {
-    return Intl.message(
-      'Export failed',
-      name: 'exportError',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Please enter a number`
   String get enterNumber {
     return Intl.message(
@@ -665,10 +681,8 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
 
   @override
   bool isSupported(Locale locale) => _isSupported(locale);
-
   @override
   Future<S> load(Locale locale) => S.load(locale);
-
   @override
   bool shouldReload(AppLocalizationDelegate old) => false;
 
