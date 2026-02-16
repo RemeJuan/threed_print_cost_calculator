@@ -24,15 +24,15 @@ dependencies:
     sdk: flutter
   flutter_riverpod: 3.2.1
   flutter_slidable: 4.0.3
-  google_fonts: 8.0.0
+  google_fonts: 8.0.1
   hooks_riverpod: 3.2.1
   intl: 0.20.2
   localizely_sdk: 2.7.5
   path:
   path_provider: 2.1.5
   platform_info: 5.0.0
-  purchases_flutter: 9.11.0
-  purchases_ui_flutter: 9.11.0
+  purchases_flutter: 9.12.0
+  purchases_ui_flutter: 9.12.0
   rate_my_app: 2.3.2
   riverpod: 3.2.1
   sembast: 3.8.6
