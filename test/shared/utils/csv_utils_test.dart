@@ -3,7 +3,6 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
-import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void main() {
