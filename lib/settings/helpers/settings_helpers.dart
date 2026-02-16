@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 class SettingsHelpers {
@@ -9,9 +9,7 @@ class SettingsHelpers {
 
   SettingsHelpers(this.ref);
 
-  Future<void> saveMaterial(
-    MaterialModel value,
-  ) async {
+  Future<void> saveMaterial(MaterialModel value) async {
     final db = ref.read(databaseProvider);
     final store = stringMapStoreFactory.store('materials');
 
