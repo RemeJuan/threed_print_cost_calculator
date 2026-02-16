@@ -17,6 +17,7 @@
   "spoolWeightLabel": "Material weight",
   "spoolCostLabel": "Material cost",
   "electricityCostLabel": "Electricity",
+  "electricityCostSettingsLabel": "Electricity cost",
   "submitButton": "Calculate",
   "resultElectricityPrefix": "Electricity",
   "resultFilamentPrefix": "Filament",
@@ -49,8 +50,24 @@
   "supportEmailPrefix": "For any issues, please mail me at ",
   "supportEmail": "google@remej.dev",
   "supportIdLabel": "Please include your Support ID: ",
-  "clickToCopy": "(click to copy) \n",
+  "clickToCopy": "(click to copy)",
+  "materialWeightExplanation": "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+  "@materialWeightExplanation": {
+    "description": "Explanation shown in the support/help dialog about what 'Material weight' and 'Material cost' refer to."
+  },
   "supportIdCopied": "Support ID Copied",
+  "exportSuccess": "Export successful",
+  "@exportSuccess": {
+    "description": "Shown when a history export completes successfully"
+  },
+  "exportError": "Export failed",
+  "@exportError": {
+    "description": "Shown when a history export fails"
+  },
+  "exportButton": "Export",
+  "@exportButton": {
+    "description": "Label for export action in history list"
+  },
   "privacyPolicyLink": "Privacy Policy",
   "termsOfUseLink": "Terms of Use",
   "separator": " | ",
@@ -66,5 +83,7 @@
   "labourCostLabel": "Labour",
   "riskCostLabel": "Risk",
   "totalCostLabel": "Total",
-  "workCostsLabel": "Work Costs"
+  "workCostsLabel": "Work Costs",
+  "enterNumber": "Please enter a number",
+  "invalidNumber": "Invalid number"
 }

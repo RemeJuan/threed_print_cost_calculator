@@ -1,5 +1,5 @@
 import 'package:formz/formz.dart';
-import 'package:threed_print_cost_calculator/app/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
 class CalculatorState with FormzMixin {
@@ -73,16 +73,16 @@ class CalculatorState with FormzMixin {
 
   @override
   List<FormzInput> get inputs => [
-        watt,
-        kwCost,
-        printWeight,
-        hours,
-        minutes,
-        spoolWeight,
-        spoolCost,
-        wearAndTear,
-        failureRisk,
-        labourRate,
-        labourTime,
-      ];
+    watt,
+    kwCost,
+    printWeight,
+    hours,
+    minutes,
+    spoolWeight,
+    spoolCost,
+    wearAndTear,
+    failureRisk,
+    labourRate,
+    labourTime,
+  ];
 }

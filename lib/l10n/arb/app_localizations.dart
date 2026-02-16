@@ -178,6 +178,12 @@ abstract class AppLocalizations {
   /// **'Electricity cost'**
   String get electricityCostLabel;
 
+  /// No description provided for @electricityCostSettingsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity cost'**
+  String get electricityCostSettingsLabel;
+
   /// No description provided for @submitButton.
   ///
   /// In en, this message translates to:
@@ -237,6 +243,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'kW/h'**
   String get kwh;
+
+  /// No description provided for @enterNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a number'**
+  String get enterNumber;
+
+  /// No description provided for @invalidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid number'**
+  String get invalidNumber;
+
+  /// No description provided for @supportEmailPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'For any issues, please mail me at '**
+  String get supportEmailPrefix;
+
+  /// No description provided for @supportEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'google@remej.dev'**
+  String get supportEmail;
+
+  /// No description provided for @supportIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Please include your Support ID: '**
+  String get supportIdLabel;
+
+  /// No description provided for @clickToCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'(click to copy)'**
+  String get clickToCopy;
+
+  /// Explanation shown in the support/help dialog about what 'Material weight' and 'Material cost' refer to.
+  ///
+  /// In en, this message translates to:
+  /// **'Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.'**
+  String get materialWeightExplanation;
+
+  /// Shown when a history export completes successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Export successful'**
+  String get exportSuccess;
+
+  /// Shown when a history export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed'**
+  String get exportError;
+
+  /// Label for export action in history list
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get exportButton;
 }
 
 class _AppLocalizationsDelegate

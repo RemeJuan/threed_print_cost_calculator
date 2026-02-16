@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:threed_print_cost_calculator/app/components/accordion_menu/accordion_menu.dart';
-import 'package:threed_print_cost_calculator/app/components/accordion_menu/model/accordion_item_model.dart';
+import 'package:threed_print_cost_calculator/shared/components/accordion_menu/accordion_menu.dart';
+import 'package:threed_print_cost_calculator/shared/components/accordion_menu/model/accordion_item_model.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/materials/materials.dart';
@@ -41,7 +41,7 @@ class SettingsPage extends HookWidget {
               initiallyExpanded: true,
               isLocked: !premium.value,
             ),
-            if (premium.value)
+            if (premium.value) ...[
               AccordionItem(
                 header: Text(l10n.printersHeader, style: style),
                 body: const Printers(),
@@ -51,7 +51,6 @@ class SettingsPage extends HookWidget {
                   const Icon(Icons.add),
                 ),
               ),
-            if (premium.value)
               AccordionItem(
                 header: Text(l10n.materialsHeader, style: style),
                 body: const Materials(),
@@ -61,10 +60,11 @@ class SettingsPage extends HookWidget {
                   const Icon(Icons.add),
                 ),
               ),
-            AccordionItem(
-              header: Text(l10n.workCostsLabel, style: style),
-              body: const WorkCostsSettings(),
-            ),
+              AccordionItem(
+                header: Text(l10n.workCostsLabel, style: style),
+                body: const WorkCostsSettings(),
+              ),
+            ],
           ],
         ),
       ],
