@@ -32,6 +32,7 @@ class HistoryItem extends HookConsumerWidget {
               // export this single entry with error handling and user feedback
               try {
                 await exportCSVFile([data]);
+                if (!context.mounted) return;
                 ScaffoldMessenger.of(
                   context,
                 ).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
