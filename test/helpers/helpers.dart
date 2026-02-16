@@ -13,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_platform_interface/in_memory_shared_preferences_async.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_async_platform_interface.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:sembast/sembast_memory.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 Future<void> setupTest() async {
   SharedPreferences.setMockInitialValues({});
@@ -26,9 +28,17 @@ extension PumpApp on WidgetTester {
     List<Override> overrides = const [],
     List<NavigatorObserver> observers = const [],
   ]) async {
+    // Provide a default in-memory database override first. Tests can still
+    // override this by passing their own override which will appear later.
+    final db = await databaseFactoryMemory.openDatabase('test.db');
+    final effectiveOverrides = <Override>[
+      databaseProvider.overrideWithValue(db),
+      ...overrides,
+    ];
+
     return pumpWidget(
       ProviderScope(
-        overrides: overrides,
+        overrides: effectiveOverrides,
         child: MaterialApp(
           localizationsDelegates: const [
             S.delegate,
@@ -37,12 +47,8 @@ extension PumpApp on WidgetTester {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: S.delegate.supportedLocales,
-          home: Scaffold(
-            body: widget,
-          ),
-          navigatorObservers: [
-            ...observers,
-          ],
+          home: Scaffold(body: widget),
+          navigatorObservers: [...observers],
         ),
       ),
     );

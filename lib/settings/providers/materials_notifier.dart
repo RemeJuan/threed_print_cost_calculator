@@ -1,12 +1,13 @@
 import 'package:riverpod/riverpod.dart';
-import 'package:threed_print_cost_calculator/app/components/num_input.dart';
-import 'package:threed_print_cost_calculator/app/components/string_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/material_state.dart';
 
-final materialsProvider =
-    NotifierProvider<MaterialsProvider, MaterialState>(MaterialsProvider.new);
+final materialsProvider = NotifierProvider<MaterialsProvider, MaterialState>(
+  MaterialsProvider.new,
+);
 
 class MaterialsProvider extends Notifier<MaterialState> {
   @override
@@ -40,7 +41,8 @@ class MaterialsProvider extends Notifier<MaterialState> {
 
   void updateCost(String value) {
     state = state.copyWith(
-        cost: NumberInput.dirty(value: num.tryParse(value) ?? 0));
+      cost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+    );
   }
 
   void updateColor(String value) {
@@ -49,7 +51,8 @@ class MaterialsProvider extends Notifier<MaterialState> {
 
   void updateWeight(String value) {
     state = state.copyWith(
-        weight: NumberInput.dirty(value: num.tryParse(value) ?? 0));
+      weight: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+    );
   }
 
   void submit(String? dbRef) {

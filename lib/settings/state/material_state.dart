@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
-import 'package:threed_print_cost_calculator/app/components/num_input.dart';
-import 'package:threed_print_cost_calculator/app/components/string_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 
 class MaterialState with FormzMixin {
   final StringInput name;

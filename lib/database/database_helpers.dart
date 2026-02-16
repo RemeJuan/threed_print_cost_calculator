@@ -5,7 +5,7 @@ import 'package:sembast/sembast.dart';
 
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
-import 'package:threed_print_cost_calculator/app/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
 final dbHelpersProvider = Provider.family<DataBaseHelpers, DBName>(
@@ -23,10 +23,7 @@ class DataBaseHelpers {
 
   Database get db => ref.read(databaseProvider);
 
-  Future<void> addOrUpdateRecord(
-    String key,
-    String value,
-  ) async {
+  Future<void> addOrUpdateRecord(String key, String value) async {
     final store = stringMapStoreFactory.store(dbName.name);
     // Check if the record exists before adding or updating it.
     await db.transaction((txn) async {
@@ -83,9 +80,7 @@ class DataBaseHelpers {
     return null;
   }
 
-  Future<void> putRecord(
-    Map<String, dynamic> data,
-  ) async {
+  Future<void> putRecord(Map<String, dynamic> data) async {
     final store = StoreRef.main();
     debugPrint("the put data: $data - ${dbName.name}");
     try {
@@ -101,9 +96,13 @@ class DataBaseHelpers {
     if (settings == null) {
       return GeneralSettingsModel.initial();
     }
-    final printers = await store.record(DBName.printers.name).get(db);
-    final printerIds = printers != null
-        ? (printers as Map<String, dynamic>).keys.toList()
+
+    // Read printer IDs from the dedicated 'printers' store so we validate
+    // activePrinter against actual stored printer records.
+    final printersStore = stringMapStoreFactory.store(DBName.printers.name);
+    final printerSnapshots = await printersStore.find(db);
+    final printerIds = printerSnapshots.isNotEmpty
+        ? printerSnapshots.map((r) => r.key.toString()).toList()
         : <String>[];
 
     final generalSettings = GeneralSettingsModel.fromMap(

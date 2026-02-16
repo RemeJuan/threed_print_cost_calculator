@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class AddPrinter extends HookConsumerWidget {
   const AddPrinter({this.dbRef, super.key});

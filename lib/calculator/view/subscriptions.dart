@@ -90,7 +90,7 @@ class Subscriptions extends HookWidget {
                               customerInfo = result;
                             }
 
-                            if (customerInfo != null) {
+                            if (customerInfo != null && context.mounted) {
                               Navigator.pop(context);
                             }
                           } on PlatformException catch (e) {

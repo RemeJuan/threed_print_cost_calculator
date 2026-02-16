@@ -40,6 +40,7 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "Peso del carrete/resina",
   "@spoolWeightLabel": {},
+  "electricityCostSettingsLabel": "Electricity cost",
   "submitButton": "Calcular",
   "@submitButton": {},
   "watt": "Vatio",
@@ -98,9 +99,24 @@
   "@supportEmail": {},
   "supportIdLabel": "Please include your Support ID: ",
   "@supportIdLabel": {},
-  "clickToCopy": "(click to copy) \\n",
-  "@clickToCopy": {},
+  "clickToCopy": "(click to copy)",
+  "materialWeightExplanation": "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+  "@materialWeightExplanation": {
+    "description": "Explanation shown in the support/help dialog about what 'Material weight' and 'Material cost' refer to."
+  },
   "supportIdCopied": "Support ID Copied",
+  "exportSuccess": "Export successful",
+  "@exportSuccess": {
+    "description": "Shown when a history export completes successfully"
+  },
+  "exportError": "Export failed",
+  "@exportError": {
+    "description": "Shown when a history export fails"
+  },
+  "exportButton": "Export",
+  "@exportButton": {
+    "description": "Label for export action in history list"
+  },
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacy Policy",
   "@privacyPolicyLink": {},
@@ -133,5 +149,9 @@
   "totalCostLabel": "Total",
   "@totalCostLabel": {},
   "workCostsLabel": "Costos de Trabajo",
-  "@workCostsLabel": {}
+  "@workCostsLabel": {},
+  "enterNumber": "Please enter a number",
+  "@enterNumber": {},
+  "invalidNumber": "Invalid number",
+  "@invalidNumber": {}
 }

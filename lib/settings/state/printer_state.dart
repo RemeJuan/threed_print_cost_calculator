@@ -1,5 +1,5 @@
 import 'package:formz/formz.dart';
-import 'package:threed_print_cost_calculator/app/components/string_input.dart';
+import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 
 class PrinterState with FormzMixin {
   final StringInput name;
