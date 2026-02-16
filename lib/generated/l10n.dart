@@ -214,6 +214,16 @@ class S {
     );
   }
 
+  /// `Electricity cost`
+  String get electricityCostSettingsLabel {
+    return Intl.message(
+      'Electricity cost',
+      name: 'electricityCostSettingsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Calculate`
   String get submitButton {
     return Intl.message('Calculate', name: 'submitButton', desc: '', args: []);

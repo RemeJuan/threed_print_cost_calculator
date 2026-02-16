@@ -41,6 +41,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("ค่าไฟฟ้า"),
+    "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
+      "Electricity cost",
+    ),
     "enterNumber": MessageLookupByLibrary.simpleMessage(
       "Please enter a number",
     ),
@@ -117,9 +120,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("การตั้งค่า"),
     "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
-    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("ค่าสปูล/เรซิน"),
+    "spoolCostLabel": MessageLookupByLibrary.simpleMessage("ค่าเส้น/เรซิน"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
-      "น้ำหนักสปูล/เรซิน",
+      "น้ำหนักเส้น/เรซิน",
     ),
     "submitButton": MessageLookupByLibrary.simpleMessage("คำนวณ"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),

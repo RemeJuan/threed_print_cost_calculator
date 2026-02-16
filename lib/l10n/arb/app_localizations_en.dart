@@ -51,6 +51,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get electricityCostLabel => 'Electricity cost';
 
   @override
+  String get electricityCostSettingsLabel => 'Electricity cost';
+
+  @override
   String get submitButton => 'Calculate';
 
   @override

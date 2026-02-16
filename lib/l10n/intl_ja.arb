@@ -40,6 +40,8 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "スプール/樹脂重量",
   "@spoolWeightLabel": {},
+  "electricityCostSettingsLabel": "Electricity cost",
+  "@electricityCostSettingsLabel": {},
   "submitButton": "計算する",
   "@submitButton": {},
   "watt": "ワット",

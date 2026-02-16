@@ -178,6 +178,12 @@ abstract class AppLocalizations {
   /// **'Electricity cost'**
   String get electricityCostLabel;
 
+  /// No description provided for @electricityCostSettingsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity cost'**
+  String get electricityCostSettingsLabel;
+
   /// No description provided for @submitButton.
   ///
   /// In en, this message translates to:

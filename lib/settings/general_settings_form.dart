@@ -45,7 +45,7 @@ class GeneralSettings extends HookConsumerWidget {
                       await dbHelper.putRecord(updated.toMap());
                     },
                     decoration: InputDecoration(
-                      labelText: l10n.electricityCostLabel,
+                      labelText: l10n.electricityCostSettingsLabel,
                       suffixText: l10n.kwh,
                     ),
                   ),

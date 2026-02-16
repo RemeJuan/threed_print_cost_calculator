@@ -40,6 +40,8 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "Berat kumparan/Resin",
   "@spoolWeightLabel": {},
+  "electricityCostSettingsLabel": "Electricity cost",
+  "@electricityCostSettingsLabel": {},
   "submitButton": "Menghitung",
   "@submitButton": {},
   "watt": "Watt",
