@@ -72,16 +72,30 @@ class GeneralSettings extends HookConsumerWidget {
       if (trimmed.isEmpty) return;
 
       // wattage is an integer-like value in the model; try parse as int first
-      final parsedInt = int.tryParse(trimmed.replaceAll(',', '.'));
-      final parsed =
-          parsedInt ?? double.tryParse(trimmed.replaceAll(',', '.'))?.toInt();
+      final parsedInt = int.tryParse(trimmed);
+      int? parsed;
+      bool fromInt = false;
+
+      if (parsedInt != null) {
+        parsed = parsedInt;
+        fromInt = true;
+      } else {
+        final parsedDouble = double.tryParse(trimmed.replaceAll(',', '.'));
+        if (parsedDouble != null) {
+          parsed = parsedDouble.toInt();
+        }
+      }
+
       if (parsed == null) return;
 
       wattDebounceRef.value = Timer(
         const Duration(milliseconds: 400),
         () async {
           try {
-            final updated = data.copyWith(wattage: parsed.toStringAsFixed(2));
+            final wattString = fromInt
+                ? parsed.toString()
+                : parsed?.toStringAsFixed(2);
+            final updated = data.copyWith(wattage: wattString);
             await dbHelper.putRecord(updated.toMap());
           } catch (e, st) {
             if (kDebugMode) print('Error persisting wattage: $e\n$st');
@@ -120,7 +134,7 @@ class GeneralSettings extends HookConsumerWidget {
         wattController.text = data.wattage.toString();
       }
       return null;
-    }, [data]);
+    }, [data.electricityCost, data.wattage]);
 
     return Container(
       padding: const EdgeInsets.only(bottom: 12),
