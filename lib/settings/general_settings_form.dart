@@ -81,7 +81,7 @@ class GeneralSettings extends HookConsumerWidget {
         const Duration(milliseconds: 400),
         () async {
           try {
-            final updated = data.copyWith(wattage: parsed.toStringAsFixed(2));
+            final updated = data.copyWith(wattage: parsed.toString());
             await dbHelper.putRecord(updated.toMap());
           } catch (e, st) {
             if (kDebugMode) print('Error persisting wattage: $e\n$st');
