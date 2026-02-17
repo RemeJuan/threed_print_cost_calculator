@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class MaterialForm extends HookConsumerWidget {
   final String? dbRef;
@@ -15,6 +17,48 @@ class MaterialForm extends HookConsumerWidget {
     final state = ref.watch(materialsProvider);
     final l10n = S.of(context);
 
+    // Create controllers and focus nodes at the top-level of the build to keep
+    // hook calls linear and avoid wrapping fields in Builders.
+    final nameController = useTextEditingController(text: state.name.value);
+    final nameFocus = useFocusNode();
+    useEffect(() {
+      if (!nameFocus.hasFocus) nameController.text = state.name.value;
+      return null;
+    }, [state.name.value]);
+
+    final colorController = useTextEditingController(text: state.color.value);
+    final colorFocus = useFocusNode();
+    useEffect(() {
+      if (!colorFocus.hasFocus) colorController.text = state.color.value;
+      return null;
+    }, [state.color.value]);
+
+    final weightController = useTextEditingController(
+      text: state.weight.value != null ? state.weight.value.toString() : '',
+    );
+    final weightFocus = useFocusNode();
+    useEffect(() {
+      if (!weightFocus.hasFocus) {
+        weightController.text = state.weight.value != null
+            ? state.weight.value.toString()
+            : '';
+      }
+      return null;
+    }, [state.weight.value]);
+
+    final costController = useTextEditingController(
+      text: state.cost.value != null ? state.cost.value.toString() : '',
+    );
+    final costFocus = useFocusNode();
+    useEffect(() {
+      if (!costFocus.hasFocus) {
+        costController.text = state.cost.value != null
+            ? state.cost.value.toString()
+            : '';
+      }
+      return null;
+    }, [state.cost.value]);
+
     return Dialog(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -24,37 +68,49 @@ class MaterialForm extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                initialValue: state.name.value,
+              FocusSafeTextField(
+                controller: nameController,
+                externalText: state.name.value,
+                focusNode: nameFocus,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(labelText: l10n.materialNameLabel),
                 onChanged: notifier.updateName,
               ),
-              TextFormField(
-                initialValue: state.color.value,
+
+              FocusSafeTextField(
+                controller: colorController,
+                externalText: state.color.value,
+                focusNode: colorFocus,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(labelText: l10n.colorLabel),
                 onChanged: notifier.updateColor,
               ),
-              TextFormField(
-                initialValue: state.weight.value != null
+
+              FocusSafeTextField(
+                controller: weightController,
+                externalText: state.weight.value != null
                     ? state.weight.value.toString()
                     : '',
+                focusNode: weightFocus,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: l10n.weightLabel,
                   suffix: Text(l10n.gramsSuffix),
                 ),
-                onChanged: notifier.updateWeight,
+                onChanged: (v) => notifier.updateWeight(v),
               ),
-              TextFormField(
-                initialValue: state.cost.value != null
+
+              FocusSafeTextField(
+                controller: costController,
+                externalText: state.cost.value != null
                     ? state.cost.value.toString()
                     : '',
+                focusNode: costFocus,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: l10n.costLabel),
-                onChanged: notifier.updateCost,
+                onChanged: (v) => notifier.updateCost(v),
               ),
+
               const SizedBox(height: 16),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
