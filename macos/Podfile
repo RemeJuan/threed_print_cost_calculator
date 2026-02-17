@@ -1,4 +1,4 @@
-platform :osx, '10.11'
+platform :osx, '10.15'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -36,5 +36,31 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
+
+    # Ensure pods use a modern macOS deployment target and generate dSYMs
+    target.build_configurations.each do |config|
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '10.15'
+      config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
+    end
+  end
+
+  # Also ensure the main Runner Xcode project will produce dSYMs for all build configurations.
+  begin
+    require 'xcodeproj'
+    runner_project_path = File.join(File.dirname(__FILE__), 'Runner.xcodeproj')
+    if File.exist?(runner_project_path)
+      project = Xcodeproj::Project.open(runner_project_path)
+      project.targets.each do |target|
+        target.build_configurations.each do |config|
+          # Set to dwarf-with-dsym to ensure .dSYM generation
+          config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
+        end
+      end
+      project.save
+    end
+  rescue LoadError
+    puts 'xcodeproj gem not available; skipping Runner.xcodeproj modifications.'
+  rescue => e
+    puts "Failed to modify Runner.xcodeproj build settings: #{e}"
   end
 end

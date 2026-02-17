@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
@@ -15,6 +17,8 @@ final calculatorProvider =
     );
 
 class CalculatorProvider extends Notifier<CalculatorState> {
+  Timer? _submitDebounce;
+
   // Avoid storing late/nullable fields that may not be initialized when tests
   // override the provider. Use on-demand getters that read the required
   // resources from `ref` so they are always available.
@@ -24,6 +28,14 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   @override
   CalculatorState build() {
+    // Register a disposal callback so any pending submit timer is cancelled
+    // when the notifier is disposed. This prevents timers firing after the
+    // provider is torn down and avoids memory/resource leaks.
+    ref.onDispose(() {
+      _submitDebounce?.cancel();
+      _submitDebounce = null;
+    });
+
     return CalculatorState();
   }
 
@@ -252,6 +264,14 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
 
     updateResults(results);
+  }
+
+  /// Schedule a debounced submit to avoid running heavy calculations on every keystroke.
+  ///
+  /// Cancels any previously scheduled submit and schedules a new one after [delay].
+  void submitDebounced({Duration delay = const Duration(milliseconds: 250)}) {
+    _submitDebounce?.cancel();
+    _submitDebounce = Timer(delay, submit);
   }
 
   Future<Map<String, Object?>> _getValue(String key) async {

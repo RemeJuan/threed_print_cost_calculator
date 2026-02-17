@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class AdjustmentsSection extends HookConsumerWidget {
   final bool premium;
@@ -15,38 +17,47 @@ class AdjustmentsSection extends HookConsumerWidget {
     final l10n = S.of(context);
 
     if (!premium) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
+
+    // Local controllers and focus nodes
+    final labourRateController = useTextEditingController(
+      text: state.labourRate.value?.toString() ?? '',
+    );
+    final labourRateFocus = useFocusNode();
+    final labourTimeController = useTextEditingController(
+      text: state.labourTime.value?.toString() ?? '',
+    );
+    final labourTimeFocus = useFocusNode();
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
-          child: TextFormField(
+          child: FocusSafeTextField(
+            controller: labourRateController,
+            externalText: state.labourRate.value?.toString() ?? '',
+            focusNode: labourRateFocus,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.labourRateLabel),
-            initialValue: state.labourRate.value != null
-                ? state.labourRate.value.toString()
-                : '',
             onChanged: (value) async {
-              // Local-only change for calculator; do not persist to settings
               notifier.setLabourRate(num.tryParse(value) ?? 0);
-              notifier.submit();
+              notifier.submitDebounced();
             },
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: TextFormField(
-            initialValue: state.labourTime.value != null
-                ? state.labourTime.value.toString()
-                : '',
+          child: FocusSafeTextField(
+            controller: labourTimeController,
+            externalText: state.labourTime.value?.toString() ?? '',
+            focusNode: labourTimeFocus,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.labourTimeLabel),
             onChanged: (value) async {
               notifier
                 ..updateLabourTime(num.tryParse(value) ?? 0)
-                ..submit();
+                ..submitDebounced();
             },
           ),
         ),

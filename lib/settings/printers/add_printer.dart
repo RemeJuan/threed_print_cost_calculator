@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 class AddPrinter extends HookConsumerWidget {
   const AddPrinter({this.dbRef, super.key});
@@ -15,6 +17,16 @@ class AddPrinter extends HookConsumerWidget {
     final state = ref.watch(printersProvider);
     final l10n = S.of(context);
 
+    // Hook-managed controllers and focus nodes to avoid clobbering while typing
+    final nameController = useTextEditingController(text: state.name.value);
+    final nameFocus = useFocusNode();
+
+    final bedController = useTextEditingController(text: state.bedSize.value);
+    final bedFocus = useFocusNode();
+
+    final wattController = useTextEditingController(text: state.wattage.value);
+    final wattFocus = useFocusNode();
+
     return Dialog(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -24,20 +36,26 @@ class AddPrinter extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                initialValue: state.name.value,
+              FocusSafeTextField(
+                controller: nameController,
+                externalText: state.name.value,
+                focusNode: nameFocus,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(labelText: l10n.printerNameLabel),
                 onChanged: notifier.updateName,
               ),
-              TextFormField(
-                initialValue: state.bedSize.value,
+              FocusSafeTextField(
+                controller: bedController,
+                externalText: state.bedSize.value,
+                focusNode: bedFocus,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(labelText: l10n.bedSizeLabel),
                 onChanged: notifier.updateBedSize,
               ),
-              TextFormField(
-                initialValue: state.wattage.value,
+              FocusSafeTextField(
+                controller: wattController,
+                externalText: state.wattage.value,
+                focusNode: wattFocus,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(labelText: l10n.wattageLabel),
                 onChanged: notifier.updateWattage,
