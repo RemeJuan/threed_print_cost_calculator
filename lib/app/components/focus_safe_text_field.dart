@@ -67,16 +67,25 @@ class _FocusSafeTextFieldState extends State<FocusSafeTextField> {
     super.didUpdateWidget(oldWidget);
     // If the focusNode changed ownership, adjust listeners
     if (oldWidget.focusNode != widget.focusNode) {
-      try {
+      // If the old widget previously used an internal node (we owned it),
+      // remove its listener and dispose it to avoid leaks.
+      if (oldWidget.focusNode == null || _ownsNode) {
+        _internalNode?.removeListener(_onFocusChange);
+        _internalNode?.dispose();
+        _internalNode = null;
+        _ownsNode = false;
+      } else {
+        // Old widget had an external node; only remove listener from it.
         oldWidget.focusNode?.removeListener(_onFocusChange);
-      } catch (_) {}
+      }
 
+      // If the new widget needs an internal node, create it now.
       if (widget.focusNode == null && !_ownsNode) {
-        // we now own an internal node
         _internalNode = FocusNode();
         _ownsNode = true;
       }
 
+      // Attach listener to the current node.
       _node.addListener(_onFocusChange);
     }
 
@@ -111,9 +120,7 @@ class _FocusSafeTextFieldState extends State<FocusSafeTextField> {
 
   @override
   void dispose() {
-    try {
-      _node.removeListener(_onFocusChange);
-    } catch (_) {}
+    _node.removeListener(_onFocusChange);
     if (_ownsNode) {
       _internalNode?.dispose();
       _internalNode = null;
