@@ -74,11 +74,9 @@ class GeneralSettings extends HookConsumerWidget {
       // wattage is an integer-like value in the model; try parse as int first
       final parsedInt = int.tryParse(trimmed);
       int? parsed;
-      bool fromInt = false;
 
       if (parsedInt != null) {
         parsed = parsedInt;
-        fromInt = true;
       } else {
         final parsedDouble = double.tryParse(trimmed.replaceAll(',', '.'));
         if (parsedDouble != null) {
@@ -92,10 +90,7 @@ class GeneralSettings extends HookConsumerWidget {
         const Duration(milliseconds: 400),
         () async {
           try {
-            final wattString = fromInt
-                ? parsed.toString()
-                : parsed?.toStringAsFixed(2);
-            final updated = data.copyWith(wattage: wattString);
+            final updated = data.copyWith(wattage: parsed.toString());
             await dbHelper.putRecord(updated.toMap());
           } catch (e, st) {
             if (kDebugMode) print('Error persisting wattage: $e\n$st');

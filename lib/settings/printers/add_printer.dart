@@ -20,24 +20,12 @@ class AddPrinter extends HookConsumerWidget {
     // Hook-managed controllers and focus nodes to avoid clobbering while typing
     final nameController = useTextEditingController(text: state.name.value);
     final nameFocus = useFocusNode();
-    useEffect(() {
-      if (!nameFocus.hasFocus) nameController.text = state.name.value;
-      return null;
-    }, [state.name.value]);
 
     final bedController = useTextEditingController(text: state.bedSize.value);
     final bedFocus = useFocusNode();
-    useEffect(() {
-      if (!bedFocus.hasFocus) bedController.text = state.bedSize.value;
-      return null;
-    }, [state.bedSize.value]);
 
     final wattController = useTextEditingController(text: state.wattage.value);
     final wattFocus = useFocusNode();
-    useEffect(() {
-      if (!wattFocus.hasFocus) wattController.text = state.wattage.value;
-      return null;
-    }, [state.wattage.value]);
 
     return Dialog(
       child: SingleChildScrollView(

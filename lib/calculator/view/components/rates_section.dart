@@ -30,16 +30,6 @@ class RatesSection extends HookConsumerWidget {
     );
     final failureFocus = useFocusNode();
 
-    useEffect(() {
-      if (!wearFocus.hasFocus) {
-        wearController.text = state.wearAndTear.value?.toString() ?? '';
-      }
-      if (!failureFocus.hasFocus) {
-        failureController.text = state.failureRisk.value?.toString() ?? '';
-      }
-      return null;
-    }, [state]);
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [

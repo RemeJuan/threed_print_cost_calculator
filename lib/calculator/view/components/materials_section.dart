@@ -31,22 +31,6 @@ class MaterialsSection extends HookConsumerWidget {
     final spoolCostFocus = useFocusNode();
     final printWeightFocus = useFocusNode();
 
-    // Keep controllers in sync with external state only when not focused
-    useEffect(() {
-      if (!spoolWeightFocus.hasFocus) {
-        spoolWeightController.text = state.spoolWeight.value?.toString() ?? '';
-      }
-      if (!spoolCostFocus.hasFocus) {
-        spoolCostController.text = state.spoolCostText.isNotEmpty
-            ? state.spoolCostText
-            : (state.spoolCost.value?.toString() ?? '');
-      }
-      if (!printWeightFocus.hasFocus) {
-        printWeightController.text = state.printWeight.value?.toString() ?? '';
-      }
-      return null;
-    }, [state]);
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
