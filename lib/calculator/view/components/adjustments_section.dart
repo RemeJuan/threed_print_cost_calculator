@@ -30,16 +30,6 @@ class AdjustmentsSection extends HookConsumerWidget {
     );
     final labourTimeFocus = useFocusNode();
 
-    useEffect(() {
-      if (!labourRateFocus.hasFocus) {
-        labourRateController.text = state.labourRate.value?.toString() ?? '';
-      }
-      if (!labourTimeFocus.hasFocus) {
-        labourTimeController.text = state.labourTime.value?.toString() ?? '';
-      }
-      return null;
-    }, [state]);
-
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
