@@ -17,7 +17,7 @@ class AdjustmentsSection extends HookConsumerWidget {
     final l10n = S.of(context);
 
     if (!premium) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     // Local controllers and focus nodes
