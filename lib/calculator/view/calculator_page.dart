@@ -53,26 +53,8 @@ class CalculatorPage extends HookConsumerWidget {
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = S.of(context);
 
-    final spoolWeightController = useTextEditingController(
-      text: state.spoolWeight.value?.toString() ?? '',
-    );
-    final spoolCostController = useTextEditingController(
-      text: state.spoolCostText.isNotEmpty
-          ? state.spoolCostText
-          : (state.spoolCost.value?.toString() ?? ''),
-    );
-    final printWeightController = useTextEditingController(
-      text: state.printWeight.value?.toString() ?? '',
-    );
-
-    useEffect(() {
-      spoolWeightController.text = state.spoolWeight.value?.toString() ?? '';
-      spoolCostController.text = state.spoolCostText.isNotEmpty
-          ? state.spoolCostText
-          : (state.spoolCost.value?.toString() ?? '');
-      printWeightController.text = state.printWeight.value?.toString() ?? '';
-      return null;
-    }, [state]);
+    // Section-level inputs manage their own controllers and focus nodes to
+    // avoid prop drilling. MaterialsSection will create its own controllers.
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -93,11 +75,8 @@ class CalculatorPage extends HookConsumerWidget {
           children: [
             if (premium.value) const PrinterSelect(),
             if (premium.value) const MaterialSelect(),
-            MaterailsSection(
-              printWeightController: printWeightController,
-              spoolCostController: spoolCostController,
-              spoolWeightController: spoolWeightController,
-            ),
+            // Let MaterialsSection manage its own controllers and focus state
+            const MaterialsSection(),
             const SizedBox(height: 8),
             TimeSection(),
             const SizedBox(height: 8),

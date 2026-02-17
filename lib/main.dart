@@ -81,7 +81,7 @@ Future<void> revenueCat() async {
   late PurchasesConfiguration configuration;
   if (Platform.isAndroid) {
     configuration = PurchasesConfiguration('goog_JuJbmwmKhkyRSsswDqoVyMDlGdM');
-  } else if (Platform.isIOS) {
+  } else if (Platform.isIOS || Platform.isMacOS) {
     configuration = PurchasesConfiguration('appl_pKHoxoNodCJqGiKMyPkOzCNtcyF');
   }
   await Purchases.configure(configuration);
