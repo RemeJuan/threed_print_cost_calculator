@@ -21,43 +21,19 @@ class MaterialForm extends HookConsumerWidget {
     // hook calls linear and avoid wrapping fields in Builders.
     final nameController = useTextEditingController(text: state.name.value);
     final nameFocus = useFocusNode();
-    useEffect(() {
-      if (!nameFocus.hasFocus) nameController.text = state.name.value;
-      return null;
-    }, [state.name.value]);
 
     final colorController = useTextEditingController(text: state.color.value);
     final colorFocus = useFocusNode();
-    useEffect(() {
-      if (!colorFocus.hasFocus) colorController.text = state.color.value;
-      return null;
-    }, [state.color.value]);
 
     final weightController = useTextEditingController(
       text: state.weight.value != null ? state.weight.value.toString() : '',
     );
     final weightFocus = useFocusNode();
-    useEffect(() {
-      if (!weightFocus.hasFocus) {
-        weightController.text = state.weight.value != null
-            ? state.weight.value.toString()
-            : '';
-      }
-      return null;
-    }, [state.weight.value]);
 
     final costController = useTextEditingController(
       text: state.cost.value != null ? state.cost.value.toString() : '',
     );
     final costFocus = useFocusNode();
-    useEffect(() {
-      if (!costFocus.hasFocus) {
-        costController.text = state.cost.value != null
-            ? state.cost.value.toString()
-            : '';
-      }
-      return null;
-    }, [state.cost.value]);
 
     return Dialog(
       child: SingleChildScrollView(
