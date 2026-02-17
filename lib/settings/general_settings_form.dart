@@ -90,73 +90,75 @@ class GeneralSettings extends HookConsumerWidget {
       );
     }
 
-    return StreamBuilder(
-      stream: store.record(DBName.settings.name).onSnapshot(db),
-      builder: (context, snapshot) {
-        late GeneralSettingsModel data;
+    // Use a hook to subscribe to the database record stream at top-level
+    final snapshot = useStream<RecordSnapshot?>(
+      store.record(DBName.settings.name).onSnapshot(db),
+    );
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox.shrink();
-        }
+    late GeneralSettingsModel data;
 
-        if (snapshot.hasData) {
-          data = GeneralSettingsModel.fromMap(
-            snapshot.data!.value as Map<String, dynamic>,
-          );
-        } else {
-          data = GeneralSettingsModel.initial();
-        }
+    // If the stream has an error, log it (keep rendering the form with initial/default data)
+    if (snapshot.hasError) {
+      if (kDebugMode) print('GeneralSettings stream error: ${snapshot.error}');
+    }
 
-        // Sync controller text with external data when field is not focused
-        useEffect(() {
-          if (!electricityFocus.hasFocus) {
-            electricityController.text = data.electricityCost.toString();
-          }
-          if (!wattFocus.hasFocus) {
-            wattController.text = data.wattage.toString();
-          }
-          return null;
-        }, [data]);
+    if (snapshot.hasData && snapshot.data?.value != null) {
+      data = GeneralSettingsModel.fromMap(
+        snapshot.data!.value as Map<String, dynamic>,
+      );
+    } else {
+      // Use initial/default settings until the database provides a value so the form is visible
+      data = GeneralSettingsModel.initial();
+    }
 
-        return Container(
-          padding: EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              Expanded(
-                child: FocusSafeTextField(
-                  controller: electricityController,
-                  externalText: data.electricityCost.toString(),
-                  focusNode: electricityFocus,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: l10n.electricityCostSettingsLabel,
-                    suffixText: l10n.kwh,
-                  ),
-                  onChanged: (value) async {
-                    await persistElectricity(value, data);
-                  },
-                ),
+    // Sync controller text with external data when field is not focused
+    useEffect(() {
+      if (!electricityFocus.hasFocus) {
+        electricityController.text = data.electricityCost.toString();
+      }
+      if (!wattFocus.hasFocus) {
+        wattController.text = data.wattage.toString();
+      }
+      return null;
+    }, [data]);
+
+    return Container(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: FocusSafeTextField(
+              controller: electricityController,
+              externalText: data.electricityCost.toString(),
+              focusNode: electricityFocus,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.electricityCostSettingsLabel,
+                suffixText: l10n.kwh,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: FocusSafeTextField(
-                  controller: wattController,
-                  externalText: data.wattage.toString(),
-                  focusNode: wattFocus,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    labelText: l10n.wattLabel,
-                    suffixText: l10n.watt,
-                  ),
-                  onChanged: (value) async {
-                    await persistWatt(value, data);
-                  },
-                ),
-              ),
-            ],
+              onChanged: (value) async {
+                await persistElectricity(value, data);
+              },
+            ),
           ),
-        );
-      },
+          const SizedBox(width: 16),
+          Expanded(
+            child: FocusSafeTextField(
+              controller: wattController,
+              externalText: data.wattage.toString(),
+              focusNode: wattFocus,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                labelText: l10n.wattLabel,
+                suffixText: l10n.watt,
+              ),
+              onChanged: (value) async {
+                await persistWatt(value, data);
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
