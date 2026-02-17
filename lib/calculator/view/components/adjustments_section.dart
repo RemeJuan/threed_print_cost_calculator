@@ -17,7 +17,7 @@ class AdjustmentsSection extends HookConsumerWidget {
     final l10n = S.of(context);
 
     if (!premium) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     // Local controllers and focus nodes
@@ -29,16 +29,6 @@ class AdjustmentsSection extends HookConsumerWidget {
       text: state.labourTime.value?.toString() ?? '',
     );
     final labourTimeFocus = useFocusNode();
-
-    useEffect(() {
-      if (!labourRateFocus.hasFocus) {
-        labourRateController.text = state.labourRate.value?.toString() ?? '';
-      }
-      if (!labourTimeFocus.hasFocus) {
-        labourTimeController.text = state.labourTime.value?.toString() ?? '';
-      }
-      return null;
-    }, [state]);
 
     return Row(
       mainAxisSize: MainAxisSize.min,
