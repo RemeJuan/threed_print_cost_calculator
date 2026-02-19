@@ -5,9 +5,9 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 // Local generic Reader type to match ProviderContainer.read / Ref.read signatures.
 // Use a broad `Object?` parameter so tests can pass `container.read` without
 // requiring internal Riverpod types to be in scope.
-//typedef ReaderFunc = T Function<T>(Object? provider);
 
 /// Helper that manages a printer -> [record keys] index in Sembast.
+///
 ///
 /// Index store structure:
 /// - store name: 'printer_index'
