@@ -1,7 +1,7 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 
 // Holds the current free-text query used to filter history. Implemented as a
 // NotifierProvider to match the project's Riverpod patterns.
@@ -20,13 +20,15 @@ class HistoryQueryNotifier extends Notifier<String> {
 // It reads the database and applies the same name/printer filtering as the UI.
 final historyRecordsProvider = FutureProvider.autoDispose<List<RecordSnapshot>>(
   (ref) async {
-    final db = ref.read(databaseProvider);
-    final store = stringMapStoreFactory.store('history');
+    // Use the DB helpers provider so we avoid magic string store names and get
+    // a centralized place to access the DB.
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
+    final store = stringMapStoreFactory.store(DBName.history.name);
 
     final query = ref.watch(historyQueryProvider);
 
     final records = await store.find(
-      db,
+      dbHelpers.db,
       finder: Finder(sortOrders: [SortOrder('date', false)]),
     );
 

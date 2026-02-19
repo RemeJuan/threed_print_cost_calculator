@@ -14,7 +14,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sembast/sembast.dart';
@@ -35,8 +34,6 @@ Future<void> main() async {
     final String license = await rootBundle.loadString('fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(<String>['google_fonts'], license);
   });
-
-  GoogleFonts.config.allowRuntimeFetching = false;
 
   // Set preferred orientations early and await to avoid side-effects in widgets
   await SystemChrome.setPreferredOrientations([

@@ -54,6 +54,8 @@ class HistoryPagedState {
 
 // Notifier that manages paged history loading and query changes.
 class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
+  int _loadGeneration = 0; // generation counter to prevent stale updates
+
   @override
   HistoryPagedState build() => HistoryPagedState.initial();
 
@@ -70,21 +72,27 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       hasMore: true,
       error: null,
     );
-    await _loadPage(reset: true);
+    _loadGeneration++;
+    final currentGen = _loadGeneration;
+    await _loadPage(reset: true, generation: currentGen);
   }
 
   Future<void> refresh() async {
     state = state.copyWith(page: 0, items: [], hasMore: true, error: null);
-    await _loadPage(reset: true);
+    _loadGeneration++;
+    final currentGen = _loadGeneration;
+    await _loadPage(reset: true, generation: currentGen);
   }
 
   Future<void> loadMore() async {
     if (state.isLoading) return;
     if (!state.hasMore) return;
-    await _loadPage(reset: false);
+    _loadGeneration++;
+    final currentGen = _loadGeneration;
+    await _loadPage(reset: false, generation: currentGen);
   }
 
-  Future<void> _loadPage({required bool reset}) async {
+  Future<void> _loadPage({required bool reset, required int generation}) async {
     try {
       final nextPage = reset ? 0 : state.page + 1;
       state = state.copyWith(isLoading: true, error: null);
@@ -158,6 +166,9 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
           }
         }
       }
+
+      // Ensure generation matches before applying results — otherwise this load is stale
+      if (generation != _loadGeneration) return;
 
       final combined = reset ? pageEntries : [...state.items, ...pageEntries];
       final hasMore = combined.length < totalCount;

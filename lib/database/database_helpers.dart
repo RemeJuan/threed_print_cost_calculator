@@ -55,12 +55,12 @@ class DataBaseHelpers {
       }
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
+      rethrow;
     }
   }
 
   Future<void> updateRecord(String key, Map<String, dynamic> data) async {
     final store = stringMapStoreFactory.store(dbName.name);
-
     try {
       // If history, detect printer changes and update index
       if (dbName == DBName.history) {
@@ -90,20 +90,22 @@ class DataBaseHelpers {
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
-      // If history, remove from printer index first
+      // Read existing so we know the printer before deletion
+      final existing = await store.record(key).get(db) as Map<String, dynamic>?;
+
+      // First, delete the history entry from the store
+      await store.record(key).delete(db);
+
+      // Then, if this is history, remove the key from the printer index
       if (dbName == DBName.history) {
-        final existing =
-            await store.record(key).get(db) as Map<String, dynamic>?;
         final printer = (existing?['printer']?.toString() ?? '').trim();
         if (printer.isNotEmpty) {
           final helpers = PrinterIndexHelpers.fromRef(ref);
           await helpers.removeKey(printer, key);
         }
       }
-
-      await store.record(key).delete(db);
     } catch (e) {
-      BotToast.showText(text: 'Error removing printer');
+      BotToast.showText(text: 'Error removing record');
     }
   }
 
