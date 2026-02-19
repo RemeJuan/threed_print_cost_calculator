@@ -104,10 +104,10 @@ Future<void> startupMigration(Database db) async {
   // Startup migration: ensure the printer index is built. Use a short-lived
   // ProviderContainer so we can use existing helper wiring without changing
   // the ProviderScope that's used by the app.
+  final tempContainer = ProviderContainer(
+    overrides: [databaseProvider.overrideWithValue(db)],
+  );
   try {
-    final tempContainer = ProviderContainer(
-      overrides: [databaseProvider.overrideWithValue(db)],
-    );
     final indexHelpers = PrinterIndexHelpers.fromContainer(tempContainer);
     final indexed = await indexHelpers.getAllIndexedPrinters();
     if (indexed.isEmpty) {
@@ -121,11 +121,12 @@ Future<void> startupMigration(Database db) async {
         print('Printer index rebuild finished');
       }
     }
-    tempContainer.dispose();
   } catch (e, st) {
     if (kDebugMode) {
       // ignore: avoid_print
       print('Printer index rebuild failed: $e\n$st');
     }
+  } finally {
+    tempContainer.dispose();
   }
 }
