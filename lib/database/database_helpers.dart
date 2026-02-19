@@ -7,6 +7,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/src/type.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 
 final dbHelpersProvider = Provider.family<DataBaseHelpers, DBName>(
   (ref, name) => DataBaseHelpers(ref, name),
@@ -43,7 +44,15 @@ class DataBaseHelpers {
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
-      await store.add(db, data);
+      final key = await store.add(db, data);
+      // If this is the history store, maintain the printer index
+      if (dbName == DBName.history) {
+        final printer = (data['printer']?.toString() ?? '').trim();
+        if (printer.isNotEmpty) {
+          final helpers = PrinterIndexHelpers.fromRef(ref);
+          await helpers.addKey(printer, key);
+        }
+      }
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
     }
@@ -53,7 +62,25 @@ class DataBaseHelpers {
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
-      await store.record(key).update(db, data);
+      // If history, detect printer changes and update index
+      if (dbName == DBName.history) {
+        final existing =
+            await store.record(key).get(db) as Map<String, dynamic>?;
+        final oldPrinter = (existing?['printer']?.toString() ?? '').trim();
+        final newPrinter = (data['printer']?.toString() ?? oldPrinter).trim();
+
+        await store.record(key).update(db, data);
+
+        final helpers = PrinterIndexHelpers.fromRef(ref);
+        if (oldPrinter.isNotEmpty && oldPrinter != newPrinter) {
+          await helpers.removeKey(oldPrinter, key);
+        }
+        if (newPrinter.isNotEmpty && oldPrinter != newPrinter) {
+          await helpers.addKey(newPrinter, key);
+        }
+      } else {
+        await store.record(key).update(db, data);
+      }
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
     }
@@ -63,6 +90,17 @@ class DataBaseHelpers {
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
+      // If history, remove from printer index first
+      if (dbName == DBName.history) {
+        final existing =
+            await store.record(key).get(db) as Map<String, dynamic>?;
+        final printer = (existing?['printer']?.toString() ?? '').trim();
+        if (printer.isNotEmpty) {
+          final helpers = PrinterIndexHelpers.fromRef(ref);
+          await helpers.removeKey(printer, key);
+        }
+      }
+
       await store.record(key).delete(db);
     } catch (e) {
       BotToast.showText(text: 'Error removing printer');

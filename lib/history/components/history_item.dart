@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -17,8 +16,6 @@ class HistoryItem extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final db = ref.read(databaseProvider);
-    final store = stringMapStoreFactory.store('history');
     final l10n = S.of(context);
 
     return Slidable(
@@ -75,7 +72,8 @@ class HistoryItem extends HookConsumerWidget {
               );
 
               if (confirm == true) {
-                await store.record(dbKey).delete(db);
+                final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
+                await dbHelpers.deleteRecord(dbKey);
               }
             },
             backgroundColor: Colors.red,

@@ -30,7 +30,8 @@ extension PumpApp on WidgetTester {
   ]) async {
     // Provide a default in-memory database override first. Tests can still
     // override this by passing their own override which will appear later.
-    final db = await databaseFactoryMemory.openDatabase('test.db');
+    final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
+    final db = await databaseFactoryMemory.openDatabase(name);
     final effectiveOverrides = <Override>[
       databaseProvider.overrideWithValue(db),
       ...overrides,
