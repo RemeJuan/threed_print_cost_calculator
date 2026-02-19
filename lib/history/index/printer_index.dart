@@ -53,19 +53,22 @@ class PrinterIndexHelpers {
       map.putIfAbsent(norm, () => <dynamic>[]).add(key);
     }
 
-    // Clear existing index and write fresh. Ensure keys are treated as strings.
-    final existing = await _indexStore.find(_db);
-    for (final e in existing) {
-      final k = e.key.toString();
-      if (k.isNotEmpty) {
-        await _indexStore.record(k).delete(_db);
+    // Perform clear-and-write inside a single transaction so the index is updated atomically.
+    await _db.transaction((txn) async {
+      // Clear existing index and write fresh. Ensure keys are treated as strings.
+      final existing = await _indexStore.find(txn);
+      for (final e in existing) {
+        final k = e.key.toString();
+        if (k.isNotEmpty) {
+          await _indexStore.record(k).delete(txn);
+        }
       }
-    }
 
-    for (final entry in map.entries) {
-      final k = entry.key.toString();
-      await _indexStore.record(k).put(_db, {'keys': entry.value});
-    }
+      for (final entry in map.entries) {
+        final k = entry.key.toString();
+        await _indexStore.record(k).put(txn, {'keys': entry.value});
+      }
+    });
   }
 
   /// Add a mapping from [printer] -> [recordKey] to the index.

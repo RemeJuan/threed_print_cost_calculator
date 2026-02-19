@@ -23,7 +23,7 @@ Future<void> setupTest() async {
 }
 
 extension PumpApp on WidgetTester {
-  Future<void> pumpApp(
+  Future<Database> pumpApp(
     Widget widget, [
     List<Override> overrides = const [],
     List<NavigatorObserver> observers = const [],
@@ -37,7 +37,7 @@ extension PumpApp on WidgetTester {
       ...overrides,
     ];
 
-    return pumpWidget(
+    await pumpWidget(
       ProviderScope(
         overrides: effectiveOverrides,
         child: MaterialApp(
@@ -53,5 +53,7 @@ extension PumpApp on WidgetTester {
         ),
       ),
     );
+
+    return db;
   }
 }

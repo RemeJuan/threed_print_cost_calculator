@@ -7,6 +7,8 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
+import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
+import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;
@@ -71,9 +73,19 @@ class HistoryItem extends HookConsumerWidget {
                 ),
               );
 
+              if (!context.mounted) return;
+
               if (confirm == true) {
                 final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
                 await dbHelpers.deleteRecord(dbKey);
+
+                if (!context.mounted) return;
+
+                // Refresh paged provider so the deleted item disappears from the list
+                ref.read(historyPagedProvider.notifier).refresh();
+
+                // Also refresh the historyRecordsProvider in case other parts of the UI rely on it
+                ref.invalidate(historyRecordsProvider);
               }
             },
             backgroundColor: Colors.red,
