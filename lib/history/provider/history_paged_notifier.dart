@@ -181,6 +181,9 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       );
     } catch (e, st) {
       if (kDebugMode) print('HistoryPagedNotifier._loadPage error: $e\n$st');
+      // Only update state for the generation that started this load — ignore
+      // stale failures from earlier loads.
+      if (generation != _loadGeneration) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

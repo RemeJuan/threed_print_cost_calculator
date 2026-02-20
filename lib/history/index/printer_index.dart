@@ -1,13 +1,14 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 
 // Local generic Reader type to match ProviderContainer.read / Ref.read signatures.
 // Use a broad `Object?` parameter so tests can pass `container.read` without
 // requiring internal Riverpod types to be in scope.
+//typedef ReaderFunc = T Function<T>(Object? provider);
 
 /// Helper that manages a printer -> [record keys] index in Sembast.
-///
 ///
 /// Index store structure:
 /// - store name: 'printer_index'
@@ -30,11 +31,13 @@ class PrinterIndexHelpers {
 
   Database get _db => _read(databaseProvider);
 
+  static const String _kPrinterIndexStoreName = 'printer_index';
+
   final StoreRef<String, Map<String, Object?>> _indexStore =
-      stringMapStoreFactory.store('printer_index');
+      stringMapStoreFactory.store(_kPrinterIndexStoreName);
 
   final StoreRef<String, Map<String, Object?>> _historyStore =
-      stringMapStoreFactory.store('history');
+      stringMapStoreFactory.store(DBName.history.name);
 
   String _normalize(String s) => s.trim().toLowerCase();
 

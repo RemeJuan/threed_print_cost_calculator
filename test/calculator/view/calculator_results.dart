@@ -27,5 +27,5 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(CalculatorResults), findsOneWidget);
     });
-  }, skip: true);
+  });
 }
