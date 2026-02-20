@@ -30,11 +30,6 @@ import 'database/database.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  LicenseRegistry.addLicense(() async* {
-    final String license = await rootBundle.loadString('fonts/OFL.txt');
-    yield LicenseEntryWithLineBreaks(<String>['google_fonts'], license);
-  });
-
   // Set preferred orientations early and await to avoid side-effects in widgets
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
