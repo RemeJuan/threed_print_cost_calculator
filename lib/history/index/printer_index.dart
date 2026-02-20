@@ -79,14 +79,17 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
-    final existing =
-        await _indexStore.record(norm).get(_db) as Map<String, dynamic>?;
-    final keys = <dynamic>[...?existing?['keys'] as List?];
+    // Do read-modify-write inside a single transaction to avoid TOCTOU races.
+    await _db.transaction((txn) async {
+      final existing =
+          await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
+      final keys = <dynamic>[...?existing?['keys'] as List?];
 
-    if (!keys.contains(recordKey)) {
-      keys.add(recordKey);
-      await _indexStore.record(norm).put(_db, {'keys': keys});
-    }
+      if (!keys.contains(recordKey)) {
+        keys.add(recordKey);
+        await _indexStore.record(norm).put(txn, {'keys': keys});
+      }
+    });
   }
 
   /// Remove a mapping from [printer] -> [recordKey] from the index.
@@ -94,18 +97,21 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
-    final existing =
-        await _indexStore.record(norm).get(_db) as Map<String, dynamic>?;
-    if (existing == null) return;
+    // Perform read-modify-write in a transaction to avoid TOCTOU races.
+    await _db.transaction((txn) async {
+      final existing =
+          await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
+      if (existing == null) return;
 
-    final keys = <dynamic>[...?existing['keys'] as List?];
-    keys.removeWhere((k) => k == recordKey);
+      final keys = <dynamic>[...?existing['keys'] as List?];
+      keys.removeWhere((k) => k == recordKey);
 
-    if (keys.isEmpty) {
-      await _indexStore.record(norm).delete(_db);
-    } else {
-      await _indexStore.record(norm).put(_db, {'keys': keys});
-    }
+      if (keys.isEmpty) {
+        await _indexStore.record(norm).delete(txn);
+      } else {
+        await _indexStore.record(norm).put(txn, {'keys': keys});
+      }
+    });
   }
 
   /// Return all record keys that belong to any printer whose normalized
