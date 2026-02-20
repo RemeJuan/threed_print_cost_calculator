@@ -118,6 +118,7 @@
   "@exportButton": {
     "description": "Label for export action in history list"
   },
+  "historySearchHint": "名前やプリンターで検索",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacy Policy",
   "@privacyPolicyLink": {},

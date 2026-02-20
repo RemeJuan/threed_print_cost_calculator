@@ -85,5 +85,6 @@
   "totalCostLabel": "Total",
   "workCostsLabel": "Work Costs",
   "enterNumber": "Please enter a number",
-  "invalidNumber": "Invalid number"
+  "invalidNumber": "Invalid number",
+  "historySearchHint": "Search by name or printer"
 }

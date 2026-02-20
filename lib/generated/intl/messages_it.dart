@@ -59,6 +59,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Storia"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historySearchHint": MessageLookupByLibrary.simpleMessage(
+      "Cerca per nome o stampante",
+    ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Tempo di stampa (ore)"),
     "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/ora"),

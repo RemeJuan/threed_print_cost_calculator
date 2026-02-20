@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 
 class HistoryToolbar extends StatelessWidget {
   final TextEditingController controller;
@@ -12,6 +13,8 @@ class HistoryToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = S.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
@@ -24,7 +27,7 @@ class HistoryToolbar extends StatelessWidget {
                   controller: controller,
                   decoration: InputDecoration(
                     isDense: true,
-                    hintText: 'Search by name or printer',
+                    hintText: l10n.historySearchHint,
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: value.text.isNotEmpty
                         ? IconButton(
@@ -43,7 +46,7 @@ class HistoryToolbar extends StatelessWidget {
           const SizedBox(width: 8),
           IconButton(
             icon: const Icon(Icons.upload_file),
-            tooltip: 'Export',
+            tooltip: l10n.exportButton,
             onPressed: onExportPressed,
           ),
         ],
