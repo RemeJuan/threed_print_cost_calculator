@@ -117,6 +117,7 @@
   "@exportButton": {
     "description": "Label for export action in history list"
   },
+  "historySearchHint": "Pesquisar por nome ou impressora",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacy Policy",
   "@privacyPolicyLink": {},

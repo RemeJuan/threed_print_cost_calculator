@@ -59,7 +59,8 @@ void main() {
     final store = stringMapStoreFactory.store('history');
 
     setUp(() async {
-      db = await databaseFactoryMemory.openDatabase('test.db');
+      final name = 'test_csv_${DateTime.now().microsecondsSinceEpoch}.db';
+      db = await databaseFactoryMemory.openDatabase(name);
       // Ensure a clean history store for each test run
       await store.delete(db);
       container = ProviderContainer(

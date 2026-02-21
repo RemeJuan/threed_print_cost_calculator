@@ -9,26 +9,23 @@ void main() {
     // await setupTest();
   });
 
-  group(
-    'CalculatorPage',
-    () {
-      testWidgets('renders CalculatorView', (tester) async {
-        await tester.pumpApp(
-          const CalculatorResults(
-            results: CalculationResult(
-              electricity: 0.0,
-              filament: 0.0,
-              risk: 0.0,
-              labour: 0.0,
-              total: 0.0,
-            ),
-            premium: true,
+  group('CalculatorPage', () {
+    testWidgets('renders CalculatorView', (tester) async {
+      final db = await tester.pumpApp(
+        const CalculatorResults(
+          results: CalculationResult(
+            electricity: 0.0,
+            filament: 0.0,
+            risk: 0.0,
+            labour: 0.0,
+            total: 0.0,
           ),
-        );
-        await tester.pumpAndSettle();
-        expect(find.byType(CalculatorResults), findsOneWidget);
-      });
-    },
-    skip: true,
-  );
+          premium: true,
+        ),
+      );
+      addTearDown(() => db.close());
+      await tester.pumpAndSettle();
+      expect(find.byType(CalculatorResults), findsOneWidget);
+    });
+  });
 }

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
@@ -61,11 +62,10 @@ class CalculatorHelpers {
   }
 
   Future<void> savePrint(HistoryModel value) async {
-    final store = stringMapStoreFactory.store('history');
-
     try {
       final data = {...value.toMap(), 'date': value.date.toIso8601String()};
-      await store.add(db, data);
+      final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
+      await dbHelpers.insertRecord(data);
       BotToast.showText(text: 'Print saved');
     } catch (e) {
       BotToast.showText(text: 'Error saving print');

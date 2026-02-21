@@ -31,10 +31,11 @@ void main() {
 
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
-      await tester.pumpApp(const App(), [
+      final db = await tester.pumpApp(const App(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
         sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
       ]);
+      addTearDown(() => db.close());
       await tester.pumpAndSettle();
       expect(find.byType(CalculatorPage), findsOneWidget);
     });
