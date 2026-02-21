@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
+
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
@@ -59,6 +60,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Histoire"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historySearchHint": MessageLookupByLibrary.simpleMessage(
+      "Rechercher par nom ou imprimante",
+    ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Temps d\'impression (heures)",
     ),

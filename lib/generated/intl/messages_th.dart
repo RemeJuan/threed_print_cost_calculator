@@ -57,6 +57,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("ประวัติศาสตร์"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historySearchHint": MessageLookupByLibrary.simpleMessage(
+      "ค้นหาตามชื่อหรือเครื่องพิมพ์",
+    ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "เวลาในการพิมพ์ (ชั่วโมง)",
     ),

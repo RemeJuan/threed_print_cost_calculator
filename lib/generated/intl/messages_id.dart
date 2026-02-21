@@ -59,6 +59,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Sejarah"),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historySearchHint": MessageLookupByLibrary.simpleMessage(
+      "Cari berdasarkan nama atau printer",
+    ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Waktu pencetakan (jam)",
     ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
 const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
@@ -38,17 +37,10 @@ ThemeData theme() {
   );
 
   // Create the final text theme with GoogleFonts applied
-  final appliedTextTheme = GoogleFonts.montserratTextTheme(themeData.textTheme);
 
   return themeData.copyWith(
-    textTheme: appliedTextTheme,
     scaffoldBackgroundColor: DARK_BLUE,
-    appBarTheme: AppBarTheme(
-      backgroundColor: DEEP_BLUE,
-      // Use the final (GoogleFonts-applied) text theme so AppBar title picks up Montserrat
-      titleTextStyle: appliedTextTheme.displayMedium,
-      elevation: 0,
-    ),
+    appBarTheme: AppBarTheme(backgroundColor: DEEP_BLUE, elevation: 0),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: DEEP_BLUE,
       selectedItemColor: LIGHT_BLUE,

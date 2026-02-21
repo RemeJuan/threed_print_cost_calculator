@@ -23,20 +23,21 @@ Future<void> setupTest() async {
 }
 
 extension PumpApp on WidgetTester {
-  Future<void> pumpApp(
+  Future<Database> pumpApp(
     Widget widget, [
     List<Override> overrides = const [],
     List<NavigatorObserver> observers = const [],
   ]) async {
     // Provide a default in-memory database override first. Tests can still
     // override this by passing their own override which will appear later.
-    final db = await databaseFactoryMemory.openDatabase('test.db');
+    final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
+    final db = await databaseFactoryMemory.openDatabase(name);
     final effectiveOverrides = <Override>[
       databaseProvider.overrideWithValue(db),
       ...overrides,
     ];
 
-    return pumpWidget(
+    await pumpWidget(
       ProviderScope(
         overrides: effectiveOverrides,
         child: MaterialApp(
@@ -52,5 +53,7 @@ extension PumpApp on WidgetTester {
         ),
       ),
     );
+
+    return db;
   }
 }

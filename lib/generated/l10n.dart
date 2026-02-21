@@ -669,6 +669,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Search by name or printer`
+  String get historySearchHint {
+    return Intl.message(
+      'Search by name or printer',
+      name: 'historySearchHint',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

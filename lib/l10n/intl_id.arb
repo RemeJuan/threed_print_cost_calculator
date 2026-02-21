@@ -118,6 +118,7 @@
   "@exportButton": {
     "description": "Label for export action in history list"
   },
+  "historySearchHint": "Cari berdasarkan nama atau printer",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacy Policy",
   "@privacyPolicyLink": {},
