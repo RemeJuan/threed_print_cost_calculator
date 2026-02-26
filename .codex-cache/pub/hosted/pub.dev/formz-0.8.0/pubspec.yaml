@@ -1,0 +1,18 @@
+name: formz
+description: A unified form representation in Dart which aims to simplify form representation and validation in a generic way.
+repository: https://github.com/VeryGoodOpenSource/formz
+issue_tracker: https://github.com/VeryGoodOpenSource/formz/issues
+homepage: https://github.com/VeryGoodOpenSource/formz
+documentation: https://github.com/VeryGoodOpenSource/formz
+
+version: 0.8.0
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  meta: ^1.7.0
+
+dev_dependencies:
+  test: ^1.16.0
+  very_good_analysis: ^6.0.0

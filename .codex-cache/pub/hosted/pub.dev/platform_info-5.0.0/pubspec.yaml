@@ -1,0 +1,45 @@
+name: platform_info
+description: >
+  Contains info about current platform
+  such as Build mode and Operating system.
+version: 5.0.0
+repository: https://github.com/PlugFox/platform_info/tree/master
+issue_tracker: https://github.com/PlugFox/platform_info/issues
+homepage: https://github.com/PlugFox/platform_info
+#author: Plague Fox <plugfox@gmail.com>
+#documentation: https://pub.dev/documentation/platform_info/latest
+
+funding:
+  - https://www.buymeacoffee.com/plugfox
+  - https://www.patreon.com/plugfox
+  - https://boosty.to/plugfox
+
+topics:
+  - platform
+  - info
+  - cross-platform
+  - device
+  - information
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
+
+screenshots:
+  - description: 'Example of using the library to get the current platform info'
+    path: example.png
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  meta: ^1.9.1
+  web: ^1.0.0
+
+dev_dependencies:
+  lints: ">=4.0.0 <5.0.0"
+  test: ^1.24.2
