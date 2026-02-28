@@ -55,7 +55,7 @@ jobs:
               "GraphQL-Features": "issues_copilot_assignment_api_support,coding_agent_model_selection"
             };
 
-            // 1) Fetch repo id + suggestedActors
+            // Query: repo id + default branch + suggestedActors
             const query = `
               query($owner: String!, $name: String!) {
                 repository(owner: $owner, name: $name) {
@@ -79,8 +79,8 @@ jobs:
               variables: { owner, name: repo }
             });
 
-            // NOTE: github.request returns { data: <GraphQL response> }
-            const repository = repoRes?.data?.repository;
+            // NOTE: in github-script, GraphQL response is nested under data.data
+            const repository = repoRes?.data?.data?.repository;
 
             if (!repository?.id) {
               core.setFailed("Failed to read repository id from GraphQL response.");
@@ -94,17 +94,15 @@ jobs:
 
             core.info(`suggestedActors: ${nodes.map(n => `${n.login}:${n.__typename}`).join(", ")}`);
 
-            const copilotActor = nodes.find(n => n.login === "copilot-swe-agent" && n.id)
-                               || nodes.find(n => (n.login || "").toLowerCase().includes("copilot") && n.id);
-
+            const copilotActor = nodes.find(n => n.login === "copilot-swe-agent" && n.id);
             if (!copilotActor?.id) {
-              core.setFailed(`Could not find Copilot actor id. suggestedActors: ${nodes.map(n => n.login).join(", ")}`);
+              core.setFailed(`Could not find copilot-swe-agent in suggestedActors. Found: ${nodes.map(n => n.login).join(", ")}`);
               return;
             }
 
             core.info(`Using Copilot actor: ${copilotActor.login} (${copilotActor.id})`);
 
-            // 2) Create issue with Copilot assignee
+            // Mutation: create issue assigned to Copilot and start agent work
             const mutation = `
               mutation($input: CreateIssueInput!) {
                 createIssue(input: $input) {
@@ -117,7 +115,7 @@ jobs:
               }
             `;
 
-            const created = await github.request("POST /graphql", {
+            const createdRes = await github.request("POST /graphql", {
               headers,
               query: mutation,
               variables: {
@@ -134,10 +132,11 @@ jobs:
               }
             });
 
-            const issue = created?.data?.createIssue?.issue;
+            const issue = createdRes?.data?.data?.createIssue?.issue;
+
             if (!issue?.number) {
               core.setFailed("Issue creation failed (no issue number returned).");
-              core.info(JSON.stringify(created, null, 2));
+              core.info(JSON.stringify(createdRes, null, 2));
               return;
             }
 
@@ -145,6 +144,6 @@ jobs:
             core.info(`Created issue #${issue.number}: ${issue.url}`);
             core.info(`Issue assignees: ${assignees.join(", ")}`);
 
-            if (!assignees.some(a => (a || "").toLowerCase().includes("copilot"))) {
-              core.setFailed(`Issue created but Copilot does not appear in assignees. Actual: ${assignees.join(", ")}`);
+            if (!assignees.includes("copilot-swe-agent")) {
+              core.setFailed(`Issue created but Copilot is not in assignees. Actual: ${assignees.join(", ")}`);
             }
