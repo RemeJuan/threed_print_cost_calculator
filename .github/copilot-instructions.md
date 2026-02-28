@@ -203,6 +203,7 @@ final settings = await dbHelpers.getSettings();
 - Keep widgets small and focused
 - Write self-documenting code with clear variable names
 - Consider offline-first functionality (local database primary)
+- All commit mesage should follow conventional commit formatting.
 
 ## Code Generation
 When suggesting code:
