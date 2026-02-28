@@ -1,3 +1,7 @@
+## [2.4.1] - 2026-02-28
+### Changed
+- Upgraded purchases_flutter and purchases_ui_flutter to 9.12.3
+
 ## [2.2.14] - 2025-11-25
 ### Changed
 - Version bump for release
@@ -60,6 +64,7 @@
 ### Added
 - Added in-app update checker
 
+[2.4.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.4.1
 [2.2.14]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.2.13...2.2.14
 [1.2.0+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.2.0...1.2.0+1
 [1.2.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.1.0...1.2.0
