@@ -2,7 +2,6 @@ name: Biweekly Flutter Maintenance (Copilot Agent)
 
 on:
   schedule:
-    # Every 14 days at 07:00 UTC
     - cron: "0 7 */14 * *"
   workflow_dispatch: {}
 
@@ -14,7 +13,7 @@ jobs:
   create_and_assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Create issue assigned to Copilot (assign by actor ID via GraphQL)
+      - name: Create issue assigned to Copilot (GraphQL)
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.COPILOT_AGENT_PAT }}
@@ -52,12 +51,11 @@ jobs:
               "- Include dependency summary (majors called out), confirmation make bump_fix ran, analyze/test results, and any skips + why."
             ].join("\n");
 
-            // GitHub requires this header for Copilot assignment APIs.
             const headers = {
               "GraphQL-Features": "issues_copilot_assignment_api_support,coding_agent_model_selection"
             };
 
-            // 1) Get repo id, default branch, and the assignable actors list.
+            // 1) Fetch repo id + suggestedActors
             const query = `
               query($owner: String!, $name: String!) {
                 repository(owner: $owner, name: $name) {
@@ -81,10 +79,12 @@ jobs:
               variables: { owner, name: repo }
             });
 
+            // NOTE: github.request returns { data: <GraphQL response> }
             const repository = repoRes?.data?.repository;
+
             if (!repository?.id) {
               core.setFailed("Failed to read repository id from GraphQL response.");
-              core.info(JSON.stringify(repoRes?.data ?? {}, null, 2));
+              core.info(JSON.stringify(repoRes, null, 2));
               return;
             }
 
@@ -92,27 +92,19 @@ jobs:
             const defaultBranch = repository.defaultBranchRef?.name || "main";
             const nodes = repository.suggestedActors?.nodes || [];
 
-            // Log available assignable actors (helps when GitHub changes the Copilot login label in a repo)
-            core.info(`suggestedActors (logins): ${nodes.map(n => n.login).filter(Boolean).join(", ")}`);
+            core.info(`suggestedActors: ${nodes.map(n => `${n.login}:${n.__typename}`).join(", ")}`);
 
-            // 2) Pick the Copilot actor.
-            // Docs commonly show `copilot-swe-agent`, but some repos show `copilot`.
-            // We choose the first actor whose login contains "copilot" and has an id.
-            const copilotActor =
-              nodes.find(n => (n.login || "").toLowerCase().includes("copilot") && n.id) ||
-              nodes.find(n => n.id); // fallback: first assignable actor with an id
+            const copilotActor = nodes.find(n => n.login === "copilot-swe-agent" && n.id)
+                               || nodes.find(n => (n.login || "").toLowerCase().includes("copilot") && n.id);
 
             if (!copilotActor?.id) {
-              core.setFailed(
-                `Could not find an assignable Copilot actor with an id. suggestedActors: ${nodes.map(n => `${n.login}:${n.__typename}`).join(", ")}`
-              );
+              core.setFailed(`Could not find Copilot actor id. suggestedActors: ${nodes.map(n => n.login).join(", ")}`);
               return;
             }
 
-            core.info(`Using actor login=${copilotActor.login} type=${copilotActor.__typename}`);
+            core.info(`Using Copilot actor: ${copilotActor.login} (${copilotActor.id})`);
 
-            // 3) Create the issue assigned to the selected actor (by id) and start the agent.
-            // GitHub changelog indicates createIssue supports Copilot assignment with this header. (See "Assign issues to Copilot using the API".)
+            // 2) Create issue with Copilot assignee
             const mutation = `
               mutation($input: CreateIssueInput!) {
                 createIssue(input: $input) {
@@ -145,7 +137,7 @@ jobs:
             const issue = created?.data?.createIssue?.issue;
             if (!issue?.number) {
               core.setFailed("Issue creation failed (no issue number returned).");
-              core.info(JSON.stringify(created?.data ?? {}, null, 2));
+              core.info(JSON.stringify(created, null, 2));
               return;
             }
 
@@ -153,7 +145,6 @@ jobs:
             core.info(`Created issue #${issue.number}: ${issue.url}`);
             core.info(`Issue assignees: ${assignees.join(", ")}`);
 
-            // Soft validation: ensure at least one assignee contains "copilot"
             if (!assignees.some(a => (a || "").toLowerCase().includes("copilot"))) {
               core.setFailed(`Issue created but Copilot does not appear in assignees. Actual: ${assignees.join(", ")}`);
             }
