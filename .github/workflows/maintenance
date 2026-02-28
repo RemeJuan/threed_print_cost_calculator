@@ -1,0 +1,97 @@
+name: Biweekly Flutter Maintenance (Issue -> Copilot)
+
+on:
+  schedule:
+    # Every other Monday at 07:00 UTC (adjust as you like)
+    # If you prefer weekly, use: "0 7 * * 1"
+    - cron: "0 7 */14 * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  create_issue_and_assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create maintenance issue and assign to Copilot agent
+        uses: actions/github-script@v7
+        with:
+          # IMPORTANT:
+          # Use a PAT with permission to create issues + assign copilot-swe-agent.
+          # Store it as a repo secret: COPILOT_AGENT_PAT
+          github-token: ${{ secrets.COPILOT_AGENT_PAT }}
+          script: |
+            const date = new Date().toISOString().slice(0, 10);
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const title = `chore: biweekly maintenance (${date})`;
+
+            const body = [
+              "Goal: Create a maintenance PR that upgrades dependencies, fixes breakages, bumps the patch version using `make bump_fix` (amends the last commit), and opens a PR for review.",
+              "",
+              "Constraints:",
+              "- Never push directly to main.",
+              "- Keep changes minimal. No refactors or drive-by formatting.",
+              "- If something is ambiguous or risky, stop and explain in the PR body instead of guessing.",
+              "- Use system `flutter`/`dart` (no FVM).",
+              "",
+              "Runbook:",
+              "0) Environment setup",
+              "- Ensure repo root.",
+              "- `mkdir -p .codex-cache/pub`",
+              "- `export PUB_CACHE=\"$PWD/.codex-cache/pub\"`",
+              "- `flutter --version` and `dart --version`",
+              "- `flutter doctor -v` (stop if it fails)",
+              "",
+              "1) Baseline (must pass before touching deps)",
+              "- `flutter pub get`",
+              "- `dart analyze`",
+              "- `flutter test`",
+              "",
+              "2) Upgrade deps",
+              "- `flutter pub upgrade`",
+              "- `flutter pub outdated` (note majors separately)",
+              "",
+              "3) Verify + fix",
+              "- `dart analyze`",
+              "- `flutter test`",
+              "- Fix minimally until green.",
+              "",
+              "4) Commit maintenance changes",
+              "- Single commit: `chore: biweekly maintenance (" + date + ")`",
+              "",
+              "5) Version bump (amend commit)",
+              "- Run `make bump_fix` (amends the previous commit).",
+              "- Confirm `pubspec.yaml` + `CHANGELOG.md` updated.",
+              "",
+              "6) Final verification",
+              "- `dart analyze`",
+              "- `flutter test`",
+              "- If failures: fix minimally and `git commit --amend --no-edit`.",
+              "",
+              "PR requirements:",
+              "- Title: `chore: biweekly maintenance (" + date + ")`",
+              "- Include dependency summary (majors called out), confirmation `make bump_fix` ran, analyze/test results, and any skips/follow-ups."
+            ].join("\n");
+
+            // Create issue
+            const issue = await github.rest.issues.create({
+              owner,
+              repo,
+              title,
+              body,
+              labels: ["maintenance"]
+            });
+
+            // Assign to Copilot coding agent (login per GitHub docs)
+            await github.rest.issues.addAssignees({
+              owner,
+              repo,
+              issue_number: issue.data.number,
+              assignees: ["copilot-swe-agent"]
+            });
+
+            core.info(`Created issue #${issue.data.number} and assigned to copilot-swe-agent`);
