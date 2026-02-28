@@ -44,11 +44,7 @@ jobs:
               "7) flutter test (fix minimally until green)",
               `8) Commit: chore: biweekly maintenance (${date})`,
               "9) make bump_fix (amend commit)",
-              "10) dart analyze + flutter test",
-              "",
-              "PR requirements:",
-              `- Title: chore: biweekly maintenance (${date})`,
-              "- Include dependency summary (majors called out), confirmation make bump_fix ran, analyze/test results, and any skips + why."
+              "10) dart analyze + flutter test"
             ].join("\n");
 
             const headers = {
@@ -79,9 +75,7 @@ jobs:
               variables: { owner, name: repo }
             });
 
-            // NOTE: in github-script, GraphQL response is nested under data.data
             const repository = repoRes?.data?.data?.repository;
-
             if (!repository?.id) {
               core.setFailed("Failed to read repository id from GraphQL response.");
               core.info(JSON.stringify(repoRes, null, 2));
@@ -100,16 +94,23 @@ jobs:
               return;
             }
 
-            core.info(`Using Copilot actor: ${copilotActor.login} (${copilotActor.id})`);
+            const copilotId = copilotActor.id;
+            core.info(`Using Copilot actor: ${copilotActor.login} (${copilotId})`);
 
-            // Mutation: create issue assigned to Copilot and start agent work
+            // Create issue assigned to Copilot by ID
             const mutation = `
               mutation($input: CreateIssueInput!) {
                 createIssue(input: $input) {
                   issue {
                     number
                     url
-                    assignees(first: 20) { nodes { login } }
+                    assignees(first: 20) {
+                      nodes {
+                        login
+                        ... on Bot { id }
+                        ... on User { id }
+                      }
+                    }
                   }
                 }
               }
@@ -123,7 +124,7 @@ jobs:
                   repositoryId,
                   title,
                   body,
-                  assigneeIds: [copilotActor.id],
+                  assigneeIds: [copilotId],
                   agentAssignment: {
                     targetRepositoryId: repositoryId,
                     baseRef: defaultBranch
@@ -133,17 +134,21 @@ jobs:
             });
 
             const issue = createdRes?.data?.data?.createIssue?.issue;
-
             if (!issue?.number) {
               core.setFailed("Issue creation failed (no issue number returned).");
               core.info(JSON.stringify(createdRes, null, 2));
               return;
             }
 
-            const assignees = issue.assignees?.nodes?.map(a => a.login) || [];
-            core.info(`Created issue #${issue.number}: ${issue.url}`);
-            core.info(`Issue assignees: ${assignees.join(", ")}`);
+            const assigneeNodes = issue.assignees?.nodes || [];
+            const assigneeLogins = assigneeNodes.map(a => a.login);
+            const assigneeIds = assigneeNodes.map(a => a.id).filter(Boolean);
 
-            if (!assignees.includes("copilot-swe-agent")) {
-              core.setFailed(`Issue created but Copilot is not in assignees. Actual: ${assignees.join(", ")}`);
+            core.info(`Created issue #${issue.number}: ${issue.url}`);
+            core.info(`Issue assignees (logins): ${assigneeLogins.join(", ")}`);
+            core.info(`Issue assignees (ids): ${assigneeIds.join(", ")}`);
+
+            // Validate by ID, not login label
+            if (!assigneeIds.includes(copilotId)) {
+              core.setFailed(`Issue created but Copilot id not present in assignees. Expected: ${copilotId}. Actual ids: ${assigneeIds.join(", ")}`);
             }
