@@ -2,7 +2,7 @@ name: Biweekly Flutter Maintenance (Copilot Issue)
 
 on:
   schedule:
-    # Every 2 weeks (pick a cadence you like). This is "every 14 days" at 07:00 UTC.
+    # Every 2 weeks at 07:00 UTC. Adjust as needed.
     - cron: "0 7 */14 * *"
   workflow_dispatch: {}
 
@@ -11,17 +11,12 @@ permissions:
   issues: write
 
 jobs:
-  create_issue:
+  create_issue_and_assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Create issue + assign to Copilot coding agent
+      - name: Create maintenance issue and assign to Copilot
         uses: actions/github-script@v7
         with:
-          # Use a user token (PAT or GitHub App user-to-server token).
-          # Fine-grained PAT must have:
-          # - Metadata: read
-          # - Actions/Contents/Issues/Pull requests: read & write
-          # (per GitHub docs).
           github-token: ${{ secrets.COPILOT_AGENT_PAT }}
           script: |
             const owner = context.repo.owner;
@@ -29,71 +24,67 @@ jobs:
             const date = new Date().toISOString().slice(0, 10);
             const title = `chore: biweekly maintenance (${date})`;
 
-            const body = [
-              "Goal:",
-              "- Upgrade Dart/Flutter dependencies",
-              "- Keep the changes minimal and mechanical",
-              "- Run analyze + tests",
-              "- Bump patch version via `make bump_fix` (amends the maintenance commit)",
-              "- Open a PR to the default branch",
-              "",
-              "Constraints:",
-              "- No refactors or formatting-only changes.",
-              "- If a major upgrade requires real work, note it and skip it rather than rewriting lots of code.",
-              "- Prefer smallest possible fixes.",
-              "",
-              "Runbook (hosted runner):",
-              "1) Baseline:",
-              "- `flutter pub get`",
-              "- `dart analyze`",
-              "- `flutter test`",
-              "",
-              "2) Upgrade:",
-              "- `flutter pub upgrade`",
-              "- `flutter pub outdated` (call out majors separately in PR notes)",
-              "",
-              "3) Verify + fix:",
-              "- `dart analyze`",
-              "- `flutter test`",
-              "",
-              "4) Commit:",
-              "- Single commit message: `chore: biweekly maintenance (" + date + ")`",
-              "",
-              "5) Version bump:",
-              "- `make bump_fix` (amends the commit)",
-              "- Confirm `pubspec.yaml` + `CHANGELOG.md` updated",
-              "",
-              "6) Final verification:",
-              "- `dart analyze`",
-              "- `flutter test`",
-              "",
-              "PR requirements:",
-              "- Title: `chore: biweekly maintenance (" + date + ")`",
-              "- Include: dependency summary (majors called out), confirmation `make bump_fix` ran, analyze/test results, and any skipped upgrades + why."
-            ].join("\n");
+            const body = `Goal:
+            - Upgrade Dart/Flutter dependencies
+            - Run analyze + tests
+            - Bump patch version via make bump_fix (amends commit)
+            - Open a PR to the default branch
 
-            // Create issue and assign to Copilot, including agent_assignment
-            const res = await github.request("POST /repos/{owner}/{repo}/issues", {
+            Constraints:
+            - No refactors or formatting-only changes.
+            - If a major upgrade needs real work, note it and skip it.
+
+            Runbook:
+            1) flutter pub get
+            2) dart analyze
+            3) flutter test
+            4) flutter pub upgrade
+            5) flutter pub outdated (call out majors)
+            6) dart analyze
+            7) flutter test (fix minimally)
+            8) Commit: chore: biweekly maintenance (${date})
+            9) make bump_fix (amend)
+            10) dart analyze + flutter test
+
+            PR requirements:
+            - Title: chore: biweekly maintenance (${date})
+            - Include dependency summary (majors called out), confirmation make bump_fix ran, analyze/test results, and any skipped upgrades + why.
+            `;
+
+            const created = await github.rest.issues.create({
               owner,
               repo,
               title,
               body,
-              labels: ["maintenance"],
-              assignees: ["copilot-swe-agent[bot]"],
-              agent_assignment: {
-                target_repo: `${owner}/${repo}`,
-                base_branch: "main",
-                custom_instructions: "",
-                custom_agent: "",
-                model: ""
-              }
+              labels: ["maintenance"]
             });
 
-            const assignees = (res.data.assignees || []).map(a => a.login);
-            core.info(`Created issue #${res.data.number}. Assignees: ${assignees.join(", ")}`);
+            const issue_number = created.data.number;
 
-            if (!assignees.includes("copilot-swe-agent[bot]")) {
+            // Assign Copilot + the workflow actor (optional). If you only want Copilot, remove context.actor.
+            await github.rest.issues.addAssignees({
+              owner,
+              repo,
+              issue_number,
+              assignees: ["copilot", context.actor]
+            });
+
+            // Re-fetch and validate assignment
+            const issue = await github.rest.issues.get({ owner, repo, issue_number });
+            const assignees = (issue.data.assignees || []).map(a => ({
+              login: a.login,
+              type: a.type
+            }));
+
+            core.info(`Created issue #${issue_number}. Assignees: ${assignees.map(a => a.login).join(", ")}`);
+
+            const copilotAssigned = assignees.some(a =>
+              (a.type === "Bot" && a.login.toLowerCase().includes("copilot")) ||
+              ["copilot", "copilot-swe-agent", "copilot-swe-agent[bot]"].includes(a.login)
+            );
+
+            if (!copilotAssigned) {
               core.setFailed(
-                `Issue was created but Copilot was not assigned. Actual assignees: ${assignees.join(", ")}`
+                `Issue was created but Copilot was not assigned. Actual assignees: ${assignees.map(a => a.login).join(", ")}`
               );
             }
