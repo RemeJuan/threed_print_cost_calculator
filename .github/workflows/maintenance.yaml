@@ -1,20 +1,19 @@
-name: Biweekly Flutter Maintenance (Copilot Issue)
+name: Biweekly Flutter Maintenance (Assign Copilot by ID)
 
 on:
   schedule:
-    # Every 2 weeks at 07:00 UTC. Adjust as needed.
-    - cron: "0 7 */14 * *"
+    - cron: "0 7 */14 * *" # every 14 days at 07:00 UTC
   workflow_dispatch: {}
 
 permissions:
-  contents: read
   issues: write
+  contents: read
 
 jobs:
-  create_issue_and_assign:
+  create_and_assign:
     runs-on: ubuntu-latest
     steps:
-      - name: Create maintenance issue and assign to Copilot
+      - name: Create issue and assign Copilot (by actor ID)
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.COPILOT_AGENT_PAT }}
@@ -22,69 +21,106 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const date = new Date().toISOString().slice(0, 10);
+
             const title = `chore: biweekly maintenance (${date})`;
+            const body = [
+              "Goal:",
+              "- Upgrade Dart/Flutter dependencies",
+              "- Run analyze + tests",
+              "- Bump patch version via `make bump_fix` (amends the maintenance commit)",
+              "- Open a PR to the default branch",
+              "",
+              "Constraints:",
+              "- Keep changes minimal (no refactors, no formatting-only changes).",
+              "- If a major upgrade needs real work, note it and skip it.",
+              "",
+              "Runbook:",
+              "1) flutter pub get",
+              "2) dart analyze",
+              "3) flutter test",
+              "4) flutter pub upgrade",
+              "5) flutter pub outdated (call out majors separately)",
+              "6) dart analyze",
+              "7) flutter test (fix minimally until green)",
+              `8) Commit: chore: biweekly maintenance (${date})`,
+              "9) make bump_fix (amend commit)",
+              "10) dart analyze + flutter test",
+              "",
+              "PR requirements:",
+              `- Title: chore: biweekly maintenance (${date})`,
+              "- Include dependency summary (majors called out), confirmation make bump_fix ran, analyze/test results, and any skips + why."
+            ].join("\n");
 
-            const body = `Goal:
-            - Upgrade Dart/Flutter dependencies
-            - Run analyze + tests
-            - Bump patch version via make bump_fix (amends commit)
-            - Open a PR to the default branch
+            // Preview headers required for agent assignment APIs
+            const headers = {
+              "GraphQL-Features": "issues_copilot_assignment_api_support,coding_agent_model_selection"
+            };
 
-            Constraints:
-            - No refactors or formatting-only changes.
-            - If a major upgrade needs real work, note it and skip it.
-
-            Runbook:
-            1) flutter pub get
-            2) dart analyze
-            3) flutter test
-            4) flutter pub upgrade
-            5) flutter pub outdated (call out majors)
-            6) dart analyze
-            7) flutter test (fix minimally)
-            8) Commit: chore: biweekly maintenance (${date})
-            9) make bump_fix (amend)
-            10) dart analyze + flutter test
-
-            PR requirements:
-            - Title: chore: biweekly maintenance (${date})
-            - Include dependency summary (majors called out), confirmation make bump_fix ran, analyze/test results, and any skipped upgrades + why.
+            // 1) Fetch repository id, default branch, and assignable actors
+            const query = `
+              query($owner: String!, $name: String!) {
+                repository(owner: $owner, name: $name) {
+                  id
+                  defaultBranchRef { name }
+                  suggestedActors(capabilities: [CAN_BE_ASSIGNED], first: 100) {
+                    nodes {
+                      login
+                      __typename
+                      ... on Bot { id }
+                      ... on User { id }
+                    }
+                  }
+                }
+              }
             `;
 
-            const created = await github.rest.issues.create({
-              owner,
-              repo,
+            const repoRes = await github.request("POST /graphql", {
+              headers,
+              query,
+              variables: { owner, name: repo }
+            });
+
+            const repository = repoRes.data.repository;
+            const repositoryId = repository.id;
+            const defaultBranch = repository.defaultBranchRef?.name || "main";
+
+            const actors = repository.suggestedActors?.nodes || [];
+            const copilotActor = actors.find(a => (a.login || "").toLowerCase().includes("copilot") && a.id);
+
+            if (!copilotActor) {
+              core.setFailed(
+                `No assignable Copilot actor found in suggestedActors. Found: ${actors.map(a => a.login).join(", ")}`
+              );
+              return;
+            }
+
+            core.info(`Using Copilot actor login=${copilotActor.login}, type=${copilotActor.__typename}`);
+
+            // 2) Create issue assigned to Copilot by ID and start the agent
+            const mutation = `
+              mutation($input: CreateIssueInput!) {
+                createIssue(input: $input) {
+                  issue { number url }
+                }
+              }
+            `;
+
+            const input = {
+              repositoryId,
               title,
               body,
-              labels: ["maintenance"]
+              assigneeIds: [copilotActor.id],
+              agentAssignment: {
+                targetRepositoryId: repositoryId,
+                baseRef: defaultBranch
+              }
+            };
+
+            const created = await github.request("POST /graphql", {
+              headers,
+              query: mutation,
+              variables: { input }
             });
 
-            const issue_number = created.data.number;
-
-            // Assign Copilot + the workflow actor (optional). If you only want Copilot, remove context.actor.
-            await github.rest.issues.addAssignees({
-              owner,
-              repo,
-              issue_number,
-              assignees: ["copilot", context.actor]
-            });
-
-            // Re-fetch and validate assignment
-            const issue = await github.rest.issues.get({ owner, repo, issue_number });
-            const assignees = (issue.data.assignees || []).map(a => ({
-              login: a.login,
-              type: a.type
-            }));
-
-            core.info(`Created issue #${issue_number}. Assignees: ${assignees.map(a => a.login).join(", ")}`);
-
-            const copilotAssigned = assignees.some(a =>
-              (a.type === "Bot" && a.login.toLowerCase().includes("copilot")) ||
-              ["copilot", "copilot-swe-agent", "copilot-swe-agent[bot]"].includes(a.login)
-            );
-
-            if (!copilotAssigned) {
-              core.setFailed(
-                `Issue was created but Copilot was not assigned. Actual assignees: ${assignees.map(a => a.login).join(", ")}`
-              );
-            }
+            const issue = created.data.createIssue.issue;
+            core.info(`Created issue #${issue.number}: ${issue.url}`);
