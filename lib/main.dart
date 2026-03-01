@@ -121,4 +121,50 @@ Future<void> startupMigration(Database db) async {
   } finally {
     tempContainer.dispose();
   }
+
+  // Migrate existing history records to populate materialUsages.
+  await _migrateHistoryMaterialUsages(db);
+}
+
+/// Back-fills [materialUsages] on history records that pre-date the
+/// multi-material feature. A single [MaterialUsage] entry is created from the
+/// legacy [material] name and [weight] fields so display code can always rely
+/// on [materialUsages] being present.
+Future<void> _migrateHistoryMaterialUsages(Database db) async {
+  final store = stringMapStoreFactory.store('history');
+  try {
+    final records = await store.find(db);
+    for (final record in records) {
+      final map = record.value as Map<String, dynamic>;
+
+      // Skip already-migrated records.
+      final existing = map['materialUsages'];
+      if (existing is List && existing.isNotEmpty) continue;
+
+      final materialName = map['material']?.toString() ?? '';
+      final weight = (map['weight'] as num?)?.toInt() ?? 0;
+
+      // Only migrate records that have meaningful material data.
+      if (materialName.isEmpty || materialName == 'NotSelected') continue;
+
+      final migrated = Map<String, dynamic>.from(map)
+        ..['materialUsages'] = [
+          {
+            'materialId': '',
+            'materialName': materialName,
+            'weightGrams': weight,
+            'spoolWeight': 0,
+            'spoolCost': 0,
+            'filamentCost': (map['filamentCost'] as num?) ?? 0,
+          },
+        ];
+
+      await store.record(record.key).update(db, migrated);
+    }
+  } catch (e, st) {
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print('Material usage migration failed: $e\n$st');
+    }
+  }
 }

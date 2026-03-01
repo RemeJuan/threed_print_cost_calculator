@@ -46,5 +46,13 @@
   "exportButton": "Export",
   "@exportButton": {
     "description": "Label for export action in history list"
+  },
+  "addMaterialButton": "Add material",
+  "@addMaterialButton": {
+    "description": "Button label to add a new material to the multi-material calculator section"
+  },
+  "totalMaterialWeightLabel": "Total material weight",
+  "@totalMaterialWeightLabel": {
+    "description": "Label for the sum of all per-material weights in the multi-material section"
   }
 }

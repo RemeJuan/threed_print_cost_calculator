@@ -155,7 +155,7 @@ class HistoryItem extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                // Additional summary line: weight (kg) • time (e.g. 6h 20m) • printer • material
+                // Summary line: weight (kg) • time • printer
                 Builder(
                   builder: (context) {
                     final weightKg = (data.weight / 1000);
@@ -172,7 +172,7 @@ class HistoryItem extends HookConsumerWidget {
                     }
 
                     final summary =
-                        '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer} • ${data.material}';
+                        '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer}';
 
                     return Text(
                       summary,
@@ -180,6 +180,20 @@ class HistoryItem extends HookConsumerWidget {
                     );
                   },
                 ),
+                // Multi-material badge / materials list
+                if (data.materialUsages.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  _MaterialsBadge(data: data),
+                ] else if (data.material.isNotEmpty &&
+                    data.material != 'NotSelected') ...[
+                  const SizedBox(height: 4),
+                  Text(
+                    data.material,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.white54,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -210,4 +224,68 @@ Widget _row(BuildContext context, String label, num value) {
       ],
     ),
   );
+}
+
+/// Displays a compact list of material usages for a history item.
+///
+/// Shows each material name and weight. When there are 2+ materials a
+/// count badge is shown alongside the first material name.
+class _MaterialsBadge extends StatelessWidget {
+  final HistoryModel data;
+
+  const _MaterialsBadge({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final usages = data.materialUsages;
+    if (usages.isEmpty) return const SizedBox.shrink();
+
+    if (usages.length == 1) {
+      return Text(
+        '${usages.first.materialName}: ${usages.first.weightGrams}g',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: Colors.white54,
+        ),
+      );
+    }
+
+    // Multiple materials — show first name + badge count, then full list below.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              usages.first.materialName,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.white54,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: LIGHT_BLUE.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                '+${usages.length - 1}',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: LIGHT_BLUE,
+                ),
+              ),
+            ),
+          ],
+        ),
+        ...usages.map(
+          (u) => Text(
+            '  ${u.materialName}: ${u.weightGrams}g',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.white38,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

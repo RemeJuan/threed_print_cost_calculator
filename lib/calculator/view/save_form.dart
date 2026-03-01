@@ -82,14 +82,22 @@ class SaveForm extends HookConsumerWidget {
                       }
                     }
 
-                    // Read calculator state for weight and time
+                    // Read calculator state for weight, time, and material usages.
                     final calcState = ref.read(calculatorProvider);
-                    final num weightVal = calcState.printWeight.value ?? 0;
                     final int hours = (calcState.hours.value ?? 0).toInt();
                     final int minutes = (calcState.minutes.value ?? 0).toInt();
 
                     String twoDigits(int n) => n.toString().padLeft(2, '0');
                     final timeStr = '${twoDigits(hours)}:${twoDigits(minutes)}';
+
+                    // Multi-material: derive weight and display name from usages.
+                    final usages = calcState.materialUsages;
+                    final num weightVal = usages.isNotEmpty
+                        ? calcState.totalMaterialWeight
+                        : (calcState.printWeight.value ?? 0);
+                    final String firstMaterialName = usages.isNotEmpty
+                        ? usages.first.materialName
+                        : materialName;
 
                     final model = HistoryModel(
                       name: name.value,
@@ -100,9 +108,10 @@ class SaveForm extends HookConsumerWidget {
                       labourCost: data.labour,
                       date: DateTime.now(),
                       printer: printerName,
-                      material: materialName,
+                      material: firstMaterialName,
                       weight: weightVal,
                       timeHours: timeStr,
+                      materialUsages: usages,
                     );
                     await ref.read(calculatorHelpersProvider).savePrint(model);
                     showSave.value = false;

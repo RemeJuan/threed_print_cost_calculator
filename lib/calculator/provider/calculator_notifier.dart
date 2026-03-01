@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
@@ -67,6 +69,11 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       updateWatt(settings.wattage.toString());
     }
 
+    // Load the selected material into the initial materialUsages list.
+    final initialUsages = await _loadInitialMaterialUsages(
+      settings.selectedMaterial,
+    );
+
     state = CalculatorState(
       watt: NumberInput.dirty(value: state.watt.value),
       kwCost: NumberInput.dirty(
@@ -93,7 +100,30 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       ),
       labourTime: NumberInput.dirty(value: state.labourTime.value),
       results: state.results,
+      materialUsages: initialUsages,
     );
+  }
+
+  /// Loads the initial [MaterialUsage] list from the persisted selected material.
+  Future<List<MaterialUsage>> _loadInitialMaterialUsages(
+    String selectedMaterialId,
+  ) async {
+    if (selectedMaterialId.isEmpty) return [];
+    final materialsStore = stringMapStoreFactory.store(DBName.materials.name);
+    final snapshot = await materialsStore
+        .query(finder: Finder(filter: Filter.byKey(selectedMaterialId)))
+        .getSnapshot(_database);
+    if (snapshot == null) return [];
+    final material = MaterialModel.fromMap(snapshot.value, selectedMaterialId);
+    return [
+      MaterialUsage(
+        materialId: material.id,
+        materialName: material.name,
+        weightGrams: 0,
+        spoolWeight: num.tryParse(material.weight) ?? 0,
+        spoolCost: num.tryParse(material.cost) ?? 0,
+      ),
+    ];
   }
 
   void updateWatt(String value) {
@@ -217,6 +247,48 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(results: results);
   }
 
+  // ── Multi-material methods ───────────────────────────────────────────────
+
+  /// Adds a new [MaterialUsage] entry from a [MaterialModel].
+  /// Weight defaults to 0 so the user can set it explicitly.
+  void addMaterial(MaterialModel material) {
+    final usage = MaterialUsage(
+      materialId: material.id,
+      materialName: material.name,
+      weightGrams: 0,
+      spoolWeight: num.tryParse(material.weight) ?? 0,
+      spoolCost: num.tryParse(material.cost) ?? 0,
+    );
+    state = state.copyWith(
+      materialUsages: [...state.materialUsages, usage],
+    );
+    submitDebounced();
+  }
+
+  /// Updates the [weightGrams] of the material usage at [index].
+  void updateMaterialWeight(int index, int grams) {
+    final updated = List<MaterialUsage>.from(state.materialUsages);
+    if (index < 0 || index >= updated.length) return;
+    updated[index] = updated[index].copyWith(weightGrams: grams);
+    state = state.copyWith(materialUsages: updated);
+  }
+
+  /// Removes the material usage at [index].
+  /// No-op if there is only one material (must have at least one).
+  void removeMaterial(int index) {
+    if (state.materialUsages.length <= 1) return;
+    final updated = List<MaterialUsage>.from(state.materialUsages)
+      ..removeAt(index);
+    state = state.copyWith(materialUsages: updated);
+    submitDebounced();
+  }
+
+  /// Replaces the entire material usages list (used for picker-based replacement).
+  void setMaterialUsages(List<MaterialUsage> usages) {
+    state = state.copyWith(materialUsages: usages);
+    submitDebounced();
+  }
+
   void submit() {
     num electricityCost = 0;
     num filamentCost = 0;
@@ -242,10 +314,17 @@ class CalculatorProvider extends Notifier<CalculatorState> {
           .electricityCost(w, h, m, kw);
     }
 
-    if (pw > -1 && sw > -1 && sc > -1) {
-      filamentCost = ref
-          .read(calculatorHelpersProvider)
-          .filamentCost(pw, sw, sc);
+    final helpers = ref.read(calculatorHelpersProvider);
+
+    if (state.materialUsages.isNotEmpty) {
+      // Multi-material path: compute costs per usage, store back into state.
+      final costed = helpers.computeUsageCosts(state.materialUsages);
+      filamentCost = costed.fold<num>(0, (sum, u) => sum + u.filamentCost);
+      // Store computed costs back so history/save can access them.
+      state = state.copyWith(materialUsages: costed);
+    } else if (pw > -1 && sw > -1 && sc > -1) {
+      // Legacy single-material fallback.
+      filamentCost = helpers.filamentCost(pw, sw, sc);
     }
 
     if (lt > -1 && lr > -1) {

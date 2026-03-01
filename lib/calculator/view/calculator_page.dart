@@ -12,10 +12,9 @@ import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 import 'calculator_results.dart';
-import 'components/materials_section.dart';
+import 'components/multi_material_section.dart';
 import 'components/rates_section.dart';
 import 'components/time_section.dart';
-import 'material_select.dart';
 
 class CalculatorPage extends HookConsumerWidget {
   const CalculatorPage({super.key});
@@ -53,9 +52,6 @@ class CalculatorPage extends HookConsumerWidget {
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = S.of(context);
 
-    // Section-level inputs manage their own controllers and focus nodes to
-    // avoid prop drilling. MaterialsSection will create its own controllers.
-
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         notifier
@@ -74,9 +70,9 @@ class CalculatorPage extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (premium.value) const PrinterSelect(),
-            if (premium.value) const MaterialSelect(),
-            // Let MaterialsSection manage its own controllers and focus state
-            const MaterialsSection(),
+            // Multi-material section replaces the old single-material selector
+            // and spool weight/cost inputs. Always shown (free + premium).
+            const MultiMaterialSection(),
             const SizedBox(height: 8),
             TimeSection(),
             const SizedBox(height: 8),

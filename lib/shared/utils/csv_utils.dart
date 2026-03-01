@@ -17,7 +17,7 @@ String generateCsv(List<HistoryModel> items) {
   final buffer = StringBuffer();
 
   buffer.writeln(
-    'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+    'Date,Printer,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
   );
 
   for (final item in items) {
@@ -28,10 +28,18 @@ String generateCsv(List<HistoryModel> items) {
     final risk = (item.riskCost).toString();
     final total = (item.totalCost).toString();
 
+    // Multi-material: emit a semicolon-separated "Name:Xg" list when available;
+    // fall back to the legacy single material name for older records.
+    final materialsStr = item.materialUsages.isNotEmpty
+        ? item.materialUsages
+            .map((u) => '${u.materialName}:${u.weightGrams}g')
+            .join('; ')
+        : item.material;
+
     buffer.writeln(
       '${_quote(dateStr)},'
       '${_quote(item.printer)},'
-      '${_quote(item.material)},'
+      '${_quote(materialsStr)},'
       '${_quote(item.weight)},'
       '${_quote(item.timeHours)},'
       '${_quote(electricity)},'

@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
@@ -8,6 +9,9 @@ class CalculatorState with FormzMixin {
   final NumberInput printWeight;
   final NumberInput hours;
   final NumberInput minutes;
+
+  /// Legacy single-material fields — kept for backward compatibility.
+  /// When [materialUsages] is non-empty these are ignored in [submit].
   final NumberInput spoolWeight;
   final NumberInput spoolCost;
   final String spoolCostText; // Raw text input for spool cost
@@ -16,6 +20,10 @@ class CalculatorState with FormzMixin {
   final NumberInput labourRate;
   final NumberInput labourTime;
   final CalculationResult results;
+
+  /// Multi-material usages. Takes precedence over the legacy [spoolWeight] /
+  /// [spoolCost] / [printWeight] fields when non-empty.
+  final List<MaterialUsage> materialUsages;
 
   CalculatorState({
     this.watt = const NumberInput.pure(),
@@ -37,6 +45,7 @@ class CalculatorState with FormzMixin {
       labour: 0.0,
       total: 0.0,
     ),
+    this.materialUsages = const [],
   });
 
   CalculatorState copyWith({
@@ -53,6 +62,7 @@ class CalculatorState with FormzMixin {
     NumberInput? labourRate,
     NumberInput? labourTime,
     CalculationResult? results,
+    List<MaterialUsage>? materialUsages,
   }) {
     return CalculatorState(
       watt: watt ?? this.watt,
@@ -68,8 +78,13 @@ class CalculatorState with FormzMixin {
       labourRate: labourRate ?? this.labourRate,
       labourTime: labourTime ?? this.labourTime,
       results: results ?? this.results,
+      materialUsages: materialUsages ?? this.materialUsages,
     );
   }
+
+  /// Total print weight derived from all material usages (grams).
+  int get totalMaterialWeight =>
+      materialUsages.fold(0, (sum, u) => sum + u.weightGrams);
 
   @override
   List<FormzInput> get inputs => [

@@ -47,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "enterNumber": MessageLookupByLibrary.simpleMessage(
       "Please enter a number",
     ),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("Add material"),
     "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
     "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
     "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
@@ -126,6 +127,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
+    "totalMaterialWeightLabel": MessageLookupByLibrary.simpleMessage(
+      "Total material weight",
+    ),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D Printer)"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
