@@ -49,6 +49,7 @@ Future<void> main() async {
 
   // Run any startup migrations (index rebuild etc.)
   await startupMigration(db);
+
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);

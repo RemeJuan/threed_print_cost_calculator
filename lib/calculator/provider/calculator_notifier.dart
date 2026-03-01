@@ -222,6 +222,11 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   // ── Multi-material management ───────────────────────────────────────────────
 
   /// Adds a new [MaterialUsage] for the given [material] with [weightGrams].
+  ///
+  /// Spool weight and cost are snapshotted from the material at the time of
+  /// adding; zero is used as a safe fallback for unparseable numeric fields.
+  /// In [multiMaterialFilamentCost], usages with a zero spool weight are
+  /// skipped, so invalid materials contribute no cost rather than crashing.
   void addMaterialUsage(MaterialModel material, {int weightGrams = 0}) {
     final usage = MaterialUsage(
       materialId: material.id,
