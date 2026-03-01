@@ -1,3 +1,5 @@
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
+
 class HistoryModel {
   final String name;
   final num totalCost;
@@ -10,6 +12,8 @@ class HistoryModel {
   final String material;
   final num weight; // grams
   final String timeHours; // stored as "hh:mm"
+  /// Multi-material usages. Empty for legacy single-material records.
+  final List<MaterialUsage> materialUsages;
 
   const HistoryModel({
     required this.name,
@@ -23,6 +27,7 @@ class HistoryModel {
     required this.material,
     required this.weight,
     required this.timeHours,
+    this.materialUsages = const <MaterialUsage>[],
   });
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
@@ -37,6 +42,16 @@ class HistoryModel {
       parsedDate = DateTime.parse(dateValue.toString());
     }
 
+    // Parse materialUsages if present; otherwise fall back to empty list.
+    List<MaterialUsage> usages = const <MaterialUsage>[];
+    final dynamic rawUsages = map['materialUsages'];
+    if (rawUsages is List && rawUsages.isNotEmpty) {
+      usages = rawUsages
+          .whereType<Map>()
+          .map((m) => MaterialUsage.fromMap(Map<String, dynamic>.from(m)))
+          .toList();
+    }
+
     return HistoryModel(
       name: map['name']?.toString() ?? '',
       totalCost: map['totalCost'] as num,
@@ -49,6 +64,7 @@ class HistoryModel {
       material: map['material']?.toString() ?? 'NotSelected',
       weight: map['weight'] as num? ?? 0.0,
       timeHours: map['timeHours']?.toString() ?? '00:00',
+      materialUsages: usages,
     );
   }
 
@@ -64,6 +80,7 @@ class HistoryModel {
     String? material,
     num? weight,
     String? timeHours,
+    List<MaterialUsage>? materialUsages,
   }) {
     return HistoryModel(
       name: name ?? this.name,
@@ -77,6 +94,7 @@ class HistoryModel {
       material: material ?? this.material,
       weight: weight ?? this.weight,
       timeHours: timeHours ?? this.timeHours,
+      materialUsages: materialUsages ?? this.materialUsages,
     );
   }
 
@@ -93,6 +111,7 @@ class HistoryModel {
       'material': material,
       'weight': weight,
       'timeHours': timeHours,
+      'materialUsages': materialUsages.map((u) => u.toMap()).toList(),
     };
   }
 

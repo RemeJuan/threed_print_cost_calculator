@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
@@ -16,6 +17,10 @@ class CalculatorState with FormzMixin {
   final NumberInput labourRate;
   final NumberInput labourTime;
   final CalculationResult results;
+  /// Multi-material usages for the current calculation.
+  /// When non-empty, the filament cost is computed from these usages.
+  /// When empty, the legacy spoolWeight/spoolCost/printWeight fields are used.
+  final List<MaterialUsage> materialUsages;
 
   CalculatorState({
     this.watt = const NumberInput.pure(),
@@ -37,6 +42,7 @@ class CalculatorState with FormzMixin {
       labour: 0.0,
       total: 0.0,
     ),
+    this.materialUsages = const <MaterialUsage>[],
   });
 
   CalculatorState copyWith({
@@ -53,6 +59,7 @@ class CalculatorState with FormzMixin {
     NumberInput? labourRate,
     NumberInput? labourTime,
     CalculationResult? results,
+    List<MaterialUsage>? materialUsages,
   }) {
     return CalculatorState(
       watt: watt ?? this.watt,
@@ -68,6 +75,7 @@ class CalculatorState with FormzMixin {
       labourRate: labourRate ?? this.labourRate,
       labourTime: labourTime ?? this.labourTime,
       results: results ?? this.results,
+      materialUsages: materialUsages ?? this.materialUsages,
     );
   }
 

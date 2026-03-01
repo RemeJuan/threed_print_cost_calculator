@@ -171,8 +171,20 @@ class HistoryItem extends HookConsumerWidget {
                       timeLabel = data.timeHours;
                     }
 
+                    // Build material label: multi-material badge or legacy name
+                    String materialLabel;
+                    if (data.materialUsages.length > 1) {
+                      final first = data.materialUsages.first.materialName;
+                      final extra = data.materialUsages.length - 1;
+                      materialLabel = '$first +$extra';
+                    } else if (data.materialUsages.length == 1) {
+                      materialLabel = data.materialUsages.first.materialName;
+                    } else {
+                      materialLabel = data.material;
+                    }
+
                     final summary =
-                        '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer} • ${data.material}';
+                        '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer} • $materialLabel';
 
                     return Text(
                       summary,

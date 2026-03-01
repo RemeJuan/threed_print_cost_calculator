@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:riverpod/riverpod.dart';
@@ -30,15 +31,56 @@ void main() {
 
       expect(
         lines[0],
-        'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+        'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Materials',
       );
 
       // Note: date is output with toIso8601String, which includes milliseconds and Z
       final expectedDate = '2022-01-02T03:04:05.000Z';
+      // When materialUsages is empty, the Materials column falls back to the
+      // legacy material field value.
       final expectedRow =
-          '"$expectedDate","My,Printer","PLA ""Red""","12.5","01:30","1.23","2.34","3.45","0.12","7.14"';
+          '"$expectedDate","My,Printer","PLA ""Red""","12.5","01:30","1.23","2.34","3.45","0.12","7.14","PLA ""Red"""';
 
       expect(lines[1], expectedRow);
+    });
+
+    test('multi-material row uses flattened materialUsages string', () {
+      final item = HistoryModel(
+        name: 'Multi Print',
+        totalCost: 5.0,
+        riskCost: 0.0,
+        filamentCost: 5.0,
+        electricityCost: 0.0,
+        labourCost: 0.0,
+        date: DateTime.parse('2023-06-01T00:00:00Z'),
+        printer: 'Printer',
+        material: 'PLA Black',
+        weight: 155,
+        timeHours: '02:00',
+        materialUsages: const [
+          MaterialUsage(
+            materialId: 'a',
+            materialName: 'PLA Black',
+            weightGrams: 120,
+            spoolWeightGrams: 1000,
+            spoolCost: 25,
+          ),
+          MaterialUsage(
+            materialId: 'b',
+            materialName: 'PLA White',
+            weightGrams: 35,
+            spoolWeightGrams: 1000,
+            spoolCost: 25,
+          ),
+        ],
+      );
+
+      final csv = generateCsv([item]);
+      final lines = csv.split('\n').where((s) => s.isNotEmpty).toList();
+
+      expect(lines.length, 2);
+      // The Materials column should contain the flattened multi-material string
+      expect(lines[1], contains('"PLA Black:120g; PLA White:35g"'));
     });
 
     test('handles empty list', () {
@@ -47,7 +89,7 @@ void main() {
       expect(lines.length, 1);
       expect(
         lines[0],
-        'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+        'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Materials',
       );
     });
   });
