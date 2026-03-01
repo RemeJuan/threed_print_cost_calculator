@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:sembast/sembast.dart';
@@ -64,7 +65,24 @@ class SaveForm extends HookConsumerWidget {
                       }
                     }
 
-                    if (settings.selectedMaterial.isNotEmpty) {
+                    // Read calculator state for weight and time
+                    final calcState = ref.read(calculatorProvider);
+                    final num weightVal = calcState.materialUsages.fold<int>(
+                      0,
+                      (sum, usage) => sum + usage.weightGrams,
+                    );
+
+                    final usages = calcState.materialUsages
+                        .map((usage) => usage.toMap())
+                        .toList();
+
+                    if (calcState.materialUsages.isNotEmpty) {
+                      final firstName = calcState.materialUsages.first.materialName;
+                      final count = calcState.materialUsages.length;
+                      materialName = count > 1
+                          ? '$firstName +${count - 1}'
+                          : firstName;
+                    } else if (settings.selectedMaterial.isNotEmpty) {
                       final store = stringMapStoreFactory.store(
                         DBName.materials.name,
                       );
@@ -77,14 +95,17 @@ class SaveForm extends HookConsumerWidget {
                           .getSnapshot(db);
                       if (snapshot != null) {
                         final map = snapshot.value as Map<String, dynamic>;
-                        materialName = (map['name'] ?? 'NotSelected')
-                            .toString();
+                        materialName = (map['name'] ?? 'NotSelected').toString();
+                        usages.add(
+                          MaterialUsageInput(
+                            materialId: settings.selectedMaterial,
+                            materialName: materialName,
+                            costPerKg: 0,
+                            weightGrams: weightVal.toInt(),
+                          ).toMap(),
+                        );
                       }
                     }
-
-                    // Read calculator state for weight and time
-                    final calcState = ref.read(calculatorProvider);
-                    final num weightVal = calcState.printWeight.value ?? 0;
                     final int hours = (calcState.hours.value ?? 0).toInt();
                     final int minutes = (calcState.minutes.value ?? 0).toInt();
 
@@ -102,6 +123,7 @@ class SaveForm extends HookConsumerWidget {
                       printer: printerName,
                       material: materialName,
                       weight: weightVal,
+                      materialUsages: usages,
                       timeHours: timeStr,
                     );
                     await ref.read(calculatorHelpersProvider).savePrint(model);

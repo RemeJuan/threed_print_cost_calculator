@@ -117,6 +117,19 @@ class HistoryItem extends HookConsumerWidget {
                       ),
                     ),
                     const Spacer(),
+                    if (data.materialUsages.length > 1)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text('${data.materialUsages.length} materials'),
+                      ),
+                    const SizedBox(width: 8),
                     // Format date string
                     Text(
                       DateFormat('dd MMM yyyy').format(data.date),
@@ -174,9 +187,32 @@ class HistoryItem extends HookConsumerWidget {
                     final summary =
                         '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer} • ${data.material}';
 
-                    return Text(
-                      summary,
-                      style: Theme.of(context).textTheme.bodySmall,
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          summary,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        if (data.materialUsages.isNotEmpty) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            'Material breakdown',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 4),
+                          ...data.materialUsages.map((usage) {
+                            final weight =
+                                int.tryParse(usage['weightGrams'].toString()) ??
+                                0;
+                            final materialName =
+                                usage['materialName']?.toString() ??
+                                usage['materialId']?.toString() ??
+                                'Material';
+                            return Text('$materialName | ${weight}g');
+                          }),
+                        ],
+                      ],
                     );
                   },
                 ),
