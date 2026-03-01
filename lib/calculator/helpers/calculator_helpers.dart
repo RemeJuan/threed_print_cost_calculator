@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -37,6 +38,34 @@ class CalculatorHelpers {
     final totalFixed = (w * cost).toStringAsFixed(2);
 
     return num.parse(totalFixed);
+  }
+
+  /// Calculates total filament cost for a multi-material print.
+  ///
+  /// Each [MaterialUsage] contributes `(weightGrams / spoolWeight) * spoolCost`.
+  /// Usages with zero spool weight are skipped to avoid division by zero.
+  /// Returns 0 if [usages] is empty.
+  num multiFilamentCost(List<MaterialUsage> usages) {
+    if (usages.isEmpty) return 0.0;
+    num total = 0;
+    for (final usage in usages) {
+      if (usage.spoolWeight > 0) {
+        total += filamentCost(usage.weightGrams, usage.spoolWeight, usage.spoolCost);
+      }
+    }
+    return num.parse(total.toStringAsFixed(2));
+  }
+
+  /// Computes per-material filament costs and returns a new list with
+  /// [MaterialUsage.filamentCost] populated on each entry.
+  List<MaterialUsage> computeUsageCosts(List<MaterialUsage> usages) {
+    return usages.map((usage) {
+      num cost = 0;
+      if (usage.spoolWeight > 0) {
+        cost = filamentCost(usage.weightGrams, usage.spoolWeight, usage.spoolCost);
+      }
+      return usage.copyWith(filamentCost: cost);
+    }).toList();
   }
 
   static num labourCost(num labourRate, num labourTime) {

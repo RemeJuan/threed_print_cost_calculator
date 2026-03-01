@@ -1,3 +1,5 @@
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
+
 class HistoryModel {
   final String name;
   final num totalCost;
@@ -7,9 +9,17 @@ class HistoryModel {
   final num labourCost;
   final DateTime date;
   final String printer;
+
+  /// Legacy single-material name — kept for backward compatibility.
+  /// New records populate [materialUsages] instead (and derive this from the
+  /// first usage for display convenience).
   final String material;
   final num weight; // grams
   final String timeHours; // stored as "hh:mm"
+
+  /// Multi-material usages. Empty for records saved before the multi-material
+  /// feature; those records rely on the legacy [material] + [weight] fields.
+  final List<MaterialUsage> materialUsages;
 
   const HistoryModel({
     required this.name,
@@ -23,6 +33,7 @@ class HistoryModel {
     required this.material,
     required this.weight,
     required this.timeHours,
+    this.materialUsages = const [],
   });
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
@@ -37,6 +48,16 @@ class HistoryModel {
       parsedDate = DateTime.parse(dateValue.toString());
     }
 
+    // Parse materialUsages (new field, backward-compatible — defaults to []).
+    List<MaterialUsage> usages = [];
+    final usagesData = map['materialUsages'];
+    if (usagesData is List && usagesData.isNotEmpty) {
+      usages = usagesData
+          .whereType<Map<String, dynamic>>()
+          .map(MaterialUsage.fromMap)
+          .toList();
+    }
+
     return HistoryModel(
       name: map['name']?.toString() ?? '',
       totalCost: map['totalCost'] as num,
@@ -49,6 +70,7 @@ class HistoryModel {
       material: map['material']?.toString() ?? 'NotSelected',
       weight: map['weight'] as num? ?? 0.0,
       timeHours: map['timeHours']?.toString() ?? '00:00',
+      materialUsages: usages,
     );
   }
 
@@ -64,6 +86,7 @@ class HistoryModel {
     String? material,
     num? weight,
     String? timeHours,
+    List<MaterialUsage>? materialUsages,
   }) {
     return HistoryModel(
       name: name ?? this.name,
@@ -77,6 +100,7 @@ class HistoryModel {
       material: material ?? this.material,
       weight: weight ?? this.weight,
       timeHours: timeHours ?? this.timeHours,
+      materialUsages: materialUsages ?? this.materialUsages,
     );
   }
 
@@ -93,7 +117,19 @@ class HistoryModel {
       'material': material,
       'weight': weight,
       'timeHours': timeHours,
+      'materialUsages': materialUsages.map((e) => e.toMap()).toList(),
     };
+  }
+
+  /// Human-readable summary of materials used.
+  ///
+  /// Returns formatted list (e.g. "PLA Black: 120g, PLA White: 35g") when
+  /// [materialUsages] is populated, otherwise falls back to [material].
+  String get materialsLabel {
+    if (materialUsages.isEmpty) return material;
+    return materialUsages
+        .map((u) => '${u.materialName}: ${u.weightGrams}g')
+        .join(', ');
   }
 
   @override

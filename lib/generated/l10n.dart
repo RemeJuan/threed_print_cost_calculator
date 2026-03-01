@@ -525,6 +525,26 @@ class S {
     );
   }
 
+  /// `Add material`
+  String get addMaterialButton {
+    return Intl.message(
+      'Add material',
+      name: 'addMaterialButton',
+      desc: 'Button label to add a new material to the multi-material calculator section',
+      args: [],
+    );
+  }
+
+  /// `Total material weight`
+  String get totalMaterialWeightLabel {
+    return Intl.message(
+      'Total material weight',
+      name: 'totalMaterialWeightLabel',
+      desc: 'Label for the sum of all per-material weights in the multi-material section',
+      args: [],
+    );
+  }
+
   /// `Privacy Policy`
   String get privacyPolicyLink {
     return Intl.message(
