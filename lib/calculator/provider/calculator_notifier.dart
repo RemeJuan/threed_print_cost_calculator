@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
@@ -217,6 +219,39 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(results: results);
   }
 
+  // ── Multi-material management ───────────────────────────────────────────────
+
+  /// Adds a new [MaterialUsage] for the given [material] with [weightGrams].
+  void addMaterialUsage(MaterialModel material, {int weightGrams = 0}) {
+    final usage = MaterialUsage(
+      materialId: material.id,
+      materialName: material.name,
+      weightGrams: weightGrams,
+      spoolWeightGrams: num.tryParse(material.weight) ?? 0,
+      spoolCost: num.tryParse(material.cost) ?? 0,
+    );
+    state = state.copyWith(
+      materialUsages: [...state.materialUsages, usage],
+    );
+    submitDebounced();
+  }
+
+  /// Removes the material usage at [index].
+  void removeMaterialUsage(int index) {
+    final updated = List<MaterialUsage>.from(state.materialUsages)
+      ..removeAt(index);
+    state = state.copyWith(materialUsages: updated);
+    submitDebounced();
+  }
+
+  /// Updates the [weightGrams] for the material usage at [index].
+  void updateMaterialUsageWeight(int index, int weightGrams) {
+    final updated = List<MaterialUsage>.from(state.materialUsages);
+    updated[index] = updated[index].copyWith(weightGrams: weightGrams);
+    state = state.copyWith(materialUsages: updated);
+    submitDebounced();
+  }
+
   void submit() {
     num electricityCost = 0;
     num filamentCost = 0;
@@ -242,7 +277,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
           .electricityCost(w, h, m, kw);
     }
 
-    if (pw > -1 && sw > -1 && sc > -1) {
+    // Use multi-material cost when usages are present; fall back to legacy
+    // single-material fields otherwise.
+    if (state.materialUsages.isNotEmpty) {
+      filamentCost = ref
+          .read(calculatorHelpersProvider)
+          .multiMaterialFilamentCost(state.materialUsages);
+    } else if (pw > -1 && sw > -1 && sc > -1) {
       filamentCost = ref
           .read(calculatorHelpersProvider)
           .filamentCost(pw, sw, sc);

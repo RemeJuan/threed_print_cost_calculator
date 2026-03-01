@@ -19,6 +19,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:sembast/sembast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -48,7 +49,6 @@ Future<void> main() async {
 
   // Run any startup migrations (index rebuild etc.)
   await startupMigration(db);
-
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
@@ -120,5 +120,49 @@ Future<void> startupMigration(Database db) async {
     }
   } finally {
     tempContainer.dispose();
+  }
+
+  // Migrate history records that pre-date multi-material support.
+  await _migrateHistoryToMultiMaterial(db);
+}
+
+/// For each history record without a `materialUsages` field, create one
+/// [MaterialUsage] from the legacy `material` (name) and `weight` fields so
+/// that the multi-material UI always has data to display.
+Future<void> _migrateHistoryToMultiMaterial(Database db) async {
+  try {
+    final store = stringMapStoreFactory.store('history');
+    final records = await store.find(db);
+
+    for (final record in records) {
+      final map = Map<String, dynamic>.from(record.value as Map);
+      if (map['materialUsages'] != null) continue;
+
+      final materialName = map['material']?.toString() ?? '';
+      final weight = (map['weight'] as num? ?? 0).toInt();
+
+      final usage = MaterialUsage(
+        materialId: '',
+        materialName: materialName,
+        weightGrams: weight,
+        spoolWeightGrams: 0,
+        spoolCost: 0,
+      );
+
+      await store.record(record.key).update(db, {
+        ...map,
+        'materialUsages': [usage.toMap()],
+      });
+    }
+
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print('History multi-material migration complete');
+    }
+  } catch (e, st) {
+    if (kDebugMode) {
+      // ignore: avoid_print
+      print('History multi-material migration failed: $e\n$st');
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -37,6 +38,22 @@ class CalculatorHelpers {
     final totalFixed = (w * cost).toStringAsFixed(2);
 
     return num.parse(totalFixed);
+  }
+
+  /// Computes the total filament cost for a multi-material print.
+  ///
+  /// For each [MaterialUsage], the cost is:
+  ///   (usage.weightGrams / usage.spoolWeightGrams) × usage.spoolCost
+  ///
+  /// Usages with zero spool weight are skipped (zero contribution).
+  num multiMaterialFilamentCost(List<MaterialUsage> usages) {
+    var total = 0.0;
+    for (final usage in usages) {
+      if (usage.spoolWeightGrams > 0) {
+        total += (usage.weightGrams / usage.spoolWeightGrams) * usage.spoolCost;
+      }
+    }
+    return num.parse(total.toStringAsFixed(2));
   }
 
   static num labourCost(num labourRate, num labourTime) {

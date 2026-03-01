@@ -84,7 +84,13 @@ class SaveForm extends HookConsumerWidget {
 
                     // Read calculator state for weight and time
                     final calcState = ref.read(calculatorProvider);
-                    final num weightVal = calcState.printWeight.value ?? 0;
+                    // Compute total weight: sum from multi-material usages or
+                    // fall back to the legacy printWeight field.
+                    final num weightVal = calcState.materialUsages.isNotEmpty
+                        ? calcState.materialUsages
+                              .fold(0, (sum, u) => sum + u.weightGrams)
+                              .toDouble()
+                        : (calcState.printWeight.value ?? 0);
                     final int hours = (calcState.hours.value ?? 0).toInt();
                     final int minutes = (calcState.minutes.value ?? 0).toInt();
 
@@ -103,6 +109,7 @@ class SaveForm extends HookConsumerWidget {
                       material: materialName,
                       weight: weightVal,
                       timeHours: timeStr,
+                      materialUsages: calcState.materialUsages,
                     );
                     await ref.read(calculatorHelpersProvider).savePrint(model);
                     showSave.value = false;
