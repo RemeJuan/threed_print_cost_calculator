@@ -20,9 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'id';
 
+  static String m0(count) => "${count} material";
+
+  static String m1(grams) => "Total berat material: ${grams}g";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage("Tambahkan setidaknya satu material."),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("Tambah material"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Kalkulator Cetak 3D",
     ),
@@ -77,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Could not open mail client",
     ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage("Rincian material"),
+    "materialsCountLabel": m0,
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
       "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
@@ -110,6 +118,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("Cari material"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
@@ -129,11 +138,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support ID Copied",
     ),
+    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage("Gunakan total berat tunggal"),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
       "Please include your Support ID: ",
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
+    "totalMaterialWeightLabel": m1,
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (Printer 3D)"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),

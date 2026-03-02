@@ -19,6 +19,9 @@ void main() {
         printer: 'My,Printer',
         material: 'PLA "Red"',
         weight: 12.5,
+        materialUsages: const [
+          {'materialName': 'PLA Red', 'weightGrams': 12},
+        ],
         timeHours: '01:30',
       );
 
@@ -30,13 +33,13 @@ void main() {
 
       expect(
         lines[0],
-        'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+        'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
       );
 
       // Note: date is output with toIso8601String, which includes milliseconds and Z
       final expectedDate = '2022-01-02T03:04:05.000Z';
       final expectedRow =
-          '"$expectedDate","My,Printer","PLA ""Red""","12.5","01:30","1.23","2.34","3.45","0.12","7.14"';
+          '"$expectedDate","My,Printer","PLA ""Red""","PLA Red:12g","12.5","01:30","1.23","2.34","3.45","0.12","7.14"';
 
       expect(lines[1], expectedRow);
     });
@@ -47,7 +50,7 @@ void main() {
       expect(lines.length, 1);
       expect(
         lines[0],
-        'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+        'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
       );
     });
   });

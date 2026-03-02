@@ -17,7 +17,7 @@ String generateCsv(List<HistoryModel> items) {
   final buffer = StringBuffer();
 
   buffer.writeln(
-    'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
   );
 
   for (final item in items) {
@@ -28,10 +28,20 @@ String generateCsv(List<HistoryModel> items) {
     final risk = (item.riskCost).toString();
     final total = (item.totalCost).toString();
 
+    final materialsFlattened = item.materialUsages
+        .map((usage) {
+          final name =
+              usage['materialName']?.toString() ?? usage['materialId']?.toString() ?? 'Material';
+          final weight = usage['weightGrams']?.toString() ?? '0';
+          return '$name:${weight}g';
+        })
+        .join('; ');
+
     buffer.writeln(
       '${_quote(dateStr)},'
       '${_quote(item.printer)},'
       '${_quote(item.material)},'
+      '${_quote(materialsFlattened)},'
       '${_quote(item.weight)},'
       '${_quote(item.timeHours)},'
       '${_quote(electricity)},'

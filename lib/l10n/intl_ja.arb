@@ -155,5 +155,22 @@
   "enterNumber": "Please enter a number",
   "@enterNumber": {},
   "invalidNumber": "Invalid number",
-  "@invalidNumber": {}
+  "@invalidNumber": {},
+  "addMaterialButton": "素材を追加",
+  "useSingleTotalWeightAction": "単一の合計重量を使用",
+  "addAtLeastOneMaterial": "少なくとも1つの素材を追加してください。",
+  "searchMaterialsHint": "素材を検索",
+  "materialBreakdownLabel": "素材内訳",
+  "materialsCountLabel": "{count} 種類の素材",
+  "totalMaterialWeightLabel": "素材の合計重量: {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {}
+    }
+  }
 }

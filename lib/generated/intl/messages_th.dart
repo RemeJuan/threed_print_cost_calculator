@@ -20,9 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'th';
 
+  static String m0(count) => "${count} วัสดุ";
+
+  static String m1(grams) => "น้ำหนักวัสดุรวม: ${grams}g";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage("เพิ่มวัสดุอย่างน้อย 1 รายการ"),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("เพิ่มวัสดุ"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "เครื่องคิดเลขการพิมพ์ 3 มิติ",
     ),
@@ -75,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Could not open mail client",
     ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage("รายละเอียดวัสดุ"),
+    "materialsCountLabel": m0,
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
       "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
@@ -114,6 +122,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("ค้นหาวัสดุ"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
@@ -135,6 +144,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support ID Copied",
     ),
+    "totalMaterialWeightLabel": m1,
+    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage("ใช้ค่าน้ำหนักรวมเดียว"),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
       "Please include your Support ID: ",
     ),

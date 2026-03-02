@@ -113,6 +113,30 @@ Future<void> startupMigration(Database db) async {
         print('Printer index rebuild finished');
       }
     }
+
+    // Migrate old history records to materialUsages[] format.
+    final historyStore = stringMapStoreFactory.store('history');
+    final records = await historyStore.find(db);
+    for (final record in records) {
+      final value = record.value as Map<String, dynamic>;
+      final usages = value['materialUsages'];
+      if (usages is List && usages.isNotEmpty) {
+        continue;
+      }
+
+      final migrated = {
+        ...value,
+        'materialUsages': [
+          {
+            'materialId': value['materialId']?.toString() ?? '',
+            'materialName': value['material']?.toString() ?? 'NotSelected',
+            'costPerKg': 0,
+            'weightGrams': (value['weight'] as num? ?? 0).toInt(),
+          },
+        ],
+      };
+      await historyStore.record(record.key).put(db, migrated);
+    }
   } catch (e, st) {
     if (kDebugMode) {
       // ignore: avoid_print

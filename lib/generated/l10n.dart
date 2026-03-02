@@ -679,6 +679,77 @@ class S {
       args: [],
     );
   }
+
+  /// `Add material`
+  String get addMaterialButton {
+    return Intl.message(
+      'Add material',
+      name: 'addMaterialButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use single total weight`
+  String get useSingleTotalWeightAction {
+    return Intl.message(
+      'Use single total weight',
+      name: 'useSingleTotalWeightAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add at least one material.`
+  String get addAtLeastOneMaterial {
+    return Intl.message(
+      'Add at least one material.',
+      name: 'addAtLeastOneMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search materials`
+  String get searchMaterialsHint {
+    return Intl.message(
+      'Search materials',
+      name: 'searchMaterialsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material breakdown`
+  String get materialBreakdownLabel {
+    return Intl.message(
+      'Material breakdown',
+      name: 'materialBreakdownLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} materials`
+  String materialsCountLabel(Object count) {
+    return Intl.message(
+      '$count materials',
+      name: 'materialsCountLabel',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Total material weight: {grams}g`
+  String totalMaterialWeightLabel(Object grams) {
+    return Intl.message(
+      'Total material weight: ${grams}g',
+      name: 'totalMaterialWeightLabel',
+      desc: '',
+      args: [grams],
+    );
+  }
+
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

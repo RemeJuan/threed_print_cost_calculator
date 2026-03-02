@@ -20,9 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ja';
 
+  static String m0(count) => "${count} 種類の素材";
+
+  static String m1(grams) => "素材の合計重量: ${grams}g";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage("少なくとも1つの素材を追加してください。"),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("素材を追加"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage("3Dプリント計算機"),
     "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
     "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -65,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Could not open mail client",
     ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
+    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage("素材内訳"),
+    "materialsCountLabel": m0,
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
       "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
@@ -94,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("リスクコスト:"),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("素材を検索"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Select Material",
     ),
@@ -111,6 +120,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support ID Copied",
     ),
+    "totalMaterialWeightLabel": m1,
+    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage("単一の合計重量を使用"),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
       "Please include your Support ID: ",
     ),
