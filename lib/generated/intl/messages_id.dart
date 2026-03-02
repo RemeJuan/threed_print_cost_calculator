@@ -26,9 +26,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
+      "Tambahkan setidaknya satu material.",
+    ),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage(
+      "Tambah material",
+    ),
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
-    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage("Tambahkan setidaknya satu material."),
-    "addMaterialButton": MessageLookupByLibrary.simpleMessage("Tambah material"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Kalkulator Cetak 3D",
     ),
@@ -82,13 +86,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "mailClientError": MessageLookupByLibrary.simpleMessage(
       "Could not open mail client",
     ),
+    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
+      "Rincian material",
+    ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage("Rincian material"),
-    "materialsCountLabel": m0,
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
       "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
     ),
+    "materialsCountLabel": m0,
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Menit"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
@@ -118,10 +124,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
-    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("Cari material"),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
-      "Select Material",
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
+      "Cari material",
     ),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("Tidak dipilih"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("Pilih printer"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Pengaturan"),
@@ -138,13 +144,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support ID Copied",
     ),
-    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage("Gunakan total berat tunggal"),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
       "Please include your Support ID: ",
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
     "totalMaterialWeightLabel": m1,
+    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
+      "Gunakan total berat tunggal",
+    ),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (Printer 3D)"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),

@@ -83,7 +83,7 @@
   "@cancelButton": {},
   "deleteButton": "Delete",
   "@deleteButton": {},
-  "selectMaterialHint": "Select Material",
+  "selectMaterialHint": "Non selezionato",
   "@selectMaterialHint": {},
   "materialNone": "None",
   "@materialNone": {},

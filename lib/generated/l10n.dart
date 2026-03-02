@@ -399,10 +399,10 @@ class S {
     return Intl.message('Delete', name: 'deleteButton', desc: '', args: []);
   }
 
-  /// `Select Material`
+  /// `Unselected`
   String get selectMaterialHint {
     return Intl.message(
-      'Select Material',
+      'Unselected',
       name: 'selectMaterialHint',
       desc: '',
       args: [],
@@ -680,14 +680,9 @@ class S {
     );
   }
 
-  /// `Add material`
+  /// `Add`
   String get addMaterialButton {
-    return Intl.message(
-      'Add material',
-      name: 'addMaterialButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Add', name: 'addMaterialButton', desc: '', args: []);
   }
 
   /// `Use single total weight`
@@ -730,10 +725,12 @@ class S {
     );
   }
 
-  /// `{count} materials`
-  String materialsCountLabel(Object count) {
-    return Intl.message(
-      '$count materials',
+  /// `{count, plural, one{# material} other{# materials}}`
+  String materialsCountLabel(num count) {
+    return Intl.plural(
+      count,
+      one: '# material',
+      other: '# materials',
       name: 'materialsCountLabel',
       desc: '',
       args: [count],
@@ -749,7 +746,6 @@ class S {
       args: [grams],
     );
   }
-
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
