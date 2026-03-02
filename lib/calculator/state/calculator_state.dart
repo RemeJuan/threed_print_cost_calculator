@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
@@ -6,6 +7,7 @@ class CalculatorState with FormzMixin {
   final NumberInput watt;
   final NumberInput kwCost;
   final NumberInput printWeight;
+  final List<MaterialUsageInput> materialUsages;
   final NumberInput hours;
   final NumberInput minutes;
   final NumberInput spoolWeight;
@@ -21,6 +23,7 @@ class CalculatorState with FormzMixin {
     this.watt = const NumberInput.pure(),
     this.kwCost = const NumberInput.pure(),
     this.printWeight = const NumberInput.pure(),
+    this.materialUsages = const [],
     this.hours = const NumberInput.pure(),
     this.minutes = const NumberInput.pure(),
     this.spoolWeight = const NumberInput.pure(),
@@ -43,6 +46,7 @@ class CalculatorState with FormzMixin {
     NumberInput? watt,
     NumberInput? kwCost,
     NumberInput? printWeight,
+    List<MaterialUsageInput>? materialUsages,
     NumberInput? hours,
     NumberInput? minutes,
     NumberInput? spoolWeight,
@@ -58,6 +62,7 @@ class CalculatorState with FormzMixin {
       watt: watt ?? this.watt,
       kwCost: kwCost ?? this.kwCost,
       printWeight: printWeight ?? this.printWeight,
+      materialUsages: materialUsages ?? this.materialUsages,
       hours: hours ?? this.hours,
       minutes: minutes ?? this.minutes,
       spoolWeight: spoolWeight ?? this.spoolWeight,

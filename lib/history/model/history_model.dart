@@ -9,6 +9,7 @@ class HistoryModel {
   final String printer;
   final String material;
   final num weight; // grams
+  final List<Map<String, dynamic>> materialUsages;
   final String timeHours; // stored as "hh:mm"
 
   const HistoryModel({
@@ -22,6 +23,7 @@ class HistoryModel {
     required this.printer,
     required this.material,
     required this.weight,
+    this.materialUsages = const [],
     required this.timeHours,
   });
 
@@ -48,8 +50,17 @@ class HistoryModel {
       printer: map['printer']?.toString() ?? 'NotSelected',
       material: map['material']?.toString() ?? 'NotSelected',
       weight: map['weight'] as num? ?? 0.0,
+      materialUsages: _parseMaterialUsages(map['materialUsages']),
       timeHours: map['timeHours']?.toString() ?? '00:00',
     );
+  }
+
+  static List<Map<String, dynamic>> _parseMaterialUsages(dynamic raw) {
+    if (raw is! List) return const [];
+    return raw
+        .whereType<Map>()
+        .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
+        .toList();
   }
 
   HistoryModel copyWith({
@@ -63,6 +74,7 @@ class HistoryModel {
     String? printer,
     String? material,
     num? weight,
+    List<Map<String, dynamic>>? materialUsages,
     String? timeHours,
   }) {
     return HistoryModel(
@@ -76,6 +88,7 @@ class HistoryModel {
       printer: printer ?? this.printer,
       material: material ?? this.material,
       weight: weight ?? this.weight,
+      materialUsages: materialUsages ?? this.materialUsages,
       timeHours: timeHours ?? this.timeHours,
     );
   }
@@ -92,6 +105,7 @@ class HistoryModel {
       'printer': printer,
       'material': material,
       'weight': weight,
+      'materialUsages': materialUsages,
       'timeHours': timeHours,
     };
   }

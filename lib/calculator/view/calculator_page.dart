@@ -15,7 +15,6 @@ import 'calculator_results.dart';
 import 'components/materials_section.dart';
 import 'components/rates_section.dart';
 import 'components/time_section.dart';
-import 'material_select.dart';
 
 class CalculatorPage extends HookConsumerWidget {
   const CalculatorPage({super.key});
@@ -74,9 +73,8 @@ class CalculatorPage extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (premium.value) const PrinterSelect(),
-            if (premium.value) const MaterialSelect(),
             // Let MaterialsSection manage its own controllers and focus state
-            const MaterialsSection(),
+            MaterialsSection(premium: premium.value),
             const SizedBox(height: 8),
             TimeSection(),
             const SizedBox(height: 8),

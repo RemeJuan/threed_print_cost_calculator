@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -37,6 +38,15 @@ class CalculatorHelpers {
     final totalFixed = (w * cost).toStringAsFixed(2);
 
     return num.parse(totalFixed);
+  }
+
+  num multiMaterialFilamentCost(List<MaterialUsageInput> usages) {
+    final total = usages.fold<num>(0, (sum, usage) {
+      final materialCost = (usage.weightGrams * usage.costPerKg) / 1000;
+      return sum + materialCost;
+    });
+
+    return num.parse(total.toStringAsFixed(2));
   }
 
   static num labourCost(num labourRate, num labourTime) {

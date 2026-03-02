@@ -154,5 +154,22 @@
   "enterNumber": "Please enter a number",
   "@enterNumber": {},
   "invalidNumber": "Invalid number",
-  "@invalidNumber": {}
+  "@invalidNumber": {},
+  "addMaterialButton": "Ajouter un matériau",
+  "useSingleTotalWeightAction": "Utiliser le poids total unique",
+  "addAtLeastOneMaterial": "Ajoutez au moins un matériau.",
+  "searchMaterialsHint": "Rechercher des matériaux",
+  "materialBreakdownLabel": "Répartition des matériaux",
+  "materialsCountLabel": "{count} matériaux",
+  "totalMaterialWeightLabel": "Poids total du matériau : {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {}
+    }
+  }
 }
