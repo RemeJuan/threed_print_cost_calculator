@@ -169,4 +169,17 @@ class DataBaseHelpers {
 
     return {'value': ''};
   }
+
+  // New helper: return all records from the configured store
+  Future<List<RecordSnapshot<Key?, Value?>>> getAllRecords() async {
+    final store = stringMapStoreFactory.store(dbName.name);
+    try {
+      return await store.find(db);
+    } catch (e) {
+      BotToast.showText(text: 'Error reading records');
+      // Propagate the error so callers can handle migration/backfill failures
+      // instead of silently receiving an empty list.
+      rethrow;
+    }
+  }
 }

@@ -5,9 +5,11 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
@@ -92,7 +94,61 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         value: num.tryParse(settings.labourRate.replaceAll(',', '.')),
       ),
       labourTime: NumberInput.dirty(value: state.labourTime.value),
+      materialUsages: state.materialUsages,
       results: state.results,
+    );
+
+    await _ensureInitialMaterialUsage(settings.selectedMaterial);
+  }
+
+  Future<void> _ensureInitialMaterialUsage(String selectedMaterialId) async {
+    if (state.materialUsages.isNotEmpty) return;
+
+    final defaultUsage = MaterialUsageInput(
+      materialId: 'none',
+      materialName: 'Unassigned',
+      costPerKg: 0,
+      weightGrams: 0,
+    );
+
+    if (selectedMaterialId.isEmpty) {
+      state = state.copyWith(materialUsages: [defaultUsage]);
+      return;
+    }
+
+    // Use DataBaseHelpers to fetch single material record instead of direct Sembast access
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
+    final materialSnapshot = await dbHelpers.getRecord(selectedMaterialId);
+
+    if (materialSnapshot == null) {
+      state = state.copyWith(materialUsages: [defaultUsage]);
+      return;
+    }
+
+    final material = MaterialModel.fromMap(
+      materialSnapshot.value as Map<String, dynamic>,
+      materialSnapshot.key.toString(),
+    );
+
+    // Normalize user-entered strings: trim and replace comma decimals with dot
+    final rawWeightStr = (material.weight).toString().trim().replaceAll(
+      ',',
+      '.',
+    );
+    final rawCostStr = (material.cost).toString().trim().replaceAll(',', '.');
+    final weight = num.tryParse(rawWeightStr) ?? 0;
+    final cost = num.tryParse(rawCostStr) ?? 0;
+    final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
+
+    state = state.copyWith(
+      materialUsages: [
+        MaterialUsageInput(
+          materialId: material.id,
+          materialName: material.name,
+          costPerKg: costPerKg,
+          weightGrams: (state.printWeight.value ?? 0).toInt(),
+        ),
+      ],
     );
   }
 
@@ -113,9 +169,111 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void updatePrintWeight(String value) {
+    final normalized = value.trim().replaceAll(',', '.');
+    final parsed = (num.tryParse(normalized) ?? 0).toInt();
+    final usages = [...state.materialUsages];
+    if (usages.length == 1) {
+      usages[0] = usages[0].copyWith(weightGrams: parsed);
+    }
+
     state = state.copyWith(
-      printWeight: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+      printWeight: NumberInput.dirty(value: parsed),
+      materialUsages: usages,
     );
+  }
+
+  void addMaterialUsage(MaterialUsageInput usage) {
+    state = state.copyWith(materialUsages: [...state.materialUsages, usage]);
+  }
+
+  void removeMaterialUsageAt(int index) {
+    // Defensive: ensure index is valid
+    if (index < 0 || index >= state.materialUsages.length) return;
+
+    final target = state.materialUsages[index];
+    final id = target.materialId.trim();
+
+    // Do not allow removing the placeholder 'Unassigned' entry. The placeholder
+    // is represented by an empty id or the literal 'none' (case-insensitive).
+    if (id.isEmpty || id.toLowerCase() == 'none') return;
+
+    final usages = [...state.materialUsages]..removeAt(index);
+
+    // If removal would leave the list empty, re-add a placeholder to keep UI stable.
+    if (usages.isEmpty) {
+      usages.add(
+        MaterialUsageInput(
+          materialId: 'none',
+          materialName: 'Unassigned',
+          costPerKg: 0,
+          weightGrams: 0,
+        ),
+      );
+    }
+
+    // Always update state: update materialUsages and printWeight (sum of weights or 0)
+    final totalWeight = usages.fold<int>(
+      0,
+      (sum, item) => sum + item.weightGrams,
+    );
+
+    state = state.copyWith(
+      materialUsages: usages,
+      printWeight: NumberInput.dirty(value: totalWeight),
+    );
+  }
+
+  void updateMaterialUsageWeight(int index, int grams) {
+    // Validate index
+    if (index < 0 || index >= state.materialUsages.length) return;
+
+    // Ensure non-negative grams
+    final safeGrams = grams < 0 ? 0 : grams;
+
+    final usages = [...state.materialUsages];
+    usages[index] = usages[index].copyWith(weightGrams: safeGrams);
+    final totalWeight = usages.fold<int>(
+      0,
+      (sum, item) => sum + item.weightGrams,
+    );
+
+    state = state.copyWith(
+      materialUsages: usages,
+      printWeight: NumberInput.dirty(value: totalWeight),
+    );
+  }
+
+  // New helper: update an entire material usage at an index
+  void updateMaterialUsage(int index, MaterialUsageInput usage) {
+    if (index < 0 || index >= state.materialUsages.length) return;
+
+    final usages = [...state.materialUsages];
+    usages[index] = usage;
+
+    final totalWeight = usages.fold<int>(
+      0,
+      (sum, item) => sum + item.weightGrams,
+    );
+
+    state = state.copyWith(
+      materialUsages: usages,
+      printWeight: NumberInput.dirty(value: totalWeight),
+    );
+  }
+
+  void applySingleTotalWeightToFirstRow() {
+    if (state.materialUsages.isEmpty) return;
+
+    // Reset all other rows to 0 to avoid double-counting, then apply the
+    // total to the first row.
+    final total = (state.printWeight.value ?? 0).toInt();
+    for (var i = 0; i < state.materialUsages.length; i++) {
+      if (i == 0) continue;
+      // Use updateMaterialUsageWeight to ensure state consistency
+      updateMaterialUsageWeight(i, 0);
+    }
+
+    updateMaterialUsageWeight(0, total);
   }
 
   void updateHours(num value) {
@@ -242,7 +400,17 @@ class CalculatorProvider extends Notifier<CalculatorState> {
           .electricityCost(w, h, m, kw);
     }
 
-    if (pw > -1 && sw > -1 && sc > -1) {
+    if (state.materialUsages.isNotEmpty &&
+        state.materialUsages.any(
+          (u) =>
+              u.weightGrams > 0 &&
+              u.materialId.trim().toLowerCase() != 'none' &&
+              (u.costPerKg > 0),
+        )) {
+      filamentCost = ref
+          .read(calculatorHelpersProvider)
+          .multiMaterialFilamentCost(state.materialUsages);
+    } else if (pw > -1 && sw > -1 && sc > -1) {
       filamentCost = ref
           .read(calculatorHelpersProvider)
           .filamentCost(pw, sw, sc);

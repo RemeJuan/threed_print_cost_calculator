@@ -42,7 +42,7 @@
   "deleteDialogContent": "Are you sure you want to delete this item?",
   "cancelButton": "Cancel",
   "deleteButton": "Delete",
-  "selectMaterialHint": "Select Material",
+  "selectMaterialHint": "Unselected",
   "materialNone": "None",
   "gramsSuffix": "g",
   "wattsSuffix": "w",
@@ -86,5 +86,24 @@
   "workCostsLabel": "Work Costs",
   "enterNumber": "Please enter a number",
   "invalidNumber": "Invalid number",
-  "historySearchHint": "Search by name or printer"
+  "historySearchHint": "Search by name or printer",
+  "addMaterialButton": "Add",
+  "useSingleTotalWeightAction": "Use single total weight",
+  "addAtLeastOneMaterial": "Add at least one material.",
+  "searchMaterialsHint": "Search materials",
+  "materialBreakdownLabel": "Material breakdown",
+  "materialsCountLabel": "{count, plural, one{# material} other{# materials}}",
+  "totalMaterialWeightLabel": "Total material weight: {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {}
+    }
+  },
+  "materialFallback": "Material",
+  "@materialFallback": {}
 }

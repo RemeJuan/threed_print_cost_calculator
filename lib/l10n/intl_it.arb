@@ -83,7 +83,7 @@
   "@cancelButton": {},
   "deleteButton": "Delete",
   "@deleteButton": {},
-  "selectMaterialHint": "Select Material",
+  "selectMaterialHint": "Non selezionato",
   "@selectMaterialHint": {},
   "materialNone": "None",
   "@materialNone": {},
@@ -154,5 +154,22 @@
   "enterNumber": "Please enter a number",
   "@enterNumber": {},
   "invalidNumber": "Invalid number",
-  "@invalidNumber": {}
+  "@invalidNumber": {},
+  "addMaterialButton": "Aggiungi materiale",
+  "useSingleTotalWeightAction": "Usa peso totale singolo",
+  "addAtLeastOneMaterial": "Aggiungi almeno un materiale.",
+  "searchMaterialsHint": "Cerca materiali",
+  "materialBreakdownLabel": "Dettaglio materiali",
+  "materialsCountLabel": "{count, plural, one{{count} materiale} other{{count} materiali}}",
+  "totalMaterialWeightLabel": "Peso totale materiale: {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {}
+    }
+  }
 }

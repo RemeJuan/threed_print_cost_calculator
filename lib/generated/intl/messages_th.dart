@@ -20,8 +20,16 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'th';
 
+  static String m0(count) => "${count} วัสดุ";
+
+  static String m1(grams) => "น้ำหนักวัสดุรวม: ${grams}g";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
+      "เพิ่มวัสดุอย่างน้อย 1 รายการ",
+    ),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("เพิ่มวัสดุ"),
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "เครื่องคิดเลขการพิมพ์ 3 มิติ",
@@ -74,11 +82,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "mailClientError": MessageLookupByLibrary.simpleMessage(
       "Could not open mail client",
     ),
+    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
+      "รายละเอียดวัสดุ",
+    ),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
       "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
     ),
+    "materialsCountLabel": m0,
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("นาที"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
@@ -114,9 +126,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
-      "Select Material",
-    ),
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("ค้นหาวัสดุ"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("ไม่ได้เลือก"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
       "เลือกเครื่องพิมพ์",
     ),
@@ -140,6 +151,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("ทั้งหมด"),
+    "totalMaterialWeightLabel": m1,
+    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
+      "ใช้ค่าน้ำหนักรวมเดียว",
+    ),
     "watt": MessageLookupByLibrary.simpleMessage("วัตต์"),
     "wattLabel": MessageLookupByLibrary.simpleMessage(
       "วัตต์ (เครื่องพิมพ์ 3D)",

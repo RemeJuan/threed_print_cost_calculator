@@ -84,7 +84,7 @@
   "@cancelButton": {},
   "deleteButton": "Delete",
   "@deleteButton": {},
-  "selectMaterialHint": "Select Material",
+  "selectMaterialHint": "Tidak dipilih",
   "@selectMaterialHint": {},
   "materialNone": "None",
   "@materialNone": {},
@@ -155,5 +155,22 @@
   "enterNumber": "Please enter a number",
   "@enterNumber": {},
   "invalidNumber": "Invalid number",
-  "@invalidNumber": {}
+  "@invalidNumber": {},
+  "addMaterialButton": "Tambah material",
+  "useSingleTotalWeightAction": "Gunakan total berat tunggal",
+  "addAtLeastOneMaterial": "Tambahkan setidaknya satu material.",
+  "searchMaterialsHint": "Cari material",
+  "materialBreakdownLabel": "Rincian material",
+  "materialsCountLabel": "{count} material",
+  "totalMaterialWeightLabel": "Total berat material: {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {}
+    }
+  }
 }
