@@ -30,48 +30,44 @@ class MessageLookup extends MessageLookupByLibrary {
       "เพิ่มวัสดุอย่างน้อย 1 รายการ",
     ),
     "addMaterialButton": MessageLookupByLibrary.simpleMessage("เพิ่มวัสดุ"),
-    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("ขนาดฐานพิมพ์ *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "เครื่องคิดเลขการพิมพ์ 3 มิติ",
     ),
-    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
-    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
-    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
-    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
-    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
-    "currentOfferings": MessageLookupByLibrary.simpleMessage(
-      "Current Offerings",
-    ),
-    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("เครื่องคิดเลข"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("ยกเลิก"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(แตะเพื่อคัดลอก)"),
+    "closeButton": MessageLookupByLibrary.simpleMessage("ปิด"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("สี *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("ราคา *"),
+    "currentOfferings": MessageLookupByLibrary.simpleMessage("ข้อเสนอปัจจุบัน"),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("ลบ"),
     "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this item?",
+      "คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?",
     ),
-    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("ลบ"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("ค่าไฟฟ้า"),
     "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
-      "Electricity cost",
+      "ค่าไฟฟ้า",
     ),
-    "enterNumber": MessageLookupByLibrary.simpleMessage(
-      "Please enter a number",
-    ),
-    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
-    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
-    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
+    "enterNumber": MessageLookupByLibrary.simpleMessage("กรุณาใส่ตัวเลข"),
+    "exportButton": MessageLookupByLibrary.simpleMessage("ส่งออก"),
+    "exportError": MessageLookupByLibrary.simpleMessage("ส่งออกล้มเหลว"),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage("ส่งออกสำเร็จ"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "ความเสี่ยงจากความล้มเหลว (%)",
     ),
-    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("เส้นใย"),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("ฟิลาเมนต์"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
-    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("ประวัติศาสตร์"),
-    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("ประวัติ"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("ประวัติ"),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "ค้นหาตามชื่อหรือเครื่องพิมพ์",
     ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "เวลาในการพิมพ์ (ชั่วโมง)",
     ),
-    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("ตัวเลขไม่ถูกต้อง"),
     "kwh": MessageLookupByLibrary.simpleMessage("กิโลวัตต์/ชม"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("ค่าแรง"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage("ค่าแรง/วัสดุ: "),
@@ -80,37 +76,40 @@ class MessageLookup extends MessageLookupByLibrary {
       "ระยะเวลาดำเนินการ",
     ),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
-      "Could not open mail client",
+      "ไม่สามารถเปิดแอปอีเมลได้",
     ),
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
       "รายละเอียดวัสดุ",
     ),
-    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("วัสดุ"),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("ชื่อวัสดุ *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("ไม่มี"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
-      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+      "น้ำหนักวัสดุคือน้ำหนักรวมของวัสดุต้นทาง หรือก็คือน้ำหนักของม้วนฟิลาเมนต์ทั้งม้วน ค่าใช้จ่ายคือราคาของหน่วยทั้งหมด",
     ),
     "materialsCountLabel": m0,
-    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("วัสดุ"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("นาที"),
-    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
-    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage(
+      "ต้องการความช่วยเหลือ?",
+    ),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("ข้อผิดพลาด: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "ผู้ใช้ระดับพรีเมียมเท่านั้น:",
     ),
-    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("ชื่องานพิมพ์"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage(
       "น้ำหนักของการพิมพ์",
     ),
-    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
-    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("ชื่อ *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("เครื่องพิมพ์"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
+      "นโยบายความเป็นส่วนตัว",
+    ),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
-      "There was an error processing your purchase. Please try again later.",
+      "เกิดข้อผิดพลาดในการประมวลผลการซื้อของคุณ โปรดลองอีกครั้งในภายหลัง",
     ),
-    "restorePurchases": MessageLookupByLibrary.simpleMessage(
-      "Restore Purchases",
-    ),
+    "restorePurchases": MessageLookupByLibrary.simpleMessage("กู้คืนการซื้อ"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "ค่าไฟฟ้าทั้งหมด: ",
     ),
@@ -124,8 +123,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage(
       "ต้นทุนความเสี่ยง: ",
     ),
-    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
-    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "saveButton": MessageLookupByLibrary.simpleMessage("บันทึก"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("บันทึกงานพิมพ์"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("ค้นหาวัสดุ"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage("ไม่ได้เลือก"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
@@ -133,7 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("การตั้งค่า"),
-    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("การตั้งค่า"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage("ค่าเส้น/เรซิน"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
       "น้ำหนักเส้น/เรซิน",
@@ -141,15 +140,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("คำนวณ"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
-      "For any issues, please mail me at ",
+      "หากมีปัญหา กรุณาส่งอีเมลมาที่ ",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
-      "Support ID Copied",
+      "คัดลอกรหัสสนับสนุนแล้ว",
     ),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
-      "Please include your Support ID: ",
+      "โปรดระบุรหัสสนับสนุนของคุณ: ",
     ),
-    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("ข้อกำหนดการใช้งาน"),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("ทั้งหมด"),
     "totalMaterialWeightLabel": m1,
     "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
@@ -159,14 +158,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "wattLabel": MessageLookupByLibrary.simpleMessage(
       "วัตต์ (เครื่องพิมพ์ 3D)",
     ),
-    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("กำลังไฟ *"),
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "วัสดุ/การสึกหรอ + ฉีกขาด",
     ),
-    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
-    "workCostsLabel": MessageLookupByLibrary.simpleMessage(
-      "ค่าใช้จ่ายในการทำงาน",
-    ),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("น้ำหนัก *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("ค่าใช้จ่ายงาน"),
   };
 }

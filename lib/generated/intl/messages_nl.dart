@@ -33,41 +33,43 @@ class MessageLookup extends MessageLookupByLibrary {
     "addMaterialButton": MessageLookupByLibrary.simpleMessage(
       "Materiaal toevoegen",
     ),
-    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bedgrootte *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "3D-printcalculator",
     ),
-    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
-    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
-    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
-    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
-    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Rekenmachine"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Annuleren"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage(
+      "(klik om te kopiëren)",
+    ),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Sluiten"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Kleur *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Kosten *"),
     "currentOfferings": MessageLookupByLibrary.simpleMessage(
-      "Current Offerings",
+      "Huidige aanbiedingen",
     ),
-    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Verwijderen"),
     "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this item?",
+      "Weet je zeker dat je dit item wilt verwijderen?",
     ),
-    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Verwijderen"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Elektriciteitskosten",
     ),
     "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
-      "Electricity cost",
+      "Elektriciteitskosten",
     ),
     "enterNumber": MessageLookupByLibrary.simpleMessage("Voer een getal in"),
-    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
-    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
-    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
+    "exportButton": MessageLookupByLibrary.simpleMessage("Exporteren"),
+    "exportError": MessageLookupByLibrary.simpleMessage("Export mislukt"),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export geslaagd"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risico op falen (%)",
     ),
-    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filament"),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamentkosten"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Geschiedenis"),
-    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("Geschiedenis"),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Zoeken op naam of printer",
     ),
@@ -81,36 +83,39 @@ class MessageLookup extends MessageLookupByLibrary {
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Uurtarief"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Verwerkingstijd"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
-      "Could not open mail client",
+      "Kon e-mailclient niet openen",
     ),
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
       "Materiaaluitsplitsing",
     ),
-    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("Materiaal"),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage(
+      "Materiaalnaam *",
+    ),
+    "materialNone": MessageLookupByLibrary.simpleMessage("Geen"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
-      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+      "Materiaalgewicht is het totale gewicht van het bronmateriaal, dus de volledige rol filament. De kosten zijn de kosten van de volledige eenheid.",
     ),
     "materialsCountLabel": m0,
-    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materialen"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Notulen"),
-    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
-    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Hulp nodig?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Fout: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Alleen voor Premium-gebruikers:",
     ),
-    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Printnaam"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Gewicht van de afdruk",
     ),
-    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
-    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Naam *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("3D-printers"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacybeleid"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
-      "There was an error processing your purchase. Please try again later.",
+      "Er is een fout opgetreden bij het verwerken van je aankoop. Probeer het later opnieuw.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
-      "Restore Purchases",
+      "Aankopen herstellen",
     ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Totale kosten voor elektriciteit:",
@@ -121,8 +126,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Totale kosten:"),
     "riskCostLabel": MessageLookupByLibrary.simpleMessage("Risico"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risicokosten:"),
-    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
-    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Opslaan"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Print opslaan"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Materialen zoeken",
     ),
@@ -134,7 +139,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Instellingen"),
-    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Instellingen"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Spoel/hars kosten"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Spoel/harsgewicht",
@@ -142,15 +147,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("Berekenen"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
-      "For any issues, please mail me at ",
+      "Bij problemen kun je mij mailen op ",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
-      "Support ID Copied",
+      "Support-ID gekopieerd",
     ),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
-      "Please include your Support ID: ",
+      "Voeg je support-ID toe: ",
     ),
-    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage(
+      "Gebruiksvoorwaarden",
+    ),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("Totaal"),
     "totalMaterialWeightLabel": m1,
     "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
@@ -158,12 +165,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D-printer)"),
-    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Vermogen *"),
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Materialen/Slijtage",
     ),
-    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
-    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Werkkosten"),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Gewicht *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Arbeidskosten"),
   };
 }

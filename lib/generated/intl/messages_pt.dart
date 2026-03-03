@@ -30,55 +30,51 @@ class MessageLookup extends MessageLookupByLibrary {
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
       "Adicione pelo menos um material.",
     ),
-    "addMaterialButton": MessageLookupByLibrary.simpleMessage(
-      "Adicionar material",
-    ),
-    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("Adicionar"),
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Tamanho da mesa *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Calculadora de impressão 3D",
     ),
-    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
-    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
-    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
-    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
-    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
-    "currentOfferings": MessageLookupByLibrary.simpleMessage(
-      "Current Offerings",
-    ),
-    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculadora"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancelar"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage("(toque para copiar)"),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Fechar"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Cor *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Custo *"),
+    "currentOfferings": MessageLookupByLibrary.simpleMessage("Ofertas atuais"),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Excluir"),
     "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this item?",
+      "Tem certeza de que deseja excluir este item?",
     ),
-    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Excluir"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Custo de eletricidade",
     ),
     "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
-      "Electricity cost",
+      "Custo de eletricidade",
     ),
-    "enterNumber": MessageLookupByLibrary.simpleMessage(
-      "Please enter a number",
+    "enterNumber": MessageLookupByLibrary.simpleMessage("Digite um número"),
+    "exportButton": MessageLookupByLibrary.simpleMessage("Exportar"),
+    "exportError": MessageLookupByLibrary.simpleMessage("Falha na exportação"),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage(
+      "Exportação bem-sucedida",
     ),
-    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
-    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
-    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risco de falha (%)",
     ),
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamento"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
-    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("História"),
-    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Histórico"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("Histórico"),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Pesquisar por nome ou impressora",
     ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Tempo de impressão (horas)",
     ),
-    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Número inválido"),
     "kwh": MessageLookupByLibrary.simpleMessage("kWh"),
-    "labourCostLabel": MessageLookupByLibrary.simpleMessage("Trabalho"),
+    "labourCostLabel": MessageLookupByLibrary.simpleMessage("Mão de obra"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
       "Mão de obra/Materiais: ",
     ),
@@ -87,37 +83,41 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tempo de processamento",
     ),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
-      "Could not open mail client",
+      "Não foi possível abrir o cliente de e-mail",
     ),
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
       "Detalhamento de materiais",
     ),
-    "materialFallback": MessageLookupByLibrary.simpleMessage("Material"),
-    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("Material padrão"),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage(
+      "Nome do material *",
+    ),
+    "materialNone": MessageLookupByLibrary.simpleMessage("Nenhum"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
-      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+      "O peso do material é o peso total do material de origem, ou seja, todo o rolo de filamento. O custo é o custo da unidade inteira.",
     ),
     "materialsCountLabel": m0,
-    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materiais"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutos"),
-    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
-    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Precisa de ajuda?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Erro: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Apenas usuários premium:",
     ),
-    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Nome da impressão"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Peso da impressão",
     ),
-    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
-    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Nome *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Impressoras"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
+      "Política de Privacidade",
+    ),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
-      "There was an error processing your purchase. Please try again later.",
+      "Houve um erro ao processar sua compra. Tente novamente mais tarde.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
-      "Restore Purchases",
+      "Restaurar compras",
     ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Custo total de eletricidade: ",
@@ -128,8 +128,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo total: "),
     "riskCostLabel": MessageLookupByLibrary.simpleMessage("Risco"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo do risco: "),
-    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
-    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Salvar"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Salvar impressão"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Pesquisar materiais",
     ),
@@ -143,7 +143,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Configurações",
     ),
-    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Configurações"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
       "Custo do carretel/resina",
     ),
@@ -153,30 +153,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("Calcular"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
-      "For any issues, please mail me at ",
+      "Em caso de problemas, envie um e-mail para ",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
-      "Support ID Copied",
+      "ID de suporte copiado",
     ),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
-      "Please include your Support ID: ",
+      "Inclua seu ID de suporte: ",
     ),
-    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
-    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Termos de Uso"),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Custo total"),
     "totalMaterialWeightLabel": m1,
     "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
       "Usar peso total único",
     ),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (impressora 3D)"),
-    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Potência *"),
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Materiais/desgaste + rasgo",
     ),
-    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Peso *"),
     "workCostsLabel": MessageLookupByLibrary.simpleMessage(
-      "Custos de Trabalho",
+      "Custos de mão de obra",
     ),
   };
 }

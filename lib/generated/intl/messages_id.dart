@@ -20,7 +20,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'id';
 
-  static String m0(count) => "${count} material";
+  static String m0(count) => "${count} bahan";
 
   static String m1(grams) => "Total berat material: ${grams}g";
 
@@ -30,52 +30,52 @@ class MessageLookup extends MessageLookupByLibrary {
       "Tambahkan setidaknya satu material.",
     ),
     "addMaterialButton": MessageLookupByLibrary.simpleMessage(
-      "Tambah material",
+      "Tambahkan bahan",
     ),
-    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Ukuran bed *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Kalkulator Cetak 3D",
     ),
-    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
-    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
-    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
-    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
-    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Kalkulator"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Batal"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage(
+      "(ketuk untuk menyalin)",
+    ),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Tutup"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Warna *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Biaya *"),
     "currentOfferings": MessageLookupByLibrary.simpleMessage(
-      "Current Offerings",
+      "Penawaran saat ini",
     ),
-    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Hapus"),
     "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this item?",
+      "Yakin ingin menghapus item ini?",
     ),
-    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Hapus"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage(
       "Biaya listrik",
     ),
     "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
-      "Electricity cost",
+      "Biaya listrik",
     ),
-    "enterNumber": MessageLookupByLibrary.simpleMessage(
-      "Please enter a number",
-    ),
-    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
-    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
-    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
+    "enterNumber": MessageLookupByLibrary.simpleMessage("Harap masukkan angka"),
+    "exportButton": MessageLookupByLibrary.simpleMessage("Ekspor"),
+    "exportError": MessageLookupByLibrary.simpleMessage("Ekspor gagal"),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage("Ekspor berhasil"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Risiko kegagalan (%)",
     ),
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamen"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
-    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Sejarah"),
-    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Riwayat"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("Riwayat"),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Cari berdasarkan nama atau printer",
     ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Waktu pencetakan (jam)",
     ),
-    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Angka tidak valid"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/jam"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Tenaga kerja"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
@@ -84,34 +84,37 @@ class MessageLookup extends MessageLookupByLibrary {
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Tarif per jam"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Waktu pengerjaan"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
-      "Could not open mail client",
+      "Tidak dapat membuka klien email",
     ),
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
-      "Rincian material",
+      "Rincian bahan",
     ),
-    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("Bahan"),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Nama bahan *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("Tidak ada"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
-      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+      "Berat bahan adalah total berat bahan sumber, yaitu seluruh gulungan filamen. Biaya adalah harga seluruh unit.",
     ),
     "materialsCountLabel": m0,
-    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Bahan"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Menit"),
-    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
-    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Butuh bantuan?"),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Kesalahan: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Khusus pengguna premium:",
     ),
-    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Nama cetak"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage("Berat cetakan"),
-    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
-    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Nama *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Printer"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
+      "Kebijakan Privasi",
+    ),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
-      "There was an error processing your purchase. Please try again later.",
+      "Terjadi kesalahan saat memproses pembelian Anda. Silakan coba lagi nanti.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
-      "Restore Purchases",
+      "Pulihkan pembelian",
     ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Total biaya Listrik: ",
@@ -122,16 +125,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Total biaya: "),
     "riskCostLabel": MessageLookupByLibrary.simpleMessage("Risiko"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
-    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
-    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
-    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
-      "Cari material",
-    ),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Simpan"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Simpan cetakan"),
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("Cari bahan"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage("Tidak dipilih"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("Pilih printer"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Pengaturan"),
-    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Pengaturan"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage("Biaya Spul/Resin"),
     "spoolWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Berat kumparan/Resin",
@@ -139,28 +140,30 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("Menghitung"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
-      "For any issues, please mail me at ",
+      "Jika ada masalah, silakan email saya di ",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
-      "Support ID Copied",
+      "ID Dukungan disalin",
     ),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
-      "Please include your Support ID: ",
+      "Harap sertakan ID Dukungan Anda: ",
     ),
-    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
-    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total"),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage(
+      "Ketentuan Penggunaan",
+    ),
+    "totalCostLabel": MessageLookupByLibrary.simpleMessage("Total biaya"),
     "totalMaterialWeightLabel": m1,
     "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
       "Gunakan total berat tunggal",
     ),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (Printer 3D)"),
-    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Daya *"),
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Bahan/Keausan + sobek",
     ),
-    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
-    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Biaya Kerja"),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Berat *"),
+    "workCostsLabel": MessageLookupByLibrary.simpleMessage("Biaya kerja"),
   };
 }
