@@ -3,13 +3,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 
 /// Single material row used inside the materials list.
 ///
 /// This widget is intentionally dumb: it accepts callbacks for actions and
 /// does not own any business logic.
-class MaterialRow extends StatelessWidget {
+class MaterialRow extends StatefulWidget {
   const MaterialRow({
     required this.index,
     required this.usage,
@@ -27,6 +28,31 @@ class MaterialRow extends StatelessWidget {
   final ValueChanged<int> onWeightChanged;
   final VoidCallback onRemove;
 
+  @override
+  State<MaterialRow> createState() => _MaterialRowState();
+}
+
+class _MaterialRowState extends State<MaterialRow> {
+  late final TextEditingController _weightController;
+  late final FocusNode _weightFocusNode;
+
+  String get _weightText =>
+      widget.usage.weightGrams == 0 ? '' : widget.usage.weightGrams.toString();
+
+  @override
+  void initState() {
+    super.initState();
+    _weightController = TextEditingController(text: _weightText);
+    _weightFocusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _weightController.dispose();
+    _weightFocusNode.dispose();
+    super.dispose();
+  }
+
   Color? _tryParseHexColor(String input) {
     final hex = input.replaceAll('#', '').trim();
     if (hex.isEmpty) return null;
@@ -43,27 +69,28 @@ class MaterialRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = S.of(context);
-    final colorString = material?.color ?? '';
+    final colorString = widget.material?.color ?? '';
     final parsed = _tryParseHexColor(colorString);
-    final id = usage.materialId.trim();
-    final rowKey = id.isNotEmpty ? id : '__row_$index';
+    final id = widget.usage.materialId.trim();
+    final rowKey = id.isNotEmpty ? id : '__row_${widget.index}';
 
     final isMaterialUnassigned =
-        usage.materialName.isEmpty || usage.materialName == kUnassignedLabel;
+        widget.usage.materialName.isEmpty ||
+        widget.usage.materialName == kUnassignedLabel;
 
     Widget rowContent = Row(
       children: [
         Expanded(
           flex: 3,
           child: InkWell(
-            onTap: onPick,
+            onTap: widget.onPick,
             child: Row(
               children: [
                 Flexible(
                   child: Text(
                     isMaterialUnassigned
                         ? l10n.selectMaterialHint
-                        : usage.materialName,
+                        : widget.usage.materialName,
                     style: isMaterialUnassigned
                         ? Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).hintColor,
@@ -98,20 +125,17 @@ class MaterialRow extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           flex: 2,
-          child: TextFormField(
-            // Use a key tied to the usage so the field is reconstructed when
-            // the parent updates the usage (weight changes). This keeps the
-            // simple StatelessWidget pattern without managing controllers here.
-            key: Key('weight-${usage.materialId}-$index-${usage.weightGrams}'),
-            initialValue: usage.weightGrams == 0
-                ? ''
-                : usage.weightGrams.toString(),
+          child: FocusSafeTextField(
+            key: Key('weight-${widget.usage.materialId}-${widget.index}'),
+            controller: _weightController,
+            focusNode: _weightFocusNode,
+            externalText: _weightText,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(suffixText: l10n.gramsSuffix),
             onChanged: (value) {
               final parsedVal =
                   num.tryParse(value.replaceAll(',', '.'))?.toInt() ?? 0;
-              onWeightChanged(parsedVal);
+              widget.onWeightChanged(parsedVal);
             },
           ),
         ),
@@ -120,7 +144,7 @@ class MaterialRow extends StatelessWidget {
 
     final keyedRow = KeyedSubtree(key: ValueKey(rowKey), child: rowContent);
 
-    final idTrim = usage.materialId.trim();
+    final idTrim = widget.usage.materialId.trim();
     final isDeletable =
         idTrim.isNotEmpty && idTrim.toLowerCase() != kNoneMaterialId;
 
@@ -128,7 +152,7 @@ class MaterialRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: isDeletable
           ? Slidable(
-              key: ValueKey('material_slidable_$index'),
+              key: ValueKey('material_slidable_${widget.index}'),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 children: [
@@ -154,7 +178,7 @@ class MaterialRow extends StatelessWidget {
                         ),
                       );
                       if (confirm != true) return;
-                      onRemove();
+                      widget.onRemove();
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
