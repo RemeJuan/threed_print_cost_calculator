@@ -103,5 +103,7 @@
     "placeholders": {
       "grams": {}
     }
-  }
+  },
+  "materialFallback": "Material",
+  "@materialFallback": {}
 }

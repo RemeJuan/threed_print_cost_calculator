@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_picker.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+
+import '../../../../helpers/helpers.dart';
 
 void main() {
   group('MaterialPicker', () {
@@ -31,21 +31,12 @@ void main() {
 
       MaterialModel? selected;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          home: Scaffold(
-            body: MaterialPicker(
-              loadMaterials: () async => materials,
-              onSelected: (m) => selected = m,
-            ),
-          ),
+      await setupTest();
+
+      await tester.pumpApp(
+        MaterialPicker(
+          loadMaterials: () async => materials,
+          onSelected: (m) => selected = m,
         ),
       );
 

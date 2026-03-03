@@ -41,6 +41,7 @@
   "spoolWeightLabel": "Poids de la bobine/résine",
   "@spoolWeightLabel": {},
   "electricityCostSettingsLabel": "Electricity cost",
+  "@electricityCostSettingsLabel": {},
   "submitButton": "Calculer",
   "@submitButton": {},
   "watt": "Watt",
@@ -160,16 +161,22 @@
   "addAtLeastOneMaterial": "Ajoutez au moins un matériau.",
   "searchMaterialsHint": "Rechercher des matériaux",
   "materialBreakdownLabel": "Répartition des matériaux",
-  "materialsCountLabel": "{count} matériaux",
+  "materialsCountLabel": "{count, plural, one{# matériau} other{# matériaux}}",
   "totalMaterialWeightLabel": "Poids total du matériau : {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
-  }
+  },
+  "materialFallback": "Matériau",
+  "@materialFallback": {}
 }

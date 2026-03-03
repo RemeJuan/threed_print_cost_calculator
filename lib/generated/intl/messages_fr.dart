@@ -20,7 +20,8 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'fr';
 
-  static String m0(count) => "${count} matériaux";
+  static String m0(count) =>
+      "${Intl.plural(count, one: '# matériau', other: '# matériaux')}";
 
   static String m1(grams) => "Poids total du matériau : ${grams}g";
 
@@ -91,6 +92,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
       "Répartition des matériaux",
     ),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("Matériau"),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(

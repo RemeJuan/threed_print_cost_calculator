@@ -67,10 +67,15 @@ class SaveForm extends HookConsumerWidget {
 
                     // Read calculator state for weight and time
                     final calcState = ref.read(calculatorProvider);
-                    final num weightVal = calcState.materialUsages.fold<int>(
+
+                    final num materialsSum = calcState.materialUsages.fold<int>(
                       0,
                       (sum, usage) => sum + usage.weightGrams,
                     );
+
+                    final num weightVal = materialsSum == 0
+                        ? (calcState.printWeight.value ?? 0)
+                        : materialsSum;
 
                     final usages = calcState.materialUsages
                         .map((usage) => usage.toMap())

@@ -746,6 +746,16 @@ class S {
       args: [grams],
     );
   }
+
+  /// `Material`
+  String get materialFallback {
+    return Intl.message(
+      'Material',
+      name: 'materialFallback',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

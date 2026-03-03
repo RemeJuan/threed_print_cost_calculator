@@ -23,7 +23,7 @@ class CalculatorState with FormzMixin {
     this.watt = const NumberInput.pure(),
     this.kwCost = const NumberInput.pure(),
     this.printWeight = const NumberInput.pure(),
-    this.materialUsages = const [],
+    List<MaterialUsageInput>? materialUsages,
     this.hours = const NumberInput.pure(),
     this.minutes = const NumberInput.pure(),
     this.spoolWeight = const NumberInput.pure(),
@@ -40,7 +40,9 @@ class CalculatorState with FormzMixin {
       labour: 0.0,
       total: 0.0,
     ),
-  });
+  }) : materialUsages = List.unmodifiable(
+         materialUsages ?? const <MaterialUsageInput>[],
+       );
 
   CalculatorState copyWith({
     NumberInput? watt,
@@ -62,7 +64,7 @@ class CalculatorState with FormzMixin {
       watt: watt ?? this.watt,
       kwCost: kwCost ?? this.kwCost,
       printWeight: printWeight ?? this.printWeight,
-      materialUsages: materialUsages ?? this.materialUsages,
+      materialUsages: List.unmodifiable(materialUsages ?? this.materialUsages),
       hours: hours ?? this.hours,
       minutes: minutes ?? this.minutes,
       spoolWeight: spoolWeight ?? this.spoolWeight,

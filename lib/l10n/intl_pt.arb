@@ -160,7 +160,7 @@
   "addAtLeastOneMaterial": "Adicione pelo menos um material.",
   "searchMaterialsHint": "Pesquisar materiais",
   "materialBreakdownLabel": "Detalhamento de materiais",
-  "materialsCountLabel": "{count} materiais",
+  "materialsCountLabel": "{count, plural, one{# material} other{# materiais}}",
   "totalMaterialWeightLabel": "Peso total do material: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
@@ -171,5 +171,7 @@
     "placeholders": {
       "grams": {}
     }
-  }
+  },
+  "materialFallback": "Material",
+  "@materialFallback": {}
 }

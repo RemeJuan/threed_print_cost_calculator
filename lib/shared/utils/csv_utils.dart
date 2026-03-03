@@ -13,6 +13,15 @@ String _quote(Object? value) {
   return '"$escaped"';
 }
 
+String _sanitizeForCsv(String input) {
+  if (input.isEmpty) return input;
+  final first = input[0];
+  if (first == '=' || first == '+' || first == '-' || first == '@') {
+    return "'$input"; // prefix with single quote to neutralize formulas
+  }
+  return input;
+}
+
 String generateCsv(List<HistoryModel> items) {
   final buffer = StringBuffer();
 
@@ -30,17 +39,22 @@ String generateCsv(List<HistoryModel> items) {
 
     final materialsFlattened = item.materialUsages
         .map((usage) {
-          final name =
-              usage['materialName']?.toString() ?? usage['materialId']?.toString() ?? 'Material';
-          final weight = usage['weightGrams']?.toString() ?? '0';
+          final rawName =
+              usage['materialName']?.toString() ??
+              usage['materialId']?.toString() ??
+              'Material';
+          final name = _sanitizeForCsv(rawName);
+          final weight = _sanitizeForCsv(
+            usage['weightGrams']?.toString() ?? '0',
+          );
           return '$name:${weight}g';
         })
         .join('; ');
 
     buffer.writeln(
-      '${_quote(dateStr)},'
-      '${_quote(item.printer)},'
-      '${_quote(item.material)},'
+      '${_quote(_sanitizeForCsv(dateStr))},'
+      '${_quote(_sanitizeForCsv(item.printer))},'
+      '${_quote(_sanitizeForCsv(item.material))},'
       '${_quote(materialsFlattened)},'
       '${_quote(item.weight)},'
       '${_quote(item.timeHours)},'

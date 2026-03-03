@@ -116,10 +116,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       return;
     }
 
-    final store = stringMapStoreFactory.store(DBName.materials.name);
-    final materialSnapshot = await store
-        .query(finder: Finder(filter: Filter.byKey(selectedMaterialId)))
-        .getSnapshot(_database);
+    // Use DataBaseHelpers to fetch single material record instead of direct Sembast access
+    final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
+    final materialSnapshot = await dbHelpers.getRecord(selectedMaterialId);
 
     if (materialSnapshot == null) {
       state = state.copyWith(materialUsages: [defaultUsage]);
@@ -205,17 +204,45 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       );
     }
 
+    // Always update state: update materialUsages and printWeight (sum of weights or 0)
+    final totalWeight = usages.fold<int>(
+      0,
+      (sum, item) => sum + item.weightGrams,
+    );
+
     state = state.copyWith(
       materialUsages: usages,
-      printWeight: NumberInput.dirty(
-        value: usages.fold<int>(0, (sum, item) => sum + item.weightGrams),
-      ),
+      printWeight: NumberInput.dirty(value: totalWeight),
     );
   }
 
   void updateMaterialUsageWeight(int index, int grams) {
+    // Validate index
+    if (index < 0 || index >= state.materialUsages.length) return;
+
+    // Ensure non-negative grams
+    final safeGrams = grams < 0 ? 0 : grams;
+
     final usages = [...state.materialUsages];
-    usages[index] = usages[index].copyWith(weightGrams: grams);
+    usages[index] = usages[index].copyWith(weightGrams: safeGrams);
+    final totalWeight = usages.fold<int>(
+      0,
+      (sum, item) => sum + item.weightGrams,
+    );
+
+    state = state.copyWith(
+      materialUsages: usages,
+      printWeight: NumberInput.dirty(value: totalWeight),
+    );
+  }
+
+  // New helper: update an entire material usage at an index
+  void updateMaterialUsage(int index, MaterialUsageInput usage) {
+    if (index < 0 || index >= state.materialUsages.length) return;
+
+    final usages = [...state.materialUsages];
+    usages[index] = usage;
+
     final totalWeight = usages.fold<int>(
       0,
       (sum, item) => sum + item.weightGrams,

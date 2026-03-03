@@ -9,10 +9,12 @@ class MaterialPicker extends HookWidget {
   const MaterialPicker({
     required this.loadMaterials,
     required this.onSelected,
+    this.loadMaterialsFuture,
     super.key,
   });
 
   final Future<List<MaterialModel>> Function() loadMaterials;
+  final Future<List<MaterialModel>>? loadMaterialsFuture;
   final ValueChanged<MaterialModel> onSelected;
 
   @override
@@ -20,8 +22,13 @@ class MaterialPicker extends HookWidget {
     final query = useState('');
     final l10n = S.of(context);
 
+    final materialsFuture = useMemoized(
+      () => loadMaterialsFuture ?? loadMaterials(),
+      const [],
+    );
+
     return FutureBuilder<List<MaterialModel>>(
-      future: loadMaterials(),
+      future: materialsFuture,
       builder: (context, snapshot) {
         final items = snapshot.data ?? const <MaterialModel>[];
         final filtered = items.where((item) {
@@ -47,8 +54,10 @@ class MaterialPicker extends HookWidget {
                 itemCount: filtered.length,
                 itemBuilder: (context, index) {
                   final material = filtered[index];
-                  final weight = num.tryParse(material.weight) ?? 0;
-                  final cost = num.tryParse(material.cost) ?? 0;
+                  final weight =
+                      num.tryParse(material.weight.replaceAll(',', '.')) ?? 0;
+                  final cost =
+                      num.tryParse(material.cost.replaceAll(',', '.')) ?? 0;
                   final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
                   return ListTile(
