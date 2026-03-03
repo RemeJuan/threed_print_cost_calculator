@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'de';
 
   static String m0(count) =>
-      "${Intl.plural(count, one: '${count} Material', other: '${count} Materialien')}";
+      "${Intl.plural(count, one: '# Material', other: '# Materialien')}";
 
   static String m1(grams) => "Gesamtes Materialgewicht: ${grams}g";
 
@@ -33,46 +33,50 @@ class MessageLookup extends MessageLookupByLibrary {
     "addMaterialButton": MessageLookupByLibrary.simpleMessage(
       "Material hinzufügen",
     ),
-    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
+    "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Druckbettgröße *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "3D-Druck-Rechner",
     ),
-    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
-    "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
-    "clickToCopy": MessageLookupByLibrary.simpleMessage("(click to copy)"),
-    "closeButton": MessageLookupByLibrary.simpleMessage("Close"),
-    "colorLabel": MessageLookupByLibrary.simpleMessage("Color *"),
-    "costLabel": MessageLookupByLibrary.simpleMessage("Cost *"),
+    "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Rechner"),
+    "cancelButton": MessageLookupByLibrary.simpleMessage("Abbrechen"),
+    "clickToCopy": MessageLookupByLibrary.simpleMessage(
+      "(zum Kopieren klicken)",
+    ),
+    "closeButton": MessageLookupByLibrary.simpleMessage("Schließen"),
+    "colorLabel": MessageLookupByLibrary.simpleMessage("Farbe *"),
+    "costLabel": MessageLookupByLibrary.simpleMessage("Kosten *"),
     "currentOfferings": MessageLookupByLibrary.simpleMessage(
-      "Current Offerings",
+      "Aktuelle Angebote",
     ),
-    "deleteButton": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteButton": MessageLookupByLibrary.simpleMessage("Löschen"),
     "deleteDialogContent": MessageLookupByLibrary.simpleMessage(
-      "Are you sure you want to delete this item?",
+      "Möchten Sie dieses Element wirklich löschen?",
     ),
-    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteDialogTitle": MessageLookupByLibrary.simpleMessage("Löschen"),
     "electricityCostLabel": MessageLookupByLibrary.simpleMessage("Stromkosten"),
     "electricityCostSettingsLabel": MessageLookupByLibrary.simpleMessage(
-      "Electricity cost",
+      "Stromkosten",
     ),
     "enterNumber": MessageLookupByLibrary.simpleMessage(
-      "Please enter a number",
+      "Bitte geben Sie eine Zahl ein",
     ),
-    "exportButton": MessageLookupByLibrary.simpleMessage("Export"),
-    "exportError": MessageLookupByLibrary.simpleMessage("Export failed"),
-    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export successful"),
+    "exportButton": MessageLookupByLibrary.simpleMessage("Exportieren"),
+    "exportError": MessageLookupByLibrary.simpleMessage(
+      "Export fehlgeschlagen",
+    ),
+    "exportSuccess": MessageLookupByLibrary.simpleMessage("Export erfolgreich"),
     "failureRiskLabel": MessageLookupByLibrary.simpleMessage(
       "Ausfallrisiko (%)",
     ),
-    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filament"),
+    "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamentkosten"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
-    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Geschichte"),
-    "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Verlauf"),
+    "historyNavLabel": MessageLookupByLibrary.simpleMessage("Verlauf"),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
-      "Suchen nach Name oder Drucker",
+      "Nach Name oder Drucker suchen",
     ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Druckzeit (Stunden)"),
-    "invalidNumber": MessageLookupByLibrary.simpleMessage("Invalid number"),
+    "invalidNumber": MessageLookupByLibrary.simpleMessage("Ungültige Zahl"),
     "kwh": MessageLookupByLibrary.simpleMessage("kW/h"),
     "labourCostLabel": MessageLookupByLibrary.simpleMessage("Arbeitskosten"),
     "labourCostPrefix": MessageLookupByLibrary.simpleMessage(
@@ -81,37 +85,41 @@ class MessageLookup extends MessageLookupByLibrary {
     "labourRateLabel": MessageLookupByLibrary.simpleMessage("Stundensatz"),
     "labourTimeLabel": MessageLookupByLibrary.simpleMessage("Bearbeitungszeit"),
     "mailClientError": MessageLookupByLibrary.simpleMessage(
-      "Could not open mail client",
+      "E-Mail-Client konnte nicht geöffnet werden",
     ),
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
       "Materialaufschlüsselung",
     ),
-    "materialFallback": MessageLookupByLibrary.simpleMessage("Material"),
-    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "materialNone": MessageLookupByLibrary.simpleMessage("None"),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("Materialtyp"),
+    "materialNameLabel": MessageLookupByLibrary.simpleMessage("Materialname *"),
+    "materialNone": MessageLookupByLibrary.simpleMessage("Keine"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
-      "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
+      "Das Materialgewicht ist das Gesamtgewicht des Ausgangsmaterials, also der gesamten Filamentrolle. Die Kosten sind die Kosten der gesamten Einheit.",
     ),
     "materialsCountLabel": m0,
-    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
+    "materialsHeader": MessageLookupByLibrary.simpleMessage("Materialien"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Protokoll"),
-    "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
-    "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
+    "needHelpTitle": MessageLookupByLibrary.simpleMessage(
+      "Brauchen Sie Hilfe?",
+    ),
+    "offeringsError": MessageLookupByLibrary.simpleMessage("Fehler: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Nur Premium-Benutzer:",
     ),
-    "printNameHint": MessageLookupByLibrary.simpleMessage("Print Name"),
+    "printNameHint": MessageLookupByLibrary.simpleMessage("Name des Drucks"),
     "printWeightLabel": MessageLookupByLibrary.simpleMessage(
       "Gewicht des Drucks",
     ),
-    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
-    "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
-    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "printerNameLabel": MessageLookupByLibrary.simpleMessage("Druckername *"),
+    "printersHeader": MessageLookupByLibrary.simpleMessage("Drucker"),
+    "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
+      "Datenschutzrichtlinie",
+    ),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
-      "There was an error processing your purchase. Please try again later.",
+      "Beim Verarbeiten Ihres Kaufs ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
-      "Restore Purchases",
+      "Käufe wiederherstellen",
     ),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Gesamtkosten für Strom:",
@@ -122,8 +130,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "resultTotalPrefix": MessageLookupByLibrary.simpleMessage("Gesamtkosten: "),
     "riskCostLabel": MessageLookupByLibrary.simpleMessage("Risikokosten"),
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risikokosten:"),
-    "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
-    "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "saveButton": MessageLookupByLibrary.simpleMessage("Speichern"),
+    "savePrintButton": MessageLookupByLibrary.simpleMessage("Druck speichern"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Materialien suchen",
     ),
@@ -137,7 +145,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage(
       "Einstellungen",
     ),
-    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Settings"),
+    "settingsNavLabel": MessageLookupByLibrary.simpleMessage("Einstellungen"),
     "spoolCostLabel": MessageLookupByLibrary.simpleMessage(
       "Spulen-/Harzkosten",
     ),
@@ -147,15 +155,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "submitButton": MessageLookupByLibrary.simpleMessage("Berechnung"),
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
-      "For any issues, please mail me at ",
+      "Bei Problemen schreiben Sie mir bitte an ",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
-      "Support ID Copied",
+      "Support-ID kopiert",
     ),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage(
-      "Please include your Support ID: ",
+      "Bitte geben Sie Ihre Support-ID an: ",
     ),
-    "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
+    "termsOfUseLink": MessageLookupByLibrary.simpleMessage(
+      "Nutzungsbedingungen",
+    ),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("Gesamtkosten"),
     "totalMaterialWeightLabel": m1,
     "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
@@ -163,12 +173,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "watt": MessageLookupByLibrary.simpleMessage("Watt"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("Watt (3D-Drucker)"),
-    "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),
+    "wattageLabel": MessageLookupByLibrary.simpleMessage("Leistung *"),
     "wattsSuffix": MessageLookupByLibrary.simpleMessage("w"),
     "wearAndTearLabel": MessageLookupByLibrary.simpleMessage(
       "Materialien/Verschleiß",
     ),
-    "weightLabel": MessageLookupByLibrary.simpleMessage("Weight *"),
+    "weightLabel": MessageLookupByLibrary.simpleMessage("Gewicht *"),
     "workCostsLabel": MessageLookupByLibrary.simpleMessage("Arbeitskosten"),
   };
 }
