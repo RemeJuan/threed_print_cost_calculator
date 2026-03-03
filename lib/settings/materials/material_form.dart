@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
@@ -93,7 +95,7 @@ class MaterialForm extends HookConsumerWidget {
                 children: [
                   TextButton(
                     onPressed: () =>
-                        Navigator.of(context, rootNavigator: true).pop(false),
+                        Navigator.of(context, rootNavigator: true).pop(null),
                     child: Text(l10n.cancelButton),
                   ),
                   const SizedBox(width: 8),
@@ -104,9 +106,35 @@ class MaterialForm extends HookConsumerWidget {
                         context,
                       ).textTheme.displayMedium?.copyWith(fontSize: 16),
                     ),
-                    onPressed: () {
-                      notifier.submit(dbRef);
-                      Navigator.of(context, rootNavigator: true).pop(true);
+                    onPressed: () async {
+                      // Submit and get the resulting key (new record id or existing dbRef)
+                      final key = await notifier.submit(dbRef);
+
+                      if (key == null) {
+                        // Submission failed for some reason; close with null
+                        Navigator.of(context, rootNavigator: true).pop(null);
+                        return;
+                      }
+
+                      // Fetch the saved record and return the constructed MaterialModel
+                      final dbHelpers = ref.read(
+                        dbHelpersProvider(DBName.materials),
+                      );
+                      final snapshot = await dbHelpers.getRecord(
+                        key.toString(),
+                      );
+
+                      if (snapshot == null) {
+                        Navigator.of(context, rootNavigator: true).pop(null);
+                        return;
+                      }
+
+                      final material = MaterialModel.fromMap(
+                        snapshot.value as Map<String, dynamic>,
+                        snapshot.key.toString(),
+                      );
+
+                      Navigator.of(context, rootNavigator: true).pop(material);
                     },
                     child: Text(l10n.saveButton),
                   ),

@@ -55,7 +55,7 @@ class MaterialsProvider extends Notifier<MaterialState> {
     );
   }
 
-  void submit(String? dbRef) {
+  Future<Object?> submit(String? dbRef) async {
     final data = {
       'name': state.name.value,
       'cost': state.cost.value,
@@ -64,9 +64,10 @@ class MaterialsProvider extends Notifier<MaterialState> {
     };
 
     if (dbRef != null) {
-      dbHelpers.updateRecord(dbRef, data);
+      await dbHelpers.updateRecord(dbRef, data);
+      return dbRef;
     } else {
-      dbHelpers.insertRecord(data);
+      return await dbHelpers.insertRecord(data);
     }
   }
 }

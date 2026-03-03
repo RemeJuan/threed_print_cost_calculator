@@ -40,7 +40,7 @@ class DataBaseHelpers {
     });
   }
 
-  Future<void> insertRecord(Map<String, dynamic> data) async {
+  Future<Object?> insertRecord(Map<String, dynamic> data) async {
     final store = stringMapStoreFactory.store(dbName.name);
 
     try {
@@ -53,6 +53,7 @@ class DataBaseHelpers {
           await helpers.addKey(printer, key);
         }
       }
+      return key;
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
       rethrow;
