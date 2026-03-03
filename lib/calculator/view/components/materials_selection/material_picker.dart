@@ -10,12 +10,17 @@ class MaterialPicker extends HookWidget {
     required this.loadMaterials,
     required this.onSelected,
     this.loadMaterialsFuture,
+    this.excludedIds,
     super.key,
   });
 
   final Future<List<MaterialModel>> Function() loadMaterials;
   final Future<List<MaterialModel>>? loadMaterialsFuture;
   final ValueChanged<MaterialModel> onSelected;
+
+  // Optional set of material IDs that should be excluded from the list
+  // (e.g. already-selected materials). IDs are compared after trimming.
+  final Set<String>? excludedIds;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +38,42 @@ class MaterialPicker extends HookWidget {
         final items = snapshot.data ?? const <MaterialModel>[];
         final filtered = items.where((item) {
           final q = query.value.toLowerCase();
-          return item.name.toLowerCase().contains(q) ||
+          final matchesQuery =
+              item.name.toLowerCase().contains(q) ||
               item.color.toLowerCase().contains(q);
+
+          if (!matchesQuery) return false;
+
+          if (excludedIds == null || excludedIds!.isEmpty) return true;
+
+          final id = item.id.trim();
+          return !excludedIds!.contains(id);
         }).toList();
+
+        if (filtered.isEmpty) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: l10n.searchMaterialsHint,
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                  onChanged: (value) => query.value = value,
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(l10n.addAtLeastOneMaterial),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
 
         return Column(
           children: [
