@@ -40,7 +40,7 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "Poids de la bobine/résine",
   "@spoolWeightLabel": {},
-  "electricityCostSettingsLabel": "Electricity cost",
+  "electricityCostSettingsLabel": "Coût de l'électricité",
   "@electricityCostSettingsLabel": {},
   "submitButton": "Calculer",
   "@submitButton": {},

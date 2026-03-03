@@ -22,10 +22,9 @@ class MaterialsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalWeight = usages.fold<int>(0, (s, i) => s + i.weightGrams);
-
     final maxHeight = MediaQuery.of(context).size.height * 0.45;
-    final constrainedHeight = totalWeight == 0 && usages.length <= 1
+    final constrainedHeight =
+        (usages.length == 1 && usages.first.weightGrams == 0)
         ? null
         : (usages.length > 4 ? maxHeight : null);
 

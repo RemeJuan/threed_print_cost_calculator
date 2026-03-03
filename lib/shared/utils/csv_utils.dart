@@ -15,10 +15,25 @@ String _quote(Object? value) {
 
 String _sanitizeForCsv(String input) {
   if (input.isEmpty) return input;
-  final first = input[0];
-  if (first == '=' || first == '+' || first == '-' || first == '@') {
-    return "'$input"; // prefix with single quote to neutralize formulas
+  // Find the first non-whitespace/control character (chars with codeUnit > 0x20)
+  int firstIndex = 0;
+  while (firstIndex < input.length) {
+    final cu = input.codeUnitAt(firstIndex);
+    if (cu > 0x20) break;
+    firstIndex++;
   }
+
+  if (firstIndex >= input.length) return input; // all whitespace/control
+
+  final firstChar = input[firstIndex];
+  if (firstChar == '=' ||
+      firstChar == '+' ||
+      firstChar == '-' ||
+      firstChar == '@') {
+    // Prefix with a single quote but keep leading whitespace/control characters intact
+    return "'${input}";
+  }
+
   return input;
 }
 

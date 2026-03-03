@@ -130,8 +130,17 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       materialSnapshot.key.toString(),
     );
 
-    final weight = num.tryParse(material.weight) ?? 0;
-    final cost = num.tryParse(material.cost) ?? 0;
+    // Normalize user-entered strings: trim and replace comma decimals with dot
+    final rawWeightStr = (material.weight ?? '').toString().trim().replaceAll(
+      ',',
+      '.',
+    );
+    final rawCostStr = (material.cost ?? '').toString().trim().replaceAll(
+      ',',
+      '.',
+    );
+    final weight = num.tryParse(rawWeightStr) ?? 0;
+    final cost = num.tryParse(rawCostStr) ?? 0;
     final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
     state = state.copyWith(
@@ -163,7 +172,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void updatePrintWeight(String value) {
-    final parsed = (num.tryParse(value) ?? 0).toInt();
+    final normalized = value.trim().replaceAll(',', '.');
+    final parsed = (num.tryParse(normalized) ?? 0).toInt();
     final usages = [...state.materialUsages];
     if (usages.length == 1) {
       usages[0] = usages[0].copyWith(weightGrams: parsed);
@@ -256,7 +266,17 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   void applySingleTotalWeightToFirstRow() {
     if (state.materialUsages.isEmpty) return;
-    updateMaterialUsageWeight(0, (state.printWeight.value ?? 0).toInt());
+
+    // Reset all other rows to 0 to avoid double-counting, then apply the
+    // total to the first row.
+    final total = (state.printWeight.value ?? 0).toInt();
+    for (var i = 0; i < state.materialUsages.length; i++) {
+      if (i == 0) continue;
+      // Use updateMaterialUsageWeight to ensure state consistency
+      updateMaterialUsageWeight(i, 0);
+    }
+
+    updateMaterialUsageWeight(0, total);
   }
 
   void updateHours(num value) {
@@ -384,7 +404,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     }
 
     if (state.materialUsages.isNotEmpty &&
-        state.materialUsages.any((u) => u.weightGrams > 0)) {
+        state.materialUsages.any(
+          (u) =>
+              u.weightGrams > 0 &&
+              u.materialId.trim().toLowerCase() != 'none' &&
+              (u.costPerKg > 0),
+        )) {
       filamentCost = ref
           .read(calculatorHelpersProvider)
           .multiMaterialFilamentCost(state.materialUsages);
