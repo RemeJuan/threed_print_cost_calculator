@@ -37,10 +37,9 @@ class MaterialUsageInput {
   factory MaterialUsageInput.fromMap(Map<String, dynamic> map) {
     return MaterialUsageInput(
       materialId: map['materialId']?.toString() ?? '',
-      materialName: map['materialName']?.toString() ?? 'NotSelected',
+      materialName: map['materialName']?.toString() ?? 'Unassigned',
       costPerKg: num.tryParse(map['costPerKg']?.toString() ?? '0') ?? 0,
-      weightGrams:
-          int.tryParse(map['weightGrams']?.toString() ?? '0') ?? 0,
+      weightGrams: int.tryParse(map['weightGrams']?.toString() ?? '0') ?? 0,
     );
   }
 }
