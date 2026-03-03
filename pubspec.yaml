@@ -1,6 +1,6 @@
 name: threed_print_cost_calculator
 description: A simple 3D Print cost calculator.
-version: 2.4.0
+version: 2.4.1
 publish_to: none
 
 environment:
@@ -30,8 +30,8 @@ dependencies:
   path:
   path_provider: 2.1.5
   platform_info: 5.0.0
-  purchases_flutter: 9.12.0
-  purchases_ui_flutter: 9.12.0
+  purchases_flutter: 9.12.3
+  purchases_ui_flutter: 9.12.3
   rate_my_app: 2.3.2
   riverpod: 3.2.1
   sembast: 3.8.6
