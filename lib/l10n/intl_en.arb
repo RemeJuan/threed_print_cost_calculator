@@ -104,6 +104,13 @@
       "grams": {}
     }
   },
+  "versionLabel": "Version {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "materialFallback": "Material",
   "@materialFallback": {}
 }

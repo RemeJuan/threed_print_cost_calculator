@@ -173,5 +173,12 @@
       "grams": {}
     }
   },
-  "materialFallback": "Bahan"
+  "materialFallback": "Bahan",
+  "versionLabel": "Versi {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  }
 }

@@ -173,5 +173,12 @@
       "grams": {}
     }
   },
-  "materialFallback": "วัสดุ"
+  "materialFallback": "วัสดุ",
+  "versionLabel": "เวอร์ชัน {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  }
 }

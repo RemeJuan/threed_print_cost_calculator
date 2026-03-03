@@ -747,6 +747,16 @@ class S {
     );
   }
 
+  /// `Version {version}`
+  String versionLabel(Object version) {
+    return Intl.message(
+      'Version $version',
+      name: 'versionLabel',
+      desc: 'Label for showing app version',
+      args: [version],
+    );
+  }
+
   /// `Material`
   String get materialFallback {
     return Intl.message(
