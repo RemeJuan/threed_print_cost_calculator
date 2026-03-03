@@ -127,7 +127,9 @@ class HistoryItem extends HookConsumerWidget {
                           color: Colors.white12,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(l10n.materialsCountLabel(data.materialUsages.length)),
+                        child: Text(
+                          l10n.materialsCountLabel(data.materialUsages.length),
+                        ),
                       ),
                     const SizedBox(width: 8),
                     // Format date string
@@ -208,7 +210,7 @@ class HistoryItem extends HookConsumerWidget {
                             final materialName =
                                 usage['materialName']?.toString() ??
                                 usage['materialId']?.toString() ??
-                                'Material';
+                                l10n.materialFallback;
                             return Text('$materialName | ${weight}g');
                           }),
                         ],

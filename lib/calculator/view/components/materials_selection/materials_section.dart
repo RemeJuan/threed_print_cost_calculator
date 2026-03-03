@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_header.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_list.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_picker.dart';
@@ -113,6 +111,25 @@ class MaterialsSection extends HookConsumerWidget {
     final materialsAsync = ref.watch(materialsListProvider);
     final materialsById = ref.watch(materialsByIdProvider);
 
+    // Memoize the future so FutureBuilder won't re-query on every build
+    final materialsFuture = useMemoized(() async {
+      return materialsAsync.maybeWhen(
+        data: (list) => Future.value(list),
+        orElse: () async {
+          final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
+          final snapshots = await dbHelpers.getAllRecords();
+          return snapshots
+              .map(
+                (e) => MaterialModel.fromMap(
+                  e.value as Map<String, dynamic>,
+                  e.key.toString(),
+                ),
+              )
+              .toList();
+        },
+      );
+    }, [materialsAsync]);
+
     // Accordion expanded state
     final expanded = useState<bool>(true);
 
@@ -120,7 +137,7 @@ class MaterialsSection extends HookConsumerWidget {
       final selectedId = await _showMaterialPicker(
         context,
         ref,
-        materialsAsync,
+        materialsFuture,
       );
       if (selectedId == null) return;
       expanded.value = true;
@@ -131,7 +148,8 @@ class MaterialsSection extends HookConsumerWidget {
       final selectedId = await _showMaterialPicker(
         context,
         ref,
-        materialsAsync,
+        materialsFuture,
+        editingIndex: index,
         focusAfterId: usage.materialId.trim().isNotEmpty
             ? usage.materialId.trim()
             : null,
@@ -195,7 +213,8 @@ class MaterialsSection extends HookConsumerWidget {
   Future<String?> _showMaterialPicker(
     BuildContext context,
     WidgetRef ref,
-    AsyncValue<List<MaterialModel>> materialsAsync, {
+    Future<List<MaterialModel>> materialsFuture, {
+    int? editingIndex,
     String? focusAfterId,
   }) async {
     final state = ref.read(calculatorProvider);
@@ -216,47 +235,40 @@ class MaterialsSection extends HookConsumerWidget {
         return FractionallySizedBox(
           heightFactor: 0.95,
           child: MaterialPicker(
+            loadMaterials: () => materialsFuture,
             onSelected: (material) {
-              final weight = num.tryParse(material.weight) ?? 0;
-              final cost = num.tryParse(material.cost) ?? 0;
+              final weight =
+                  num.tryParse(material.weight.replaceAll(',', '.')) ?? 0;
+              final cost =
+                  num.tryParse(material.cost.replaceAll(',', '.')) ?? 0;
               final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
               final refRead = ref.read(calculatorProvider.notifier);
-              refRead.addMaterialUsage(
-                MaterialUsageInput(
-                  materialId: material.id,
-                  materialName: material.name,
-                  costPerKg: costPerKg,
-                  weightGrams: 0,
-                ),
-              );
+              if (editingIndex != null &&
+                  editingIndex >= 0 &&
+                  editingIndex < state.materialUsages.length) {
+                refRead.updateMaterialUsage(
+                  editingIndex,
+                  MaterialUsageInput(
+                    materialId: material.id,
+                    materialName: material.name,
+                    costPerKg: costPerKg,
+                    weightGrams: state.materialUsages[editingIndex].weightGrams,
+                  ),
+                );
+              } else {
+                refRead.addMaterialUsage(
+                  MaterialUsageInput(
+                    materialId: material.id,
+                    materialName: material.name,
+                    costPerKg: costPerKg,
+                    weightGrams: 0,
+                  ),
+                );
+              }
               Navigator.of(context).pop(material.id);
             },
-            loadMaterials: () async {
-              // Use the already-loaded provider if data is available, otherwise
-              // read directly to avoid double DB load.
-              return materialsAsync.maybeWhen(
-                data: (list) => Future.value(
-                  list.where((m) => !selectedIds.contains(m.id)).toList(),
-                ),
-                orElse: () async {
-                  final db = ref.read(databaseProvider);
-                  final store = stringMapStoreFactory.store(
-                    DBName.materials.name,
-                  );
-                  final snapshots = await store.find(db);
-                  return snapshots
-                      .map(
-                        (e) => MaterialModel.fromMap(
-                          e.value as Map<String, dynamic>,
-                          e.key.toString(),
-                        ),
-                      )
-                      .where((m) => !selectedIds.contains(m.id))
-                      .toList();
-                },
-              );
-            },
+            loadMaterialsFuture: materialsFuture,
           ),
         );
       },

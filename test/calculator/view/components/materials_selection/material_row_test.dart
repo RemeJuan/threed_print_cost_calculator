@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_row.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+
+import '../../../../helpers/helpers.dart';
 
 void main() {
   group('MaterialRow', () {
@@ -29,25 +29,16 @@ void main() {
 
       int? updatedWeight;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          home: Scaffold(
-            body: MaterialRow(
-              index: 0,
-              usage: usage,
-              material: material,
-              onPick: () {},
-              onWeightChanged: (w) => updatedWeight = w,
-              onRemove: () {},
-            ),
-          ),
+      await setupTest();
+
+      await tester.pumpApp(
+        MaterialRow(
+          index: 0,
+          usage: usage,
+          material: material,
+          onPick: () {},
+          onWeightChanged: (w) => updatedWeight = w,
+          onRemove: () {},
         ),
       );
 

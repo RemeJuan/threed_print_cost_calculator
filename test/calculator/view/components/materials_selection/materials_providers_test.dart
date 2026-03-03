@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
-import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';

@@ -124,6 +124,18 @@ Future<void> startupMigration(Database db) async {
         continue;
       }
 
+      // Robust weight parsing: accept num, String, null; default to 0
+      int parsedWeight = 0;
+      final rawWeight = value['weight'];
+      if (rawWeight is num) {
+        parsedWeight = rawWeight.toInt();
+      } else if (rawWeight is String && rawWeight.trim().isNotEmpty) {
+        final parsed = num.tryParse(rawWeight.replaceAll(',', '.'));
+        parsedWeight = parsed?.toInt() ?? 0;
+      } else {
+        parsedWeight = 0;
+      }
+
       final migrated = {
         ...value,
         'materialUsages': [
@@ -131,17 +143,23 @@ Future<void> startupMigration(Database db) async {
             'materialId': value['materialId']?.toString() ?? '',
             'materialName': value['material']?.toString() ?? 'Unassigned',
             'costPerKg': 0,
-            'weightGrams': (value['weight'] as num? ?? 0).toInt(),
+            'weightGrams': parsedWeight,
           },
         ],
       };
       await historyStore.record(record.key).put(db, migrated);
     }
   } catch (e, st) {
-    if (kDebugMode) {
-      // ignore: avoid_print
-      print('Printer index rebuild failed: $e\n$st');
-    }
+    // Report the error so it's visible in production, then rethrow
+    FlutterError.reportError(
+      FlutterErrorDetails(
+        exception: e,
+        stack: st,
+        library: 'startupMigration',
+        context: ErrorDescription('Printer index rebuild / migration'),
+      ),
+    );
+    rethrow;
   } finally {
     tempContainer.dispose();
   }

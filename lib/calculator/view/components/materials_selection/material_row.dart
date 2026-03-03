@@ -103,7 +103,11 @@ class MaterialRow extends StatelessWidget {
                 : usage.weightGrams.toString(),
             keyboardType: TextInputType.number,
             decoration: InputDecoration(suffixText: l10n.gramsSuffix),
-            onChanged: (value) => onWeightChanged(int.tryParse(value) ?? 0),
+            onChanged: (value) {
+              final parsedVal =
+                  num.tryParse(value.replaceAll(',', '.'))?.toInt() ?? 0;
+              onWeightChanged(parsedVal);
+            },
           ),
         ),
       ],

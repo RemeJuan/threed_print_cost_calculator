@@ -1,16 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 
 /// Loads materials from the local Sembast database.
 final materialsListProvider = FutureProvider.autoDispose<List<MaterialModel>>((
   ref,
 ) async {
-  final db = ref.read(databaseProvider);
-  final store = stringMapStoreFactory.store(DBName.materials.name);
-  final snapshots = await store.find(db);
+  final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
+  final snapshots = await dbHelpers.getAllRecords();
   return snapshots
       .map(
         (e) => MaterialModel.fromMap(

@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage(
       "Material breakdown",
     ),
+    "materialFallback": MessageLookupByLibrary.simpleMessage("Material"),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(

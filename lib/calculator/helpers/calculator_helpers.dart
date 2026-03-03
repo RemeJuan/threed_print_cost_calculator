@@ -41,9 +41,13 @@ class CalculatorHelpers {
   }
 
   num multiMaterialFilamentCost(List<MaterialUsageInput> usages) {
+    // Compute each usage cost and round to cents before summing to avoid
+    // accumulation rounding drift.
     final total = usages.fold<num>(0, (sum, usage) {
-      final materialCost = (usage.weightGrams * usage.costPerKg) / 1000;
-      return sum + materialCost;
+      final raw = (usage.weightGrams * usage.costPerKg) / 1000;
+      // Round per-item cost to two decimals (cents) before adding.
+      final perItem = num.parse(raw.toStringAsFixed(2));
+      return sum + perItem;
     });
 
     return num.parse(total.toStringAsFixed(2));

@@ -161,7 +161,7 @@
   "addAtLeastOneMaterial": "Voeg minimaal één materiaal toe.",
   "searchMaterialsHint": "Materialen zoeken",
   "materialBreakdownLabel": "Materiaaluitsplitsing",
-  "materialsCountLabel": "{count} materialen",
+  "materialsCountLabel": "{count, plural, =1{# materiaal} other{# materialen}}",
   "totalMaterialWeightLabel": "Totaal materiaalgewicht: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
