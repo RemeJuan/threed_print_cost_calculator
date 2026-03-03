@@ -1,3 +1,5 @@
+import 'package:threed_print_cost_calculator/shared/constants.dart';
+
 class HistoryModel {
   final String name;
   final num totalCost;
@@ -47,8 +49,8 @@ class HistoryModel {
       electricityCost: map['electricityCost'] as num,
       labourCost: map['labourCost'] as num,
       date: parsedDate,
-      printer: map['printer']?.toString() ?? 'Unassigned',
-      material: map['material']?.toString() ?? 'Unassigned',
+      printer: map['printer']?.toString() ?? kUnassignedLabel,
+      material: map['material']?.toString() ?? kUnassignedLabel,
       weight: map['weight'] as num? ?? 0.0,
       materialUsages: _parseMaterialUsages(map['materialUsages']),
       timeHours: map['timeHours']?.toString() ?? '00:00',

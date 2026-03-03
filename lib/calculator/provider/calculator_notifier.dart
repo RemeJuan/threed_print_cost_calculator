@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
@@ -106,7 +107,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     final defaultUsage = MaterialUsageInput(
       materialId: 'none',
-      materialName: 'Unassigned',
+      materialName: kUnassignedLabel,
       costPerKg: 0,
       weightGrams: 0,
     );
@@ -213,7 +214,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       usages.add(
         MaterialUsageInput(
           materialId: 'none',
-          materialName: 'Unassigned',
+          materialName: kUnassignedLabel,
           costPerKg: 0,
           weightGrams: 0,
         ),

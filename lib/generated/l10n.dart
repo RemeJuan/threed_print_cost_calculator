@@ -399,10 +399,10 @@ class S {
     return Intl.message('Delete', name: 'deleteButton', desc: '', args: []);
   }
 
-  /// `Unselected`
+  /// `Custom (unsaved)`
   String get selectMaterialHint {
     return Intl.message(
-      'Unselected',
+      'Custom (unsaved)',
       name: 'selectMaterialHint',
       desc: '',
       args: [],

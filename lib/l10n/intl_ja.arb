@@ -84,7 +84,7 @@
   "@cancelButton": {},
   "deleteButton": "削除",
   "@deleteButton": {},
-  "selectMaterialHint": "未選択",
+  "selectMaterialHint": "カスタム（未保存）",
   "@selectMaterialHint": {},
   "materialNone": "なし",
   "@materialNone": {},

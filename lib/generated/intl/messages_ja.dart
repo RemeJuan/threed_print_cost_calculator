@@ -100,7 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveButton": MessageLookupByLibrary.simpleMessage("保存"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("プリントを保存"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("素材を検索"),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("未選択"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("カスタム（未保存）"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("プリンターを選択"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("設定"),

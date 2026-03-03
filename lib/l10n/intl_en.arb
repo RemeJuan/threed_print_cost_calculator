@@ -42,7 +42,7 @@
   "deleteDialogContent": "Are you sure you want to delete this item?",
   "cancelButton": "Cancel",
   "deleteButton": "Delete",
-  "selectMaterialHint": "Unselected",
+  "selectMaterialHint": "Custom (unsaved)",
   "materialNone": "None",
   "gramsSuffix": "g",
   "wattsSuffix": "w",

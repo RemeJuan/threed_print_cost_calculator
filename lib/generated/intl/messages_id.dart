@@ -128,7 +128,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveButton": MessageLookupByLibrary.simpleMessage("Simpan"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Simpan cetakan"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("Cari bahan"),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("Tidak dipilih"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "Kustom (belum disimpan)",
+    ),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("Pilih printer"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Pengaturan"),
