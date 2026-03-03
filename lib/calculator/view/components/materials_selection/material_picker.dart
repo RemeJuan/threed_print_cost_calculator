@@ -77,7 +77,6 @@ class MaterialPicker extends HookWidget {
                   onPressed: () async {
                     final created = await showDialog<MaterialModel?>(
                       context: context,
-                      useRootNavigator: true,
                       builder: (dialogContext) => const MaterialForm(),
                     );
 
@@ -135,7 +134,6 @@ class MaterialPicker extends HookWidget {
                 onPressed: () async {
                   final created = await showDialog<MaterialModel?>(
                     context: context,
-                    useRootNavigator: true,
                     builder: (dialogContext) => const MaterialForm(),
                   );
 
