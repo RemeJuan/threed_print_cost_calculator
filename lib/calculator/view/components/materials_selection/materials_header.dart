@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
 
 /// A small header widget for the Materials accordion.
 ///
@@ -30,9 +31,7 @@ class MaterialsHeader extends StatelessWidget {
     final l10n = S.of(context);
 
     final rawCountLabel = l10n.materialsCountLabel(count);
-    final countText = rawCountLabel.contains('#')
-        ? rawCountLabel.replaceAll('#', count.toString())
-        : rawCountLabel;
+    final countText = formatCountLabel(rawCountLabel, count);
     final summary = '$countText · $totalWeight${l10n.gramsSuffix}';
 
     return Material(
