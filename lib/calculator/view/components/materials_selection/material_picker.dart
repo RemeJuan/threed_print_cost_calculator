@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 
-/// Reusable material picker widget. Uses a Stream<List<MaterialModel>> so it
+/// Reusable material picker widget. Uses a `Stream<List<MaterialModel>>` so it
 /// updates live when the DB changes. Calls `onSelected` when the user picks
 /// or creates a material. The picker does not pop navigation itself; the
 /// caller should handle closing the bottom sheet if desired.
