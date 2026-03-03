@@ -1,3 +1,3 @@
 // Shared constants to avoid magic strings across the codebase.
-const String kUnassignedLabel = 'Unassigned';
+const String kUnassignedLabel = 'Custom (unsaved)';
 const String kNoneMaterialId = 'none';

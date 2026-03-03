@@ -136,7 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materialien suchen",
     ),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
-      "Nicht ausgewählt",
+      "Benutzerdefiniert (nicht gespeichert)",
     ),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
       "Drucker auswählen",

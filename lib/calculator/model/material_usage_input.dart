@@ -1,3 +1,5 @@
+import 'package:threed_print_cost_calculator/shared/constants.dart';
+
 class MaterialUsageInput {
   const MaterialUsageInput({
     required this.materialId,
@@ -40,7 +42,7 @@ class MaterialUsageInput {
         v?.toString().trim().replaceAll(',', '.') ?? '';
 
     final materialId = map['materialId']?.toString() ?? '';
-    final materialName = map['materialName']?.toString() ?? 'Unassigned';
+    final materialName = map['materialName']?.toString() ?? kUnassignedLabel;
 
     final costStr = normalize(map['costPerKg']);
     final cost = num.tryParse(costStr) ?? 0;

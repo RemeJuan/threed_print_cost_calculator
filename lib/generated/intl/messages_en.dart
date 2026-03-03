@@ -121,7 +121,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Search materials",
     ),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("Unselected"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "Custom (unsaved)",
+    ),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("Select Printer"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("Settings"),

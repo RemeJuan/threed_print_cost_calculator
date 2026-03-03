@@ -84,7 +84,7 @@
   "@cancelButton": {},
   "deleteButton": "ลบ",
   "@deleteButton": {},
-  "selectMaterialHint": "ไม่ได้เลือก",
+  "selectMaterialHint": "กำหนดเอง (ยังไม่ได้บันทึก)",
   "@selectMaterialHint": {},
   "materialNone": "ไม่มี",
   "@materialNone": {},

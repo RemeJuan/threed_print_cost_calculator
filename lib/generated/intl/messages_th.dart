@@ -126,7 +126,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "saveButton": MessageLookupByLibrary.simpleMessage("บันทึก"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("บันทึกงานพิมพ์"),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("ค้นหาวัสดุ"),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("ไม่ได้เลือก"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
+      "กำหนดเอง (ยังไม่ได้บันทึก)",
+    ),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
       "เลือกเครื่องพิมพ์",
     ),

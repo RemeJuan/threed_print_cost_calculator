@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/history/provider/history_paged_noti
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
+import 'dart:math' as math;
 
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;
@@ -206,35 +207,112 @@ class HistoryItem extends HookConsumerWidget {
                         ),
                         if (data.materialUsages.isNotEmpty) ...[
                           const SizedBox(height: 8),
-                          Text(
-                            l10n.materialBreakdownLabel,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                          // Small accordion for material breakdown. Constrain height so
+                          // long lists remain scrollable and don't expand the history item.
+                          Theme(
+                            data: Theme.of(
+                              context,
+                            ).copyWith(dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              // Minimal padding so the tile aligns with surrounding content
+                              tilePadding: EdgeInsets.zero,
+                              childrenPadding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              collapsedBackgroundColor: Colors.transparent,
+                              // Make chevron visible on dark background
+                              iconColor: Colors.white70,
+                              collapsedIconColor: Colors.white54,
+                              title: Text(
+                                l10n.materialBreakdownLabel,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Colors.white70),
+                              ),
+                              children: [
+                                SingleChildScrollView(
+                                  padding: EdgeInsets.zero,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: List.generate(
+                                      data.materialUsages.length,
+                                      (idx) {
+                                        final usage = data.materialUsages[idx];
+                                        final weight =
+                                            int.tryParse(
+                                              usage['weightGrams'].toString(),
+                                            ) ??
+                                            0;
+
+                                        String materialLabel;
+                                        final materialId = usage['materialId']
+                                            ?.toString();
+                                        if (materialId != null &&
+                                            materialsById.containsKey(
+                                              materialId,
+                                            )) {
+                                          final mat =
+                                              materialsById[materialId]!;
+                                          materialLabel =
+                                              '${mat.name} - ${mat.color}';
+                                        } else {
+                                          materialLabel =
+                                              usage['materialName']
+                                                  ?.toString() ??
+                                              materialId ??
+                                              l10n.materialFallback;
+                                        }
+
+                                        return Column(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                  ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      materialLabel,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall
+                                                          ?.copyWith(
+                                                            color:
+                                                                Colors.white70,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  Text(
+                                                    '${weight}g',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          color: Colors.white60,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            if (idx <
+                                                data.materialUsages.length - 1)
+                                              const Divider(
+                                                height: 1,
+                                                color: Colors.white12,
+                                              ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 4),
-                          ...data.materialUsages.map((usage) {
-                            final weight =
-                                int.tryParse(usage['weightGrams'].toString()) ??
-                                0;
-
-                            // Prefer a DB lookup: try to resolve materialId -> MaterialModel
-                            String materialLabel;
-                            final materialId = usage['materialId']?.toString();
-                            if (materialId != null &&
-                                materialsById.containsKey(materialId)) {
-                              final mat = materialsById[materialId]!;
-                              final name = mat.name;
-                              final color = mat.color;
-                              materialLabel = '$name - $color';
-                            } else {
-                              // Fallback to stored name, id, or localized fallback
-                              materialLabel =
-                                  usage['materialName']?.toString() ??
-                                  materialId ??
-                                  l10n.materialFallback;
-                            }
-
-                            return Text('$materialLabel | ${weight}g');
-                          }),
                         ],
                       ],
                     );

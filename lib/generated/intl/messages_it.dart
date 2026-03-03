@@ -140,7 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Cerca materiali",
     ),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
-      "Non selezionato",
+      "Personalizzato (non salvato)",
     ),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
       "Seleziona stampante",

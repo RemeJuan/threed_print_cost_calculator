@@ -132,7 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materialen zoeken",
     ),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
-      "Niet geselecteerd",
+      "Aangepast (niet opgeslagen)",
     ),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage(
       "Selecteer printer",
