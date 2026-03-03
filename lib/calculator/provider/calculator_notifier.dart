@@ -106,7 +106,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     final defaultUsage = MaterialUsageInput(
       materialId: 'none',
-      materialName: 'NotSelected',
+      materialName: 'Unassigned',
       costPerKg: 0,
       weightGrams: 0,
     );
@@ -181,8 +181,30 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void removeMaterialUsageAt(int index) {
+    // Defensive: ensure index is valid
+    if (index < 0 || index >= state.materialUsages.length) return;
+
+    final target = state.materialUsages[index];
+    final id = target.materialId.trim();
+
+    // Do not allow removing the placeholder 'Unassigned' entry. The placeholder
+    // is represented by an empty id or the literal 'none' (case-insensitive).
+    if (id.isEmpty || id.toLowerCase() == 'none') return;
+
     final usages = [...state.materialUsages]..removeAt(index);
-    if (usages.isEmpty) return;
+
+    // If removal would leave the list empty, re-add a placeholder to keep UI stable.
+    if (usages.isEmpty) {
+      usages.add(
+        MaterialUsageInput(
+          materialId: 'none',
+          materialName: 'Unassigned',
+          costPerKg: 0,
+          weightGrams: 0,
+        ),
+      );
+    }
+
     state = state.copyWith(
       materialUsages: usages,
       printWeight: NumberInput.dirty(
@@ -194,7 +216,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void updateMaterialUsageWeight(int index, int grams) {
     final usages = [...state.materialUsages];
     usages[index] = usages[index].copyWith(weightGrams: grams);
-    final totalWeight = usages.fold<int>(0, (sum, item) => sum + item.weightGrams);
+    final totalWeight = usages.fold<int>(
+      0,
+      (sum, item) => sum + item.weightGrams,
+    );
 
     state = state.copyWith(
       materialUsages: usages,

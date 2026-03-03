@@ -12,7 +12,7 @@ import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 import 'calculator_results.dart';
-import 'components/materials_section.dart';
+import 'components/materials_selection/materials_section.dart';
 import 'components/rates_section.dart';
 import 'components/time_section.dart';
 

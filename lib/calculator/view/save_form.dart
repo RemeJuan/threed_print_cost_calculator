@@ -45,8 +45,8 @@ class SaveForm extends HookConsumerWidget {
                     );
                     final settings = await settingsHelpers.getSettings();
 
-                    String printerName = 'NotSelected';
-                    String materialName = 'NotSelected';
+                    String printerName = 'Unassigned';
+                    String materialName = 'Unassigned';
 
                     if (settings.activePrinter.isNotEmpty) {
                       final store = stringMapStoreFactory.store(
@@ -61,7 +61,7 @@ class SaveForm extends HookConsumerWidget {
                           .getSnapshot(db);
                       if (snapshot != null) {
                         final map = snapshot.value as Map<String, dynamic>;
-                        printerName = (map['name'] ?? 'NotSelected').toString();
+                        printerName = (map['name'] ?? 'Unassigned').toString();
                       }
                     }
 
@@ -77,7 +77,8 @@ class SaveForm extends HookConsumerWidget {
                         .toList();
 
                     if (calcState.materialUsages.isNotEmpty) {
-                      final firstName = calcState.materialUsages.first.materialName;
+                      final firstName =
+                          calcState.materialUsages.first.materialName;
                       final count = calcState.materialUsages.length;
                       materialName = count > 1
                           ? '$firstName +${count - 1}'
@@ -95,7 +96,7 @@ class SaveForm extends HookConsumerWidget {
                           .getSnapshot(db);
                       if (snapshot != null) {
                         final map = snapshot.value as Map<String, dynamic>;
-                        materialName = (map['name'] ?? 'NotSelected').toString();
+                        materialName = (map['name'] ?? 'Unassigned').toString();
                         usages.add(
                           MaterialUsageInput(
                             materialId: settings.selectedMaterial,
