@@ -172,5 +172,12 @@
       "grams": {}
     }
   },
-  "materialFallback": "Material genérico"
+  "materialFallback": "Material genérico",
+  "versionLabel": "Versión {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  }
 }

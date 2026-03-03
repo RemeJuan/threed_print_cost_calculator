@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SupportDialog extends StatelessWidget {
   const SupportDialog({required this.userID, super.key});
@@ -17,14 +18,20 @@ class SupportDialog extends StatelessWidget {
     final linkFont = Theme.of(
       context,
     ).textTheme.displayMedium?.copyWith(fontSize: 12);
+
     return Dialog(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.55,
-        child: Padding(
+      child: // Replace fixed height SizedBox with a ConstrainedBox + SingleChildScrollView
+      ConstrainedBox(
+        constraints: BoxConstraints(
+          // allow the dialog to grow with its content but cap it to 90% of screen height
+          maxHeight: MediaQuery.of(context).size.height * 0.9,
+        ),
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
+            // Let the column size itself to its children instead of stretching to available space
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 l10n.needHelpTitle,
@@ -133,6 +140,26 @@ class SupportDialog extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const SizedBox(height: 12),
+              // App version row (fetched from package info)
+              Center(
+                child: FutureBuilder<PackageInfo>(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox.shrink();
+                    }
+                    final versionString = snapshot.hasData
+                        ? '${snapshot.data!.version}+${snapshot.data!.buildNumber}'
+                        : '';
+                    final localized = l10n.versionLabel(versionString);
+                    return Text(
+                      localized,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    );
+                  },
+                ),
               ),
               const SizedBox(height: 16),
               Container(

@@ -24,6 +24,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(grams) => "น้ำหนักวัสดุรวม: ${grams}g";
 
+  static String m2(version) => "เวอร์ชัน ${version}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -156,6 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
       "ใช้ค่าน้ำหนักรวมเดียว",
     ),
+    "versionLabel": m2,
     "watt": MessageLookupByLibrary.simpleMessage("วัตต์"),
     "wattLabel": MessageLookupByLibrary.simpleMessage(
       "วัตต์ (เครื่องพิมพ์ 3D)",
