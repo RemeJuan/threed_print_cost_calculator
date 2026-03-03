@@ -31,7 +31,7 @@ String _sanitizeForCsv(String input) {
       firstChar == '-' ||
       firstChar == '@') {
     // Prefix with a single quote but keep leading whitespace/control characters intact
-    return "'${input}";
+    return "'$input";
   }
 
   return input;
