@@ -33,7 +33,7 @@ class MaterialsHeader extends StatelessWidget {
     final countText = rawCountLabel.contains('#')
         ? rawCountLabel.replaceAll('#', count.toString())
         : rawCountLabel;
-    final summary = '$countText · ${totalWeight}${l10n.gramsSuffix}';
+    final summary = '$countText · $totalWeight${l10n.gramsSuffix}';
 
     return Material(
       color: Colors.transparent,

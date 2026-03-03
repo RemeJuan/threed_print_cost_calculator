@@ -131,14 +131,11 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
 
     // Normalize user-entered strings: trim and replace comma decimals with dot
-    final rawWeightStr = (material.weight ?? '').toString().trim().replaceAll(
+    final rawWeightStr = (material.weight).toString().trim().replaceAll(
       ',',
       '.',
     );
-    final rawCostStr = (material.cost ?? '').toString().trim().replaceAll(
-      ',',
-      '.',
-    );
+    final rawCostStr = (material.cost).toString().trim().replaceAll(',', '.');
     final weight = num.tryParse(rawWeightStr) ?? 0;
     final cost = num.tryParse(rawCostStr) ?? 0;
     final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
