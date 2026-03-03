@@ -111,6 +111,7 @@ class MaterialForm extends HookConsumerWidget {
                       final key = await notifier.submit(dbRef);
 
                       if (key == null) {
+                        if (!context.mounted) return;
                         // Submission failed for some reason; close with null
                         Navigator.of(context, rootNavigator: true).pop(null);
                         return;
@@ -125,6 +126,7 @@ class MaterialForm extends HookConsumerWidget {
                       );
 
                       if (snapshot == null) {
+                        if (!context.mounted) return;
                         Navigator.of(context, rootNavigator: true).pop(null);
                         return;
                       }
@@ -133,6 +135,8 @@ class MaterialForm extends HookConsumerWidget {
                         snapshot.value as Map<String, dynamic>,
                         snapshot.key.toString(),
                       );
+
+                      if (!context.mounted) return;
 
                       Navigator.of(context, rootNavigator: true).pop(material);
                     },
