@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 void main() {
   group('materials providers', () {
@@ -39,7 +42,26 @@ void main() {
           await db.close();
         });
 
-        final materials = await container.read(materialsListProvider.future);
+        // Listen for the first data emission using container.listen on the
+        // StreamProvider's AsyncValue and complete a completer when data arrives.
+        final completer = Completer<List<MaterialModel>>();
+        final sub = container.listen<AsyncValue<List<MaterialModel>>>(
+          materialsListProvider,
+          (previous, next) {
+            next.when(
+              data: (list) {
+                if (!completer.isCompleted) completer.complete(list);
+              },
+              loading: () {},
+              error: (_, __) {},
+            );
+          },
+          fireImmediately: true,
+        );
+
+        final materials = await completer.future;
+        sub.close();
+
         expect(materials, isNotEmpty);
         expect(materials.length, equals(2));
 
