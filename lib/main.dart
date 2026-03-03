@@ -129,7 +129,7 @@ Future<void> startupMigration(Database db) async {
         'materialUsages': [
           {
             'materialId': value['materialId']?.toString() ?? '',
-            'materialName': value['material']?.toString() ?? 'NotSelected',
+            'materialName': value['material']?.toString() ?? 'Unassigned',
             'costPerKg': 0,
             'weightGrams': (value['weight'] as num? ?? 0).toInt(),
           },
