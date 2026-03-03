@@ -145,8 +145,9 @@ class _MaterialRowState extends State<MaterialRow> {
     final keyedRow = KeyedSubtree(key: ValueKey(rowKey), child: rowContent);
 
     final idTrim = widget.usage.materialId.trim();
-    final isDeletable =
-        idTrim.isNotEmpty && idTrim.toLowerCase() != kNoneMaterialId;
+    // Deletable when a material id is present. Allow empty lists and do not
+    // special-case a literal 'none'.
+    final isDeletable = idTrim.isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),

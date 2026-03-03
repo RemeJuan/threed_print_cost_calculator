@@ -11,7 +11,6 @@ import 'package:threed_print_cost_calculator/history/provider/history_paged_noti
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
-import 'dart:math' as math;
 
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;

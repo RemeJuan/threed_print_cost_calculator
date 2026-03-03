@@ -38,28 +38,29 @@ class MaterialSelect extends HookConsumerWidget {
     return StreamBuilder(
       stream: query.onSnapshots(db),
       builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.isNotEmpty && !loading.value) {
-          final none = MaterialModel(
-            name: l10n.materialNone,
-            color: l10n.materialNone,
-            cost: '0',
-            weight: '0',
-            id: 'none',
-            archived: false,
-          );
+        // If we have snapshot data (possibly empty) and finished loading settings
+        if (snapshot.hasData && !loading.value) {
+          // Map DB snapshots to models; allow the resulting list to be empty
+          final data = snapshot.data!
+              .map((e) => MaterialModel.fromMap(e.value, e.key))
+              .toList();
 
-          final data = [
-            none,
-            ...snapshot.data!.map((e) => MaterialModel.fromMap(e.value, e.key)),
-          ];
+          // If there are no materials, render nothing
+          if (data.isEmpty) {
+            return const SizedBox.shrink();
+          }
+
+          // Only use the selected value if it exists in the current data set
+          final selectedValue =
+              data.any((e) => e.id == generalSettings.value.selectedMaterial)
+              ? generalSettings.value.selectedMaterial
+              : null;
 
           return DropdownButton<String>(
             hint: Text(l10n.selectMaterialHint),
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
-            value: generalSettings.value.selectedMaterial.isEmpty
-                ? null
-                : generalSettings.value.selectedMaterial,
+            value: selectedValue,
             items: data.map((e) {
               return DropdownMenuItem(
                 value: e.id,
@@ -70,6 +71,8 @@ class MaterialSelect extends HookConsumerWidget {
               );
             }).toList(),
             onChanged: (v) async {
+              if (v == null) return;
+
               final updated = generalSettings.value.copyWith(
                 selectedMaterial: v,
               );
