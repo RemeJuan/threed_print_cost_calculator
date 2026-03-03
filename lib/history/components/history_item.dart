@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
+import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;
@@ -20,6 +21,7 @@ class HistoryItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = S.of(context);
+    final materialsById = ref.watch(materialsByIdProvider);
 
     return Slidable(
       key: ValueKey(dbKey),
@@ -213,11 +215,25 @@ class HistoryItem extends HookConsumerWidget {
                             final weight =
                                 int.tryParse(usage['weightGrams'].toString()) ??
                                 0;
-                            final materialName =
-                                usage['materialName']?.toString() ??
-                                usage['materialId']?.toString() ??
-                                l10n.materialFallback;
-                            return Text('$materialName | ${weight}g');
+
+                            // Prefer a DB lookup: try to resolve materialId -> MaterialModel
+                            String materialLabel;
+                            final materialId = usage['materialId']?.toString();
+                            if (materialId != null &&
+                                materialsById.containsKey(materialId)) {
+                              final mat = materialsById[materialId]!;
+                              final name = mat.name;
+                              final color = mat.color;
+                              materialLabel = '$name - $color';
+                            } else {
+                              // Fallback to stored name, id, or localized fallback
+                              materialLabel =
+                                  usage['materialName']?.toString() ??
+                                  materialId ??
+                                  l10n.materialFallback;
+                            }
+
+                            return Text('$materialLabel | ${weight}g');
                           }),
                         ],
                       ],
