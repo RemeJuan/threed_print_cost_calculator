@@ -223,6 +223,7 @@ class MaterialsSection extends HookConsumerWidget {
     final selectedIds = state.materialUsages
         .map((u) => u.materialId)
         .where((id) => id.trim().isNotEmpty && id.toLowerCase() != 'none')
+        .map((e) => e.trim())
         .toSet();
     if (focusAfterId != null && focusAfterId.trim().isNotEmpty) {
       selectedIds.remove(focusAfterId);
@@ -270,6 +271,7 @@ class MaterialsSection extends HookConsumerWidget {
               Navigator.of(context).pop(material.id);
             },
             loadMaterialsFuture: materialsFuture,
+            excludedIds: selectedIds,
           ),
         );
       },

@@ -183,6 +183,15 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void addMaterialUsage(MaterialUsageInput usage) {
+    // Defensive: do not add duplicate material IDs (except the placeholder 'none').
+    final id = usage.materialId.trim();
+    if (id.isNotEmpty && id.toLowerCase() != 'none') {
+      final exists = state.materialUsages.any(
+        (u) => u.materialId.trim().isNotEmpty && u.materialId.trim() == id,
+      );
+      if (exists) return; // ignore duplicate add
+    }
+
     state = state.copyWith(materialUsages: [...state.materialUsages, usage]);
   }
 
