@@ -40,7 +40,8 @@
   "@spoolCostLabel": {},
   "spoolWeightLabel": "Poids de la bobine/résine",
   "@spoolWeightLabel": {},
-  "electricityCostSettingsLabel": "Electricity cost",
+  "electricityCostSettingsLabel": "Coût de l'électricité",
+  "@electricityCostSettingsLabel": {},
   "submitButton": "Calculer",
   "@submitButton": {},
   "watt": "Watt",
@@ -83,7 +84,7 @@
   "@cancelButton": {},
   "deleteButton": "Delete",
   "@deleteButton": {},
-  "selectMaterialHint": "Select Material",
+  "selectMaterialHint": "Non sélectionné",
   "@selectMaterialHint": {},
   "materialNone": "None",
   "@materialNone": {},
@@ -154,5 +155,28 @@
   "enterNumber": "Please enter a number",
   "@enterNumber": {},
   "invalidNumber": "Invalid number",
-  "@invalidNumber": {}
+  "@invalidNumber": {},
+  "addMaterialButton": "Ajouter un matériau",
+  "useSingleTotalWeightAction": "Utiliser le poids total unique",
+  "addAtLeastOneMaterial": "Ajoutez au moins un matériau.",
+  "searchMaterialsHint": "Rechercher des matériaux",
+  "materialBreakdownLabel": "Répartition des matériaux",
+  "materialsCountLabel": "{count, plural, one{# matériau} other{# matériaux}}",
+  "totalMaterialWeightLabel": "Poids total du matériau : {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {
+        "type": "num"
+      }
+    }
+  },
+  "materialFallback": "Matériau",
+  "@materialFallback": {}
 }

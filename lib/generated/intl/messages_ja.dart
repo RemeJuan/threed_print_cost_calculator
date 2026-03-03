@@ -20,8 +20,16 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ja';
 
+  static String m0(count) => "${count} 種類の素材";
+
+  static String m1(grams) => "素材の合計重量: ${grams}g";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
+      "少なくとも1つの素材を追加してください。",
+    ),
+    "addMaterialButton": MessageLookupByLibrary.simpleMessage("素材を追加"),
     "bedSizeLabel": MessageLookupByLibrary.simpleMessage("Bed Size *"),
     "calculatorAppBarTitle": MessageLookupByLibrary.simpleMessage("3Dプリント計算機"),
     "calculatorNavLabel": MessageLookupByLibrary.simpleMessage("Calculator"),
@@ -64,11 +72,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "mailClientError": MessageLookupByLibrary.simpleMessage(
       "Could not open mail client",
     ),
+    "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage("素材内訳"),
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
       "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
     ),
+    "materialsCountLabel": m0,
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("分"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
@@ -94,9 +104,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("リスクコスト:"),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
-    "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
-      "Select Material",
-    ),
+    "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("素材を検索"),
+    "selectMaterialHint": MessageLookupByLibrary.simpleMessage("未選択"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("プリンターを選択"),
     "separator": MessageLookupByLibrary.simpleMessage(" | "),
     "settingsAppBarTitle": MessageLookupByLibrary.simpleMessage("設定"),
@@ -116,6 +125,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "termsOfUseLink": MessageLookupByLibrary.simpleMessage("Terms of Use"),
     "totalCostLabel": MessageLookupByLibrary.simpleMessage("総費用"),
+    "totalMaterialWeightLabel": m1,
+    "useSingleTotalWeightAction": MessageLookupByLibrary.simpleMessage(
+      "単一の合計重量を使用",
+    ),
     "watt": MessageLookupByLibrary.simpleMessage("ワット"),
     "wattLabel": MessageLookupByLibrary.simpleMessage("ワット（3Dプリンター）"),
     "wattageLabel": MessageLookupByLibrary.simpleMessage("Wattage *"),

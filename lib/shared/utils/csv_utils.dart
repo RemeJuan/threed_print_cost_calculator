@@ -13,11 +13,35 @@ String _quote(Object? value) {
   return '"$escaped"';
 }
 
+String _sanitizeForCsv(String input) {
+  if (input.isEmpty) return input;
+  // Find the first non-whitespace/control character (chars with codeUnit > 0x20)
+  int firstIndex = 0;
+  while (firstIndex < input.length) {
+    final cu = input.codeUnitAt(firstIndex);
+    if (cu > 0x20) break;
+    firstIndex++;
+  }
+
+  if (firstIndex >= input.length) return input; // all whitespace/control
+
+  final firstChar = input[firstIndex];
+  if (firstChar == '=' ||
+      firstChar == '+' ||
+      firstChar == '-' ||
+      firstChar == '@') {
+    // Prefix with a single quote but keep leading whitespace/control characters intact
+    return "'$input";
+  }
+
+  return input;
+}
+
 String generateCsv(List<HistoryModel> items) {
   final buffer = StringBuffer();
 
   buffer.writeln(
-    'Date,Printer,Material,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
+    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
   );
 
   for (final item in items) {
@@ -28,10 +52,25 @@ String generateCsv(List<HistoryModel> items) {
     final risk = (item.riskCost).toString();
     final total = (item.totalCost).toString();
 
+    final materialsFlattened = item.materialUsages
+        .map((usage) {
+          final rawName =
+              usage['materialName']?.toString() ??
+              usage['materialId']?.toString() ??
+              'Material';
+          final name = _sanitizeForCsv(rawName);
+          final weight = _sanitizeForCsv(
+            usage['weightGrams']?.toString() ?? '0',
+          );
+          return '$name:${weight}g';
+        })
+        .join('; ');
+
     buffer.writeln(
-      '${_quote(dateStr)},'
-      '${_quote(item.printer)},'
-      '${_quote(item.material)},'
+      '${_quote(_sanitizeForCsv(dateStr))},'
+      '${_quote(_sanitizeForCsv(item.printer))},'
+      '${_quote(_sanitizeForCsv(item.material))},'
+      '${_quote(materialsFlattened)},'
       '${_quote(item.weight)},'
       '${_quote(item.timeHours)},'
       '${_quote(electricity)},'

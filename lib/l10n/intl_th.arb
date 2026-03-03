@@ -84,7 +84,7 @@
   "@cancelButton": {},
   "deleteButton": "Delete",
   "@deleteButton": {},
-  "selectMaterialHint": "Select Material",
+  "selectMaterialHint": "ไม่ได้เลือก",
   "@selectMaterialHint": {},
   "materialNone": "None",
   "@materialNone": {},
@@ -155,5 +155,22 @@
   "enterNumber": "Please enter a number",
   "@enterNumber": {},
   "invalidNumber": "Invalid number",
-  "@invalidNumber": {}
+  "@invalidNumber": {},
+  "addMaterialButton": "เพิ่มวัสดุ",
+  "useSingleTotalWeightAction": "ใช้ค่าน้ำหนักรวมเดียว",
+  "addAtLeastOneMaterial": "เพิ่มวัสดุอย่างน้อย 1 รายการ",
+  "searchMaterialsHint": "ค้นหาวัสดุ",
+  "materialBreakdownLabel": "รายละเอียดวัสดุ",
+  "materialsCountLabel": "{count} วัสดุ",
+  "totalMaterialWeightLabel": "น้ำหนักวัสดุรวม: {grams}g",
+  "@materialsCountLabel": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "@totalMaterialWeightLabel": {
+    "placeholders": {
+      "grams": {}
+    }
+  }
 }

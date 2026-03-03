@@ -399,10 +399,10 @@ class S {
     return Intl.message('Delete', name: 'deleteButton', desc: '', args: []);
   }
 
-  /// `Select Material`
+  /// `Unselected`
   String get selectMaterialHint {
     return Intl.message(
-      'Select Material',
+      'Unselected',
       name: 'selectMaterialHint',
       desc: '',
       args: [],
@@ -675,6 +675,83 @@ class S {
     return Intl.message(
       'Search by name or printer',
       name: 'historySearchHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get addMaterialButton {
+    return Intl.message('Add', name: 'addMaterialButton', desc: '', args: []);
+  }
+
+  /// `Use single total weight`
+  String get useSingleTotalWeightAction {
+    return Intl.message(
+      'Use single total weight',
+      name: 'useSingleTotalWeightAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add at least one material.`
+  String get addAtLeastOneMaterial {
+    return Intl.message(
+      'Add at least one material.',
+      name: 'addAtLeastOneMaterial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search materials`
+  String get searchMaterialsHint {
+    return Intl.message(
+      'Search materials',
+      name: 'searchMaterialsHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Material breakdown`
+  String get materialBreakdownLabel {
+    return Intl.message(
+      'Material breakdown',
+      name: 'materialBreakdownLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, one{# material} other{# materials}}`
+  String materialsCountLabel(num count) {
+    return Intl.plural(
+      count,
+      one: '# material',
+      other: '# materials',
+      name: 'materialsCountLabel',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Total material weight: {grams}g`
+  String totalMaterialWeightLabel(Object grams) {
+    return Intl.message(
+      'Total material weight: ${grams}g',
+      name: 'totalMaterialWeightLabel',
+      desc: '',
+      args: [grams],
+    );
+  }
+
+  /// `Material`
+  String get materialFallback {
+    return Intl.message(
+      'Material',
+      name: 'materialFallback',
       desc: '',
       args: [],
     );
