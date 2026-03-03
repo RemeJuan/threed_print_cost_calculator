@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
@@ -103,17 +102,15 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> _ensureInitialMaterialUsage(String selectedMaterialId) async {
+    // Previously this forced a placeholder 'none' material when the list was
+    // empty. Change: allow an empty materialUsages list so users can add
+    // materials only when needed and are required to provide cost for any
+    // material rows they add.
     if (state.materialUsages.isNotEmpty) return;
 
-    final defaultUsage = MaterialUsageInput(
-      materialId: 'none',
-      materialName: kUnassignedLabel,
-      costPerKg: 0,
-      weightGrams: 0,
-    );
-
     if (selectedMaterialId.isEmpty) {
-      state = state.copyWith(materialUsages: [defaultUsage]);
+      // Leave materialUsages empty instead of adding a placeholder.
+      state = state.copyWith(materialUsages: []);
       return;
     }
 
@@ -122,7 +119,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final materialSnapshot = await dbHelpers.getRecord(selectedMaterialId);
 
     if (materialSnapshot == null) {
-      state = state.copyWith(materialUsages: [defaultUsage]);
+      // Leave empty if selected material not found
+      state = state.copyWith(materialUsages: []);
       return;
     }
 
@@ -184,9 +182,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void addMaterialUsage(MaterialUsageInput usage) {
-    // Defensive: do not add duplicate material IDs (except the placeholder 'none').
+    // Allow adding any usage; prevent exact duplicate material IDs.
     final id = usage.materialId.trim();
-    if (id.isNotEmpty && id.toLowerCase() != 'none') {
+    if (id.isNotEmpty) {
       final exists = state.materialUsages.any(
         (u) => u.materialId.trim().isNotEmpty && u.materialId.trim() == id,
       );
@@ -200,26 +198,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     // Defensive: ensure index is valid
     if (index < 0 || index >= state.materialUsages.length) return;
 
-    final target = state.materialUsages[index];
-    final id = target.materialId.trim();
-
-    // Do not allow removing the placeholder 'Unassigned' entry. The placeholder
-    // is represented by an empty id or the literal 'none' (case-insensitive).
-    if (id.isEmpty || id.toLowerCase() == 'none') return;
-
     final usages = [...state.materialUsages]..removeAt(index);
 
-    // If removal would leave the list empty, re-add a placeholder to keep UI stable.
-    if (usages.isEmpty) {
-      usages.add(
-        MaterialUsageInput(
-          materialId: 'none',
-          materialName: kUnassignedLabel,
-          costPerKg: 0,
-          weightGrams: 0,
-        ),
-      );
-    }
+    // Do not re-add placeholders; allow the list to be empty.
 
     // Always update state: update materialUsages and printWeight (sum of weights or 0)
     final totalWeight = usages.fold<int>(
@@ -414,7 +395,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         state.materialUsages.any(
           (u) =>
               u.weightGrams > 0 &&
-              u.materialId.trim().toLowerCase() != 'none' &&
+              u.materialId.trim().isNotEmpty &&
               (u.costPerKg > 0),
         )) {
       filamentCost = ref

@@ -6,6 +6,8 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_header.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_list.dart';
@@ -109,27 +111,24 @@ class MaterialsSection extends HookConsumerWidget {
     );
 
     // Read materials via Riverpod providers
-    final materialsAsync = ref.watch(materialsListProvider);
     final materialsById = ref.watch(materialsByIdProvider);
 
-    // Memoize the future so FutureBuilder won't re-query on every build
-    final materialsFuture = useMemoized(() async {
-      return materialsAsync.maybeWhen(
-        data: (list) => Future.value(list),
-        orElse: () async {
-          final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
-          final snapshots = await dbHelpers.getAllRecords();
-          return snapshots
+    // Prepare a stream from Sembast so the picker can watch live updates.
+    final db = ref.read(databaseProvider);
+    final materialsStore = stringMapStoreFactory.store(DBName.materials.name);
+    final materialsStream = materialsStore
+        .query()
+        .onSnapshots(db)
+        .map(
+          (snapshots) => snapshots
               .map(
                 (e) => MaterialModel.fromMap(
                   e.value as Map<String, dynamic>,
                   e.key.toString(),
                 ),
               )
-              .toList();
-        },
-      );
-    }, [materialsAsync.asData?.value]);
+              .toList(),
+        );
 
     // Accordion expanded state
     final expanded = useState<bool>(true);
@@ -138,7 +137,7 @@ class MaterialsSection extends HookConsumerWidget {
       final selectedId = await _showMaterialPicker(
         context,
         ref,
-        materialsFuture,
+        materialsStream,
       );
       if (selectedId == null) return;
       expanded.value = true;
@@ -149,7 +148,7 @@ class MaterialsSection extends HookConsumerWidget {
       final selectedId = await _showMaterialPicker(
         context,
         ref,
-        materialsFuture,
+        materialsStream,
         editingIndex: index,
         focusAfterId: usage.materialId.trim().isNotEmpty
             ? usage.materialId.trim()
@@ -214,15 +213,17 @@ class MaterialsSection extends HookConsumerWidget {
   Future<String?> _showMaterialPicker(
     BuildContext context,
     WidgetRef ref,
-    Future<List<MaterialModel>> materialsFuture, {
+    Stream<List<MaterialModel>> materialsStream, {
     int? editingIndex,
     String? focusAfterId,
   }) async {
     final state = ref.read(calculatorProvider);
 
+    // Build a set of currently selected material ids to exclude from the picker.
+    // Only include non-empty ids; don't special-case the literal 'none'.
     final selectedIds = state.materialUsages
         .map((u) => u.materialId)
-        .where((id) => id.trim().isNotEmpty && id.toLowerCase() != 'none')
+        .where((id) => id.trim().isNotEmpty)
         .map((e) => e.trim())
         .toSet();
     if (focusAfterId != null && focusAfterId.trim().isNotEmpty) {
@@ -237,7 +238,7 @@ class MaterialsSection extends HookConsumerWidget {
         return FractionallySizedBox(
           heightFactor: 0.95,
           child: MaterialPicker(
-            loadMaterials: () => materialsFuture,
+            materialsStream: materialsStream,
             onSelected: (material) {
               final weight =
                   num.tryParse(material.weight.replaceAll(',', '.')) ?? 0;
@@ -270,7 +271,6 @@ class MaterialsSection extends HookConsumerWidget {
               }
               Navigator.of(context).pop(material.id);
             },
-            loadMaterialsFuture: materialsFuture,
             excludedIds: selectedIds,
           ),
         );

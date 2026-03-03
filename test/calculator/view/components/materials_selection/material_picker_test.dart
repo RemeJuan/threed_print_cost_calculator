@@ -35,7 +35,7 @@ void main() {
 
       await tester.pumpApp(
         MaterialPicker(
-          loadMaterials: () async => materials,
+          materialsStream: Stream.fromIterable([materials]),
           onSelected: (m) => selected = m,
         ),
       );

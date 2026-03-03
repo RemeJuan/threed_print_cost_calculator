@@ -88,15 +88,29 @@ class MaterialForm extends HookConsumerWidget {
               ),
 
               const SizedBox(height: 16),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: DEEP_BLUE,
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.displayMedium?.copyWith(fontSize: 16),
-                ),
-                onPressed: () => notifier.submit(dbRef),
-                child: Text(l10n.saveButton),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(false),
+                    child: Text(l10n.cancelButton),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: DEEP_BLUE,
+                      textStyle: Theme.of(
+                        context,
+                      ).textTheme.displayMedium?.copyWith(fontSize: 16),
+                    ),
+                    onPressed: () {
+                      notifier.submit(dbRef);
+                      Navigator.of(context, rootNavigator: true).pop(true);
+                    },
+                    child: Text(l10n.saveButton),
+                  ),
+                ],
               ),
             ],
           ),
