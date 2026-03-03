@@ -45,8 +45,8 @@ class SaveForm extends HookConsumerWidget {
                     );
                     final settings = await settingsHelpers.getSettings();
 
-                    String printerName = 'Unassigned';
-                    String materialName = 'Unassigned';
+                    String printerName = '';
+                    String materialName = '';
 
                     if (settings.activePrinter.isNotEmpty) {
                       final store = stringMapStoreFactory.store(
@@ -61,7 +61,7 @@ class SaveForm extends HookConsumerWidget {
                           .getSnapshot(db);
                       if (snapshot != null) {
                         final map = snapshot.value as Map<String, dynamic>;
-                        printerName = (map['name'] ?? 'Unassigned').toString();
+                        printerName = (map['name'] ?? '').toString();
                       }
                     }
 
@@ -101,7 +101,7 @@ class SaveForm extends HookConsumerWidget {
                           .getSnapshot(db);
                       if (snapshot != null) {
                         final map = snapshot.value as Map<String, dynamic>;
-                        materialName = (map['name'] ?? 'Unassigned').toString();
+                        materialName = (map['name'] ?? '').toString();
                         usages.add(
                           MaterialUsageInput(
                             materialId: settings.selectedMaterial,

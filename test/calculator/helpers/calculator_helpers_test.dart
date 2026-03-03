@@ -111,25 +111,27 @@ void main() {
   test(
     'multiMaterialFilamentCost rounds per-item costs to cents (precision boundary)',
     () {
-      // Two usages that produce per-item costs that would test rounding at .005
+      // Two usages that each produce raw per-item cost 0.005. With
+      // per-item rounding to cents, each becomes 0.01, so total should be 0.02.
       const u1 = MaterialUsageInput(
         materialId: 'm1',
         materialName: 'M1',
-        costPerKg: 10, // per-kg price
-        weightGrams: 1, // 0.001 kg -> raw cost = 0.01
+        costPerKg: 5, // (1g * 5) / 1000 = 0.005
+        weightGrams: 1,
       );
       const u2 = MaterialUsageInput(
         materialId: 'm2',
         materialName: 'M2',
-        costPerKg: 0.005 * 1000, // make raw per-item cost around 0.005
+        costPerKg: 5, // same as above
         weightGrams: 1,
       );
 
       final result = container
           .read(calculatorHelpersProvider)
           .multiMaterialFilamentCost([u1, u2]);
-      // Ensure result is rounded to two decimals and deterministic
-      expect(result, equals(num.parse(result.toStringAsFixed(2))));
+
+      // Per-item rounding should produce exactly 0.02
+      expect(result, equals(0.02));
     },
   );
 }

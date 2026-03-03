@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/shared/constants.dart';
 
 /// Single material row used inside the materials list.
 ///
@@ -47,6 +48,9 @@ class MaterialRow extends StatelessWidget {
     final id = usage.materialId.trim();
     final rowKey = id.isNotEmpty ? id : '__row_$index';
 
+    final isMaterialUnassigned =
+        usage.materialName.isEmpty || usage.materialName == kUnassignedLabel;
+
     Widget rowContent = Row(
       children: [
         Expanded(
@@ -57,13 +61,10 @@ class MaterialRow extends StatelessWidget {
               children: [
                 Flexible(
                   child: Text(
-                    usage.materialName.isEmpty ||
-                            usage.materialName == 'Unassigned'
+                    isMaterialUnassigned
                         ? l10n.selectMaterialHint
                         : usage.materialName,
-                    style:
-                        usage.materialName.isEmpty ||
-                            usage.materialName == 'Unassigned'
+                    style: isMaterialUnassigned
                         ? Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).hintColor,
                           )
@@ -98,6 +99,10 @@ class MaterialRow extends StatelessWidget {
         Expanded(
           flex: 2,
           child: TextFormField(
+            // Use a key tied to the usage so the field is reconstructed when
+            // the parent updates the usage (weight changes). This keeps the
+            // simple StatelessWidget pattern without managing controllers here.
+            key: Key('weight-${usage.materialId}-$index-${usage.weightGrams}'),
             initialValue: usage.weightGrams == 0
                 ? ''
                 : usage.weightGrams.toString(),
@@ -116,7 +121,8 @@ class MaterialRow extends StatelessWidget {
     final keyedRow = KeyedSubtree(key: ValueKey(rowKey), child: rowContent);
 
     final idTrim = usage.materialId.trim();
-    final isDeletable = idTrim.isNotEmpty && idTrim.toLowerCase() != 'none';
+    final isDeletable =
+        idTrim.isNotEmpty && idTrim.toLowerCase() != kNoneMaterialId;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),

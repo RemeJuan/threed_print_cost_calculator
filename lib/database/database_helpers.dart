@@ -177,7 +177,9 @@ class DataBaseHelpers {
       return await store.find(db);
     } catch (e) {
       BotToast.showText(text: 'Error reading records');
-      return <RecordSnapshot<Key?, Value?>>[];
+      // Propagate the error so callers can handle migration/backfill failures
+      // instead of silently receiving an empty list.
+      rethrow;
     }
   }
 }

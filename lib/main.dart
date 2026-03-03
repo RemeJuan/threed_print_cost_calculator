@@ -26,6 +26,7 @@ import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 
 import 'app/app.dart';
 import 'database/database.dart';
+import 'package:threed_print_cost_calculator/shared/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -141,7 +142,7 @@ Future<void> startupMigration(Database db) async {
         'materialUsages': [
           {
             'materialId': value['materialId']?.toString() ?? '',
-            'materialName': value['material']?.toString() ?? 'Unassigned',
+            'materialName': value['material']?.toString() ?? kUnassignedLabel,
             'costPerKg': 0,
             'weightGrams': parsedWeight,
           },

@@ -57,8 +57,9 @@ class MaterialsSection extends HookConsumerWidget {
                     suffixText: l10n.gramsSuffix,
                   ),
                   onChanged: (value) {
+                    final normalized = value.trim().replaceAll(',', '.');
                     notifier
-                      ..updateSpoolWeight(num.tryParse(value) ?? 0)
+                      ..updateSpoolWeight(num.tryParse(normalized) ?? 0)
                       ..submitDebounced();
                   },
                 ),
@@ -128,7 +129,7 @@ class MaterialsSection extends HookConsumerWidget {
               .toList();
         },
       );
-    }, [materialsAsync]);
+    }, [materialsAsync.asData?.value]);
 
     // Accordion expanded state
     final expanded = useState<bool>(true);
@@ -171,7 +172,7 @@ class MaterialsSection extends HookConsumerWidget {
     }
 
     return Card(
-      color: const Color.fromRGBO(8, 8, 18, 1),
+      color: Theme.of(context).cardColor,
       margin: EdgeInsets.zero,
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -35,11 +35,33 @@ class MaterialUsageInput {
   }
 
   factory MaterialUsageInput.fromMap(Map<String, dynamic> map) {
+    // Normalize strings and accept comma decimals
+    String normalize(Object? v) =>
+        v?.toString().trim().replaceAll(',', '.') ?? '';
+
+    final materialId = map['materialId']?.toString() ?? '';
+    final materialName = map['materialName']?.toString() ?? 'Unassigned';
+
+    final costStr = normalize(map['costPerKg']);
+    final cost = num.tryParse(costStr) ?? 0;
+
+    final weightStr = normalize(map['weightGrams']);
+    int weight = 0;
+    if (weightStr.isNotEmpty) {
+      // Accept decimal weights like "120.0" and round to nearest int
+      final parsedDouble = double.tryParse(weightStr);
+      if (parsedDouble != null) {
+        weight = parsedDouble.round();
+      } else {
+        weight = int.tryParse(weightStr) ?? 0;
+      }
+    }
+
     return MaterialUsageInput(
-      materialId: map['materialId']?.toString() ?? '',
-      materialName: map['materialName']?.toString() ?? 'Unassigned',
-      costPerKg: num.tryParse(map['costPerKg']?.toString() ?? '0') ?? 0,
-      weightGrams: int.tryParse(map['weightGrams']?.toString() ?? '0') ?? 0,
+      materialId: materialId,
+      materialName: materialName,
+      costPerKg: cost,
+      weightGrams: weight,
     );
   }
 }
