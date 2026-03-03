@@ -1,3 +1,14 @@
+## [2.5.0] - 2026-03-03
+### Added
+- Multi-material support for premium users, including picker and list components.
+
+### Changed
+- Improved multi-material state handling and normalized weight/cost input processing.
+- Updated localization strings for material-related labels across multiple languages.
+
+### Fixed
+- Standardized default unassigned material naming and usage behavior.
+
 ## [2.4.1] - 2026-02-28
 ### Changed
 - Upgraded purchases_flutter and purchases_ui_flutter to 9.12.3
@@ -64,6 +75,7 @@
 ### Added
 - Added in-app update checker
 
+[2.5.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.5.0
 [2.4.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.4.1
 [2.2.14]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.2.13...2.2.14
 [1.2.0+1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/1.2.0...1.2.0+1
