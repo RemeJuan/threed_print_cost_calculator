@@ -53,7 +53,7 @@ void main() {
                 if (!completer.isCompleted) completer.complete(list);
               },
               loading: () {},
-              error: (_, __) {},
+              error: (_, _) {},
             );
           },
           fireImmediately: true,
