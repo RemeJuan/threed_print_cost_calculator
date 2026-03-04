@@ -87,8 +87,13 @@ class DataBaseHelpers {
     }
   }
 
-  Future<void> deleteRecord(String key) async {
-    final store = stringMapStoreFactory.store(dbName.name);
+  // Accept generic Sembast keys (int or String) so callers that use numeric keys
+  // (auto-incremented) don't accidentally stringify them and fail to find records.
+  Future<void> deleteRecord(Object key) async {
+    // Use a dynamically-typed StoreRef so record(key) accepts both int and String
+    final store =
+        stringMapStoreFactory.store(dbName.name)
+            as StoreRef<Object?, Map<String, Object?>>;
 
     try {
       // Read existing so we know the printer before deletion
@@ -100,18 +105,51 @@ class DataBaseHelpers {
       // Then, if this is history, remove the key from the printer index
       if (dbName == DBName.history) {
         final printer = (existing?['printer']?.toString() ?? '').trim();
+        final helpers = PrinterIndexHelpers.fromRef(ref);
         if (printer.isNotEmpty) {
-          final helpers = PrinterIndexHelpers.fromRef(ref);
           await helpers.removeKey(printer, key);
         }
+
+        // Defensive: some index entries may have stale keys or the record's printer
+        // field may be empty. To ensure the index doesn't retain the deleted key,
+        // scan the entire printer_index store and remove any occurrences of this key.
+        // Compare keys by their string representation to tolerate mixed types.
+        final indexStore = stringMapStoreFactory.store('printer_index');
+        await db.transaction((txn) async {
+          final all = await indexStore.find(txn);
+          for (final e in all) {
+            final entryKeys = (e.value['keys'] as List?) ?? [];
+            final hasMatch = entryKeys.any(
+              (k) => k.toString() == key.toString(),
+            );
+            if (hasMatch) {
+              final newKeys = entryKeys
+                  .where((k) => k.toString() != key.toString())
+                  .toList();
+              if (newKeys.isEmpty) {
+                await indexStore.record(e.key).delete(txn);
+                // removed empty index entry
+              } else {
+                await indexStore.record(e.key).put(txn, {'keys': newKeys});
+                // updated index entry
+              }
+            }
+          }
+        });
       }
-    } catch (e) {
+    } catch (e, st) {
+      // ignore: avoid_print
+      print(
+        'DataBaseHelpers.deleteRecord: error deleting key=${key} - $e\n$st',
+      );
       BotToast.showText(text: 'Error removing record');
     }
   }
 
-  Future<RecordSnapshot<Key?, Value?>?> getRecord(String key) async {
-    final store = stringMapStoreFactory.store(dbName.name);
+  Future<RecordSnapshot<Key?, Value?>?> getRecord(Object key) async {
+    final store =
+        stringMapStoreFactory.store(dbName.name)
+            as StoreRef<Object?, Map<String, Object?>>;
 
     try {
       return await store.record(key).getSnapshot(db);
@@ -123,7 +161,6 @@ class DataBaseHelpers {
 
   Future<void> putRecord(Map<String, dynamic> data) async {
     final store = StoreRef.main();
-    debugPrint("the put data: $data - ${dbName.name}");
     try {
       await store.record(dbName.name).put(db, data);
     } catch (e) {
