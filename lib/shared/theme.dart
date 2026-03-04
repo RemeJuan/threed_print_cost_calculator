@@ -39,8 +39,13 @@ ThemeData theme() {
   // Create the final text theme with GoogleFonts applied
 
   return themeData.copyWith(
+    textTheme: themeData.textTheme,
     scaffoldBackgroundColor: DARK_BLUE,
-    appBarTheme: AppBarTheme(backgroundColor: DEEP_BLUE, elevation: 0),
+    appBarTheme: AppBarTheme(
+      backgroundColor: DEEP_BLUE,
+      elevation: 0,
+      titleTextStyle: themeData.textTheme.displayMedium,
+    ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: DEEP_BLUE,
       selectedItemColor: LIGHT_BLUE,
