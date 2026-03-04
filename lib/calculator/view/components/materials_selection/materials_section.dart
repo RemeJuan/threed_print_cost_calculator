@@ -170,9 +170,8 @@ class MaterialsSection extends HookConsumerWidget {
         ..submitDebounced();
     }
 
-    return Card(
-      color: Theme.of(context).cardColor,
-      margin: EdgeInsets.zero,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -183,17 +182,36 @@ class MaterialsSection extends HookConsumerWidget {
             onAdd: onAddPressed,
             onToggle: () => expanded.value = !expanded.value,
           ),
-
+          if (!expanded.value) ...[
+            const SizedBox(height: 8),
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: Theme.of(context).dividerColor.withAlpha(120),
+            ),
+          ],
           AnimatedCrossFade(
             firstChild: const SizedBox.shrink(),
             secondChild: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: MaterialsList(
-                usages: state.materialUsages,
-                materialsById: materialsById,
-                onPick: onRowPick,
-                onWeightChanged: onRowWeightChanged,
-                onRemove: onRowRemove,
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Column(
+                children: [
+                  MaterialsList(
+                    usages: state.materialUsages,
+                    materialsById: materialsById,
+                    onPick: onRowPick,
+                    onWeightChanged: onRowWeightChanged,
+                    onRemove: onRowRemove,
+                  ),
+                  if (expanded.value) ...[
+                    const SizedBox(height: 8),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: Theme.of(context).dividerColor.withAlpha(120),
+                    ),
+                  ],
+                ],
               ),
             ),
             crossFadeState: expanded.value
