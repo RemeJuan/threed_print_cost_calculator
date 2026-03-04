@@ -102,18 +102,10 @@ Future<void> startupMigration(Database db) async {
   );
   try {
     final indexHelpers = PrinterIndexHelpers.fromContainer(tempContainer);
-    final indexed = await indexHelpers.getAllIndexedPrinters();
-    if (indexed.isEmpty) {
-      if (kDebugMode) {
-        // ignore: avoid_print
-        print('Printer index empty — rebuilding from history store...');
-      }
-      await indexHelpers.rebuildIndex();
-      if (kDebugMode) {
-        // ignore: avoid_print
-        print('Printer index rebuild finished');
-      }
-    }
+    // Always attempt to rebuild the index at startup. `rebuildIndex` is
+    // idempotent and ensures any stale or mixed-typed keys are normalized to
+    // the current canonical representation derived from the history store.
+    await indexHelpers.rebuildIndex();
 
     // Migrate old history records to materialUsages[] format.
     final historyStore = stringMapStoreFactory.store('history');
