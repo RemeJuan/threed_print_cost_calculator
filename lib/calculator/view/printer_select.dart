@@ -43,11 +43,11 @@ class PrinterSelect extends HookConsumerWidget {
             (e) => PrinterModel.fromMap(e.value, e.key),
           );
 
-          return DropdownButton<String>(
+          return DropdownButtonFormField<String>(
             hint: Text(l10n.selectPrinterHint),
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
-            value: generalSettings.value.activePrinter.isEmpty
+            initialValue: generalSettings.value.activePrinter.isEmpty
                 ? null
                 : generalSettings.value.activePrinter,
             items: data.map((e) {
@@ -62,17 +62,21 @@ class PrinterSelect extends HookConsumerWidget {
                 ),
               );
             }).toList(),
-            onChanged: (v) async {
-              final updated = generalSettings.value.copyWith(activePrinter: v);
-              generalSettings.value = updated;
-              await dbHelpers.putRecord(updated.toMap());
+            onChanged: data.length == 1
+                ? null
+                : (v) async {
+                    final updated = generalSettings.value.copyWith(
+                      activePrinter: v,
+                    );
+                    generalSettings.value = updated;
+                    await dbHelpers.putRecord(updated.toMap());
 
-              final wattage = data.firstWhere((e) => e.id == v).wattage;
+                    final wattage = data.firstWhere((e) => e.id == v).wattage;
 
-              ref
-                  .read(calculatorProvider.notifier)
-                  .updateWatt(wattage.toString());
-            },
+                    ref
+                        .read(calculatorProvider.notifier)
+                        .updateWatt(wattage.toString());
+                  },
           );
         } else {
           return const SizedBox.shrink();
