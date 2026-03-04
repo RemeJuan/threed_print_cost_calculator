@@ -53,24 +53,10 @@ class _MaterialRowState extends State<MaterialRow> {
     super.dispose();
   }
 
-  Color? _tryParseHexColor(String input) {
-    final hex = input.replaceAll('#', '').trim();
-    if (hex.isEmpty) return null;
-    final isHex = RegExp(r'^[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$').hasMatch(hex);
-    if (!isHex) return null;
-    try {
-      final value = int.parse(hex, radix: 16);
-      return Color(hex.length == 6 ? (0xFF000000 | value) : value);
-    } catch (_) {
-      return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = S.of(context);
     final colorString = widget.material?.color ?? '';
-    final parsed = _tryParseHexColor(colorString);
     final id = widget.usage.materialId.trim();
     final rowKey = id.isNotEmpty ? id : '__row_${widget.index}';
 
@@ -98,22 +84,11 @@ class _MaterialRowState extends State<MaterialRow> {
                         : Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
-                if (parsed != null) ...[
-                  Container(
-                    width: 14,
-                    height: 14,
-                    margin: const EdgeInsets.only(left: 8),
-                    decoration: BoxDecoration(
-                      color: parsed,
-                      borderRadius: BorderRadius.circular(3),
-                      border: Border.all(color: Colors.black12),
-                    ),
-                  ),
-                ] else if (colorString.isNotEmpty) ...[
+                if (colorString.isNotEmpty) ...[
                   Padding(
                     padding: const EdgeInsets.only(left: 8),
                     child: Text(
-                      '- ($colorString)',
+                      '($colorString)',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),

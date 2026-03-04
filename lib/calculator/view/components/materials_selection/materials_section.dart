@@ -196,12 +196,15 @@ class MaterialsSection extends HookConsumerWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Column(
                 children: [
-                  MaterialsList(
-                    usages: state.materialUsages,
-                    materialsById: materialsById,
-                    onPick: onRowPick,
-                    onWeightChanged: onRowWeightChanged,
-                    onRemove: onRowRemove,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: MaterialsList(
+                      usages: state.materialUsages,
+                      materialsById: materialsById,
+                      onPick: onRowPick,
+                      onWeightChanged: onRowWeightChanged,
+                      onRemove: onRowRemove,
+                    ),
                   ),
                   if (expanded.value) ...[
                     const SizedBox(height: 8),
