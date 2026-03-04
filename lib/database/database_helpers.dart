@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/cupertino.dart' hide Key;
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 
@@ -137,11 +136,7 @@ class DataBaseHelpers {
           }
         });
       }
-    } catch (e, st) {
-      // ignore: avoid_print
-      print(
-        'DataBaseHelpers.deleteRecord: error deleting key=${key} - $e\n$st',
-      );
+    } catch (e) {
       BotToast.showText(text: 'Error removing record');
     }
   }
