@@ -43,7 +43,7 @@ class PrinterIndexHelpers {
 
   /// Rebuild the entire index from the history store. This is idempotent.
   Future<void> rebuildIndex() async {
-    final Map<String, List<dynamic>> map = {};
+    final Map<String, List<String>> map = {};
 
     final records = await _historyStore.find(_db);
 
@@ -53,8 +53,11 @@ class PrinterIndexHelpers {
       final key = r.key;
       final norm = _normalize(printer);
       if (norm.isEmpty) continue;
-      map.putIfAbsent(norm, () => <dynamic>[]).add(key);
+      // Store keys as strings for consistent indexing
+      map.putIfAbsent(norm, () => <String>[]).add(key.toString());
     }
+
+    // rebuild index
 
     // Perform clear-and-write inside a single transaction so the index is updated atomically.
     await _db.transaction((txn) async {
@@ -79,15 +82,23 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
+    final recordKeyStr = recordKey.toString();
+    // addKey called
+
     // Do read-modify-write inside a single transaction to avoid TOCTOU races.
     await _db.transaction((txn) async {
       final existing =
           await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
-      final keys = <dynamic>[...?existing?['keys'] as List?];
+      final keys = <String>[
+        ...?existing?['keys']?.cast<String>() as List<String>?,
+      ];
 
-      if (!keys.contains(recordKey)) {
-        keys.add(recordKey);
+      if (!keys.contains(recordKeyStr)) {
+        keys.add(recordKeyStr);
         await _indexStore.record(norm).put(txn, {'keys': keys});
+        // added key
+      } else {
+        // already present
       }
     });
   }
@@ -97,21 +108,38 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
+    final recordKeyStr = recordKey.toString();
+    // removeKey called
+
     // Perform read-modify-write in a transaction to avoid TOCTOU races.
     await _db.transaction((txn) async {
       final existing =
           await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
       if (existing == null) return;
 
-      final keys = <dynamic>[...?existing['keys'] as List?];
-      keys.removeWhere((k) => k == recordKey);
+      final keys = <String>[
+        ...?existing['keys']?.cast<String>() as List<String>?,
+      ];
+      // before removal
+
+      keys.removeWhere((k) => k == recordKeyStr);
 
       if (keys.isEmpty) {
         await _indexStore.record(norm).delete(txn);
+        // deleted index entry
       } else {
         await _indexStore.record(norm).put(txn, {'keys': keys});
+        // updated index entry
       }
     });
+  }
+
+  /// Helper to convert a stored string key back to original typed key when possible.
+  dynamic _typedKey(String s) {
+    // If looks like an integer (positive/negative), parse to int; otherwise return string
+    final intRegex = RegExp(r'^-?\d+\$');
+    if (intRegex.hasMatch(s)) return int.parse(s);
+    return s;
   }
 
   /// Return all record keys that belong to any printer whose normalized
@@ -121,18 +149,21 @@ class PrinterIndexHelpers {
     if (q.isEmpty) return [];
 
     final all = await _indexStore.find(_db);
-    final matches = <dynamic>{};
+    final matches = <String>{};
 
     for (final e in all) {
       final k = e.key;
       if (k.contains(q)) {
         final value = e.value as Map<String, dynamic>;
         final keys = (value['keys'] as List?) ?? [];
-        matches.addAll(keys);
+        matches.addAll(keys.map((k) => k.toString()));
       }
     }
 
-    return matches.toList();
+    // matched keys
+
+    // Convert stored string keys back to typed keys where appropriate
+    return matches.map((s) => _typedKey(s)).toList();
   }
 
   /// Helper: get all indexed printers (normalized)
