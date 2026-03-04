@@ -1,36 +1,27 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 
-class HistoryModel {
-  final String name;
-  final num totalCost;
-  final num riskCost;
-  final num filamentCost;
-  final num electricityCost;
-  final num labourCost;
-  final DateTime date;
-  final String printer;
-  final String material;
-  final num weight; // grams
-  final List<Map<String, dynamic>> materialUsages;
-  final String timeHours; // stored as "hh:mm"
+part 'history_model.freezed.dart';
 
-  const HistoryModel({
-    required this.name,
-    required this.totalCost,
-    required this.riskCost,
-    required this.filamentCost,
-    required this.electricityCost,
-    required this.labourCost,
-    required this.date,
-    required this.printer,
-    required this.material,
-    required this.weight,
-    this.materialUsages = const [],
-    required this.timeHours,
-  });
+@freezed
+abstract class HistoryModel with _$HistoryModel {
+  const factory HistoryModel({
+    required String name,
+    required num totalCost,
+    required num riskCost,
+    required num filamentCost,
+    required num electricityCost,
+    required num labourCost,
+    required DateTime date,
+    required String printer,
+    required String material,
+    required num weight,
+    @Default(<Map<String, dynamic>>[])
+    List<Map<String, dynamic>> materialUsages,
+    required String timeHours,
+  }) = _HistoryModel;
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
-    // robust date parsing: accept String or DateTime
     final dynamic dateValue = map['date'];
     DateTime parsedDate;
     if (dateValue is DateTime) {
@@ -64,37 +55,9 @@ class HistoryModel {
         .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
         .toList();
   }
+}
 
-  HistoryModel copyWith({
-    String? name,
-    num? totalCost,
-    num? riskCost,
-    num? filamentCost,
-    num? electricityCost,
-    num? labourCost,
-    DateTime? date,
-    String? printer,
-    String? material,
-    num? weight,
-    List<Map<String, dynamic>>? materialUsages,
-    String? timeHours,
-  }) {
-    return HistoryModel(
-      name: name ?? this.name,
-      totalCost: totalCost ?? this.totalCost,
-      riskCost: riskCost ?? this.riskCost,
-      filamentCost: filamentCost ?? this.filamentCost,
-      electricityCost: electricityCost ?? this.electricityCost,
-      labourCost: labourCost ?? this.labourCost,
-      date: date ?? this.date,
-      printer: printer ?? this.printer,
-      material: material ?? this.material,
-      weight: weight ?? this.weight,
-      materialUsages: materialUsages ?? this.materialUsages,
-      timeHours: timeHours ?? this.timeHours,
-    );
-  }
-
+extension HistoryModelX on HistoryModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -110,20 +73,5 @@ class HistoryModel {
       'materialUsages': materialUsages,
       'timeHours': timeHours,
     };
-  }
-
-  @override
-  String toString() {
-    return 'HistoryModel{'
-        'name: $name, '
-        'totalCost: $totalCost, '
-        'riskCost: $riskCost, '
-        'filamentCost: $filamentCost, '
-        'electricityCost: $electricityCost, '
-        'printer: $printer, '
-        'material: $material, '
-        'weight: $weight, '
-        'timeHours: $timeHours'
-        '}';
   }
 }

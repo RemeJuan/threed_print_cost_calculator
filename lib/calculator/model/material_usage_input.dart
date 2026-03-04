@@ -1,43 +1,18 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 
-class MaterialUsageInput {
-  const MaterialUsageInput({
-    required this.materialId,
-    required this.materialName,
-    required this.costPerKg,
-    required this.weightGrams,
-  });
+part 'material_usage_input.freezed.dart';
 
-  final String materialId;
-  final String materialName;
-  final num costPerKg;
-  final int weightGrams;
-
-  MaterialUsageInput copyWith({
-    String? materialId,
-    String? materialName,
-    num? costPerKg,
-    int? weightGrams,
-  }) {
-    return MaterialUsageInput(
-      materialId: materialId ?? this.materialId,
-      materialName: materialName ?? this.materialName,
-      costPerKg: costPerKg ?? this.costPerKg,
-      weightGrams: weightGrams ?? this.weightGrams,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'materialId': materialId,
-      'materialName': materialName,
-      'costPerKg': costPerKg,
-      'weightGrams': weightGrams,
-    };
-  }
+@freezed
+abstract class MaterialUsageInput with _$MaterialUsageInput {
+  const factory MaterialUsageInput({
+    required String materialId,
+    required String materialName,
+    required num costPerKg,
+    required int weightGrams,
+  }) = _MaterialUsageInput;
 
   factory MaterialUsageInput.fromMap(Map<String, dynamic> map) {
-    // Normalize strings and accept comma decimals
     String normalize(Object? v) =>
         v?.toString().trim().replaceAll(',', '.') ?? '';
 
@@ -50,7 +25,6 @@ class MaterialUsageInput {
     final weightStr = normalize(map['weightGrams']);
     int weight = 0;
     if (weightStr.isNotEmpty) {
-      // Accept decimal weights like "120.0" and round to nearest int
       final parsedDouble = double.tryParse(weightStr);
       if (parsedDouble != null) {
         weight = parsedDouble.round();
@@ -65,5 +39,16 @@ class MaterialUsageInput {
       costPerKg: cost,
       weightGrams: weight,
     );
+  }
+}
+
+extension MaterialUsageInputX on MaterialUsageInput {
+  Map<String, dynamic> toMap() {
+    return {
+      'materialId': materialId,
+      'materialName': materialName,
+      'costPerKg': costPerKg,
+      'weightGrams': weightGrams,
+    };
   }
 }

@@ -66,7 +66,7 @@ class PrinterSelect extends HookConsumerWidget {
                 ? null
                 : (v) async {
                     final updated = generalSettings.value.copyWith(
-                      activePrinter: v,
+                      activePrinter: v!,
                     );
                     generalSettings.value = updated;
                     await dbHelpers.putRecord(updated.toMap());
