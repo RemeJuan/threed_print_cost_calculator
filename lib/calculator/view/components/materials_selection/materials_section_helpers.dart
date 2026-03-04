@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_picker.dart';
+
+/// Shows the material picker bottom sheet and updates the calculator state.
+/// Returns the selected material id or null if cancelled.
+Future<String?> showMaterialPicker(
+  BuildContext context,
+  WidgetRef ref,
+  Stream<List<MaterialModel>> materialsStream, {
+  int? editingIndex,
+  String? focusAfterId,
+}) async {
+  final state = ref.read(calculatorProvider);
+
+  final selectedIds = state.materialUsages
+      .map((u) => u.materialId)
+      .where((id) => id.trim().isNotEmpty)
+      .map((e) => e.trim())
+      .toSet();
+  if (focusAfterId != null && focusAfterId.trim().isNotEmpty) {
+    selectedIds.remove(focusAfterId);
+  }
+
+  final selectedId = await showModalBottomSheet<String>(
+    context: context,
+    useSafeArea: true,
+    isScrollControlled: true,
+    builder: (context) {
+      return FractionallySizedBox(
+        heightFactor: 0.95,
+        child: MaterialPicker(
+          materialsStream: materialsStream,
+          onSelected: (material) {
+            final weight =
+                num.tryParse(material.weight.replaceAll(',', '.')) ?? 0;
+            final cost = num.tryParse(material.cost.replaceAll(',', '.')) ?? 0;
+            final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
+
+            final refRead = ref.read(calculatorProvider.notifier);
+            if (editingIndex != null &&
+                editingIndex >= 0 &&
+                editingIndex < state.materialUsages.length) {
+              refRead.updateMaterialUsage(
+                editingIndex,
+                MaterialUsageInput(
+                  materialId: material.id,
+                  materialName: material.name,
+                  costPerKg: costPerKg,
+                  weightGrams: state.materialUsages[editingIndex].weightGrams,
+                ),
+              );
+            } else {
+              refRead.addMaterialUsage(
+                MaterialUsageInput(
+                  materialId: material.id,
+                  materialName: material.name,
+                  costPerKg: costPerKg,
+                  weightGrams: 0,
+                ),
+              );
+            }
+            Navigator.of(context).pop(material.id);
+          },
+          excludedIds: selectedIds,
+        ),
+      );
+    },
+  );
+
+  return selectedId;
+}
