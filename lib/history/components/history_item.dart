@@ -76,13 +76,9 @@ class HistoryItem extends HookConsumerWidget {
                 ),
               );
 
-              if (!context.mounted) return;
-
               if (confirm == true) {
                 final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
                 await dbHelpers.deleteRecord(dbKey);
-
-                if (!context.mounted) return;
 
                 // Refresh paged provider so the deleted item disappears from the list
                 ref.read(historyPagedProvider.notifier).refresh();
