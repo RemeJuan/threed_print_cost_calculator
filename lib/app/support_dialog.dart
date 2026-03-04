@@ -151,7 +151,7 @@ class SupportDialog extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                     final versionString = snapshot.hasData
-                        ? '${snapshot.data!.version}+${snapshot.data!.buildNumber}'
+                        ? snapshot.data!.version
                         : '';
                     final localized = l10n.versionLabel(versionString);
                     return Text(
