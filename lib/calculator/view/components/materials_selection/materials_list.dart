@@ -32,25 +32,23 @@ class MaterialsList extends StatelessWidget {
       constraints: BoxConstraints(
         maxHeight: constrainedHeight ?? double.infinity,
       ),
-      child: Scrollbar(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          itemCount: usages.length,
-          itemBuilder: (context, index) {
-            final usage = usages[index];
-            final material = materialsById[usage.materialId];
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const ClampingScrollPhysics(),
+        itemCount: usages.length,
+        itemBuilder: (context, index) {
+          final usage = usages[index];
+          final material = materialsById[usage.materialId];
 
-            return MaterialRow(
-              index: index,
-              usage: usage,
-              material: material,
-              onPick: () => onPick(index),
-              onWeightChanged: (grams) => onWeightChanged(index, grams),
-              onRemove: () => onRemove(index),
-            );
-          },
-        ),
+          return MaterialRow(
+            index: index,
+            usage: usage,
+            material: material,
+            onPick: () => onPick(index),
+            onWeightChanged: (grams) => onWeightChanged(index, grams),
+            onRemove: () => onRemove(index),
+          );
+        },
       ),
     );
   }
