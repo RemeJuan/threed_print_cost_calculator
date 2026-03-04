@@ -1,13 +1,18 @@
-class GeneralSettingsModel {
-  const GeneralSettingsModel({
-    required this.electricityCost,
-    required this.wattage,
-    required this.activePrinter,
-    required this.selectedMaterial,
-    required this.wearAndTear,
-    required this.failureRisk,
-    required this.labourRate,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'general_settings_model.freezed.dart';
+
+@freezed
+abstract class GeneralSettingsModel with _$GeneralSettingsModel {
+  const factory GeneralSettingsModel({
+    required String electricityCost,
+    required String wattage,
+    required String activePrinter,
+    required String selectedMaterial,
+    required String wearAndTear,
+    required String failureRisk,
+    required String labourRate,
+  }) = _GeneralSettingsModel;
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
     return GeneralSettingsModel(
@@ -32,15 +37,9 @@ class GeneralSettingsModel {
       labourRate: '',
     );
   }
+}
 
-  final String electricityCost;
-  final String wattage;
-  final String activePrinter;
-  final String selectedMaterial;
-  final String wearAndTear;
-  final String failureRisk;
-  final String labourRate;
-
+extension GeneralSettingsModelX on GeneralSettingsModel {
   Map<String, dynamic> toMap() {
     return {
       'electricityCost': electricityCost,
@@ -52,36 +51,4 @@ class GeneralSettingsModel {
       'labourRate': labourRate,
     };
   }
-
-  GeneralSettingsModel copyWith({
-    String? electricityCost,
-    String? wattage,
-    String? activePrinter,
-    String? selectedMaterial,
-    String? wearAndTear,
-    String? failureRisk,
-    String? labourRate,
-  }) {
-    return GeneralSettingsModel(
-      electricityCost: electricityCost ?? this.electricityCost,
-      wattage: wattage ?? this.wattage,
-      activePrinter: activePrinter ?? this.activePrinter,
-      selectedMaterial: selectedMaterial ?? this.selectedMaterial,
-      wearAndTear: wearAndTear ?? this.wearAndTear,
-      failureRisk: failureRisk ?? this.failureRisk,
-      labourRate: labourRate ?? this.labourRate,
-    );
-  }
-
-  @override
-  String toString() =>
-      'GeneralSettingsModel('
-      'electricityCost: $electricityCost, '
-      'wattage: $wattage, '
-      'activePrinter: $activePrinter, '
-      'selectedMaterial: $selectedMaterial, '
-      'wearAndTear: $wearAndTear, '
-      'failureRisk: $failureRisk, '
-      'labourRate: $labourRate'
-      ')';
 }

@@ -11,8 +11,6 @@ import 'package:threed_print_cost_calculator/calculator/view/components/material
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_section_helpers.dart';
 
-import 'materials_section_free.dart';
-
 class MaterialsSectionPremium extends HookConsumerWidget {
   const MaterialsSectionPremium({super.key});
 

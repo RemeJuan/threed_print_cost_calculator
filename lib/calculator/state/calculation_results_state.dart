@@ -1,19 +1,16 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class CalculationResult extends Equatable {
-  final num electricity;
-  final num filament;
-  final num risk;
-  final num labour;
-  final num total;
+part 'calculation_results_state.freezed.dart';
 
-  const CalculationResult({
-    required this.electricity,
-    required this.filament,
-    required this.risk,
-    required this.labour,
-    required this.total,
-  });
+@freezed
+abstract class CalculationResult with _$CalculationResult {
+  const factory CalculationResult({
+    required num electricity,
+    required num filament,
+    required num risk,
+    required num labour,
+    required num total,
+  }) = _CalculationResult;
 
   factory CalculationResult.empty() {
     return const CalculationResult(
@@ -24,7 +21,4 @@ class CalculationResult extends Equatable {
       total: 0.0,
     );
   }
-
-  @override
-  List<Object> get props => [electricity, filament, risk, labour, total];
 }

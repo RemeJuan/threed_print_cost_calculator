@@ -1,12 +1,17 @@
-class MaterialModel {
-  MaterialModel({
-    required this.id,
-    required this.name,
-    required this.cost,
-    required this.color,
-    required this.weight,
-    required this.archived,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'material_model.freezed.dart';
+
+@freezed
+abstract class MaterialModel with _$MaterialModel {
+  const factory MaterialModel({
+    required String id,
+    required String name,
+    required String cost,
+    required String color,
+    required String weight,
+    required bool archived,
+  }) = _MaterialModel;
 
   factory MaterialModel.fromMap(Map<String, dynamic> map, String key) {
     return MaterialModel(
@@ -15,35 +20,12 @@ class MaterialModel {
       cost: map['cost'].toString(),
       color: map['color'].toString(),
       weight: (map['weight'] ?? 0).toString(),
-      archived: false, //map['archived'] as bool,
+      archived: false,
     );
   }
+}
 
-  String id;
-  String name;
-  String cost;
-  String color;
-  String weight;
-  bool archived;
-
-  MaterialModel copyWith({
-    String? id,
-    String? name,
-    String? cost,
-    String? color,
-    String? weight,
-    bool? archived,
-  }) {
-    return MaterialModel(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      cost: cost ?? this.cost,
-      color: color ?? this.color,
-      weight: weight ?? this.weight,
-      archived: archived ?? this.archived,
-    );
-  }
-
+extension MaterialModelX on MaterialModel {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -51,10 +33,5 @@ class MaterialModel {
       'color': color,
       'weight': weight,
     };
-  }
-
-  @override
-  String toString() {
-    return 'MaterialModel(name: $name, cost: $cost, color: $color, weight: $weight)';
   }
 }
