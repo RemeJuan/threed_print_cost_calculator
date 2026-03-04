@@ -61,8 +61,9 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
 
   Database get _db => ref.read(databaseProvider);
 
-  StoreRef<String, Map<String, Object?>> get _store =>
-      stringMapStoreFactory.store('history');
+  StoreRef<Object?, Map<String, Object?>> get _store =>
+      stringMapStoreFactory.store('history')
+          as StoreRef<Object?, Map<String, Object?>>;
 
   Future<void> setQuery(String q) async {
     state = state.copyWith(
@@ -125,6 +126,8 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         // and delegates to ref.read with the correct generic type.
         final indexHelpers = PrinterIndexHelpers.fromRef(ref);
         final indexKeys = await indexHelpers.getKeysMatchingPrinter(q);
+
+        // index returned keys
 
         if (indexKeys.isNotEmpty) {
           // Fetch records by keys, build entries, sort by date desc, then page
