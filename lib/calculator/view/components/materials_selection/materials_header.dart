@@ -39,7 +39,7 @@ class MaterialsHeader extends StatelessWidget {
       child: InkWell(
         onTap: onToggle,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.only(top: 8),
           child: Row(
             children: [
               Expanded(
