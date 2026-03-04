@@ -251,7 +251,7 @@ class HistoryItem extends HookConsumerWidget {
                                           final mat =
                                               materialsById[materialId]!;
                                           materialLabel =
-                                              '${mat.name} - ${mat.color}';
+                                              '${mat.name} (${mat.color})';
                                         } else {
                                           materialLabel =
                                               usage['materialName']
