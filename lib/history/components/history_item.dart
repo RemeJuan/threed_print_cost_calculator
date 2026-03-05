@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -34,6 +35,7 @@ class HistoryItem extends HookConsumerWidget {
               // export this single entry with error handling and user feedback
               try {
                 await exportCSVFile([data]);
+                AppAnalytics.safeLog(() => AppAnalytics.exportUsed('job'));
                 if (!context.mounted) return;
                 ScaffoldMessenger.of(
                   context,

@@ -68,7 +68,7 @@ class AddPrinter extends HookConsumerWidget {
                     context,
                   ).textTheme.displayMedium?.copyWith(fontSize: 16),
                 ),
-                onPressed: () => notifier.submit(dbRef),
+                onPressed: () async => notifier.submit(dbRef),
                 child: Text(l10n.saveButton),
               ),
             ],

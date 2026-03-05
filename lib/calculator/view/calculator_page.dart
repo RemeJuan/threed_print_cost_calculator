@@ -6,6 +6,7 @@ import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/adjustments_section.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
@@ -36,8 +37,14 @@ class CalculatorPage extends HookConsumerWidget {
 
           if (runCount > 2 && !paywall) {
             try {
+              AppAnalytics.safeLog(
+                () => AppAnalytics.premiumFeatureTapped('multi_printer'),
+              );
               await prefs.setBool('paywall', true);
               await Future.delayed(const Duration(seconds: 2));
+              AppAnalytics.safeLog(
+                () => AppAnalytics.paywallShown('multi_printer'),
+              );
               await RevenueCatUI.presentPaywallIfNeeded("pro");
             } catch (e) {
               debugPrint('paywall failed ${e.toString()}');

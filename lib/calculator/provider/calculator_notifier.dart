@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpe
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -424,6 +425,20 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
 
     updateResults(results);
+
+    AppAnalytics.safeLog(
+      () => AppAnalytics.calculationCreated(
+        materialCount: state.materialUsages.length,
+        hasFailureRisk: fr > 0,
+        hasLabour: labourCost > 0,
+      ),
+    );
+
+    if (state.materialUsages.length > 1) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.multiMaterialUsed(state.materialUsages.length),
+      );
+    }
   }
 
   /// Schedule a debounced submit to avoid running heavy calculations on every keystroke.

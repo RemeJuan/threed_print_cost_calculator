@@ -11,3 +11,15 @@ A small app to help you calculate the cost of printing your 3D models.
 While there are many others out there, I saw none that were simple 
 for a quick personal check, and allowed you to enter the actual wattage
 of your printer, which is an essential value in an accurate calculation.
+
+## Firebase Analytics DebugView
+
+This app logs only feature-level events through `AppAnalytics` (see `lib/core/analytics/app_analytics.dart`) and does not send user identifiers, print names, file names, or cost/job payloads.
+
+During development you can enable Firebase Analytics DebugView:
+
+```bash
+adb shell setprop debug.firebase.analytics.app <package_name>
+```
+
+Note: events can appear quickly in DebugView, but standard Firebase Analytics dashboards may take several hours to update.

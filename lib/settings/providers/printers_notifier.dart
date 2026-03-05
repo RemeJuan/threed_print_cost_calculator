@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/printer_state.dart';
@@ -44,7 +45,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
     state = state.copyWith(wattage: StringInput.dirty(value: value));
   }
 
-  void submit(String? dbRef) {
+  Future<void> submit(String? dbRef) async {
     final data = {
       'name': state.name.value,
       'bedSize': state.bedSize.value,
@@ -52,9 +53,11 @@ class PrintersNotifier extends Notifier<PrinterState> {
     };
 
     if (dbRef != null) {
-      dbHelpers.updateRecord(dbRef, data);
-    } else {
-      dbHelpers.insertRecord(data);
+      await dbHelpers.updateRecord(dbRef, data);
+      return;
     }
+
+    await dbHelpers.insertRecord(data);
+    AppAnalytics.safeLog(AppAnalytics.printerProfileCreated);
   }
 }
