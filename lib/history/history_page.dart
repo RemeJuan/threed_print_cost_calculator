@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
 
@@ -117,6 +118,9 @@ class HistoryPage extends HookConsumerWidget {
                                     await ref
                                         .read(csvUtilsProvider)
                                         .exportForRange(ExportRange.all);
+                                    AppAnalytics.safeLog(
+                                      () => AppAnalytics.exportUsed('history'),
+                                    );
                                   },
                                 ),
                                 ListTile(
@@ -126,6 +130,9 @@ class HistoryPage extends HookConsumerWidget {
                                     await ref
                                         .read(csvUtilsProvider)
                                         .exportForRange(ExportRange.last7Days);
+                                    AppAnalytics.safeLog(
+                                      () => AppAnalytics.exportUsed('history'),
+                                    );
                                   },
                                 ),
                                 ListTile(
@@ -135,6 +142,9 @@ class HistoryPage extends HookConsumerWidget {
                                     await ref
                                         .read(csvUtilsProvider)
                                         .exportForRange(ExportRange.last30Days);
+                                    AppAnalytics.safeLog(
+                                      () => AppAnalytics.exportUsed('history'),
+                                    );
                                   },
                                 ),
                                 const SizedBox(height: 8),

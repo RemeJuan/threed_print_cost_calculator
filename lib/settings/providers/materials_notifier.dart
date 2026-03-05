@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -66,8 +67,10 @@ class MaterialsProvider extends Notifier<MaterialState> {
     if (dbRef != null) {
       await dbHelpers.updateRecord(dbRef, data);
       return dbRef;
-    } else {
-      return await dbHelpers.insertRecord(data);
     }
+
+    final key = await dbHelpers.insertRecord(data);
+    AppAnalytics.safeLog(AppAnalytics.materialCreated);
+    return key;
   }
 }
