@@ -23,6 +23,20 @@
           <a href="#faq">FAQ</a>
           <a href="#download">Download</a>
         </div>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-drawer">
+          <span class="visually-hidden">Toggle menu</span>
+          <span class="nav-toggle-line" aria-hidden="true"></span>
+          <span class="nav-toggle-line" aria-hidden="true"></span>
+          <span class="nav-toggle-line" aria-hidden="true"></span>
+        </button>
+        <div class="mobile-drawer" id="mobile-drawer">
+          <a href="#problem">Problem</a>
+          <a href="#solution">Solution</a>
+          <a href="#features">Features</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#faq">FAQ</a>
+          <a href="#download">Download</a>
+        </div>
       </nav>
     </header>
 
@@ -160,10 +174,42 @@
         <div class="footer-links">
           <a href="privacy.html">Privacy Policy</a>
           <a href="terms.html">Terms of Service</a>
-          <a href="https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
         </div>
         <p>© 2026 3D Print Cost Calculator</p>
       </footer>
     </main>
+    <script>
+      const navToggle = document.getElementById("nav-toggle");
+      const mobileDrawer = document.getElementById("mobile-drawer");
+
+      if (navToggle && mobileDrawer) {
+        const closeDrawer = () => {
+          navToggle.setAttribute("aria-expanded", "false");
+          mobileDrawer.classList.remove("is-open");
+        };
+
+        navToggle.addEventListener("click", () => {
+          const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
+          navToggle.setAttribute("aria-expanded", String(!isExpanded));
+          mobileDrawer.classList.toggle("is-open", !isExpanded);
+        });
+
+        mobileDrawer.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeDrawer);
+        });
+
+        window.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            closeDrawer();
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth > 680) {
+            closeDrawer();
+          }
+        });
+      }
+    </script>
   </body>
 </html>
