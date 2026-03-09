@@ -1,46 +1,80 @@
-<h1>Privacy Policy for 3D Printing Cost Calculator</h1>
+# Privacy Policy for 3D Printing Cost Calculator
 
-<p>At 3D Printing Cost Calculator, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by 3D Printing Cost Calculator and how we use it.</p>
+Last updated: March 9, 2026
 
-<p>If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.</p>
+3D Printing Cost Calculator is designed to work primarily on your device. This policy explains what data is stored locally, what third-party services are used, and how data may be processed.
 
-<h2>Log Files</h2>
+## Data You Enter in the App
 
-<p>3D Printing Cost Calculator follows a standard procedure of using log files. These files log visitors when they use app. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the app, tracking users' movement on the app, and gathering demographic information.</p>
+The app stores your calculator and profile data locally on your device so features work as expected. This can include:
 
-<h2>Our Advertising Partners</h2>
+- Printer profiles (for example, name, bed size, wattage)
+- Material profiles (for example, name, color, spool cost, spool weight)
+- General settings (for example, electricity cost, wear-and-tear, labour/failure settings)
+- Saved print history (for example, print name, selected printer/material, weights, time, and calculated costs)
 
-<p>Some of advertisers in our app may use cookies and web beacons. Our advertising partners are listed below. Each of our advertising partners has their own Privacy Policy for their policies on user data. For easier access, we hyperlinked to their Privacy Policies below.</p>
+This local data is stored in the app's local database on your device.
 
-<ul>
-    <li>
-        <p>Google</p>
-        <p><a href="https://policies.google.com/technologies/ads">https://policies.google.com/technologies/ads</a></p>
-    </li>
-</ul>
+## App Preferences Stored Locally
 
-<h2>Privacy Policies</h2>
+The app uses local preferences to store simple app state values, such as:
 
-<P>You may consult this list to find the Privacy Policy for each of the advertising partners of 3D Printing Cost Calculator.</p>
+- Run count
+- Whether a paywall has already been shown
 
-<p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Beacons that are used in their respective advertisements and links that appear on 3D Printing Cost Calculator. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on this app or other apps or websites.</p>
+## Analytics
 
-<p>Note that 3D Printing Cost Calculator has no access to or control over these cookies that are used by third-party advertisers.</p>
+We use Firebase Analytics to collect feature-level usage events to understand product usage and improve the app.
 
-<h2>Third Party Privacy Policies</h2>
+Examples of event types include:
 
-<p>3D Printing Cost Calculator's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.</p>
+- Calculation created
+- Multi-material usage
+- Export actions
+- Paywall shown / premium feature tap
 
-<h2>Children's Information</h2>
+We do not intentionally send print names, file names, or full cost/job payloads as analytics event parameters.
 
-<p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
+## Crash and Error Reporting
 
-<p>3D Printing Cost Calculator does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our App, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>
+We use Firebase Crashlytics to receive crash and diagnostic reports so we can detect and fix issues.
 
-<h2>Online Privacy Policy Only</h2>
+## Subscription and Purchase Processing
 
-<p>This Privacy Policy applies only to our online activities and is valid for visitors to our App with regards to the information that they shared and/or collect in 3D Printing Cost Calculator. This policy is not applicable to any information collected offline or via channels other than this app. Our Privacy Policy was created with the help of the <a href="https://www.app-privacy-policy.com/app-privacy-policy-generator/">App Privacy Policy Generator from App-Privacy-Policy.com</a></p>
+We use RevenueCat to power subscriptions and entitlement status, and we rely on Apple App Store / Google Play for payment processing.
 
-<h2>Consent</h2>
+If you start, restore, or manage a subscription, relevant purchase/subscription metadata is processed by RevenueCat and the applicable app store providers under their own privacy terms.
 
-<p>By using our app, you hereby consent to our Privacy Policy and agree to its Terms and Conditions.</p>
+## App Integrity and Abuse Prevention
+
+We use Firebase App Check (and DeviceCheck on iOS where supported) to help protect backend resources from abuse.
+
+## Advertising
+
+The app currently does not serve third-party display ads in-app.
+
+## CSV Export
+
+If you export history, the app generates a CSV file in temporary local storage and opens the system share sheet so you can choose where to send it.
+
+## Third-Party Services
+
+This app uses third-party services that process data under their own policies:
+
+- Google Firebase (Analytics, Crashlytics, App Check)
+- RevenueCat
+- Apple App Store / Google Play billing
+
+## Children's Privacy
+
+The app is not directed to children under 13, and we do not knowingly collect personal information from children under 13. If you believe a child has provided personal information, contact us and we will take reasonable steps to address it.
+
+## Changes to This Policy
+
+We may update this policy from time to time. Material changes will be reflected by updating the "Last updated" date above.
+
+## Contact
+
+If you have questions about this privacy policy, contact:
+
+- google@remej.dev
