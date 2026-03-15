@@ -364,3 +364,39 @@ main {
     height: 48px;
   }
 }
+
+.markdown-content {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: rgba(7, 9, 26, 0.75);
+  padding: 1rem 1.2rem;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4 {
+  color: var(--color-text);
+}
+
+.markdown-content p,
+.markdown-content li,
+.markdown-content code {
+  color: var(--color-text-muted);
+}
+
+.markdown-content code {
+  background: rgba(84, 153, 254, 0.12);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+}
+
+.markdown-content ul {
+  padding-left: 1.25rem;
+}
+
+.markdown-error {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}

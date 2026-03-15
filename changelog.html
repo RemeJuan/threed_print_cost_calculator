@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Changelog | 3D Print Cost Calculator</title>
+    <meta name="description" content="Latest updates for the 3D Print Cost Calculator app.">
+    <link rel="icon" href="assets/logo/play_store_feature.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/styles/site.css">
+  </head>
+  <body>
+    <main class="legal">
+      <p><a href="index.html">← Back to homepage</a></p>
+      <h1>Changelog</h1>
+      <p>Latest published updates sourced directly from <code>changelog.md</code>.</p>
+
+      <article id="changelog-content" class="markdown-content" aria-live="polite">
+        <p>Loading changelog…</p>
+      </article>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      const changelogContent = document.getElementById("changelog-content");
+
+      const loadChangelog = async () => {
+        if (!changelogContent) {
+          return;
+        }
+
+        try {
+          const response = await fetch("changelog.md", { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error(`Failed to fetch changelog.md (${response.status})`);
+          }
+
+          const markdown = await response.text();
+          changelogContent.innerHTML = marked.parse(markdown);
+        } catch (error) {
+          changelogContent.innerHTML = "";
+          const message = document.createElement("p");
+          message.textContent = "Unable to load changelog content right now.";
+          const details = document.createElement("p");
+          details.className = "markdown-error";
+          details.textContent = error instanceof Error ? error.message : "Unknown error";
+          changelogContent.append(message, details);
+        }
+      };
+
+      loadChangelog();
+    </script>
+  </body>
+</html>
