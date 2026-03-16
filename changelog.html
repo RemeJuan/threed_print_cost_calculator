@@ -48,6 +48,12 @@
         try {
           const markdown = await fetchFirstAvailableChangelog();
           changelogContent.innerHTML = marked.parse(markdown);
+
+          changelogContent.querySelectorAll("a").forEach((link) => {
+            const span = document.createElement("span");
+            span.textContent = link.textContent || "";
+            link.replaceWith(span);
+          });
         } catch (error) {
           changelogContent.innerHTML = "";
           const message = document.createElement("p");
