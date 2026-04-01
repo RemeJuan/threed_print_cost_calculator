@@ -137,7 +137,7 @@ class PrinterIndexHelpers {
   /// Helper to convert a stored string key back to original typed key when possible.
   dynamic _typedKey(String s) {
     // If looks like an integer (positive/negative), parse to int; otherwise return string
-    final intRegex = RegExp(r'^-?\d+\$');
+    final intRegex = RegExp(r'^-?\d+$');
     if (intRegex.hasMatch(s)) return int.parse(s);
     return s;
   }
