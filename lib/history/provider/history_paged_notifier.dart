@@ -126,25 +126,11 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         // and delegates to ref.read with the correct generic type.
         final indexHelpers = PrinterIndexHelpers.fromRef(ref);
         final indexKeys = await indexHelpers.getKeysMatchingPrinter(q);
-
-        // index returned keys
+        queryCount++;
 
         if (indexKeys.isNotEmpty) {
-          // Fetch records by keys, build entries, sort by date desc, then page
-          final allEntries = <MapEntry<dynamic, Map<String, dynamic>>>[];
-          for (final k in indexKeys) {
-            final val =
-                await _store.record(k).get(_db) as Map<String, dynamic>?;
-            if (val != null) {
-              allEntries.add(MapEntry(k, Map<String, dynamic>.from(val)));
-            }
-          }
-          // sort by date desc
-          allEntries.sort((a, b) {
-            final da = _parseDate(a.value['date']);
-            final db = _parseDate(b.value['date']);
-            return db.compareTo(da);
-          });
+          final allEntries = await _findEntriesByKeys(indexKeys);
+          queryCount++;
           totalCount = allEntries.length;
           final slice = allEntries.skip(offset).take(_pageSize).toList();
           pageEntries.addAll(slice);
@@ -189,6 +175,42 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       if (generation != _loadGeneration) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
+  }
+
+  Future<List<MapEntry<dynamic, Map<String, dynamic>>>> _findEntriesByKeys(
+    Iterable<dynamic> keys,
+  ) async {
+    final uniqueKeys = <dynamic>[];
+    final seenKeys = <dynamic>{};
+    for (final key in keys) {
+      if (seenKeys.add(key)) {
+        uniqueKeys.add(key);
+      }
+    }
+
+    if (uniqueKeys.isEmpty) {
+      return const <MapEntry<dynamic, Map<String, dynamic>>>[];
+    }
+
+    final records = await _store.records(uniqueKeys).getSnapshots(_db);
+
+    final entries = records
+        .whereType<RecordSnapshot<Object?, Map<String, Object?>>>()
+        .map(
+          (record) => MapEntry(
+            record.key,
+            Map<String, dynamic>.from(record.value as Map),
+          ),
+        )
+        .toList();
+
+    entries.sort((a, b) {
+      final aDate = _parseDate(a.value['date']);
+      final bDate = _parseDate(b.value['date']);
+      return bDate.compareTo(aDate);
+    });
+
+    return entries;
   }
 
   DateTime _parseDate(dynamic dateVal) {
