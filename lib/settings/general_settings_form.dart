@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -34,6 +34,7 @@ class GeneralSettings extends HookConsumerWidget {
     }, []);
 
     final settingsRepository = ref.read(settingsRepositoryProvider);
+    final logger = ref.read(appLoggerProvider);
 
     Future<void> persistElectricity(
       String value,
@@ -52,7 +53,13 @@ class GeneralSettings extends HookConsumerWidget {
             final updated = data.copyWith(electricityCost: parsed.toString());
             await settingsRepository.saveSettings(updated);
           } catch (e, st) {
-            if (kDebugMode) print('Error persisting electricity cost: $e\n$st');
+            logger.error(
+              AppLogCategory.ui,
+              'Failed to persist electricity cost',
+              context: {'setting': 'electricityCost'},
+              error: e,
+              stackTrace: st,
+            );
           }
         },
       );
@@ -71,7 +78,13 @@ class GeneralSettings extends HookConsumerWidget {
             final updated = data.copyWith(wattage: parsed.toString());
             await settingsRepository.saveSettings(updated);
           } catch (e, st) {
-            if (kDebugMode) print('Error persisting wattage: $e\n$st');
+            logger.error(
+              AppLogCategory.ui,
+              'Failed to persist wattage',
+              context: {'setting': 'wattage'},
+              error: e,
+              stackTrace: st,
+            );
           }
         },
       );
@@ -87,7 +100,12 @@ class GeneralSettings extends HookConsumerWidget {
 
     // If the stream has an error, log it (keep rendering the form with initial/default data)
     if (snapshot.hasError) {
-      if (kDebugMode) print('GeneralSettings stream error: ${snapshot.error}');
+      logger.warn(
+        AppLogCategory.ui,
+        'General settings stream reported an error',
+        context: {'stream': 'settings'},
+        error: snapshot.error,
+      );
     }
 
     // Sync controller text with external data when field is not focused

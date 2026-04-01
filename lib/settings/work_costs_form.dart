@@ -1,10 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -21,6 +21,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     final wearController = useTextEditingController();
 
     final settingsRepository = ref.read(settingsRepositoryProvider);
+    final logger = ref.read(appLoggerProvider);
 
     // Hooks for other fields/debounces: keep at top-level to preserve hook order
     final failureController = useTextEditingController();
@@ -53,7 +54,13 @@ class WorkCostsSettings extends HookConsumerWidget {
             final updated = data.copyWith(failureRisk: parsed.toString());
             await settingsRepository.saveSettings(updated);
           } catch (e, st) {
-            if (kDebugMode) print('Error persisting failure risk: $e\n$st');
+            logger.error(
+              AppLogCategory.ui,
+              'Failed to persist failure risk',
+              context: {'setting': 'failureRisk'},
+              error: e,
+              stackTrace: st,
+            );
           }
         },
       );
@@ -68,7 +75,13 @@ class WorkCostsSettings extends HookConsumerWidget {
           final updated = data.copyWith(labourRate: parsed.toString());
           await settingsRepository.saveSettings(updated);
         } catch (e, st) {
-          if (kDebugMode) print('Error persisting labour rate: $e\n$st');
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist labour rate',
+            context: {'setting': 'labourRate'},
+            error: e,
+            stackTrace: st,
+          );
         }
       });
     }
@@ -82,7 +95,13 @@ class WorkCostsSettings extends HookConsumerWidget {
           final updated = data.copyWith(wearAndTear: parsed.toString());
           await settingsRepository.saveSettings(updated);
         } catch (e, st) {
-          if (kDebugMode) print('Error persisting wear and tear: $e\n$st');
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist wear and tear',
+            context: {'setting': 'wearAndTear'},
+            error: e,
+            stackTrace: st,
+          );
         }
       });
     }
