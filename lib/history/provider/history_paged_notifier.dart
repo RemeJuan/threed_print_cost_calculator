@@ -104,15 +104,16 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       state = state.copyWith(isLoading: true, error: null);
 
       final offset = nextPage * _pageSize;
-      // (finder would be built when needed) -- not used directly here.
 
       int totalCount = 0;
+      var queryCount = 0;
       final pageEntries = <MapEntry<dynamic, Map<String, dynamic>>>[];
 
       final q = state.query.trim();
       if (q.isEmpty) {
         // Empty query: do DB-side pagination (count + paged find)
         totalCount = await _store.count(_db);
+        queryCount++;
         final records = await _store.find(
           _db,
           finder: Finder(
@@ -121,6 +122,7 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
             offset: offset,
           ),
         );
+        queryCount++;
         for (final r in records) {
           final value = Map<String, dynamic>.from(r.value as Map);
           pageEntries.add(MapEntry(r.key, value));
@@ -145,6 +147,7 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
             _db,
             finder: Finder(sortOrders: [SortOrder('date', false)]),
           );
+          queryCount++;
           final qLower = q.toLowerCase();
           final filtered = all.where((r) {
             final item = r.value as Map<String, dynamic>;
@@ -172,6 +175,7 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         isLoading: false,
         hasMore: hasMore,
         page: nextPage,
+        debugQueryCount: queryCount,
       );
     } catch (e, st) {
       if (kDebugMode) print('HistoryPagedNotifier._loadPage error: $e\n$st');
