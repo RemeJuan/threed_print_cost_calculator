@@ -44,7 +44,7 @@ class HistoryPage extends HookConsumerWidget {
     // modifying providers during the widget build lifecycle.
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(historyPagedProvider.notifier).refresh();
+        ref.read(historyPagedProvider.notifier).refreshIfNeeded();
       });
       return null;
     }, const []);
