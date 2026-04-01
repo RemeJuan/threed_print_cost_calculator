@@ -68,14 +68,38 @@ void main() {
   });
 
   test('loads first page with 25 items by default', () async {
-    // refresh to load first page
-    await container.read(historyPagedProvider.notifier).refresh();
+    await container.read(historyPagedProvider.notifier).refreshIfNeeded();
 
     final state = container.read(historyPagedProvider);
     expect(state.items.length, 25);
     expect(state.hasMore, isTrue);
     expect(state.page, 0);
+    expect(state.hasLoadedOnce, isTrue);
   });
+
+  test(
+    'refreshIfNeeded preserves initialized search and pagination state',
+    () async {
+      final notifier = container.read(historyPagedProvider.notifier);
+
+      await notifier.setQuery('Prusa');
+      await notifier.loadMore();
+
+      final beforeRemount = container.read(historyPagedProvider);
+      expect(beforeRemount.query, 'Prusa');
+      expect(beforeRemount.items.length, 30);
+      expect(beforeRemount.page, 1);
+      expect(beforeRemount.hasMore, isFalse);
+
+      await notifier.refreshIfNeeded();
+
+      final afterRemount = container.read(historyPagedProvider);
+      expect(afterRemount.query, 'Prusa');
+      expect(afterRemount.items.length, 30);
+      expect(afterRemount.page, 1);
+      expect(afterRemount.hasMore, isFalse);
+    },
+  );
 
   test('loadMore fetches subsequent pages until no more', () async {
     await container.read(historyPagedProvider.notifier).refresh();
@@ -231,6 +255,57 @@ void main() {
     expect(state.hasMore, isFalse);
     expect(state.debugQueryCount, 2);
     expect(state.debugUsedFallbackScan, isFalse);
+  });
+
+  test('explicit refresh still reloads page 1', () async {
+    final notifier = container.read(historyPagedProvider.notifier);
+
+    await notifier.refreshIfNeeded();
+    await notifier.loadMore();
+    expect(container.read(historyPagedProvider).items.length, 50);
+
+    await notifier.refresh();
+
+    final state = container.read(historyPagedProvider);
+    expect(state.items.length, 25);
+    expect(state.page, 0);
+    expect(state.hasMore, isTrue);
+  });
+
+  test('stale state refreshes on demand after history changes', () async {
+    final notifier = container.read(historyPagedProvider.notifier);
+
+    await notifier.refreshIfNeeded();
+    await notifier.loadMore();
+    expect(container.read(historyPagedProvider).items.length, 50);
+
+    await store.add(db, {
+      'name': 'Newest Record',
+      'totalCost': 999.0,
+      'riskCost': 0.0,
+      'filamentCost': 0.0,
+      'electricityCost': 0.0,
+      'labourCost': 0.0,
+      'date': DateTime.now()
+          .toUtc()
+          .add(const Duration(days: 1))
+          .toIso8601String(),
+      'printer': 'Prusa',
+      'material': 'PLA',
+      'weight': 10,
+      'timeHours': '01:00',
+      kHistorySearchNameField: 'newest record',
+      kHistorySearchPrinterField: 'prusa',
+    });
+
+    notifier.markStale();
+    await notifier.refreshIfNeeded();
+
+    final state = container.read(historyPagedProvider);
+    expect(state.items.length, 25);
+    expect(state.page, 0);
+    expect(state.items.first.value['name'], 'Newest Record');
+    expect(state.isStale, isFalse);
   });
 
   test(
