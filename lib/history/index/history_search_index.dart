@@ -267,16 +267,43 @@ class HistorySearchIndexHelpers {
     required String printer,
     required dynamic recordKey,
   }) async {
-    final recordTokens = _recordTokens(name: name, printer: printer);
-    if (recordTokens.isEmpty) return;
+    final recordTokens = _recordTokensByField(name: name, printer: printer);
+    final hasTokens = recordTokens.values.any((tokens) => tokens.isNotEmpty);
+    if (!hasTokens) return;
 
     await _db.transaction((txn) async {
-      await _removeTokens(
-        txn: txn,
-        tokens: recordTokens,
-        recordKey: recordKey.toString(),
-      );
+      for (final entry in recordTokens.entries) {
+        if (entry.value.isEmpty) continue;
+        await _removeTokens(
+          txn: txn,
+          tokens: entry.value
+              .map((token) => _indexKey(entry.key, token))
+              .toSet(),
+          recordKey: recordKey.toString(),
+        );
+      }
     });
+  }
+
+  Future<int> backfillSearchFields() async {
+    var updatedCount = 0;
+
+    await _db.transaction((txn) async {
+      final records = await _historyStore.find(txn);
+
+      for (final record in records) {
+        final value = Map<String, dynamic>.from(record.value as Map);
+        final updated = withHistorySearchFields(value);
+        if (mapEquals(value, updated)) {
+          continue;
+        }
+
+        await _historyStore.record(record.key).put(txn, updated);
+        updatedCount++;
+      }
+    });
+
+    return updatedCount;
   }
 
   Future<bool> _isLikelyUninitialized() async {
@@ -324,17 +351,33 @@ class HistorySearchIndexHelpers {
 
   /// Returns history record keys that match all normalized query terms.
   ///
-  /// Matches are substring-based per token (because indexed record tokens
-  /// include all token substrings).
+  /// Matches are substring-based per token inside either the normalized name
+  /// or normalized printer field.
   Future<List<dynamic>> getKeysMatchingQuery(String query) async {
-    final firstPass = await _queryOnce(query);
+    final firstPass = await _queryIndexedFields(query);
     if (firstPass.isNotEmpty) return firstPass;
 
     if (await _isLikelyUninitialized()) {
+      await backfillSearchFields();
       await rebuildIndex();
-      return _queryOnce(query);
+      return _queryIndexedFields(query);
     }
 
     return firstPass;
+  }
+
+  Future<List<dynamic>> _queryIndexedFields(String query) async {
+    final nameKeys = await _queryField(kHistorySearchNameField, query);
+    final printerKeys = await _queryField(kHistorySearchPrinterField, query);
+
+    final merged = <dynamic>[];
+    final seen = <String>{};
+    for (final key in [...nameKeys, ...printerKeys]) {
+      if (seen.add(key.toString())) {
+        merged.add(key);
+      }
+    }
+
+    return merged;
   }
 }
