@@ -22,6 +22,7 @@ import 'package:threed_print_cost_calculator/bootstrap.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 
 import 'app/app.dart';
@@ -102,10 +103,15 @@ Future<void> startupMigration(Database db) async {
   );
   try {
     final indexHelpers = PrinterIndexHelpers.fromContainer(tempContainer);
+    final searchIndexHelpers = HistorySearchIndexHelpers.fromContainer(
+      tempContainer,
+    );
     // Always attempt to rebuild the index at startup. `rebuildIndex` is
     // idempotent and ensures any stale or mixed-typed keys are normalized to
     // the current canonical representation derived from the history store.
     await indexHelpers.rebuildIndex();
+    await searchIndexHelpers.backfillSearchFields();
+    await searchIndexHelpers.rebuildIndex();
 
     // Migrate old history records to materialUsages[] format.
     final historyStore = stringMapStoreFactory.store('history');
@@ -149,7 +155,9 @@ Future<void> startupMigration(Database db) async {
         exception: e,
         stack: st,
         library: 'startupMigration',
-        context: ErrorDescription('Printer index rebuild / migration'),
+        context: ErrorDescription(
+          'History search/printer index rebuild / migration',
+        ),
       ),
     );
     rethrow;
