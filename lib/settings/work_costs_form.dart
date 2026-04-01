@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class WorkCostsSettings extends HookConsumerWidget {
   const WorkCostsSettings({super.key});
@@ -50,8 +51,7 @@ class WorkCostsSettings extends HookConsumerWidget {
       failureDebounce.value = Timer(
         const Duration(milliseconds: 400),
         () async {
-          final v = value.replaceAll(',', '.').trim();
-          final parsed = num.tryParse(v);
+          final parsed = tryParseLocalizedNum(value);
           if (parsed == null) return;
           try {
             final updated = data.copyWith(failureRisk: parsed.toString());
@@ -66,8 +66,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     void persistLabour(String value, GeneralSettingsModel data) {
       labourDebounce.value?.cancel();
       labourDebounce.value = Timer(const Duration(milliseconds: 400), () async {
-        final v = value.replaceAll(',', '.').trim();
-        final parsed = num.tryParse(v);
+        final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
           final updated = data.copyWith(labourRate: parsed.toString());
@@ -81,8 +80,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     void persistWear(String value, GeneralSettingsModel data) {
       wearDebounce.value?.cancel();
       wearDebounce.value = Timer(const Duration(milliseconds: 400), () async {
-        final v = value.replaceAll(',', '.').trim();
-        final parsed = num.tryParse(v);
+        final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
           final updated = data.copyWith(wearAndTear: parsed.toString());
@@ -137,9 +135,12 @@ class WorkCostsSettings extends HookConsumerWidget {
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   ],
                   validator: (value) {
-                    final v = value?.replaceAll(',', '.') ?? '';
-                    if (v.isEmpty) return l10n.enterNumber;
-                    if (num.tryParse(v) == null) return l10n.invalidNumber;
+                    if (normalizeLocalizedNumber(value).isEmpty) {
+                      return l10n.enterNumber;
+                    }
+                    if (tryParseLocalizedNum(value) == null) {
+                      return l10n.invalidNumber;
+                    }
                     return null;
                   },
                   onChanged: (value) {
@@ -160,9 +161,12 @@ class WorkCostsSettings extends HookConsumerWidget {
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   ],
                   validator: (value) {
-                    final v = value?.replaceAll(',', '.') ?? '';
-                    if (v.isEmpty) return l10n.enterNumber;
-                    if (num.tryParse(v) == null) return l10n.invalidNumber;
+                    if (normalizeLocalizedNumber(value).isEmpty) {
+                      return l10n.enterNumber;
+                    }
+                    if (tryParseLocalizedNum(value) == null) {
+                      return l10n.invalidNumber;
+                    }
                     return null;
                   },
                   onChanged: (value) {
@@ -182,9 +186,12 @@ class WorkCostsSettings extends HookConsumerWidget {
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   ],
                   validator: (value) {
-                    final v = value?.replaceAll(',', '.') ?? '';
-                    if (v.isEmpty) return l10n.enterNumber;
-                    if (num.tryParse(v) == null) return l10n.invalidNumber;
+                    if (normalizeLocalizedNumber(value).isEmpty) {
+                      return l10n.enterNumber;
+                    }
+                    if (tryParseLocalizedNum(value) == null) {
+                      return l10n.invalidNumber;
+                    }
                     return null;
                   },
                   onChanged: (value) {
