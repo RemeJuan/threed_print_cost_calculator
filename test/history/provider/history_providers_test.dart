@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 
@@ -59,6 +60,10 @@ void main() {
     container = ProviderContainer(
       overrides: [databaseProvider.overrideWithValue(db)],
     );
+
+    final indexHelpers = HistorySearchIndexHelpers.fromContainer(container);
+    await indexHelpers.backfillSearchFields();
+    await indexHelpers.rebuildIndex();
   });
 
   tearDown(() async {

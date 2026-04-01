@@ -37,6 +37,7 @@ void main() {
 
   test('rebuildIndex supports name and printer lookups', () async {
     final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
     await helpers.rebuildIndex();
 
     final byName = await helpers.getKeysMatchingQuery('gear');
@@ -45,10 +46,18 @@ void main() {
     expect(byName.length, 1);
     expect(byPrinter.length, 1);
     expect(byName.first, byPrinter.first);
+
+    final records = await store.find(db);
+    final indexed = records.firstWhere(
+      (record) => record.value['name'] == 'Prusa Gear',
+    );
+    expect(indexed.value[kHistorySearchNameField], 'prusa gear');
+    expect(indexed.value[kHistorySearchPrinterField], 'prusa mini');
   });
 
   test('query prefixes work without scanning history store', () async {
     final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
     await helpers.rebuildIndex();
 
     final keys = await helpers.getKeysMatchingQuery('brac');
@@ -59,5 +68,8 @@ void main() {
     final helpers = HistorySearchIndexHelpers.fromContainer(container);
     final keys = await helpers.getKeysMatchingQuery('prusa');
     expect(keys.length, 1);
+
+    final records = await store.find(db);
+    expect(records.first.value[kHistorySearchTextField], isNotEmpty);
   });
 }

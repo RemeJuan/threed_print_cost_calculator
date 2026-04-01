@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/sembast.dart' as sembast;
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 
@@ -55,6 +56,10 @@ void main() {
     container = ProviderContainer(
       overrides: [databaseProvider.overrideWithValue(db)],
     );
+
+    final indexHelpers = HistorySearchIndexHelpers.fromContainer(container);
+    await indexHelpers.backfillSearchFields();
+    await indexHelpers.rebuildIndex();
   });
 
   tearDown(() async {
@@ -91,27 +96,52 @@ void main() {
     expect(state.page, 2);
   });
 
-  test('setQuery resets paging and filters by printer', () async {
-    // Set query to 'Prusa' should return up to 25 (of 30) and hasMore true
-    await container.read(historyPagedProvider.notifier).setQuery('Prusa');
-    var state = container.read(historyPagedProvider);
-    expect(state.items.length, 25);
-    expect(state.hasMore, isTrue);
-    expect(state.debugQueryCount, 2);
+  test(
+    'search by printer uses the search index and preserves paging',
+    () async {
+      await container.read(historyPagedProvider.notifier).setQuery('Prusa');
+      var state = container.read(historyPagedProvider);
+      expect(state.items.length, 25);
+      expect(state.hasMore, isTrue);
+      expect(state.debugQueryCount, 2);
+      expect(state.debugUsedFallbackScan, isFalse);
 
-    // load remaining 5
-    await container.read(historyPagedProvider.notifier).loadMore();
-    state = container.read(historyPagedProvider);
-    expect(state.items.length, 30);
+      await container.read(historyPagedProvider.notifier).loadMore();
+      state = container.read(historyPagedProvider);
+      expect(state.items.length, 30);
+      expect(state.hasMore, isFalse);
+      expect(state.debugQueryCount, 2);
+      expect(state.debugUsedFallbackScan, isFalse);
+
+      expect(
+        state.items.every((entry) => entry.value['printer'] == 'Prusa'),
+        isTrue,
+      );
+    },
+  );
+
+  test('search by name uses the search index', () async {
+    await container.read(historyPagedProvider.notifier).setQuery('Item 12');
+
+    final state = container.read(historyPagedProvider);
+    expect(state.items.length, 2);
     expect(state.hasMore, isFalse);
     expect(state.debugQueryCount, 2);
+    expect(state.debugUsedFallbackScan, isFalse);
+    expect(
+      state.items.map((entry) => entry.value['name']).toList(),
+      containsAll(['Prusa Item 12', 'Ender Item 12']),
+    );
+  });
 
-    // Now search for 'Ender' expect 25 results (only 25 exist) and hasMore false
-    await container.read(historyPagedProvider.notifier).setQuery('Ender');
-    state = container.read(historyPagedProvider);
+  test('mixed-case queries match normalized indexed values', () async {
+    await container.read(historyPagedProvider.notifier).setQuery('eNdEr');
+
+    final state = container.read(historyPagedProvider);
     expect(state.items.length, 25);
     expect(state.hasMore, isFalse);
     expect(state.debugQueryCount, 2);
+    expect(state.debugUsedFallbackScan, isFalse);
   });
 
   test(
@@ -147,6 +177,12 @@ void main() {
       );
 
       try {
+        final indexHelpers = HistorySearchIndexHelpers.fromContainer(
+          largeContainer,
+        );
+        await indexHelpers.backfillSearchFields();
+        await indexHelpers.rebuildIndex();
+
         await largeContainer
             .read(historyPagedProvider.notifier)
             .setQuery('Prusa');
@@ -154,6 +190,7 @@ void main() {
         expect(state.items.length, 25);
         expect(state.hasMore, isTrue);
         expect(state.debugQueryCount, 2);
+        expect(state.debugUsedFallbackScan, isFalse);
 
         final allRecords = await largeStore.find(
           largeDb,
@@ -180,6 +217,64 @@ void main() {
       } finally {
         largeContainer.dispose();
         await largeDb.close();
+      }
+    },
+  );
+
+  test('non-index misses do not trigger a full-table fallback scan', () async {
+    await container
+        .read(historyPagedProvider.notifier)
+        .setQuery('NoSuchPrinter');
+
+    final state = container.read(historyPagedProvider);
+    expect(state.items, isEmpty);
+    expect(state.hasMore, isFalse);
+    expect(state.debugQueryCount, 2);
+    expect(state.debugUsedFallbackScan, isFalse);
+  });
+
+  test(
+    'legacy rows become searchable after lazy backfill and rebuild',
+    () async {
+      final legacyDbName =
+          'test_legacy_paged_${DateTime.now().microsecondsSinceEpoch}.db';
+      final legacyDb = await databaseFactoryMemory.openDatabase(legacyDbName);
+      final legacyStore = stringMapStoreFactory.store('history');
+
+      await legacyStore.add(legacyDb, {
+        'name': 'Legacy Gear',
+        'totalCost': 1.0,
+        'riskCost': 0.0,
+        'filamentCost': 0.0,
+        'electricityCost': 0.0,
+        'labourCost': 0.0,
+        'date': DateTime.utc(2024, 1, 1).toIso8601String(),
+        'printer': 'Legacy Printer',
+        'material': 'PLA',
+        'weight': 10,
+        'timeHours': '01:00',
+      });
+
+      final legacyContainer = ProviderContainer(
+        overrides: [databaseProvider.overrideWithValue(legacyDb)],
+      );
+
+      try {
+        await legacyContainer
+            .read(historyPagedProvider.notifier)
+            .setQuery('legacy');
+
+        final state = legacyContainer.read(historyPagedProvider);
+        expect(state.items.length, 1);
+        expect(state.items.first.value['name'], 'Legacy Gear');
+        expect(state.debugUsedFallbackScan, isFalse);
+
+        final storedRecord = (await legacyStore.find(legacyDb)).single.value;
+        expect(storedRecord[kHistorySearchNameField], 'legacy gear');
+        expect(storedRecord[kHistorySearchPrinterField], 'legacy printer');
+      } finally {
+        legacyContainer.dispose();
+        await legacyDb.close();
       }
     },
   );
