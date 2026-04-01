@@ -14,6 +14,7 @@ class HistoryPagedState {
   final String? error;
   final String query;
   final int page;
+  final int debugQueryCount;
 
   const HistoryPagedState({
     required this.items,
@@ -22,6 +23,7 @@ class HistoryPagedState {
     this.error,
     required this.query,
     required this.page,
+    required this.debugQueryCount,
   });
 
   factory HistoryPagedState.initial() => const HistoryPagedState(
@@ -31,6 +33,7 @@ class HistoryPagedState {
     error: null,
     query: '',
     page: 0,
+    debugQueryCount: 0,
   );
 
   HistoryPagedState copyWith({
@@ -40,6 +43,7 @@ class HistoryPagedState {
     String? error,
     String? query,
     int? page,
+    int? debugQueryCount,
   }) {
     return HistoryPagedState(
       items: items ?? this.items,
@@ -48,6 +52,7 @@ class HistoryPagedState {
       error: error,
       query: query ?? this.query,
       page: page ?? this.page,
+      debugQueryCount: debugQueryCount ?? this.debugQueryCount,
     );
   }
 }
