@@ -2,17 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -23,13 +21,6 @@ final calculatorProvider =
 
 class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
-
-  // Avoid storing late/nullable fields that may not be initialized when tests
-  // override the provider. Use on-demand getters that read the required
-  // resources from `ref` so they are always available.
-  Database get _database => ref.read(databaseProvider);
-
-  StoreRef get _store => stringMapStoreFactory.store();
 
   @override
   CalculatorState build() {
@@ -44,26 +35,27 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     return CalculatorState();
   }
 
-  void init() async {
-    // Nothing to initialize here; _database and _store are getters that read
-    // from ref on demand.
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
-    final settings = await dbHelpers.getSettings();
+  Future<void> init() async {
+    final settingsRepository = ref.read(settingsRepositoryProvider);
+    final preferencesRepository = ref.read(
+      calculatorPreferencesRepositoryProvider,
+    );
+    final settings = await settingsRepository.getSettings();
     final printerKey = settings.activePrinter;
 
-    final spoolWeightVal = await _getValue('spoolWeight');
-    final spoolCostVal = await _getValue('spoolCost');
+    final spoolWeightVal = await preferencesRepository.getStringValue(
+      'spoolWeight',
+    );
+    final spoolCostVal = await preferencesRepository.getStringValue(
+      'spoolCost',
+    );
 
     if (printerKey.isNotEmpty) {
-      final printersStore = stringMapStoreFactory.store(DBName.printers.name);
+      final printer = await ref
+          .read(printersRepositoryProvider)
+          .getPrinterById(printerKey);
 
-      final data = await printersStore
-          .query(finder: Finder(filter: Filter.byKey(printerKey)))
-          .getSnapshot(_database);
-
-      if (data != null) {
-        final printer = PrinterModel.fromMap(data.value, printerKey);
-
+      if (printer != null) {
         updateWatt(printer.wattage.toString());
       } else {
         updateWatt(settings.wattage.toString());
@@ -81,12 +73,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       hours: NumberInput.dirty(value: state.hours.value),
       minutes: NumberInput.dirty(value: state.minutes.value),
       spoolWeight: NumberInput.dirty(
-        value: tryParseLocalizedNum(spoolWeightVal['value']),
+        value: tryParseLocalizedNum(spoolWeightVal),
       ),
-      spoolCost: NumberInput.dirty(
-        value: tryParseLocalizedNum(spoolCostVal['value']),
-      ),
-      spoolCostText: spoolCostVal['value'] as String,
+      spoolCost: NumberInput.dirty(value: tryParseLocalizedNum(spoolCostVal)),
+      spoolCostText: spoolCostVal,
       wearAndTear: NumberInput.dirty(
         value: tryParseLocalizedNum(settings.wearAndTear),
       ),
@@ -117,20 +107,15 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       return;
     }
 
-    // Use DataBaseHelpers to fetch single material record instead of direct Sembast access
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
-    final materialSnapshot = await dbHelpers.getRecord(selectedMaterialId);
+    final material = await ref
+        .read(materialsRepositoryProvider)
+        .getMaterialById(selectedMaterialId);
 
-    if (materialSnapshot == null) {
+    if (material == null) {
       // Leave empty if selected material not found
       state = state.copyWith(materialUsages: []);
       return;
     }
-
-    final material = MaterialModel.fromMap(
-      materialSnapshot.value as Map<String, dynamic>,
-      materialSnapshot.key.toString(),
-    );
 
     final weight = parseLocalizedNum(material.weight);
     final cost = parseLocalizedNum(material.cost);
@@ -280,15 +265,15 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   void updateSpoolWeight(num value) {
     ref
-        .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('spoolWeight', value.toString());
+        .read(calculatorPreferencesRepositoryProvider)
+        .saveStringValue('spoolWeight', value.toString());
     state = state.copyWith(spoolWeight: NumberInput.dirty(value: value));
   }
 
   void updateSpoolCost(String value) {
     ref
-        .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('spoolCost', value.toString());
+        .read(calculatorPreferencesRepositoryProvider)
+        .saveStringValue('spoolCost', value);
     state = state.copyWith(
       spoolCost: NumberInput.dirty(value: parseLocalizedNum(value)),
       spoolCostText: value,
@@ -296,12 +281,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> updateWearAndTear(num value) async {
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
+    final settingsRepository = ref.read(settingsRepositoryProvider);
 
     try {
-      final settings = await dbHelpers.getSettings();
+      final settings = await settingsRepository.getSettings();
       final updated = settings.copyWith(wearAndTear: value.toString());
-      await dbHelpers.putRecord(updated.toMap());
+      await settingsRepository.saveSettings(updated);
 
       // Only update local state after successful DB write
       state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
@@ -314,12 +299,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> updateFailureRisk(num value) async {
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
+    final settingsRepository = ref.read(settingsRepositoryProvider);
 
     try {
-      final settings = await dbHelpers.getSettings();
+      final settings = await settingsRepository.getSettings();
       final updated = settings.copyWith(failureRisk: value.toStringAsFixed(2));
-      await dbHelpers.putRecord(updated.toMap());
+      await settingsRepository.saveSettings(updated);
 
       // Only update local state after successful DB write
       state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
@@ -330,12 +315,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> updateLabourRate(num value) async {
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
+    final settingsRepository = ref.read(settingsRepositoryProvider);
 
     try {
-      final settings = await dbHelpers.getSettings();
+      final settings = await settingsRepository.getSettings();
       final updated = settings.copyWith(labourRate: value.toString());
-      await dbHelpers.putRecord(updated.toMap());
+      await settingsRepository.saveSettings(updated);
 
       // Only update local state after successful DB write
       state = state.copyWith(labourRate: NumberInput.dirty(value: value));
@@ -360,8 +345,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   void updateLabourTime(num value) {
     ref
-        .read(calculatorHelpersProvider)
-        .addOrUpdateRecord('labourTime', value.toString());
+        .read(calculatorPreferencesRepositoryProvider)
+        .saveStringValue('labourTime', value.toString());
     state = state.copyWith(labourTime: NumberInput.dirty(value: value));
   }
 
@@ -448,13 +433,5 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void submitDebounced({Duration delay = const Duration(milliseconds: 250)}) {
     _submitDebounce?.cancel();
     _submitDebounce = Timer(delay, submit);
-  }
-
-  Future<Map<String, Object?>> _getValue(String key) async {
-    if (await _store.record(key).exists(_database)) {
-      return await _store.record(key).get(_database) as Map<String, Object?>;
-    }
-
-    return {'value': ''};
   }
 }
