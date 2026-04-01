@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'dart:async';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class GeneralSettings extends HookConsumerWidget {
   const GeneralSettings({super.key});
@@ -45,11 +46,7 @@ class GeneralSettings extends HookConsumerWidget {
       // Cancel previous timer
       electricityDebounceRef.value?.cancel();
 
-      final trimmed = value.trim();
-      if (trimmed.isEmpty) return;
-
-      // Normalize decimal separator and parse
-      final parsed = double.tryParse(trimmed.replaceAll(',', '.'));
+      final parsed = tryParseLocalizedNum(value);
       if (parsed == null) return;
 
       electricityDebounceRef.value = Timer(
@@ -68,22 +65,7 @@ class GeneralSettings extends HookConsumerWidget {
     Future<void> persistWatt(String value, GeneralSettingsModel data) async {
       wattDebounceRef.value?.cancel();
 
-      final trimmed = value.trim();
-      if (trimmed.isEmpty) return;
-
-      // wattage is an integer-like value in the model; try parse as int first
-      final parsedInt = int.tryParse(trimmed);
-      int? parsed;
-
-      if (parsedInt != null) {
-        parsed = parsedInt;
-      } else {
-        final parsedDouble = double.tryParse(trimmed.replaceAll(',', '.'));
-        if (parsedDouble != null) {
-          parsed = parsedDouble.toInt();
-        }
-      }
-
+      final parsed = tryParseLocalizedInt(value);
       if (parsed == null) return;
 
       wattDebounceRef.value = Timer(
