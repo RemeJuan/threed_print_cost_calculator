@@ -16,6 +16,8 @@ class HistoryPagedState {
   final int page;
   final int debugQueryCount;
   final bool debugUsedFallbackScan;
+  final bool hasLoadedOnce;
+  final bool isStale;
 
   const HistoryPagedState({
     required this.items,
@@ -26,6 +28,8 @@ class HistoryPagedState {
     required this.page,
     required this.debugQueryCount,
     required this.debugUsedFallbackScan,
+    required this.hasLoadedOnce,
+    required this.isStale,
   });
 
   factory HistoryPagedState.initial() => const HistoryPagedState(
@@ -37,6 +41,8 @@ class HistoryPagedState {
     page: 0,
     debugQueryCount: 0,
     debugUsedFallbackScan: false,
+    hasLoadedOnce: false,
+    isStale: false,
   );
 
   HistoryPagedState copyWith({
@@ -48,6 +54,8 @@ class HistoryPagedState {
     int? page,
     int? debugQueryCount,
     bool? debugUsedFallbackScan,
+    bool? hasLoadedOnce,
+    bool? isStale,
   }) {
     return HistoryPagedState(
       items: items ?? this.items,
@@ -59,8 +67,12 @@ class HistoryPagedState {
       debugQueryCount: debugQueryCount ?? this.debugQueryCount,
       debugUsedFallbackScan:
           debugUsedFallbackScan ?? this.debugUsedFallbackScan,
+      hasLoadedOnce: hasLoadedOnce ?? this.hasLoadedOnce,
+      isStale: isStale ?? this.isStale,
     );
   }
+
+  bool get shouldRefreshOnMount => !isLoading && (!hasLoadedOnce || isStale);
 }
 
 // Notifier that manages paged history loading and query changes.
@@ -94,6 +106,15 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
     _loadGeneration++;
     final currentGen = _loadGeneration;
     await _loadPage(reset: true, generation: currentGen);
+  }
+
+  Future<void> refreshIfNeeded() async {
+    if (!state.shouldRefreshOnMount) return;
+    await refresh();
+  }
+
+  void markStale() {
+    state = state.copyWith(isStale: true);
   }
 
   Future<void> loadMore() async {
@@ -160,6 +181,8 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         page: nextPage,
         debugQueryCount: queryCount,
         debugUsedFallbackScan: usedFallbackScan,
+        hasLoadedOnce: true,
+        isStale: false,
       );
     } catch (e, st) {
       if (kDebugMode) print('HistoryPagedNotifier._loadPage error: $e\n$st');
