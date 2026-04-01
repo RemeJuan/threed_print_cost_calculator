@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 
 import 'analytics_service.dart';
 import 'firebase_analytics_service.dart';
 
 class AppAnalytics {
+  static AppLogger logger = AppLogger(
+    sink: const DebugPrintAppLogSink(),
+    config: const AppLoggerConfig.defaults(),
+  );
+
   // Expose a service that can be replaced in tests. By default use the real
   // Firebase-backed implementation. Tests should override this with a
   // no-op or a mock to prevent touching Firebase.
@@ -15,7 +20,7 @@ class AppAnalytics {
   static Map<String, Object>? _sanitizeParams(Map<String, Object?>? params) {
     if (params == null) return null;
 
-    Object? _sanitizeValue(Object? v) {
+    Object? sanitizeValue(Object? v) {
       if (v == null) return null;
       if (v is bool) return v ? 1 : 0; // convert bool -> num
       if (v is num) return v;
@@ -23,12 +28,12 @@ class AppAnalytics {
       if (v is Map) {
         final Map<String, Object?> m = {};
         v.forEach((key, value) {
-          m[key.toString()] = _sanitizeValue(value);
+          m[key.toString()] = sanitizeValue(value);
         });
         return jsonEncode(m);
       }
       if (v is Iterable) {
-        final list = v.map((e) => _sanitizeValue(e)).toList();
+        final list = v.map((e) => sanitizeValue(e)).toList();
         return jsonEncode(list);
       }
       // Fallback to string representation for other types
@@ -37,7 +42,7 @@ class AppAnalytics {
 
     final sanitized = <String, Object>{};
     params.forEach((key, value) {
-      final s = _sanitizeValue(value);
+      final s = sanitizeValue(value);
       if (s == null) return; // omit null values
       // Ensure final values are either num or String
       if (s is num || s is String) {
@@ -56,9 +61,13 @@ class AppAnalytics {
       final sanitized = _sanitizeParams(params);
       await service.logEvent(event, params: sanitized);
     } catch (e, st) {
-      if (kDebugMode) {
-        debugPrint('Analytics log failed for $event: $e\n$st');
-      }
+      logger.warn(
+        AppLogCategory.ui,
+        'Analytics log failed',
+        context: {'event': event},
+        error: e,
+        stackTrace: st,
+      );
     }
   }
 
