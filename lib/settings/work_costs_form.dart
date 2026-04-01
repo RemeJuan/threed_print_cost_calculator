@@ -5,9 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
@@ -22,9 +20,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     // Controller for wearAndTear so the field reflects external updates
     final wearController = useTextEditingController();
 
-    final db = ref.read(databaseProvider);
-    final store = StoreRef.main();
-    final dbHelper = ref.read(dbHelpersProvider(DBName.settings));
+    final settingsRepository = ref.read(settingsRepositoryProvider);
 
     // Hooks for other fields/debounces: keep at top-level to preserve hook order
     final failureController = useTextEditingController();
@@ -55,7 +51,7 @@ class WorkCostsSettings extends HookConsumerWidget {
           if (parsed == null) return;
           try {
             final updated = data.copyWith(failureRisk: parsed.toString());
-            await dbHelper.putRecord(updated.toMap());
+            await settingsRepository.saveSettings(updated);
           } catch (e, st) {
             if (kDebugMode) print('Error persisting failure risk: $e\n$st');
           }
@@ -70,7 +66,7 @@ class WorkCostsSettings extends HookConsumerWidget {
         if (parsed == null) return;
         try {
           final updated = data.copyWith(labourRate: parsed.toString());
-          await dbHelper.putRecord(updated.toMap());
+          await settingsRepository.saveSettings(updated);
         } catch (e, st) {
           if (kDebugMode) print('Error persisting labour rate: $e\n$st');
         }
@@ -84,7 +80,7 @@ class WorkCostsSettings extends HookConsumerWidget {
         if (parsed == null) return;
         try {
           final updated = data.copyWith(wearAndTear: parsed.toString());
-          await dbHelper.putRecord(updated.toMap());
+          await settingsRepository.saveSettings(updated);
         } catch (e, st) {
           if (kDebugMode) print('Error persisting wear and tear: $e\n$st');
         }
@@ -92,7 +88,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     }
 
     return StreamBuilder(
-      stream: store.record(DBName.settings.name).onSnapshot(db),
+      stream: settingsRepository.watchSettings(),
       builder: (context, snapshot) {
         late GeneralSettingsModel data;
 
@@ -100,9 +96,7 @@ class WorkCostsSettings extends HookConsumerWidget {
           return const SizedBox.shrink();
         } else {
           if (snapshot.hasData) {
-            data = GeneralSettingsModel.fromMap(
-              snapshot.data!.value as Map<String, dynamic>,
-            );
+            data = snapshot.data!;
           } else {
             data = GeneralSettingsModel.initial();
           }
