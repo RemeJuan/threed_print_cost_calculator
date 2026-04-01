@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class MaterialsSectionFree extends HookConsumerWidget {
   const MaterialsSectionFree({super.key});
@@ -46,9 +47,8 @@ class MaterialsSectionFree extends HookConsumerWidget {
                   suffixText: l10n.gramsSuffix,
                 ),
                 onChanged: (value) {
-                  final normalized = value.trim().replaceAll(',', '.');
                   notifier
-                    ..updateSpoolWeight(num.tryParse(normalized) ?? 0)
+                    ..updateSpoolWeight(parseLocalizedNum(value))
                     ..submitDebounced();
                 },
               ),

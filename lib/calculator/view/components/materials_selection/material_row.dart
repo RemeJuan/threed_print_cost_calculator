@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 /// Single material row used inside the materials list.
 ///
@@ -108,8 +109,7 @@ class _MaterialRowState extends State<MaterialRow> {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(suffixText: l10n.gramsSuffix),
             onChanged: (value) {
-              final parsedVal =
-                  num.tryParse(value.replaceAll(',', '.'))?.toInt() ?? 0;
+              final parsedVal = parseLocalizedInt(value);
               widget.onWeightChanged(parsedVal);
             },
           ),

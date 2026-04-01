@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class RatesSection extends HookConsumerWidget {
   final bool premium;
@@ -41,7 +42,7 @@ class RatesSection extends HookConsumerWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
             onChanged: (value) async {
-              notifier.setWearAndTear(num.tryParse(value) ?? 0);
+              notifier.setWearAndTear(parseLocalizedNum(value));
               notifier.submitDebounced();
             },
           ),
@@ -55,7 +56,7 @@ class RatesSection extends HookConsumerWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.failureRiskLabel),
             onChanged: (value) async {
-              notifier.setFailureRisk(num.tryParse(value) ?? 0);
+              notifier.setFailureRisk(parseLocalizedNum(value));
               notifier.submitDebounced();
             },
           ),
