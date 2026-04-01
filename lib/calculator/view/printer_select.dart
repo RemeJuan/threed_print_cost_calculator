@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 class PrinterSelect extends HookConsumerWidget {
   const PrinterSelect({super.key});
@@ -15,16 +13,13 @@ class PrinterSelect extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final loading = useState<bool>(true);
-    final db = ref.read(databaseProvider);
-    final store = stringMapStoreFactory.store(DBName.printers.name);
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
     final generalSettings = useState(GeneralSettingsModel.initial());
     final l10n = S.of(context);
 
-    final query = store.query();
-
     Future<void> getSettings() async {
-      generalSettings.value = await dbHelpers.getSettings();
+      generalSettings.value = await ref
+          .read(settingsRepositoryProvider)
+          .getSettings();
       loading.value = false;
     }
 
@@ -35,14 +30,11 @@ class PrinterSelect extends HookConsumerWidget {
       return null;
     }, []);
 
-    return StreamBuilder(
-      stream: query.onSnapshots(db),
-      builder: (context, snapshot) {
-        if (snapshot.hasData && snapshot.data!.isNotEmpty && !loading.value) {
-          final data = snapshot.data!.map(
-            (e) => PrinterModel.fromMap(e.value, e.key),
-          );
+    final printersAsync = ref.watch(printersStreamProvider);
 
+    return printersAsync.when(
+      data: (data) {
+        if (data.isNotEmpty && !loading.value) {
           return DropdownButtonFormField<String>(
             hint: Text(l10n.selectPrinterHint),
             alignment: AlignmentDirectional.centerStart,
@@ -69,7 +61,9 @@ class PrinterSelect extends HookConsumerWidget {
                       activePrinter: v!,
                     );
                     generalSettings.value = updated;
-                    await dbHelpers.putRecord(updated.toMap());
+                    await ref
+                        .read(settingsRepositoryProvider)
+                        .saveSettings(updated);
 
                     final wattage = data.firstWhere((e) => e.id == v).wattage;
 
@@ -78,10 +72,11 @@ class PrinterSelect extends HookConsumerWidget {
                         .updateWatt(wattage.toString());
                   },
           );
-        } else {
-          return const SizedBox.shrink();
         }
+        return const SizedBox.shrink();
       },
+      loading: () => const SizedBox.shrink(),
+      error: (error, stackTrace) => const SizedBox.shrink(),
     );
   }
 }

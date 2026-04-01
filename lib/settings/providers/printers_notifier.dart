@@ -1,7 +1,7 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/printer_state.dart';
 
@@ -15,17 +15,13 @@ class PrintersNotifier extends Notifier<PrinterState> {
     return PrinterState();
   }
 
-  DataBaseHelpers get dbHelpers => ref.read(dbHelpersProvider(DBName.printers));
+  PrintersRepository get _printersRepository =>
+      ref.read(printersRepositoryProvider);
 
   void init(String? key) async {
     if (key != null) {
-      final record = await dbHelpers.getRecord(key);
-
-      final printer = PrinterModel.fromMap(
-        // ignore: cast_nullable_to_non_nullable
-        record!.value as Map<String, dynamic>,
-        key,
-      );
+      final printer = await _printersRepository.getPrinterById(key);
+      if (printer == null) return;
 
       updateName(printer.name);
       updateBedSize(printer.bedSize);
@@ -46,18 +42,15 @@ class PrintersNotifier extends Notifier<PrinterState> {
   }
 
   Future<void> submit(String? dbRef) async {
-    final data = {
-      'name': state.name.value,
-      'bedSize': state.bedSize.value,
-      'wattage': state.wattage.value,
-    };
+    final printer = PrinterModel(
+      id: dbRef ?? '',
+      name: state.name.value,
+      bedSize: state.bedSize.value,
+      wattage: state.wattage.value,
+      archived: false,
+    );
 
-    if (dbRef != null) {
-      await dbHelpers.updateRecord(dbRef, data);
-      return;
-    }
-
-    await dbHelpers.insertRecord(data);
+    await _printersRepository.savePrinter(printer, id: dbRef);
     AppAnalytics.safeLog(AppAnalytics.printerProfileCreated);
   }
 }
