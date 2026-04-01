@@ -1,14 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'dart:async';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class GeneralSettings extends HookConsumerWidget {
@@ -35,9 +33,7 @@ class GeneralSettings extends HookConsumerWidget {
       };
     }, []);
 
-    final db = ref.read(databaseProvider);
-    final store = StoreRef.main();
-    final dbHelper = ref.read(dbHelpersProvider(DBName.settings));
+    final settingsRepository = ref.read(settingsRepositoryProvider);
 
     Future<void> persistElectricity(
       String value,
@@ -54,7 +50,7 @@ class GeneralSettings extends HookConsumerWidget {
         () async {
           try {
             final updated = data.copyWith(electricityCost: parsed.toString());
-            await dbHelper.putRecord(updated.toMap());
+            await settingsRepository.saveSettings(updated);
           } catch (e, st) {
             if (kDebugMode) print('Error persisting electricity cost: $e\n$st');
           }
@@ -73,7 +69,7 @@ class GeneralSettings extends HookConsumerWidget {
         () async {
           try {
             final updated = data.copyWith(wattage: parsed.toString());
-            await dbHelper.putRecord(updated.toMap());
+            await settingsRepository.saveSettings(updated);
           } catch (e, st) {
             if (kDebugMode) print('Error persisting wattage: $e\n$st');
           }
@@ -82,24 +78,16 @@ class GeneralSettings extends HookConsumerWidget {
     }
 
     // Use a hook to subscribe to the database record stream at top-level
-    final snapshot = useStream<RecordSnapshot?>(
-      store.record(DBName.settings.name).onSnapshot(db),
+    final snapshot = useStream<GeneralSettingsModel>(
+      settingsRepository.watchSettings(),
+      initialData: GeneralSettingsModel.initial(),
     );
 
-    late GeneralSettingsModel data;
+    final data = snapshot.data ?? GeneralSettingsModel.initial();
 
     // If the stream has an error, log it (keep rendering the form with initial/default data)
     if (snapshot.hasError) {
       if (kDebugMode) print('GeneralSettings stream error: ${snapshot.error}');
-    }
-
-    if (snapshot.hasData && snapshot.data?.value != null) {
-      data = GeneralSettingsModel.fromMap(
-        snapshot.data!.value as Map<String, dynamic>,
-      );
-    } else {
-      // Use initial/default settings until the database provides a value so the form is visible
-      data = GeneralSettingsModel.initial();
     }
 
     // Sync controller text with external data when field is not focused
