@@ -54,8 +54,14 @@ void main() {
     await helpers.rebuildIndex();
 
     final keys = await helpers.getKeysMatchingPrinter('prusa');
+    final expectedKeys = (await store.find(db))
+        .where((record) => record.value['printer'].toString().contains('Prusa'))
+        .map((record) => record.key)
+        .toList();
+
     // Should find both 'prusa' and 'prusa mini' entries -> at least 2 keys
     expect(keys.length, 2);
+    expect(keys, unorderedEquals(expectedKeys));
   });
 
   test('addKey and removeKey update index', () async {
