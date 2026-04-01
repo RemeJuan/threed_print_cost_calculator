@@ -6,6 +6,7 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/src/type.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 
 final dbHelpersProvider = Provider.family<DataBaseHelpers, DBName>(
@@ -41,18 +42,34 @@ class DataBaseHelpers {
 
   Future<Object?> insertRecord(Map<String, dynamic> data) async {
     final store = stringMapStoreFactory.store(dbName.name);
+    final payload = dbName == DBName.history
+        ? withHistorySearchFields(data)
+        : data;
 
     try {
-      final key = await store.add(db, data);
-      // If this is the history store, maintain the printer index
-      if (dbName == DBName.history) {
-        final printer = (data['printer']?.toString() ?? '').trim();
-        if (printer.isNotEmpty) {
-          final helpers = PrinterIndexHelpers.fromRef(ref);
-          await helpers.addKey(printer, key);
-        }
+      if (dbName != DBName.history) {
+        return store.add(db, payload);
       }
-      return key;
+
+      final printerHelpers = PrinterIndexHelpers.fromRef(ref);
+      final searchHelpers = HistorySearchIndexHelpers.fromRef(ref);
+
+      return db.transaction((txn) async {
+        final key = await store.add(txn, payload);
+        final printer = (payload['printer']?.toString() ?? '').trim();
+        if (printer.isNotEmpty) {
+          await printerHelpers.addKeyInTransaction(txn, printer, key);
+        }
+
+        await searchHelpers.addRecordInTransaction(
+          txn: txn,
+          name: payload[kHistorySearchNameField]?.toString() ?? '',
+          printer: payload[kHistorySearchPrinterField]?.toString() ?? '',
+          recordKey: key,
+        );
+
+        return key;
+      });
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
       rethrow;
@@ -62,14 +79,16 @@ class DataBaseHelpers {
   Future<void> updateRecord(String key, Map<String, dynamic> data) async {
     final store = stringMapStoreFactory.store(dbName.name);
     try {
-      // If history, detect printer changes and update index
       if (dbName == DBName.history) {
         final existing =
             await store.record(key).get(db) as Map<String, dynamic>?;
-        final oldPrinter = (existing?['printer']?.toString() ?? '').trim();
-        final newPrinter = (data['printer']?.toString() ?? oldPrinter).trim();
+        if (existing == null) return;
 
-        await store.record(key).update(db, data);
+        final merged = withHistorySearchFields({...existing, ...data});
+        final oldPrinter = (existing['printer']?.toString() ?? '').trim();
+        final newPrinter = (merged['printer']?.toString() ?? '').trim();
+
+        await store.record(key).put(db, merged);
 
         final helpers = PrinterIndexHelpers.fromRef(ref);
         if (oldPrinter.isNotEmpty && oldPrinter != newPrinter) {
@@ -78,6 +97,20 @@ class DataBaseHelpers {
         if (newPrinter.isNotEmpty && oldPrinter != newPrinter) {
           await helpers.addKey(newPrinter, key);
         }
+
+        await HistorySearchIndexHelpers.fromRef(ref).updateRecord(
+          oldName:
+              existing[kHistorySearchNameField]?.toString() ??
+              normalizeHistorySearchValue(existing['name']?.toString() ?? ''),
+          oldPrinter:
+              existing[kHistorySearchPrinterField]?.toString() ??
+              normalizeHistorySearchValue(
+                existing['printer']?.toString() ?? '',
+              ),
+          newName: merged[kHistorySearchNameField]?.toString() ?? '',
+          newPrinter: merged[kHistorySearchPrinterField]?.toString() ?? '',
+          recordKey: key,
+        );
       } else {
         await store.record(key).update(db, data);
       }
@@ -108,6 +141,18 @@ class DataBaseHelpers {
         if (printer.isNotEmpty) {
           await helpers.removeKey(printer, key);
         }
+
+        await HistorySearchIndexHelpers.fromRef(ref).removeRecord(
+          name:
+              existing?[kHistorySearchNameField]?.toString() ??
+              normalizeHistorySearchValue(existing?['name']?.toString() ?? ''),
+          printer:
+              existing?[kHistorySearchPrinterField]?.toString() ??
+              normalizeHistorySearchValue(
+                existing?['printer']?.toString() ?? '',
+              ),
+          recordKey: key,
+        );
 
         // Defensive: some index entries may have stale keys or the record's printer
         // field may be empty. To ensure the index doesn't retain the deleted key,
