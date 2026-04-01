@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 part 'history_model.freezed.dart';
 
@@ -34,15 +35,15 @@ abstract class HistoryModel with _$HistoryModel {
 
     return HistoryModel(
       name: map['name']?.toString() ?? '',
-      totalCost: map['totalCost'] as num,
-      riskCost: map['riskCost'] as num,
-      filamentCost: map['filamentCost'] as num,
-      electricityCost: map['electricityCost'] as num,
-      labourCost: map['labourCost'] as num,
+      totalCost: parseLocalizedNum(map['totalCost']),
+      riskCost: parseLocalizedNum(map['riskCost']),
+      filamentCost: parseLocalizedNum(map['filamentCost']),
+      electricityCost: parseLocalizedNum(map['electricityCost']),
+      labourCost: parseLocalizedNum(map['labourCost']),
       date: parsedDate,
       printer: map['printer']?.toString() ?? kUnassignedLabel,
       material: map['material']?.toString() ?? kUnassignedLabel,
-      weight: map['weight'] as num? ?? 0.0,
+      weight: parseLocalizedNum(map['weight']),
       materialUsages: _parseMaterialUsages(map['materialUsages']),
       timeHours: map['timeHours']?.toString() ?? '00:00',
     );
