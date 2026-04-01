@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 String _quote(Object? value) {
   final s = value?.toString() ?? '';
@@ -111,8 +110,6 @@ class CsvUtils {
 
   CsvUtils(this.ref);
 
-  Database get _db => ref.read(databaseProvider);
-
   /// Instance wrapper for top-level generateCsv
   String generateCsvForItems(List<HistoryModel> items) => generateCsv(items);
 
@@ -128,44 +125,19 @@ class CsvUtils {
     ExportRange range, {
     DateTime? now,
   }) async {
-    final store = stringMapStoreFactory.store('history');
-
-    // We sort by date descending always
-    final sortOrders = [SortOrder('date', false)];
-
     final referenceNow = (now ?? DateTime.now()).toUtc();
-
-    // Always fetch records sorted by date descending; we apply range filtering in-memory
-    final records = await store.find(
-      _db,
-      finder: Finder(sortOrders: sortOrders),
-    );
-
-    // If range is not all, apply in-memory date filtering to avoid Sembast
-    // comparison quirks with string dates.
-    List<RecordSnapshot> filtered = records;
+    var items = await ref.read(historyRepositoryProvider).getAllHistory();
 
     if (range != ExportRange.all) {
       final days = range == ExportRange.last7Days ? 7 : 30;
       final cutoff = referenceNow.subtract(Duration(days: days));
-      filtered = records.where((r) {
-        final map = r.value as Map<String, dynamic>;
-        final dateVal = map['date'];
-        try {
-          final dt = dateVal is DateTime
-              ? dateVal.toUtc()
-              : DateTime.parse(dateVal.toString()).toUtc();
-          return dt.isAtSameMomentAs(cutoff) || dt.isAfter(cutoff);
-        } catch (_) {
-          return false;
-        }
+      items = items.where((entry) {
+        final dt = entry.model.date.toUtc();
+        return dt.isAtSameMomentAs(cutoff) || dt.isAfter(cutoff);
       }).toList();
     }
 
-    return filtered.map((r) {
-      final map = r.value as Map<String, dynamic>;
-      return HistoryModel.fromMap(map);
-    }).toList();
+    return items.map((entry) => entry.model).toList();
   }
 
   /// Query and export history for the given [range].

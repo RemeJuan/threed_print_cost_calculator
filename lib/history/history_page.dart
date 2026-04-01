@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
@@ -160,12 +159,11 @@ class HistoryPage extends HookConsumerWidget {
               SliverList.builder(
                 itemCount: paged.items.length,
                 itemBuilder: (_, index) {
-                  final record = paged.items[index];
-                  final item = record.value;
-
-                  final data = HistoryModel.fromMap(item);
-
-                  return HistoryItem(dbKey: record.key.toString(), data: data);
+                  final entry = paged.items[index];
+                  return HistoryItem(
+                    dbKey: entry.key.toString(),
+                    data: entry.model,
+                  );
                 },
               ),
               SliverToBoxAdapter(

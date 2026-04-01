@@ -86,7 +86,6 @@ void main() {
     container.read(historyQueryProvider.notifier).setQuery('beta');
     final betaMatches = await container.read(historyRecordsProvider.future);
     expect(betaMatches.length, 1);
-    final map = betaMatches.first.value as Map<String, dynamic>;
-    expect(map['name'], 'Beta');
+    expect(betaMatches.first.model.name, 'Beta');
   });
 }
