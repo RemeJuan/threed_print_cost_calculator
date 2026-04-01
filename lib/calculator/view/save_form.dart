@@ -3,13 +3,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:sembast/sembast.dart';
 
 class SaveForm extends HookConsumerWidget {
   final CalculationResult data;
@@ -38,31 +38,18 @@ class SaveForm extends HookConsumerWidget {
             onPressed: name.value.isEmpty
                 ? null
                 : () async {
-                    // Gather printer and material names from settings and DB
-                    final db = ref.read(databaseProvider);
-                    final settingsHelpers = ref.read(
-                      dbHelpersProvider(DBName.settings),
-                    );
-                    final settings = await settingsHelpers.getSettings();
+                    final settings = await ref
+                        .read(settingsRepositoryProvider)
+                        .getSettings();
 
                     String printerName = '';
                     String materialName = '';
 
                     if (settings.activePrinter.isNotEmpty) {
-                      final store = stringMapStoreFactory.store(
-                        DBName.printers.name,
-                      );
-                      final snapshot = await store
-                          .query(
-                            finder: Finder(
-                              filter: Filter.byKey(settings.activePrinter),
-                            ),
-                          )
-                          .getSnapshot(db);
-                      if (snapshot != null) {
-                        final map = snapshot.value as Map<String, dynamic>;
-                        printerName = (map['name'] ?? '').toString();
-                      }
+                      final printer = await ref
+                          .read(printersRepositoryProvider)
+                          .getPrinterById(settings.activePrinter);
+                      printerName = printer?.name ?? '';
                     }
 
                     // Read calculator state for weight and time
@@ -89,19 +76,11 @@ class SaveForm extends HookConsumerWidget {
                           ? '$firstName +${count - 1}'
                           : firstName;
                     } else if (settings.selectedMaterial.isNotEmpty) {
-                      final store = stringMapStoreFactory.store(
-                        DBName.materials.name,
-                      );
-                      final snapshot = await store
-                          .query(
-                            finder: Finder(
-                              filter: Filter.byKey(settings.selectedMaterial),
-                            ),
-                          )
-                          .getSnapshot(db);
-                      if (snapshot != null) {
-                        final map = snapshot.value as Map<String, dynamic>;
-                        materialName = (map['name'] ?? '').toString();
+                      final material = await ref
+                          .read(materialsRepositoryProvider)
+                          .getMaterialById(settings.selectedMaterial);
+                      if (material != null) {
+                        materialName = material.name;
                         usages.add(
                           MaterialUsageInput(
                             materialId: settings.selectedMaterial,
