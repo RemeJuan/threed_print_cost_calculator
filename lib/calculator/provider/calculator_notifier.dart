@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculator_state.d
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -23,6 +24,34 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
+
+  num _costPerKgFromSpool({required num spoolWeight, required num spoolCost}) {
+    return spoolWeight <= 0 ? 0 : (spoolCost / spoolWeight) * 1000;
+  }
+
+  List<MaterialUsageInput> _syncedSingleMaterialUsage({
+    String? materialId,
+    String? materialName,
+    num? spoolWeight,
+    num? spoolCost,
+  }) {
+    if (state.materialUsages.length != 1) return state.materialUsages;
+
+    final usage = state.materialUsages.first;
+    final nextSpoolWeight = spoolWeight ?? (state.spoolWeight.value ?? 0);
+    final nextSpoolCost = spoolCost ?? (state.spoolCost.value ?? 0);
+
+    return [
+      usage.copyWith(
+        materialId: materialId ?? usage.materialId,
+        materialName: materialName ?? usage.materialName,
+        costPerKg: _costPerKgFromSpool(
+          spoolWeight: nextSpoolWeight,
+          spoolCost: nextSpoolCost,
+        ),
+      ),
+    ];
+  }
 
   @override
   CalculatorState build() {
@@ -121,7 +150,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     final weight = parseLocalizedNum(material.weight);
     final cost = parseLocalizedNum(material.cost);
-    final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
+    final costPerKg = _costPerKgFromSpool(spoolWeight: weight, spoolCost: cost);
 
     state = state.copyWith(
       materialUsages: [
@@ -269,17 +298,48 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     ref
         .read(calculatorPreferencesRepositoryProvider)
         .saveStringValue('spoolWeight', value.toString());
-    state = state.copyWith(spoolWeight: NumberInput.dirty(value: value));
+    state = state.copyWith(
+      spoolWeight: NumberInput.dirty(value: value),
+      materialUsages: _syncedSingleMaterialUsage(spoolWeight: value),
+    );
   }
 
   void updateSpoolCost(String value) {
+    final parsedCost = parseLocalizedNum(value);
     ref
         .read(calculatorPreferencesRepositoryProvider)
         .saveStringValue('spoolCost', value);
     state = state.copyWith(
-      spoolCost: NumberInput.dirty(value: parseLocalizedNum(value)),
+      spoolCost: NumberInput.dirty(value: parsedCost),
       spoolCostText: value,
+      materialUsages: _syncedSingleMaterialUsage(spoolCost: parsedCost),
     );
+  }
+
+  void selectMaterial(MaterialModel material) {
+    final spoolWeight = parseLocalizedNum(material.weight);
+    final spoolCost = parseLocalizedNum(material.cost);
+
+    ref
+        .read(calculatorPreferencesRepositoryProvider)
+        .saveStringValue('spoolWeight', material.weight);
+    ref
+        .read(calculatorPreferencesRepositoryProvider)
+        .saveStringValue('spoolCost', material.cost);
+
+    state = state.copyWith(
+      spoolWeight: NumberInput.dirty(value: spoolWeight),
+      spoolCost: NumberInput.dirty(value: spoolCost),
+      spoolCostText: material.cost,
+      materialUsages: _syncedSingleMaterialUsage(
+        materialId: material.id,
+        materialName: material.name,
+        spoolWeight: spoolWeight,
+        spoolCost: spoolCost,
+      ),
+    );
+
+    submit();
   }
 
   Future<void> updateWearAndTear(num value) async {
@@ -399,10 +459,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     if (state.materialUsages.isNotEmpty &&
         state.materialUsages.any(
-          (u) =>
-              u.weightGrams > 0 &&
-              u.materialId.trim().isNotEmpty &&
-              (u.costPerKg > 0),
+          (u) => u.weightGrams > 0 && u.materialId.trim().isNotEmpty,
         )) {
       filamentCost = ref
           .read(calculatorHelpersProvider)

@@ -63,6 +63,8 @@ class MaterialSelect extends HookConsumerWidget {
             onChanged: (v) async {
               if (v == null) return;
 
+              final material = data.firstWhere((e) => e.id == v);
+
               final updated = generalSettings.value.copyWith(
                 selectedMaterial: v,
               );
@@ -70,13 +72,7 @@ class MaterialSelect extends HookConsumerWidget {
 
               await ref.read(settingsRepositoryProvider).saveSettings(updated);
 
-              final materialWeight = data.firstWhere((e) => e.id == v).weight;
-              final materialCost = data.firstWhere((e) => e.id == v).cost;
-
-              ref.read(calculatorProvider.notifier)
-                ..updateSpoolWeight(num.parse(materialWeight))
-                ..updateSpoolCost(materialCost)
-                ..submit();
+              ref.read(calculatorProvider.notifier).selectMaterial(material);
             },
           );
         }
