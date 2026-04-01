@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 class MaterialSelect extends HookConsumerWidget {
   const MaterialSelect({super.key});
@@ -15,16 +13,13 @@ class MaterialSelect extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final loading = useState<bool>(true);
-    final db = ref.read(databaseProvider);
-    final store = stringMapStoreFactory.store(DBName.materials.name);
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
     final generalSettings = useState(GeneralSettingsModel.initial());
     final l10n = S.of(context);
 
-    final query = store.query();
-
     Future<void> getSettings() async {
-      generalSettings.value = await dbHelpers.getSettings();
+      generalSettings.value = await ref
+          .read(settingsRepositoryProvider)
+          .getSettings();
       loading.value = false;
     }
 
@@ -35,16 +30,11 @@ class MaterialSelect extends HookConsumerWidget {
       return null;
     }, []);
 
-    return StreamBuilder(
-      stream: query.onSnapshots(db),
-      builder: (context, snapshot) {
-        // If we have snapshot data (possibly empty) and finished loading settings
-        if (snapshot.hasData && !loading.value) {
-          // Map DB snapshots to models; allow the resulting list to be empty
-          final data = snapshot.data!
-              .map((e) => MaterialModel.fromMap(e.value, e.key))
-              .toList();
+    final materialsAsync = ref.watch(materialsStreamProvider);
 
+    return materialsAsync.when(
+      data: (data) {
+        if (!loading.value) {
           // If there are no materials, render nothing
           if (data.isEmpty) {
             return const SizedBox.shrink();
@@ -78,8 +68,7 @@ class MaterialSelect extends HookConsumerWidget {
               );
               generalSettings.value = updated;
 
-              final dbHelpers = ref.read(dbHelpersProvider(DBName.settings));
-              await dbHelpers.putRecord(updated.toMap());
+              await ref.read(settingsRepositoryProvider).saveSettings(updated);
 
               final materialWeight = data.firstWhere((e) => e.id == v).weight;
               final materialCost = data.firstWhere((e) => e.id == v).cost;
@@ -90,10 +79,11 @@ class MaterialSelect extends HookConsumerWidget {
                 ..submit();
             },
           );
-        } else {
-          return const SizedBox.shrink();
         }
+        return const SizedBox.shrink();
       },
+      loading: () => const SizedBox.shrink(),
+      error: (error, stackTrace) => const SizedBox.shrink(),
     );
   }
 }
