@@ -1,8 +1,8 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/material_state.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
@@ -17,18 +17,13 @@ class MaterialsProvider extends Notifier<MaterialState> {
     return MaterialState();
   }
 
-  DataBaseHelpers get dbHelpers =>
-      ref.read(dbHelpersProvider(DBName.materials));
+  MaterialsRepository get _materialsRepository =>
+      ref.read(materialsRepositoryProvider);
 
   void init(final String? key) async {
     if (key != null) {
-      final record = await dbHelpers.getRecord(key);
-
-      final material = MaterialModel.fromMap(
-        // ignore: cast_nullable_to_non_nullable
-        record!.value as Map<String, dynamic>,
-        key,
-      );
+      final material = await _materialsRepository.getMaterialById(key);
+      if (material == null) return;
 
       updateName(material.name);
       updateColor(material.color);
@@ -58,19 +53,16 @@ class MaterialsProvider extends Notifier<MaterialState> {
   }
 
   Future<Object?> submit(String? dbRef) async {
-    final data = {
-      'name': state.name.value,
-      'cost': state.cost.value,
-      'color': state.color.value,
-      'weight': state.weight.value,
-    };
+    final material = MaterialModel(
+      id: dbRef ?? '',
+      name: state.name.value,
+      cost: state.cost.value.toString(),
+      color: state.color.value,
+      weight: state.weight.value.toString(),
+      archived: false,
+    );
 
-    if (dbRef != null) {
-      await dbHelpers.updateRecord(dbRef, data);
-      return dbRef;
-    }
-
-    final key = await dbHelpers.insertRecord(data);
+    final key = await _materialsRepository.saveMaterial(material, id: dbRef);
     AppAnalytics.safeLog(AppAnalytics.materialCreated);
     return key;
   }
