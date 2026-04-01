@@ -1,9 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
 final calculatorHelpersProvider = Provider<CalculatorHelpers>(
@@ -14,8 +13,6 @@ class CalculatorHelpers {
   final Ref ref;
 
   CalculatorHelpers(this.ref);
-
-  Database get db => ref.read(databaseProvider);
 
   num electricityCost(num watts, num hours, num minutes, num cost) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
@@ -60,26 +57,14 @@ class CalculatorHelpers {
   }
 
   Future<void> addOrUpdateRecord(String key, String value) async {
-    final store = stringMapStoreFactory.store();
-    // Check if the record exists before adding or updating it.
-    await db.transaction((txn) async {
-      // Look of existing record
-      final existing = await store.record(key).getSnapshot(txn);
-      if (existing == null) {
-        // code not found, add
-        await store.record(key).add(txn, {'value': value});
-      } else {
-        // Update existing
-        await existing.ref.update(txn, {'value': value});
-      }
-    });
+    await ref
+        .read(calculatorPreferencesRepositoryProvider)
+        .saveStringValue(key, value);
   }
 
   Future<void> savePrint(HistoryModel value) async {
     try {
-      final data = {...value.toMap(), 'date': value.date.toIso8601String()};
-      final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
-      await dbHelpers.insertRecord(data);
+      await ref.read(historyRepositoryProvider).saveHistory(value);
       BotToast.showText(text: 'Print saved');
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
