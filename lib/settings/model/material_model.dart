@@ -27,11 +27,6 @@ abstract class MaterialModel with _$MaterialModel {
 
 extension MaterialModelX on MaterialModel {
   Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'cost': cost,
-      'color': color,
-      'weight': weight,
-    };
+    return {'name': name, 'cost': cost, 'color': color, 'weight': weight};
   }
 }
