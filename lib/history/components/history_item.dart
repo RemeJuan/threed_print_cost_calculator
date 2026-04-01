@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
@@ -23,6 +24,7 @@ class HistoryItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = S.of(context);
     final materialsById = ref.watch(materialsByIdProvider);
+    final logger = ref.read(appLoggerProvider);
 
     return Slidable(
       key: ValueKey(dbKey),
@@ -41,7 +43,13 @@ class HistoryItem extends HookConsumerWidget {
                   context,
                 ).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
               } catch (e, st) {
-                debugPrint('Export failed: $e\n$st');
+                logger.error(
+                  AppLogCategory.ui,
+                  'History export failed',
+                  context: {'exportType': 'job'},
+                  error: e,
+                  stackTrace: st,
+                );
                 ScaffoldMessenger.of(
                   context,
                 ).showSnackBar(SnackBar(content: Text(l10n.exportError)));
