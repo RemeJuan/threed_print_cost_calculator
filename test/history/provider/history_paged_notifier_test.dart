@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:sembast/sembast.dart' as sembast;
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 
@@ -96,17 +97,90 @@ void main() {
     var state = container.read(historyPagedProvider);
     expect(state.items.length, 25);
     expect(state.hasMore, isTrue);
+    expect(state.debugQueryCount, 2);
 
     // load remaining 5
     await container.read(historyPagedProvider.notifier).loadMore();
     state = container.read(historyPagedProvider);
     expect(state.items.length, 30);
     expect(state.hasMore, isFalse);
+    expect(state.debugQueryCount, 2);
 
     // Now search for 'Ender' expect 25 results (only 25 exist) and hasMore false
     await container.read(historyPagedProvider.notifier).setQuery('Ender');
     state = container.read(historyPagedProvider);
     expect(state.items.length, 25);
     expect(state.hasMore, isFalse);
+    expect(state.debugQueryCount, 2);
   });
+
+  test(
+    'indexed search keeps constant query count for large datasets',
+    () async {
+      final largeDbName =
+          'test_large_paged_${DateTime.now().microsecondsSinceEpoch}.db';
+      final largeDb = await databaseFactoryMemory.openDatabase(largeDbName);
+      final largeStore = stringMapStoreFactory.store('history');
+
+      for (var i = 0; i < 1200; i++) {
+        await largeStore.add(largeDb, {
+          'name': 'Prusa Batch $i',
+          'totalCost': i + 1.0,
+          'riskCost': 0.0,
+          'filamentCost': 0.0,
+          'electricityCost': 0.0,
+          'labourCost': 0.0,
+          'date': DateTime.utc(
+            2024,
+            1,
+            1,
+          ).add(Duration(minutes: i)).toIso8601String(),
+          'printer': i.isEven ? 'Prusa XL' : 'Ender 3',
+          'material': i.isEven ? 'PLA' : 'PETG',
+          'weight': i,
+          'timeHours': '01:00',
+        });
+      }
+
+      final largeContainer = ProviderContainer(
+        overrides: [databaseProvider.overrideWithValue(largeDb)],
+      );
+
+      try {
+        await largeContainer
+            .read(historyPagedProvider.notifier)
+            .setQuery('Prusa');
+        final state = largeContainer.read(historyPagedProvider);
+        expect(state.items.length, 25);
+        expect(state.hasMore, isTrue);
+        expect(state.debugQueryCount, 2);
+
+        final allRecords = await largeStore.find(
+          largeDb,
+          finder: sembast.Finder(
+            sortOrders: [sembast.SortOrder('date', false)],
+          ),
+        );
+        final expectedFirstPage = allRecords
+            .where(
+              (record) =>
+                  (record.value['name']?.toString().toLowerCase() ?? '')
+                      .contains('prusa') ||
+                  (record.value['printer']?.toString().toLowerCase() ?? '')
+                      .contains('prusa'),
+            )
+            .take(25)
+            .map((record) => record.key)
+            .toList();
+
+        expect(
+          state.items.map((entry) => entry.key).toList(),
+          orderedEquals(expectedFirstPage),
+        );
+      } finally {
+        largeContainer.dispose();
+        await largeDb.close();
+      }
+    },
+  );
 }
