@@ -82,25 +82,30 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
-    final recordKeyStr = recordKey.toString();
-    // addKey called
-
-    // Do read-modify-write inside a single transaction to avoid TOCTOU races.
     await _db.transaction((txn) async {
-      final existing =
-          await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
-      final keys = <String>[
-        ...?existing?['keys']?.cast<String>() as List<String>?,
-      ];
-
-      if (!keys.contains(recordKeyStr)) {
-        keys.add(recordKeyStr);
-        await _indexStore.record(norm).put(txn, {'keys': keys});
-        // added key
-      } else {
-        // already present
-      }
+      await addKeyInTransaction(txn, printer, recordKey);
     });
+  }
+
+  Future<void> addKeyInTransaction(
+    Transaction txn,
+    String printer,
+    dynamic recordKey,
+  ) async {
+    final norm = _normalize(printer);
+    if (norm.isEmpty) return;
+
+    final recordKeyStr = recordKey.toString();
+    final existing =
+        await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
+    final keys = <String>[
+      ...?existing?['keys']?.cast<String>() as List<String>?,
+    ];
+
+    if (!keys.contains(recordKeyStr)) {
+      keys.add(recordKeyStr);
+      await _indexStore.record(norm).put(txn, {'keys': keys});
+    }
   }
 
   /// Remove a mapping from [printer] -> [recordKey] from the index.
@@ -108,30 +113,34 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
-    final recordKeyStr = recordKey.toString();
-    // removeKey called
-
-    // Perform read-modify-write in a transaction to avoid TOCTOU races.
     await _db.transaction((txn) async {
-      final existing =
-          await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
-      if (existing == null) return;
-
-      final keys = <String>[
-        ...?existing['keys']?.cast<String>() as List<String>?,
-      ];
-      // before removal
-
-      keys.removeWhere((k) => k == recordKeyStr);
-
-      if (keys.isEmpty) {
-        await _indexStore.record(norm).delete(txn);
-        // deleted index entry
-      } else {
-        await _indexStore.record(norm).put(txn, {'keys': keys});
-        // updated index entry
-      }
+      await removeKeyInTransaction(txn, printer, recordKey);
     });
+  }
+
+  Future<void> removeKeyInTransaction(
+    Transaction txn,
+    String printer,
+    dynamic recordKey,
+  ) async {
+    final norm = _normalize(printer);
+    if (norm.isEmpty) return;
+
+    final recordKeyStr = recordKey.toString();
+    final existing =
+        await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
+    if (existing == null) return;
+
+    final keys = <String>[
+      ...?existing['keys']?.cast<String>() as List<String>?,
+    ];
+    keys.removeWhere((k) => k == recordKeyStr);
+
+    if (keys.isEmpty) {
+      await _indexStore.record(norm).delete(txn);
+    } else {
+      await _indexStore.record(norm).put(txn, {'keys': keys});
+    }
   }
 
   /// Helper to convert a stored string key back to original typed key when possible.
