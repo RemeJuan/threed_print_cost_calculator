@@ -1,16 +1,22 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:threed_print_cost_calculator/app/app_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final logger = ref.read(appLoggerProvider);
+    AppAnalytics.logger = logger;
+
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MaterialApp(
@@ -39,7 +45,11 @@ class App extends StatelessWidget {
               try {
                 rateMyApp.showRateDialog(context);
               } catch (e) {
-                debugPrint(e.toString());
+                logger.warn(
+                  AppLogCategory.ui,
+                  'Rate dialog failed to open',
+                  error: e,
+                );
               }
             }
           },
