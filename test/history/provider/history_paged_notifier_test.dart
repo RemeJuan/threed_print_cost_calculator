@@ -2,9 +2,29 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/sembast.dart' as sembast;
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
+import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
+
+class _RecordingLogSink extends AppLogSink {
+  final events = <AppLogEvent>[];
+
+  @override
+  void log(AppLogEvent event) {
+    events.add(event);
+  }
+}
+
+class _ThrowingHistoryRepository extends HistoryRepository {
+  _ThrowingHistoryRepository(super.ref);
+
+  @override
+  Future<int> countHistory() async {
+    throw StateError('count failed');
+  }
+}
 
 void main() {
   late Database db;
@@ -362,5 +382,32 @@ void main() {
     final state = container.read(historyPagedProvider);
     expect(state.error, isNull);
     expect(state.items.every((entry) => entry.model.name.isNotEmpty), isTrue);
+  });
+
+  test('load failures still surface to state while being logged', () async {
+    final sink = _RecordingLogSink();
+    final failingContainer = ProviderContainer(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        appLogSinkProvider.overrideWithValue(sink),
+        appLoggerConfigProvider.overrideWithValue(
+          const AppLoggerConfig(minLevel: AppLogLevel.debug),
+        ),
+        historyRepositoryProvider.overrideWith(
+          (ref) => _ThrowingHistoryRepository(ref),
+        ),
+      ],
+    );
+    addTearDown(failingContainer.dispose);
+
+    await failingContainer.read(historyPagedProvider.notifier).refresh();
+
+    final state = failingContainer.read(historyPagedProvider);
+    expect(state.isLoading, isFalse);
+    expect(state.error, contains('count failed'));
+    expect(sink.events, isNotEmpty);
+    expect(sink.events.last.level, AppLogLevel.error);
+    expect(sink.events.last.category, AppLogCategory.provider);
+    expect(sink.events.last.message, 'History page load failed');
   });
 }
