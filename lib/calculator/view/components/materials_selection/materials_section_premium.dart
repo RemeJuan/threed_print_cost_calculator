@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_header.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_list.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
@@ -25,22 +22,7 @@ class MaterialsSectionPremium extends HookConsumerWidget {
     );
 
     final materialsById = ref.watch(materialsByIdProvider);
-
-    final db = ref.read(databaseProvider);
-    final materialsStore = stringMapStoreFactory.store(DBName.materials.name);
-    final materialsStream = materialsStore
-        .query()
-        .onSnapshots(db)
-        .map(
-          (snapshots) => snapshots
-              .map(
-                (e) => MaterialModel.fromMap(
-                  e.value as Map<String, dynamic>,
-                  e.key.toString(),
-                ),
-              )
-              .toList(),
-        );
+    ref.watch(materialsStreamProvider);
 
     final expanded = useState<bool>(true);
 
@@ -48,7 +30,7 @@ class MaterialsSectionPremium extends HookConsumerWidget {
       final selectedId = await showMaterialPicker(
         context,
         ref,
-        materialsStream,
+        editingIndex: null,
       );
       if (selectedId == null) return;
       expanded.value = true;
@@ -59,7 +41,6 @@ class MaterialsSectionPremium extends HookConsumerWidget {
       final selectedId = await showMaterialPicker(
         context,
         ref,
-        materialsStream,
         editingIndex: index,
         focusAfterId: usage.materialId.trim().isNotEmpty
             ? usage.materialId.trim()

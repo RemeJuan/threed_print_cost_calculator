@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_picker.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -10,9 +9,8 @@ import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 /// Returns the selected material id or null if cancelled.
 Future<String?> showMaterialPicker(
   BuildContext context,
-  WidgetRef ref,
-  Stream<List<MaterialModel>> materialsStream, {
-  int? editingIndex,
+  WidgetRef ref, {
+  required int? editingIndex,
   String? focusAfterId,
 }) async {
   final state = ref.read(calculatorProvider);
@@ -34,7 +32,6 @@ Future<String?> showMaterialPicker(
       return FractionallySizedBox(
         heightFactor: 0.95,
         child: MaterialPicker(
-          materialsStream: materialsStream,
           onSelected: (material) {
             final weight = parseLocalizedNum(material.weight);
             final cost = parseLocalizedNum(material.cost);
