@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -14,6 +14,8 @@ class PrintersRepository {
   PrintersRepository(this.ref);
 
   final Ref ref;
+
+  AppLogger get _logger => ref.read(appLoggerProvider);
 
   Database get _db => ref.read(databaseProvider);
 
@@ -61,17 +63,20 @@ class PrintersRepository {
       snapshot.value,
       storeName: DBName.printers.name,
       key: snapshot.key,
+      logger: _logger,
     );
     if (map == null) return null;
 
     try {
       return PrinterModel.fromMap(map, snapshot.key.toString());
     } catch (error, stackTrace) {
-      if (kDebugMode) {
-        debugPrint(
-          'Skipping malformed printer record for key=${snapshot.key}: $error\n$stackTrace',
-        );
-      }
+      _logger.warn(
+        AppLogCategory.migration,
+        'Skipping malformed printer record',
+        context: {'store': DBName.printers.name, 'key': snapshot.key},
+        error: error,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }

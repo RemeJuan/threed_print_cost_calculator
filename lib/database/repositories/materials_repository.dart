@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -14,6 +14,8 @@ class MaterialsRepository {
   MaterialsRepository(this.ref);
 
   final Ref ref;
+
+  AppLogger get _logger => ref.read(appLoggerProvider);
 
   Database get _db => ref.read(databaseProvider);
 
@@ -67,17 +69,20 @@ class MaterialsRepository {
       snapshot.value,
       storeName: DBName.materials.name,
       key: snapshot.key,
+      logger: _logger,
     );
     if (map == null) return null;
 
     try {
       return MaterialModel.fromMap(map, snapshot.key.toString());
     } catch (error, stackTrace) {
-      if (kDebugMode) {
-        debugPrint(
-          'Skipping malformed material record for key=${snapshot.key}: $error\n$stackTrace',
-        );
-      }
+      _logger.warn(
+        AppLogCategory.migration,
+        'Skipping malformed material record',
+        context: {'store': DBName.materials.name, 'key': snapshot.key},
+        error: error,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }

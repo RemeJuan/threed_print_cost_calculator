@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
@@ -16,6 +16,8 @@ class HistoryRepository {
   HistoryRepository(this.ref);
 
   final Ref ref;
+
+  AppLogger get _logger => ref.read(appLoggerProvider);
 
   Database get _db => ref.read(databaseProvider);
 
@@ -100,6 +102,7 @@ class HistoryRepository {
       snapshot.value,
       storeName: DBName.history.name,
       key: snapshot.key,
+      logger: _logger,
     );
     if (map == null) return null;
 
@@ -109,11 +112,13 @@ class HistoryRepository {
         model: HistoryModel.fromMap(map),
       );
     } catch (error, stackTrace) {
-      if (kDebugMode) {
-        debugPrint(
-          'Skipping malformed history record for key=${snapshot.key}: $error\n$stackTrace',
-        );
-      }
+      _logger.warn(
+        AppLogCategory.migration,
+        'Skipping malformed history record',
+        context: {'store': DBName.history.name, 'key': snapshot.key},
+        error: error,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }

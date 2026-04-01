@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -14,6 +14,8 @@ class SettingsRepository {
   SettingsRepository(this.ref);
 
   final Ref ref;
+
+  AppLogger get _logger => ref.read(appLoggerProvider);
 
   Database get _db => ref.read(databaseProvider);
 
@@ -47,6 +49,7 @@ class SettingsRepository {
       raw,
       storeName: DBName.settings.name,
       key: key,
+      logger: _logger,
     );
     if (map == null) {
       return GeneralSettingsModel.initial();
@@ -56,11 +59,13 @@ class SettingsRepository {
     try {
       settings = GeneralSettingsModel.fromMap(map);
     } catch (error, stackTrace) {
-      if (kDebugMode) {
-        debugPrint(
-          'Falling back to default settings for key=$key: $error\n$stackTrace',
-        );
-      }
+      _logger.warn(
+        AppLogCategory.migration,
+        'Falling back to default settings',
+        context: {'store': DBName.settings.name, 'key': key},
+        error: error,
+        stackTrace: stackTrace,
+      );
       return GeneralSettingsModel.initial();
     }
 
