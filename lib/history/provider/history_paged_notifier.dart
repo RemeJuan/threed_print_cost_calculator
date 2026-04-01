@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 
@@ -77,6 +77,8 @@ class HistoryPagedState {
 class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
   int _loadGeneration = 0; // generation counter to prevent stale updates
 
+  AppLogger get _logger => ref.read(appLoggerProvider);
+
   @override
   HistoryPagedState build() => HistoryPagedState.initial();
 
@@ -133,6 +135,12 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       final pageEntries = <HistoryEntry>[];
 
       final q = state.query.trim();
+      _logger.debug(
+        AppLogCategory.provider,
+        'History page load started',
+        context: {'reset': reset, 'page': nextPage, 'hasQuery': q.isNotEmpty},
+      );
+
       if (q.isEmpty) {
         totalCount = await _historyRepository.countHistory();
         queryCount++;
@@ -167,8 +175,30 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         hasLoadedOnce: true,
         isStale: false,
       );
+      _logger.debug(
+        AppLogCategory.provider,
+        'History page load completed',
+        context: {
+          'reset': reset,
+          'page': nextPage,
+          'itemCount': pageEntries.length,
+          'totalLoaded': combined.length,
+          'hasMore': hasMore,
+          'hasQuery': q.isNotEmpty,
+        },
+      );
     } catch (e, st) {
-      if (kDebugMode) print('HistoryPagedNotifier._loadPage error: $e\n$st');
+      _logger.error(
+        AppLogCategory.provider,
+        'History page load failed',
+        context: {
+          'reset': reset,
+          'page': reset ? 0 : state.page + 1,
+          'hasQuery': state.query.trim().isNotEmpty,
+        },
+        error: e,
+        stackTrace: st,
+      );
       // Only update state for the generation that started this load — ignore
       // stale failures from earlier loads.
       if (generation != _loadGeneration) return;
