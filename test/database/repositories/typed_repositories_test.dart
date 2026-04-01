@@ -1,22 +1,40 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
+class _RecordingLogSink extends AppLogSink {
+  final events = <AppLogEvent>[];
+
+  @override
+  void log(AppLogEvent event) {
+    events.add(event);
+  }
+}
+
 void main() {
   late Database db;
   late ProviderContainer container;
+  late _RecordingLogSink sink;
 
   setUp(() async {
     db = await databaseFactoryMemory.openDatabase(
       'typed_repo_${DateTime.now().microsecondsSinceEpoch}.db',
     );
+    sink = _RecordingLogSink();
     container = ProviderContainer(
-      overrides: [databaseProvider.overrideWithValue(db)],
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        appLogSinkProvider.overrideWithValue(sink),
+        appLoggerConfigProvider.overrideWithValue(
+          const AppLoggerConfig(minLevel: AppLogLevel.debug),
+        ),
+      ],
     );
   });
 
@@ -46,6 +64,9 @@ void main() {
       expect(materials, hasLength(1));
       expect(materials.single.id, 'valid');
       expect(materials.single.name, 'PLA');
+      expect(sink.events, hasLength(1));
+      expect(sink.events.single.category, AppLogCategory.migration);
+      expect(sink.events.single.message, 'Skipping malformed database record');
     },
   );
 
