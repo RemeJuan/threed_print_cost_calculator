@@ -268,16 +268,16 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void applySingleTotalWeightToFirstRow() {
     if (state.materialUsages.isEmpty) return;
 
-    // Reset all other rows to 0 to avoid double-counting, then apply the
-    // total to the first row.
     final total = (state.printWeight.value ?? 0).toInt();
-    for (var i = 0; i < state.materialUsages.length; i++) {
-      if (i == 0) continue;
-      // Use updateMaterialUsageWeight to ensure state consistency
-      updateMaterialUsageWeight(i, 0);
-    }
+    final normalizedUsages = _normalizedMaterialUsagesForSingleTotalWeight(
+      state.materialUsages,
+      total,
+    );
 
-    updateMaterialUsageWeight(0, total);
+    state = state.copyWith(
+      materialUsages: normalizedUsages,
+      printWeight: NumberInput.dirty(value: total),
+    );
   }
 
   void updateHours(num value) {
