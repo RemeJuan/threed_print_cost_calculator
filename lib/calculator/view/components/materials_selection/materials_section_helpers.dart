@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_picker.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 /// Shows the material picker bottom sheet and updates the calculator state.
 /// Returns the selected material id or null if cancelled.
@@ -35,9 +36,8 @@ Future<String?> showMaterialPicker(
         child: MaterialPicker(
           materialsStream: materialsStream,
           onSelected: (material) {
-            final weight =
-                num.tryParse(material.weight.replaceAll(',', '.')) ?? 0;
-            final cost = num.tryParse(material.cost.replaceAll(',', '.')) ?? 0;
+            final weight = parseLocalizedNum(material.weight);
+            final cost = parseLocalizedNum(material.cost);
             final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
             final refRead = ref.read(calculatorProvider.notifier);

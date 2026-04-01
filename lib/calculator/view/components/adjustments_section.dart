@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class AdjustmentsSection extends HookConsumerWidget {
   final bool premium;
@@ -41,7 +42,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.labourRateLabel),
             onChanged: (value) async {
-              notifier.setLabourRate(num.tryParse(value) ?? 0);
+              notifier.setLabourRate(parseLocalizedNum(value));
               notifier.submitDebounced();
             },
           ),
@@ -56,7 +57,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             decoration: InputDecoration(labelText: l10n.labourTimeLabel),
             onChanged: (value) async {
               notifier
-                ..updateLabourTime(num.tryParse(value) ?? 0)
+                ..updateLabourTime(parseLocalizedNum(value))
                 ..submitDebounced();
             },
           ),

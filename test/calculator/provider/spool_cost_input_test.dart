@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 void main() {
   group('Spool Cost Input Test', () {
@@ -71,7 +72,7 @@ void main() {
 
       // Act - Simulate loading from saved data
       final updatedState = initialState.copyWith(
-        spoolCost: NumberInput.dirty(value: num.tryParse(savedValue)),
+        spoolCost: NumberInput.dirty(value: tryParseLocalizedNum(savedValue)),
         spoolCostText: savedValue,
       );
 

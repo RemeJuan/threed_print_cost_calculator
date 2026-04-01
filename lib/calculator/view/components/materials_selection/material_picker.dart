@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 /// Reusable material picker widget. Uses a `Stream<List<MaterialModel>>` so it
 /// updates live when the DB changes. Calls `onSelected` when the user picks
@@ -108,10 +109,8 @@ class MaterialPicker extends HookWidget {
                 itemCount: filtered.length,
                 itemBuilder: (context, index) {
                   final material = filtered[index];
-                  final weight =
-                      num.tryParse(material.weight.replaceAll(',', '.')) ?? 0;
-                  final cost =
-                      num.tryParse(material.cost.replaceAll(',', '.')) ?? 0;
+                  final weight = parseLocalizedNum(material.weight);
+                  final cost = parseLocalizedNum(material.cost);
                   final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
                   return ListTile(

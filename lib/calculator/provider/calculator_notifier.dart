@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorProvider =
     NotifierProvider<CalculatorProvider, CalculatorState>(
@@ -74,26 +75,26 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = CalculatorState(
       watt: NumberInput.dirty(value: state.watt.value),
       kwCost: NumberInput.dirty(
-        value: num.tryParse(settings.electricityCost.replaceAll(',', '.')),
+        value: tryParseLocalizedNum(settings.electricityCost),
       ),
       printWeight: NumberInput.dirty(value: state.printWeight.value),
       hours: NumberInput.dirty(value: state.hours.value),
       minutes: NumberInput.dirty(value: state.minutes.value),
       spoolWeight: NumberInput.dirty(
-        value: num.tryParse(spoolWeightVal['value'] as String),
+        value: tryParseLocalizedNum(spoolWeightVal['value']),
       ),
       spoolCost: NumberInput.dirty(
-        value: num.tryParse(spoolCostVal['value'] as String),
+        value: tryParseLocalizedNum(spoolCostVal['value']),
       ),
       spoolCostText: spoolCostVal['value'] as String,
       wearAndTear: NumberInput.dirty(
-        value: num.tryParse(settings.wearAndTear.replaceAll(',', '.')),
+        value: tryParseLocalizedNum(settings.wearAndTear),
       ),
       failureRisk: NumberInput.dirty(
-        value: num.tryParse(settings.failureRisk.replaceAll(',', '.')),
+        value: tryParseLocalizedNum(settings.failureRisk),
       ),
       labourRate: NumberInput.dirty(
-        value: num.tryParse(settings.labourRate.replaceAll(',', '.')),
+        value: tryParseLocalizedNum(settings.labourRate),
       ),
       labourTime: NumberInput.dirty(value: state.labourTime.value),
       materialUsages: state.materialUsages,
@@ -131,14 +132,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       materialSnapshot.key.toString(),
     );
 
-    // Normalize user-entered strings: trim and replace comma decimals with dot
-    final rawWeightStr = (material.weight).toString().trim().replaceAll(
-      ',',
-      '.',
-    );
-    final rawCostStr = (material.cost).toString().trim().replaceAll(',', '.');
-    final weight = num.tryParse(rawWeightStr) ?? 0;
-    final cost = num.tryParse(rawCostStr) ?? 0;
+    final weight = parseLocalizedNum(material.weight);
+    final cost = parseLocalizedNum(material.cost);
     final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
     state = state.copyWith(
@@ -155,23 +150,18 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   void updateWatt(String value) {
     state = state.copyWith(
-      watt: NumberInput.dirty(
-        value: num.tryParse(value.replaceAll(',', '.')) ?? 0,
-      ),
+      watt: NumberInput.dirty(value: parseLocalizedNum(value)),
     );
   }
 
   void updateKwCost(String value) {
     state = state.copyWith(
-      kwCost: NumberInput.dirty(
-        value: num.tryParse(value.replaceAll(',', '.')) ?? 0,
-      ),
+      kwCost: NumberInput.dirty(value: parseLocalizedNum(value)),
     );
   }
 
   void updatePrintWeight(String value) {
-    final normalized = value.trim().replaceAll(',', '.');
-    final parsed = (num.tryParse(normalized) ?? 0).toInt();
+    final parsed = parseLocalizedInt(value);
     final usages = [...state.materialUsages];
     if (usages.length == 1) {
       usages[0] = usages[0].copyWith(weightGrams: parsed);
@@ -300,7 +290,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         .read(calculatorHelpersProvider)
         .addOrUpdateRecord('spoolCost', value.toString());
     state = state.copyWith(
-      spoolCost: NumberInput.dirty(value: num.tryParse(value) ?? 0),
+      spoolCost: NumberInput.dirty(value: parseLocalizedNum(value)),
       spoolCostText: value,
     );
   }
