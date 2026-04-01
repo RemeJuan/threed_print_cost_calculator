@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
@@ -118,23 +117,15 @@ class MaterialForm extends HookConsumerWidget {
                       }
 
                       // Fetch the saved record and return the constructed MaterialModel
-                      final dbHelpers = ref.read(
-                        dbHelpersProvider(DBName.materials),
-                      );
-                      final snapshot = await dbHelpers.getRecord(
-                        key.toString(),
-                      );
+                      final material = await ref
+                          .read(materialsRepositoryProvider)
+                          .getMaterialById(key.toString());
 
-                      if (snapshot == null) {
+                      if (material == null) {
                         if (!context.mounted) return;
                         Navigator.of(context, rootNavigator: true).pop(null);
                         return;
                       }
-
-                      final material = MaterialModel.fromMap(
-                        snapshot.value as Map<String, dynamic>,
-                        snapshot.key.toString(),
-                      );
 
                       if (!context.mounted) return;
 

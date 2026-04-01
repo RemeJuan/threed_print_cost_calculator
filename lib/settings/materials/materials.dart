@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class Materials extends HookConsumerWidget {
@@ -14,100 +11,105 @@ class Materials extends HookConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final db = ref.read(databaseProvider);
-    final store = stringMapStoreFactory.store(DBName.materials.name);
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.materials));
+    final materialsRepository = ref.read(materialsRepositoryProvider);
     final l10n = S.of(context);
 
-    final query = store.query(finder: Finder(sortOrders: [SortOrder('name')]));
+    return ref
+        .watch(materialsStreamProvider)
+        .when(
+          data: (materials) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    itemCount: materials.length,
+                    itemBuilder: (_, index) {
+                      final data = materials[index];
+                      final key = data.id;
 
-    return StreamBuilder(
-      stream: query.onSnapshots(db),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Column(
-            children: [
-              SizedBox(
-                height: 100,
-                child: ListView.builder(
-                  itemCount: snapshot.data?.length ?? 0,
-                  itemBuilder: (_, index) {
-                    final item = snapshot.data![index].value;
-                    final key = snapshot.data![index].key;
-                    final data = MaterialModel.fromMap(item, key);
-
-                    return Slidable(
-                      key: ValueKey(key),
-                      endActionPane: ActionPane(
-                        motion: const ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (_) {
-                              dbHelpers.deleteRecord(key);
-                            },
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
-                            icon: Icons.delete,
-                          ),
-                          SlidableAction(
-                            onPressed: (_) {
-                              showDialog<void>(
-                                context: context,
-                                builder: (_) => MaterialForm(dbRef: key),
-                              );
-                            },
-                            backgroundColor: LIGHT_BLUE,
-                            foregroundColor: Colors.white,
-                            icon: Icons.edit,
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                data.name,
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(color: Colors.white),
-                              ),
-                              Text(
-                                data.color,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.titleSmall?.copyWith(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                data.cost,
-                                style: Theme.of(context).textTheme.titleMedium
-                                    ?.copyWith(color: Colors.white),
-                              ),
-                              Text(
-                                '${data.weight}${l10n.gramsSuffix}',
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.titleSmall?.copyWith(fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                      return Slidable(
+                        key: ValueKey(key),
+                        endActionPane: ActionPane(
+                          motion: const ScrollMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (_) {
+                                materialsRepository.deleteMaterial(key);
+                              },
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                            ),
+                            SlidableAction(
+                              onPressed: (_) {
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (_) => MaterialForm(dbRef: key),
+                                );
+                              },
+                              backgroundColor: LIGHT_BLUE,
+                              foregroundColor: Colors.white,
+                              icon: Icons.edit,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.name,
+                                  style: Theme.of(context).textTheme.titleMedium
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                Text(
+                                  data.color,
+                                  style: Theme.of(context).textTheme.titleSmall
+                                      ?.copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  data.cost,
+                                  style: Theme.of(context).textTheme.titleMedium
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                Text(
+                                  '${data.weight}${l10n.gramsSuffix}',
+                                  style: Theme.of(context).textTheme.titleSmall
+                                      ?.copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          );
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+              ],
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Failed to load materials: $error'),
+                const SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () => ref.invalidate(materialsStreamProvider),
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        );
   }
 }
