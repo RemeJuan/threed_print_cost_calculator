@@ -138,7 +138,7 @@ void main() {
       expect(state.debugUsedFallbackScan, isFalse);
 
       expect(
-        state.items.every((entry) => entry.value['printer'] == 'Prusa'),
+        state.items.every((entry) => entry.model.printer == 'Prusa'),
         isTrue,
       );
     },
@@ -153,7 +153,7 @@ void main() {
     expect(state.debugQueryCount, 2);
     expect(state.debugUsedFallbackScan, isFalse);
     expect(
-      state.items.map((entry) => entry.value['name']).toList(),
+      state.items.map((entry) => entry.model.name).toList(),
       containsAll(['Prusa Item 12', 'Ender Item 12']),
     );
   });
@@ -304,7 +304,7 @@ void main() {
     final state = container.read(historyPagedProvider);
     expect(state.items.length, 25);
     expect(state.page, 0);
-    expect(state.items.first.value['name'], 'Newest Record');
+    expect(state.items.first.model.name, 'Newest Record');
     expect(state.isStale, isFalse);
   });
 
@@ -341,7 +341,7 @@ void main() {
 
         final state = legacyContainer.read(historyPagedProvider);
         expect(state.items.length, 1);
-        expect(state.items.first.value['name'], 'Legacy Gear');
+        expect(state.items.first.model.name, 'Legacy Gear');
         expect(state.debugUsedFallbackScan, isFalse);
 
         final storedRecord = (await legacyStore.find(legacyDb)).single.value;
@@ -353,4 +353,14 @@ void main() {
       }
     },
   );
+
+  test('malformed history rows are skipped without cast failures', () async {
+    await StoreRef<String, Object?>('history').add(db, 'bad-row');
+
+    await container.read(historyPagedProvider.notifier).refresh();
+
+    final state = container.read(historyPagedProvider);
+    expect(state.error, isNull);
+    expect(state.items.every((entry) => entry.model.name.isNotEmpty), isTrue);
+  });
 }
