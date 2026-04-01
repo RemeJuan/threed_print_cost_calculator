@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 
 const int _pageSize = 25;
 
@@ -15,6 +15,7 @@ class HistoryPagedState {
   final String query;
   final int page;
   final int debugQueryCount;
+  final bool debugUsedFallbackScan;
 
   const HistoryPagedState({
     required this.items,
@@ -24,6 +25,7 @@ class HistoryPagedState {
     required this.query,
     required this.page,
     required this.debugQueryCount,
+    required this.debugUsedFallbackScan,
   });
 
   factory HistoryPagedState.initial() => const HistoryPagedState(
@@ -34,6 +36,7 @@ class HistoryPagedState {
     query: '',
     page: 0,
     debugQueryCount: 0,
+    debugUsedFallbackScan: false,
   );
 
   HistoryPagedState copyWith({
@@ -44,6 +47,7 @@ class HistoryPagedState {
     String? query,
     int? page,
     int? debugQueryCount,
+    bool? debugUsedFallbackScan,
   }) {
     return HistoryPagedState(
       items: items ?? this.items,
@@ -53,6 +57,8 @@ class HistoryPagedState {
       query: query ?? this.query,
       page: page ?? this.page,
       debugQueryCount: debugQueryCount ?? this.debugQueryCount,
+      debugUsedFallbackScan:
+          debugUsedFallbackScan ?? this.debugUsedFallbackScan,
     );
   }
 }
@@ -107,9 +113,10 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
 
       int totalCount = 0;
       var queryCount = 0;
+      var usedFallbackScan = false;
       final pageEntries = <MapEntry<dynamic, Map<String, dynamic>>>[];
 
-      final q = state.query.trim();
+      final q = normalizeHistorySearchValue(state.query);
       if (q.isEmpty) {
         // Empty query: do DB-side pagination (count + paged find)
         totalCount = await _store.count(_db);
@@ -128,40 +135,16 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
           pageEntries.add(MapEntry(r.key, value));
         }
       } else {
-        // Non-empty: prefer printer index if it returns matches
-        // Wrap ref.read to match ReaderFunc: a generic function that accepts an object
-        // and delegates to ref.read with the correct generic type.
-        final indexHelpers = PrinterIndexHelpers.fromRef(ref);
-        final indexKeys = await indexHelpers.getKeysMatchingPrinter(q);
+        final indexKeys = await HistorySearchIndexHelpers.fromRef(
+          ref,
+        ).getKeysMatchingQuery(q);
         queryCount++;
 
-        if (indexKeys.isNotEmpty) {
-          final allEntries = await _findEntriesByKeys(indexKeys);
-          queryCount++;
-          totalCount = allEntries.length;
-          final slice = allEntries.skip(offset).take(_pageSize).toList();
-          pageEntries.addAll(slice);
-        } else {
-          // No index matches; fall back to scanning all records and filter by name/printer
-          final all = await _store.find(
-            _db,
-            finder: Finder(sortOrders: [SortOrder('date', false)]),
-          );
-          queryCount++;
-          final qLower = q.toLowerCase();
-          final filtered = all.where((r) {
-            final item = r.value as Map<String, dynamic>;
-            final name = (item['name']?.toString() ?? '').toLowerCase();
-            final printer = (item['printer']?.toString() ?? '').toLowerCase();
-            return name.contains(qLower) || printer.contains(qLower);
-          }).toList();
-          totalCount = filtered.length;
-          for (final r in filtered.skip(offset).take(_pageSize)) {
-            pageEntries.add(
-              MapEntry(r.key, Map<String, dynamic>.from(r.value as Map)),
-            );
-          }
-        }
+        final allEntries = await _findEntriesByKeys(indexKeys);
+        queryCount++;
+        totalCount = allEntries.length;
+        final slice = allEntries.skip(offset).take(_pageSize).toList();
+        pageEntries.addAll(slice);
       }
 
       // Ensure generation matches before applying results — otherwise this load is stale
@@ -176,6 +159,7 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         hasMore: hasMore,
         page: nextPage,
         debugQueryCount: queryCount,
+        debugUsedFallbackScan: usedFallbackScan,
       );
     } catch (e, st) {
       if (kDebugMode) print('HistoryPagedNotifier._loadPage error: $e\n$st');
@@ -201,17 +185,15 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       return const <MapEntry<dynamic, Map<String, dynamic>>>[];
     }
 
-    final records = await _store.records(uniqueKeys).getSnapshots(_db);
+    final entries = <MapEntry<dynamic, Map<String, dynamic>>>[];
+    for (final key in uniqueKeys) {
+      final record = await _store.record(key).getSnapshot(_db);
+      if (record == null) continue;
 
-    final entries = records
-        .whereType<RecordSnapshot<Object?, Map<String, Object?>>>()
-        .map(
-          (record) => MapEntry(
-            record.key,
-            Map<String, dynamic>.from(record.value as Map),
-          ),
-        )
-        .toList();
+      entries.add(
+        MapEntry(record.key, Map<String, dynamic>.from(record.value as Map)),
+      );
+    }
 
     entries.sort((a, b) {
       final aDate = _parseDate(a.value['date']);
