@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -11,6 +10,7 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -21,6 +21,8 @@ final calculatorProvider =
 
 class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
+
+  AppLogger get _logger => ref.read(appLoggerProvider);
 
   @override
   CalculatorState build() {
@@ -291,9 +293,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       // Only update local state after successful DB write
       state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
     } catch (e, st) {
-      // Log and rethrow so callers can handle or await the failure
-      // Using print for logging to avoid adding new logging dependencies
-      if (kDebugMode) print('Error updating wearAndTear: $e\n$st');
+      _logger.error(
+        AppLogCategory.provider,
+        'Failed to persist wear and tear setting',
+        context: {'setting': 'wearAndTear'},
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -309,7 +315,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       // Only update local state after successful DB write
       state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
     } catch (e, st) {
-      if (kDebugMode) print('Error updating failureRisk: $e\n$st');
+      _logger.error(
+        AppLogCategory.provider,
+        'Failed to persist failure risk setting',
+        context: {'setting': 'failureRisk'},
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -325,7 +337,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       // Only update local state after successful DB write
       state = state.copyWith(labourRate: NumberInput.dirty(value: value));
     } catch (e, st) {
-      if (kDebugMode) print('Error updating labourRate: $e\n$st');
+      _logger.error(
+        AppLogCategory.provider,
+        'Failed to persist labour rate setting',
+        context: {'setting': 'labourRate'},
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
