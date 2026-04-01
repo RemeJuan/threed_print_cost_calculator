@@ -1,35 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
-/// Reusable material picker widget. Uses a `Stream<List<MaterialModel>>` so it
-/// updates live when the DB changes. Calls `onSelected` when the user picks
-/// or creates a material. The picker does not pop navigation itself; the
-/// caller should handle closing the bottom sheet if desired.
-class MaterialPicker extends HookWidget {
-  const MaterialPicker({
-    required this.materialsStream,
-    required this.onSelected,
-    this.excludedIds,
-    super.key,
-  });
+/// Reusable material picker widget. Uses the shared materials provider so it
+/// updates live without creating duplicate listeners.
+class MaterialPicker extends HookConsumerWidget {
+  const MaterialPicker({required this.onSelected, this.excludedIds, super.key});
 
-  final Stream<List<MaterialModel>> materialsStream;
   final ValueChanged<MaterialModel> onSelected;
   final Set<String>? excludedIds;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final query = useState('');
     final l10n = S.of(context);
+    final materialsAsync = ref.watch(materialsStreamProvider);
 
-    return StreamBuilder<List<MaterialModel>>(
-      stream: materialsStream,
-      builder: (context, snapshot) {
-        final items = snapshot.data ?? const <MaterialModel>[];
+    return materialsAsync.when(
+      data: (items) {
         final filtered = items.where((item) {
           final q = query.value.toLowerCase();
           final matchesQuery =
@@ -145,6 +138,13 @@ class MaterialPicker extends HookWidget {
           ],
         );
       },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text('Failed to load materials: $error'),
+        ),
+      ),
     );
   }
 }
