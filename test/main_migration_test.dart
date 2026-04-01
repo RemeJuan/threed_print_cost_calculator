@@ -35,4 +35,36 @@ void main() {
       expect((usages.first as Map)['weightGrams'], 120);
     },
   );
+
+  test(
+    'startup migration parses localized string weights for old history records',
+    () async {
+      final db = await databaseFactoryMemory.openDatabase(
+        'migration_localized_test.db',
+      );
+      addTearDown(() => db.close());
+
+      final historyStore = stringMapStoreFactory.store('history');
+      final key = await historyStore.add(db, {
+        'name': 'Localized print',
+        'material': 'PLA Black',
+        'weight': ' 12,5 ',
+        'totalCost': 10,
+        'riskCost': 0,
+        'filamentCost': 5,
+        'electricityCost': 3,
+        'labourCost': 2,
+        'date': DateTime.now().toIso8601String(),
+        'printer': 'Printer A',
+        'timeHours': '01:00',
+      });
+
+      await startupMigration(db);
+
+      final migrated =
+          await historyStore.record(key).get(db) as Map<String, dynamic>;
+      final usages = migrated['materialUsages'] as List;
+      expect((usages.first as Map)['weightGrams'], 12);
+    },
+  );
 }

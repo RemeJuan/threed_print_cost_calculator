@@ -24,6 +24,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 import 'app/app.dart';
 import 'database/database.dart';
@@ -123,17 +124,10 @@ Future<void> startupMigration(Database db) async {
         continue;
       }
 
-      // Robust weight parsing: accept num, String, null; default to 0
-      int parsedWeight = 0;
       final rawWeight = value['weight'];
-      if (rawWeight is num) {
-        parsedWeight = rawWeight.toInt();
-      } else if (rawWeight is String && rawWeight.trim().isNotEmpty) {
-        final parsed = num.tryParse(rawWeight.replaceAll(',', '.'));
-        parsedWeight = parsed?.toInt() ?? 0;
-      } else {
-        parsedWeight = 0;
-      }
+      final parsedWeight = rawWeight is num
+          ? rawWeight.toInt()
+          : parseLocalizedInt(rawWeight);
 
       final migrated = {
         ...value,
