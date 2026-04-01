@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
+import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 
 final dbHelpersProvider = Provider.family<DataBaseHelpers, DBName>(
   (ref, name) => DataBaseHelpers(ref, name),
@@ -54,7 +55,7 @@ class DataBaseHelpers {
       final printerHelpers = PrinterIndexHelpers.fromRef(ref);
       final searchHelpers = HistorySearchIndexHelpers.fromRef(ref);
 
-      return db.transaction((txn) async {
+      final key = await db.transaction((txn) async {
         final key = await store.add(txn, payload);
         final printer = (payload['printer']?.toString() ?? '').trim();
         if (printer.isNotEmpty) {
@@ -70,6 +71,9 @@ class DataBaseHelpers {
 
         return key;
       });
+
+      ref.read(historyPagedProvider.notifier).markStale();
+      return key;
     } catch (e) {
       BotToast.showText(text: 'Error saving print');
       rethrow;
@@ -111,6 +115,8 @@ class DataBaseHelpers {
           newPrinter: merged[kHistorySearchPrinterField]?.toString() ?? '',
           recordKey: key,
         );
+
+        ref.read(historyPagedProvider.notifier).markStale();
       } else {
         await store.record(key).update(db, data);
       }
@@ -180,6 +186,8 @@ class DataBaseHelpers {
             }
           }
         });
+
+        ref.read(historyPagedProvider.notifier).markStale();
       }
     } catch (e) {
       BotToast.showText(text: 'Error removing record');
