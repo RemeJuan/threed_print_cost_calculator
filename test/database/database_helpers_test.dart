@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
+import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void main() {
@@ -60,4 +61,28 @@ void main() {
       expect(keys.contains(resolvedKey), isFalse);
     },
   );
+
+  test('insertRecord marks paged history state stale', () async {
+    final dbHelpers = container.read(dbHelpersProvider(DBName.history));
+    final notifier = container.read(historyPagedProvider.notifier);
+
+    await notifier.refreshIfNeeded();
+    expect(container.read(historyPagedProvider).isStale, isFalse);
+
+    await dbHelpers.insertRecord({
+      'name': 'Newest Print',
+      'printer': 'Prusa MK4',
+      'date': DateTime.now().toUtc().toIso8601String(),
+      'material': 'PLA',
+      'weight': 25,
+      'timeHours': '01:00',
+      'totalCost': 2.0,
+      'riskCost': 0.0,
+      'filamentCost': 0.0,
+      'electricityCost': 0.0,
+      'labourCost': 0.0,
+    });
+
+    expect(container.read(historyPagedProvider).isStale, isTrue);
+  });
 }
