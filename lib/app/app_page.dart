@@ -52,10 +52,10 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
     useEffect(() {
       if (!context.mounted) return;
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(calculatorProvider.notifier)
-          ..init()
-          ..submit();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        final notifier = ref.read(calculatorProvider.notifier);
+        await notifier.init();
+        notifier.submit();
       });
 
       return null;

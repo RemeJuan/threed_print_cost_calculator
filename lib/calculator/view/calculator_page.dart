@@ -63,10 +63,9 @@ class CalculatorPage extends HookConsumerWidget {
     // avoid prop drilling. MaterialsSection will create its own controllers.
 
     useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifier
-          ..init()
-          ..submit();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await notifier.init();
+        notifier.submit();
       });
       return null;
     }, []);
