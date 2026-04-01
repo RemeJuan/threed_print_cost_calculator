@@ -236,6 +236,17 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
   }
 
+  List<MaterialUsageInput> _normalizedMaterialUsagesForSingleTotalWeight(
+    List<MaterialUsageInput> usages,
+    int totalWeight,
+  ) {
+    if (usages.isEmpty) return usages;
+
+    return List<MaterialUsageInput>.generate(usages.length, (index) {
+      return usages[index].copyWith(weightGrams: index == 0 ? totalWeight : 0);
+    });
+  }
+
   // New helper: update an entire material usage at an index
   void updateMaterialUsage(int index, MaterialUsageInput usage) {
     if (index < 0 || index >= state.materialUsages.length) return;
