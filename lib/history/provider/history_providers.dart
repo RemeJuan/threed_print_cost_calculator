@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 
@@ -16,31 +17,41 @@ class HistoryQueryNotifier extends Notifier<String> {
   void setQuery(String q) => state = q;
 }
 
-// Returns the list of history RecordSnapshot filtered by the current query.
-// It reads the database and applies the same name/printer filtering as the UI.
 final historyRecordsProvider = FutureProvider.autoDispose<List<RecordSnapshot>>(
   (ref) async {
-    // Use the DB helpers provider so we avoid magic string store names and get
-    // a centralized place to access the DB.
     final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
-    final store = stringMapStoreFactory.store(DBName.history.name);
+    final store =
+        stringMapStoreFactory.store(DBName.history.name)
+            as StoreRef<Object?, Map<String, Object?>>;
 
     final query = ref.watch(historyQueryProvider);
+    final normalizedQuery = normalizeHistorySearchValue(query);
 
-    final records = await store.find(
-      dbHelpers.db,
-      finder: Finder(sortOrders: [SortOrder('date', false)]),
-    );
+    if (normalizedQuery.isEmpty) {
+      return store.find(
+        dbHelpers.db,
+        finder: Finder(sortOrders: [SortOrder('date', false)]),
+      );
+    }
 
-    final q = query.trim().toLowerCase();
-    if (q.isEmpty) return records;
+    final keys = await HistorySearchIndexHelpers.fromRef(
+      ref,
+    ).getKeysMatchingQuery(normalizedQuery);
+    if (keys.isEmpty) return const <RecordSnapshot>[];
 
-    return records.where((r) {
-      final item = r.value as Map<String, dynamic>;
-      final data = HistoryModel.fromMap(item);
-      final name = data.name.toLowerCase();
-      final printer = data.printer.toLowerCase();
-      return name.contains(q) || printer.contains(q);
-    }).toList();
+    final records = <RecordSnapshot>[];
+    for (final key in keys) {
+      final snapshot = await store.record(key).getSnapshot(dbHelpers.db);
+      if (snapshot != null) {
+        records.add(snapshot);
+      }
+    }
+
+    records.sort((a, b) {
+      final aDate = HistoryModel.fromMap(a.value as Map<String, dynamic>).date;
+      final bDate = HistoryModel.fromMap(b.value as Map<String, dynamic>).date;
+      return bDate.compareTo(aDate);
+    });
+    return records;
   },
 );
