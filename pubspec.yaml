@@ -32,14 +32,15 @@ dependencies:
   path:
   path_provider: 2.1.5
   platform_info: 5.0.0
-  purchases_flutter: 9.15.1
-  purchases_ui_flutter: 9.15.1
+  purchases_flutter: 9.16.0
+  purchases_ui_flutter: 9.16.0
   rate_my_app: 2.3.2
   riverpod: 3.2.1
   sembast: 3.8.6
   shared_preferences: 2.5.5
   share_plus: 12.0.2
   url_launcher: 6.3.2
+  shorebird_code_push: 2.0.5
 
 dev_dependencies:
   bloc_test: 10.0.0

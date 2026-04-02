@@ -801,18 +801,18 @@ packages:
     dependency: "direct main"
     description:
       name: purchases_flutter
-      sha256: "8513d0750e671378d21b7ac1c72dd475661a9d6c139c714b232049d7483b2e67"
+      sha256: c344ddc799151536fa091592d0597616435559684d3efe45f70ecae2b3e205be
       url: "https://pub.dev"
     source: hosted
-    version: "9.15.1"
+    version: "9.16.0"
   purchases_ui_flutter:
     dependency: "direct main"
     description:
       name: purchases_ui_flutter
-      sha256: "5d4acb408d781fe738673fbafc5364038ac1eb2a19f181ea2b568abca76a404d"
+      sha256: "0b596e2b8536616bd526fef6ec8e12baa676db8c59ebe7ee29187328cbda8654"
       url: "https://pub.dev"
     source: hosted
-    version: "9.15.1"
+    version: "9.16.0"
   rate_my_app:
     dependency: "direct main"
     description:
@@ -949,6 +949,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  shorebird_code_push:
+    dependency: "direct main"
+    description:
+      name: shorebird_code_push
+      sha256: "82203f39a66c78548da944dbe4079c2aa2a60fa5bc1105ed707b144c94f04349"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
