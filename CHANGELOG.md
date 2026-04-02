@@ -1,3 +1,11 @@
+## [2.5.2] - 2026-04-02
+### Fixed
+- Fixed calculator totals not recalculating when switching from a priced material to a zero-cost material.
+- Synced selected material values with spool weight/cost and single-material usage state to prevent stale filament totals.
+
+### Added
+- Added regression coverage for material-selection recalculation paths, including non-zero → zero and zero → non-zero transitions.
+
 ## [2.5.0] - 2026-03-03
 ### Added
 - Multi-material support for premium users, including picker and list components.
@@ -75,6 +83,7 @@
 ### Added
 - Added in-app update checker
 
+[2.5.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.1...2.5.2
 [2.5.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.5.0
 [2.4.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.4.1
 [2.2.14]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.2.13...2.2.14
