@@ -125,6 +125,7 @@ class GeneralSettings extends HookConsumerWidget {
         children: [
           Expanded(
             child: FocusSafeTextField(
+              key: const ValueKey<String>('settings.electricityCost.input'),
               controller: electricityController,
               externalText: data.electricityCost.toString(),
               focusNode: electricityFocus,
@@ -141,6 +142,7 @@ class GeneralSettings extends HookConsumerWidget {
           const SizedBox(width: 16),
           Expanded(
             child: FocusSafeTextField(
+              key: const ValueKey<String>('settings.generalWattage.input'),
               controller: wattController,
               externalText: data.wattage.toString(),
               focusNode: wattFocus,
