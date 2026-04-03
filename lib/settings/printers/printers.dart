@@ -59,21 +59,25 @@ class Printers extends HookConsumerWidget {
                           ],
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              key: ValueKey<String>(
-                                'settings.printers.item.$index.name',
+                            Expanded(
+                              child: Text(
+                                key: ValueKey<String>(
+                                  'settings.printers.item.$index.name',
+                                ),
+                                data.name,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(color: Colors.white),
                               ),
-                              data.name,
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(color: Colors.white),
                             ),
+                            const SizedBox(width: 12),
                             Text(
                               key: ValueKey<String>(
                                 'settings.printers.item.$index.summary',
                               ),
                               '${data.bedSize} (${data.wattage}${l10n.wattsSuffix})',
+                              overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
                           ],
