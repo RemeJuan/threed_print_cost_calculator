@@ -46,6 +46,7 @@ class MaterialForm extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.materials.name.input'),
                 controller: nameController,
                 externalText: state.name.value,
                 focusNode: nameFocus,
@@ -55,6 +56,7 @@ class MaterialForm extends HookConsumerWidget {
               ),
 
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.materials.color.input'),
                 controller: colorController,
                 externalText: state.color.value,
                 focusNode: colorFocus,
@@ -64,6 +66,7 @@ class MaterialForm extends HookConsumerWidget {
               ),
 
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.materials.weight.input'),
                 controller: weightController,
                 externalText: state.weight.value != null
                     ? state.weight.value.toString()
@@ -78,6 +81,7 @@ class MaterialForm extends HookConsumerWidget {
               ),
 
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.materials.cost.input'),
                 controller: costController,
                 externalText: state.cost.value != null
                     ? state.cost.value.toString()
@@ -99,6 +103,9 @@ class MaterialForm extends HookConsumerWidget {
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
+                    key: const ValueKey<String>(
+                      'settings.materials.save.button',
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: DEEP_BLUE,
                       textStyle: Theme.of(
