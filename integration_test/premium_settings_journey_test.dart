@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 
 import 'helpers/integration_test_harness.dart';
+import 'helpers/integration_test_ui.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +27,7 @@ void main() {
     addTearDown(harness.dispose);
 
     await tester.launchHarnessApp(harness);
-    await _tapByKey(tester, 'nav.settings.button');
+    await tester.tapByKey('nav.settings.button');
 
     expect(
       find.byKey(const ValueKey<String>('settings.general.section')),
@@ -46,215 +46,133 @@ void main() {
       findsOneWidget,
     );
 
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.electricityCost.input',
       electricityCostPerKwh,
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.generalWattage.input',
       generalWattage,
     );
-    await _settleDebounce(tester);
+    await tester.settleDebounce();
 
-    await _tapByKey(tester, 'settings.printers.section');
-    await _tapByKey(tester, 'settings.printers.add.button');
-    await _enterTextByKey(tester, 'settings.printers.name.input', printerName);
-    await _enterTextByKey(
-      tester,
+    await tester.tapByKey('settings.printers.section');
+    await tester.tapByKey('settings.printers.add.button');
+    await tester.enterTextByKey('settings.printers.name.input', printerName);
+    await tester.enterTextByKey(
       'settings.printers.bedSize.input',
       printerBedSize,
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.printers.wattage.input',
       generalWattage,
     );
-    await _tapByKey(tester, 'settings.printers.save.button');
+    await tester.tapByKey('settings.printers.save.button');
 
-    expect(_textFromKey(tester, 'settings.printers.item.0.name'), printerName);
+    expect(tester.textFromKey('settings.printers.item.0.name'), printerName);
     expect(
-      _textFromKey(tester, 'settings.printers.item.0.summary'),
+      tester.textFromKey('settings.printers.item.0.summary'),
       contains(printerBedSize),
     );
     expect(
-      _textFromKey(tester, 'settings.printers.item.0.summary'),
+      tester.textFromKey('settings.printers.item.0.summary'),
       contains('120'),
     );
 
-    await _tapByKey(tester, 'settings.materials.section');
-    await _tapByKey(tester, 'settings.materials.add.button');
-    await _enterTextByKey(
-      tester,
-      'settings.materials.name.input',
-      materialName,
-    );
-    await _enterTextByKey(
-      tester,
+    await tester.tapByKey('settings.materials.section');
+    await tester.tapByKey('settings.materials.add.button');
+    await tester.enterTextByKey('settings.materials.name.input', materialName);
+    await tester.enterTextByKey(
       'settings.materials.color.input',
       materialColor,
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.materials.weight.input',
       materialWeight,
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.materials.cost.input',
       materialCostPerKg,
     );
-    await _tapByKey(tester, 'settings.materials.save.button');
+    await tester.tapByKey('settings.materials.save.button');
 
+    expect(tester.textFromKey('settings.materials.item.0.name'), materialName);
     expect(
-      _textFromKey(tester, 'settings.materials.item.0.name'),
-      materialName,
-    );
-    expect(
-      _textFromKey(tester, 'settings.materials.item.0.color'),
+      tester.textFromKey('settings.materials.item.0.color'),
       materialColor,
     );
     expect(
-      _numberFromTextKey(tester, 'settings.materials.item.0.cost'),
+      tester.numberFromTextKey('settings.materials.item.0.cost'),
       closeTo(200, 0.001),
     );
     expect(
-      _numberFromTextKey(tester, 'settings.materials.item.0.weight'),
+      tester.numberFromTextKey('settings.materials.item.0.weight'),
       closeTo(1000, 0.001),
     );
 
-    await _tapByKey(tester, 'settings.workCost.section');
-    await _scrollSettingsUntilVisible(
-      tester,
-      'settings.workCost.wearAndTear.input',
-    );
+    await tester.tapByKey('settings.workCost.section');
+    await tester.scrollUntilKeyVisible('settings.workCost.wearAndTear.input');
     expect(
       find.byKey(const ValueKey<String>('settings.workCost.wearAndTear.input')),
       findsOneWidget,
     );
     expect(find.text('Premium users only:'), findsNothing);
 
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.workCost.wearAndTear.input',
       wearAndTear,
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.workCost.failureRisk.input',
       failureRisk,
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.workCost.labourRate.input',
       labourRate,
     );
-    await _settleDebounce(tester);
+    await tester.settleDebounce();
 
-    await _tapByKey(tester, 'nav.calculator.button');
-    await _tapByKey(tester, 'nav.settings.button');
+    await tester.tapByKey('nav.calculator.button');
+    await tester.tapByKey('nav.settings.button');
 
-    await _scrollSettingsUntilVisible(tester, 'settings.general.section');
-    await _tapByKey(tester, 'settings.general.section');
+    await tester.scrollUntilKeyVisible('settings.general.section');
+    await tester.tapByKey('settings.general.section');
     expect(
-      _focusSafeFieldText(tester, 'settings.electricityCost.input'),
+      tester.focusSafeFieldText('settings.electricityCost.input'),
       anyOf('3.0', '3.00'),
     );
     expect(
-      _focusSafeFieldText(tester, 'settings.generalWattage.input'),
+      tester.focusSafeFieldText('settings.generalWattage.input'),
       generalWattage,
     );
 
-    await _tapByKey(tester, 'settings.printers.section');
-    expect(_textFromKey(tester, 'settings.printers.item.0.name'), printerName);
+    await tester.tapByKey('settings.printers.section');
+    expect(tester.textFromKey('settings.printers.item.0.name'), printerName);
     expect(
-      _textFromKey(tester, 'settings.printers.item.0.summary'),
+      tester.textFromKey('settings.printers.item.0.summary'),
       contains(printerBedSize),
     );
 
-    await _tapByKey(tester, 'settings.materials.section');
+    await tester.tapByKey('settings.materials.section');
+    expect(tester.textFromKey('settings.materials.item.0.name'), materialName);
     expect(
-      _textFromKey(tester, 'settings.materials.item.0.name'),
-      materialName,
-    );
-    expect(
-      _numberFromTextKey(tester, 'settings.materials.item.0.cost'),
+      tester.numberFromTextKey('settings.materials.item.0.cost'),
       closeTo(200, 0.001),
     );
 
-    await _tapByKey(tester, 'settings.workCost.section');
-    await _scrollSettingsUntilVisible(
-      tester,
-      'settings.workCost.wearAndTear.input',
-    );
+    await tester.tapByKey('settings.workCost.section');
+    await tester.scrollUntilKeyVisible('settings.workCost.wearAndTear.input');
     expect(
-      _focusSafeFieldText(tester, 'settings.workCost.wearAndTear.input'),
+      tester.focusSafeFieldText('settings.workCost.wearAndTear.input'),
       anyOf('1.5', '1.50'),
     );
     expect(
-      _focusSafeFieldText(tester, 'settings.workCost.failureRisk.input'),
+      tester.focusSafeFieldText('settings.workCost.failureRisk.input'),
       anyOf('10.0', '10.00'),
     );
     expect(
-      _focusSafeFieldText(tester, 'settings.workCost.labourRate.input'),
+      tester.focusSafeFieldText('settings.workCost.labourRate.input'),
       anyOf('25.0', '25.00'),
     );
   });
-}
-
-Future<void> _tapByKey(WidgetTester tester, String key) async {
-  final finder = find.byKey(ValueKey<String>(key));
-  await tester.ensureVisible(finder);
-  await tester.tap(finder);
-  await tester.pumpAndSettle();
-}
-
-Future<void> _enterTextByKey(
-  WidgetTester tester,
-  String key,
-  String value,
-) async {
-  final finder = find.byKey(ValueKey<String>(key));
-  await tester.ensureVisible(finder);
-  await tester.tap(finder);
-  await tester.pumpAndSettle();
-  await tester.enterText(finder, value);
-  await tester.pump();
-}
-
-Future<void> _scrollSettingsUntilVisible(
-  WidgetTester tester,
-  String key,
-) async {
-  final finder = find.byKey(ValueKey<String>(key));
-  await tester.scrollUntilVisible(
-    finder,
-    150,
-    scrollable: find.byType(Scrollable).first,
-  );
-  await tester.pumpAndSettle();
-}
-
-Future<void> _settleDebounce(WidgetTester tester) async {
-  await tester.pump(const Duration(milliseconds: 500));
-  await tester.pumpAndSettle();
-}
-
-String _focusSafeFieldText(WidgetTester tester, String key) {
-  final widget = tester.widget<FocusSafeTextField>(
-    find.byKey(ValueKey<String>(key)),
-  );
-  return widget.controller.text;
-}
-
-String _textFromKey(WidgetTester tester, String key) {
-  final widget = tester.widget<Text>(find.byKey(ValueKey<String>(key)));
-  return widget.data ?? '';
-}
-
-double _numberFromTextKey(WidgetTester tester, String key) {
-  return double.parse(
-    _textFromKey(tester, key).replaceAll(RegExp(r'[^0-9.\-]'), ''),
-  );
 }
