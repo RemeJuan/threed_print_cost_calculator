@@ -28,6 +28,7 @@ class SaveForm extends HookConsumerWidget {
         children: [
           Expanded(
             child: TextField(
+              key: const ValueKey<String>('calculator.save.name.input'),
               decoration: InputDecoration(hintText: l10n.printNameHint),
               onChanged: (value) {
                 name.value = value;
@@ -35,6 +36,7 @@ class SaveForm extends HookConsumerWidget {
             ),
           ),
           IconButton(
+            key: const ValueKey<String>('calculator.save.confirm.button'),
             onPressed: name.value.isEmpty
                 ? null
                 : () async {
@@ -117,6 +119,7 @@ class SaveForm extends HookConsumerWidget {
             icon: const Icon(Icons.save),
           ),
           IconButton(
+            key: const ValueKey<String>('calculator.save.cancel.button'),
             onPressed: () {
               showSave.value = false;
             },
