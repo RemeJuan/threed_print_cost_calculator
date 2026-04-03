@@ -79,6 +79,7 @@ class AccordionMenu extends HookConsumerWidget {
               Material(
                 color: Colors.transparent,
                 child: InkWell(
+                  key: item.headerKey,
                   onTap: item.isLocked
                       ? null
                       : () => ref
@@ -123,6 +124,7 @@ class AccordionMenu extends HookConsumerWidget {
               AnimatedCrossFade(
                 firstChild: const SizedBox.shrink(),
                 secondChild: Padding(
+                  key: item.bodyKey,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 8,

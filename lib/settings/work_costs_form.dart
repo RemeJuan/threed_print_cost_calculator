@@ -139,6 +139,9 @@ class WorkCostsSettings extends HookConsumerWidget {
             child: Column(
               children: [
                 FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.workCost.wearAndTear.input',
+                  ),
                   controller: wearController,
                   externalText: wearText,
                   keyboardType: const TextInputType.numberWithOptions(
@@ -164,6 +167,9 @@ class WorkCostsSettings extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.workCost.failureRisk.input',
+                  ),
                   controller: failureController,
                   externalText: data.failureRisk.toString(),
                   focusNode: failureFocus,
@@ -189,6 +195,9 @@ class WorkCostsSettings extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.workCost.labourRate.input',
+                  ),
                   controller: labourController,
                   externalText: data.labourRate.toString(),
                   focusNode: labourFocus,

@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 class AccordionItem {
   final Widget header;
   final Widget body;
+  final Key? headerKey;
+  final Key? bodyKey;
   final bool initiallyExpanded;
 
   /// If true the item is locked/disabled: it will be shown expanded by
@@ -20,6 +22,8 @@ class AccordionItem {
   AccordionItem({
     required this.header,
     required this.body,
+    this.headerKey,
+    this.bodyKey,
     this.initiallyExpanded = false,
     this.isLocked = false,
     this.action,

@@ -29,6 +29,8 @@ class SettingsPage extends ConsumerWidget {
         AccordionMenu(
           items: [
             AccordionItem(
+              headerKey: const ValueKey<String>('settings.general.section'),
+              bodyKey: const ValueKey<String>('settings.general.body'),
               header: Text("General", style: style),
               body: const GeneralSettings(),
               initiallyExpanded: true,
@@ -36,24 +38,32 @@ class SettingsPage extends ConsumerWidget {
             ),
             if (isPremium) ...[
               AccordionItem(
+                headerKey: const ValueKey<String>('settings.printers.section'),
+                bodyKey: const ValueKey<String>('settings.printers.body'),
                 header: Text(l10n.printersHeader, style: style),
                 body: const Printers(),
                 action: _action(
                   context,
                   const AddPrinter(),
                   const Icon(Icons.add),
+                  const ValueKey<String>('settings.printers.add.button'),
                 ),
               ),
               AccordionItem(
+                headerKey: const ValueKey<String>('settings.materials.section'),
+                bodyKey: const ValueKey<String>('settings.materials.body'),
                 header: Text(l10n.materialsHeader, style: style),
                 body: const Materials(),
                 action: _action(
                   context,
                   const MaterialForm(),
                   const Icon(Icons.add),
+                  const ValueKey<String>('settings.materials.add.button'),
                 ),
               ),
               AccordionItem(
+                headerKey: const ValueKey<String>('settings.workCost.section'),
+                bodyKey: const ValueKey<String>('settings.workCost.body'),
                 header: Text(l10n.workCostsLabel, style: style),
                 body: const WorkCostsSettings(),
               ),
@@ -64,8 +74,9 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  Widget _action(BuildContext context, Widget widget, Widget icon) {
+  Widget _action(BuildContext context, Widget widget, Widget icon, Key key) {
     return IconButton(
+      key: key,
       onPressed: () async {
         await showDialog<void>(context: context, builder: (_) => widget);
       },
