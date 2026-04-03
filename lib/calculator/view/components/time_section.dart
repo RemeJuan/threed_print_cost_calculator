@@ -23,6 +23,7 @@ class TimeSection extends HookConsumerWidget {
             final currentHours = (state.hours.value ?? 0).toInt();
             final currentMinutes = (state.minutes.value ?? 0).toInt();
             return GestureDetector(
+              key: const ValueKey<String>('calculator.duration.button'),
               onTap: () async {
                 int selectedHours = currentHours;
                 int selectedMinutes = currentMinutes;
