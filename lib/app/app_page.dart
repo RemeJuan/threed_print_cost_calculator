@@ -94,7 +94,10 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
         },
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: const Icon(Icons.calculate),
+            icon: const Icon(
+              Icons.calculate,
+              key: ValueKey<String>('nav.calculator.button'),
+            ),
             label: l10n.calculatorNavLabel,
           ),
           if (premium.value)
@@ -103,7 +106,10 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
               label: l10n.historyNavLabel,
             ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.settings),
+            icon: const Icon(
+              Icons.settings,
+              key: ValueKey<String>('nav.settings.button'),
+            ),
             label: l10n.settingsNavLabel,
           ),
         ],
