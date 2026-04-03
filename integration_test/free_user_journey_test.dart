@@ -8,6 +8,9 @@ import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void main() {
@@ -40,6 +43,15 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(db),
           sharedPreferencesProvider.overrideWithValue(prefs),
+          purchasesGatewayProvider.overrideWithValue(
+            _FakePurchasesGateway(
+              const PremiumState(
+                isPremium: false,
+                isLoading: false,
+                userId: 'integration-free',
+              ),
+            ),
+          ),
         ],
         child: const App(),
       ),
@@ -133,6 +145,21 @@ void main() {
 class _NoopAnalyticsService implements AnalyticsService {
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {}
+}
+
+class _FakePurchasesGateway implements PurchasesGateway {
+  _FakePurchasesGateway(this._premiumState);
+
+  final PremiumState _premiumState;
+
+  @override
+  void dispose() {}
+
+  @override
+  Future<PremiumState> fetchPremiumState() async => _premiumState;
+
+  @override
+  Stream<PremiumState> watchPremiumState() => const Stream.empty();
 }
 
 Future<void> _tapByKey(WidgetTester tester, String key) async {

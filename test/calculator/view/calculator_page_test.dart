@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -14,7 +15,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockCalculatorNotifier mockCalculatorProvider;
-  late MockSharedPreferences mockSharedPreferences;
+  late SharedPreferences sharedPreferences;
 
   setUpAll(() async {
     await setupTest();
@@ -22,14 +23,15 @@ void main() {
 
   setUp(() {
     mockCalculatorProvider = MockCalculatorNotifier();
-    mockSharedPreferences = MockSharedPreferences();
+    SharedPreferences.setMockInitialValues({});
   });
 
   group('CalculatorPage', () {
     testWidgets('renders CalculatorView', (tester) async {
+      sharedPreferences = await SharedPreferences.getInstance();
       final db = await tester.pumpApp(const CalculatorPage(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
-        sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ]);
       addTearDown(() => db.close());
       await tester.pumpAndSettle();
@@ -39,9 +41,10 @@ void main() {
     testWidgets(
       'add material -> select -> row appears and remove updates total',
       (tester) async {
+        sharedPreferences = await SharedPreferences.getInstance();
         final db = await tester.pumpApp(
-          const Scaffold(body: MaterialsSection(premium: true)),
-          [sharedPreferencesProvider.overrideWithValue(mockSharedPreferences)],
+          const Scaffold(body: MaterialsSection()),
+          [sharedPreferencesProvider.overrideWithValue(sharedPreferences)],
         );
         addTearDown(() => db.close());
 

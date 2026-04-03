@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -18,7 +19,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockCalculatorNotifier mockCalculatorProvider;
-  late MockSharedPreferences mockSharedPreferences;
+  late SharedPreferences sharedPreferences;
 
   setUpAll(() async {
     await setupTest();
@@ -26,14 +27,15 @@ void main() {
 
   setUp(() {
     mockCalculatorProvider = MockCalculatorNotifier();
-    mockSharedPreferences = MockSharedPreferences();
+    SharedPreferences.setMockInitialValues({});
   });
 
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
+      sharedPreferences = await SharedPreferences.getInstance();
       final db = await tester.pumpApp(const App(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
-        sharedPreferencesProvider.overrideWithValue(mockSharedPreferences),
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ]);
       addTearDown(() => db.close());
       await tester.pumpAndSettle();
