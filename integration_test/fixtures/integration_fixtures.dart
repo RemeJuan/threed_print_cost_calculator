@@ -39,26 +39,99 @@ abstract final class IntegrationFixtures {
   );
 
   static HistoryModel historyEntry({DateTime? date}) {
+    return buildHistoryEntry(date: date);
+  }
+
+  static PrinterModel buildPrinter({
+    required String id,
+    required String name,
+    required String bedSize,
+    required String wattage,
+    bool archived = false,
+  }) {
+    return PrinterModel(
+      id: id,
+      name: name,
+      bedSize: bedSize,
+      wattage: wattage,
+      archived: archived,
+    );
+  }
+
+  static MaterialModel buildMaterial({
+    required String id,
+    required String name,
+    required String cost,
+    required String color,
+    required String weight,
+    bool archived = false,
+  }) {
+    return MaterialModel(
+      id: id,
+      name: name,
+      cost: cost,
+      color: color,
+      weight: weight,
+      archived: archived,
+    );
+  }
+
+  static GeneralSettingsModel buildSettings({
+    String electricityCost = electricityCost,
+    String wattage = IntegrationFixtures.wattage,
+    String activePrinter = '',
+    String selectedMaterial = '',
+    String wearAndTear = '',
+    String failureRisk = '',
+    String labourRate = '',
+  }) {
+    return GeneralSettingsModel(
+      electricityCost: electricityCost,
+      wattage: wattage,
+      activePrinter: activePrinter,
+      selectedMaterial: selectedMaterial,
+      wearAndTear: wearAndTear,
+      failureRisk: failureRisk,
+      labourRate: labourRate,
+    );
+  }
+
+  static HistoryModel buildHistoryEntry({
+    String name = 'Seeded Test Print',
+    double totalCost = 30.9,
+    double riskCost = 0,
+    double filamentCost = 30,
+    double electricityCost = 0.9,
+    double labourCost = 0,
+    DateTime? date,
+    String printer = printerAName,
+    String material = materialPlaBlackName,
+    double weight = 150,
+    List<Map<String, Object>>? materialUsages,
+    String timeHours = '02:30',
+  }) {
     return HistoryModel(
-      name: 'Seeded Test Print',
-      totalCost: 30.9,
-      riskCost: 0,
-      filamentCost: 30,
-      electricityCost: 0.9,
-      labourCost: 0,
+      name: name,
+      totalCost: totalCost,
+      riskCost: riskCost,
+      filamentCost: filamentCost,
+      electricityCost: electricityCost,
+      labourCost: labourCost,
       date: date ?? DateTime.parse('2024-01-01T12:00:00.000Z'),
-      printer: printerAName,
-      material: materialPlaBlackName,
-      weight: 150,
-      materialUsages: const [
-        {
-          'materialId': materialPlaBlackId,
-          'materialName': materialPlaBlackName,
-          'costPerKg': 200.0,
-          'weightGrams': 150,
-        },
-      ],
-      timeHours: '02:30',
+      printer: printer,
+      material: material,
+      weight: weight,
+      materialUsages:
+          materialUsages ??
+          const [
+            {
+              'materialId': materialPlaBlackId,
+              'materialName': materialPlaBlackName,
+              'costPerKg': 200.0,
+              'weightGrams': 150,
+            },
+          ],
+      timeHours: timeHours,
     );
   }
 }
