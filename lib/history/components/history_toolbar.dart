@@ -24,6 +24,7 @@ class HistoryToolbar extends StatelessWidget {
               valueListenable: controller,
               builder: (_, value, _) {
                 return TextField(
+                  key: const ValueKey<String>('history.search.input'),
                   controller: controller,
                   decoration: InputDecoration(
                     isDense: true,
@@ -31,6 +32,9 @@ class HistoryToolbar extends StatelessWidget {
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: value.text.isNotEmpty
                         ? IconButton(
+                            key: const ValueKey<String>(
+                              'history.search.clear.button',
+                            ),
                             icon: const Icon(Icons.clear),
                             onPressed: () {
                               controller.clear();
@@ -45,6 +49,7 @@ class HistoryToolbar extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           IconButton(
+            key: const ValueKey<String>('history.export.button'),
             icon: const Icon(Icons.upload_file),
             tooltip: l10n.exportButton,
             onPressed: onExportPressed,
