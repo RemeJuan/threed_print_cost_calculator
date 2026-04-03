@@ -39,8 +39,18 @@ class CalculatorResults extends ConsumerWidget {
             key: const ValueKey<String>('calculator.result.filamentCost'),
           ),
           if (isPremium) ...[
-            _itemRow(context, l10n.riskTotalPrefix, results.risk),
-            _itemRow(context, l10n.labourCostPrefix, results.labour),
+            _itemRow(
+              context,
+              l10n.riskTotalPrefix,
+              results.risk,
+              key: const ValueKey<String>('calculator.result.riskCost'),
+            ),
+            _itemRow(
+              context,
+              l10n.labourCostPrefix,
+              results.labour,
+              key: const ValueKey<String>('calculator.result.labourCost'),
+            ),
           ],
           Divider(),
           Padding(

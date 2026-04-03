@@ -43,6 +43,9 @@ class MaterialPicker extends HookConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: TextField(
+                  key: const ValueKey<String>(
+                    'calculator.materialPicker.search.input',
+                  ),
                   decoration: InputDecoration(
                     labelText: l10n.searchMaterialsHint,
                     prefixIcon: const Icon(Icons.search),
@@ -66,6 +69,9 @@ class MaterialPicker extends HookConsumerWidget {
                   vertical: 8,
                 ),
                 child: ElevatedButton.icon(
+                  key: const ValueKey<String>(
+                    'calculator.materialPicker.add.button',
+                  ),
                   icon: const Icon(Icons.add),
                   label: Text(l10n.addMaterialButton),
                   onPressed: () async {
@@ -90,6 +96,9 @@ class MaterialPicker extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: TextField(
+                key: const ValueKey<String>(
+                  'calculator.materialPicker.search.input',
+                ),
                 decoration: InputDecoration(
                   labelText: l10n.searchMaterialsHint,
                   prefixIcon: const Icon(Icons.search),
@@ -107,6 +116,9 @@ class MaterialPicker extends HookConsumerWidget {
                   final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
                   return ListTile(
+                    key: ValueKey<String>(
+                      'calculator.materialPicker.item.${material.name}',
+                    ),
                     title: Text(material.name),
                     subtitle: Text(
                       '${material.color} • ${costPerKg.toStringAsFixed(2)}/kg',
@@ -121,6 +133,9 @@ class MaterialPicker extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: ElevatedButton.icon(
+                key: const ValueKey<String>(
+                  'calculator.materialPicker.add.button',
+                ),
                 icon: const Icon(Icons.add),
                 label: Text(l10n.addMaterialButton),
                 onPressed: () async {

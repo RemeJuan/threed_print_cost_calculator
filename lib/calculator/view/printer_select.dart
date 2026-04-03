@@ -36,6 +36,7 @@ class PrinterSelect extends HookConsumerWidget {
       data: (data) {
         if (data.isNotEmpty && !loading.value) {
           return DropdownButtonFormField<String>(
+            key: const ValueKey<String>('calculator.printer.select'),
             hint: Text(l10n.selectPrinterHint),
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
@@ -44,11 +45,14 @@ class PrinterSelect extends HookConsumerWidget {
                 : generalSettings.value.activePrinter,
             items: data.map((e) {
               return DropdownMenuItem(
+                key: ValueKey<String>('calculator.printer.option.${e.name}'),
                 value: e.id,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(e.name),
+                    Expanded(
+                      child: Text(e.name, overflow: TextOverflow.ellipsis),
+                    ),
+                    const SizedBox(width: 12),
                     Text('${e.wattage}${l10n.wattsSuffix}'),
                   ],
                 ),

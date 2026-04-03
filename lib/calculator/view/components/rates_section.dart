@@ -36,6 +36,7 @@ class RatesSection extends HookConsumerWidget {
       children: [
         Expanded(
           child: FocusSafeTextField(
+            key: const ValueKey<String>('calculator.rates.wearAndTear.input'),
             controller: wearController,
             externalText: state.wearAndTear.value?.toString() ?? '',
             focusNode: wearFocus,
@@ -50,6 +51,7 @@ class RatesSection extends HookConsumerWidget {
         const SizedBox(width: 16),
         Expanded(
           child: FocusSafeTextField(
+            key: const ValueKey<String>('calculator.rates.failureRisk.input'),
             controller: failureController,
             externalText: state.failureRisk.value?.toString() ?? '',
             focusNode: failureFocus,

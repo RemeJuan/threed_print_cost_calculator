@@ -37,6 +37,7 @@ class MaterialsHeader extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
+        key: const ValueKey<String>('calculator.materials.section'),
         onTap: onToggle,
         child: Padding(
           padding: const EdgeInsets.only(top: 8),
@@ -77,6 +78,9 @@ class MaterialsHeader extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
+                  key: const ValueKey<String>(
+                    'calculator.materials.add.button',
+                  ),
                   onPressed: onAdd,
                   icon: const Icon(Icons.add),
                 ),
