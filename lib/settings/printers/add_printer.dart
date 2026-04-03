@@ -37,6 +37,7 @@ class AddPrinter extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.printers.name.input'),
                 controller: nameController,
                 externalText: state.name.value,
                 focusNode: nameFocus,
@@ -45,6 +46,7 @@ class AddPrinter extends HookConsumerWidget {
                 onChanged: notifier.updateName,
               ),
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.printers.bedSize.input'),
                 controller: bedController,
                 externalText: state.bedSize.value,
                 focusNode: bedFocus,
@@ -53,6 +55,7 @@ class AddPrinter extends HookConsumerWidget {
                 onChanged: notifier.updateBedSize,
               ),
               FocusSafeTextField(
+                key: const ValueKey<String>('settings.printers.wattage.input'),
                 controller: wattController,
                 externalText: state.wattage.value,
                 focusNode: wattFocus,
@@ -62,13 +65,18 @@ class AddPrinter extends HookConsumerWidget {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
+                key: const ValueKey<String>('settings.printers.save.button'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DEEP_BLUE,
                   textStyle: Theme.of(
                     context,
                   ).textTheme.displayMedium?.copyWith(fontSize: 16),
                 ),
-                onPressed: () async => notifier.submit(dbRef),
+                onPressed: () async {
+                  await notifier.submit(dbRef);
+                  if (!context.mounted) return;
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
                 child: Text(l10n.saveButton),
               ),
             ],
