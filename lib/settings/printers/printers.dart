@@ -30,7 +30,7 @@ class Printers extends HookConsumerWidget {
                       final key = data.id;
 
                       return Slidable(
-                        key: ValueKey(key),
+                        key: ValueKey<String>('settings.printers.item.$index'),
                         endActionPane: ActionPane(
                           motion: const ScrollMotion(),
                           children: [
@@ -43,6 +43,9 @@ class Printers extends HookConsumerWidget {
                               icon: Icons.delete,
                             ),
                             SlidableAction(
+                              key: ValueKey<String>(
+                                'settings.printers.item.$index.edit.button',
+                              ),
                               onPressed: (_) {
                                 showDialog<void>(
                                   context: context,
@@ -59,11 +62,17 @@ class Printers extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
+                              key: ValueKey<String>(
+                                'settings.printers.item.$index.name',
+                              ),
                               data.name,
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(color: Colors.white),
                             ),
                             Text(
+                              key: ValueKey<String>(
+                                'settings.printers.item.$index.summary',
+                              ),
                               '${data.bedSize} (${data.wattage}${l10n.wattsSuffix})',
                               style: Theme.of(context).textTheme.titleSmall,
                             ),
