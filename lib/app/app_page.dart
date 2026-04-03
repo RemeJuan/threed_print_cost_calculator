@@ -2,15 +2,16 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   const AppPage({super.key});
@@ -18,36 +19,45 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   @override
   Widget build(context, ref) {
     final selectedIndex = useState(0);
-    final premium = useState<bool>(false);
-    final userId = useState<String>('');
     final l10n = S.of(context);
+    final prefs = ref.read(sharedPreferencesProvider);
+    final premiumState = ref.watch(premiumStateProvider);
+    final isPremium = premiumState.isPremium;
 
-    useEffect(() {
-      Purchases.addCustomerInfoUpdateListener((info) async {
-        premium.value = info.entitlements.active.isNotEmpty;
-        userId.value = info.originalAppUserId;
+    ref.listen<PremiumState>(premiumStateProvider, (previous, next) async {
+      if (next.isLoading || next.userId.isEmpty) return;
+      if (previous?.isLoading == false && previous?.userId == next.userId) {
+        return;
+      }
 
-        final prefs = await SharedPreferences.getInstance();
-        final runCount = prefs.getInt('run_count') ?? 0;
-        await prefs.setInt('run_count', runCount + 1);
-      });
-
-      return null;
-    }, []);
+      final runCount = prefs.getInt('run_count') ?? 0;
+      await prefs.setInt('run_count', runCount + 1);
+    });
 
     final pageController = usePageController(initialPage: selectedIndex.value);
 
     final pages = <Widget>[
       const CalculatorPage(),
-      if (premium.value) const HistoryPage(),
+      if (isPremium) const HistoryPage(),
       const SettingsPage(),
     ];
 
     final headings = [
       l10n.calculatorAppBarTitle,
-      if (premium.value) l10n.historyAppBarTitle,
+      if (isPremium) l10n.historyAppBarTitle,
       l10n.settingsAppBarTitle,
     ];
+
+    useEffect(() {
+      if (selectedIndex.value < pages.length) return null;
+      selectedIndex.value = pages.length - 1;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (pageController.hasClients) {
+          pageController.jumpToPage(selectedIndex.value);
+        }
+      });
+      return null;
+    }, [pages.length]);
 
     useEffect(() {
       if (!context.mounted) return;
@@ -72,7 +82,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           onPressed: () {
             BotToast.showCustomNotification(
               duration: const Duration(minutes: 5),
-              toastBuilder: (_) => SupportDialog(userID: userId.value),
+              toastBuilder: (_) => SupportDialog(userID: premiumState.userId),
             );
           },
         ),
@@ -100,7 +110,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             ),
             label: l10n.calculatorNavLabel,
           ),
-          if (premium.value)
+          if (isPremium)
             BottomNavigationBarItem(
               icon: const Icon(Icons.history),
               label: l10n.historyNavLabel,
