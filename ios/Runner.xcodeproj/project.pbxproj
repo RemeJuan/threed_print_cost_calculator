@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Debug\" ] || [ \"$PLATFORM_NAME\" = \"iphonesimulator\" ]; then\n  echo \"Skipping Crashlytics symbol upload for $CONFIGURATION on $PLATFORM_NAME.\"\n  exit 0\nfi\n\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n";
 		};
 		56942B20668F8ACA30633099 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
