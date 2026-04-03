@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:sembast/sembast_memory.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
-import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+
+import 'helpers/integration_test_harness.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -24,39 +16,13 @@ void main() {
   const durationHours = 2;
   const durationMinutes = 30;
 
-  setUpAll(() async {
-    AppAnalytics.service = _NoopAnalyticsService();
-  });
-
   testWidgets('calculates the deterministic free-user journey end to end', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({});
-    final prefs = await SharedPreferences.getInstance();
-    final db = await databaseFactoryMemory.openDatabase(
-      'integration_${DateTime.now().microsecondsSinceEpoch}.db',
-    );
-    addTearDown(() => db.close());
+    final harness = await IntegrationTestHarness.free();
+    addTearDown(harness.dispose);
 
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          databaseProvider.overrideWithValue(db),
-          sharedPreferencesProvider.overrideWithValue(prefs),
-          purchasesGatewayProvider.overrideWithValue(
-            _FakePurchasesGateway(
-              const PremiumState(
-                isPremium: false,
-                isLoading: false,
-                userId: 'integration-free',
-              ),
-            ),
-          ),
-        ],
-        child: const App(),
-      ),
-    );
-    await tester.pumpAndSettle();
+    await tester.launchHarnessApp(harness);
 
     await _tapByKey(tester, 'nav.settings.button');
 
@@ -140,26 +106,6 @@ void main() {
       closeTo(expectedTotalCost, 0.001),
     );
   });
-}
-
-class _NoopAnalyticsService implements AnalyticsService {
-  @override
-  Future<void> logEvent(String name, {Map<String, Object>? params}) async {}
-}
-
-class _FakePurchasesGateway implements PurchasesGateway {
-  _FakePurchasesGateway(this._premiumState);
-
-  final PremiumState _premiumState;
-
-  @override
-  void dispose() {}
-
-  @override
-  Future<PremiumState> fetchPremiumState() async => _premiumState;
-
-  @override
-  Stream<PremiumState> watchPremiumState() => const Stream.empty();
 }
 
 Future<void> _tapByKey(WidgetTester tester, String key) async {
