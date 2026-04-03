@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/accordion_menu.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/model/accordion_item_model.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
@@ -12,20 +12,13 @@ import 'package:threed_print_cost_calculator/settings/work_costs_form.dart';
 
 import 'materials/material_form.dart';
 
-class SettingsPage extends HookWidget {
+class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = S.of(context);
-    final premium = useState<bool>(false);
-
-    useEffect(() {
-      Purchases.addCustomerInfoUpdateListener((info) {
-        premium.value = info.entitlements.active.isNotEmpty;
-      });
-      return null;
-    }, []);
+    final isPremium = ref.watch(isPremiumProvider);
 
     final style = Theme.of(
       context,
@@ -39,9 +32,9 @@ class SettingsPage extends HookWidget {
               header: Text("General", style: style),
               body: const GeneralSettings(),
               initiallyExpanded: true,
-              isLocked: !premium.value,
+              isLocked: !isPremium,
             ),
-            if (premium.value) ...[
+            if (isPremium) ...[
               AccordionItem(
                 header: Text(l10n.printersHeader, style: style),
                 body: const Printers(),
