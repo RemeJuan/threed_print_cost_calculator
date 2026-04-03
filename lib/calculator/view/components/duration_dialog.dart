@@ -22,8 +22,9 @@ class DurationDialog extends StatefulWidget {
 
 class _DurationDialogState extends State<DurationDialog> {
   late final TextEditingController _hoursController;
+  late final TextEditingController _minutesController;
   late final FocusNode _hoursFocus;
-  late int _selectedMinutes;
+  late final FocusNode _minutesFocus;
 
   @override
   void initState() {
@@ -34,8 +35,14 @@ class _DurationDialogState extends State<DurationDialog> {
     _hoursController.selection = TextSelection.fromPosition(
       TextPosition(offset: _hoursController.text.length),
     );
+    _minutesController = TextEditingController(
+      text: widget.initialMinutes.toString(),
+    );
+    _minutesController.selection = TextSelection.fromPosition(
+      TextPosition(offset: _minutesController.text.length),
+    );
     _hoursFocus = FocusNode();
-    _selectedMinutes = widget.initialMinutes;
+    _minutesFocus = FocusNode();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _hoursFocus.requestFocus();
     });
@@ -44,7 +51,9 @@ class _DurationDialogState extends State<DurationDialog> {
   @override
   void dispose() {
     _hoursController.dispose();
+    _minutesController.dispose();
     _hoursFocus.dispose();
+    _minutesFocus.dispose();
     super.dispose();
   }
 
@@ -62,6 +71,9 @@ class _DurationDialogState extends State<DurationDialog> {
             children: [
               Expanded(
                 child: TextFormField(
+                  key: const ValueKey<String>(
+                    'calculator.duration.hours.input',
+                  ),
                   controller: _hoursController,
                   focusNode: _hoursFocus,
                   keyboardType: TextInputType.number,
@@ -95,18 +107,17 @@ class _DurationDialogState extends State<DurationDialog> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: DropdownButtonFormField<int>(
-                  initialValue: _selectedMinutes,
+                child: TextFormField(
+                  key: const ValueKey<String>(
+                    'calculator.duration.minutes.input',
+                  ),
+                  controller: _minutesController,
+                  focusNode: _minutesFocus,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
                     labelText: widget.l10n.minutesLabel,
                   ),
-                  items: List.generate(60, (i) => i)
-                      .map(
-                        (m) =>
-                            DropdownMenuItem<int>(value: m, child: Text('$m')),
-                      )
-                      .toList(),
-                  onChanged: (v) => setState(() => _selectedMinutes = v ?? 0),
                 ),
               ),
             ],
@@ -119,11 +130,12 @@ class _DurationDialogState extends State<DurationDialog> {
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
         ),
         TextButton(
+          key: const ValueKey<String>('calculator.duration.save.button'),
           onPressed: () {
             final hours = int.tryParse(_hoursController.text) ?? 0;
-            Navigator.of(
-              context,
-            ).pop({'hours': hours, 'minutes': _selectedMinutes});
+            final rawMinutes = int.tryParse(_minutesController.text) ?? 0;
+            final minutes = rawMinutes.clamp(0, 59);
+            Navigator.of(context).pop({'hours': hours, 'minutes': minutes});
           },
           child: Text(MaterialLocalizations.of(context).okButtonLabel),
         ),
