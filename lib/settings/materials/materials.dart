@@ -29,7 +29,7 @@ class Materials extends HookConsumerWidget {
                       final key = data.id;
 
                       return Slidable(
-                        key: ValueKey(key),
+                        key: ValueKey<String>('settings.materials.item.$index'),
                         endActionPane: ActionPane(
                           motion: const ScrollMotion(),
                           children: [
@@ -42,6 +42,9 @@ class Materials extends HookConsumerWidget {
                               icon: Icons.delete,
                             ),
                             SlidableAction(
+                              key: ValueKey<String>(
+                                'settings.materials.item.$index.edit.button',
+                              ),
                               onPressed: (_) {
                                 showDialog<void>(
                                   context: context,
@@ -61,11 +64,17 @@ class Materials extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
+                                  key: ValueKey<String>(
+                                    'settings.materials.item.$index.name',
+                                  ),
                                   data.name,
                                   style: Theme.of(context).textTheme.titleMedium
                                       ?.copyWith(color: Colors.white),
                                 ),
                                 Text(
+                                  key: ValueKey<String>(
+                                    'settings.materials.item.$index.color',
+                                  ),
                                   data.color,
                                   style: Theme.of(context).textTheme.titleSmall
                                       ?.copyWith(fontSize: 12),
@@ -76,11 +85,17 @@ class Materials extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
+                                  key: ValueKey<String>(
+                                    'settings.materials.item.$index.cost',
+                                  ),
                                   data.cost,
                                   style: Theme.of(context).textTheme.titleMedium
                                       ?.copyWith(color: Colors.white),
                                 ),
                                 Text(
+                                  key: ValueKey<String>(
+                                    'settings.materials.item.$index.weight',
+                                  ),
                                   '${data.weight}${l10n.gramsSuffix}',
                                   style: Theme.of(context).textTheme.titleSmall
                                       ?.copyWith(fontSize: 12),
