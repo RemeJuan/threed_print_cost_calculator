@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/app_page.dart';
@@ -7,35 +5,11 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
+import '../../../test_support/fake_purchases_gateway.dart';
 import '../../helpers/helpers.dart';
 import '../../helpers/mocks.dart';
-
-class FakePurchasesGateway implements PurchasesGateway {
-  FakePurchasesGateway(this._currentState);
-
-  PremiumState _currentState;
-  final StreamController<PremiumState> _controller =
-      StreamController<PremiumState>.broadcast();
-
-  @override
-  Future<PremiumState> fetchPremiumState() async => _currentState;
-
-  @override
-  Stream<PremiumState> watchPremiumState() => _controller.stream;
-
-  void emit(PremiumState nextState) {
-    _currentState = nextState;
-    _controller.add(nextState);
-  }
-
-  @override
-  void dispose() {
-    _controller.close();
-  }
-}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
