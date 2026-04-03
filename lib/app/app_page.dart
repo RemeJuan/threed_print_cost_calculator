@@ -112,7 +112,10 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           ),
           if (isPremium)
             BottomNavigationBarItem(
-              icon: const Icon(Icons.history),
+              icon: const Icon(
+                Icons.history,
+                key: ValueKey<String>('nav.history.button'),
+              ),
               label: l10n.historyNavLabel,
             ),
           BottomNavigationBarItem(
