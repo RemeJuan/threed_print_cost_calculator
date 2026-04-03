@@ -38,6 +38,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
           children: [
             Expanded(
               child: FocusSafeTextField(
+                key: const ValueKey<String>('calculator.spoolWeight.input'),
                 controller: spoolWeightController,
                 externalText: state.spoolWeight.value?.toString() ?? '',
                 focusNode: spoolWeightFocus,
@@ -56,6 +57,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
             const SizedBox(width: 16),
             Expanded(
               child: FocusSafeTextField(
+                key: const ValueKey<String>('calculator.spoolCost.input'),
                 controller: spoolCostController,
                 externalText: state.spoolCostText.isNotEmpty
                     ? state.spoolCostText
@@ -75,6 +77,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
           ],
         ),
         FocusSafeTextField(
+          key: const ValueKey<String>('calculator.printWeight.input'),
           controller: printWeightController,
           externalText: state.printWeight.value?.toString() ?? '',
           focusNode: printWeightFocus,
