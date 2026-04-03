@@ -25,6 +25,7 @@ class HistoryItem extends HookConsumerWidget {
     final l10n = S.of(context);
     final materialsById = ref.watch(materialsByIdProvider);
     final logger = ref.read(appLoggerProvider);
+    final itemKeyPrefix = 'history.item.${data.name}';
 
     return Slidable(
       key: ValueKey(dbKey),
@@ -107,6 +108,7 @@ class HistoryItem extends HookConsumerWidget {
       child: Column(
         children: [
           Container(
+            key: ValueKey<String>('$itemKeyPrefix.card'),
             padding: EdgeInsets.all(8),
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             decoration: BoxDecoration(
@@ -119,6 +121,7 @@ class HistoryItem extends HookConsumerWidget {
                 Row(
                   children: [
                     Text(
+                      key: ValueKey<String>('$itemKeyPrefix.name'),
                       data.name,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.white,
@@ -157,10 +160,30 @@ class HistoryItem extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                _row(context, l10n.electricityCostLabel, data.electricityCost),
-                _row(context, l10n.filamentCostLabel, data.filamentCost),
-                _row(context, l10n.labourCostLabel, data.labourCost),
-                _row(context, l10n.riskCostLabel, data.riskCost),
+                _row(
+                  context,
+                  l10n.electricityCostLabel,
+                  data.electricityCost,
+                  key: ValueKey<String>('$itemKeyPrefix.electricityCost'),
+                ),
+                _row(
+                  context,
+                  l10n.filamentCostLabel,
+                  data.filamentCost,
+                  key: ValueKey<String>('$itemKeyPrefix.filamentCost'),
+                ),
+                _row(
+                  context,
+                  l10n.labourCostLabel,
+                  data.labourCost,
+                  key: ValueKey<String>('$itemKeyPrefix.labourCost'),
+                ),
+                _row(
+                  context,
+                  l10n.riskCostLabel,
+                  data.riskCost,
+                  key: ValueKey<String>('$itemKeyPrefix.riskCost'),
+                ),
                 const SizedBox(height: 4),
                 Divider(),
                 const SizedBox(height: 4),
@@ -175,6 +198,7 @@ class HistoryItem extends HookConsumerWidget {
                     ),
                     const Spacer(),
                     Text(
+                      key: ValueKey<String>('$itemKeyPrefix.totalCost'),
                       data.totalCost.toStringAsFixed(2),
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.white,
@@ -207,6 +231,7 @@ class HistoryItem extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          key: ValueKey<String>('$itemKeyPrefix.summary'),
                           summary,
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
@@ -332,7 +357,7 @@ class HistoryItem extends HookConsumerWidget {
   }
 }
 
-Widget _row(BuildContext context, String label, num value) {
+Widget _row(BuildContext context, String label, num value, {Key? key}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 6),
     child: Row(
@@ -345,6 +370,7 @@ Widget _row(BuildContext context, String label, num value) {
           ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         Text(
+          key: key,
           value.toStringAsFixed(2),
           style: Theme.of(
             context,
