@@ -18,7 +18,7 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
-import 'fake_purchases_gateway.dart';
+import '../../test_support/fake_purchases_gateway.dart';
 
 typedef IntegrationHarnessSeed =
     Future<void> Function(IntegrationTestHarness harness);
