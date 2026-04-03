@@ -1,21 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
-class CalculatorResults extends StatelessWidget {
+class CalculatorResults extends ConsumerWidget {
   final CalculationResult results;
-  final bool premium;
 
-  const CalculatorResults({
-    required this.results,
-    required this.premium,
-    super.key,
-  });
+  const CalculatorResults({required this.results, super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = S.of(context);
+    final isPremium = ref.watch(isPremiumProvider);
     const width = kIsWeb ? 250.0 : null;
 
     return Container(
@@ -40,7 +38,7 @@ class CalculatorResults extends StatelessWidget {
             results.filament,
             key: const ValueKey<String>('calculator.result.filamentCost'),
           ),
-          if (premium) ...[
+          if (isPremium) ...[
             _itemRow(context, l10n.riskTotalPrefix, results.risk),
             _itemRow(context, l10n.labourCostPrefix, results.labour),
           ],

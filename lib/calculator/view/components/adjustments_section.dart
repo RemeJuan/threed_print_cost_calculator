@@ -4,20 +4,20 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class AdjustmentsSection extends HookConsumerWidget {
-  final bool premium;
-
-  const AdjustmentsSection({required this.premium, super.key});
+  const AdjustmentsSection({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(calculatorProvider);
     final notifier = ref.watch(calculatorProvider.notifier);
     final l10n = S.of(context);
+    final isPremium = ref.watch(isPremiumProvider);
 
-    if (!premium) {
+    if (!isPremium) {
       return const SizedBox.shrink();
     }
 
