@@ -37,11 +37,11 @@ Future<String?> showMaterialPicker(
             final cost = parseLocalizedNum(material.cost);
             final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
-            final refRead = ref.read(calculatorProvider.notifier);
+            final notifier = ref.read(calculatorProvider.notifier);
             if (editingIndex != null &&
                 editingIndex >= 0 &&
                 editingIndex < state.materialUsages.length) {
-              refRead.updateMaterialUsage(
+              notifier.updateMaterialUsage(
                 editingIndex,
                 MaterialUsageInput(
                   materialId: material.id,
@@ -51,7 +51,7 @@ Future<String?> showMaterialPicker(
                 ),
               );
             } else {
-              refRead.addMaterialUsage(
+              notifier.addMaterialUsage(
                 MaterialUsageInput(
                   materialId: material.id,
                   materialName: material.name,
@@ -60,6 +60,7 @@ Future<String?> showMaterialPicker(
                 ),
               );
             }
+            notifier.submit();
             Navigator.of(context).pop(material.id);
           },
           excludedIds: selectedIds,
