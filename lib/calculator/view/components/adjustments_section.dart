@@ -36,6 +36,9 @@ class AdjustmentsSection extends HookConsumerWidget {
       children: [
         Expanded(
           child: FocusSafeTextField(
+            key: const ValueKey<String>(
+              'calculator.adjustments.labourRate.input',
+            ),
             controller: labourRateController,
             externalText: state.labourRate.value?.toString() ?? '',
             focusNode: labourRateFocus,
@@ -50,6 +53,9 @@ class AdjustmentsSection extends HookConsumerWidget {
         const SizedBox(width: 16),
         Expanded(
           child: FocusSafeTextField(
+            key: const ValueKey<String>(
+              'calculator.adjustments.labourTime.input',
+            ),
             controller: labourTimeController,
             externalText: state.labourTime.value?.toString() ?? '',
             focusNode: labourTimeFocus,

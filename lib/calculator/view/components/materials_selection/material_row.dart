@@ -70,6 +70,9 @@ class _MaterialRowState extends State<MaterialRow> {
         Expanded(
           flex: 3,
           child: InkWell(
+            key: ValueKey<String>(
+              'calculator.materials.item.${widget.index}.pick.button',
+            ),
             onTap: widget.onPick,
             child: Row(
               children: [
@@ -102,7 +105,9 @@ class _MaterialRowState extends State<MaterialRow> {
         Expanded(
           flex: 2,
           child: FocusSafeTextField(
-            key: Key('weight-${widget.usage.materialId}-${widget.index}'),
+            key: ValueKey<String>(
+              'calculator.materials.item.${widget.index}.weight.input',
+            ),
             controller: _weightController,
             focusNode: _weightFocusNode,
             externalText: _weightText,
