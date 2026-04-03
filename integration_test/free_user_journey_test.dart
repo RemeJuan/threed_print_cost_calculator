@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 
 import 'helpers/integration_test_harness.dart';
+import 'helpers/integration_test_ui.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -24,66 +23,59 @@ void main() {
 
     await tester.launchHarnessApp(harness);
 
-    await _tapByKey(tester, 'nav.settings.button');
+    await tester.tapByKey('nav.settings.button');
 
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.electricityCost.input',
       electricityCostPerKwh.toStringAsFixed(2),
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'settings.generalWattage.input',
       wattage.toString(),
     );
     await tester.pump(const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
 
-    await _tapByKey(tester, 'nav.calculator.button');
+    await tester.tapByKey('nav.calculator.button');
     await tester.pumpAndSettle();
-    await _tapByKey(tester, 'nav.settings.button');
+    await tester.tapByKey('nav.settings.button');
     await tester.pumpAndSettle();
 
     expect(
-      _focusSafeFieldText(tester, 'settings.electricityCost.input'),
+      tester.focusSafeFieldText('settings.electricityCost.input'),
       anyOf('3.0', '3.00'),
     );
 
-    await _tapByKey(tester, 'nav.calculator.button');
+    await tester.tapByKey('nav.calculator.button');
     await tester.pumpAndSettle();
 
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'calculator.spoolWeight.input',
       materialWeightGrams.toString(),
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'calculator.spoolCost.input',
       materialCostPerKg.toStringAsFixed(2),
     );
 
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'calculator.printWeight.input',
       printWeightGrams.toString(),
     );
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pumpAndSettle();
 
-    await _tapByKey(tester, 'calculator.duration.button');
+    await tester.tapByKey('calculator.duration.button');
     await tester.pumpAndSettle();
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'calculator.duration.hours.input',
       durationHours.toString(),
     );
-    await _enterTextByKey(
-      tester,
+    await tester.enterTextByKey(
       'calculator.duration.minutes.input',
       durationMinutes.toString(),
     );
-    await _tapByKey(tester, 'calculator.duration.save.button');
+    await tester.tapByKey('calculator.duration.save.button');
     await tester.pumpAndSettle();
 
     final expectedElectricityCost =
@@ -94,48 +86,16 @@ void main() {
     final expectedTotalCost = expectedElectricityCost + expectedFilamentCost;
 
     expect(
-      _numberFromKey(tester, 'calculator.result.electricityCost'),
+      tester.numberFromTextKey('calculator.result.electricityCost'),
       closeTo(expectedElectricityCost, 0.001),
     );
     expect(
-      _numberFromKey(tester, 'calculator.result.filamentCost'),
+      tester.numberFromTextKey('calculator.result.filamentCost'),
       closeTo(expectedFilamentCost, 0.001),
     );
     expect(
-      _numberFromKey(tester, 'calculator.result.totalCost'),
+      tester.numberFromTextKey('calculator.result.totalCost'),
       closeTo(expectedTotalCost, 0.001),
     );
   });
-}
-
-Future<void> _tapByKey(WidgetTester tester, String key) async {
-  final finder = find.byKey(ValueKey<String>(key));
-  await tester.ensureVisible(finder);
-  await tester.tap(finder);
-  await tester.pumpAndSettle();
-}
-
-Future<void> _enterTextByKey(
-  WidgetTester tester,
-  String key,
-  String value,
-) async {
-  final finder = find.byKey(ValueKey<String>(key));
-  await tester.ensureVisible(finder);
-  await tester.tap(finder);
-  await tester.pumpAndSettle();
-  await tester.enterText(finder, value);
-  await tester.pump();
-}
-
-String _focusSafeFieldText(WidgetTester tester, String key) {
-  final widget = tester.widget<FocusSafeTextField>(
-    find.byKey(ValueKey<String>(key)),
-  );
-  return widget.controller.text;
-}
-
-double _numberFromKey(WidgetTester tester, String key) {
-  final widget = tester.widget<Text>(find.byKey(ValueKey<String>(key)));
-  return double.parse((widget.data ?? '').replaceAll(RegExp(r'[^0-9.\-]'), ''));
 }

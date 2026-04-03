@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 
 import 'fixtures/integration_fixtures.dart';
 import 'helpers/integration_test_harness.dart';
+import 'helpers/integration_test_ui.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +55,7 @@ void main() {
       addTearDown(harness.dispose);
 
       await tester.launchHarnessApp(harness);
-      await _tapByKey(tester, 'nav.settings.button');
+      await tester.tapByKey('nav.settings.button');
 
       final settings = await harness.container
           .read(settingsRepositoryProvider)
@@ -68,30 +68,13 @@ void main() {
           .getMaterials();
 
       expect(
-        _focusSafeFieldText(tester, 'settings.electricityCost.input'),
+        tester.focusSafeFieldText('settings.electricityCost.input'),
         '3.00',
       );
-      expect(
-        _focusSafeFieldText(tester, 'settings.generalWattage.input'),
-        '120',
-      );
+      expect(tester.focusSafeFieldText('settings.generalWattage.input'), '120');
       expect(settings, IntegrationFixtures.settings);
       expect(printers.single.name, IntegrationFixtures.printerA.name);
       expect(materials.single.name, IntegrationFixtures.materialPlaBlack.name);
     },
   );
-}
-
-Future<void> _tapByKey(WidgetTester tester, String key) async {
-  final finder = find.byKey(ValueKey<String>(key));
-  await tester.ensureVisible(finder);
-  await tester.tap(finder);
-  await tester.pumpAndSettle();
-}
-
-String _focusSafeFieldText(WidgetTester tester, String key) {
-  final widget = tester.widget<FocusSafeTextField>(
-    find.byKey(ValueKey<String>(key)),
-  );
-  return widget.controller.text;
 }
