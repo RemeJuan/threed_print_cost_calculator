@@ -28,8 +28,18 @@ class CalculatorResults extends StatelessWidget {
       width: width,
       child: Column(
         children: [
-          _itemRow(context, l10n.resultElectricityPrefix, results.electricity),
-          _itemRow(context, l10n.resultFilamentPrefix, results.filament),
+          _itemRow(
+            context,
+            l10n.resultElectricityPrefix,
+            results.electricity,
+            key: const ValueKey<String>('calculator.result.electricityCost'),
+          ),
+          _itemRow(
+            context,
+            l10n.resultFilamentPrefix,
+            results.filament,
+            key: const ValueKey<String>('calculator.result.filamentCost'),
+          ),
           if (premium) ...[
             _itemRow(context, l10n.riskTotalPrefix, results.risk),
             _itemRow(context, l10n.labourCostPrefix, results.labour),
@@ -48,6 +58,7 @@ class CalculatorResults extends StatelessWidget {
                   ),
                 ),
                 Text(
+                  key: const ValueKey<String>('calculator.result.totalCost'),
                   results.total.toString(),
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Colors.white,
@@ -62,7 +73,7 @@ class CalculatorResults extends StatelessWidget {
     );
   }
 
-  Padding _itemRow(BuildContext context, String prefix, num value) {
+  Padding _itemRow(BuildContext context, String prefix, num value, {Key? key}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -76,7 +87,7 @@ class CalculatorResults extends StatelessWidget {
                 ).textTheme.bodyLarge?.copyWith(color: Colors.white70) ??
                 const TextStyle(color: Colors.white70),
           ),
-          Text(value.toString()),
+          Text(value.toString(), key: key),
         ],
       ),
     );
