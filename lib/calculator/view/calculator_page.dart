@@ -97,6 +97,7 @@ class CalculatorPage extends HookConsumerWidget {
             CalculatorResults(results: state.results),
             if (isPremium && !showSave.value)
               ElevatedButton.icon(
+                key: const ValueKey<String>('calculator.save.open.button'),
                 onPressed: () {
                   showSave.value = true;
                 },
