@@ -78,6 +78,9 @@ class _MaterialRowState extends State<MaterialRow> {
               children: [
                 Flexible(
                   child: Text(
+                    key: ValueKey<String>(
+                      'calculator.materials.item.${widget.index}.name',
+                    ),
                     isMaterialUnassigned
                         ? l10n.selectMaterialHint
                         : widget.usage.materialName,
