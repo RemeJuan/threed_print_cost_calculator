@@ -128,3 +128,6 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+
+# Patrol
+patrol_test/test_bundle.dart
