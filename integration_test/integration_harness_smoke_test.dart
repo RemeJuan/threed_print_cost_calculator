@@ -9,6 +9,8 @@ import 'fixtures/integration_fixtures.dart';
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
 
+// Local-only harness smoke test.
+// Keeps the shared integration bootstrap honest, but is not part of the CI E2E gate.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
