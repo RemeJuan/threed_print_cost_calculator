@@ -255,7 +255,7 @@ workflows:
     environment:
       flutter: stable
       groups:
-        - firebase_test_lab
+        - firebase_test_lab # GCLOUD_SERVICE_ACCOUNT_CREDENTIALS and any Firebase Test Lab values used by the Patrol scripts.
       vars:
         PATROL_FLUTTER_COMMAND: fvm flutter
         GCLOUD_PROJECT: d-print-cost-calculator-cf650
