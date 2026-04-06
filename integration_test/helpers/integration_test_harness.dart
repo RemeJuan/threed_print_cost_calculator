@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -99,10 +100,12 @@ class IntegrationTestHarness {
   }
 
   Future<void> launchApp(WidgetTester tester) async {
-    await tester.pumpWidget(
-      UncontrolledProviderScope(container: container, child: const App()),
-    );
+    await tester.pumpWidget(buildApp());
     await settleApp(tester);
+  }
+
+  Widget buildApp() {
+    return UncontrolledProviderScope(container: container, child: const App());
   }
 
   Future<void> settleApp(WidgetTester tester) async {
