@@ -72,4 +72,73 @@ void main() {
     final records = await store.find(db);
     expect(records.first.value[kHistorySearchTextField], isNotEmpty);
   });
+
+  test('backfillSearchFields normalizes missing search fields', () async {
+    final helperStore = stringMapStoreFactory.store('history');
+    await helperStore.add(db, {
+      'name': '  Gear -- Fix  ',
+      'printer': 'MK4, Mini!',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    final updated = await helpers.backfillSearchFields();
+
+    expect(updated, 3);
+
+    final records = await helperStore.find(db);
+    final normalized = records
+        .firstWhere((record) => record.value['name'] == '  Gear -- Fix  ')
+        .value;
+
+    expect(normalized[kHistorySearchNameField], 'gear fix');
+    expect(normalized[kHistorySearchPrinterField], 'mk4 mini');
+    expect(normalized[kHistorySearchTextField], 'gear fix mk4 mini');
+  });
+
+  test('updateRecord and removeRecord keep index tokens in sync', () async {
+    final helperStore = stringMapStoreFactory.store('history');
+    final key = await helperStore.add(db, {
+      'name': 'Prusa Gear',
+      'printer': 'Prusa Mini',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+
+    expect(await helpers.getKeysMatchingQuery('gear'), contains(key));
+    expect(await helpers.getKeysMatchingQuery('mini'), contains(key));
+
+    await helpers.updateRecord(
+      oldName: 'Prusa Gear',
+      oldPrinter: 'Prusa Mini',
+      newName: 'Bambu Gear',
+      newPrinter: 'Bambu X1',
+      recordKey: key,
+    );
+
+    expect(await helpers.getKeysMatchingQuery('bambu'), contains(key));
+
+    await helpers.removeRecord(
+      name: 'Bambu Gear',
+      printer: 'Bambu X1',
+      recordKey: key,
+    );
+
+    final indexRecords = await stringMapStoreFactory
+        .store('history_search_index')
+        .find(db);
+    expect(
+      indexRecords.every(
+        (record) =>
+            (record.value['keys'] as List?)
+                ?.map((value) => value.toString())
+                .contains(key.toString()) !=
+            true,
+      ),
+      isTrue,
+    );
+  });
 }
