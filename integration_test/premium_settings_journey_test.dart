@@ -112,6 +112,7 @@ void main() {
       closeTo(1000, 0.001),
     );
 
+    await tester.scrollUntilKeyVisible('settings.workCost.section');
     await tester.tapByKey('settings.workCost.section');
     await tester.scrollUntilKeyVisible('settings.workCost.wearAndTear.input');
     expect(
