@@ -1,0 +1,70 @@
+workflows:
+  patrol_e2e_android:
+    name: Patrol Android E2E
+    max_build_duration: 60
+    instance_type: linux_x2
+    triggering:
+      events:
+        - pull_request
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+      cancel_previous_builds: true
+    environment:
+      flutter: stable
+      groups:
+        - firebase_test_lab
+      vars:
+        PATROL_FLUTTER_COMMAND: fvm flutter
+        GCLOUD_PROJECT: d-print-cost-calculator-cf650
+        FIREBASE_TEST_LAB_DEVICE_MODEL: MediumPhone.arm
+        FIREBASE_TEST_LAB_DEVICE_VERSION: "35"
+        FIREBASE_TEST_LAB_DEVICE_LOCALE: en
+        FIREBASE_TEST_LAB_DEVICE_ORIENTATION: portrait
+        FIREBASE_TEST_LAB_TIMEOUT: 15m
+        FIREBASE_TEST_LAB_RESULTS_HISTORY_NAME: Patrol E2E
+        FIREBASE_TEST_LAB_RESULTS_DIR_PREFIX: patrol-e2e
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/.gradle/caches
+        - $HOME/.gradle/wrapper
+        - $HOME/.android/build-cache
+    scripts:
+      - name: Set up Flutter and Patrol CLI
+        script: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          dart pub global activate fvm
+          dart pub global activate patrol_cli 4.3.0
+          fvm install
+          fvm flutter pub get
+      - name: Run analyzer
+        script: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          fvm flutter analyze
+      - name: Run lower-level tests
+        script: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          fvm flutter test test
+      - name: Authenticate gcloud
+        script: |
+          test -n "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS"
+          export GOOGLE_APPLICATION_CREDENTIALS="$CM_BUILD_DIR/gcloud-service-account.json"
+          printf '%s' "$GCLOUD_SERVICE_ACCOUNT_CREDENTIALS" > "$GOOGLE_APPLICATION_CREDENTIALS"
+          gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+          gcloud config set project "$GCLOUD_PROJECT"
+      - name: Build Patrol Android suite artifacts
+        script: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          ./scripts/prepare_patrol_android_artifacts.sh
+      - name: Run Patrol suite on Firebase Test Lab
+        script: |
+          export PATH="$PATH:$HOME/.pub-cache/bin"
+          ./scripts/run_patrol_android_ftl.sh
+    artifacts:
+      - build/patrol_artifacts/android/*.apk
+      - build/app/outputs/apk/**/*.apk
+      - build/app/outputs/androidTest-results/**/*.xml
+      - build/app/reports/androidTests/**/*.html
