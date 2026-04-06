@@ -16,19 +16,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:sembast/sembast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
+import 'package:threed_print_cost_calculator/startup.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
-import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
-import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 import 'app/app.dart';
 import 'database/database.dart';
-import 'package:threed_print_cost_calculator/shared/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -93,69 +89,4 @@ Future<void> revenueCat() async {
     configuration = PurchasesConfiguration('appl_pKHoxoNodCJqGiKMyPkOzCNtcyF');
   }
   await Purchases.configure(configuration);
-}
-
-Future<void> startupMigration(Database db) async {
-  // Startup migration: ensure the printer index is built. Use a short-lived
-  // ProviderContainer so we can use existing helper wiring without changing
-  // the ProviderScope that's used by the app.
-  final tempContainer = ProviderContainer(
-    overrides: [databaseProvider.overrideWithValue(db)],
-  );
-  try {
-    final indexHelpers = PrinterIndexHelpers.fromContainer(tempContainer);
-    final searchIndexHelpers = HistorySearchIndexHelpers.fromContainer(
-      tempContainer,
-    );
-    // Always attempt to rebuild the index at startup. `rebuildIndex` is
-    // idempotent and ensures any stale or mixed-typed keys are normalized to
-    // the current canonical representation derived from the history store.
-    await indexHelpers.rebuildIndex();
-    await searchIndexHelpers.backfillSearchFields();
-    await searchIndexHelpers.rebuildIndex();
-
-    // Migrate old history records to materialUsages[] format.
-    final historyStore = stringMapStoreFactory.store('history');
-    final records = await historyStore.find(db);
-    for (final record in records) {
-      final value = record.value as Map<String, dynamic>;
-      final usages = value['materialUsages'];
-      if (usages is List && usages.isNotEmpty) {
-        continue;
-      }
-
-      final rawWeight = value['weight'];
-      final parsedWeight = rawWeight is num
-          ? rawWeight.toInt()
-          : parseLocalizedInt(rawWeight);
-
-      final migrated = {
-        ...value,
-        'materialUsages': [
-          {
-            'materialId': value['materialId']?.toString() ?? '',
-            'materialName': value['material']?.toString() ?? kUnassignedLabel,
-            'costPerKg': 0,
-            'weightGrams': parsedWeight,
-          },
-        ],
-      };
-      await historyStore.record(record.key).put(db, migrated);
-    }
-  } catch (e, st) {
-    // Report the error so it's visible in production, then rethrow
-    FlutterError.reportError(
-      FlutterErrorDetails(
-        exception: e,
-        stack: st,
-        library: 'startupMigration',
-        context: ErrorDescription(
-          'History search/printer index rebuild / migration',
-        ),
-      ),
-    );
-    rethrow;
-  } finally {
-    tempContainer.dispose();
-  }
 }
