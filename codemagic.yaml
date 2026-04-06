@@ -308,3 +308,10 @@ workflows:
       - build/app/outputs/apk/**/*.apk
       - build/app/outputs/androidTest-results/**/*.xml
       - build/app/reports/androidTests/**/*.html
+    publishing:
+      email:
+        recipients:
+          - mail@remej.dev
+        notify:
+          success: true
+          failure: true
