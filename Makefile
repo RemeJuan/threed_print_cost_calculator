@@ -13,5 +13,8 @@ fix_ios:
 flutter_test:
 	fvm flutter test test --no-pub --test-randomize-ordering-seed random
 
+flutter_cov:
+	./scripts/coverage.sh
+
 flutter_generate:
 	fvm flutter packages pub run build_runner build --delete-conflicting-outputs
