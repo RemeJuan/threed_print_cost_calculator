@@ -62,6 +62,31 @@ void main() {
     },
   );
 
+  test('getSettings falls back to a valid printer id when needed', () async {
+    final printersStore = stringMapStoreFactory.store(DBName.printers.name);
+    await printersStore.record('printer-1').put(db, {'name': 'Printer 1'});
+    await printersStore.record('printer-2').put(db, {'name': 'Printer 2'});
+
+    await StoreRef<String, Object?>.main()
+        .record(DBName.settings.name)
+        .put(db, {
+          'electricityCost': '0.25',
+          'wattage': '150',
+          'activePrinter': 'missing-printer',
+          'selectedMaterial': 'pla',
+          'wearAndTear': '1.5',
+          'failureRisk': '7.5',
+          'labourRate': '22',
+        });
+
+    final settings = await container
+        .read(dbHelpersProvider(DBName.settings))
+        .getSettings();
+
+    expect(settings.activePrinter, 'printer-1');
+    expect(settings.electricityCost, '0.25');
+  });
+
   test('insertRecord marks paged history state stale', () async {
     final dbHelpers = container.read(dbHelpersProvider(DBName.history));
     final notifier = container.read(historyPagedProvider.notifier);
