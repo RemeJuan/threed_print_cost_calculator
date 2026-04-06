@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class AddPrinter extends HookConsumerWidget {
   const AddPrinter({this.dbRef, super.key});
@@ -13,9 +13,14 @@ class AddPrinter extends HookConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final notifier = ref.read(printersProvider.notifier)..init(dbRef);
+    final notifier = ref.read(printersProvider.notifier);
     final state = ref.watch(printersProvider);
     final l10n = S.of(context);
+
+    useEffect(() {
+      notifier.init(dbRef);
+      return null;
+    }, [dbRef]);
 
     // Hook-managed controllers and focus nodes to avoid clobbering while typing
     final nameController = useTextEditingController(text: state.name.value);

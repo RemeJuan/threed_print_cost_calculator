@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class MaterialForm extends HookConsumerWidget {
   final String? dbRef;
@@ -14,9 +14,14 @@ class MaterialForm extends HookConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final notifier = ref.read(materialsProvider.notifier)..init(dbRef);
+    final notifier = ref.read(materialsProvider.notifier);
     final state = ref.watch(materialsProvider);
     final l10n = S.of(context);
+
+    useEffect(() {
+      notifier.init(dbRef);
+      return null;
+    }, [dbRef]);
 
     // Create controllers and focus nodes at the top-level of the build to keep
     // hook calls linear and avoid wrapping fields in Builders.
