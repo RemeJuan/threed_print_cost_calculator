@@ -18,6 +18,23 @@ import 'components/materials_selection/materials_section.dart';
 import 'components/rates_section.dart';
 import 'components/time_section.dart';
 
+abstract class PaywallPresenter {
+  Future<void> present(String offeringId);
+}
+
+final paywallPresenterProvider = Provider<PaywallPresenter>((ref) {
+  return const _RevenueCatPaywallPresenter();
+});
+
+class _RevenueCatPaywallPresenter implements PaywallPresenter {
+  const _RevenueCatPaywallPresenter();
+
+  @override
+  Future<void> present(String offeringId) {
+    return RevenueCatUI.presentPaywallIfNeeded(offeringId);
+  }
+}
+
 class CalculatorPage extends HookConsumerWidget {
   const CalculatorPage({super.key});
 
@@ -50,7 +67,7 @@ class CalculatorPage extends HookConsumerWidget {
             AppAnalytics.safeLog(
               () => AppAnalytics.paywallShown('multi_printer'),
             );
-            await RevenueCatUI.presentPaywallIfNeeded("pro");
+            await ref.read(paywallPresenterProvider).present("pro");
           } catch (e) {
             logger.warn(
               AppLogCategory.billing,
