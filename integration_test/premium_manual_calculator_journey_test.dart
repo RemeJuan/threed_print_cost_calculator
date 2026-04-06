@@ -5,6 +5,8 @@ import 'package:integration_test/integration_test.dart';
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
 
+// Local-only integration smoke test.
+// Retained for manual cross-feature checks while Patrol covers the release gates.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 

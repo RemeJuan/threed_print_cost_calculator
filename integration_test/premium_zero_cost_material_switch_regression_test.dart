@@ -5,6 +5,8 @@ import 'fixtures/integration_fixtures.dart';
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
 
+// Local-only regression smoke test.
+// Kept to cover material switching behavior that is still useful to run manually.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 

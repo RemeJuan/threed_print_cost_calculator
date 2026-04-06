@@ -5,6 +5,8 @@ import 'package:integration_test/integration_test.dart';
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
 
+// Local-only integration smoke test.
+// Kept to exercise settings CRUD and revisit flow outside the Patrol gate.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 

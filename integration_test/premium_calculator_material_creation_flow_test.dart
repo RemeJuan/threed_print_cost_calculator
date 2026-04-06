@@ -6,6 +6,8 @@ import 'fixtures/integration_fixtures.dart';
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
 
+// Local-only integration smoke test.
+// Kept for the calculator-to-material creation flow that is still useful outside CI.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 

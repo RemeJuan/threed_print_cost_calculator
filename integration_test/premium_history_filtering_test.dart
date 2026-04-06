@@ -5,6 +5,8 @@ import 'fixtures/integration_fixtures.dart';
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
 
+// Local-only integration smoke test.
+// Kept to exercise history search/filter wiring outside the Patrol gate.
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
