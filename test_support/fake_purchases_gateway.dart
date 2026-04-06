@@ -39,6 +39,8 @@ class FakePurchasesGateway implements PurchasesGateway {
 
   @override
   void dispose() {
-    _controller.close();
+    if (!_controller.isClosed) {
+      _controller.close();
+    }
   }
 }
