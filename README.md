@@ -23,3 +23,13 @@ adb shell setprop debug.firebase.analytics.app <package_name>
 ```
 
 Note: events can appear quickly in DebugView, but standard Firebase Analytics dashboards may take several hours to update.
+
+## Coverage
+
+Run filtered coverage with:
+
+```bash
+./scripts/coverage.sh
+```
+
+This runs `fvm flutter test --coverage` and removes generated files plus bootstrap-only files from `coverage/lcov.info` before printing the final summary.
