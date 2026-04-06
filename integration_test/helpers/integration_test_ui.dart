@@ -45,6 +45,26 @@ extension IntegrationTestUiWidgetTesterX on WidgetTester {
     await pumpAndSettle();
   }
 
+  Future<void> expectFieldTextEventually(
+    String key,
+    Matcher matcher, {
+    Duration timeout = const Duration(seconds: 5),
+    Duration step = const Duration(milliseconds: 100),
+  }) async {
+    final deadline = DateTime.now().add(timeout);
+
+    while (DateTime.now().isBefore(deadline)) {
+      final text = focusSafeFieldText(key);
+      if (matcher.matches(text, <dynamic, dynamic>{})) {
+        return;
+      }
+
+      await pump(step);
+    }
+
+    expect(focusSafeFieldText(key), matcher);
+  }
+
   String focusSafeFieldText(String key) {
     final widget = this.widget<FocusSafeTextField>(
       find.byKey(ValueKey<String>(key)),
