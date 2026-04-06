@@ -41,8 +41,8 @@ void main() {
     await tester.tapByKey('nav.settings.button');
     await tester.pumpAndSettle();
 
-    expect(
-      tester.focusSafeFieldText('settings.electricityCost.input'),
+    await tester.expectFieldTextEventually(
+      'settings.electricityCost.input',
       anyOf('3.0', '3.00'),
     );
 
