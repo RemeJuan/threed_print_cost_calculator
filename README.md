@@ -33,3 +33,7 @@ Run filtered coverage with:
 ```
 
 This runs `fvm flutter test --coverage` and removes generated files plus bootstrap-only files from `coverage/lcov.info` before printing the final summary.
+
+## Testing
+
+See `TESTING.md` for the current unit, widget, integration, and Patrol testing workflow.
