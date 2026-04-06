@@ -43,7 +43,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     }, []);
 
     // persist functions: fire-and-forget debounced schedulers
-    void persistFailure(String value, GeneralSettingsModel data) {
+    void persistFailure(String value) {
       failureDebounce.value?.cancel();
       failureDebounce.value = Timer(
         const Duration(milliseconds: 400),
@@ -51,7 +51,8 @@ class WorkCostsSettings extends HookConsumerWidget {
           final parsed = tryParseLocalizedNum(value);
           if (parsed == null) return;
           try {
-            final updated = data.copyWith(failureRisk: parsed.toString());
+            final latest = await settingsRepository.getSettings();
+            final updated = latest.copyWith(failureRisk: parsed.toString());
             await settingsRepository.saveSettings(updated);
           } catch (e, st) {
             logger.error(
@@ -66,13 +67,14 @@ class WorkCostsSettings extends HookConsumerWidget {
       );
     }
 
-    void persistLabour(String value, GeneralSettingsModel data) {
+    void persistLabour(String value) {
       labourDebounce.value?.cancel();
       labourDebounce.value = Timer(const Duration(milliseconds: 400), () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
-          final updated = data.copyWith(labourRate: parsed.toString());
+          final latest = await settingsRepository.getSettings();
+          final updated = latest.copyWith(labourRate: parsed.toString());
           await settingsRepository.saveSettings(updated);
         } catch (e, st) {
           logger.error(
@@ -86,13 +88,14 @@ class WorkCostsSettings extends HookConsumerWidget {
       });
     }
 
-    void persistWear(String value, GeneralSettingsModel data) {
+    void persistWear(String value) {
       wearDebounce.value?.cancel();
       wearDebounce.value = Timer(const Duration(milliseconds: 400), () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
-          final updated = data.copyWith(wearAndTear: parsed.toString());
+          final latest = await settingsRepository.getSettings();
+          final updated = latest.copyWith(wearAndTear: parsed.toString());
           await settingsRepository.saveSettings(updated);
         } catch (e, st) {
           logger.error(
@@ -161,7 +164,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   },
                   onChanged: (value) {
                     // Schedule debounced persistence; fire-and-forget
-                    persistWear(value, data);
+                    persistWear(value);
                   },
                   decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
                 ),
@@ -189,7 +192,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                     return null;
                   },
                   onChanged: (value) {
-                    persistFailure(value, data);
+                    persistFailure(value);
                   },
                   decoration: InputDecoration(labelText: l10n.failureRiskLabel),
                 ),
@@ -217,7 +220,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                     return null;
                   },
                   onChanged: (value) {
-                    persistLabour(value, data);
+                    persistLabour(value);
                   },
                   decoration: InputDecoration(labelText: l10n.labourRateLabel),
                 ),
