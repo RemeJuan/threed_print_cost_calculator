@@ -36,10 +36,7 @@ class GeneralSettings extends HookConsumerWidget {
     final settingsRepository = ref.read(settingsRepositoryProvider);
     final logger = ref.read(appLoggerProvider);
 
-    Future<void> persistElectricity(
-      String value,
-      GeneralSettingsModel data,
-    ) async {
+    Future<void> persistElectricity(String value) async {
       // Cancel previous timer
       electricityDebounceRef.value?.cancel();
 
@@ -50,7 +47,8 @@ class GeneralSettings extends HookConsumerWidget {
         const Duration(milliseconds: 400),
         () async {
           try {
-            final updated = data.copyWith(electricityCost: parsed.toString());
+            final latest = await settingsRepository.getSettings();
+            final updated = latest.copyWith(electricityCost: parsed.toString());
             await settingsRepository.saveSettings(updated);
           } catch (e, st) {
             logger.error(
@@ -65,7 +63,7 @@ class GeneralSettings extends HookConsumerWidget {
       );
     }
 
-    Future<void> persistWatt(String value, GeneralSettingsModel data) async {
+    Future<void> persistWatt(String value) async {
       wattDebounceRef.value?.cancel();
 
       final parsed = tryParseLocalizedInt(value);
@@ -75,7 +73,8 @@ class GeneralSettings extends HookConsumerWidget {
         const Duration(milliseconds: 400),
         () async {
           try {
-            final updated = data.copyWith(wattage: parsed.toString());
+            final latest = await settingsRepository.getSettings();
+            final updated = latest.copyWith(wattage: parsed.toString());
             await settingsRepository.saveSettings(updated);
           } catch (e, st) {
             logger.error(
@@ -135,7 +134,7 @@ class GeneralSettings extends HookConsumerWidget {
                 suffixText: l10n.kwh,
               ),
               onChanged: (value) async {
-                await persistElectricity(value, data);
+                await persistElectricity(value);
               },
             ),
           ),
@@ -152,7 +151,7 @@ class GeneralSettings extends HookConsumerWidget {
                 suffixText: l10n.watt,
               ),
               onChanged: (value) async {
-                await persistWatt(value, data);
+                await persistWatt(value);
               },
             ),
           ),
