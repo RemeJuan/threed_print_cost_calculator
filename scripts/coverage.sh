@@ -12,18 +12,25 @@ if ! command -v lcov >/dev/null 2>&1; then
   exit 1
 fi
 
-fvm flutter test --coverage
+fvm flutter test --coverage --no-pub --test-randomize-ordering-seed random
 
 exclude_files=()
 
+add_exclude_if_traced() {
+  local file="$1"
+  if grep -Fqx "SF:$file" "$RAW_COVERAGE"; then
+    exclude_files+=("$file")
+  fi
+}
+
 if [ -d "$ROOT_DIR/lib/generated" ]; then
   while IFS= read -r file; do
-    exclude_files+=("$file")
+    add_exclude_if_traced "$file"
   done < <(rg --files lib/generated)
 fi
 
 while IFS= read -r file; do
-  exclude_files+=("$file")
+  add_exclude_if_traced "$file"
 done < <(
   rg --files lib \
     -g '*.g.dart' \
@@ -32,7 +39,7 @@ done < <(
 
 for file in lib/firebase_options.dart lib/bootstrap.dart; do
   if [ -f "$ROOT_DIR/$file" ]; then
-    exclude_files+=("$file")
+    add_exclude_if_traced "$file"
   fi
 done
 
@@ -42,7 +49,6 @@ if [ ${#exclude_files[@]} -eq 0 ]; then
 fi
 
 lcov \
-  --ignore-errors unused \
   --remove "$RAW_COVERAGE" \
   "${exclude_files[@]}" \
   -o "$RAW_COVERAGE"
