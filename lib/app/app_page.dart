@@ -23,6 +23,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   @override
   Widget build(context, ref) {
     final selectedTab = useState(_AppTab.calculator);
+    final tapNavigationTargetIndex = useState<int?>(null);
     final l10n = S.of(context);
     final prefs = ref.read(sharedPreferencesProvider);
     final premiumState = ref.watch(premiumStateProvider);
@@ -70,8 +71,6 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       return _AppTab.settings;
     }
 
-    final selectedIndex = tabToIndex(selectedTab.value);
-
     final pages = <Widget>[
       const CalculatorPage(),
       if (showHistoryTab)
@@ -88,6 +87,8 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       if (showHistoryTab) l10n.historyAppBarTitle,
       l10n.settingsAppBarTitle,
     ];
+
+    final selectedIndex = tabToIndex(selectedTab.value);
 
     final isHistoryTeaserSelected =
         showHistoryTeaser && selectedTab.value == _AppTab.history;
@@ -130,13 +131,35 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           },
         ),
       ),
-      body: PageView(controller: pageController, children: pages),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: (index) {
+          final tapTargetIndex = tapNavigationTargetIndex.value;
+          if (tapTargetIndex != null) {
+            if (index == tapTargetIndex) {
+              tapNavigationTargetIndex.value = null;
+            }
+            return;
+          }
+
+          selectedTab.value = tabFromIndex(index);
+        },
+        children: pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (index) {
-          selectedTab.value = tabFromIndex(index);
+          final targetTab = tabFromIndex(index);
+          final targetIndex = tabToIndex(targetTab);
+
+          if (targetIndex == selectedIndex) {
+            return;
+          }
+
+          tapNavigationTargetIndex.value = targetIndex;
+          selectedTab.value = targetTab;
           pageController.animateToPage(
-            tabToIndex(tabFromIndex(index)),
+            targetIndex,
             duration: const Duration(milliseconds: 500),
             curve: Curves.ease,
           );
