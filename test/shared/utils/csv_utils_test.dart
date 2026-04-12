@@ -6,6 +6,9 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void main() {
+  const historyCsvHeader =
+      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+
   group('csv_utils.generateCsv', () {
     test('generates header and properly quoted row for a single item', () {
       final item = HistoryModel(
@@ -25,16 +28,13 @@ void main() {
         timeHours: '01:30',
       );
 
-      final csv = generateCsv([item]);
+      final csv = generateCsv([item], historyCsvHeader);
 
       final lines = csv.split('\n').where((s) => s.isNotEmpty).toList();
 
       expect(lines.length, 2);
 
-      expect(
-        lines[0],
-        'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
-      );
+      expect(lines[0], historyCsvHeader);
 
       // Note: date is output with toIso8601String, which includes milliseconds and Z
       final expectedDate = '2022-01-02T03:04:05.000Z';
@@ -45,13 +45,10 @@ void main() {
     });
 
     test('handles empty list', () {
-      final csv = generateCsv([]);
+      final csv = generateCsv([], historyCsvHeader);
       final lines = csv.split('\n').where((s) => s.isNotEmpty).toList();
       expect(lines.length, 1);
-      expect(
-        lines[0],
-        'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
-      );
+      expect(lines[0], historyCsvHeader);
     });
   });
 
@@ -227,5 +224,17 @@ void main() {
         );
       },
     );
+  });
+
+  group('csv_utils.generateSampleCsvPreview', () {
+    test('returns header and two sample rows by default', () {
+      final csv = generateSampleCsvPreview(csvHeader: historyCsvHeader);
+      final lines = csv.split('\n').where((s) => s.isNotEmpty).toList();
+
+      expect(lines.length, 3);
+      expect(lines[0], historyCsvHeader);
+      expect(lines[1], contains('Bambu Lab A1'));
+      expect(lines[2], contains('Prusa MK4S'));
+    });
   });
 }

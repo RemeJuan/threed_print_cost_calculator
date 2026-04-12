@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
+import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
@@ -12,17 +13,22 @@ import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+
+enum _AppTab { calculator, history, settings }
 
 class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   const AppPage({super.key});
 
   @override
   Widget build(context, ref) {
-    final selectedIndex = useState(0);
+    final selectedTab = useState(_AppTab.calculator);
     final l10n = S.of(context);
     final prefs = ref.read(sharedPreferencesProvider);
     final premiumState = ref.watch(premiumStateProvider);
     final isPremium = premiumState.isPremium;
+    final showHistoryTab = ref.watch(shouldShowHistoryTabProvider);
+    final showHistoryTeaser = ref.watch(shouldShowHistoryTeaserProvider);
 
     ref.listen<PremiumState>(premiumStateProvider, (previous, next) async {
       if (next.isLoading || next.userId.isEmpty) return;
@@ -34,30 +40,67 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       await prefs.setInt('run_count', runCount + 1);
     });
 
-    final pageController = usePageController(initialPage: selectedIndex.value);
+    final pageController = usePageController(initialPage: 0);
+
+    useEffect(() {
+      if (showHistoryTab || selectedTab.value != _AppTab.history) {
+        return null;
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (selectedTab.value == _AppTab.history) {
+          selectedTab.value = _AppTab.calculator;
+        }
+      });
+
+      return null;
+    }, [showHistoryTab, selectedTab.value]);
+
+    int tabToIndex(_AppTab tab) {
+      return switch (tab) {
+        _AppTab.calculator => 0,
+        _AppTab.history => 1,
+        _AppTab.settings => showHistoryTab ? 2 : 1,
+      };
+    }
+
+    _AppTab tabFromIndex(int index) {
+      if (index == 0) return _AppTab.calculator;
+      if (showHistoryTab && index == 1) return _AppTab.history;
+      return _AppTab.settings;
+    }
+
+    final selectedIndex = tabToIndex(selectedTab.value);
 
     final pages = <Widget>[
       const CalculatorPage(),
-      if (isPremium) const HistoryPage(),
+      if (showHistoryTab)
+        HistoryPage(
+          mode: showHistoryTeaser
+              ? HistoryPageMode.teaser
+              : HistoryPageMode.full,
+        ),
       const SettingsPage(),
     ];
 
     final headings = [
       l10n.calculatorAppBarTitle,
-      if (isPremium) l10n.historyAppBarTitle,
+      if (showHistoryTab) l10n.historyAppBarTitle,
       l10n.settingsAppBarTitle,
     ];
 
+    final isHistoryTeaserSelected =
+        showHistoryTeaser && selectedTab.value == _AppTab.history;
+
     useEffect(() {
-      if (selectedIndex.value < pages.length) return null;
-      selectedIndex.value = pages.length - 1;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (pageController.hasClients) {
-          pageController.jumpToPage(selectedIndex.value);
+        if (pageController.hasClients &&
+            pageController.page?.round() != selectedIndex) {
+          pageController.jumpToPage(selectedIndex);
         }
       });
       return null;
-    }, [pages.length]);
+    }, [selectedIndex]);
 
     useEffect(() {
       if (!context.mounted) return;
@@ -69,14 +112,14 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       });
 
       return null;
-    }, [selectedIndex.value]);
+    }, [selectedIndex]);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(headings[selectedIndex.value]),
-        actions: const [HeaderActions()],
+        title: Text(headings[selectedIndex]),
+        actions: isHistoryTeaserSelected ? const [] : const [HeaderActions()],
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () {
@@ -87,17 +130,13 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           },
         ),
       ),
-      body: PageView(
-        onPageChanged: (index) => selectedIndex.value = index,
-        controller: pageController,
-        children: pages,
-      ),
+      body: PageView(controller: pageController, children: pages),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex.value,
+        currentIndex: selectedIndex,
         onTap: (index) {
-          selectedIndex.value = index;
+          selectedTab.value = tabFromIndex(index);
           pageController.animateToPage(
-            index,
+            tabToIndex(tabFromIndex(index)),
             duration: const Duration(milliseconds: 500),
             curve: Curves.ease,
           );
@@ -110,12 +149,14 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             ),
             label: l10n.calculatorNavLabel,
           ),
-          if (isPremium)
+          if (showHistoryTab)
             BottomNavigationBarItem(
-              icon: const Icon(
-                Icons.history,
-                key: ValueKey<String>('nav.history.button'),
-              ),
+              icon: isPremium
+                  ? const Icon(
+                      Icons.history,
+                      key: ValueKey<String>('nav.history.button'),
+                    )
+                  : const PromoHistoryTabIcon(),
               label: l10n.historyNavLabel,
             ),
           BottomNavigationBarItem(
