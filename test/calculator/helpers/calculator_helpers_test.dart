@@ -1,9 +1,100 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
+import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
+import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+
+class _RecordingHistoryRepository extends HistoryRepository {
+  _RecordingHistoryRepository(super.ref, {this.shouldThrow = false});
+
+  final bool shouldThrow;
+  final List<HistoryModel> saved = [];
+
+  @override
+  Future<Object?> saveHistory(HistoryModel model) async {
+    if (shouldThrow) {
+      throw Exception('save failed');
+    }
+
+    saved.add(model);
+    return 1;
+  }
+}
+
+class _RecordingMaterialStockService extends MaterialStockService {
+  _RecordingMaterialStockService(super.ref, {this.shouldThrow = false});
+
+  final bool shouldThrow;
+  final List<HistoryModel> deducted = [];
+
+  @override
+  Future<void> deductForSavedHistory(HistoryModel history) async {
+    if (shouldThrow) {
+      throw Exception('deduction failed');
+    }
+
+    deducted.add(history);
+  }
+}
+
+class _RecordingLogSink extends AppLogSink {
+  final List<AppLogEvent> events = [];
+
+  @override
+  void log(AppLogEvent event) {
+    events.add(event);
+  }
+}
+
+HistoryModel _buildHistoryModel() {
+  return HistoryModel(
+    name: 'Saved print',
+    totalCost: 10,
+    riskCost: 1,
+    filamentCost: 5,
+    electricityCost: 2,
+    labourCost: 2,
+    date: DateTime.parse('2024-01-01T00:00:00.000Z'),
+    printer: 'Printer',
+    material: 'PLA',
+    weight: 100,
+    materialUsages: const [
+      {
+        'materialId': 'mat-1',
+        'materialName': 'PLA',
+        'costPerKg': 20,
+        'weightGrams': 100,
+      },
+    ],
+    timeHours: '01:00',
+  );
+}
+
+Future<void> _pumpToastApp(
+  WidgetTester tester,
+  ProviderContainer container,
+) async {
+  await tester.pumpWidget(
+    UncontrolledProviderScope(
+      container: container,
+      child: MaterialApp(
+        builder: BotToastInit(),
+        navigatorObservers: [BotToastNavigatorObserver()],
+        home: const Scaffold(body: SizedBox.shrink()),
+      ),
+    ),
+  );
+  await tester.pump();
+}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late ProviderContainer container;
 
   setUp(() {
@@ -132,6 +223,90 @@ void main() {
 
       // Per-item rounding should produce exactly 0.02
       expect(result, equals(0.02));
+    },
+  );
+
+  testWidgets('savePrint skips stock deduction when history save fails', (
+    tester,
+  ) async {
+    late _RecordingHistoryRepository historyRepository;
+    _RecordingMaterialStockService? stockService;
+    final overrideContainer = ProviderContainer(
+      overrides: [
+        historyRepositoryProvider.overrideWith((ref) {
+          historyRepository = _RecordingHistoryRepository(
+            ref,
+            shouldThrow: true,
+          );
+          return historyRepository;
+        }),
+        materialStockServiceProvider.overrideWith((ref) {
+          final service = _RecordingMaterialStockService(ref);
+          stockService = service;
+          return service;
+        }),
+      ],
+    );
+    addTearDown(overrideContainer.dispose);
+
+    await _pumpToastApp(tester, overrideContainer);
+    await overrideContainer
+        .read(calculatorHelpersProvider)
+        .savePrint(_buildHistoryModel());
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
+
+    expect(historyRepository.saved, isEmpty);
+    expect(stockService, isNull);
+  });
+
+  testWidgets(
+    'savePrint logs warning and keeps success path when deduction fails',
+    (tester) async {
+      final logSink = _RecordingLogSink();
+      late _RecordingHistoryRepository historyRepository;
+      late _RecordingMaterialStockService stockService;
+      final overrideContainer = ProviderContainer(
+        overrides: [
+          historyRepositoryProvider.overrideWith((ref) {
+            historyRepository = _RecordingHistoryRepository(ref);
+            return historyRepository;
+          }),
+          materialStockServiceProvider.overrideWith((ref) {
+            stockService = _RecordingMaterialStockService(
+              ref,
+              shouldThrow: true,
+            );
+            return stockService;
+          }),
+          appLogSinkProvider.overrideWithValue(logSink),
+          appLoggerConfigProvider.overrideWithValue(
+            const AppLoggerConfig(minLevel: AppLogLevel.debug),
+          ),
+        ],
+      );
+      addTearDown(overrideContainer.dispose);
+
+      await _pumpToastApp(tester, overrideContainer);
+
+      final history = _buildHistoryModel();
+      await overrideContainer
+          .read(calculatorHelpersProvider)
+          .savePrint(history);
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 3));
+
+      expect(historyRepository.saved, [history]);
+      expect(stockService.deducted, isEmpty);
+      expect(
+        logSink.events.any(
+          (event) =>
+              event.level == AppLogLevel.warn &&
+              event.message ==
+                  'History saved but material stock deduction failed',
+        ),
+        isTrue,
+      );
     },
   );
 }
