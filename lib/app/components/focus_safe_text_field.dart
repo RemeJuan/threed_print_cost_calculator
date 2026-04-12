@@ -16,6 +16,7 @@ class FocusSafeTextField extends StatefulWidget {
   final bool? obscureText;
   final TextInputAction? textInputAction;
   final List<TextInputFormatter>? inputFormatters;
+  final String Function(String)? inputNormalizer;
 
   const FocusSafeTextField({
     super.key,
@@ -30,6 +31,7 @@ class FocusSafeTextField extends StatefulWidget {
     this.obscureText,
     this.textInputAction,
     this.inputFormatters,
+    this.inputNormalizer,
   });
 
   @override
@@ -133,7 +135,17 @@ class _FocusSafeTextFieldState extends State<FocusSafeTextField> {
     return TextFormField(
       controller: widget.controller,
       focusNode: _node,
-      onChanged: widget.onChanged,
+      onChanged: (value) {
+        final normalized = widget.inputNormalizer?.call(value) ?? value;
+        if (normalized != value) {
+          widget.controller.value = TextEditingValue(
+            text: normalized,
+            selection: TextSelection.collapsed(offset: normalized.length),
+            composing: TextRange.empty,
+          );
+        }
+        widget.onChanged?.call(normalized);
+      },
       validator: widget.validator,
       autovalidateMode: widget.autovalidateMode,
       keyboardType: widget.keyboardType,

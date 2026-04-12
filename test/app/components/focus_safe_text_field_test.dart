@@ -65,6 +65,31 @@ void main() {
     focusNode.dispose();
     controller.dispose();
   });
+
+  testWidgets('normalizes leading zeros before onChanged', (tester) async {
+    final controller = TextEditingController();
+    String? changedValue;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: FocusSafeTextField(
+            controller: controller,
+            externalText: '',
+            inputNormalizer: (value) => value.replaceFirst(RegExp(r'^0+'), ''),
+            onChanged: (value) => changedValue = value,
+          ),
+        ),
+      ),
+    );
+
+    await tester.enterText(find.byType(TextFormField), '01000');
+    await tester.pump();
+
+    expect(controller.text, '1000');
+    expect(changedValue, '1000');
+    controller.dispose();
+  });
 }
 
 class _Host extends StatefulWidget {
