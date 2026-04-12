@@ -45,6 +45,19 @@
   "selectMaterialHint": "Custom (unsaved)",
   "materialNone": "None",
   "gramsSuffix": "g",
+  "remainingLabel": "Remaining:",
+  "trackRemainingFilamentLabel": "Track remaining filament",
+  "remainingFilamentLabel": "Remaining filament",
+  "savePrintErrorMessage": "Error saving print",
+  "savePrintSuccessMessage": "Print saved",
+  "numberExampleHint": "e.g. 123",
+  "materialsLoadError": "Failed to load materials: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "Retry",
   "wattsSuffix": "w",
   "needHelpTitle": "Need Help?",
   "supportEmailPrefix": "For any issues, please mail me at ",

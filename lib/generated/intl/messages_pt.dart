@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "Versão ${version}";
 
+  static String m3(error) => "Erro ao carregar materiais: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -91,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Detalhamento de materiais",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("Material padrão"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage(
       "Nome do material *",
     ),
@@ -102,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materiais"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutos"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Precisa de ajuda?"),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("ex.: 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("Erro: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Apenas usuários premium:",
@@ -115,12 +119,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
       "Política de Privacidade",
     ),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Filamento restante",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("Restante:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "Houve um erro ao processar sua compra. Tente novamente mais tarde.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
       "Restaurar compras",
     ),
+    "retryButton": MessageLookupByLibrary.simpleMessage("Tentar novamente"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Custo total de eletricidade: ",
     ),
@@ -132,6 +141,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Custo do risco: "),
     "saveButton": MessageLookupByLibrary.simpleMessage("Salvar"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Salvar impressão"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "Erro ao salvar a impressão",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Impressão salva",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Pesquisar materiais",
     ),
@@ -156,6 +171,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "Em caso de problemas, envie um e-mail para ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Monitorar filamento restante",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "ID de suporte copiado",

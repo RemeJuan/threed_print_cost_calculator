@@ -89,6 +89,26 @@
   "@materialNone": {},
   "gramsSuffix": "g",
   "@gramsSuffix": {},
+  "remainingLabel": "Restante:",
+  "@remainingLabel": {},
+  "trackRemainingFilamentLabel": "Hacer seguimiento del filamento restante",
+  "@trackRemainingFilamentLabel": {},
+  "remainingFilamentLabel": "Filamento restante",
+  "@remainingFilamentLabel": {},
+  "savePrintErrorMessage": "Error al guardar la impresión",
+  "@savePrintErrorMessage": {},
+  "savePrintSuccessMessage": "Impresión guardada",
+  "@savePrintSuccessMessage": {},
+  "numberExampleHint": "p. ej. 123",
+  "@numberExampleHint": {},
+  "materialsLoadError": "Error al cargar los materiales: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "Reintentar",
+  "@retryButton": {},
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "¿Necesitas ayuda?",

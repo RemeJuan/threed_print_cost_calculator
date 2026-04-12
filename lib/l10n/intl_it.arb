@@ -89,6 +89,26 @@
   "@materialNone": {},
   "gramsSuffix": "g",
   "@gramsSuffix": {},
+  "remainingLabel": "Rimanente:",
+  "@remainingLabel": {},
+  "trackRemainingFilamentLabel": "Tieni traccia del filamento rimanente",
+  "@trackRemainingFilamentLabel": {},
+  "remainingFilamentLabel": "Filamento rimanente",
+  "@remainingFilamentLabel": {},
+  "savePrintErrorMessage": "Errore durante il salvataggio della stampa",
+  "@savePrintErrorMessage": {},
+  "savePrintSuccessMessage": "Stampa salvata",
+  "@savePrintSuccessMessage": {},
+  "numberExampleHint": "es. 123",
+  "@numberExampleHint": {},
+  "materialsLoadError": "Errore durante il caricamento dei materiali: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "Riprova",
+  "@retryButton": {},
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "Hai bisogno di aiuto?",

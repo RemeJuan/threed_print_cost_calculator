@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "Version ${version}";
 
+  static String m3(error) => "Failed to load materials: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -87,6 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Material breakdown",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("Material"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("None"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
@@ -96,6 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materials"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Minutes"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Need Help?"),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("e.g. 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("Error: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Premium users only:",
@@ -105,12 +109,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "printerNameLabel": MessageLookupByLibrary.simpleMessage("Name *"),
     "printersHeader": MessageLookupByLibrary.simpleMessage("Printers"),
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Remaining filament",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("Remaining:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "There was an error processing your purchase. Please try again later.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
       "Restore Purchases",
     ),
+    "retryButton": MessageLookupByLibrary.simpleMessage("Retry"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Electricity",
     ),
@@ -120,6 +129,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risk"),
     "saveButton": MessageLookupByLibrary.simpleMessage("Save"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Save Print"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "Error saving print",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Print saved",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Search materials",
     ),
@@ -136,6 +151,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "For any issues, please mail me at ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Track remaining filament",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support ID Copied",

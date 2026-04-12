@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "Versie ${version}";
 
+  static String m3(error) => "Fout bij laden van materialen: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -91,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materiaaluitsplitsing",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("Materiaal"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage(
       "Materiaalnaam *",
     ),
@@ -102,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Materialen"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Notulen"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Hulp nodig?"),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("bijv. 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("Fout: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Alleen voor Premium-gebruikers:",
@@ -113,12 +117,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "printerNameLabel": MessageLookupByLibrary.simpleMessage("Naam *"),
     "printersHeader": MessageLookupByLibrary.simpleMessage("3D-printers"),
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("Privacybeleid"),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Resterend filament",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("Resterend:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "Er is een fout opgetreden bij het verwerken van je aankoop. Probeer het later opnieuw.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
       "Aankopen herstellen",
     ),
+    "retryButton": MessageLookupByLibrary.simpleMessage("Opnieuw proberen"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Totale kosten voor elektriciteit:",
     ),
@@ -130,6 +139,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risicokosten:"),
     "saveButton": MessageLookupByLibrary.simpleMessage("Opslaan"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Print opslaan"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "Fout bij opslaan van print",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Print opgeslagen",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Materialen zoeken",
     ),
@@ -150,6 +165,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "Bij problemen kun je mij mailen op ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Resterend filament bijhouden",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support-ID gekopieerd",

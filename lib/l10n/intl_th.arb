@@ -90,6 +90,26 @@
   "@materialNone": {},
   "gramsSuffix": "g",
   "@gramsSuffix": {},
+  "remainingLabel": "คงเหลือ:",
+  "@remainingLabel": {},
+  "trackRemainingFilamentLabel": "ติดตามฟิลาเมนต์คงเหลือ",
+  "@trackRemainingFilamentLabel": {},
+  "remainingFilamentLabel": "ฟิลาเมนต์คงเหลือ",
+  "@remainingFilamentLabel": {},
+  "savePrintErrorMessage": "เกิดข้อผิดพลาดขณะบันทึกงานพิมพ์",
+  "@savePrintErrorMessage": {},
+  "savePrintSuccessMessage": "บันทึกงานพิมพ์แล้ว",
+  "@savePrintSuccessMessage": {},
+  "numberExampleHint": "เช่น 123",
+  "@numberExampleHint": {},
+  "materialsLoadError": "โหลดวัสดุไม่สำเร็จ: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "ลองอีกครั้ง",
+  "@retryButton": {},
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "ต้องการความช่วยเหลือ?",

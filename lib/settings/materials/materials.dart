@@ -124,11 +124,11 @@ class Materials extends HookConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Failed to load materials: $error'),
+                Text(l10n.materialsLoadError(error.toString())),
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () => ref.invalidate(materialsStreamProvider),
-                  child: const Text('Retry'),
+                  child: Text(l10n.retryButton),
                 ),
               ],
             ),

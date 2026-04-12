@@ -90,6 +90,26 @@
   "@materialNone": {},
   "gramsSuffix": "g",
   "@gramsSuffix": {},
+  "remainingLabel": "残量:",
+  "@remainingLabel": {},
+  "trackRemainingFilamentLabel": "残りフィラメントを追跡",
+  "@trackRemainingFilamentLabel": {},
+  "remainingFilamentLabel": "残りフィラメント",
+  "@remainingFilamentLabel": {},
+  "savePrintErrorMessage": "プリントの保存中にエラーが発生しました",
+  "@savePrintErrorMessage": {},
+  "savePrintSuccessMessage": "プリントを保存しました",
+  "@savePrintSuccessMessage": {},
+  "numberExampleHint": "例: 123",
+  "@numberExampleHint": {},
+  "materialsLoadError": "材料の読み込みに失敗しました: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "再試行",
+  "@retryButton": {},
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "ヘルプが必要ですか？",

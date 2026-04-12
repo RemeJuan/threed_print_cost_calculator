@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "バージョン ${version}";
 
+  static String m3(error) => "材料の読み込みに失敗しました: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -72,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "materialBreakdownLabel": MessageLookupByLibrary.simpleMessage("素材内訳"),
     "materialFallback": MessageLookupByLibrary.simpleMessage("材料"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("材料名 *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("なし"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
@@ -81,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialsHeader": MessageLookupByLibrary.simpleMessage("材料"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("分"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("ヘルプが必要ですか？"),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("例: 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("エラー: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage("プレミアムユーザーのみ:"),
     "printNameHint": MessageLookupByLibrary.simpleMessage("プリント名"),
@@ -88,10 +92,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "printerNameLabel": MessageLookupByLibrary.simpleMessage("名前 *"),
     "printersHeader": MessageLookupByLibrary.simpleMessage("プリンター"),
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage("プライバシーポリシー"),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage("残りフィラメント"),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("残量:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "購入処理中にエラーが発生しました。後でもう一度お試しください。",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage("購入を復元"),
+    "retryButton": MessageLookupByLibrary.simpleMessage("再試行"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage("電気代合計:"),
     "resultFilamentPrefix": MessageLookupByLibrary.simpleMessage(
       "フィラメントの合計コスト:",
@@ -101,6 +108,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("リスクコスト:"),
     "saveButton": MessageLookupByLibrary.simpleMessage("保存"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("プリントを保存"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "プリントの保存中にエラーが発生しました",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "プリントを保存しました",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("素材を検索"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage("カスタム（未保存）"),
     "selectPrinterHint": MessageLookupByLibrary.simpleMessage("プリンターを選択"),
@@ -113,6 +126,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "問題がある場合は、次のアドレスまでメールしてください: ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "残りフィラメントを追跡",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage("サポートIDをコピーしました"),
     "supportIdLabel": MessageLookupByLibrary.simpleMessage("サポートIDを含めてください: "),

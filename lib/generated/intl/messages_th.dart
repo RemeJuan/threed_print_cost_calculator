@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "เวอร์ชัน ${version}";
 
+  static String m3(error) => "โหลดวัสดุไม่สำเร็จ: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -84,6 +86,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "รายละเอียดวัสดุ",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("วัสดุ"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("ชื่อวัสดุ *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("ไม่มี"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
@@ -95,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "needHelpTitle": MessageLookupByLibrary.simpleMessage(
       "ต้องการความช่วยเหลือ?",
     ),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("เช่น 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("ข้อผิดพลาด: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "ผู้ใช้ระดับพรีเมียมเท่านั้น:",
@@ -108,10 +112,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
       "นโยบายความเป็นส่วนตัว",
     ),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "ฟิลาเมนต์คงเหลือ",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("คงเหลือ:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "เกิดข้อผิดพลาดในการประมวลผลการซื้อของคุณ โปรดลองอีกครั้งในภายหลัง",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage("กู้คืนการซื้อ"),
+    "retryButton": MessageLookupByLibrary.simpleMessage("ลองอีกครั้ง"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "ค่าไฟฟ้าทั้งหมด: ",
     ),
@@ -127,6 +136,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "saveButton": MessageLookupByLibrary.simpleMessage("บันทึก"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("บันทึกงานพิมพ์"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "เกิดข้อผิดพลาดขณะบันทึกงานพิมพ์",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "บันทึกงานพิมพ์แล้ว",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("ค้นหาวัสดุ"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "กำหนดเอง (ยังไม่ได้บันทึก)",
@@ -145,6 +160,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "หากมีปัญหา กรุณาส่งอีเมลมาที่ ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "ติดตามฟิลาเมนต์คงเหลือ",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "คัดลอกรหัสสนับสนุนแล้ว",

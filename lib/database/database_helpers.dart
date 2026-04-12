@@ -4,6 +4,7 @@ import 'package:sembast/sembast.dart';
 
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
@@ -75,7 +76,7 @@ class DataBaseHelpers {
       ref.read(historyPagedProvider.notifier).markStale();
       return key;
     } catch (e) {
-      BotToast.showText(text: 'Error saving print');
+      BotToast.showText(text: S.current.savePrintErrorMessage);
       rethrow;
     }
   }
@@ -121,7 +122,7 @@ class DataBaseHelpers {
         await store.record(key).update(db, data);
       }
     } catch (e) {
-      BotToast.showText(text: 'Error saving print');
+      BotToast.showText(text: S.current.savePrintErrorMessage);
     }
   }
 
@@ -202,7 +203,7 @@ class DataBaseHelpers {
     try {
       return await store.record(key).getSnapshot(db);
     } catch (e) {
-      BotToast.showText(text: 'Error saving print');
+      BotToast.showText(text: S.current.savePrintErrorMessage);
     }
     return null;
   }

@@ -90,6 +90,26 @@
   "@materialNone": {},
   "gramsSuffix": "g",
   "@gramsSuffix": {},
+  "remainingLabel": "Sisa:",
+  "@remainingLabel": {},
+  "trackRemainingFilamentLabel": "Lacak sisa filamen",
+  "@trackRemainingFilamentLabel": {},
+  "remainingFilamentLabel": "Sisa filamen",
+  "@remainingFilamentLabel": {},
+  "savePrintErrorMessage": "Gagal menyimpan hasil cetak",
+  "@savePrintErrorMessage": {},
+  "savePrintSuccessMessage": "Hasil cetak disimpan",
+  "@savePrintSuccessMessage": {},
+  "numberExampleHint": "mis. 123",
+  "@numberExampleHint": {},
+  "materialsLoadError": "Gagal memuat material: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "Coba lagi",
+  "@retryButton": {},
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "Butuh bantuan?",
