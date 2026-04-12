@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 class WorkCostsSettings extends HookConsumerWidget {
   const WorkCostsSettings({super.key});
@@ -153,6 +154,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   ],
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: (value) {
                     if (normalizeLocalizedNumber(value).isEmpty) {
                       return l10n.enterNumber;
@@ -182,6 +184,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   ],
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: (value) {
                     if (normalizeLocalizedNumber(value).isEmpty) {
                       return l10n.enterNumber;
@@ -210,6 +213,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
                   ],
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: (value) {
                     if (normalizeLocalizedNumber(value).isEmpty) {
                       return l10n.enterNumber;

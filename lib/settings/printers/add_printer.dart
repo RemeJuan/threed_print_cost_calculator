@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class AddPrinter extends HookConsumerWidget {
@@ -65,6 +66,7 @@ class AddPrinter extends HookConsumerWidget {
                 externalText: state.wattage.value,
                 focusNode: wattFocus,
                 keyboardType: TextInputType.number,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(labelText: l10n.wattageLabel),
                 onChanged: notifier.updateWattage,
               ),

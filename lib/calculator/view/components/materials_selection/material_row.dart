@@ -115,6 +115,8 @@ class _MaterialRowState extends State<MaterialRow> {
             focusNode: _weightFocusNode,
             externalText: _weightText,
             keyboardType: TextInputType.number,
+            inputNormalizer: (value) =>
+                normalizeLeadingZeroNumericInput(value, allowDecimal: false),
             decoration: InputDecoration(suffixText: l10n.gramsSuffix),
             onChanged: (value) {
               final parsedVal = parseLocalizedInt(value);

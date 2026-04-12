@@ -78,6 +78,7 @@ class MaterialForm extends HookConsumerWidget {
                     : '',
                 focusNode: weightFocus,
                 keyboardType: TextInputType.number,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(
                   labelText: l10n.weightLabel,
                   suffix: Text(l10n.gramsSuffix),
