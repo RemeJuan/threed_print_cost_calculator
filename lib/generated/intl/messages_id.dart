@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "Versi ${version}";
 
+  static String m3(error) => "Gagal memuat material: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -92,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Rincian bahan",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("Bahan"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Nama bahan *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("Tidak ada"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
@@ -101,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "materialsHeader": MessageLookupByLibrary.simpleMessage("Bahan"),
     "minutesLabel": MessageLookupByLibrary.simpleMessage("Menit"),
     "needHelpTitle": MessageLookupByLibrary.simpleMessage("Butuh bantuan?"),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("mis. 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("Kesalahan: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Khusus pengguna premium:",
@@ -112,12 +116,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
       "Kebijakan Privasi",
     ),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Sisa filamen",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("Sisa:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "Terjadi kesalahan saat memproses pembelian Anda. Silakan coba lagi nanti.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
       "Pulihkan pembelian",
     ),
+    "retryButton": MessageLookupByLibrary.simpleMessage("Coba lagi"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Total biaya Listrik: ",
     ),
@@ -129,6 +138,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Biaya risiko: "),
     "saveButton": MessageLookupByLibrary.simpleMessage("Simpan"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Simpan cetakan"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "Gagal menyimpan hasil cetak",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Hasil cetak disimpan",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("Cari bahan"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(
       "Kustom (belum disimpan)",
@@ -145,6 +160,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "Jika ada masalah, silakan email saya di ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Lacak sisa filamen",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "ID Dukungan disalin",

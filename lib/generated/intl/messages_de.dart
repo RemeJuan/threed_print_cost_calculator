@@ -27,6 +27,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "Version ${version}";
 
+  static String m3(error) => "Fehler beim Laden der Materialien: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -93,6 +95,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Materialaufschlüsselung",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("Materialtyp"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage("Materialname *"),
     "materialNone": MessageLookupByLibrary.simpleMessage("Keine"),
     "materialWeightExplanation": MessageLookupByLibrary.simpleMessage(
@@ -104,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "needHelpTitle": MessageLookupByLibrary.simpleMessage(
       "Brauchen Sie Hilfe?",
     ),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("z. B. 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("Fehler: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Nur Premium-Benutzer:",
@@ -117,12 +121,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
       "Datenschutzrichtlinie",
     ),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Verbleibendes Filament",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("Verbleibend:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "Beim Verarbeiten Ihres Kaufs ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
       "Käufe wiederherstellen",
     ),
+    "retryButton": MessageLookupByLibrary.simpleMessage("Erneut versuchen"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Gesamtkosten für Strom:",
     ),
@@ -134,6 +143,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "riskTotalPrefix": MessageLookupByLibrary.simpleMessage("Risikokosten:"),
     "saveButton": MessageLookupByLibrary.simpleMessage("Speichern"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Druck speichern"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "Fehler beim Speichern des Drucks",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Druck gespeichert",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Materialien suchen",
     ),
@@ -158,6 +173,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "Bei Problemen schreiben Sie mir bitte an ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Verbleibendes Filament verfolgen",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "Support-ID kopiert",

@@ -90,6 +90,26 @@
   "@materialNone": {},
   "gramsSuffix": "g",
   "@gramsSuffix": {},
+  "remainingLabel": "Resterend:",
+  "@remainingLabel": {},
+  "trackRemainingFilamentLabel": "Resterend filament bijhouden",
+  "@trackRemainingFilamentLabel": {},
+  "remainingFilamentLabel": "Resterend filament",
+  "@remainingFilamentLabel": {},
+  "savePrintErrorMessage": "Fout bij opslaan van print",
+  "@savePrintErrorMessage": {},
+  "savePrintSuccessMessage": "Print opgeslagen",
+  "@savePrintSuccessMessage": {},
+  "numberExampleHint": "bijv. 123",
+  "@numberExampleHint": {},
+  "materialsLoadError": "Fout bij laden van materialen: {error}",
+  "@materialsLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "retryButton": "Opnieuw proberen",
+  "@retryButton": {},
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "Hulp nodig?",

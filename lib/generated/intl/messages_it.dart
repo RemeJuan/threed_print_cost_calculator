@@ -27,6 +27,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m2(version) => "Versione ${version}";
 
+  static String m3(error) =>
+      "Errore durante il caricamento dei materiali: ${error}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addAtLeastOneMaterial": MessageLookupByLibrary.simpleMessage(
@@ -93,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Dettaglio materiali",
     ),
     "materialFallback": MessageLookupByLibrary.simpleMessage("Materiale"),
+    "materialsLoadError": m3,
     "materialNameLabel": MessageLookupByLibrary.simpleMessage(
       "Nome materiale *",
     ),
@@ -106,6 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "needHelpTitle": MessageLookupByLibrary.simpleMessage(
       "Hai bisogno di aiuto?",
     ),
+    "numberExampleHint": MessageLookupByLibrary.simpleMessage("es. 123"),
     "offeringsError": MessageLookupByLibrary.simpleMessage("Errore: "),
     "premiumHeader": MessageLookupByLibrary.simpleMessage(
       "Solo utenti Premium:",
@@ -119,12 +124,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacyPolicyLink": MessageLookupByLibrary.simpleMessage(
       "Informativa sulla privacy",
     ),
+    "remainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Filamento rimanente",
+    ),
+    "remainingLabel": MessageLookupByLibrary.simpleMessage("Rimanente:"),
     "purchaseError": MessageLookupByLibrary.simpleMessage(
       "Si è verificato un errore durante l\'elaborazione dell\'acquisto. Riprova più tardi.",
     ),
     "restorePurchases": MessageLookupByLibrary.simpleMessage(
       "Ripristina acquisti",
     ),
+    "retryButton": MessageLookupByLibrary.simpleMessage("Riprova"),
     "resultElectricityPrefix": MessageLookupByLibrary.simpleMessage(
       "Costo totale per l\'elettricità: ",
     ),
@@ -138,6 +148,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "saveButton": MessageLookupByLibrary.simpleMessage("Salva"),
     "savePrintButton": MessageLookupByLibrary.simpleMessage("Salva stampa"),
+    "savePrintErrorMessage": MessageLookupByLibrary.simpleMessage(
+      "Errore durante il salvataggio della stampa",
+    ),
+    "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Stampa salvata",
+    ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Cerca materiali",
     ),
@@ -160,6 +176,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "supportEmail": MessageLookupByLibrary.simpleMessage("google@remej.dev"),
     "supportEmailPrefix": MessageLookupByLibrary.simpleMessage(
       "Per qualsiasi problema, scrivimi a ",
+    ),
+    "trackRemainingFilamentLabel": MessageLookupByLibrary.simpleMessage(
+      "Tieni traccia del filamento rimanente",
     ),
     "supportIdCopied": MessageLookupByLibrary.simpleMessage(
       "ID di supporto copiato",

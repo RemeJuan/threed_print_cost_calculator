@@ -157,7 +157,7 @@ class MaterialPicker extends HookConsumerWidget {
       error: (error, stackTrace) => Center(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Text('Failed to load materials: $error'),
+          child: Text(l10n.materialsLoadError(error.toString())),
         ),
       ),
     );

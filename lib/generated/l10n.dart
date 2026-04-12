@@ -419,6 +419,71 @@ class S {
     return Intl.message('g', name: 'gramsSuffix', desc: '', args: []);
   }
 
+  /// `Remaining:`
+  String get remainingLabel {
+    return Intl.message(
+      'Remaining:',
+      name: 'remainingLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Track remaining filament`
+  String get trackRemainingFilamentLabel {
+    return Intl.message(
+      'Track remaining filament',
+      name: 'trackRemainingFilamentLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remaining filament`
+  String get remainingFilamentLabel {
+    return Intl.message(
+      'Remaining filament',
+      name: 'remainingFilamentLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error saving print`
+  String get savePrintErrorMessage {
+    return Intl.message(
+      'Error saving print',
+      name: 'savePrintErrorMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Print saved`
+  String get savePrintSuccessMessage {
+    return Intl.message(
+      'Print saved',
+      name: 'savePrintSuccessMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `e.g. 123`
+  String get numberExampleHint {
+    return Intl.message(
+      'e.g. 123',
+      name: 'numberExampleHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get retryButton {
+    return Intl.message('Retry', name: 'retryButton', desc: '', args: []);
+  }
+
   /// `w`
   String get wattsSuffix {
     return Intl.message('w', name: 'wattsSuffix', desc: '', args: []);
@@ -734,6 +799,16 @@ class S {
       name: 'materialsCountLabel',
       desc: '',
       args: [count],
+    );
+  }
+
+  /// `Failed to load materials: {error}`
+  String materialsLoadError(Object error) {
+    return Intl.message(
+      'Failed to load materials: $error',
+      name: 'materialsLoadError',
+      desc: '',
+      args: [error],
     );
   }
 
