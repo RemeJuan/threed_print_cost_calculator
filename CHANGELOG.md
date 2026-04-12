@@ -1,3 +1,13 @@
+## [2.6.0] - 2026-04-12
+### Added
+- Added a free-user history teaser with an export preview instead of direct access.
+- Added remaining material stock display in the calculator and automatic stock deduction after saves.
+- Added locked premium indicators in calculator results for Pro-only features.
+
+### Changed
+- Added an option to hide Pro promotions in Settings.
+- Improved numeric input handling across calculator and settings forms.
+
 ## [2.5.2] - 2026-04-02
 ### Fixed
 - Fixed calculator totals not recalculating when switching from a priced material to a zero-cost material.
@@ -95,6 +105,7 @@
 ### Added
 - Added in-app update checker
 
+[2.6.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.2...2.6.0
 [2.5.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.5.0
