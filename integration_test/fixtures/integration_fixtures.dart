@@ -26,6 +26,8 @@ abstract final class IntegrationFixtures {
     color: 'Black',
     weight: '1000',
     archived: false,
+    originalWeight: 1000,
+    remainingWeight: 1000,
   );
 
   static const settings = GeneralSettingsModel(
