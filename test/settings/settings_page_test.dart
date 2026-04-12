@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -48,6 +49,12 @@ class _FakeSettingsRepository implements SettingsRepository {
   Future<void> dispose() => _controller.close();
 }
 
+Finder _hideProPromotionsToggle() {
+  return find.byKey(
+    const ValueKey<String>('settings.hideProPromotions.toggle'),
+  );
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -90,6 +97,10 @@ void main() {
       findsNothing,
     );
     expect(
+      find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
       findsNothing,
     );
@@ -97,6 +108,60 @@ void main() {
       find.byKey(const ValueKey<String>('settings.materials.add.button')),
       findsNothing,
     );
+  });
+
+  testWidgets('free user toggle restores persisted enabled state', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({'hideProPromotions': true});
+
+    final settingsRepo = _FakeSettingsRepository();
+    final prefs = await SharedPreferences.getInstance();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(false),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+
+    expect(_hideProPromotionsToggle(), findsOneWidget);
+    expect(
+      tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
+      isTrue,
+    );
+    expect(prefs.getBool('hideProPromotions'), isTrue);
+  });
+
+  testWidgets('toggling promo visibility updates immediately', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+
+    final settingsRepo = _FakeSettingsRepository();
+    final prefs = await SharedPreferences.getInstance();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(false),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(_hideProPromotionsToggle());
+    await tester.pump();
+
+    expect(
+      tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
+      isTrue,
+    );
+    expect(prefs.getBool('hideProPromotions'), isTrue);
   });
 
   testWidgets('premium users see printers materials and work cost sections', (
@@ -134,6 +199,10 @@ void main() {
     expect(
       find.byKey(const ValueKey<String>('settings.materials.add.button')),
       findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
+      findsNothing,
     );
   });
 

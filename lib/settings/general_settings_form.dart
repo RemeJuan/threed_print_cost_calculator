@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
@@ -16,6 +17,13 @@ class GeneralSettings extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = S.of(context);
+    final shouldShowHideProPromotionsToggle = ref.watch(
+      shouldShowHideProPromotionsToggleProvider,
+    );
+    final hideProPromotions = ref.watch(hideProPromotionsProvider);
+    final hideProPromotionsNotifier = ref.read(
+      hideProPromotionsProvider.notifier,
+    );
 
     // Hook-managed controllers and focus nodes must be called at the top-level of build
     final electricityController = useTextEditingController();
@@ -121,43 +129,63 @@ class GeneralSettings extends HookConsumerWidget {
 
     return Container(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: FocusSafeTextField(
-              key: const ValueKey<String>('settings.electricityCost.input'),
-              controller: electricityController,
-              externalText: data.electricityCost.toString(),
-              focusNode: electricityFocus,
-              keyboardType: TextInputType.number,
-              inputNormalizer: normalizeLeadingZeroNumericInput,
-              decoration: InputDecoration(
-                labelText: l10n.electricityCostSettingsLabel,
-                suffixText: l10n.kwh,
+          Row(
+            children: [
+              Expanded(
+                child: FocusSafeTextField(
+                  key: const ValueKey<String>('settings.electricityCost.input'),
+                  controller: electricityController,
+                  externalText: data.electricityCost.toString(),
+                  focusNode: electricityFocus,
+                  keyboardType: TextInputType.number,
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  decoration: InputDecoration(
+                    labelText: l10n.electricityCostSettingsLabel,
+                    suffixText: l10n.kwh,
+                  ),
+                  onChanged: (value) async {
+                    await persistElectricity(value);
+                  },
+                ),
               ),
-              onChanged: (value) async {
-                await persistElectricity(value);
+              const SizedBox(width: 16),
+              Expanded(
+                child: FocusSafeTextField(
+                  key: const ValueKey<String>('settings.generalWattage.input'),
+                  controller: wattController,
+                  externalText: data.wattage.toString(),
+                  focusNode: wattFocus,
+                  keyboardType: TextInputType.number,
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  decoration: InputDecoration(
+                    labelText: l10n.wattLabel,
+                    suffixText: l10n.watt,
+                  ),
+                  onChanged: (value) async {
+                    await persistWatt(value);
+                  },
+                ),
+              ),
+            ],
+          ),
+          if (shouldShowHideProPromotionsToggle) ...[
+            const SizedBox(height: 8),
+            SwitchListTile.adaptive(
+              key: const ValueKey<String>('settings.hideProPromotions.toggle'),
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              title: Text(l10n.hideProPromotionsTitle),
+              subtitle: Text(l10n.hideProPromotionsSubtitle),
+              value: hideProPromotions,
+              onChanged: (value) {
+                unawaited(
+                  hideProPromotionsNotifier.setHideProPromotions(value),
+                );
               },
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: FocusSafeTextField(
-              key: const ValueKey<String>('settings.generalWattage.input'),
-              controller: wattController,
-              externalText: data.wattage.toString(),
-              focusNode: wattFocus,
-              keyboardType: TextInputType.number,
-              inputNormalizer: normalizeLeadingZeroNumericInput,
-              decoration: InputDecoration(
-                labelText: l10n.wattLabel,
-                suffixText: l10n.watt,
-              ),
-              onChanged: (value) async {
-                await persistWatt(value);
-              },
-            ),
-          ),
+          ],
         ],
       ),
     );
