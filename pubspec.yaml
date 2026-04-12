@@ -27,7 +27,6 @@ dependencies:
   flutter_slidable: 4.0.3
   hooks_riverpod: 3.3.1
   intl: 0.20.2
-  localizely_sdk: 2.7.5
   package_info_plus: 9.0.1
   path:
   path_provider: 2.1.5
@@ -69,12 +68,6 @@ cider:
   link_template:
     tag: https://github.com/RemeJuan/threed_print_cost_calculator/releases/tag/%tag% # initial release link template
     diff: https://github.com/RemeJuan/threed_print_cost_calculator/compare/%from%...%to% # subsequent releases link template
-
-flutter_intl:
-  enabled: true
-  localizely:
-    ota_enabled: false
-    project_id: 268cbebb-6c43-4716-a4b0-4d4217db93df
 
 patrol:
   app_name: 3D Print Cost Calculator
