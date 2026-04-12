@@ -16,6 +16,12 @@ class MaterialSelect extends HookConsumerWidget {
     final generalSettings = useState(GeneralSettingsModel.initial());
     final l10n = S.of(context);
 
+    String formatWeight(num value) {
+      return value % 1 == 0
+          ? value.toStringAsFixed(0)
+          : value.toStringAsFixed(1);
+    }
+
     Future<void> getSettings() async {
       generalSettings.value = await ref
           .read(settingsRepositoryProvider)
@@ -51,6 +57,28 @@ class MaterialSelect extends HookConsumerWidget {
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
             value: selectedValue,
+            selectedItemBuilder: (_) {
+              return data.map((e) {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(e.name),
+                      if (e.autoDeductEnabled)
+                        Text(
+                          '${l10n.remainingLabel} ${formatWeight(e.remainingWeight)}${l10n.gramsSuffix}',
+                          key: ValueKey<String>(
+                            'calculator.materialSelect.remaining.${e.id}',
+                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                    ],
+                  ),
+                );
+              }).toList();
+            },
             items: data.map((e) {
               return DropdownMenuItem(
                 value: e.id,
