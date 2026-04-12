@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
@@ -25,10 +27,16 @@ class MaterialsProvider extends Notifier<MaterialState> {
       final material = await _materialsRepository.getMaterialById(key);
       if (material == null) return;
 
-      updateName(material.name);
-      updateColor(material.color);
-      updateCost(material.cost.toString());
-      updateWeight(material.weight.toString());
+      state = state.copyWith(
+        name: StringInput.dirty(value: material.name),
+        color: StringInput.dirty(value: material.color),
+        cost: NumberInput.dirty(value: parseLocalizedNum(material.cost)),
+        weight: NumberInput.dirty(value: parseLocalizedNum(material.weight)),
+        autoDeductEnabled: material.autoDeductEnabled,
+        remainingWeight: material.autoDeductEnabled
+            ? NumberInput.dirty(value: material.remainingWeight)
+            : const NumberInput.pure(),
+      );
     }
   }
 
@@ -47,12 +55,40 @@ class MaterialsProvider extends Notifier<MaterialState> {
   }
 
   void updateWeight(String value) {
+    final parsedValue = parseLocalizedNum(value);
     state = state.copyWith(
-      weight: NumberInput.dirty(value: parseLocalizedNum(value)),
+      weight: NumberInput.dirty(value: parsedValue),
+      remainingWeight: state.autoDeductEnabled
+          ? state.remainingWeight
+          : NumberInput.dirty(value: math.max(0, parsedValue)),
+    );
+  }
+
+  void updateAutoDeductEnabled(bool value) {
+    state = state.copyWith(
+      autoDeductEnabled: value,
+      remainingWeight: value
+          ? NumberInput.dirty(value: math.max(0, state.weight.value ?? 0))
+          : const NumberInput.pure(),
+    );
+  }
+
+  void updateRemainingWeight(String value) {
+    state = state.copyWith(
+      remainingWeight: NumberInput.dirty(
+        value: math.max(0, parseLocalizedNum(value)),
+      ),
     );
   }
 
   Future<Object?> submit(String? dbRef) async {
+    final existing = dbRef == null
+        ? null
+        : await _materialsRepository.getMaterialById(dbRef);
+    final parsedWeight = (state.weight.value ?? 0).toDouble();
+    final wasTrackingEnabled = existing?.autoDeductEnabled ?? false;
+    final isTrackingEnabled = state.autoDeductEnabled;
+
     final material = MaterialModel(
       id: dbRef ?? '',
       name: state.name.value,
@@ -60,6 +96,16 @@ class MaterialsProvider extends Notifier<MaterialState> {
       color: state.color.value,
       weight: state.weight.value.toString(),
       archived: false,
+      autoDeductEnabled: isTrackingEnabled,
+      originalWeight: isTrackingEnabled && wasTrackingEnabled
+          ? existing!.originalWeight
+          : parsedWeight,
+      remainingWeight: isTrackingEnabled
+          ? math.max(
+              0,
+              (state.remainingWeight.value ?? parsedWeight).toDouble(),
+            )
+          : parsedWeight,
     );
 
     final key = await _materialsRepository.saveMaterial(material, id: dbRef);
