@@ -28,6 +28,20 @@ void main() {
     );
   }
 
+  MaterialModel trackedMaterial(String id, String name, String color) {
+    return MaterialModel(
+      id: id,
+      name: name,
+      cost: '20',
+      color: color,
+      weight: '1000',
+      archived: false,
+      autoDeductEnabled: true,
+      originalWeight: 1000,
+      remainingWeight: 640,
+    );
+  }
+
   testWidgets('stale selected material is ignored when missing', (
     tester,
   ) async {
@@ -89,5 +103,29 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(DropdownButton<String>), findsNothing);
+  });
+
+  testWidgets('shows remaining stock only for tracked selected material', (
+    tester,
+  ) async {
+    await tester.pumpApp(const MaterialSelect(), [
+      settingsRepositoryProvider.overrideWithValue(
+        FakeSettingsRepository(
+          initialSettings: GeneralSettingsModel.initial().copyWith(
+            selectedMaterial: 'mat-a',
+          ),
+        ),
+      ),
+      materialsStreamProvider.overrideWith(
+        (ref) => Stream.value([
+          trackedMaterial('mat-a', 'PLA', '#FFFFFF'),
+          material('mat-b', 'ABS', '#000000'),
+        ]),
+      ),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Remaining: 640g'), findsOneWidget);
   });
 }

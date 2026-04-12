@@ -31,6 +31,9 @@ class _MaterialRowHarnessState extends State<_MaterialRowHarness> {
     color: '#FFFFFF',
     weight: '1000',
     archived: false,
+    autoDeductEnabled: true,
+    originalWeight: 1000,
+    remainingWeight: 875,
   );
 
   @override
@@ -70,6 +73,9 @@ void main() {
         color: '#FFFFFF',
         weight: '1000',
         archived: false,
+        autoDeductEnabled: true,
+        originalWeight: 1000,
+        remainingWeight: 875,
       );
 
       int? updatedWeight;
@@ -91,6 +97,7 @@ void main() {
 
       // The weight field should show initial value
       expect(find.text('50'), findsOneWidget);
+      expect(find.text('Remaining: 875g'), findsOneWidget);
       expect(find.byType(FocusSafeTextField), findsOneWidget);
 
       // Change weight

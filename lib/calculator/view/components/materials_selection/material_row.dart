@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 /// Single material row used inside the materials list.
 ///
@@ -58,8 +59,15 @@ class _MaterialRowState extends State<MaterialRow> {
   Widget build(BuildContext context) {
     final l10n = S.of(context);
     final colorString = widget.material?.color ?? '';
+    final remainingWeight = widget.material?.remainingWeight ?? 0;
     final id = widget.usage.materialId.trim();
     final rowKey = id.isNotEmpty ? id : '__row_${widget.index}';
+
+    String formatWeight(num value) {
+      return value % 1 == 0
+          ? value.toStringAsFixed(0)
+          : value.toStringAsFixed(1);
+    }
 
     final isMaterialUnassigned =
         widget.usage.materialName.isEmpty ||
@@ -77,18 +85,32 @@ class _MaterialRowState extends State<MaterialRow> {
             child: Row(
               children: [
                 Flexible(
-                  child: Text(
-                    key: ValueKey<String>(
-                      'calculator.materials.item.${widget.index}.name',
-                    ),
-                    isMaterialUnassigned
-                        ? l10n.selectMaterialHint
-                        : widget.usage.materialName,
-                    style: isMaterialUnassigned
-                        ? Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).hintColor,
-                          )
-                        : Theme.of(context).textTheme.bodyMedium,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        key: ValueKey<String>(
+                          'calculator.materials.item.${widget.index}.name',
+                        ),
+                        isMaterialUnassigned
+                            ? l10n.selectMaterialHint
+                            : widget.usage.materialName,
+                        style: isMaterialUnassigned
+                            ? Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context).hintColor,
+                              )
+                            : Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      if (widget.material?.autoDeductEnabled == true)
+                        Text(
+                          key: ValueKey<String>(
+                            'calculator.materials.item.${widget.index}.remaining',
+                          ),
+                          '${l10n.remainingLabel} ${formatWeight(remainingWeight)}${l10n.gramsSuffix}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                    ],
                   ),
                 ),
                 if (colorString.isNotEmpty) ...[
