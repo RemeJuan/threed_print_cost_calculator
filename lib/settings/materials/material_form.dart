@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class MaterialForm extends HookConsumerWidget {
@@ -35,6 +36,13 @@ class MaterialForm extends HookConsumerWidget {
       text: state.weight.value != null ? state.weight.value.toString() : '',
     );
     final weightFocus = useFocusNode();
+
+    final remainingWeightController = useTextEditingController(
+      text: state.remainingWeight.value != null
+          ? state.remainingWeight.value.toString()
+          : '',
+    );
+    final remainingWeightFocus = useFocusNode();
 
     final costController = useTextEditingController(
       text: state.cost.value != null ? state.cost.value.toString() : '',
@@ -94,9 +102,39 @@ class MaterialForm extends HookConsumerWidget {
                     : '',
                 focusNode: costFocus,
                 keyboardType: TextInputType.number,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(labelText: l10n.costLabel),
                 onChanged: (v) => notifier.updateCost(v),
               ),
+
+              SwitchListTile.adaptive(
+                key: const ValueKey<String>(
+                  'settings.materials.track_remaining.toggle',
+                ),
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.trackRemainingFilamentLabel),
+                value: state.autoDeductEnabled,
+                onChanged: notifier.updateAutoDeductEnabled,
+              ),
+
+              if (state.autoDeductEnabled)
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.materials.remaining_weight.input',
+                  ),
+                  controller: remainingWeightController,
+                  externalText: state.remainingWeight.value != null
+                      ? state.remainingWeight.value.toString()
+                      : '',
+                  focusNode: remainingWeightFocus,
+                  keyboardType: TextInputType.number,
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  decoration: InputDecoration(
+                    labelText: l10n.remainingFilamentLabel,
+                    suffix: Text(l10n.gramsSuffix),
+                  ),
+                  onChanged: notifier.updateRemainingWeight,
+                ),
 
               const SizedBox(height: 16),
               Row(

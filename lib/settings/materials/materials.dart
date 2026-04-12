@@ -14,6 +14,12 @@ class Materials extends HookConsumerWidget {
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final l10n = S.of(context);
 
+    String formatWeight(num value) {
+      return value % 1 == 0
+          ? value.toStringAsFixed(0)
+          : value.toStringAsFixed(1);
+    }
+
     return ref
         .watch(materialsStreamProvider)
         .when(
@@ -85,6 +91,18 @@ class Materials extends HookConsumerWidget {
                                         .titleSmall
                                         ?.copyWith(fontSize: 12),
                                   ),
+                                  if (data.autoDeductEnabled)
+                                    Text(
+                                      key: ValueKey<String>(
+                                        'settings.materials.item.$index.remaining',
+                                      ),
+                                      '${l10n.remainingLabel} ${formatWeight(data.remainingWeight)}${l10n.gramsSuffix}',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall
+                                          ?.copyWith(fontSize: 12),
+                                    ),
                                 ],
                               ),
                             ),

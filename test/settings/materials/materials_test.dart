@@ -24,6 +24,9 @@ MaterialModel _material() {
     color: 'Red',
     weight: '1000',
     archived: false,
+    autoDeductEnabled: true,
+    originalWeight: 1000,
+    remainingWeight: 800,
   );
 }
 
@@ -93,6 +96,7 @@ void main() {
     expect(find.text('Red'), findsOneWidget);
     expect(find.text('24.5'), findsOneWidget);
     expect(find.text('1000${S.current.gramsSuffix}'), findsOneWidget);
+    expect(find.text('Remaining: 800${S.current.gramsSuffix}'), findsOneWidget);
   });
 
   testWidgets('retries after a stream error', (tester) async {

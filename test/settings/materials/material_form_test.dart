@@ -70,6 +70,16 @@ void main() {
     await tester.enterText(_field('settings.materials.color.input'), 'Blue');
     await tester.enterText(_field('settings.materials.weight.input'), '1000');
     await tester.enterText(_field('settings.materials.cost.input'), '24.5');
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.materials.track_remaining.toggle'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      _field('settings.materials.remaining_weight.input'),
+      '850',
+    );
 
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.materials.save.button')),
@@ -82,9 +92,50 @@ void main() {
     expect(repo.savedMaterials.single.color, 'Blue');
     expect(repo.savedMaterials.single.weight, '1000');
     expect(repo.savedMaterials.single.cost, '24.5');
+    expect(repo.savedMaterials.single.autoDeductEnabled, isTrue);
+    expect(repo.savedMaterials.single.originalWeight, 1000);
+    expect(repo.savedMaterials.single.remainingWeight, 850);
     expect(repo.getMaterialByIdCalls, ['material-1']);
     expect(savedResult.single, isA<MaterialModel>());
     expect((savedResult.single as MaterialModel).id, 'material-1');
+  });
+
+  testWidgets('remaining filament input strips leading zeros', (tester) async {
+    final repo = FakeMaterialsRepository();
+    final db = await tester.pumpApp(
+      _MaterialDialogHost(
+        onResult: (_) {},
+        builder: (_) => const MaterialForm(),
+      ),
+      [materialsRepositoryProvider.overrideWithValue(repo)],
+    );
+    addTearDown(db.close);
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.materials.track_remaining.toggle'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      _field('settings.materials.remaining_weight.input'),
+      '01000',
+    );
+    await tester.pump();
+
+    expect(
+      tester
+          .widget<TextFormField>(
+            _field('settings.materials.remaining_weight.input'),
+          )
+          .controller!
+          .text,
+      '1000',
+    );
   });
 
   testWidgets('null save results close the dialog safely', (tester) async {
@@ -125,6 +176,9 @@ void main() {
       color: 'Red',
       weight: '1000',
       archived: false,
+      autoDeductEnabled: true,
+      originalWeight: 1000,
+      remainingWeight: 725,
     );
     final repo = FakeMaterialsRepository();
     repo.materialsById[material.id] = material;
@@ -169,6 +223,27 @@ void main() {
           .controller!
           .text,
       '24.5',
+    );
+    expect(
+      tester
+          .widget<SwitchListTile>(
+            find.byKey(
+              const ValueKey<String>(
+                'settings.materials.track_remaining.toggle',
+              ),
+            ),
+          )
+          .value,
+      isTrue,
+    );
+    expect(
+      tester
+          .widget<TextFormField>(
+            _field('settings.materials.remaining_weight.input'),
+          )
+          .controller!
+          .text,
+      '725.0',
     );
 
     await tester.enterText(
