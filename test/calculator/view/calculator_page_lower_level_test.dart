@@ -8,7 +8,6 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
@@ -41,7 +40,6 @@ void main() {
     await tester.pumpApp(const CalculatorPage(), [
       calculatorProvider.overrideWith(() => calculatorNotifier),
       settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
-      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       purchasesGatewayProvider.overrideWithValue(gateway),
       paywallPresenterProvider.overrideWithValue(paywallPresenter),
       materialsStreamProvider.overrideWith(

@@ -47,8 +47,10 @@ extension PumpApp on WidgetTester {
     // override this by passing their own override which will appear later.
     final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
     final db = await databaseFactoryMemory.openDatabase(name);
+    final sharedPreferences = await SharedPreferences.getInstance();
     final effectiveOverrides = <Override>[
       databaseProvider.overrideWithValue(db),
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ...overrides,
     ];
 

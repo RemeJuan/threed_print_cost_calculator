@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
@@ -23,7 +22,6 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockCalculatorNotifier mockCalculatorProvider;
-  late SharedPreferences sharedPreferences;
 
   setUpAll(() async {
     await setupTest();
@@ -43,10 +41,8 @@ void main() {
 
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
-      sharedPreferences = await SharedPreferences.getInstance();
       final db = await tester.pumpApp(const App(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ]);
       addTearDown(() => db.close());
       await tester.pumpAndSettle();
@@ -54,10 +50,8 @@ void main() {
     });
 
     testWidgets('help button opens the support dialog', (tester) async {
-      sharedPreferences = await SharedPreferences.getInstance();
       final db = await tester.pumpApp(const App(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ]);
       addTearDown(() => db.close());
 
