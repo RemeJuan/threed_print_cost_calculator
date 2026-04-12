@@ -244,6 +244,48 @@ void main() {
       ],
     );
   });
+
+  testWidgets('cancel does not save anything', (tester) async {
+    final helpers = FakeCalculatorHelpers();
+    final showSave = ValueNotifier<bool>(true);
+    final settingsRepo = FakeSettingsRepository(
+      initialSettings: GeneralSettingsModel.initial(),
+    );
+    final calculatorNotifier = FakeCalculatorNotifier(
+      initialState: CalculatorState(),
+    );
+
+    await tester.pumpApp(
+      SaveForm(
+        data: const CalculationResult(
+          electricity: 0,
+          filament: 0,
+          risk: 0,
+          labour: 0,
+          total: 0,
+        ),
+        showSave: showSave,
+      ),
+      [
+        calculatorProvider.overrideWith(() => calculatorNotifier),
+        settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        printersRepositoryProvider.overrideWithValue(FakePrintersRepository()),
+        materialsRepositoryProvider.overrideWithValue(
+          FakeMaterialsRepository(),
+        ),
+        calculatorHelpersProvider.overrideWithValue(helpers),
+      ],
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('calculator.save.cancel.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(helpers.lastSavedPrint, isNull);
+    expect(showSave.value, isFalse);
+  });
 }
 
 class HistoryModelCapture {
