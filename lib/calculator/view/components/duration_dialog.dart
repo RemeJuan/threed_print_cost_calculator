@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 /// A dialog that lets the user input hours (free numeric) and minutes (0-59).
 /// Returns a `Map<String,int>` via Navigator.pop: {'hours': hours, 'minutes': minutes}.
@@ -25,6 +26,20 @@ class _DurationDialogState extends State<DurationDialog> {
   late final TextEditingController _minutesController;
   late final FocusNode _hoursFocus;
   late final FocusNode _minutesFocus;
+
+  void _normalizeController(TextEditingController controller) {
+    final normalized = normalizeLeadingZeroNumericInput(
+      controller.text,
+      allowDecimal: false,
+    );
+    if (normalized == controller.text) return;
+
+    controller.value = TextEditingValue(
+      text: normalized,
+      selection: TextSelection.collapsed(offset: normalized.length),
+      composing: TextRange.empty,
+    );
+  }
 
   @override
   void initState() {
@@ -80,29 +95,9 @@ class _DurationDialogState extends State<DurationDialog> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
                     labelText: widget.l10n.hoursLabel,
-                    hintText: 'e.g. 123',
+                    hintText: widget.l10n.numberExampleHint,
                   ),
-                  onChanged: (v) {
-                    // Normalize leading zeros: when user types over an initial '0',
-                    // we want '1' not '01'. If the text has more than 1 char and
-                    // starts with '0', strip leading zeros (but keep a single '0').
-                    String text = _hoursController.text;
-                    if (text.length > 1 && text.startsWith('0')) {
-                      final normalized = text.replaceFirst(RegExp(r'^0+'), '');
-                      final newText = normalized.isEmpty ? '0' : normalized;
-                      if (newText != text) {
-                        // Update controller text once; this will trigger onChanged again,
-                        // but the normalized text won't need further normalization.
-                        _hoursController.text = newText;
-                      }
-                    }
-
-                    // Ensure the caret is at the end after any normalization.
-                    final len = _hoursController.text.length;
-                    _hoursController.selection = TextSelection.fromPosition(
-                      TextPosition(offset: len),
-                    );
-                  },
+                  onChanged: (_) => _normalizeController(_hoursController),
                 ),
               ),
               const SizedBox(width: 12),
@@ -115,6 +110,7 @@ class _DurationDialogState extends State<DurationDialog> {
                   focusNode: _minutesFocus,
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (_) => _normalizeController(_minutesController),
                   decoration: InputDecoration(
                     labelText: widget.l10n.minutesLabel,
                   ),

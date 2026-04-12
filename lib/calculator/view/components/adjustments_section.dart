@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/app/components/focus_safe_text_fiel
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 class AdjustmentsSection extends HookConsumerWidget {
   const AdjustmentsSection({super.key});
@@ -43,6 +44,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             externalText: state.labourRate.value?.toString() ?? '',
             focusNode: labourRateFocus,
             keyboardType: TextInputType.number,
+            inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.labourRateLabel),
             onChanged: (value) async {
               notifier.setLabourRate(parseLocalizedNum(value));
@@ -60,6 +62,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             externalText: state.labourTime.value?.toString() ?? '',
             focusNode: labourTimeFocus,
             keyboardType: TextInputType.number,
+            inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.labourTimeLabel),
             onChanged: (value) async {
               notifier

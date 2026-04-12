@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 class RatesSection extends HookConsumerWidget {
   const RatesSection({super.key});
@@ -41,6 +42,7 @@ class RatesSection extends HookConsumerWidget {
             externalText: state.wearAndTear.value?.toString() ?? '',
             focusNode: wearFocus,
             keyboardType: TextInputType.number,
+            inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
             onChanged: (value) async {
               notifier.setWearAndTear(parseLocalizedNum(value));
@@ -56,6 +58,7 @@ class RatesSection extends HookConsumerWidget {
             externalText: state.failureRisk.value?.toString() ?? '',
             focusNode: failureFocus,
             keyboardType: TextInputType.number,
+            inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.failureRiskLabel),
             onChanged: (value) async {
               notifier.setFailureRisk(parseLocalizedNum(value));

@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 class GeneralSettings extends HookConsumerWidget {
   const GeneralSettings({super.key});
@@ -129,6 +130,7 @@ class GeneralSettings extends HookConsumerWidget {
               externalText: data.electricityCost.toString(),
               focusNode: electricityFocus,
               keyboardType: TextInputType.number,
+              inputNormalizer: normalizeLeadingZeroNumericInput,
               decoration: InputDecoration(
                 labelText: l10n.electricityCostSettingsLabel,
                 suffixText: l10n.kwh,
@@ -146,6 +148,7 @@ class GeneralSettings extends HookConsumerWidget {
               externalText: data.wattage.toString(),
               focusNode: wattFocus,
               keyboardType: TextInputType.number,
+              inputNormalizer: normalizeLeadingZeroNumericInput,
               decoration: InputDecoration(
                 labelText: l10n.wattLabel,
                 suffixText: l10n.watt,

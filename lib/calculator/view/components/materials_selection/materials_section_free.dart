@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/app/components/focus_safe_text_fiel
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 class MaterialsSectionFree extends HookConsumerWidget {
   const MaterialsSectionFree({super.key});
@@ -43,6 +44,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
                 externalText: state.spoolWeight.value?.toString() ?? '',
                 focusNode: spoolWeightFocus,
                 keyboardType: TextInputType.number,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(
                   labelText: l10n.spoolWeightLabel,
                   suffixText: l10n.gramsSuffix,
@@ -66,6 +68,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
+                inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(labelText: l10n.spoolCostLabel),
                 onChanged: (value) {
                   notifier
@@ -82,6 +85,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
           externalText: state.printWeight.value?.toString() ?? '',
           focusNode: printWeightFocus,
           keyboardType: TextInputType.number,
+          inputNormalizer: normalizeLeadingZeroNumericInput,
           decoration: InputDecoration(labelText: l10n.printWeightLabel),
           onChanged: (value) {
             notifier
