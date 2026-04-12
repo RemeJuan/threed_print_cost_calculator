@@ -3,6 +3,9 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
 final calculatorHelpersProvider = Provider<CalculatorHelpers>(
@@ -65,9 +68,24 @@ class CalculatorHelpers {
   Future<void> savePrint(HistoryModel value) async {
     try {
       await ref.read(historyRepositoryProvider).saveHistory(value);
-      BotToast.showText(text: 'Print saved');
     } catch (e) {
-      BotToast.showText(text: 'Error saving print');
+      BotToast.showText(text: S.current.savePrintErrorMessage);
+      return;
     }
+
+    try {
+      await ref.read(materialStockServiceProvider).deductForSavedHistory(value);
+    } catch (error, stackTrace) {
+      ref
+          .read(appLoggerProvider)
+          .warn(
+            AppLogCategory.db,
+            'History saved but material stock deduction failed',
+            error: error,
+            stackTrace: stackTrace,
+          );
+    }
+
+    BotToast.showText(text: S.current.savePrintSuccessMessage);
   }
 }
