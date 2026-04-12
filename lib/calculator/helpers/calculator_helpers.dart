@@ -17,6 +17,14 @@ class CalculatorHelpers {
 
   CalculatorHelpers(this.ref);
 
+  String _toastText(String fallback, String Function(S s) localized) {
+    try {
+      return localized(S.current);
+    } catch (_) {
+      return fallback;
+    }
+  }
+
   num electricityCost(num watts, num hours, num minutes, num cost) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
     final w = watts / 1000;
@@ -69,7 +77,9 @@ class CalculatorHelpers {
     try {
       await ref.read(historyRepositoryProvider).saveHistory(value);
     } catch (e) {
-      BotToast.showText(text: S.current.savePrintErrorMessage);
+      BotToast.showText(
+        text: _toastText('Error saving print', (s) => s.savePrintErrorMessage),
+      );
       return;
     }
 
@@ -86,6 +96,8 @@ class CalculatorHelpers {
           );
     }
 
-    BotToast.showText(text: S.current.savePrintSuccessMessage);
+    BotToast.showText(
+      text: _toastText('Print saved', (s) => s.savePrintSuccessMessage),
+    );
   }
 }
