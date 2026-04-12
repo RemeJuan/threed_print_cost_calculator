@@ -204,6 +204,55 @@ void main() {
     expect(find.text(S.current.historyNavLabel), findsNothing);
   });
 
+  testWidgets('swiping between pages updates bottom navigation selection', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'run_count': 0,
+      'hideProPromotions': true,
+    });
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
+    );
+
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(
+      tester
+          .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
+          .currentIndex,
+      0,
+    );
+
+    final pageView = find.byType(PageView);
+    final pageWidth = tester.getSize(pageView).width;
+
+    await tester.fling(pageView, Offset(-pageWidth, 0), 1000);
+    await tester.pump(const Duration(milliseconds: 700));
+    await tester.pump();
+
+    expect(
+      tester
+          .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
+          .currentIndex,
+      1,
+    );
+
+    await tester.fling(pageView, Offset(-pageWidth, 0), 1000);
+    await tester.pump(const Duration(milliseconds: 700));
+    await tester.pump();
+
+    expect(
+      tester
+          .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
+          .currentIndex,
+      2,
+    );
+  });
+
   testWidgets(
     'history selection falls back to calculator when tab disappears',
     (tester) async {
