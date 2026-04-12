@@ -588,22 +588,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
-  localizely_sdk:
-    dependency: "direct main"
-    description:
-      name: localizely_sdk
-      sha256: "12c42e4c55a002895e98483c5cbb18f8a9f9ffe9c749b6d46e73a98f4c9a130c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.7.5"
-  logger:
-    dependency: transitive
-    description:
-      name: logger
-      sha256: a7967e31b703831a893bbc3c3dd11db08126fe5f369b5c648a36f821979f5be3
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.6.2"
   logging:
     dependency: transitive
     description:
@@ -780,14 +764,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.0"
-  petitparser:
-    dependency: transitive
-    description:
-      name: petitparser
-      sha256: "91bd59303e9f769f108f8df05e371341b15d59e995e6806aefab827b58336675"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.0.2"
   platform:
     dependency: transitive
     description:

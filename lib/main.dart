@@ -14,7 +14,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:localizely_sdk/localizely_sdk.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
@@ -62,11 +61,6 @@ Future<void> main() async {
       await DeviceCheck.instance.generateToken();
     }
   }
-
-  Localizely.init(
-    '8e7a9d1398e34b6cb58a2a16cc6954368b062836',
-    'bfa0278e4ce9434e92abf8fc74aa6790',
-  );
 
   return bootstrap(
     () => ProviderScope(
