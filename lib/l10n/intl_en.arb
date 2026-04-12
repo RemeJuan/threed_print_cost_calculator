@@ -100,6 +100,27 @@
   "enterNumber": "Please enter a number",
   "invalidNumber": "Invalid number",
   "historySearchHint": "Search by name or printer",
+  "historyExportMenuTitle": "Export Prints",
+  "historyExportRangeAll": "All",
+  "historyExportRangeLast7Days": "Last 7 days",
+  "historyExportRangeLast30Days": "Last 30 days",
+  "historyNoMoreRecords": "No more records",
+  "historyLoadError": "Error loading history: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total",
+  "historyExportShareText": "3D Print Cost History Export",
+  "historyTeaserTitle": "Keep every print estimate in one place",
+  "historyTeaserDescription": "Review how history works before upgrading. Save completed estimates and export them any time with Pro.",
+  "historyTeaserCta": "Save & export history with Pro",
+  "historyExportPreviewEntry": "Preview sample CSV export",
+  "historyExportPreviewTitle": "CSV preview",
+  "historyExportPreviewDescription": "See how your export will look. Download and share are unlocked with Pro.",
+  "historyExportPreviewSampleLabel": "[Sample]",
+  "historyExportPreviewAction": "Download / Share with Pro",
   "addMaterialButton": "Add",
   "useSingleTotalWeightAction": "Use single total weight",
   "addAtLeastOneMaterial": "Add at least one material.",

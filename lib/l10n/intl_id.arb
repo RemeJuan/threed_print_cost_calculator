@@ -139,6 +139,19 @@
     "description": "Label for export action in history list"
   },
   "historySearchHint": "Cari berdasarkan nama atau printer",
+  "historyExportMenuTitle": "Ekspor cetakan",
+  "historyExportRangeAll": "Semua",
+  "historyExportRangeLast7Days": "7 hari terakhir",
+  "historyExportRangeLast30Days": "30 hari terakhir",
+  "historyNoMoreRecords": "Tidak ada data lagi",
+  "historyLoadError": "Gagal memuat riwayat: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total",
+  "historyExportShareText": "Ekspor riwayat biaya cetak 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Kebijakan Privasi",
   "@privacyPolicyLink": {},

@@ -139,6 +139,19 @@
     "description": "Label for export action in history list"
   },
   "historySearchHint": "名前やプリンターで検索",
+  "historyExportMenuTitle": "印刷データを書き出す",
+  "historyExportRangeAll": "すべて",
+  "historyExportRangeLast7Days": "過去7日間",
+  "historyExportRangeLast30Days": "過去30日間",
+  "historyNoMoreRecords": "これ以上の記録はありません",
+  "historyLoadError": "履歴を読み込めませんでした: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計",
+  "historyExportShareText": "3Dプリント費用履歴の書き出し",
   "@supportIdCopied": {},
   "privacyPolicyLink": "プライバシーポリシー",
   "@privacyPolicyLink": {},

@@ -22,6 +22,10 @@
   "riskTotalPrefix": "Risk cost: ",
   "premiumHeader": "Premium users only:",
   "labourCostPrefix": "Labour/Materials: ",
+  "lockedValuePlaceholder": "—",
+  "@lockedValuePlaceholder": {
+    "description": "Placeholder shown for locked premium result values."
+  },
   "selectPrinterHint": "Select Printer",
   "watt": "Watt",
   "kwh": "kW/h",
@@ -46,5 +50,58 @@
   "exportButton": "Export",
   "@exportButton": {
     "description": "Label for export action in history list"
-  }
+  },
+  "hideProPromotionsTitle": "Hide Pro feature promotions",
+  "@hideProPromotionsTitle": {
+    "description": "Title for the free-user toggle that hides upgrade prompts and premium previews."
+  },
+  "hideProPromotionsSubtitle": "Hide upgrade prompts and previews for premium features",
+  "@hideProPromotionsSubtitle": {
+    "description": "Subtitle for the free-user toggle that hides premium promotional surfaces."
+  },
+  "historyTeaserTitle": "Keep every print estimate in one place",
+  "@historyTeaserTitle": {
+    "description": "Headline for the free-user history teaser state."
+  },
+  "historyTeaserDescription": "Save past print costs and export them as CSV with Pro.",
+  "@historyTeaserDescription": {
+    "description": "Short explanation of the history feature value in the teaser state."
+  },
+  "historyTeaserCta": "Save & export history with Pro",
+  "@historyTeaserCta": {
+    "description": "Primary CTA shown in the free-user history teaser state."
+  },
+  "historyExportPreviewEntry": "Preview sample CSV export",
+  "@historyExportPreviewEntry": {
+    "description": "Entry point label for the free-user export teaser flow."
+  },
+  "historyExportPreviewTitle": "CSV preview",
+  "@historyExportPreviewTitle": {
+    "description": "Title for the export preview teaser sheet."
+  },
+  "historyExportPreviewDescription": "Example rows only. Download and sharing unlock with Pro.",
+  "@historyExportPreviewDescription": {
+    "description": "Helper copy shown above the sample CSV preview for free users."
+  },
+  "historyExportPreviewSampleLabel": "[Sample]",
+  "@historyExportPreviewSampleLabel": {
+    "description": "Label marking the teaser CSV preview as sample data."
+  },
+  "historyExportPreviewAction": "Download / Share with Pro",
+  "@historyExportPreviewAction": {
+    "description": "Button label for the gated action in the export teaser flow."
+  },
+  "historyExportMenuTitle": "Export Prints",
+  "historyExportRangeAll": "All",
+  "historyExportRangeLast7Days": "Last 7 days",
+  "historyExportRangeLast30Days": "Last 30 days",
+  "historyNoMoreRecords": "No more records",
+  "historyLoadError": "Error loading history: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total",
+  "historyExportShareText": "3D Print Cost History Export"
 }

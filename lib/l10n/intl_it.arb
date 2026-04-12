@@ -138,6 +138,19 @@
     "description": "Label for export action in history list"
   },
   "historySearchHint": "Cerca per nome o stampante",
+  "historyExportMenuTitle": "Esporta stampe",
+  "historyExportRangeAll": "Tutto",
+  "historyExportRangeLast7Days": "Ultimi 7 giorni",
+  "historyExportRangeLast30Days": "Ultimi 30 giorni",
+  "historyNoMoreRecords": "Nessun altro record",
+  "historyLoadError": "Impossibile caricare la cronologia: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale",
+  "historyExportShareText": "Esportazione della cronologia dei costi di stampa 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Informativa sulla privacy",
   "@privacyPolicyLink": {},

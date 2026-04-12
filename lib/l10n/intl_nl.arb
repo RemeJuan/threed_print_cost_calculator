@@ -139,6 +139,19 @@
     "description": "Label for export action in history list"
   },
   "historySearchHint": "Zoeken op naam of printer",
+  "historyExportMenuTitle": "Prints exporteren",
+  "historyExportRangeAll": "Alles",
+  "historyExportRangeLast7Days": "Laatste 7 dagen",
+  "historyExportRangeLast30Days": "Laatste 30 dagen",
+  "historyNoMoreRecords": "Geen verdere records",
+  "historyLoadError": "Geschiedenis laden mislukt: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal",
+  "historyExportShareText": "Export van 3D-printkostenoverzicht",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",
   "@privacyPolicyLink": {},
