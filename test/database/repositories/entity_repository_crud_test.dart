@@ -57,6 +57,30 @@ void main() {
     expect(await repo.getMaterials(), hasLength(1));
   });
 
+  test(
+    'materials repository maps legacy records with tracking disabled by default',
+    () async {
+      final repo = container.read(materialsRepositoryProvider);
+      await stringMapStoreFactory
+          .store('materials')
+          .record('material-legacy')
+          .put(db, {
+            'name': 'PLA',
+            'cost': '25',
+            'color': 'Red',
+            'weight': '1000',
+            'archived': false,
+          });
+
+      final material = await repo.getMaterialById('material-legacy');
+
+      expect(material, isNotNull);
+      expect(material!.autoDeductEnabled, isFalse);
+      expect(material.originalWeight, 1000);
+      expect(material.remainingWeight, 1000);
+    },
+  );
+
   test('materials repository updates and deletes records', () async {
     final repo = container.read(materialsRepositoryProvider);
     await stringMapStoreFactory.store('materials').record('material-1').put(

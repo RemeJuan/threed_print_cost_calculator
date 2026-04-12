@@ -101,7 +101,7 @@ class FakePrintersRepository implements PrintersRepository {
 
 class FakeMaterialsRepository implements MaterialsRepository {
   FakeMaterialsRepository([Map<String, MaterialModel>? materials])
-    : _materials = materials ?? const {};
+    : _materials = Map<String, MaterialModel>.from(materials ?? const {});
 
   final Map<String, MaterialModel> _materials;
 
@@ -121,8 +121,13 @@ class FakeMaterialsRepository implements MaterialsRepository {
   Future<MaterialModel?> getMaterialById(String id) async => _materials[id];
 
   @override
-  Future<Object?> saveMaterial(MaterialModel material, {String? id}) async =>
-      id ?? material.id;
+  Future<Object?> saveMaterial(MaterialModel material, {String? id}) async {
+    final key = id ?? material.id;
+    if (key.isNotEmpty) {
+      _materials[key] = material.copyWith(id: key);
+    }
+    return key;
+  }
 
   @override
   Future<void> deleteMaterial(String id) async {}
