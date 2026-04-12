@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -215,6 +217,50 @@ void main() {
             .controller!
             .text,
         '',
+      );
+    });
+
+    testWidgets('persists the hide Pro promotions toggle', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final prefs = await SharedPreferences.getInstance();
+      final db = await tester.pumpApp(const GeneralSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+        isPremiumProvider.overrideWithValue(false),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      final toggle = find.byKey(
+        const ValueKey<String>('settings.hideProPromotions.toggle'),
+      );
+      expect(toggle, findsOneWidget);
+
+      await tester.tap(toggle);
+      await tester.pump();
+
+      expect(prefs.getBool('hideProPromotions'), isTrue);
+    });
+
+    testWidgets('hides the toggle for premium users', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const GeneralSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+        isPremiumProvider.overrideWithValue(true),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      expect(
+        find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
+        findsNothing,
       );
     });
   });
