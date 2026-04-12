@@ -139,6 +139,19 @@
     "description": "Label for export action in history list"
   },
   "historySearchHint": "ค้นหาตามชื่อหรือเครื่องพิมพ์",
+  "historyExportMenuTitle": "ส่งออกงานพิมพ์",
+  "historyExportRangeAll": "ทั้งหมด",
+  "historyExportRangeLast7Days": "7 วันที่ผ่านมา",
+  "historyExportRangeLast30Days": "30 วันที่ผ่านมา",
+  "historyNoMoreRecords": "ไม่มีบันทึกเพิ่มเติม",
+  "historyLoadError": "ไม่สามารถโหลดประวัติได้: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "วันที่,เครื่องพิมพ์,วัสดุ,วัสดุ,น้ำหนัก (ก.),เวลา,ไฟฟ้า,เส้นใย,ค่าแรง,ความเสี่ยง,รวม",
+  "historyExportShareText": "การส่งออกประวัติต้นทุนการพิมพ์ 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "นโยบายความเป็นส่วนตัว",
   "@privacyPolicyLink": {},

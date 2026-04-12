@@ -75,6 +75,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labourCostPrefix => 'Labour/Materials: ';
 
   @override
+  String get lockedValuePlaceholder => '—';
+
+  @override
   String get selectPrinterHint => 'Select Printer';
 
   @override
@@ -113,4 +116,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportButton => 'Export';
+
+  @override
+  String get hideProPromotionsTitle => 'Hide Pro feature promotions';
+
+  @override
+  String get hideProPromotionsSubtitle =>
+      'Hide upgrade prompts and previews for premium features';
+
+  @override
+  String get historyTeaserTitle => 'Keep every print estimate in one place';
+
+  @override
+  String get historyTeaserDescription =>
+      'Save past print costs and export them as CSV with Pro.';
+
+  @override
+  String get historyTeaserCta => 'Save & export history with Pro';
+
+  @override
+  String get historyExportPreviewEntry => 'Preview sample CSV export';
+
+  @override
+  String get historyExportPreviewTitle => 'CSV preview';
+
+  @override
+  String get historyExportPreviewDescription =>
+      'Example rows only. Download and sharing unlock with Pro.';
+
+  @override
+  String get historyExportPreviewSampleLabel => '[Sample]';
+
+  @override
+  String get historyExportPreviewAction => 'Download / Share with Pro';
+
+  @override
+  String get historyExportMenuTitle => 'Export Prints';
+
+  @override
+  String get historyExportRangeAll => 'All';
+
+  @override
+  String get historyExportRangeLast7Days => 'Last 7 days';
+
+  @override
+  String get historyExportRangeLast30Days => 'Last 30 days';
+
+  @override
+  String get historyNoMoreRecords => 'No more records';
+
+  @override
+  String historyLoadError(Object error) {
+    return 'Error loading history: $error';
+  }
+
+  @override
+  String get historyCsvHeader =>
+      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+
+  @override
+  String get historyExportShareText => '3D Print Cost History Export';
 }

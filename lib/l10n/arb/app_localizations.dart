@@ -226,6 +226,12 @@ abstract class AppLocalizations {
   /// **'Labour/Materials: '**
   String get labourCostPrefix;
 
+  /// Placeholder shown for locked premium result values.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get lockedValuePlaceholder;
+
   /// No description provided for @selectPrinterHint.
   ///
   /// In en, this message translates to:
@@ -303,6 +309,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export'**
   String get exportButton;
+
+  /// Title for the free-user toggle that hides upgrade prompts and premium previews.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Pro feature promotions'**
+  String get hideProPromotionsTitle;
+
+  /// Subtitle for the free-user toggle that hides premium promotional surfaces.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide upgrade prompts and previews for premium features'**
+  String get hideProPromotionsSubtitle;
+
+  /// Headline for the free-user history teaser state.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep every print estimate in one place'**
+  String get historyTeaserTitle;
+
+  /// Short explanation of the history feature value in the teaser state.
+  ///
+  /// In en, this message translates to:
+  /// **'Save past print costs and export them as CSV with Pro.'**
+  String get historyTeaserDescription;
+
+  /// Primary CTA shown in the free-user history teaser state.
+  ///
+  /// In en, this message translates to:
+  /// **'Save & export history with Pro'**
+  String get historyTeaserCta;
+
+  /// Entry point label for the free-user export teaser flow.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview sample CSV export'**
+  String get historyExportPreviewEntry;
+
+  /// Title for the export preview teaser sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV preview'**
+  String get historyExportPreviewTitle;
+
+  /// Helper copy shown above the sample CSV preview for free users.
+  ///
+  /// In en, this message translates to:
+  /// **'Example rows only. Download and sharing unlock with Pro.'**
+  String get historyExportPreviewDescription;
+
+  /// Label marking the teaser CSV preview as sample data.
+  ///
+  /// In en, this message translates to:
+  /// **'[Sample]'**
+  String get historyExportPreviewSampleLabel;
+
+  /// Button label for the gated action in the export teaser flow.
+  ///
+  /// In en, this message translates to:
+  /// **'Download / Share with Pro'**
+  String get historyExportPreviewAction;
+
+  /// No description provided for @historyExportMenuTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Prints'**
+  String get historyExportMenuTitle;
+
+  /// No description provided for @historyExportRangeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get historyExportRangeAll;
+
+  /// No description provided for @historyExportRangeLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get historyExportRangeLast7Days;
+
+  /// No description provided for @historyExportRangeLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get historyExportRangeLast30Days;
+
+  /// No description provided for @historyNoMoreRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'No more records'**
+  String get historyNoMoreRecords;
+
+  /// No description provided for @historyLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading history: {error}'**
+  String historyLoadError(Object error);
+
+  /// No description provided for @historyCsvHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total'**
+  String get historyCsvHeader;
+
+  /// No description provided for @historyExportShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost History Export'**
+  String get historyExportShareText;
 }
 
 class _AppLocalizationsDelegate

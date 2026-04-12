@@ -99,6 +99,166 @@ class S {
     return Intl.message('History', name: 'historyNavLabel', desc: '', args: []);
   }
 
+  /// `Keep every print estimate in one place`
+  String get historyTeaserTitle {
+    return Intl.message(
+      'Keep every print estimate in one place',
+      name: 'historyTeaserTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Review how history works before upgrading. Save completed estimates and export them any time with Pro.`
+  String get historyTeaserDescription {
+    return Intl.message(
+      'Review how history works before upgrading. Save completed estimates and export them any time with Pro.',
+      name: 'historyTeaserDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save & export history with Pro`
+  String get historyTeaserCta {
+    return Intl.message(
+      'Save & export history with Pro',
+      name: 'historyTeaserCta',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preview sample CSV export`
+  String get historyExportPreviewEntry {
+    return Intl.message(
+      'Preview sample CSV export',
+      name: 'historyExportPreviewEntry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CSV preview`
+  String get historyExportPreviewTitle {
+    return Intl.message(
+      'CSV preview',
+      name: 'historyExportPreviewTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See how your export will look. Download and share are unlocked with Pro.`
+  String get historyExportPreviewDescription {
+    return Intl.message(
+      'See how your export will look. Download and share are unlocked with Pro.',
+      name: 'historyExportPreviewDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `[Sample]`
+  String get historyExportPreviewSampleLabel {
+    return Intl.message(
+      '[Sample]',
+      name: 'historyExportPreviewSampleLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Download / Share with Pro`
+  String get historyExportPreviewAction {
+    return Intl.message(
+      'Download / Share with Pro',
+      name: 'historyExportPreviewAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export Prints`
+  String get historyExportMenuTitle {
+    return Intl.message(
+      'Export Prints',
+      name: 'historyExportMenuTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get historyExportRangeAll {
+    return Intl.message(
+      'All',
+      name: 'historyExportRangeAll',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last 7 days`
+  String get historyExportRangeLast7Days {
+    return Intl.message(
+      'Last 7 days',
+      name: 'historyExportRangeLast7Days',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last 30 days`
+  String get historyExportRangeLast30Days {
+    return Intl.message(
+      'Last 30 days',
+      name: 'historyExportRangeLast30Days',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No more records`
+  String get historyNoMoreRecords {
+    return Intl.message(
+      'No more records',
+      name: 'historyNoMoreRecords',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error loading history: {error}`
+  String historyLoadError(Object error) {
+    return Intl.message(
+      'Error loading history: $error',
+      name: 'historyLoadError',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Date,Printer,Name,Description,Weight(g),Time(min),Price,Material cost,Electricity cost,Processing cost,Risk cost,Total`
+  String get historyCsvHeader {
+    return Intl.message(
+      'Date,Printer,Name,Description,Weight(g),Time(min),Price,Material cost,Electricity cost,Processing cost,Risk cost,Total',
+      name: 'historyCsvHeader',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `3D Print Cost History Export`
+  String get historyExportShareText {
+    return Intl.message(
+      '3D Print Cost History Export',
+      name: 'historyExportShareText',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get settingsNavLabel {
     return Intl.message(
@@ -279,6 +439,16 @@ class S {
     return Intl.message(
       'Labour/Materials',
       name: 'labourCostPrefix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `—`
+  String get lockedValuePlaceholder {
+    return Intl.message(
+      '—',
+      name: 'lockedValuePlaceholder',
       desc: '',
       args: [],
     );
@@ -586,6 +756,26 @@ class S {
       'Export',
       name: 'exportButton',
       desc: 'Label for export action in history list',
+      args: [],
+    );
+  }
+
+  /// `Hide Pro feature promotions`
+  String get hideProPromotionsTitle {
+    return Intl.message(
+      'Hide Pro feature promotions',
+      name: 'hideProPromotionsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hide upgrade prompts and previews for premium features`
+  String get hideProPromotionsSubtitle {
+    return Intl.message(
+      'Hide upgrade prompts and previews for premium features',
+      name: 'hideProPromotionsSubtitle',
+      desc: '',
       args: [],
     );
   }

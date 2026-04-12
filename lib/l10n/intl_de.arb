@@ -138,6 +138,19 @@
     "description": "Label for export action in history list"
   },
   "historySearchHint": "Nach Name oder Drucker suchen",
+  "historyExportMenuTitle": "Drucke exportieren",
+  "historyExportRangeAll": "Alle",
+  "historyExportRangeLast7Days": "Letzte 7 Tage",
+  "historyExportRangeLast30Days": "Letzte 30 Tage",
+  "historyNoMoreRecords": "Keine weiteren Einträge",
+  "historyLoadError": "Verlauf konnte nicht geladen werden: {error}",
+  "@historyLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "historyCsvHeader": "Datum,Drucker,Material,Materialien,Gewicht (g),Zeit,Strom,Filament,Arbeit,Risiko,Gesamt",
+  "historyExportShareText": "Export des 3D-Druck-Kostenverlaufs",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Datenschutzrichtlinie",
   "@privacyPolicyLink": {},
