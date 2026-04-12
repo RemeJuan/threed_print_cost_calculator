@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
+import 'package:threed_print_cost_calculator/history/components/history_export_preview_sheet.dart';
+import 'package:threed_print_cost_calculator/history/components/history_teaser_state.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
@@ -55,7 +57,11 @@ class _FakeCsvUtils extends CsvUtils {
   ExportRange? lastRange;
 
   @override
-  Future<void> exportForRange(ExportRange range) async {
+  Future<void> exportForRange(
+    ExportRange range, {
+    required String csvHeader,
+    required String shareText,
+  }) async {
     lastRange = range;
   }
 }
@@ -97,7 +103,7 @@ void main() {
       HistoryPagedState.initial().copyWith(hasMore: false),
     );
 
-    await tester.pumpApp(const HistoryPage(), [
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
     ]);
 
@@ -124,7 +130,7 @@ void main() {
       ),
     );
 
-    await tester.pumpApp(const HistoryPage(), [
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
     ]);
 
@@ -151,7 +157,7 @@ void main() {
     );
     late _FakeCsvUtils csvUtils;
 
-    await tester.pumpApp(const HistoryPage(), [
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
       csvUtilsProvider.overrideWith((ref) {
         csvUtils = _FakeCsvUtils(ref);
@@ -172,5 +178,76 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(csvUtils.lastRange, ExportRange.last7Days);
+  });
+
+  testWidgets('renders teaser state with sample export preview', (
+    tester,
+  ) async {
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.teaser));
+
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey<String>('history.teaser.state')),
+      findsOneWidget,
+    );
+    expect(find.text('Save & export history with Pro'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('history.export.preview.entry')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('history.export.preview.entry')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('[Sample]'), findsWidgets);
+    final csvPreviewFinder = find.byKey(
+      const ValueKey<String>('history.export.preview.csv'),
+    );
+    expect(csvPreviewFinder, findsOneWidget);
+
+    final csvPreview =
+        tester.widget<SelectableText>(csvPreviewFinder).data ?? '';
+    expect(csvPreview, contains('Bambu Lab A1'));
+    expect(csvPreview, contains('Prusa MK4S'));
+
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('history.export.preview.download.button'),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(HistoryExportPreviewSheet), findsOneWidget);
+    expect(find.byType(HistoryTeaserState), findsOneWidget);
+  });
+
+  testWidgets('premium history mode shows full controls without teaser', (
+    tester,
+  ) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(hasMore: false),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey<String>('history.teaser.state')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.export.preview.entry')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.export.button')),
+      findsOneWidget,
+    );
   });
 }

@@ -36,12 +36,10 @@ String _sanitizeForCsv(String input) {
   return input;
 }
 
-String generateCsv(List<HistoryModel> items) {
+String generateCsv(List<HistoryModel> items, String csvHeader) {
   final buffer = StringBuffer();
 
-  buffer.writeln(
-    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total',
-  );
+  buffer.writeln(csvHeader);
 
   for (final item in items) {
     final dateStr = item.date.toIso8601String();
@@ -83,6 +81,49 @@ String generateCsv(List<HistoryModel> items) {
   return buffer.toString();
 }
 
+List<HistoryModel> buildSampleHistoryItems() {
+  return [
+    HistoryModel(
+      name: 'Sample Benchy',
+      totalCost: 18.9,
+      riskCost: 1.5,
+      filamentCost: 9.8,
+      electricityCost: 2.1,
+      labourCost: 5.5,
+      date: DateTime.utc(2026, 4, 12, 9, 0),
+      printer: 'Bambu Lab A1',
+      material: 'PLA',
+      weight: 87,
+      materialUsages: const [
+        {'materialName': 'PLA Matte White', 'weightGrams': 87},
+      ],
+      timeHours: '03:40',
+    ),
+    HistoryModel(
+      name: 'Sample Bracket',
+      totalCost: 26.35,
+      riskCost: 2.0,
+      filamentCost: 13.15,
+      electricityCost: 2.7,
+      labourCost: 8.5,
+      date: DateTime.utc(2026, 4, 11, 14, 30),
+      printer: 'Prusa MK4S',
+      material: 'PETG',
+      weight: 132,
+      materialUsages: const [
+        {'materialName': 'PETG Black', 'weightGrams': 132},
+      ],
+      timeHours: '05:10',
+    ),
+  ];
+}
+
+String generateSampleCsvPreview({int rowCount = 2, required String csvHeader}) {
+  final sampleItems = buildSampleHistoryItems();
+  final safeRowCount = rowCount.clamp(1, sampleItems.length);
+  return generateCsv(sampleItems.take(safeRowCount).toList(), csvHeader);
+}
+
 Future<String> writeCsvToFile(String csv) async {
   final directory = await getTemporaryDirectory();
   final file = File('${directory.path}/3d_print_history.csv');
@@ -91,13 +132,17 @@ Future<String> writeCsvToFile(String csv) async {
   return file.path;
 }
 
-Future<void> exportCSVFile(List<HistoryModel> items) async {
+Future<void> exportCSVFile(
+  List<HistoryModel> items, {
+  required String csvHeader,
+  required String shareText,
+}) async {
   // Get the CSV file content
-  final csv = generateCsv(items);
+  final csv = generateCsv(items, csvHeader);
   final path = await writeCsvToFile(csv);
 
   await SharePlus.instance.share(
-    ShareParams(files: [XFile(path)], text: '3D Print Cost History Export'),
+    ShareParams(files: [XFile(path)], text: shareText),
   );
 }
 
@@ -111,14 +156,18 @@ class CsvUtils {
   CsvUtils(this.ref);
 
   /// Instance wrapper for top-level generateCsv
-  String generateCsvForItems(List<HistoryModel> items) => generateCsv(items);
+  String generateCsvForItems(List<HistoryModel> items, String csvHeader) =>
+      generateCsv(items, csvHeader);
 
   /// Instance wrapper for top-level writeCsvToFile
   Future<String> writeCsvFileToDisk(String csv) => writeCsvToFile(csv);
 
   /// Instance wrapper for top-level exportCSVFile
-  Future<void> exportCsvForItems(List<HistoryModel> items) =>
-      exportCSVFile(items);
+  Future<void> exportCsvForItems(
+    List<HistoryModel> items, {
+    required String csvHeader,
+    required String shareText,
+  }) => exportCSVFile(items, csvHeader: csvHeader, shareText: shareText);
 
   /// Query history records for the given [range], sorted by date descending.
   Future<List<HistoryModel>> queryHistory(
@@ -141,9 +190,13 @@ class CsvUtils {
   }
 
   /// Query and export history for the given [range].
-  Future<void> exportForRange(ExportRange range) async {
+  Future<void> exportForRange(
+    ExportRange range, {
+    required String csvHeader,
+    required String shareText,
+  }) async {
     final items = await queryHistory(range);
-    await exportCSVFile(items);
+    await exportCSVFile(items, csvHeader: csvHeader, shareText: shareText);
   }
 }
 

@@ -37,7 +37,11 @@ class HistoryItem extends HookConsumerWidget {
             onPressed: (context) async {
               // export this single entry with error handling and user feedback
               try {
-                await exportCSVFile([data]);
+                await exportCSVFile(
+                  [data],
+                  csvHeader: l10n.historyCsvHeader,
+                  shareText: l10n.historyExportShareText,
+                );
                 AppAnalytics.safeLog(() => AppAnalytics.exportUsed('job'));
                 if (!context.mounted) return;
                 ScaffoldMessenger.of(

@@ -3,17 +3,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
 
+import 'components/history_export_preview_sheet.dart';
+import 'components/history_teaser_state.dart';
 import 'components/history_item.dart';
 import 'components/history_toolbar.dart';
 
+enum HistoryPageMode { full, teaser }
+
 class HistoryPage extends HookConsumerWidget {
-  const HistoryPage({super.key});
+  const HistoryPage({super.key, this.mode = HistoryPageMode.full});
+
+  final HistoryPageMode mode;
 
   @override
   Widget build(context, ref) {
+    final l10n = S.of(context);
+
+    if (mode == HistoryPageMode.teaser) {
+      return HistoryTeaserState(
+        onUpgradePressed: () => _showPaywall(context),
+        onExportPreviewPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            isScrollControlled: true,
+            builder: (sheetContext) {
+              return HistoryExportPreviewSheet(
+                csvPreview: generateSampleCsvPreview(
+                  csvHeader: l10n.historyCsvHeader,
+                ),
+                onDownloadPressed: () {
+                  Navigator.pop(sheetContext);
+                  _showPaywall(context);
+                },
+              );
+            },
+          );
+        },
+      );
+    }
+
     // Providers will handle reading the DB and filtering via historyPagedProvider
     final pagedNow = ref.read(historyPagedProvider);
     final controller = useTextEditingController(text: pagedNow.query);
@@ -81,7 +114,9 @@ class HistoryPage extends HookConsumerWidget {
           }
 
           if (paged.error != null && paged.items.isEmpty) {
-            return Center(child: Text('Error loading history: ${paged.error}'));
+            return Center(
+              child: Text(l10n.historyLoadError(paged.error.toString())),
+            );
           }
 
           return CustomScrollView(
@@ -92,67 +127,7 @@ class HistoryPage extends HookConsumerWidget {
                   padding: const EdgeInsets.only(top: 8),
                   child: HistoryToolbar(
                     controller: controller,
-                    onExportPressed: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        builder: (context) {
-                          return SafeArea(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    'Export Prints',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleLarge,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: const Text('All'),
-                                  onTap: () async {
-                                    Navigator.pop(context);
-                                    await ref
-                                        .read(csvUtilsProvider)
-                                        .exportForRange(ExportRange.all);
-                                    AppAnalytics.safeLog(
-                                      () => AppAnalytics.exportUsed('history'),
-                                    );
-                                  },
-                                ),
-                                ListTile(
-                                  title: const Text('Last 7 days'),
-                                  onTap: () async {
-                                    Navigator.pop(context);
-                                    await ref
-                                        .read(csvUtilsProvider)
-                                        .exportForRange(ExportRange.last7Days);
-                                    AppAnalytics.safeLog(
-                                      () => AppAnalytics.exportUsed('history'),
-                                    );
-                                  },
-                                ),
-                                ListTile(
-                                  title: const Text('Last 30 days'),
-                                  onTap: () async {
-                                    Navigator.pop(context);
-                                    await ref
-                                        .read(csvUtilsProvider)
-                                        .exportForRange(ExportRange.last30Days);
-                                    AppAnalytics.safeLog(
-                                      () => AppAnalytics.exportUsed('history'),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(height: 8),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    },
+                    onExportPressed: () => _showExportOptions(context, ref),
                   ),
                 ),
               ),
@@ -176,9 +151,9 @@ class HistoryPage extends HookConsumerWidget {
                           child: CircularProgressIndicator(),
                         ),
                       if (!paged.hasMore)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12.0),
-                          child: Text('No more records'),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Text(l10n.historyNoMoreRecords),
                         ),
                       const SizedBox(height: 24),
                     ],
@@ -189,6 +164,87 @@ class HistoryPage extends HookConsumerWidget {
           );
         },
       ),
+    );
+  }
+
+  void _showExportOptions(BuildContext context, WidgetRef ref) {
+    final l10n = S.of(context);
+
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  l10n.historyExportMenuTitle,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+              ListTile(
+                title: Text(l10n.historyExportRangeAll),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await ref
+                      .read(csvUtilsProvider)
+                      .exportForRange(
+                        ExportRange.all,
+                        csvHeader: l10n.historyCsvHeader,
+                        shareText: l10n.historyExportShareText,
+                      );
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.exportUsed('history'),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text(l10n.historyExportRangeLast7Days),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await ref
+                      .read(csvUtilsProvider)
+                      .exportForRange(
+                        ExportRange.last7Days,
+                        csvHeader: l10n.historyCsvHeader,
+                        shareText: l10n.historyExportShareText,
+                      );
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.exportUsed('history'),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text(l10n.historyExportRangeLast30Days),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await ref
+                      .read(csvUtilsProvider)
+                      .exportForRange(
+                        ExportRange.last30Days,
+                        csvHeader: l10n.historyCsvHeader,
+                        shareText: l10n.historyExportShareText,
+                      );
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.exportUsed('history'),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showPaywall(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (_) => const Subscriptions(),
     );
   }
 }
