@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/history/components/history_export_preview_sheet.dart';
 import 'package:threed_print_cost_calculator/history/components/history_teaser_state.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/lower_level_test_fakes.dart';
 
 class _FakeHistoryPagedNotifier extends HistoryPagedNotifier {
   _FakeHistoryPagedNotifier(this._initialState);
@@ -99,12 +104,15 @@ void main() {
   });
 
   testWidgets('shows empty state and refresh wiring correctly', (tester) async {
+    SharedPreferences.setMockInitialValues({});
     final notifier = _FakeHistoryPagedNotifier(
-      HistoryPagedState.initial().copyWith(hasMore: false),
+      HistoryPagedState.initial().copyWith(hasLoadedOnce: true, hasMore: false),
     );
+    final paywallPresenter = FakePaywallPresenter();
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
     ]);
 
     await tester.pumpAndSettle();
@@ -114,7 +122,82 @@ void main() {
       find.byKey(const ValueKey<String>('history.search.input')),
       findsOneWidget,
     );
-    expect(find.text('No more records'), findsOneWidget);
+    expect(find.text('No saved prints yet'), findsOneWidget);
+    expect(find.text('Re-use past prints in the calculator'), findsOneWidget);
+    expect(find.text('Re-use past prints instantly'), findsOneWidget);
+    expect(find.text('Unlock advanced edits and exports'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('history.upsell.banner')),
+    );
+    await tester.pump();
+
+    expect(paywallPresenter.calls, 1);
+    expect(paywallPresenter.lastOfferingId, 'pro');
+  });
+
+  testWidgets('premium users do not see the history upsell', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: [_entry('1', 'Benchy', DateTime.utc(2024, 1, 2))],
+        hasMore: false,
+      ),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey<String>('history.upsell.banner')),
+      findsNothing,
+    );
+    expect(find.text('Re-use past prints instantly'), findsNothing);
+  });
+
+  testWidgets('shows overflow hint once and dismisses it after menu open', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: [_entry('1', 'Benchy', DateTime.utc(2024, 1, 2))],
+        hasMore: false,
+      ),
+    );
+    final paywallPresenter = FakePaywallPresenter();
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('More actions in ⋯'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('history.item.Benchy.menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('More actions in ⋯'), findsNothing);
+    expect(
+      find.byKey(const ValueKey<String>('history.upsell.banner')),
+      findsOneWidget,
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('More actions in ⋯'), findsNothing);
   });
 
   testWidgets('renders populated history and debounces search input', (
@@ -132,6 +215,7 @@ void main() {
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
+      shouldShowProPromotionProvider.overrideWithValue(false),
     ]);
 
     await tester.pumpAndSettle();
