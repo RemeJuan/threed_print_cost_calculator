@@ -35,13 +35,18 @@ void main() {
     );
   }
 
-  MaterialModel material(String id, String name) {
+  MaterialModel material(
+    String id,
+    String name, {
+    String cost = '20',
+    String weight = '1000',
+  }) {
     return MaterialModel(
       id: id,
       name: name,
-      cost: '20',
+      cost: cost,
       color: '#FFFFFF',
-      weight: '1000',
+      weight: weight,
       archived: false,
     );
   }
@@ -146,7 +151,7 @@ void main() {
         const MaterialUsageInput(
           materialId: 'material-a',
           materialName: 'PLA Black',
-          costPerKg: 0,
+          costPerKg: 20,
           weightGrams: 95,
         ).toMap(),
       ],
@@ -244,6 +249,101 @@ void main() {
       ],
     );
   });
+
+  testWidgets(
+    'saves_single_material_history_snapshot_without_changing_component_costs',
+    (tester) async {
+      const spoolCost = 37.02;
+      const spoolWeight = 1500.0;
+      final expectedCostPerKg = spoolCost / spoolWeight * 1000;
+
+      final settingsRepo = FakeSettingsRepository(
+        initialSettings: GeneralSettingsModel.initial().copyWith(
+          activePrinter: 'printer-a',
+          selectedMaterial: 'material-a',
+        ),
+      );
+      final printersRepo = FakePrintersRepository({
+        'printer-a': printer('printer-a', 'Printer A'),
+      });
+      final materialsRepo = FakeMaterialsRepository({
+        'material-a': material(
+          'material-a',
+          'PLA Black',
+          cost: spoolCost.toString(),
+          weight: spoolWeight.toString(),
+        ),
+      });
+      final helpers = FakeCalculatorHelpers();
+      final calculatorNotifier = FakeCalculatorNotifier(
+        initialState: CalculatorState(
+          printWeight: const NumberInput.dirty(value: 125),
+          hours: const NumberInput.dirty(value: 1),
+          minutes: const NumberInput.dirty(value: 45),
+          materialUsages: const [],
+        ),
+      );
+      final showSave = ValueNotifier<bool>(true);
+      const data = CalculationResult(
+        electricity: 1.11,
+        filament: 3.09,
+        risk: 0.42,
+        labour: 2.22,
+        total: 6.42,
+      );
+
+      await tester.pumpApp(SaveForm(data: data, showSave: showSave), [
+        calculatorProvider.overrideWith(() => calculatorNotifier),
+        settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        printersRepositoryProvider.overrideWithValue(printersRepo),
+        materialsRepositoryProvider.overrideWithValue(materialsRepo),
+        calculatorHelpersProvider.overrideWithValue(helpers),
+      ]);
+
+      await tester.pumpAndSettle();
+
+      tester
+          .widget<TextField>(
+            find.byKey(const ValueKey<String>('calculator.save.name.input')),
+          )
+          .onChanged
+          ?.call('Fallback single material');
+      await tester.pump();
+      tester
+          .widget<IconButton>(
+            find.byKey(
+              const ValueKey<String>('calculator.save.confirm.button'),
+            ),
+          )
+          .onPressed
+          ?.call();
+      await tester.pump();
+
+      final saved = helpers.lastSavedPrint;
+      expect(saved, isNotNull);
+      expect(saved!.electricityCost, data.electricity);
+      expect(saved.filamentCost, data.filament);
+      expect(saved.labourCost, data.labour);
+      expect(saved.riskCost, data.risk);
+      expect(saved.totalCost, data.total);
+
+      expectHistoryFields(
+        capture: HistoryModelCapture(saved),
+        printer: 'Printer A',
+        material: 'PLA Black',
+        weight: 125,
+        timeHours: '01:45',
+        materialUsages: [
+          {
+            'materialId': 'material-a',
+            'materialName': 'PLA Black',
+            'costPerKg': expectedCostPerKg,
+            'weightGrams': 125,
+          },
+        ],
+      );
+    },
+  );
 
   testWidgets('cancel does not save anything', (tester) async {
     final helpers = FakeCalculatorHelpers();
