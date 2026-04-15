@@ -10,7 +10,7 @@
   "@historyAppBarTitle": {},
   "hoursLabel": "Afdruktijd (uren)",
   "@hoursLabel": {},
-  "kwh": "kW/uur",
+  "kwh": "kWh",
   "@kwh": {},
   "labourCostPrefix": "Arbeid/Materialen:",
   "@labourCostPrefix": {},
@@ -20,7 +20,7 @@
   "@labourRateLabel": {},
   "labourTimeLabel": "Verwerkingstijd",
   "@labourTimeLabel": {},
-  "minutesLabel": "Notulen",
+  "minutesLabel": "Minuten",
   "@minutesLabel": {},
   "premiumHeader": "Alleen voor Premium-gebruikers:",
   "@premiumHeader": {},
@@ -206,15 +206,30 @@
   "totalMaterialWeightLabel": "Totaal materiaalgewicht: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "Materiaal",
+  "historyTeaserTitle": "Bewaar elke printschatting op één plek",
+  "historyTeaserDescription": "Bekijk hoe geschiedenis werkt voordat je upgradet. Bewaar voltooide schattingen en exporteer ze altijd met Pro.",
+  "historyTeaserCta": "Bewaar en exporteer geschiedenis met Pro",
+  "historyExportPreviewEntry": "Voorbeeld van CSV-export",
+  "historyExportPreviewTitle": "CSV-voorbeeld",
+  "historyExportPreviewDescription": "Bekijk hoe je export eruitziet. Downloaden en delen zijn ontgrendeld met Pro.",
+  "historyExportPreviewSampleLabel": "[Voorbeeld]",
+  "historyExportPreviewAction": "Downloaden / delen met Pro",
+  "lockedValuePlaceholder": "Vergrendeld",
+  "hideProPromotionsTitle": "Pro-promoties verbergen",
+  "hideProPromotionsSubtitle": "Upgrade-banners en prompts verbergen",
   "versionLabel": "Versie {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

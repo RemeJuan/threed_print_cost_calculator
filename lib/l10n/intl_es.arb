@@ -10,7 +10,7 @@
   "@historyAppBarTitle": {},
   "hoursLabel": "Tiempo de impresión (horas)",
   "@hoursLabel": {},
-  "kwh": "kilovatios/h",
+  "kwh": "kWh",
   "@kwh": {},
   "labourCostPrefix": "Costo laboral/Materiales: ",
   "@labourCostPrefix": {},
@@ -47,7 +47,7 @@
   "@watt": {},
   "wattLabel": "Vatio (impresora 3D)",
   "@wattLabel": {},
-  "wearAndTearLabel": "Materiales/Desgaste + desgaste",
+  "wearAndTearLabel": "Materiales/Desgaste",
   "@wearAndTearLabel": {},
   "calculatorNavLabel": "Calculadora",
   "@calculatorNavLabel": {},
@@ -205,15 +205,30 @@
   "totalMaterialWeightLabel": "Peso total del material: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "Material genérico",
+  "historyTeaserTitle": "Guarda cada estimación de impresión en un solo lugar",
+  "historyTeaserDescription": "Descubre cómo funciona el historial antes de actualizar. Guarda las estimaciones completadas y expórtalas cuando quieras con Pro.",
+  "historyTeaserCta": "Guardar y exportar historial con Pro",
+  "historyExportPreviewEntry": "Vista previa de exportación CSV",
+  "historyExportPreviewTitle": "Vista previa CSV",
+  "historyExportPreviewDescription": "Mira cómo quedará tu exportación. La descarga y el compartir se desbloquean con Pro.",
+  "historyExportPreviewSampleLabel": "[Muestra]",
+  "historyExportPreviewAction": "Descargar / Compartir con Pro",
+  "lockedValuePlaceholder": "Bloqueado",
+  "hideProPromotionsTitle": "Ocultar promociones Pro",
+  "hideProPromotionsSubtitle": "Ocultar banners y avisos de actualización",
   "versionLabel": "Versión {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

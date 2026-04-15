@@ -10,7 +10,7 @@
   "@historyAppBarTitle": {},
   "hoursLabel": "Waktu pencetakan (jam)",
   "@hoursLabel": {},
-  "kwh": "kW/jam",
+  "kwh": "kWh",
   "@kwh": {},
   "labourCostPrefix": "Biaya tenaga kerja/Bahan: ",
   "@labourCostPrefix": {},
@@ -206,15 +206,30 @@
   "totalMaterialWeightLabel": "Total berat material: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "Bahan",
+  "historyTeaserTitle": "Simpan setiap estimasi cetak di satu tempat",
+  "historyTeaserDescription": "Lihat cara kerja riwayat sebelum upgrade. Simpan estimasi yang selesai dan ekspor kapan saja dengan Pro.",
+  "historyTeaserCta": "Simpan dan ekspor riwayat dengan Pro",
+  "historyExportPreviewEntry": "Pratinjau ekspor CSV",
+  "historyExportPreviewTitle": "Pratinjau CSV",
+  "historyExportPreviewDescription": "Lihat seperti apa hasil ekspor Anda. Unduh dan bagikan dibuka dengan Pro.",
+  "historyExportPreviewSampleLabel": "[Contoh]",
+  "historyExportPreviewAction": "Unduh / Bagikan dengan Pro",
+  "lockedValuePlaceholder": "Terkunci",
+  "hideProPromotionsTitle": "Sembunyikan promosi Pro",
+  "hideProPromotionsSubtitle": "Sembunyikan banner dan prompt upgrade",
   "versionLabel": "Versi {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

@@ -202,19 +202,34 @@
   "addAtLeastOneMaterial": "少なくとも1つの素材を追加してください。",
   "searchMaterialsHint": "素材を検索",
   "materialBreakdownLabel": "素材内訳",
-  "materialsCountLabel": "{count} 件の材料",
+  "materialsCountLabel": "{count} 件の素材",
   "totalMaterialWeightLabel": "素材の合計重量: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
-  "materialFallback": "材料",
+  "materialFallback": "素材",
+  "lockedValuePlaceholder": "ロック中",
+  "hideProPromotionsTitle": "Proのプロモーションを非表示",
+  "hideProPromotionsSubtitle": "アップグレードのバナーと案内を非表示",
+  "historyTeaserTitle": "すべての印刷見積もりを1か所に保存",
+  "historyTeaserDescription": "履歴の仕組みを確認してからProにアップグレードしましょう。完了した見積もりを保存し、いつでもProで書き出せます。",
+  "historyTeaserCta": "履歴をProで保存・書き出し",
+  "historyExportPreviewEntry": "CSV書き出しのプレビュー",
+  "historyExportPreviewTitle": "CSVプレビュー",
+  "historyExportPreviewDescription": "書き出しがどう見えるか確認できます。ダウンロードと共有はProで有効になります。",
+  "historyExportPreviewSampleLabel": "[サンプル]",
+  "historyExportPreviewAction": "Proでダウンロード / 共有",
   "versionLabel": "バージョン {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

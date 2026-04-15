@@ -27,7 +27,7 @@
   "labourCostPrefix": "Labour/Materials",
   "selectPrinterHint": "Select Printer",
   "watt": "Watt",
-  "kwh": "kW/h",
+  "kwh": "kWh",
   "savePrintButton": "Save Print",
   "printNameHint": "Print Name",
   "printerNameLabel": "Name *",
@@ -102,6 +102,9 @@
   "workCostsLabel": "Work Costs",
   "enterNumber": "Please enter a number",
   "invalidNumber": "Invalid number",
+  "lockedValuePlaceholder": "Locked",
+  "hideProPromotionsTitle": "Hide Pro promotions",
+  "hideProPromotionsSubtitle": "Hide upgrade banners and prompts",
   "historySearchHint": "Search by name or printer",
   "historyExportMenuTitle": "Export Prints",
   "historyExportRangeAll": "All",
@@ -138,12 +141,16 @@
   "totalMaterialWeightLabel": "Total material weight: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "versionLabel": "Version {version}",

@@ -10,7 +10,7 @@
   "@historyAppBarTitle": {},
   "hoursLabel": "เวลาในการพิมพ์ (ชั่วโมง)",
   "@hoursLabel": {},
-  "kwh": "กิโลวัตต์/ชม",
+  "kwh": "kWh",
   "@kwh": {},
   "labourCostPrefix": "ค่าแรง/วัสดุ: ",
   "@labourCostPrefix": {},
@@ -206,15 +206,30 @@
   "totalMaterialWeightLabel": "น้ำหนักวัสดุรวม: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "วัสดุ",
+  "historyTeaserTitle": "เก็บค่าประมาณการพิมพ์ทุกชิ้นไว้ในที่เดียว",
+  "historyTeaserDescription": "ดูว่าประวัติทำงานอย่างไรก่อนอัปเกรด บันทึกค่าประมาณการที่เสร็จแล้วและส่งออกได้ทุกเมื่อด้วย Pro",
+  "historyTeaserCta": "บันทึกและส่งออกประวัติกับ Pro",
+  "historyExportPreviewEntry": "ดูตัวอย่างการส่งออก CSV",
+  "historyExportPreviewTitle": "ตัวอย่าง CSV",
+  "historyExportPreviewDescription": "ดูว่าการส่งออกของคุณจะเป็นอย่างไร การดาวน์โหลดและการแชร์ปลดล็อกด้วย Pro",
+  "historyExportPreviewSampleLabel": "[ตัวอย่าง]",
+  "historyExportPreviewAction": "ดาวน์โหลด / แชร์ด้วย Pro",
+  "lockedValuePlaceholder": "ถูกล็อก",
+  "hideProPromotionsTitle": "ซ่อนโปรโมชัน Pro",
+  "hideProPromotionsSubtitle": "ซ่อนแบนเนอร์และข้อความอัปเกรด",
   "versionLabel": "เวอร์ชัน {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

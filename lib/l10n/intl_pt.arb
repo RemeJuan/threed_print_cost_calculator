@@ -205,16 +205,31 @@
   "totalMaterialWeightLabel": "Peso total do material: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "Material padrão",
   "@materialFallback": {},
+  "historyTeaserTitle": "Guarde cada estimativa de impressão em um só lugar",
+  "historyTeaserDescription": "Veja como o histórico funciona antes de fazer upgrade. Salve estimativas concluídas e exporte-as a qualquer momento com o Pro.",
+  "historyTeaserCta": "Salvar e exportar histórico com Pro",
+  "historyExportPreviewEntry": "Prévia da exportação CSV",
+  "historyExportPreviewTitle": "Prévia CSV",
+  "historyExportPreviewDescription": "Veja como sua exportação ficará. Download e compartilhamento são desbloqueados com o Pro.",
+  "historyExportPreviewSampleLabel": "[Amostra]",
+  "historyExportPreviewAction": "Baixar / Compartilhar com Pro",
+  "lockedValuePlaceholder": "Bloqueado",
+  "hideProPromotionsTitle": "Ocultar promoções Pro",
+  "hideProPromotionsSubtitle": "Ocultar banners e prompts de atualização",
   "versionLabel": "Versão {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

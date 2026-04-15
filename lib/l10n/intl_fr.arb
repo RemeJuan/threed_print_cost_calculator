@@ -207,7 +207,7 @@
   "@materialsCountLabel": {
     "placeholders": {
       "count": {
-        "type": "int"
+        "type": "num"
       }
     }
   },
@@ -220,6 +220,17 @@
   },
   "materialFallback": "Matériau",
   "@materialFallback": {},
+  "historyTeaserTitle": "Conservez chaque estimation d'impression au même endroit",
+  "historyTeaserDescription": "Découvrez le fonctionnement de l'historique avant de passer à Pro. Enregistrez vos estimations terminées et exportez-les à tout moment avec Pro.",
+  "historyTeaserCta": "Enregistrer et exporter l'historique avec Pro",
+  "historyExportPreviewEntry": "Aperçu de l'export CSV",
+  "historyExportPreviewTitle": "Aperçu CSV",
+  "historyExportPreviewDescription": "Voyez à quoi ressemblera votre export. Le téléchargement et le partage sont débloqués avec Pro.",
+  "historyExportPreviewSampleLabel": "[Exemple]",
+  "historyExportPreviewAction": "Télécharger / Partager avec Pro",
+  "lockedValuePlaceholder": "Verrouillé",
+  "hideProPromotionsTitle": "Masquer les promotions Pro",
+  "hideProPromotionsSubtitle": "Masquer les bannières et les invites de mise à niveau",
   "versionLabel": "Version {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

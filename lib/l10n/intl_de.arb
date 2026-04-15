@@ -10,7 +10,7 @@
   "@historyAppBarTitle": {},
   "hoursLabel": "Druckzeit (Stunden)",
   "@hoursLabel": {},
-  "kwh": "kW/h",
+  "kwh": "kWh",
   "@kwh": {},
   "labourCostPrefix": "Arbeits-/Materialkosten: ",
   "@labourCostPrefix": {},
@@ -205,16 +205,31 @@
   "totalMaterialWeightLabel": "Gesamtes Materialgewicht: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "Materialtyp",
   "@materialFallback": {},
+  "historyTeaserTitle": "Alle Druckschätzungen an einem Ort speichern",
+  "historyTeaserDescription": "Sieh dir an, wie der Verlauf funktioniert, bevor du ein Upgrade machst. Speichere abgeschlossene Schätzungen und exportiere sie jederzeit mit Pro.",
+  "historyTeaserCta": "Verlauf mit Pro speichern und exportieren",
+  "historyExportPreviewEntry": "CSV-Exportvorschau",
+  "historyExportPreviewTitle": "CSV-Vorschau",
+  "historyExportPreviewDescription": "Sieh dir an, wie dein Export aussieht. Download und Teilen sind mit Pro freigeschaltet.",
+  "historyExportPreviewSampleLabel": "[Beispiel]",
+  "historyExportPreviewAction": "Mit Pro herunterladen / teilen",
+  "lockedValuePlaceholder": "Gesperrt",
+  "hideProPromotionsTitle": "Pro-Aktionen ausblenden",
+  "hideProPromotionsSubtitle": "Upgrade-Banner und Hinweise ausblenden",
   "versionLabel": "Version {version}",
   "@versionLabel": {
     "description": "Label for showing app version",

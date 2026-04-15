@@ -10,7 +10,7 @@
   "@historyAppBarTitle": {},
   "hoursLabel": "Tempo di stampa (ore)",
   "@hoursLabel": {},
-  "kwh": "kW/ora",
+  "kwh": "kWh",
   "@kwh": {},
   "labourCostPrefix": "Costo lavoro/Materiali: ",
   "@labourCostPrefix": {},
@@ -205,15 +205,30 @@
   "totalMaterialWeightLabel": "Peso totale materiale: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {
-      "count": {}
+      "count": {
+        "type": "num"
+      }
     }
   },
   "@totalMaterialWeightLabel": {
     "placeholders": {
-      "grams": {}
+      "grams": {
+        "type": "num"
+      }
     }
   },
   "materialFallback": "Materiale",
+  "historyTeaserTitle": "Conserva ogni preventivo di stampa in un unico posto",
+  "historyTeaserDescription": "Scopri come funziona la cronologia prima di passare a Pro. Salva i preventivi completati ed esportali in qualsiasi momento con Pro.",
+  "historyTeaserCta": "Salva ed esporta la cronologia con Pro",
+  "historyExportPreviewEntry": "Anteprima esportazione CSV",
+  "historyExportPreviewTitle": "Anteprima CSV",
+  "historyExportPreviewDescription": "Vedi come apparirà la tua esportazione. Download e condivisione sono sbloccati con Pro.",
+  "historyExportPreviewSampleLabel": "[Esempio]",
+  "historyExportPreviewAction": "Scarica / Condividi con Pro",
+  "lockedValuePlaceholder": "Bloccato",
+  "hideProPromotionsTitle": "Nascondi promozioni Pro",
+  "hideProPromotionsSubtitle": "Nascondi banner e richieste di aggiornamento",
   "versionLabel": "Versione {version}",
   "@versionLabel": {
     "description": "Label for showing app version",
