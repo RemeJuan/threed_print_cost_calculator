@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
@@ -17,8 +18,16 @@ import 'package:threed_print_cost_calculator/calculator/view/components/material
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;
   final HistoryModel data;
+  final Future<void> Function()? onHistoryLoaded;
+  final VoidCallback? onOverflowMenuOpened;
 
-  const HistoryItem({required this.dbKey, required this.data, super.key});
+  const HistoryItem({
+    required this.dbKey,
+    required this.data,
+    this.onHistoryLoaded,
+    this.onOverflowMenuOpened,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,81 +36,76 @@ class HistoryItem extends HookConsumerWidget {
     final logger = ref.read(appLoggerProvider);
     final itemKeyPrefix = 'history.item.${data.name}';
 
+    Future<void> exportEntry() async {
+      try {
+        await exportCSVFile(
+          [data],
+          csvHeader: l10n.historyCsvHeader,
+          shareText: l10n.historyExportShareText,
+        );
+        AppAnalytics.safeLog(() => AppAnalytics.exportUsed('job'));
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
+      } catch (e, st) {
+        logger.error(
+          AppLogCategory.ui,
+          'History export failed',
+          context: {'exportType': 'job'},
+          error: e,
+          stackTrace: st,
+        );
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.exportError)));
+      }
+    }
+
+    Future<void> deleteEntry() async {
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(l10n.deleteDialogTitle),
+          content: Text(l10n.deleteDialogContent),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancelButton),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(l10n.deleteButton),
+            ),
+          ],
+        ),
+      );
+
+      if (confirm != true) return;
+
+      final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
+      await dbHelpers.deleteRecord(dbKey);
+      ref.read(historyPagedProvider.notifier).refresh();
+      ref.invalidate(historyRecordsProvider);
+    }
+
+    Future<void> loadEntry() async {
+      final didLoad = await ref
+          .read(calculatorProvider.notifier)
+          .loadFromHistory(HistoryEntry(key: dbKey, model: data));
+      if (!didLoad) return;
+      await onHistoryLoaded?.call();
+    }
+
     return Slidable(
       key: ValueKey(dbKey),
-      startActionPane: ActionPane(
-        motion: const DrawerMotion(),
-        extentRatio: 0.25,
-        children: [
-          SlidableAction(
-            onPressed: (context) async {
-              // export this single entry with error handling and user feedback
-              try {
-                await exportCSVFile(
-                  [data],
-                  csvHeader: l10n.historyCsvHeader,
-                  shareText: l10n.historyExportShareText,
-                );
-                AppAnalytics.safeLog(() => AppAnalytics.exportUsed('job'));
-                if (!context.mounted) return;
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
-              } catch (e, st) {
-                logger.error(
-                  AppLogCategory.ui,
-                  'History export failed',
-                  context: {'exportType': 'job'},
-                  error: e,
-                  stackTrace: st,
-                );
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(l10n.exportError)));
-              }
-            },
-            backgroundColor: LIGHT_BLUE,
-            foregroundColor: Colors.white,
-            icon: Icons.share,
-            label: l10n.exportButton,
-          ),
-        ],
-      ),
       endActionPane: ActionPane(
         motion: const DrawerMotion(),
         extentRatio: 0.25,
         children: [
           SlidableAction(
-            onPressed: (context) async {
-              final confirm = await showDialog<bool>(
-                context: context,
-                builder: (dialogContext) => AlertDialog(
-                  title: Text(l10n.deleteDialogTitle),
-                  content: Text(l10n.deleteDialogContent),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(dialogContext, false),
-                      child: Text(l10n.cancelButton),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.pop(dialogContext, true),
-                      child: Text(l10n.deleteButton),
-                    ),
-                  ],
-                ),
-              );
-
-              if (confirm == true) {
-                final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
-                await dbHelpers.deleteRecord(dbKey);
-
-                // Refresh paged provider so the deleted item disappears from the list
-                ref.read(historyPagedProvider.notifier).refresh();
-
-                // Also refresh the historyRecordsProvider in case other parts of the UI rely on it
-                ref.invalidate(historyRecordsProvider);
-              }
-            },
+            onPressed: (context) async => deleteEntry(),
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -113,8 +117,8 @@ class HistoryItem extends HookConsumerWidget {
         children: [
           Container(
             key: ValueKey<String>('$itemKeyPrefix.card'),
-            padding: EdgeInsets.all(8),
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             decoration: BoxDecoration(
               color: const Color.fromRGBO(8, 8, 18, 1),
               borderRadius: BorderRadius.circular(8),
@@ -133,6 +137,79 @@ class HistoryItem extends HookConsumerWidget {
                       ),
                     ),
                     const Spacer(),
+                    PopupMenuButton<_HistoryItemAction>(
+                      key: ValueKey<String>('$itemKeyPrefix.menu'),
+                      tooltip: MaterialLocalizations.of(
+                        context,
+                      ).showMenuTooltip,
+                      icon: const SizedBox.square(
+                        dimension: 44,
+                        child: Center(
+                          child: Icon(
+                            Icons.more_horiz,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                      padding: EdgeInsets.zero,
+                      splashRadius: 24,
+                      onOpened: onOverflowMenuOpened,
+                      onSelected: (action) async {
+                        switch (action) {
+                          case _HistoryItemAction.edit:
+                            await loadEntry();
+                            return;
+                          case _HistoryItemAction.export:
+                            await exportEntry();
+                            return;
+                          case _HistoryItemAction.delete:
+                            await deleteEntry();
+                            return;
+                        }
+                      },
+                      itemBuilder: (context) => [
+                        PopupMenuItem<_HistoryItemAction>(
+                          value: _HistoryItemAction.edit,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.calculate, size: 20),
+                              const SizedBox(width: 12),
+                              Flexible(child: Text(l10n.historyLoadAction)),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<_HistoryItemAction>(
+                          value: _HistoryItemAction.export,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.ios_share, size: 20),
+                              const SizedBox(width: 12),
+                              Flexible(child: Text(l10n.exportButton)),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem<_HistoryItemAction>(
+                          value: _HistoryItemAction.delete,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.delete_outline,
+                                size: 20,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(width: 12),
+                              Flexible(
+                                child: Text(
+                                  l10n.deleteButton,
+                                  style: const TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                     if (data.materialUsages.length > 1)
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -152,8 +229,8 @@ class HistoryItem extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                    const SizedBox(width: 8),
-                    // Format date string
+                    if (data.materialUsages.length > 1)
+                      const SizedBox(width: 8),
                     Text(
                       DateFormat('dd MMM yyyy').format(data.date),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -360,6 +437,8 @@ class HistoryItem extends HookConsumerWidget {
     );
   }
 }
+
+enum _HistoryItemAction { edit, export, delete }
 
 Widget _row(BuildContext context, String label, num value, {Key? key}) {
   return Container(
