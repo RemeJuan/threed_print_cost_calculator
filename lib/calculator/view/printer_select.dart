@@ -1,48 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
-import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
-class PrinterSelect extends HookConsumerWidget {
+class PrinterSelect extends ConsumerWidget {
   const PrinterSelect({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
-    final loading = useState<bool>(true);
-    final generalSettings = useState(GeneralSettingsModel.initial());
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = S.of(context);
-
-    Future<void> getSettings() async {
-      generalSettings.value = await ref
-          .read(settingsRepositoryProvider)
-          .getSettings();
-      loading.value = false;
-    }
-
-    useEffect(() {
-      // ignore: unnecessary_statements
-      getSettings();
-
-      return null;
-    }, []);
-
     final printersAsync = ref.watch(printersStreamProvider);
+    final settingsAsync = ref.watch(settingsStreamProvider);
 
-    return printersAsync.when(
-      data: (data) {
-        if (data.isNotEmpty && !loading.value) {
+    return settingsAsync.when(
+      data: (generalSettings) => printersAsync.when(
+        data: (data) {
+          if (data.isEmpty) return const SizedBox.shrink();
+
           return DropdownButtonFormField<String>(
             key: const ValueKey<String>('calculator.printer.select'),
             hint: Text(l10n.selectPrinterHint),
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
-            initialValue: generalSettings.value.activePrinter.isEmpty
+            initialValue: generalSettings.activePrinter.isEmpty
                 ? null
-                : generalSettings.value.activePrinter,
+                : generalSettings.activePrinter,
             items: data.map((e) {
               return DropdownMenuItem(
                 key: ValueKey<String>('calculator.printer.option.${e.name}'),
@@ -61,10 +45,7 @@ class PrinterSelect extends HookConsumerWidget {
             onChanged: data.length == 1
                 ? null
                 : (v) async {
-                    final updated = generalSettings.value.copyWith(
-                      activePrinter: v!,
-                    );
-                    generalSettings.value = updated;
+                    final updated = generalSettings.copyWith(activePrinter: v!);
                     await ref
                         .read(settingsRepositoryProvider)
                         .saveSettings(updated);
@@ -76,9 +57,10 @@ class PrinterSelect extends HookConsumerWidget {
                         .updateWatt(wattage.toString());
                   },
           );
-        }
-        return const SizedBox.shrink();
-      },
+        },
+        loading: () => const SizedBox.shrink(),
+        error: (error, stackTrace) => const SizedBox.shrink(),
+      ),
       loading: () => const SizedBox.shrink(),
       error: (error, stackTrace) => const SizedBox.shrink(),
     );
