@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
@@ -131,4 +132,34 @@ void main() {
       expect(find.text('8.19'), findsOneWidget);
     },
   );
+
+  testWidgets('overflow menu shows load export and delete actions', (
+    tester,
+  ) async {
+    await tester.pumpApp(HistoryItem(dbKey: 'history-1', data: _model()));
+
+    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.pumpAndSettle();
+
+    expect(find.text(S.current.historyLoadAction), findsOneWidget);
+    expect(find.text(S.current.exportButton), findsOneWidget);
+    expect(find.text(S.current.deleteButton), findsOneWidget);
+  });
+
+  testWidgets('overflow button keeps strong contrast and tap target', (
+    tester,
+  ) async {
+    await tester.pumpApp(HistoryItem(dbKey: 'history-1', data: _model()));
+
+    final popupMenu = tester.widget<PopupMenuButton<dynamic>>(
+      find.byWidgetPredicate((widget) => widget is PopupMenuButton),
+    );
+    final trigger = popupMenu.icon as SizedBox;
+    final icon = (trigger.child as Center).child as Icon;
+
+    expect(icon.icon, Icons.more_horiz);
+    expect(icon.color, Colors.white);
+    expect(trigger.width, 44);
+    expect(trigger.height, 44);
+  });
 }
