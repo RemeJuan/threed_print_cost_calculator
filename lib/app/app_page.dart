@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
-import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
@@ -78,6 +77,17 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           mode: showHistoryTeaser
               ? HistoryPageMode.teaser
               : HistoryPageMode.full,
+          onHistoryLoaded: () async {
+            tapNavigationTargetIndex.value = 0;
+            selectedTab.value = _AppTab.calculator;
+            pageController.jumpToPage(0);
+
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(content: Text(l10n.historyLoadSuccessMessage)),
+              );
+          },
         ),
       const SettingsPage(),
     ];
@@ -100,18 +110,6 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           pageController.jumpToPage(selectedIndex);
         }
       });
-      return null;
-    }, [selectedIndex]);
-
-    useEffect(() {
-      if (!context.mounted) return;
-
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        final notifier = ref.read(calculatorProvider.notifier);
-        await notifier.init();
-        notifier.submit();
-      });
-
       return null;
     }, [selectedIndex]);
 
