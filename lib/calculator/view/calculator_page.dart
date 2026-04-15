@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import 'calculator_results.dart';
+import 'components/history_load_warning_banner.dart';
 import 'components/materials_selection/materials_section.dart';
 import 'components/rates_section.dart';
 import 'components/time_section.dart';
@@ -101,6 +102,8 @@ class CalculatorPage extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (state.showHistoryLoadReplacementWarning)
+              const HistoryLoadWarningBanner(),
             if (isPremium) const PrinterSelect(),
             // Let MaterialsSection manage its own controllers and focus state
             const MaterialsSection(),
