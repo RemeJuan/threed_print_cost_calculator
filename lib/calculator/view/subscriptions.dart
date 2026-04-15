@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Subscriptions extends HookConsumerWidget {
@@ -17,7 +17,7 @@ class Subscriptions extends HookConsumerWidget {
     final linkFont = Theme.of(
       context,
     ).textTheme.displayMedium?.copyWith(fontSize: 12);
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final logger = ref.read(appLoggerProvider);
 
     return FutureBuilder<Offerings>(

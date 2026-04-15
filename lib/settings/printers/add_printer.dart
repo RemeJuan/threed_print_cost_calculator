@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -16,7 +16,7 @@ class AddPrinter extends HookConsumerWidget {
   Widget build(context, ref) {
     final notifier = ref.read(printersProvider.notifier);
     final state = ref.watch(printersProvider);
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     useEffect(() {
       notifier.init(dbRef);

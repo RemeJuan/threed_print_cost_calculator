@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -24,12 +25,35 @@ void main() {
     addTearDown(() => db.close());
     await tester.pumpAndSettle();
 
-    expect(find.text(S.current.needHelpTitle), findsOneWidget);
-    expect(find.text(S.current.supportIdLabel), findsOneWidget);
-    expect(find.text(S.current.clickToCopy), findsOneWidget);
-    expect(find.text(S.current.privacyPolicyLink), findsOneWidget);
-    expect(find.text(S.current.termsOfUseLink), findsOneWidget);
-    expect(find.text(S.current.closeButton), findsOneWidget);
-    expect(find.text(S.current.versionLabel('1.2.3')), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).needHelpTitle),
+      findsOneWidget,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).supportIdLabel),
+      findsOneWidget,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).clickToCopy),
+      findsOneWidget,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).privacyPolicyLink),
+      findsOneWidget,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).termsOfUseLink),
+      findsOneWidget,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).closeButton),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        lookupAppLocalizations(const Locale('en')).versionLabel('1.2.3'),
+      ),
+      findsOneWidget,
+    );
   });
 }

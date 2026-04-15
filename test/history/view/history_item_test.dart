@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
@@ -86,7 +86,7 @@ void main() {
     expect(find.text('7.00'), findsOneWidget);
     expect(find.text('8.00'), findsOneWidget);
 
-    await tester.tap(find.text(S.current.materialBreakdownLabel));
+    await tester.tap(find.text(lookupAppLocalizations(const Locale('en')).materialBreakdownLabel));
     await tester.pumpAndSettle();
 
     expect(find.text('PLA (Red)'), findsOneWidget);
@@ -124,7 +124,7 @@ void main() {
       expect(find.text('Single Snapshot Benchy'), findsOneWidget);
       expect(find.text('8.19'), findsOneWidget);
 
-      await tester.tap(find.text(S.current.materialBreakdownLabel));
+      await tester.tap(find.text(lookupAppLocalizations(const Locale('en')).materialBreakdownLabel));
       await tester.pumpAndSettle();
 
       expect(find.text('PLA (Black)'), findsOneWidget);
@@ -141,9 +141,9 @@ void main() {
     await tester.tap(find.byIcon(Icons.more_horiz));
     await tester.pumpAndSettle();
 
-    expect(find.text(S.current.historyLoadAction), findsOneWidget);
-    expect(find.text(S.current.exportButton), findsOneWidget);
-    expect(find.text(S.current.deleteButton), findsOneWidget);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).historyLoadAction), findsOneWidget);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).exportButton), findsOneWidget);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).deleteButton), findsOneWidget);
   });
 
   testWidgets('overflow button keeps strong contrast and tap target', (

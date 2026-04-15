@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
 import '../settings_test_fakes.dart';
@@ -55,7 +55,7 @@ void main() {
     );
     expect(find.text('Prusa MK4'), findsOneWidget);
     expect(
-      find.text('250x210x220 (350${S.current.wattsSuffix})'),
+      find.text('250x210x220 (350${lookupAppLocalizations(const Locale('en')).wattsSuffix})'),
       findsOneWidget,
     );
   });

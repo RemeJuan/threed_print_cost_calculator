@@ -5,7 +5,6 @@ import 'package:threed_print_cost_calculator/database/repositories/history_repos
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
 final calculatorHelpersProvider = Provider<CalculatorHelpers>(
@@ -16,14 +15,6 @@ class CalculatorHelpers {
   final Ref ref;
 
   CalculatorHelpers(this.ref);
-
-  String _toastText(String fallback, String Function(S s) localized) {
-    try {
-      return localized(S.current);
-    } catch (_) {
-      return fallback;
-    }
-  }
 
   num electricityCost(num watts, num hours, num minutes, num cost) {
     //Wattage in Watts / 1,000 × Hours Used × Electricity Price per kWh = Cost of Electricity
@@ -73,13 +64,15 @@ class CalculatorHelpers {
         .saveStringValue(key, value);
   }
 
-  Future<void> savePrint(HistoryModel value) async {
+  Future<void> savePrint(
+    HistoryModel value, {
+    required String errorMessage,
+    required String successMessage,
+  }) async {
     try {
       await ref.read(historyRepositoryProvider).saveHistory(value);
     } catch (e) {
-      BotToast.showText(
-        text: _toastText('Error saving print', (s) => s.savePrintErrorMessage),
-      );
+      BotToast.showText(text: errorMessage);
       return;
     }
 
@@ -96,8 +89,6 @@ class CalculatorHelpers {
           );
     }
 
-    BotToast.showText(
-      text: _toastText('Print saved', (s) => s.savePrintSuccessMessage),
-    );
+    BotToast.showText(text: successMessage);
   }
 }

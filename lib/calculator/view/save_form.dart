@@ -6,7 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
@@ -21,7 +21,7 @@ class SaveForm extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final name = useState<String>('');
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -119,7 +119,13 @@ class SaveForm extends HookConsumerWidget {
                       materialUsages: usages,
                       timeHours: timeStr,
                     );
-                    await ref.read(calculatorHelpersProvider).savePrint(model);
+                    await ref
+                        .read(calculatorHelpersProvider)
+                        .savePrint(
+                          model,
+                          errorMessage: l10n.savePrintErrorMessage,
+                          successMessage: l10n.savePrintSuccessMessage,
+                        );
                     showSave.value = false;
                   },
             icon: const Icon(Icons.save),

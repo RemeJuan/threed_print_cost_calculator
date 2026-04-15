@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 /// A dialog that lets the user input hours (free numeric) and minutes (0-59).
@@ -8,7 +8,7 @@ import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers
 class DurationDialog extends StatefulWidget {
   final int initialHours;
   final int initialMinutes;
-  final S l10n;
+  final AppLocalizations l10n;
 
   const DurationDialog({
     required this.initialHours,

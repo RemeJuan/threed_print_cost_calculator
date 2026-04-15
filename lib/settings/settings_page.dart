@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/accordion_menu.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/model/accordion_item_model.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/materials/materials.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
@@ -17,7 +17,7 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final isPremium = ref.watch(isPremiumProvider);
 
     final style = Theme.of(

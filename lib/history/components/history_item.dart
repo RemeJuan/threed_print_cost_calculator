@@ -5,7 +5,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -31,7 +31,7 @@ class HistoryItem extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final materialsById = ref.watch(materialsByIdProvider);
     final logger = ref.read(appLoggerProvider);
     final itemKeyPrefix = 'history.item.${data.name}';

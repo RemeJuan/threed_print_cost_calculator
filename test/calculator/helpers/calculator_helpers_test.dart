@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 class _RecordingHistoryRepository extends HistoryRepository {
   _RecordingHistoryRepository(super.ref, {this.shouldThrow = false});
@@ -252,7 +253,15 @@ void main() {
     await _pumpToastApp(tester, overrideContainer);
     await overrideContainer
         .read(calculatorHelpersProvider)
-        .savePrint(_buildHistoryModel());
+        .savePrint(
+          _buildHistoryModel(),
+          errorMessage: lookupAppLocalizations(
+            const Locale('en'),
+          ).savePrintErrorMessage,
+          successMessage: lookupAppLocalizations(
+            const Locale('en'),
+          ).savePrintSuccessMessage,
+        );
     await tester.pump();
     await tester.pump(const Duration(seconds: 3));
 
@@ -292,7 +301,15 @@ void main() {
       final history = _buildHistoryModel();
       await overrideContainer
           .read(calculatorHelpersProvider)
-          .savePrint(history);
+          .savePrint(
+            history,
+            errorMessage: lookupAppLocalizations(
+              const Locale('en'),
+            ).savePrintErrorMessage,
+            successMessage: lookupAppLocalizations(
+              const Locale('en'),
+            ).savePrintSuccessMessage,
+          );
       await tester.pump();
       await tester.pump(const Duration(seconds: 3));
 

@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
@@ -70,7 +70,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(SupportDialog), findsOneWidget);
-      expect(find.text(S.current.needHelpTitle), findsOneWidget);
+      expect(find.text(lookupAppLocalizations(const Locale('en')).needHelpTitle), findsOneWidget);
     });
   });
 }

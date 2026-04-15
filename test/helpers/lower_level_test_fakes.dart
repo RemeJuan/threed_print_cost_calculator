@@ -154,7 +154,11 @@ class FakeCalculatorHelpers implements CalculatorHelpers {
   Future<void> addOrUpdateRecord(String key, String value) async {}
 
   @override
-  Future<void> savePrint(HistoryModel value) async {
+  Future<void> savePrint(
+    HistoryModel value, {
+    required String errorMessage,
+    required String successMessage,
+  }) async {
     lastSavedPrint = value;
   }
 }

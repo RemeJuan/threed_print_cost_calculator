@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -16,7 +16,7 @@ class WorkCostsSettings extends HookConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     // Controller for wearAndTear so the field reflects external updates
     final wearController = useTextEditingController();

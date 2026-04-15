@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
@@ -13,7 +13,7 @@ class CalculatorResults extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final isPremium = ref.watch(isPremiumProvider);
     final shouldShowProPromotion = ref.watch(shouldShowProPromotionProvider);
     const width = kIsWeb ? 250.0 : null;

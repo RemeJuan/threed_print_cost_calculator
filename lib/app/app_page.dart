@@ -6,8 +6,8 @@ import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
@@ -23,7 +23,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   Widget build(context, ref) {
     final selectedTab = useState(_AppTab.calculator);
     final tapNavigationTargetIndex = useState<int?>(null);
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final prefs = ref.read(sharedPreferencesProvider);
     final premiumState = ref.watch(premiumStateProvider);
     final isPremium = premiumState.isPremium;

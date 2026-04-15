@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
 
 /// A small header widget for the Materials accordion.
@@ -28,7 +28,7 @@ class MaterialsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     final rawCountLabel = l10n.materialsCountLabel(count);
     final countText = formatCountLabel(rawCountLabel, count);

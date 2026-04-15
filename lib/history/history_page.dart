@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
@@ -34,7 +34,7 @@ class HistoryPage extends HookConsumerWidget {
 
   @override
   Widget build(context, ref) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     if (mode == HistoryPageMode.teaser) {
       return HistoryTeaserState(
@@ -300,7 +300,7 @@ class HistoryPage extends HookConsumerWidget {
   }
 
   void _showExportOptions(BuildContext context, WidgetRef ref) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     showModalBottomSheet<void>(
       context: context,

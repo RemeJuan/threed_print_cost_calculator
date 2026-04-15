@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
@@ -12,7 +12,7 @@ class Printers extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final printersRepository = ref.read(printersRepositoryProvider);
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return ref
         .watch(printersStreamProvider)

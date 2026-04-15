@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/materials/materials.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -95,8 +95,8 @@ void main() {
     expect(find.text('PLA'), findsOneWidget);
     expect(find.text('Red'), findsOneWidget);
     expect(find.text('24.5'), findsOneWidget);
-    expect(find.text('1000${S.current.gramsSuffix}'), findsOneWidget);
-    expect(find.text('Remaining: 800${S.current.gramsSuffix}'), findsOneWidget);
+    expect(find.text('1000${lookupAppLocalizations(const Locale('en')).gramsSuffix}'), findsOneWidget);
+    expect(find.text('Remaining: 800${lookupAppLocalizations(const Locale('en')).gramsSuffix}'), findsOneWidget);
   });
 
   testWidgets('retries after a stream error', (tester) async {

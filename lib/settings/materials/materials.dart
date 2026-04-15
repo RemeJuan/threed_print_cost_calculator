@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
@@ -12,7 +12,7 @@ class Materials extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final materialsRepository = ref.read(materialsRepositoryProvider);
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     String formatWeight(num value) {
       return value % 1 == 0

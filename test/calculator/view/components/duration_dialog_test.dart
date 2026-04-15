@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/duration_dialog.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 import '../../../helpers/helpers.dart';
 
@@ -13,11 +13,11 @@ void main() {
   });
 
   testWidgets('hours and minutes strip leading zeros', (tester) async {
-    late S l10n;
+    late AppLocalizations l10n;
     final db = await tester.pumpApp(
       Builder(
         builder: (context) {
-          l10n = S.of(context);
+          l10n = AppLocalizations.of(context)!;
           return DurationDialog(initialHours: 0, initialMinutes: 0, l10n: l10n);
         },
       ),

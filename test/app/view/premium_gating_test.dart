@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/app_page.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
@@ -43,7 +43,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(S.current.historyNavLabel), findsNothing);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
   });
 
   testWidgets('free state shows teaser history gate when promos enabled', (
@@ -65,7 +65,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(S.current.historyNavLabel), findsOneWidget);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('nav.history.pro.badge')),
       findsOneWidget,
@@ -85,7 +85,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(S.current.historyNavLabel), findsOneWidget);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
   });
 
   testWidgets('history gate appears when gateway emits premium upgrade', (
@@ -106,13 +106,13 @@ void main() {
     addTearDown(() => db.close());
 
     await tester.pumpAndSettle();
-    expect(find.text(S.current.historyNavLabel), findsNothing);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
 
     gateway.emit(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro'),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(S.current.historyNavLabel), findsOneWidget);
+    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
   });
 }

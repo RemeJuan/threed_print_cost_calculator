@@ -1,10 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:flutter/widgets.dart' hide Key;
 
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
@@ -25,6 +26,12 @@ class DataBaseHelpers {
   final DBName dbName;
 
   Database get db => ref.read(databaseProvider);
+
+  AppLocalizations get _l10n {
+    return lookupAppLocalizations(
+      WidgetsBinding.instance.platformDispatcher.locale,
+    );
+  }
 
   Future<void> addOrUpdateRecord(String key, String value) async {
     final store = stringMapStoreFactory.store(dbName.name);
@@ -76,7 +83,7 @@ class DataBaseHelpers {
       ref.read(historyPagedProvider.notifier).markStale();
       return key;
     } catch (e) {
-      BotToast.showText(text: S.current.savePrintErrorMessage);
+      BotToast.showText(text: _l10n.savePrintErrorMessage);
       rethrow;
     }
   }
@@ -122,7 +129,7 @@ class DataBaseHelpers {
         await store.record(key).update(db, data);
       }
     } catch (e) {
-      BotToast.showText(text: S.current.savePrintErrorMessage);
+      BotToast.showText(text: _l10n.savePrintErrorMessage);
     }
   }
 
@@ -203,7 +210,7 @@ class DataBaseHelpers {
     try {
       return await store.record(key).getSnapshot(db);
     } catch (e) {
-      BotToast.showText(text: S.current.savePrintErrorMessage);
+      BotToast.showText(text: _l10n.savePrintErrorMessage);
     }
     return null;
   }

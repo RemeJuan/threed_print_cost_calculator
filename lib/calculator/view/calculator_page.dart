@@ -8,7 +8,7 @@ import 'package:threed_print_cost_calculator/calculator/view/components/adjustme
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -47,7 +47,7 @@ class CalculatorPage extends HookConsumerWidget {
 
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final premiumState = ref.watch(premiumStateProvider);
     final isPremium = premiumState.isPremium;
 

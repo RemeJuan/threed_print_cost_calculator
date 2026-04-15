@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:threed_print_cost_calculator/generated/l10n.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 class HistoryToolbar extends StatelessWidget {
   final TextEditingController controller;
@@ -13,7 +13,7 @@ class HistoryToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = S.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
