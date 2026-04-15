@@ -14,7 +14,7 @@
 ## Verify order
 - Default: `fvm flutter analyze` -> `make flutter_test`
 - If translations or generated code changed: run `make flutter_generate` before analyze/test
-- If `intl_*.arb` changes but `lib/generated/l10n.dart` does not, treat that as a broken sync and fix it before finishing
+- If `intl_*.arb` changes but `lib/l10n/app_localizations.dart` does not, treat that as a broken sync and fix it before finishing
 - If app-shell or premium/history flows changed: run relevant `integration_test/` or Patrol journey
 
 ## Architecture
@@ -24,13 +24,13 @@
 - `HistoryPage` exists only for premium users; `AppPage` dynamically removes that tab for free users.
 
 ## Testing quirks
-- Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `S.delegate`.
+- Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.
 - Integration tests should use `integration_test/helpers/integration_test_harness.dart`; it seeds in-memory DB/prefs and fake purchases for free vs premium flows.
 - Startup/migration behavior has dedicated coverage in `test/main_migration_test.dart`; keep migration order stable when touching bootstrap/database startup.
 
 ## Localisation
 - Never leave user-facing copy hardcoded when the existing l10n system should be used.
-- Source of truth for app strings: `lib/l10n/arb/*.arb`
+- Source of truth for app strings: `lib/l10n/intl_*.arb`
 - After any ARB change, run: `fvm flutter gen-l10n`
 - Never manually edit generated localisation files.
 - Use the project’s existing generated localisation access pattern consistently. Do not introduce a second localisation API in new code.
