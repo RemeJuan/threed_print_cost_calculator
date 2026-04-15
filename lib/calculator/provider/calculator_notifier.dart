@@ -11,7 +11,10 @@ import 'package:threed_print_cost_calculator/calculator/state/calculator_state.d
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -27,6 +30,49 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   num _costPerKgFromSpool({required num spoolWeight, required num spoolCost}) {
     return spoolWeight <= 0 ? 0 : (spoolCost / spoolWeight) * 1000;
+  }
+
+  NumberInput _dirtyNum(num? value) => NumberInput.dirty(value: value);
+
+  ({int hours, int minutes})? _parseHistoryTime(String value) {
+    final parts = value.split(':');
+    if (parts.length != 2) return null;
+
+    final hours = int.tryParse(parts[0]);
+    final minutes = int.tryParse(parts[1]);
+    if (hours == null || minutes == null) return null;
+
+    return (hours: hours, minutes: minutes);
+  }
+
+  Future<PrinterModel?> _resolvePrinter(
+    String printerName,
+    GeneralSettingsModel settings,
+  ) async {
+    final printersRepository = ref.read(printersRepositoryProvider);
+    final printers = await printersRepository.getPrinters();
+
+    for (final printer in printers) {
+      if (printer.name == printerName) return printer;
+    }
+
+    if (settings.activePrinter.isNotEmpty) {
+      final activePrinter = await printersRepository.getPrinterById(
+        settings.activePrinter,
+      );
+      if (activePrinter != null) return activePrinter;
+    }
+
+    if (printers.isEmpty) return null;
+    return printers.first;
+  }
+
+  Future<MaterialModel?> _resolveFallbackMaterial() async {
+    final materials = await ref
+        .read(materialsRepositoryProvider)
+        .getMaterials();
+    if (materials.isEmpty) return null;
+    return materials.first;
   }
 
   List<MaterialUsageInput> _syncedSingleMaterialUsage({
@@ -162,6 +208,108 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         ),
       ],
     );
+  }
+
+  Future<bool> loadFromHistory(HistoryEntry entry) async {
+    _submitDebounce?.cancel();
+
+    if (entry.model.materialUsages.isEmpty) {
+      _logger.warn(
+        AppLogCategory.provider,
+        'Skipping empty history entry load',
+        context: {'historyKey': entry.key},
+      );
+      return false;
+    }
+
+    final parsedTime = _parseHistoryTime(entry.model.timeHours);
+    if (parsedTime == null) {
+      _logger.warn(
+        AppLogCategory.provider,
+        'Skipping corrupted history entry load',
+        context: {'historyKey': entry.key, 'timeHours': entry.model.timeHours},
+      );
+      return false;
+    }
+
+    try {
+      final settingsRepository = ref.read(settingsRepositoryProvider);
+      final settings = await settingsRepository.getSettings();
+      final resolvedPrinter = await _resolvePrinter(
+        entry.model.printer,
+        settings,
+      );
+      final fallbackMaterial = await _resolveFallbackMaterial();
+
+      var hasReplacement =
+          entry.model.printer.isNotEmpty &&
+          resolvedPrinter != null &&
+          resolvedPrinter.name != entry.model.printer;
+
+      final materialsRepository = ref.read(materialsRepositoryProvider);
+      final materialUsages = <MaterialUsageInput>[];
+
+      for (final rawUsage in entry.model.materialUsages) {
+        final usage = MaterialUsageInput.fromMap(rawUsage);
+        var resolvedUsage = usage;
+
+        if (usage.materialId.trim().isNotEmpty) {
+          final material = await materialsRepository.getMaterialById(
+            usage.materialId,
+          );
+          if (material == null && fallbackMaterial != null) {
+            hasReplacement = true;
+            resolvedUsage = usage.copyWith(
+              materialId: fallbackMaterial.id,
+              materialName: fallbackMaterial.name,
+            );
+          }
+        }
+
+        materialUsages.add(resolvedUsage);
+      }
+
+      final nextSettings = settings.copyWith(
+        activePrinter: resolvedPrinter?.id ?? settings.activePrinter,
+        selectedMaterial: materialUsages.first.materialId,
+      );
+
+      await settingsRepository.saveSettings(nextSettings);
+
+      state = state.copyWith(
+        watt: _dirtyNum(
+          parseLocalizedNum(resolvedPrinter?.wattage ?? settings.wattage),
+        ),
+        printWeight: _dirtyNum(entry.model.weight),
+        materialUsages: materialUsages,
+        hours: _dirtyNum(parsedTime.hours),
+        minutes: _dirtyNum(parsedTime.minutes),
+        results: CalculationResult(
+          electricity: entry.model.electricityCost,
+          filament: entry.model.filamentCost,
+          risk: entry.model.riskCost,
+          labour: entry.model.labourCost,
+          total: entry.model.totalCost,
+        ),
+        showHistoryLoadReplacementWarning: hasReplacement,
+      );
+
+      return true;
+    } catch (error, stackTrace) {
+      _logger.warn(
+        AppLogCategory.provider,
+        'Failed to load history entry into calculator',
+        context: {'historyKey': entry.key},
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return false;
+    }
+  }
+
+  void dismissHistoryLoadReplacementWarning() {
+    if (!state.showHistoryLoadReplacementWarning) return;
+    state = state.copyWith(showHistoryLoadReplacementWarning: false);
   }
 
   void updateWatt(String value) {
