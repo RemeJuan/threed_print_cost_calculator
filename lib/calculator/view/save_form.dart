@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/generated/l10n.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class SaveForm extends HookConsumerWidget {
   final CalculationResult data;
@@ -82,12 +83,17 @@ class SaveForm extends HookConsumerWidget {
                           .read(materialsRepositoryProvider)
                           .getMaterialById(settings.selectedMaterial);
                       if (material != null) {
+                        final spoolWeight = parseLocalizedNum(material.weight);
+                        final spoolCost = parseLocalizedNum(material.cost);
+                        final costPerKg = spoolWeight <= 0
+                            ? 0
+                            : (spoolCost / spoolWeight) * 1000;
                         materialName = material.name;
                         usages.add(
                           MaterialUsageInput(
                             materialId: settings.selectedMaterial,
                             materialName: materialName,
-                            costPerKg: 0,
+                            costPerKg: costPerKg,
                             weightGrams: weightVal.toInt(),
                           ).toMap(),
                         );
