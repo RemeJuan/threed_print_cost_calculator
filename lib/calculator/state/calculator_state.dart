@@ -18,6 +18,7 @@ class CalculatorState with FormzMixin {
   final NumberInput labourRate;
   final NumberInput labourTime;
   final CalculationResult results;
+  final bool showHistoryLoadReplacementWarning;
 
   CalculatorState({
     this.watt = const NumberInput.pure(),
@@ -40,6 +41,7 @@ class CalculatorState with FormzMixin {
       labour: 0.0,
       total: 0.0,
     ),
+    this.showHistoryLoadReplacementWarning = false,
   }) : materialUsages = List.unmodifiable(
          materialUsages ?? const <MaterialUsageInput>[],
        );
@@ -59,6 +61,7 @@ class CalculatorState with FormzMixin {
     NumberInput? labourRate,
     NumberInput? labourTime,
     CalculationResult? results,
+    bool? showHistoryLoadReplacementWarning,
   }) {
     return CalculatorState(
       watt: watt ?? this.watt,
@@ -75,6 +78,9 @@ class CalculatorState with FormzMixin {
       labourRate: labourRate ?? this.labourRate,
       labourTime: labourTime ?? this.labourTime,
       results: results ?? this.results,
+      showHistoryLoadReplacementWarning:
+          showHistoryLoadReplacementWarning ??
+          this.showHistoryLoadReplacementWarning,
     );
   }
 
