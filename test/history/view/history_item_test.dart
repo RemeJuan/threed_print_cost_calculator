@@ -27,6 +27,30 @@ HistoryModel _model() {
   );
 }
 
+HistoryModel _singleMaterialSnapshotModel() {
+  return HistoryModel(
+    name: 'Single Snapshot Benchy',
+    totalCost: 14.11,
+    riskCost: 1.41,
+    filamentCost: 8.19,
+    electricityCost: 1.23,
+    labourCost: 3.28,
+    date: DateTime.utc(2024, 1, 4),
+    printer: 'Prusa MK4',
+    material: 'PLA Black',
+    weight: 123,
+    timeHours: '01:45',
+    materialUsages: const [
+      {
+        'materialId': 'pla-black',
+        'materialName': 'PLA Black',
+        'costPerKg': 0,
+        'weightGrams': 123,
+      },
+    ],
+  );
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -69,4 +93,42 @@ void main() {
     expect(find.text('75g'), findsOneWidget);
     expect(find.text('48g'), findsOneWidget);
   });
+
+  testWidgets(
+    'renders_single_material_filament_cost_from_stored_snapshot_not_material_usage',
+    (tester) async {
+      await tester.pumpApp(
+        HistoryItem(
+          dbKey: 'history-single',
+          data: _singleMaterialSnapshotModel(),
+        ),
+        [
+          materialsStreamProvider.overrideWith(
+            (ref) => Stream.value([
+              const MaterialModel(
+                id: 'pla-black',
+                name: 'PLA',
+                cost: '99',
+                color: 'Black',
+                weight: '1000',
+                archived: false,
+              ),
+            ]),
+          ),
+        ],
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('Single Snapshot Benchy'), findsOneWidget);
+      expect(find.text('8.19'), findsOneWidget);
+
+      await tester.tap(find.text(S.current.materialBreakdownLabel));
+      await tester.pumpAndSettle();
+
+      expect(find.text('PLA (Black)'), findsOneWidget);
+      expect(find.text('123g'), findsOneWidget);
+      expect(find.text('8.19'), findsOneWidget);
+    },
+  );
 }
