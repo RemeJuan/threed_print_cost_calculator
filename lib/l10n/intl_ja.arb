@@ -100,6 +100,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "プリントを保存しました",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "計算機で編集",
+  "historyLoadSuccessMessage": "履歴から読み込みました",
+  "historyLoadReplacementWarning": "一部の項目は利用できなかったため置き換えられました",
   "numberExampleHint": "例: 123",
   "@numberExampleHint": {},
   "materialsLoadError": "材料の読み込みに失敗しました: {error}",
@@ -143,7 +146,12 @@
   "historyExportRangeAll": "すべて",
   "historyExportRangeLast7Days": "過去7日間",
   "historyExportRangeLast30Days": "過去30日間",
+  "historyEmptyTitle": "保存されたプリントはまだありません",
+  "historyEmptyDescription": "過去のプリントを計算機で再利用できます",
+  "historyUpsellTitle": "過去のプリントをすぐに再利用",
+  "historyUpsellDescription": "高度な編集とエクスポートをアンロック",
   "historyNoMoreRecords": "これ以上の記録はありません",
+  "historyOverflowHint": "その他の操作は ⋯ にあります",
   "historyLoadError": "履歴を読み込めませんでした: {error}",
   "@historyLoadError": {
     "placeholders": {

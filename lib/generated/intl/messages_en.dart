@@ -69,7 +69,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filament"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("History"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "Re-use past prints in the calculator",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "No saved prints yet",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "Unlock advanced edits and exports",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "Re-use past prints instantly",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("History"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "More actions in ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Search by name or printer",
     ),
@@ -134,6 +149,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "Print saved",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "Use in calculator",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Loaded from history",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "Some items were unavailable and replaced",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Search materials",

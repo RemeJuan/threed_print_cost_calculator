@@ -100,6 +100,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "Print opgeslagen",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "Bewerken in calculator",
+  "historyLoadSuccessMessage": "Geladen vanuit geschiedenis",
+  "historyLoadReplacementWarning": "Sommige items waren niet beschikbaar en zijn vervangen",
   "numberExampleHint": "bijv. 123",
   "@numberExampleHint": {},
   "materialsLoadError": "Fout bij laden van materialen: {error}",
@@ -143,7 +146,12 @@
   "historyExportRangeAll": "Alles",
   "historyExportRangeLast7Days": "Laatste 7 dagen",
   "historyExportRangeLast30Days": "Laatste 30 dagen",
+  "historyEmptyTitle": "Nog geen opgeslagen prints",
+  "historyEmptyDescription": "Gebruik eerdere prints opnieuw in de calculator",
+  "historyUpsellTitle": "Hergebruik eerdere prints meteen",
+  "historyUpsellDescription": "Ontgrendel geavanceerde bewerkingen en exports",
   "historyNoMoreRecords": "Geen verdere records",
+  "historyOverflowHint": "Meer acties in ⋯",
   "historyLoadError": "Geschiedenis laden mislukt: {error}",
   "@historyLoadError": {
     "placeholders": {

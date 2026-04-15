@@ -75,7 +75,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamento"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Historial"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "Reutiliza impresiones anteriores en la calculadora",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Aún no hay impresiones guardadas",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "Desbloquea ediciones avanzadas y exportaciones",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "Reutiliza impresiones anteriores al instante",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("Historial"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "Más acciones en ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Buscar por nombre o impresora",
     ),
@@ -162,6 +177,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "Impresión guardada",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "Editar en la calculadora",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Cargado desde el historial",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "Algunos elementos no estaban disponibles y se sustituyeron",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Buscar materiales",

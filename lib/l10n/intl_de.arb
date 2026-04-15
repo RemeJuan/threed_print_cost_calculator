@@ -99,6 +99,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "Druck gespeichert",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "Im Rechner bearbeiten",
+  "historyLoadSuccessMessage": "Aus dem Verlauf geladen",
+  "historyLoadReplacementWarning": "Einige Elemente waren nicht verfügbar und wurden ersetzt",
   "numberExampleHint": "z. B. 123",
   "@numberExampleHint": {},
   "materialsLoadError": "Fehler beim Laden der Materialien: {error}",
@@ -142,7 +145,12 @@
   "historyExportRangeAll": "Alle",
   "historyExportRangeLast7Days": "Letzte 7 Tage",
   "historyExportRangeLast30Days": "Letzte 30 Tage",
+  "historyEmptyTitle": "Noch keine gespeicherten Drucke",
+  "historyEmptyDescription": "Frühere Drucke im Rechner wiederverwenden",
+  "historyUpsellTitle": "Frühere Drucke sofort wiederverwenden",
+  "historyUpsellDescription": "Erweiterte Bearbeitung und Exporte freischalten",
   "historyNoMoreRecords": "Keine weiteren Einträge",
+  "historyOverflowHint": "Weitere Aktionen unter ⋯",
   "historyLoadError": "Verlauf konnte nicht geladen werden: {error}",
   "@historyLoadError": {
     "placeholders": {

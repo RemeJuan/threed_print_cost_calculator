@@ -99,6 +99,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "Stampa salvata",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "Modifica nel calcolatore",
+  "historyLoadSuccessMessage": "Caricato dalla cronologia",
+  "historyLoadReplacementWarning": "Alcuni elementi non erano disponibili e sono stati sostituiti",
   "numberExampleHint": "es. 123",
   "@numberExampleHint": {},
   "materialsLoadError": "Errore durante il caricamento dei materiali: {error}",
@@ -142,7 +145,12 @@
   "historyExportRangeAll": "Tutto",
   "historyExportRangeLast7Days": "Ultimi 7 giorni",
   "historyExportRangeLast30Days": "Ultimi 30 giorni",
+  "historyEmptyTitle": "Nessuna stampa salvata",
+  "historyEmptyDescription": "Riutilizza le stampe passate nel calcolatore",
+  "historyUpsellTitle": "Riutilizza subito le stampe passate",
+  "historyUpsellDescription": "Sblocca modifiche avanzate ed esportazioni",
   "historyNoMoreRecords": "Nessun altro record",
+  "historyOverflowHint": "Altre azioni in ⋯",
   "historyLoadError": "Impossibile caricare la cronologia: {error}",
   "@historyLoadError": {
     "placeholders": {

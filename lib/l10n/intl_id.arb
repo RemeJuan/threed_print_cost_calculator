@@ -100,6 +100,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "Hasil cetak disimpan",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "Edit di kalkulator",
+  "historyLoadSuccessMessage": "Dimuat dari riwayat",
+  "historyLoadReplacementWarning": "Beberapa item tidak tersedia dan telah diganti",
   "numberExampleHint": "mis. 123",
   "@numberExampleHint": {},
   "materialsLoadError": "Gagal memuat material: {error}",
@@ -143,7 +146,12 @@
   "historyExportRangeAll": "Semua",
   "historyExportRangeLast7Days": "7 hari terakhir",
   "historyExportRangeLast30Days": "30 hari terakhir",
+  "historyEmptyTitle": "Belum ada cetakan yang disimpan",
+  "historyEmptyDescription": "Gunakan kembali cetakan lama di kalkulator",
+  "historyUpsellTitle": "Gunakan kembali cetakan lama seketika",
+  "historyUpsellDescription": "Buka edit lanjutan dan ekspor",
   "historyNoMoreRecords": "Tidak ada data lagi",
+  "historyOverflowHint": "Tindakan lainnya ada di ⋯",
   "historyLoadError": "Gagal memuat riwayat: {error}",
   "@historyLoadError": {
     "placeholders": {

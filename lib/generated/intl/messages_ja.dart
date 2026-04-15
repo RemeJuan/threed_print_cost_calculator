@@ -60,7 +60,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("フィラメント"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("履歴"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "過去のプリントを計算機で再利用できます",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "保存されたプリントはまだありません",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "高度な編集とエクスポートをアンロック",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "過去のプリントをすぐに再利用",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("履歴"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "その他の操作は ⋯ にあります",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage("名前やプリンターで検索"),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("印刷時間（時間）"),
     "invalidNumber": MessageLookupByLibrary.simpleMessage("無効な数値です"),
@@ -113,6 +128,13 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "プリントを保存しました",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage("計算機で編集"),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "履歴から読み込みました",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "一部の項目は利用できなかったため置き換えられました",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("素材を検索"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage("カスタム（未保存）"),

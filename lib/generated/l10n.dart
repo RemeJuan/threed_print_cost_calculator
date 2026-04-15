@@ -219,11 +219,61 @@ class S {
     );
   }
 
+  /// `No saved prints yet`
+  String get historyEmptyTitle {
+    return Intl.message(
+      'No saved prints yet',
+      name: 'historyEmptyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Re-use past prints in the calculator`
+  String get historyEmptyDescription {
+    return Intl.message(
+      'Re-use past prints in the calculator',
+      name: 'historyEmptyDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Re-use past prints instantly`
+  String get historyUpsellTitle {
+    return Intl.message(
+      'Re-use past prints instantly',
+      name: 'historyUpsellTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unlock advanced edits and exports`
+  String get historyUpsellDescription {
+    return Intl.message(
+      'Unlock advanced edits and exports',
+      name: 'historyUpsellDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No more records`
   String get historyNoMoreRecords {
     return Intl.message(
       'No more records',
       name: 'historyNoMoreRecords',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `More actions in ⋯`
+  String get historyOverflowHint {
+    return Intl.message(
+      'More actions in ⋯',
+      name: 'historyOverflowHint',
       desc: '',
       args: [],
     );
@@ -634,6 +684,36 @@ class S {
     return Intl.message(
       'Print saved',
       name: 'savePrintSuccessMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use in calculator`
+  String get historyLoadAction {
+    return Intl.message(
+      'Use in calculator',
+      name: 'historyLoadAction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loaded from history`
+  String get historyLoadSuccessMessage {
+    return Intl.message(
+      'Loaded from history',
+      name: 'historyLoadSuccessMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Some items were unavailable and replaced`
+  String get historyLoadReplacementWarning {
+    return Intl.message(
+      'Some items were unavailable and replaced',
+      name: 'historyLoadReplacementWarning',
       desc: '',
       args: [],
     );

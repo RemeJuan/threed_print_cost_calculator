@@ -100,6 +100,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "บันทึกงานพิมพ์แล้ว",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "แก้ไขในเครื่องคิดเลข",
+  "historyLoadSuccessMessage": "โหลดจากประวัติแล้ว",
+  "historyLoadReplacementWarning": "บางรายการไม่พร้อมใช้งานและถูกแทนที่แล้ว",
   "numberExampleHint": "เช่น 123",
   "@numberExampleHint": {},
   "materialsLoadError": "โหลดวัสดุไม่สำเร็จ: {error}",
@@ -143,7 +146,12 @@
   "historyExportRangeAll": "ทั้งหมด",
   "historyExportRangeLast7Days": "7 วันที่ผ่านมา",
   "historyExportRangeLast30Days": "30 วันที่ผ่านมา",
+  "historyEmptyTitle": "ยังไม่มีงานพิมพ์ที่บันทึกไว้",
+  "historyEmptyDescription": "นำงานพิมพ์ที่ผ่านมาไปใช้ซ้ำในเครื่องคิดเลข",
+  "historyUpsellTitle": "นำงานพิมพ์ที่ผ่านมาไปใช้ซ้ำได้ทันที",
+  "historyUpsellDescription": "ปลดล็อกการแก้ไขขั้นสูงและการส่งออก",
   "historyNoMoreRecords": "ไม่มีบันทึกเพิ่มเติม",
+  "historyOverflowHint": "การทำงานเพิ่มเติมอยู่ใน ⋯",
   "historyLoadError": "ไม่สามารถโหลดประวัติได้: {error}",
   "@historyLoadError": {
     "placeholders": {

@@ -99,6 +99,9 @@
   "@savePrintErrorMessage": {},
   "savePrintSuccessMessage": "Impressão salva",
   "@savePrintSuccessMessage": {},
+  "historyLoadAction": "Editar na calculadora",
+  "historyLoadSuccessMessage": "Carregado do histórico",
+  "historyLoadReplacementWarning": "Alguns itens não estavam disponíveis e foram substituídos",
   "numberExampleHint": "ex.: 123",
   "@numberExampleHint": {},
   "materialsLoadError": "Erro ao carregar materiais: {error}",
@@ -142,7 +145,12 @@
   "historyExportRangeAll": "Tudo",
   "historyExportRangeLast7Days": "Últimos 7 dias",
   "historyExportRangeLast30Days": "Últimos 30 dias",
+  "historyEmptyTitle": "Ainda não há impressões salvas",
+  "historyEmptyDescription": "Reutilize impressões anteriores na calculadora",
+  "historyUpsellTitle": "Reutilize impressões anteriores instantaneamente",
+  "historyUpsellDescription": "Desbloqueie edições avançadas e exportações",
   "historyNoMoreRecords": "Não há mais registros",
+  "historyOverflowHint": "Mais ações em ⋯",
   "historyLoadError": "Falha ao carregar o histórico: {error}",
   "@historyLoadError": {
     "placeholders": {

@@ -69,9 +69,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamento"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Histórico"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "Reutilize impressões anteriores na calculadora",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Ainda não há impressões salvas",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "Desbloqueie edições avançadas e exportações",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "Reutilize impressões anteriores instantaneamente",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("Histórico"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "Mais ações em ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
-      "Pesquisar por nome ou impressora",
+      "Buscar por nome ou impressora",
     ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage(
       "Tempo de impressão (horas)",
@@ -146,6 +161,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "Impressão salva",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "Editar na calculadora",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Carregado do histórico",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "Alguns itens não estavam disponíveis e foram substituídos",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Pesquisar materiais",

@@ -64,7 +64,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("ฟิลาเมนต์"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("ประวัติ"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "นำงานพิมพ์ที่ผ่านมาไปใช้ซ้ำในเครื่องคิดเลข",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "ยังไม่มีงานพิมพ์ที่บันทึกไว้",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "ปลดล็อกการแก้ไขขั้นสูงและการส่งออก",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "นำงานพิมพ์ที่ผ่านมาไปใช้ซ้ำได้ทันที",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("ประวัติ"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "การทำงานเพิ่มเติมอยู่ใน ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "ค้นหาตามชื่อหรือเครื่องพิมพ์",
     ),
@@ -141,6 +156,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "บันทึกงานพิมพ์แล้ว",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "แก้ไขในเครื่องคิดเลข",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "โหลดจากประวัติแล้ว",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "บางรายการไม่พร้อมใช้งานและถูกแทนที่แล้ว",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("ค้นหาวัสดุ"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(

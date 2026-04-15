@@ -75,7 +75,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamentkosten"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Verlauf"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "Frühere Drucke im Rechner wiederverwenden",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Noch keine gespeicherten Drucke",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "Erweiterte Bearbeitung und Exporte freischalten",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "Frühere Drucke sofort wiederverwenden",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("Verlauf"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "Weitere Aktionen unter ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Nach Name oder Drucker suchen",
     ),
@@ -148,6 +163,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "Druck gespeichert",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "Im Rechner bearbeiten",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Aus dem Verlauf geladen",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "Einige Elemente waren nicht verfügbar und wurden ersetzt",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Materialien suchen",

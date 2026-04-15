@@ -50,6 +50,9 @@
   "remainingFilamentLabel": "Remaining filament",
   "savePrintErrorMessage": "Error saving print",
   "savePrintSuccessMessage": "Print saved",
+  "historyLoadAction": "Use in calculator",
+  "historyLoadSuccessMessage": "Loaded from history",
+  "historyLoadReplacementWarning": "Some items were unavailable and replaced",
   "numberExampleHint": "e.g. 123",
   "materialsLoadError": "Failed to load materials: {error}",
   "@materialsLoadError": {
@@ -104,7 +107,12 @@
   "historyExportRangeAll": "All",
   "historyExportRangeLast7Days": "Last 7 days",
   "historyExportRangeLast30Days": "Last 30 days",
+  "historyEmptyTitle": "No saved prints yet",
+  "historyEmptyDescription": "Re-use past prints in the calculator",
+  "historyUpsellTitle": "Re-use past prints instantly",
+  "historyUpsellDescription": "Unlock advanced edits and exports",
   "historyNoMoreRecords": "No more records",
+  "historyOverflowHint": "More actions in ⋯",
   "historyLoadError": "Error loading history: {error}",
   "@historyLoadError": {
     "placeholders": {

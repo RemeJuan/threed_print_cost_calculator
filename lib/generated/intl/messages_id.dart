@@ -72,7 +72,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamen"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Riwayat"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "Gunakan kembali cetakan lama di kalkulator",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Belum ada cetakan yang disimpan",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "Buka edit lanjutan dan ekspor",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "Gunakan kembali cetakan lama seketika",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("Riwayat"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "Tindakan lainnya ada di ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
       "Cari berdasarkan nama atau printer",
     ),
@@ -143,6 +158,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "Hasil cetak disimpan",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "Edit di kalkulator",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Dimuat dari riwayat",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "Beberapa item tidak tersedia dan telah diganti",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage("Cari bahan"),
     "selectMaterialHint": MessageLookupByLibrary.simpleMessage(

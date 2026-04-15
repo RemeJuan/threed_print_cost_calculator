@@ -73,9 +73,24 @@ class MessageLookup extends MessageLookupByLibrary {
     "filamentCostLabel": MessageLookupByLibrary.simpleMessage("Filamentkosten"),
     "gramsSuffix": MessageLookupByLibrary.simpleMessage("g"),
     "historyAppBarTitle": MessageLookupByLibrary.simpleMessage("Geschiedenis"),
+    "historyEmptyDescription": MessageLookupByLibrary.simpleMessage(
+      "Gebruik eerdere prints opnieuw in de calculator",
+    ),
+    "historyEmptyTitle": MessageLookupByLibrary.simpleMessage(
+      "Nog geen opgeslagen prints",
+    ),
+    "historyUpsellDescription": MessageLookupByLibrary.simpleMessage(
+      "Ontgrendel geavanceerde bewerkingen en exports",
+    ),
+    "historyUpsellTitle": MessageLookupByLibrary.simpleMessage(
+      "Hergebruik eerdere prints meteen",
+    ),
     "historyNavLabel": MessageLookupByLibrary.simpleMessage("Geschiedenis"),
+    "historyOverflowHint": MessageLookupByLibrary.simpleMessage(
+      "Meer acties in ⋯",
+    ),
     "historySearchHint": MessageLookupByLibrary.simpleMessage(
-      "Zoeken op naam of printer",
+      "Zoek op naam of printer",
     ),
     "hoursLabel": MessageLookupByLibrary.simpleMessage("Afdruktijd (uren)"),
     "invalidNumber": MessageLookupByLibrary.simpleMessage("Ongeldig getal"),
@@ -144,6 +159,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "savePrintSuccessMessage": MessageLookupByLibrary.simpleMessage(
       "Print opgeslagen",
+    ),
+    "historyLoadAction": MessageLookupByLibrary.simpleMessage(
+      "Bewerken in calculator",
+    ),
+    "historyLoadSuccessMessage": MessageLookupByLibrary.simpleMessage(
+      "Geladen vanuit geschiedenis",
+    ),
+    "historyLoadReplacementWarning": MessageLookupByLibrary.simpleMessage(
+      "Sommige items waren niet beschikbaar en zijn vervangen",
     ),
     "searchMaterialsHint": MessageLookupByLibrary.simpleMessage(
       "Materialen zoeken",
