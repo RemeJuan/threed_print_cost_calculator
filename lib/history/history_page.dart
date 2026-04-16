@@ -35,6 +35,7 @@ class HistoryPage extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
+    final paged = ref.watch(historyPagedProvider);
 
     if (mode == HistoryPageMode.teaser) {
       return HistoryTeaserState(
@@ -59,10 +60,8 @@ class HistoryPage extends HookConsumerWidget {
       );
     }
 
-    // Providers will handle reading the DB and filtering via historyPagedProvider
-    final pagedNow = ref.read(historyPagedProvider);
     final prefs = ref.read(sharedPreferencesProvider);
-    final controller = useTextEditingController(text: pagedNow.query);
+    final controller = useTextEditingController(text: paged.query);
     final scrollController = useScrollController();
     final showOverflowHint = useState(false);
     final shouldShowUpsell = ref.watch(shouldShowProPromotionProvider);
@@ -155,10 +154,8 @@ class HistoryPage extends HookConsumerWidget {
     }, [scrollController]);
 
     return Scaffold(
-      body: HookConsumer(
-        builder: (context, ref, child) {
-          final paged = ref.watch(historyPagedProvider);
-
+      body: Builder(
+        builder: (context) {
           if (paged.isLoading && paged.items.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
