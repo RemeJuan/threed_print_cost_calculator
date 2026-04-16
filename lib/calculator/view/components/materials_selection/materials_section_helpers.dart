@@ -33,8 +33,8 @@ Future<String?> showMaterialPicker(
         heightFactor: 0.95,
         child: MaterialPicker(
           onSelected: (material) {
-            final weight = parseLocalizedNum(material.weight);
-            final cost = parseLocalizedNum(material.cost);
+            final weight = parseLocalizedNumOrFallback(material.weight);
+            final cost = parseLocalizedNumOrFallback(material.cost);
             final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
             final notifier = ref.read(calculatorProvider.notifier);

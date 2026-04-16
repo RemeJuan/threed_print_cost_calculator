@@ -111,8 +111,8 @@ class MaterialPicker extends HookConsumerWidget {
                 itemCount: filtered.length,
                 itemBuilder: (context, index) {
                   final material = filtered[index];
-                  final weight = parseLocalizedNum(material.weight);
-                  final cost = parseLocalizedNum(material.cost);
+                  final weight = parseLocalizedNumOrFallback(material.weight);
+                  final cost = parseLocalizedNumOrFallback(material.cost);
                   final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
 
                   return ListTile(

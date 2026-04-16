@@ -17,7 +17,7 @@ abstract class MaterialUsageInput with _$MaterialUsageInput {
     final materialId = map['materialId']?.toString() ?? '';
     final materialName = map['materialName']?.toString() ?? kUnassignedLabel;
 
-    final cost = parseLocalizedNum(map['costPerKg']);
+    final cost = parseLocalizedNumOrFallback(map['costPerKg']);
     final weight = parseLocalizedInt(map['weightGrams'], round: true);
 
     return MaterialUsageInput(

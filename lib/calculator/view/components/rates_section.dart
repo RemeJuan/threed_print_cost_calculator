@@ -45,7 +45,7 @@ class RatesSection extends HookConsumerWidget {
             inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
             onChanged: (value) async {
-              notifier.setWearAndTear(parseLocalizedNum(value));
+              notifier.setWearAndTear(parseLocalizedNumOrFallback(value));
               notifier.submitDebounced();
             },
           ),
@@ -61,7 +61,7 @@ class RatesSection extends HookConsumerWidget {
             inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.failureRiskLabel),
             onChanged: (value) async {
-              notifier.setFailureRisk(parseLocalizedNum(value));
+              notifier.setFailureRisk(parseLocalizedNumOrFallback(value));
               notifier.submitDebounced();
             },
           ),

@@ -4,13 +4,19 @@ String normalizeLocalizedNumber(Object? input) {
   return input?.toString().trim().replaceAll(',', '.') ?? '';
 }
 
-num? tryParseLocalizedNum(Object? input) {
+double? parseLocalizedNum(String input) {
   final normalized = normalizeLocalizedNumber(input);
   if (normalized.isEmpty) return null;
-  return num.tryParse(normalized);
+  return double.tryParse(normalized);
 }
 
-num parseLocalizedNum(Object? input, {num fallback = 0}) {
+double? tryParseLocalizedNum(Object? input) {
+  final normalized = normalizeLocalizedNumber(input);
+  if (normalized.isEmpty) return null;
+  return parseLocalizedNum(normalized);
+}
+
+double parseLocalizedNumOrFallback(Object? input, {double fallback = 0}) {
   return tryParseLocalizedNum(input) ?? fallback;
 }
 

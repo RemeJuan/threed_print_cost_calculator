@@ -47,7 +47,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             inputNormalizer: normalizeLeadingZeroNumericInput,
             decoration: InputDecoration(labelText: l10n.labourRateLabel),
             onChanged: (value) async {
-              notifier.setLabourRate(parseLocalizedNum(value));
+              notifier.setLabourRate(parseLocalizedNumOrFallback(value));
               notifier.submitDebounced();
             },
           ),
@@ -66,7 +66,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             decoration: InputDecoration(labelText: l10n.labourTimeLabel),
             onChanged: (value) async {
               notifier
-                ..updateLabourTime(parseLocalizedNum(value))
+                ..updateLabourTime(parseLocalizedNumOrFallback(value))
                 ..submitDebounced();
             },
           ),

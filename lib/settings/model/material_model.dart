@@ -18,14 +18,14 @@ abstract class MaterialModel with _$MaterialModel {
   }) = _MaterialModel;
 
   factory MaterialModel.fromMap(Map<String, dynamic> map, String key) {
-    final parsedWeight = parseLocalizedNum(map['weight']).toDouble();
+    final parsedWeight = parseLocalizedNumOrFallback(map['weight']);
     final hasOriginalWeight = map.containsKey('originalWeight');
     final hasRemainingWeight = map.containsKey('remainingWeight');
     final parsedOriginal = hasOriginalWeight
-        ? parseLocalizedNum(map['originalWeight']).toDouble()
+        ? parseLocalizedNumOrFallback(map['originalWeight'])
         : parsedWeight;
     final parsedRemaining = hasRemainingWeight
-        ? parseLocalizedNum(map['remainingWeight']).toDouble()
+        ? parseLocalizedNumOrFallback(map['remainingWeight'])
         : parsedWeight;
 
     return MaterialModel(

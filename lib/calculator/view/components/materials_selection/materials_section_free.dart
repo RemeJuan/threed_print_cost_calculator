@@ -51,7 +51,7 @@ class MaterialsSectionFree extends HookConsumerWidget {
                 ),
                 onChanged: (value) {
                   notifier
-                    ..updateSpoolWeight(parseLocalizedNum(value))
+                    ..updateSpoolWeight(parseLocalizedNumOrFallback(value))
                     ..submitDebounced();
                 },
               ),

@@ -194,8 +194,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       return;
     }
 
-    final weight = parseLocalizedNum(material.weight);
-    final cost = parseLocalizedNum(material.cost);
+    final weight = parseLocalizedNumOrFallback(material.weight);
+    final cost = parseLocalizedNumOrFallback(material.cost);
     final costPerKg = _costPerKgFromSpool(spoolWeight: weight, spoolCost: cost);
 
     state = state.copyWith(
@@ -259,7 +259,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
             rawCostPerKg == null ||
             rawCostPerKg.toString().trim().isEmpty ||
             (entry.model.materialUsages.length == 1 &&
-                parseLocalizedNum(rawCostPerKg) == 0 &&
+                parseLocalizedNumOrFallback(rawCostPerKg) == 0 &&
                 entry.model.filamentCost > 0);
 
         if (usage.materialId.trim().isNotEmpty) {
@@ -281,8 +281,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         if (shouldBackfillCost && resolvedMaterial != null) {
           resolvedUsage = resolvedUsage.copyWith(
             costPerKg: _costPerKgFromSpool(
-              spoolWeight: parseLocalizedNum(resolvedMaterial.weight),
-              spoolCost: parseLocalizedNum(resolvedMaterial.cost),
+              spoolWeight: parseLocalizedNumOrFallback(resolvedMaterial.weight),
+              spoolCost: parseLocalizedNumOrFallback(resolvedMaterial.cost),
             ),
           );
         }
@@ -299,7 +299,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
       state = state.copyWith(
         watt: _dirtyNum(
-          parseLocalizedNum(resolvedPrinter?.wattage ?? settings.wattage),
+          parseLocalizedNumOrFallback(
+            resolvedPrinter?.wattage ?? settings.wattage,
+          ),
         ),
         printWeight: _dirtyNum(entry.model.weight),
         materialUsages: materialUsages,
@@ -474,7 +476,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void updateSpoolCost(String value) {
-    final parsedCost = parseLocalizedNum(value);
+    final parsedCost = parseLocalizedNumOrFallback(value);
     ref
         .read(calculatorPreferencesRepositoryProvider)
         .saveStringValue('spoolCost', value);
@@ -486,8 +488,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void selectMaterial(MaterialModel material) {
-    final spoolWeight = parseLocalizedNum(material.weight);
-    final spoolCost = parseLocalizedNum(material.cost);
+    final spoolWeight = parseLocalizedNumOrFallback(material.weight);
+    final spoolCost = parseLocalizedNumOrFallback(material.cost);
 
     ref
         .read(calculatorPreferencesRepositoryProvider)

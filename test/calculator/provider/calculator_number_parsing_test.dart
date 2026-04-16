@@ -25,13 +25,13 @@ void main() {
       expect(state.printWeight.value, 12);
     });
 
-    test('invalid calculator inputs keep numeric fallback behavior', () {
+    test('invalid calculator inputs keep nullable numeric state', () {
       notifier.updateWatt('abc');
       notifier.updateKwCost('abc');
 
       final state = container.read(calculatorProvider);
-      expect(state.watt.value, 0);
-      expect(state.kwCost.value, 0);
+      expect(state.watt.value, isNull);
+      expect(state.kwCost.value, isNull);
     });
   });
 }

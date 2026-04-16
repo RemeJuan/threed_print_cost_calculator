@@ -83,8 +83,12 @@ class SaveForm extends HookConsumerWidget {
                           .read(materialsRepositoryProvider)
                           .getMaterialById(settings.selectedMaterial);
                       if (material != null) {
-                        final spoolWeight = parseLocalizedNum(material.weight);
-                        final spoolCost = parseLocalizedNum(material.cost);
+                        final spoolWeight = parseLocalizedNumOrFallback(
+                          material.weight,
+                        );
+                        final spoolCost = parseLocalizedNumOrFallback(
+                          material.cost,
+                        );
                         final costPerKg = spoolWeight <= 0
                             ? 0
                             : (spoolCost / spoolWeight) * 1000;

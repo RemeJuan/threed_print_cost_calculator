@@ -35,15 +35,15 @@ abstract class HistoryModel with _$HistoryModel {
 
     return HistoryModel(
       name: map['name']?.toString() ?? '',
-      totalCost: parseLocalizedNum(map['totalCost']),
-      riskCost: parseLocalizedNum(map['riskCost']),
-      filamentCost: parseLocalizedNum(map['filamentCost']),
-      electricityCost: parseLocalizedNum(map['electricityCost']),
-      labourCost: parseLocalizedNum(map['labourCost']),
+      totalCost: parseLocalizedNumOrFallback(map['totalCost']),
+      riskCost: parseLocalizedNumOrFallback(map['riskCost']),
+      filamentCost: parseLocalizedNumOrFallback(map['filamentCost']),
+      electricityCost: parseLocalizedNumOrFallback(map['electricityCost']),
+      labourCost: parseLocalizedNumOrFallback(map['labourCost']),
       date: parsedDate,
       printer: map['printer']?.toString() ?? kUnassignedLabel,
       material: map['material']?.toString() ?? kUnassignedLabel,
-      weight: parseLocalizedNum(map['weight']),
+      weight: parseLocalizedNumOrFallback(map['weight']),
       materialUsages: _parseMaterialUsages(map['materialUsages']),
       timeHours: map['timeHours']?.toString() ?? '00:00',
     );
