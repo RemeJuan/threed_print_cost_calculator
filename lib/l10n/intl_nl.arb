@@ -111,6 +111,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "Fout bij laden van printers: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "Opnieuw proberen",
   "@retryButton": {},
   "wattsSuffix": "w",
@@ -197,6 +203,14 @@
   "@enterNumber": {},
   "invalidNumber": "Ongeldig getal",
   "@invalidNumber": {},
+  "validationRequired": "Verplicht",
+  "@validationRequired": {},
+  "validationEnterValidNumber": "Voer een geldig getal in",
+  "@validationEnterValidNumber": {},
+  "validationMustBeGreaterThanZero": "Moet groter zijn dan 0",
+  "@validationMustBeGreaterThanZero": {},
+  "validationMustBeZeroOrMore": "Moet 0 of hoger zijn",
+  "@validationMustBeZeroOrMore": {},
   "addMaterialButton": "Materiaal toevoegen",
   "useSingleTotalWeightAction": "Gebruik enkel totaalgewicht",
   "addAtLeastOneMaterial": "Voeg minimaal één materiaal toe.",

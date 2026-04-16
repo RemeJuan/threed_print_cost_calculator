@@ -111,6 +111,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "โหลดเครื่องพิมพ์ไม่สำเร็จ: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "ลองอีกครั้ง",
   "@retryButton": {},
   "wattsSuffix": "w",
@@ -197,6 +203,14 @@
   "@enterNumber": {},
   "invalidNumber": "ตัวเลขไม่ถูกต้อง",
   "@invalidNumber": {},
+  "validationRequired": "จำเป็น",
+  "@validationRequired": {},
+  "validationEnterValidNumber": "กรอกตัวเลขที่ถูกต้อง",
+  "@validationEnterValidNumber": {},
+  "validationMustBeGreaterThanZero": "ต้องมากกว่า 0",
+  "@validationMustBeGreaterThanZero": {},
+  "validationMustBeZeroOrMore": "ต้องเป็น 0 หรือมากกว่า",
+  "@validationMustBeZeroOrMore": {},
   "addMaterialButton": "เพิ่มวัสดุ",
   "useSingleTotalWeightAction": "ใช้ค่าน้ำหนักรวมเดียว",
   "addAtLeastOneMaterial": "เพิ่มวัสดุอย่างน้อย 1 รายการ",

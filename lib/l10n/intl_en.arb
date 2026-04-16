@@ -60,6 +60,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "Failed to load printers: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "Retry",
   "wattsSuffix": "w",
   "needHelpTitle": "Need Help?",
@@ -102,6 +108,10 @@
   "workCostsLabel": "Work Costs",
   "enterNumber": "Please enter a number",
   "invalidNumber": "Invalid number",
+  "validationRequired": "Required",
+  "validationEnterValidNumber": "Enter a valid number",
+  "validationMustBeGreaterThanZero": "Must be greater than 0",
+  "validationMustBeZeroOrMore": "Must be 0 or more",
   "lockedValuePlaceholder": "Locked",
   "hideProPromotionsTitle": "Hide Pro promotions",
   "hideProPromotionsSubtitle": "Hide upgrade banners and prompts",

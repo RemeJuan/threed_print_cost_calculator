@@ -110,6 +110,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "Error al cargar las impresoras: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "Reintentar",
   "@retryButton": {},
   "wattsSuffix": "w",
@@ -196,6 +202,14 @@
   "@enterNumber": {},
   "invalidNumber": "Número inválido",
   "@invalidNumber": {},
+  "validationRequired": "Obligatorio",
+  "@validationRequired": {},
+  "validationEnterValidNumber": "Introduce un número válido",
+  "@validationEnterValidNumber": {},
+  "validationMustBeGreaterThanZero": "Debe ser mayor que 0",
+  "@validationMustBeGreaterThanZero": {},
+  "validationMustBeZeroOrMore": "Debe ser 0 o más",
+  "@validationMustBeZeroOrMore": {},
   "addMaterialButton": "Añadir material",
   "useSingleTotalWeightAction": "Usar peso total único",
   "addAtLeastOneMaterial": "Añade al menos un material.",

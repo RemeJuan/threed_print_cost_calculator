@@ -176,6 +176,11 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'プリンターの読み込みに失敗しました: $error';
+  }
+
+  @override
   String get retryButton => '再試行';
 
   @override
@@ -265,6 +270,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get invalidNumber => '無効な数値です';
+
+  @override
+  String get validationRequired => '必須';
+
+  @override
+  String get validationEnterValidNumber => '有効な数値を入力してください';
+
+  @override
+  String get validationMustBeGreaterThanZero => '0より大きい値を入力してください';
+
+  @override
+  String get validationMustBeZeroOrMore => '0以上の値を入力してください';
 
   @override
   String get lockedValuePlaceholder => 'ロック中';

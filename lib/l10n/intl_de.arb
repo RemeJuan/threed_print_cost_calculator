@@ -110,6 +110,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "Fehler beim Laden der Drucker: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "Erneut versuchen",
   "@retryButton": {},
   "wattsSuffix": "w",
@@ -196,6 +202,14 @@
   "@enterNumber": {},
   "invalidNumber": "Ungültige Zahl",
   "@invalidNumber": {},
+  "validationRequired": "Erforderlich",
+  "@validationRequired": {},
+  "validationEnterValidNumber": "Gültige Zahl eingeben",
+  "@validationEnterValidNumber": {},
+  "validationMustBeGreaterThanZero": "Muss größer als 0 sein",
+  "@validationMustBeGreaterThanZero": {},
+  "validationMustBeZeroOrMore": "Muss 0 oder mehr sein",
+  "@validationMustBeZeroOrMore": {},
   "addMaterialButton": "Material hinzufügen",
   "useSingleTotalWeightAction": "Gesamtgewicht verwenden",
   "addAtLeastOneMaterial": "Mindestens ein Material hinzufügen.",

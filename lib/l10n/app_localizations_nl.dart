@@ -178,6 +178,11 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'Fout bij laden van printers: $error';
+  }
+
+  @override
   String get retryButton => 'Opnieuw proberen';
 
   @override
@@ -268,6 +273,18 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get invalidNumber => 'Ongeldig getal';
+
+  @override
+  String get validationRequired => 'Verplicht';
+
+  @override
+  String get validationEnterValidNumber => 'Voer een geldig getal in';
+
+  @override
+  String get validationMustBeGreaterThanZero => 'Moet groter zijn dan 0';
+
+  @override
+  String get validationMustBeZeroOrMore => 'Moet 0 of hoger zijn';
 
   @override
   String get lockedValuePlaceholder => 'Vergrendeld';

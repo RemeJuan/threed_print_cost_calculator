@@ -180,6 +180,11 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'Errore durante il caricamento delle stampanti: $error';
+  }
+
+  @override
   String get retryButton => 'Riprova';
 
   @override
@@ -270,6 +275,18 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get invalidNumber => 'Numero non valido';
+
+  @override
+  String get validationRequired => 'Obbligatorio';
+
+  @override
+  String get validationEnterValidNumber => 'Inserisci un numero valido';
+
+  @override
+  String get validationMustBeGreaterThanZero => 'Deve essere maggiore di 0';
+
+  @override
+  String get validationMustBeZeroOrMore => 'Deve essere 0 o maggiore';
 
   @override
   String get lockedValuePlaceholder => 'Bloccato';

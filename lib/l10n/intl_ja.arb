@@ -111,6 +111,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "プリンターの読み込みに失敗しました: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "再試行",
   "@retryButton": {},
   "wattsSuffix": "w",
@@ -197,6 +203,14 @@
   "@enterNumber": {},
   "invalidNumber": "無効な数値です",
   "@invalidNumber": {},
+  "validationRequired": "必須",
+  "@validationRequired": {},
+  "validationEnterValidNumber": "有効な数値を入力してください",
+  "@validationEnterValidNumber": {},
+  "validationMustBeGreaterThanZero": "0より大きい値を入力してください",
+  "@validationMustBeGreaterThanZero": {},
+  "validationMustBeZeroOrMore": "0以上の値を入力してください",
+  "@validationMustBeZeroOrMore": {},
   "addMaterialButton": "素材を追加",
   "useSingleTotalWeightAction": "単一の合計重量を使用",
   "addAtLeastOneMaterial": "少なくとも1つの素材を追加してください。",

@@ -444,6 +444,12 @@ abstract class AppLocalizations {
   /// **'Failed to load materials: {error}'**
   String materialsLoadError(Object error);
 
+  /// No description provided for @printersLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load printers: {error}'**
+  String printersLoadError(Object error);
+
   /// No description provided for @retryButton.
   ///
   /// In en, this message translates to:
@@ -623,6 +629,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid number'**
   String get invalidNumber;
+
+  /// No description provided for @validationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get validationRequired;
+
+  /// No description provided for @validationEnterValidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid number'**
+  String get validationEnterValidNumber;
+
+  /// No description provided for @validationMustBeGreaterThanZero.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be greater than 0'**
+  String get validationMustBeGreaterThanZero;
+
+  /// No description provided for @validationMustBeZeroOrMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be 0 or more'**
+  String get validationMustBeZeroOrMore;
 
   /// No description provided for @lockedValuePlaceholder.
   ///

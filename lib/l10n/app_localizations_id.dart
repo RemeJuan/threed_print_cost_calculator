@@ -177,6 +177,11 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'Gagal memuat printer: $error';
+  }
+
+  @override
   String get retryButton => 'Coba lagi';
 
   @override
@@ -267,6 +272,18 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get invalidNumber => 'Angka tidak valid';
+
+  @override
+  String get validationRequired => 'Wajib';
+
+  @override
+  String get validationEnterValidNumber => 'Masukkan angka yang valid';
+
+  @override
+  String get validationMustBeGreaterThanZero => 'Harus lebih besar dari 0';
+
+  @override
+  String get validationMustBeZeroOrMore => 'Harus 0 atau lebih';
 
   @override
   String get lockedValuePlaceholder => 'Terkunci';

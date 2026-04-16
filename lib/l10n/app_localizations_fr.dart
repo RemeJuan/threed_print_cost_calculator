@@ -179,6 +179,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'Échec du chargement des imprimantes : $error';
+  }
+
+  @override
   String get retryButton => 'Réessayer';
 
   @override
@@ -270,6 +275,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get invalidNumber => 'Nombre invalide';
+
+  @override
+  String get validationRequired => 'Obligatoire';
+
+  @override
+  String get validationEnterValidNumber => 'Saisissez un nombre valide';
+
+  @override
+  String get validationMustBeGreaterThanZero => 'Doit être supérieur à 0';
+
+  @override
+  String get validationMustBeZeroOrMore => 'Doit être supérieur ou égal à 0';
 
   @override
   String get lockedValuePlaceholder => 'Verrouillé';

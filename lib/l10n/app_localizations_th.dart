@@ -177,6 +177,11 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'โหลดเครื่องพิมพ์ไม่สำเร็จ: $error';
+  }
+
+  @override
   String get retryButton => 'ลองอีกครั้ง';
 
   @override
@@ -267,6 +272,18 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get invalidNumber => 'ตัวเลขไม่ถูกต้อง';
+
+  @override
+  String get validationRequired => 'จำเป็น';
+
+  @override
+  String get validationEnterValidNumber => 'กรอกตัวเลขที่ถูกต้อง';
+
+  @override
+  String get validationMustBeGreaterThanZero => 'ต้องมากกว่า 0';
+
+  @override
+  String get validationMustBeZeroOrMore => 'ต้องเป็น 0 หรือมากกว่า';
 
   @override
   String get lockedValuePlaceholder => 'ถูกล็อก';

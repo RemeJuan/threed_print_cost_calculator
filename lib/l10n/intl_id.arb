@@ -111,6 +111,12 @@
       "error": {}
     }
   },
+  "printersLoadError": "Gagal memuat printer: {error}",
+  "@printersLoadError": {
+    "placeholders": {
+      "error": {}
+    }
+  },
   "retryButton": "Coba lagi",
   "@retryButton": {},
   "wattsSuffix": "w",
@@ -197,6 +203,14 @@
   "@enterNumber": {},
   "invalidNumber": "Angka tidak valid",
   "@invalidNumber": {},
+  "validationRequired": "Wajib",
+  "@validationRequired": {},
+  "validationEnterValidNumber": "Masukkan angka yang valid",
+  "@validationEnterValidNumber": {},
+  "validationMustBeGreaterThanZero": "Harus lebih besar dari 0",
+  "@validationMustBeGreaterThanZero": {},
+  "validationMustBeZeroOrMore": "Harus 0 atau lebih",
+  "@validationMustBeZeroOrMore": {},
   "addMaterialButton": "Tambahkan bahan",
   "useSingleTotalWeightAction": "Gunakan total berat tunggal",
   "addAtLeastOneMaterial": "Tambahkan setidaknya satu material.",

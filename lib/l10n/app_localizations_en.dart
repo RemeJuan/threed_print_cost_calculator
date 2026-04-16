@@ -178,6 +178,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String printersLoadError(Object error) {
+    return 'Failed to load printers: $error';
+  }
+
+  @override
   String get retryButton => 'Retry';
 
   @override
@@ -268,6 +273,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invalidNumber => 'Invalid number';
+
+  @override
+  String get validationRequired => 'Required';
+
+  @override
+  String get validationEnterValidNumber => 'Enter a valid number';
+
+  @override
+  String get validationMustBeGreaterThanZero => 'Must be greater than 0';
+
+  @override
+  String get validationMustBeZeroOrMore => 'Must be 0 or more';
 
   @override
   String get lockedValuePlaceholder => 'Locked';
