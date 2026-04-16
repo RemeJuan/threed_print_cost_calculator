@@ -95,6 +95,33 @@ void main() {
     expect(repo.savedPrinters.single.wattage, '350');
   });
 
+  testWidgets('invalid values block save and show localized errors', (
+    tester,
+  ) async {
+    final repo = FakePrintersRepository();
+    final db = await tester.pumpApp(
+      _PrinterDialogHost(builder: (_) => const AddPrinter()),
+      [printersRepositoryProvider.overrideWithValue(repo)],
+    );
+    addTearDown(db.close);
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(_field('settings.printers.name.input'), 'Prusa MK4');
+    await tester.enterText(_field('settings.printers.bedSize.input'), '0');
+    await tester.enterText(_field('settings.printers.wattage.input'), '0');
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('settings.printers.save.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Must be greater than 0'), findsNWidgets(2));
+    expect(repo.savedPrinters, isEmpty);
+    expect(find.byType(Dialog), findsOneWidget);
+  });
+
   testWidgets('edit mode preloads once and rebuilds preserve edits', (
     tester,
   ) async {

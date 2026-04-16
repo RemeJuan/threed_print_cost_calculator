@@ -81,11 +81,11 @@ class Printers extends HookConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Failed to load printers: $error'),
+                Text(l10n.printersLoadError(error.toString())),
                 const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: () => ref.invalidate(printersStreamProvider),
-                  child: const Text('Retry'),
+                  child: Text(l10n.retryButton),
                 ),
               ],
             ),

@@ -15,6 +15,7 @@ class FakePrintersRepository implements PrintersRepository {
   final List<PrinterModel> savedPrinters = [];
   final List<String> deleteCalls = [];
   final Map<String, PrinterModel> printersById = {};
+  Object? saveResult;
   int _watchCount = 0;
 
   @override
@@ -47,6 +48,9 @@ class FakePrintersRepository implements PrintersRepository {
   @override
   Future<Object?> savePrinter(PrinterModel printer, {String? id}) async {
     savedPrinters.add(printer);
+    if (saveResult != null) {
+      return saveResult;
+    }
     final key = id ?? printer.id;
     if (key.isNotEmpty) {
       printersById[key] = printer.copyWith(id: key);

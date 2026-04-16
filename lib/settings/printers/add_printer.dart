@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
@@ -17,6 +19,8 @@ class AddPrinter extends HookConsumerWidget {
     final notifier = ref.read(printersProvider.notifier);
     final state = ref.watch(printersProvider);
     final l10n = AppLocalizations.of(context)!;
+    final formKey = useMemoized(GlobalKey<FormState>.new);
+    final hasSubmitted = useState(false);
 
     useEffect(() {
       notifier.init(dbRef);
@@ -33,60 +37,108 @@ class AddPrinter extends HookConsumerWidget {
     final wattController = useTextEditingController(text: state.wattage.value);
     final wattFocus = useFocusNode();
 
+    String? requiredTextValidator(String? value) {
+      return localizedValidationMessage(l10n, validateRequiredText(value));
+    }
+
+    String? positiveNumberValidator(String? value) {
+      return localizedValidationMessage(l10n, validatePositiveNumber(value));
+    }
+
+    String? bedSizeValidator(String? value) {
+      return localizedValidationMessage(l10n, validatePrinterBedSize(value));
+    }
+
+    final isFormValid =
+        validateRequiredText(state.name.value) == null &&
+        validatePrinterBedSize(state.bedSize.value) == null &&
+        validatePositiveNumber(state.wattage.value) == null;
+
     return Dialog(
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         physics: const ClampingScrollPhysics(),
-        child: AutofillGroup(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              FocusSafeTextField(
-                key: const ValueKey<String>('settings.printers.name.input'),
-                controller: nameController,
-                externalText: state.name.value,
-                focusNode: nameFocus,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(labelText: l10n.printerNameLabel),
-                onChanged: notifier.updateName,
-              ),
-              FocusSafeTextField(
-                key: const ValueKey<String>('settings.printers.bedSize.input'),
-                controller: bedController,
-                externalText: state.bedSize.value,
-                focusNode: bedFocus,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(labelText: l10n.bedSizeLabel),
-                onChanged: notifier.updateBedSize,
-              ),
-              FocusSafeTextField(
-                key: const ValueKey<String>('settings.printers.wattage.input'),
-                controller: wattController,
-                externalText: state.wattage.value,
-                focusNode: wattFocus,
-                keyboardType: TextInputType.number,
-                inputNormalizer: normalizeLeadingZeroNumericInput,
-                decoration: InputDecoration(labelText: l10n.wattageLabel),
-                onChanged: notifier.updateWattage,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                key: const ValueKey<String>('settings.printers.save.button'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: DEEP_BLUE,
-                  textStyle: Theme.of(
-                    context,
-                  ).textTheme.displayMedium?.copyWith(fontSize: 16),
+        child: Form(
+          key: formKey,
+          child: AutofillGroup(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                FocusSafeTextField(
+                  key: const ValueKey<String>('settings.printers.name.input'),
+                  controller: nameController,
+                  externalText: state.name.value,
+                  focusNode: nameFocus,
+                  keyboardType: TextInputType.text,
+                  validator: requiredTextValidator,
+                  autovalidateMode: hasSubmitted.value
+                      ? AutovalidateMode.onUserInteraction
+                      : AutovalidateMode.disabled,
+                  decoration: InputDecoration(labelText: l10n.printerNameLabel),
+                  onChanged: notifier.updateName,
                 ),
-                onPressed: () async {
-                  await notifier.submit(dbRef);
-                  if (!context.mounted) return;
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
-                child: Text(l10n.saveButton),
-              ),
-            ],
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.printers.bedSize.input',
+                  ),
+                  controller: bedController,
+                  externalText: state.bedSize.value,
+                  focusNode: bedFocus,
+                  keyboardType: TextInputType.text,
+                  validator: bedSizeValidator,
+                  autovalidateMode: hasSubmitted.value
+                      ? AutovalidateMode.onUserInteraction
+                      : AutovalidateMode.disabled,
+                  decoration: InputDecoration(labelText: l10n.bedSizeLabel),
+                  onChanged: notifier.updateBedSize,
+                ),
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.printers.wattage.input',
+                  ),
+                  controller: wattController,
+                  externalText: state.wattage.value,
+                  focusNode: wattFocus,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
+                  ],
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  validator: positiveNumberValidator,
+                  autovalidateMode: hasSubmitted.value
+                      ? AutovalidateMode.onUserInteraction
+                      : AutovalidateMode.disabled,
+                  decoration: InputDecoration(labelText: l10n.wattageLabel),
+                  onChanged: notifier.updateWattage,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  key: const ValueKey<String>('settings.printers.save.button'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: DEEP_BLUE,
+                    textStyle: Theme.of(
+                      context,
+                    ).textTheme.displayMedium?.copyWith(fontSize: 16),
+                  ),
+                  onPressed: !hasSubmitted.value || isFormValid
+                      ? () async {
+                          hasSubmitted.value = true;
+                          if (!(formKey.currentState?.validate() ?? false)) {
+                            return;
+                          }
+
+                          final didSave = await notifier.submit(dbRef);
+                          if (!didSave || !context.mounted) return;
+                          Navigator.of(context, rootNavigator: true).pop();
+                        }
+                      : null,
+                  child: Text(l10n.saveButton),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/printer_state.dart';
+import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 
 final printersProvider = NotifierProvider<PrintersNotifier, PrinterState>(
   PrintersNotifier.new,
@@ -41,16 +42,27 @@ class PrintersNotifier extends Notifier<PrinterState> {
     state = state.copyWith(wattage: StringInput.dirty(value: value));
   }
 
-  Future<void> submit(String? dbRef) async {
+  Future<bool> submit(String? dbRef) async {
+    if (!_isValidForSubmit) {
+      return false;
+    }
+
     final printer = PrinterModel(
       id: dbRef ?? '',
-      name: state.name.value,
-      bedSize: state.bedSize.value,
-      wattage: state.wattage.value,
+      name: state.name.value.trim(),
+      bedSize: state.bedSize.value.trim(),
+      wattage: state.wattage.value.trim(),
       archived: false,
     );
 
     await _printersRepository.savePrinter(printer, id: dbRef);
     AppAnalytics.safeLog(AppAnalytics.printerProfileCreated);
+    return true;
+  }
+
+  bool get _isValidForSubmit {
+    return validateRequiredText(state.name.value) == null &&
+        validatePrinterBedSize(state.bedSize.value) == null &&
+        validatePositiveNumber(state.wattage.value) == null;
   }
 }
