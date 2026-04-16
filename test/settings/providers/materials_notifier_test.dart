@@ -34,8 +34,31 @@ void main() {
       notifier.updateWeight('');
 
       final state = container.read(materialsProvider);
-      expect(state.cost.value, 0);
-      expect(state.weight.value, 0);
+      expect(state.cost.value, isNull);
+      expect(state.weight.value, isNull);
+      expect(state.costText, 'abc');
+      expect(state.weightText, '');
+    });
+
+    test('rejects invalid payloads before persistence', () async {
+      final materialsRepository = FakeMaterialsRepository();
+      final guardedContainer = ProviderContainer(
+        overrides: [
+          materialsRepositoryProvider.overrideWithValue(materialsRepository),
+        ],
+      );
+      addTearDown(guardedContainer.dispose);
+
+      final guardedNotifier = guardedContainer.read(materialsProvider.notifier);
+      guardedNotifier.updateName('PLA');
+      guardedNotifier.updateColor('Blue');
+      guardedNotifier.updateWeight('0');
+      guardedNotifier.updateCost('12,5');
+
+      final result = await guardedNotifier.submit(null);
+
+      expect(result, isNull);
+      expect(materialsRepository.savedMaterials, isEmpty);
     });
 
     test(

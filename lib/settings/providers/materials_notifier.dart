@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/state/material_state.dart';
+import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final materialsProvider = NotifierProvider<MaterialsProvider, MaterialState>(
@@ -31,11 +32,16 @@ class MaterialsProvider extends Notifier<MaterialState> {
         name: StringInput.dirty(value: material.name),
         color: StringInput.dirty(value: material.color),
         cost: NumberInput.dirty(value: parseLocalizedNum(material.cost)),
+        costText: material.cost,
         weight: NumberInput.dirty(value: parseLocalizedNum(material.weight)),
+        weightText: material.weight,
         autoDeductEnabled: material.autoDeductEnabled,
         remainingWeight: material.autoDeductEnabled
             ? NumberInput.dirty(value: material.remainingWeight)
             : const NumberInput.pure(),
+        remainingWeightText: material.autoDeductEnabled
+            ? material.remainingWeight.toString()
+            : '',
       );
     }
   }
@@ -47,6 +53,7 @@ class MaterialsProvider extends Notifier<MaterialState> {
   void updateCost(String value) {
     state = state.copyWith(
       cost: NumberInput.dirty(value: parseLocalizedNum(value)),
+      costText: value,
     );
   }
 
@@ -58,58 +65,84 @@ class MaterialsProvider extends Notifier<MaterialState> {
     final parsedValue = parseLocalizedNum(value);
     state = state.copyWith(
       weight: NumberInput.dirty(value: parsedValue),
+      weightText: value,
       remainingWeight: state.autoDeductEnabled
           ? state.remainingWeight
-          : NumberInput.dirty(value: math.max(0, parsedValue)),
+          : NumberInput.dirty(
+              value: parsedValue == null ? null : math.max(0, parsedValue),
+            ),
+      remainingWeightText: state.autoDeductEnabled
+          ? state.remainingWeightText
+          : value,
     );
   }
 
   void updateAutoDeductEnabled(bool value) {
+    final parsedWeight = parseLocalizedNum(state.weightText);
     state = state.copyWith(
       autoDeductEnabled: value,
       remainingWeight: value
-          ? NumberInput.dirty(value: math.max(0, state.weight.value ?? 0))
+          ? NumberInput.dirty(
+              value: parsedWeight == null ? null : math.max(0, parsedWeight),
+            )
           : const NumberInput.pure(),
+      remainingWeightText: value ? state.weightText : '',
     );
   }
 
   void updateRemainingWeight(String value) {
     state = state.copyWith(
-      remainingWeight: NumberInput.dirty(
-        value: math.max(0, parseLocalizedNum(value)),
-      ),
+      remainingWeight: NumberInput.dirty(value: parseLocalizedNum(value)),
+      remainingWeightText: value,
     );
   }
 
   Future<Object?> submit(String? dbRef) async {
+    if (!_isValidForSubmit) {
+      return null;
+    }
+
     final existing = dbRef == null
         ? null
         : await _materialsRepository.getMaterialById(dbRef);
-    final parsedWeight = (state.weight.value ?? 0).toDouble();
+    final parsedCost = parseLocalizedNum(state.costText)!;
+    final parsedWeight = parseLocalizedNum(state.weightText)!;
     final wasTrackingEnabled = existing?.autoDeductEnabled ?? false;
     final isTrackingEnabled = state.autoDeductEnabled;
+    final parsedRemainingWeight = state.autoDeductEnabled
+        ? (state.remainingWeightText.trim().isEmpty
+              ? parsedWeight
+              : parseLocalizedNum(state.remainingWeightText)!)
+        : parsedWeight;
 
     final material = MaterialModel(
       id: dbRef ?? '',
-      name: state.name.value,
-      cost: state.cost.value.toString(),
-      color: state.color.value,
-      weight: state.weight.value.toString(),
+      name: state.name.value.trim(),
+      cost: parsedCost.toString(),
+      color: state.color.value.trim(),
+      weight: parsedWeight.toString(),
       archived: false,
       autoDeductEnabled: isTrackingEnabled,
       originalWeight: isTrackingEnabled && wasTrackingEnabled
           ? existing!.originalWeight
           : parsedWeight,
       remainingWeight: isTrackingEnabled
-          ? math.max(
-              0,
-              (state.remainingWeight.value ?? parsedWeight).toDouble(),
-            )
+          ? math.max(0, parsedRemainingWeight)
           : parsedWeight,
     );
 
     final key = await _materialsRepository.saveMaterial(material, id: dbRef);
     AppAnalytics.safeLog(AppAnalytics.materialCreated);
     return key;
+  }
+
+  bool get _isValidForSubmit {
+    return validateRequiredText(state.name.value) == null &&
+        validateRequiredText(state.color.value) == null &&
+        validatePositiveNumber(state.weightText) == null &&
+        validatePositiveNumber(state.costText) == null &&
+        (!state.autoDeductEnabled ||
+            validateOptionalNonNegativeNumber(state.remainingWeightText) ==
+                null);
   }
 }

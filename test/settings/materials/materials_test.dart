@@ -252,14 +252,14 @@ void main() {
     expect(repo.savedMaterials, hasLength(1));
     expect(repo.savedMaterials.single.name, 'PLA');
     expect(repo.savedMaterials.single.color, 'Blue');
-    expect(repo.savedMaterials.single.weight, '1000');
+    expect(repo.savedMaterials.single.weight, '1000.0');
     expect(repo.savedMaterials.single.cost, '24.5');
     expect(repo.getMaterialByIdCalls, ['material-1']);
     expect(savedResult.single, isA<MaterialModel>());
     expect((savedResult.single as MaterialModel).id, 'material-1');
   });
 
-  testWidgets('null save results close the dialog safely', (tester) async {
+  testWidgets('null save results keep the dialog open', (tester) async {
     final repo = FakeMaterialsRepository(
       useExplicitSaveResult: true,
       saveResult: null,
@@ -278,12 +278,16 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(_field('settings.materials.name.input'), 'PLA');
+    await tester.enterText(_field('settings.materials.color.input'), 'Blue');
+    await tester.enterText(_field('settings.materials.weight.input'), '1000');
+    await tester.enterText(_field('settings.materials.cost.input'), '24.5');
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.materials.save.button')),
     );
     await tester.pumpAndSettle();
 
     expect(savedResult, isNull);
-    expect(find.byType(Dialog), findsNothing);
+    expect(repo.savedMaterials, hasLength(1));
+    expect(find.byType(Dialog), findsOneWidget);
   });
 }
