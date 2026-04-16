@@ -252,6 +252,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       for (final rawUsage in entry.model.materialUsages) {
         final usage = MaterialUsageInput.fromMap(rawUsage);
         var resolvedUsage = usage;
+        MaterialModel? resolvedMaterial;
+        final rawCostPerKg = rawUsage['costPerKg'];
+        final shouldBackfillCost =
+            !rawUsage.containsKey('costPerKg') ||
+            rawCostPerKg == null ||
+            rawCostPerKg.toString().trim().isEmpty;
 
         if (usage.materialId.trim().isNotEmpty) {
           final material = await materialsRepository.getMaterialById(
@@ -259,11 +265,23 @@ class CalculatorProvider extends Notifier<CalculatorState> {
           );
           if (material == null && fallbackMaterial != null) {
             hasReplacement = true;
+            resolvedMaterial = fallbackMaterial;
             resolvedUsage = usage.copyWith(
               materialId: fallbackMaterial.id,
               materialName: fallbackMaterial.name,
             );
+          } else {
+            resolvedMaterial = material;
           }
+        }
+
+        if (shouldBackfillCost && resolvedMaterial != null) {
+          resolvedUsage = resolvedUsage.copyWith(
+            costPerKg: _costPerKgFromSpool(
+              spoolWeight: parseLocalizedNum(resolvedMaterial.weight),
+              spoolCost: parseLocalizedNum(resolvedMaterial.cost),
+            ),
+          );
         }
 
         materialUsages.add(resolvedUsage);
