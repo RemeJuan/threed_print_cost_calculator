@@ -126,6 +126,7 @@ void main() {
     expect(find.text('Re-use past prints in the calculator'), findsOneWidget);
     expect(find.text('Re-use past prints instantly'), findsOneWidget);
     expect(find.text('Unlock advanced edits and exports'), findsOneWidget);
+    expect(find.text('More actions in ⋯'), findsNothing);
 
     await tester.tap(
       find.byKey(const ValueKey<String>('history.upsell.banner')),
@@ -193,6 +194,28 @@ void main() {
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
       paywallPresenterProvider.overrideWithValue(paywallPresenter),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('More actions in ⋯'), findsNothing);
+  });
+
+  testWidgets('does not show overflow hint when overflow menu opened before', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'history_overflow_menu_opened_v1': true,
+    });
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: [_entry('1', 'Benchy', DateTime.utc(2024, 1, 2))],
+        hasMore: false,
+      ),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
     ]);
 
     await tester.pumpAndSettle();
