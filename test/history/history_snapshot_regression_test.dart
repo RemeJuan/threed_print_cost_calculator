@@ -112,7 +112,7 @@ void main() {
         '"${item.printer}",'
         '"${item.material}",'
         '"$materials",'
-        '"${item.weight}",'
+        '"${item.weight.toDouble()}",'
         '"${item.timeHours}",'
         '"${item.electricityCost}",'
         '"${item.filamentCost}",'
