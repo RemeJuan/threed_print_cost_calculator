@@ -257,7 +257,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         final shouldBackfillCost =
             !rawUsage.containsKey('costPerKg') ||
             rawCostPerKg == null ||
-            rawCostPerKg.toString().trim().isEmpty;
+            rawCostPerKg.toString().trim().isEmpty ||
+            (entry.model.materialUsages.length == 1 &&
+                parseLocalizedNum(rawCostPerKg) == 0 &&
+                entry.model.filamentCost > 0);
 
         if (usage.materialId.trim().isNotEmpty) {
           final material = await materialsRepository.getMaterialById(

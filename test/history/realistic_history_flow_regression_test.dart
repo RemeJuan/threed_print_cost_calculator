@@ -366,7 +366,7 @@ void main() {
 
   group('Legacy history shapes', () {
     test(
-      'zero-cost single-material snapshot stays correct through calculator recompute',
+      'recomputes_legacy_single_material_history_without_zeroing_filament_cost',
       () async {
         final legacy = await _storeLegacyRecord({
           'name': 'Legacy 1.77',
@@ -398,42 +398,109 @@ void main() {
           _expectedCsvRow(legacy.entry.model),
         ]);
 
-        final recalculated = await _loadAndRecalculateLegacy(
-          entry: legacy.entry,
-          settings: const GeneralSettingsModel(
-            electricityCost: '0.32',
-            wattage: '250',
-            activePrinter: 'printer-legacy',
-            selectedMaterial: 'mat-legacy',
-            wearAndTear: '0.10',
-            failureRisk: '15',
-            labourRate: '2',
-          ),
-          printers: {
-            'printer-legacy': const PrinterModel(
-              id: 'printer-legacy',
-              name: 'Prusa MK4S',
-              bedSize: '250x210',
-              wattage: '250',
-              archived: false,
+        final db = await databaseFactoryMemory.openDatabase(
+          'legacy_recalc_${DateTime.now().microsecondsSinceEpoch}.db',
+        );
+        final sharedPreferences = await SharedPreferences.getInstance();
+        final container = ProviderContainer(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+            calculatorPreferencesRepositoryProvider.overrideWithValue(
+              _FakeCalculatorPreferencesRepository(),
             ),
-          },
-          materials: {
-            'mat-legacy': const MaterialModel(
-              id: 'mat-legacy',
-              name: 'PETG Black',
-              cost: '29.99',
-              color: '#111111',
-              weight: '1000',
-              archived: false,
+            settingsRepositoryProvider.overrideWithValue(
+              FakeSettingsRepository(
+                initialSettings: const GeneralSettingsModel(
+                  electricityCost: '0.32',
+                  wattage: '250',
+                  activePrinter: 'printer-legacy',
+                  selectedMaterial: 'mat-legacy',
+                  wearAndTear: '0.10',
+                  failureRisk: '15',
+                  labourRate: '2',
+                ),
+              ),
             ),
-          },
+            printersRepositoryProvider.overrideWithValue(
+              FakePrintersRepository({
+                'printer-legacy': const PrinterModel(
+                  id: 'printer-legacy',
+                  name: 'Prusa MK4S',
+                  bedSize: '250x210',
+                  wattage: '250',
+                  archived: false,
+                ),
+              }),
+            ),
+            materialsRepositoryProvider.overrideWithValue(
+              FakeMaterialsRepository({
+                'mat-legacy': const MaterialModel(
+                  id: 'mat-legacy',
+                  name: 'PETG Black',
+                  cost: '29.99',
+                  color: '#111111',
+                  weight: '1000',
+                  archived: false,
+                ),
+              }),
+            ),
+          ],
         );
 
-        expect(recalculated.electricity, 0.14);
-        expect(recalculated.filament, 0.0);
-        expect(recalculated.labour, 0.0);
-        expect(recalculated.total, 0.24);
+        try {
+          final notifier = container.read(calculatorProvider.notifier);
+          await notifier.init();
+
+          expect(await notifier.loadFromHistory(legacy.entry), isTrue);
+
+          final loadedState = container.read(calculatorProvider);
+          expect(
+            loadedState.materialUsages.single.costPerKg,
+            closeTo(29.99, 0.01),
+          );
+          expect(loadedState.results.filament, closeTo(1.35, 0.01));
+
+          notifier
+            ..updateMinutes(45)
+            ..submit();
+
+          final recalculatedState = container.read(calculatorProvider);
+          expect(recalculatedState.results.filament, closeTo(1.35, 0.01));
+          expect(recalculatedState.results.total, closeTo(1.59, 0.01));
+
+          final timeHours =
+              '${recalculatedState.hours.value!.toInt().toString().padLeft(2, '0')}:${recalculatedState.minutes.value!.toInt().toString().padLeft(2, '0')}';
+          final savedModel = legacy.entry.model.copyWith(
+            electricityCost: recalculatedState.results.electricity,
+            filamentCost: recalculatedState.results.filament,
+            riskCost: recalculatedState.results.risk,
+            labourCost: recalculatedState.results.labour,
+            totalCost: recalculatedState.results.total,
+            weight:
+                recalculatedState.printWeight.value ??
+                legacy.entry.model.weight,
+            timeHours: timeHours,
+            materialUsages: recalculatedState.materialUsages
+                .map((usage) => usage.toMap())
+                .toList(),
+          );
+
+          final savedKey = await container
+              .read(historyRepositoryProvider)
+              .saveHistory(savedModel);
+          final persisted = (await _historyStore.record(savedKey).get(db))!;
+
+          expect(
+            (persisted['materialUsages'] as List).single['costPerKg'],
+            closeTo(29.99, 0.01),
+          );
+          expect(persisted['filamentCost'], closeTo(1.35, 0.01));
+          expect(persisted['totalCost'], closeTo(1.59, 0.01));
+        } finally {
+          container.dispose();
+          await db.close();
+        }
       },
     );
 
@@ -957,51 +1024,6 @@ Future<_StoredHistoryEvidence> _storeLegacyRecord(
           .where((line) => line.isNotEmpty)
           .toList(),
     );
-  } finally {
-    container.dispose();
-    await db.close();
-  }
-}
-
-Future<CalculationResult> _loadAndRecalculateLegacy({
-  required HistoryEntry entry,
-  required GeneralSettingsModel settings,
-  Map<String, PrinterModel> printers = const {},
-  Map<String, MaterialModel> materials = const {},
-}) async {
-  final db = await databaseFactoryMemory.openDatabase(
-    'legacy_recalc_${DateTime.now().microsecondsSinceEpoch}.db',
-  );
-  final sharedPreferences = await SharedPreferences.getInstance();
-  final container = ProviderContainer(
-    overrides: [
-      databaseProvider.overrideWithValue(db),
-      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      calculatorPreferencesRepositoryProvider.overrideWithValue(
-        _FakeCalculatorPreferencesRepository(),
-      ),
-      settingsRepositoryProvider.overrideWithValue(
-        FakeSettingsRepository(initialSettings: settings),
-      ),
-      printersRepositoryProvider.overrideWithValue(
-        FakePrintersRepository(printers),
-      ),
-      materialsRepositoryProvider.overrideWithValue(
-        FakeMaterialsRepository(materials),
-      ),
-    ],
-  );
-
-  try {
-    final notifier = container.read(calculatorProvider.notifier);
-    await notifier.init();
-    final didLoad = await notifier.loadFromHistory(entry);
-    expect(didLoad, isTrue);
-    expect(container.read(calculatorProvider).results.filament, 1.35);
-    notifier
-      ..updateMinutes(45)
-      ..submit();
-    return container.read(calculatorProvider).results;
   } finally {
     container.dispose();
     await db.close();
