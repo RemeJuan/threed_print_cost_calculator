@@ -16,11 +16,13 @@ Instructions:
 1. Read `CHANGELOG.md` and identify the latest version already documented.
    - Prefer the topmost version entry.
    - Extract only the version number, for example `2.5.2`.
+   - Ignore any build metadata suffix such as `+1` when comparing versions.
 
 2. Inspect git tags.
    - Find whether a newer tag exists than the latest documented version.
    - Use version-aware sorting, not simple string sorting.
    - Treat tags with or without a leading `v` as equivalent when comparing versions.
+   - Group tags by their base release version, so `2.5.2+1` and `2.5.2+2` both belong to `2.5.2`.
 
 3. If no newer tag exists:
    - Do not modify `CHANGELOG.md`.
@@ -28,8 +30,9 @@ Instructions:
 
 4. If a newer tag exists:
    - Select:
-     - previous version = latest version already documented in `CHANGELOG.md`
-     - new version = newest git tag that is newer than the documented version
+      - previous version = latest version already documented in `CHANGELOG.md`
+      - new version = newest git tag that is newer than the documented version
+      - changelog heading version = the new version with any build metadata removed
    - Generate the changelog content from the changes between those two tags only.
 
 5. Analyse the changes between the two tags.
