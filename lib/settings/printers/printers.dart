@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
 
 class Printers extends HookConsumerWidget {
   const Printers({super.key});
@@ -29,35 +28,23 @@ class Printers extends HookConsumerWidget {
                       final data = printers[index];
                       final key = data.id;
 
-                      return Slidable(
-                        key: ValueKey<String>('settings.printers.item.$index'),
-                        endActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (_) {
-                                printersRepository.deletePrinter(key);
-                              },
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                            ),
-                            SlidableAction(
-                              key: ValueKey<String>(
-                                'settings.printers.item.$index.edit.button',
-                              ),
-                              onPressed: (_) {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (_) => AddPrinter(dbRef: key),
-                                );
-                              },
-                              backgroundColor: LIGHT_BLUE,
-                              foregroundColor: Colors.white,
-                              icon: Icons.edit,
-                            ),
-                          ],
+                      return SettingsSlidableItem(
+                        itemKey: ValueKey<String>(
+                          'settings.printers.item.$index',
                         ),
+                        editButtonKey: ValueKey<String>(
+                          'settings.printers.item.$index.edit.button',
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        onDelete: () {
+                          printersRepository.deletePrinter(key);
+                        },
+                        onEdit: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) => AddPrinter(dbRef: key),
+                          );
+                        },
                         child: Row(
                           children: [
                             Expanded(

@@ -151,6 +151,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    await tester.tap(find.widgetWithText(TextButton, 'Delete'));
+    await tester.pumpAndSettle();
+
     expect(repo.deleteCalls, ['material-1']);
   });
 

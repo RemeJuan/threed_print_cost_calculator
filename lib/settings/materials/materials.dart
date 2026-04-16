@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
 
 class Materials extends HookConsumerWidget {
   const Materials({super.key});
@@ -27,42 +26,29 @@ class Materials extends HookConsumerWidget {
             return Column(
               children: [
                 SizedBox(
-                  height: 100,
+                  height: MediaQuery.sizeOf(context).height / 4,
                   child: ListView.builder(
                     itemCount: materials.length,
                     itemBuilder: (_, index) {
                       final data = materials[index];
                       final key = data.id;
 
-                      return Slidable(
-                        key: ValueKey<String>('settings.materials.item.$index'),
-                        endActionPane: ActionPane(
-                          motion: const ScrollMotion(),
-                          children: [
-                            SlidableAction(
-                              onPressed: (_) {
-                                materialsRepository.deleteMaterial(key);
-                              },
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
-                            ),
-                            SlidableAction(
-                              key: ValueKey<String>(
-                                'settings.materials.item.$index.edit.button',
-                              ),
-                              onPressed: (_) {
-                                showDialog<void>(
-                                  context: context,
-                                  builder: (_) => MaterialForm(dbRef: key),
-                                );
-                              },
-                              backgroundColor: LIGHT_BLUE,
-                              foregroundColor: Colors.white,
-                              icon: Icons.edit,
-                            ),
-                          ],
+                      return SettingsSlidableItem(
+                        itemKey: ValueKey<String>(
+                          'settings.materials.item.$index',
                         ),
+                        editButtonKey: ValueKey<String>(
+                          'settings.materials.item.$index.edit.button',
+                        ),
+                        onDelete: () {
+                          materialsRepository.deleteMaterial(key);
+                        },
+                        onEdit: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) => MaterialForm(dbRef: key),
+                          );
+                        },
                         child: Row(
                           children: [
                             Expanded(
