@@ -60,7 +60,7 @@ class _FocusSafeTextFieldState extends State<FocusSafeTextField> {
 
     // Initialize controller text if not focused
     if (!_node.hasFocus && widget.controller.text != widget.externalText) {
-      _setControllerTextPreservingSelection(widget.externalText);
+      _scheduleControllerTextSync();
     }
   }
 
@@ -93,15 +93,23 @@ class _FocusSafeTextFieldState extends State<FocusSafeTextField> {
 
     // When external text changes, update controller only if not focused
     if (!_node.hasFocus && widget.controller.text != widget.externalText) {
-      _setControllerTextPreservingSelection(widget.externalText);
+      _scheduleControllerTextSync();
     }
   }
 
   void _onFocusChange() {
     // When field loses focus, ensure controller reflects external state.
     if (!_node.hasFocus && widget.controller.text != widget.externalText) {
-      _setControllerTextPreservingSelection(widget.externalText);
+      _scheduleControllerTextSync();
     }
+  }
+
+  void _scheduleControllerTextSync() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _node.hasFocus) return;
+      if (widget.controller.text == widget.externalText) return;
+      _setControllerTextPreservingSelection(widget.externalText);
+    });
   }
 
   void _setControllerTextPreservingSelection(String text) {
