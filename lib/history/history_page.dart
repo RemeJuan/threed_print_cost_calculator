@@ -20,6 +20,7 @@ import 'components/history_toolbar.dart';
 enum HistoryPageMode { full, teaser }
 
 const _overflowHintPreferenceKey = 'history_overflow_hint_seen_v2';
+const _overflowMenuOpenedPreferenceKey = 'history_overflow_menu_opened_v1';
 const _overflowHintDuration = Duration(seconds: 4);
 
 class HistoryPage extends HookConsumerWidget {
@@ -71,6 +72,17 @@ class HistoryPage extends HookConsumerWidget {
     final overflowHintTimer = useRef<Timer?>(null);
     const debounceDuration = Duration(milliseconds: 300);
 
+    Future<void> markOverflowHintSeen() async {
+      if (prefs.getBool(_overflowHintPreferenceKey) == true) return;
+      await prefs.setBool(_overflowHintPreferenceKey, true);
+    }
+
+    Future<void> markOverflowMenuOpened() async {
+      if (prefs.getBool(_overflowMenuOpenedPreferenceKey) == true) return;
+      await prefs.setBool(_overflowMenuOpenedPreferenceKey, true);
+      AppAnalytics.safeLog(() => AppAnalytics.log('history_overflow_opened'));
+    }
+
     void dismissOverflowHint() {
       if (!showOverflowHint.value) return;
       overflowHintTimer.value?.cancel();
@@ -98,10 +110,17 @@ class HistoryPage extends HookConsumerWidget {
       var disposed = false;
 
       Future<void> maybeShowOverflowHint() async {
-        final hasSeenHint = prefs.getBool(_overflowHintPreferenceKey) ?? false;
-        if (hasSeenHint) return;
+        if (paged.items.isEmpty) return;
 
-        await prefs.setBool(_overflowHintPreferenceKey, true);
+        final hasSeenHint = prefs.getBool(_overflowHintPreferenceKey) ?? false;
+        final hasOpenedMenu =
+            prefs.getBool(_overflowMenuOpenedPreferenceKey) ?? false;
+        if (hasSeenHint || hasOpenedMenu || showOverflowHint.value) return;
+
+        await markOverflowHintSeen();
+        AppAnalytics.safeLog(
+          () => AppAnalytics.log('history_overflow_hint_shown'),
+        );
         if (disposed) return;
 
         showOverflowHint.value = true;
@@ -119,7 +138,7 @@ class HistoryPage extends HookConsumerWidget {
         disposed = true;
         overflowHintTimer.value?.cancel();
       };
-    }, const []);
+    }, [paged.items.length]);
 
     // Load first page on mount — schedule after the first frame to avoid
     // modifying providers during the widget build lifecycle.
@@ -266,7 +285,10 @@ class HistoryPage extends HookConsumerWidget {
                       dbKey: entry.key.toString(),
                       data: entry.model,
                       onHistoryLoaded: onHistoryLoaded,
-                      onOverflowMenuOpened: dismissOverflowHint,
+                      onOverflowMenuOpened: () {
+                        unawaited(markOverflowMenuOpened());
+                        dismissOverflowHint();
+                      },
                     );
                   },
                 ),
