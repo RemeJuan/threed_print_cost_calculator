@@ -70,7 +70,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(SupportDialog), findsOneWidget);
-      expect(find.text(lookupAppLocalizations(const Locale('en')).needHelpTitle), findsOneWidget);
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).needHelpTitle),
+        findsOneWidget,
+      );
     });
   });
 }

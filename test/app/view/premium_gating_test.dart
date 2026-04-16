@@ -43,7 +43,10 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
   });
 
   testWidgets('free state shows teaser history gate when promos enabled', (
@@ -65,7 +68,10 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const ValueKey<String>('nav.history.pro.badge')),
       findsOneWidget,
@@ -85,7 +91,10 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
   });
 
   testWidgets('history gate appears when gateway emits premium upgrade', (
@@ -106,13 +115,19 @@ void main() {
     addTearDown(() => db.close());
 
     await tester.pumpAndSettle();
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
 
     gateway.emit(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro'),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
   });
 }

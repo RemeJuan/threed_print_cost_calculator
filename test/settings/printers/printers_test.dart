@@ -55,7 +55,9 @@ void main() {
     );
     expect(find.text('Prusa MK4'), findsOneWidget);
     expect(
-      find.text('250x210x220 (350${lookupAppLocalizations(const Locale('en')).wattsSuffix})'),
+      find.text(
+        '250x210x220 (350${lookupAppLocalizations(const Locale('en')).wattsSuffix})',
+      ),
       findsOneWidget,
     );
   });

@@ -95,8 +95,18 @@ void main() {
     expect(find.text('PLA'), findsOneWidget);
     expect(find.text('Red'), findsOneWidget);
     expect(find.text('24.5'), findsOneWidget);
-    expect(find.text('1000${lookupAppLocalizations(const Locale('en')).gramsSuffix}'), findsOneWidget);
-    expect(find.text('Remaining: 800${lookupAppLocalizations(const Locale('en')).gramsSuffix}'), findsOneWidget);
+    expect(
+      find.text(
+        '1000${lookupAppLocalizations(const Locale('en')).gramsSuffix}',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        'Remaining: 800${lookupAppLocalizations(const Locale('en')).gramsSuffix}',
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('retries after a stream error', (tester) async {

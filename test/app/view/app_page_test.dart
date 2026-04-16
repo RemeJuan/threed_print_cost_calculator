@@ -63,9 +63,18 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
-    expect(find.text(lookupAppLocalizations(const Locale('en')).calculatorNavLabel), findsOneWidget);
-    expect(find.text(lookupAppLocalizations(const Locale('en')).settingsNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).calculatorNavLabel),
+      findsOneWidget,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).settingsNavLabel),
+      findsOneWidget,
+    );
   });
 
   testWidgets('shows teaser history tab for free users when promos enabled', (
@@ -80,7 +89,10 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const ValueKey<String>('nav.history.pro.badge')),
       findsOneWidget,
@@ -103,7 +115,10 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 600));
 
-      expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const ValueKey<String>('nav.history.pro.badge')),
         findsOneWidget,
@@ -118,13 +133,19 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 600));
 
-      expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsNothing,
+      );
 
       expect(
         find.byKey(const ValueKey<String>('nav.history.pro.badge')),
         findsNothing,
       );
-      expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsNothing,
+      );
     },
   );
 
@@ -143,21 +164,30 @@ void main() {
     await pumpAppPage(tester, gateway, calculatorNotifier);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
 
     gateway.emit(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
 
     gateway.emit(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-2'),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
     await tester.pump(const Duration(seconds: 3));
   });
 
@@ -201,7 +231,10 @@ void main() {
           .currentIndex,
       1,
     );
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
   });
 
   testWidgets('swiping between pages updates bottom navigation selection', (
@@ -291,7 +324,10 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 600));
 
-      expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsNothing);
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsNothing,
+      );
       expect(
         tester
             .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
@@ -387,7 +423,10 @@ void main() {
     await tester.pump();
     await tester.pump();
 
-    expect(find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel), findsOneWidget);
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
     expect(
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
