@@ -17,6 +17,7 @@ Instructions:
    - Prefer the topmost version entry.
    - Extract only the version number, for example `2.5.2`.
    - Ignore any build metadata suffix such as `+1` when comparing versions.
+   - Normalize versions to their base release form before any comparison or output.
 
 2. Inspect git tags.
    - Find whether a newer tag exists than the latest documented version.
@@ -79,14 +80,19 @@ Instructions:
    - do not invent features or claim impact that is not supported by the diff
 
 10. Placement:
-   - Insert the new version entry at the top of the changelog entries
-   - Do not overwrite previous history
+    - Insert the new version entry at the top of the changelog entries
+    - Do not overwrite previous history
 
-11. Final output:
-   - state the documented version found
-   - state the newer tag selected
-   - state the git range used
-   - state whether `CHANGELOG.md` was updated
+11. Version formatting:
+    - Never write build metadata in the changelog heading.
+    - If the selected git tag is `2.7.0+3`, the heading must be `## [2.7.0] - YYYY-MM-DD`.
+    - Build metadata may only affect which commits are included, not the displayed version.
+
+12. Final output:
+    - state the documented version found
+    - state the newer tag selected
+    - state the git range used
+    - state whether `CHANGELOG.md` was updated
 
 Execution guidance:
 - Prefer checking tags first before doing deeper analysis.
