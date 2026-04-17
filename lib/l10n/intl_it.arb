@@ -99,6 +99,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "Errore durante il salvataggio della stampa",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "Errore durante la rimozione del record",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "Stampa salvata",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "Modifica nel calcolatore",

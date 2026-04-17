@@ -100,6 +100,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "เกิดข้อผิดพลาดขณะบันทึกงานพิมพ์",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "เกิดข้อผิดพลาดขณะลบรายการ",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "บันทึกงานพิมพ์แล้ว",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "แก้ไขในเครื่องคิดเลข",

@@ -99,6 +99,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "Erro ao salvar a impressão",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "Erro ao remover o registo",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "Impressão salva",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "Editar na calculadora",

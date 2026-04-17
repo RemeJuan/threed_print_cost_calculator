@@ -99,6 +99,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "Fehler beim Speichern des Drucks",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "Fehler beim Entfernen des Datensatzes",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "Druck gespeichert",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "Im Rechner bearbeiten",

@@ -161,6 +161,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get savePrintErrorMessage => 'Error al guardar la impresión';
 
   @override
+  String get deleteRecordErrorMessage => 'Error al eliminar el registro';
+
+  @override
   String get savePrintSuccessMessage => 'Impresión guardada';
 
   @override

@@ -159,6 +159,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get savePrintErrorMessage => 'เกิดข้อผิดพลาดขณะบันทึกงานพิมพ์';
 
   @override
+  String get deleteRecordErrorMessage => 'เกิดข้อผิดพลาดขณะลบรายการ';
+
+  @override
   String get savePrintSuccessMessage => 'บันทึกงานพิมพ์แล้ว';
 
   @override

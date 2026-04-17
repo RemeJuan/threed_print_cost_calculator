@@ -100,6 +100,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "Gagal menyimpan hasil cetak",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "Gagal menghapus catatan",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "Hasil cetak disimpan",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "Edit di kalkulator",

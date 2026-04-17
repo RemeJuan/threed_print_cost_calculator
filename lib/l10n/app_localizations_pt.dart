@@ -160,6 +160,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get savePrintErrorMessage => 'Erro ao salvar a impressão';
 
   @override
+  String get deleteRecordErrorMessage => 'Erro ao remover o registo';
+
+  @override
   String get savePrintSuccessMessage => 'Impressão salva';
 
   @override

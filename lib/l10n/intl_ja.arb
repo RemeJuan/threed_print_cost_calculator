@@ -100,6 +100,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "プリントの保存中にエラーが発生しました",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "記録の削除中にエラーが発生しました",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "プリントを保存しました",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "計算機で編集",

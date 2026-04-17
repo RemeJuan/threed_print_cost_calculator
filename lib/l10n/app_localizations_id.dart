@@ -159,6 +159,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get savePrintErrorMessage => 'Gagal menyimpan hasil cetak';
 
   @override
+  String get deleteRecordErrorMessage => 'Gagal menghapus catatan';
+
+  @override
   String get savePrintSuccessMessage => 'Hasil cetak disimpan';
 
   @override

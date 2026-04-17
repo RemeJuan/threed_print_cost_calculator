@@ -160,6 +160,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get savePrintErrorMessage => 'Fout bij opslaan van print';
 
   @override
+  String get deleteRecordErrorMessage => 'Fout bij verwijderen van record';
+
+  @override
   String get savePrintSuccessMessage => 'Print opgeslagen';
 
   @override

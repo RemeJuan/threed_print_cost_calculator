@@ -100,6 +100,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "Erreur lors de l'enregistrement de l'impression",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "Erreur lors de la suppression de l'enregistrement",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "Impression enregistrée",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "Modifier dans la calculatrice",

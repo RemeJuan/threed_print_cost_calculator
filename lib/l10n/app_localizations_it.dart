@@ -162,6 +162,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Errore durante il salvataggio della stampa';
 
   @override
+  String get deleteRecordErrorMessage =>
+      'Errore durante la rimozione del record';
+
+  @override
   String get savePrintSuccessMessage => 'Stampa salvata';
 
   @override

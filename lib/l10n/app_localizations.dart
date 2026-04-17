@@ -414,6 +414,12 @@ abstract class AppLocalizations {
   /// **'Error saving print'**
   String get savePrintErrorMessage;
 
+  /// No description provided for @deleteRecordErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error removing record'**
+  String get deleteRecordErrorMessage;
+
   /// No description provided for @savePrintSuccessMessage.
   ///
   /// In en, this message translates to:

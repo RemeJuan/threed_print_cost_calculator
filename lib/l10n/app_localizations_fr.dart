@@ -161,6 +161,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Erreur lors de l\'enregistrement de l\'impression';
 
   @override
+  String get deleteRecordErrorMessage =>
+      'Erreur lors de la suppression de l\'enregistrement';
+
+  @override
   String get savePrintSuccessMessage => 'Impression enregistrée';
 
   @override

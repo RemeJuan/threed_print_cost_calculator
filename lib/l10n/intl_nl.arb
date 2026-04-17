@@ -100,6 +100,8 @@
   "@remainingFilamentLabel": {},
   "savePrintErrorMessage": "Fout bij opslaan van print",
   "@savePrintErrorMessage": {},
+  "deleteRecordErrorMessage": "Fout bij verwijderen van record",
+  "@deleteRecordErrorMessage": {},
   "savePrintSuccessMessage": "Print opgeslagen",
   "@savePrintSuccessMessage": {},
   "historyLoadAction": "Bewerken in calculator",

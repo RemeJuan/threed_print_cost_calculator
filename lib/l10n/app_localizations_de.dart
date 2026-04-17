@@ -160,6 +160,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get savePrintErrorMessage => 'Fehler beim Speichern des Drucks';
 
   @override
+  String get deleteRecordErrorMessage =>
+      'Fehler beim Entfernen des Datensatzes';
+
+  @override
   String get savePrintSuccessMessage => 'Druck gespeichert';
 
   @override

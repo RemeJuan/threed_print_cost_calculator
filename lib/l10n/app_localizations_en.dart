@@ -160,6 +160,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savePrintErrorMessage => 'Error saving print';
 
   @override
+  String get deleteRecordErrorMessage => 'Error removing record';
+
+  @override
   String get savePrintSuccessMessage => 'Print saved';
 
   @override

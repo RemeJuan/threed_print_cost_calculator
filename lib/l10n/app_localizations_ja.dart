@@ -159,6 +159,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get savePrintErrorMessage => 'プリントの保存中にエラーが発生しました';
 
   @override
+  String get deleteRecordErrorMessage => '記録の削除中にエラーが発生しました';
+
+  @override
   String get savePrintSuccessMessage => 'プリントを保存しました';
 
   @override

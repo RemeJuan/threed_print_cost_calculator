@@ -51,6 +51,7 @@
   "trackRemainingFilamentLabel": "Track remaining filament",
   "remainingFilamentLabel": "Remaining filament",
   "savePrintErrorMessage": "Error saving print",
+  "deleteRecordErrorMessage": "Error removing record",
   "savePrintSuccessMessage": "Print saved",
   "historyLoadAction": "Use in calculator",
   "historyLoadSuccessMessage": "Loaded from history",
