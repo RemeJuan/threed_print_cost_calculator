@@ -29,6 +29,12 @@ if [ -d "$ROOT_DIR/lib/generated" ]; then
   done < <(rg --files lib/generated)
 fi
 
+if [ -d "$ROOT_DIR/lib/l10n" ]; then
+  while IFS= read -r file; do
+    add_exclude_if_traced "$file"
+  done < <(rg --files lib/l10n)
+fi
+
 while IFS= read -r file; do
   add_exclude_if_traced "$file"
 done < <(
