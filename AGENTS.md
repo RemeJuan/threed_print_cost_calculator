@@ -27,6 +27,8 @@
 - Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.
 - Integration tests should use `integration_test/helpers/integration_test_harness.dart`; it seeds in-memory DB/prefs and fake purchases for free vs premium flows.
 - Startup/migration behavior has dedicated coverage in `test/main_migration_test.dart`; keep migration order stable when touching bootstrap/database startup.
+- Hidden in-app test overlays may use BotToast when the app shell already owns the visible overlay stack.
+- Keep dialog UI in the project’s standard `AlertDialog`/Material style even when the hosting layer is BotToast.
 
 ## Localisation
 - Never leave user-facing copy hardcoded when the existing l10n system should be used.
@@ -44,6 +46,7 @@
 ## File Layout
 - One widget per file. Keep each widget in its own Dart file, including helper sheets/dialogs/teaser states.
 - If a file grows a second widget, split it before merging.
+- Shared hidden test-tool widgets/services belong under `lib/shared/test_tools/`, not `lib/testing/`.
 
 ## Workflow notes
 - Prefer FVM-backed commands locally even if some CI jobs call plain `flutter`/`dart`.
