@@ -20,7 +20,6 @@ import 'package:threed_print_cost_calculator/shared/test_tools/enable_premium_co
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_confirmation_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_tools_dialog.dart';
-import 'package:threed_print_cost_calculator/shared/test_tools/test_data_tools_gate.dart';
 
 class SettingsVersionTapTarget extends ConsumerStatefulWidget {
   const SettingsVersionTapTarget({super.key, this.tapTargetKey});
@@ -48,8 +47,6 @@ class _SettingsVersionTapTargetState
   }
 
   void _handleTap() {
-    if (!testDataToolsEnabled) return;
-
     _tapCount += 1;
     _timer?.cancel();
     _timer = Timer(_timeout, () {
@@ -288,7 +285,7 @@ class _SettingsVersionTapTargetState
               widget.tapTargetKey ??
               const ValueKey<String>('settings.version.tapTarget'),
           behavior: HitTestBehavior.opaque,
-          onTap: testDataToolsEnabled ? _handleTap : null,
+          onTap: _handleTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: SizedBox(

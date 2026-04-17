@@ -6,7 +6,6 @@ import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
-import 'package:threed_print_cost_calculator/shared/test_tools/test_data_tools_gate.dart';
 
 final purchasesGatewayProvider = Provider<PurchasesGateway>((ref) {
   final gateway = RevenueCatPurchasesGateway();
@@ -84,8 +83,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
 
   bool _hasLocalOverride() {
     final prefs = _maybePrefs();
-    return testDataToolsEnabled &&
-        prefs != null &&
+    return prefs != null &&
         (prefs.getBool(testPremiumOverridePreferenceKey) ?? false);
   }
 
