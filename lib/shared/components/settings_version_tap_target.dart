@@ -290,11 +290,14 @@ class _SettingsVersionTapTargetState
           behavior: HitTestBehavior.opaque,
           onTap: testDataToolsEnabled ? _handleTap : null,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Center(
-              child: Text(
-                l10n.versionLabel(version),
-                style: Theme.of(context).textTheme.bodySmall,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: SizedBox(
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  l10n.versionLabel(version),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
             ),
           ),
