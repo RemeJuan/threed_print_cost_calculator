@@ -31,7 +31,9 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
     final showHistoryTeaser = ref.watch(shouldShowHistoryTeaserProvider);
 
     useEffect(() {
-      registerAppProviderContainer(ProviderScope.containerOf(context));
+      registerAppProviderContainer(
+        ProviderScope.containerOf(context, listen: false),
+      );
       return null;
     }, const []);
 
