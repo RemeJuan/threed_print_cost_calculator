@@ -1,3 +1,14 @@
+## [2.7.0] - 2026-04-17
+### Added
+- Added validation feedback for material and printer settings forms.
+
+### Changed
+- Refined history item layout and delete action styling.
+- Improved page swipe and navigation sync.
+
+### Fixed
+- Fixed legacy history loads from clearing filament cost.
+
 ## [2.6.0] - 2026-04-12
 ### Added
 - Added a free-user history teaser with an export preview instead of direct access.
@@ -106,6 +117,7 @@
 - Added in-app update checker
 
 [2.6.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.2...2.6.0
+[2.7.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.6.0...2.7.0+6
 [2.5.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.5.0
