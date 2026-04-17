@@ -27,6 +27,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsNavLabel => '設定';
 
   @override
+  String get generalHeader => '一般';
+
+  @override
   String get wattLabel => 'ワット（3Dプリンター）';
 
   @override

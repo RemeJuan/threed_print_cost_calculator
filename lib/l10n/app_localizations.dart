@@ -150,6 +150,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsNavLabel;
 
+  /// No description provided for @generalHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get generalHeader;
+
   /// No description provided for @wattLabel.
   ///
   /// In en, this message translates to:

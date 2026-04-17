@@ -56,6 +56,8 @@
   "@historyNavLabel": {},
   "settingsNavLabel": "Pengaturan",
   "@settingsNavLabel": {},
+  "generalHeader": "Umum",
+  "@generalHeader": {},
   "savePrintButton": "Simpan cetakan",
   "@savePrintButton": {},
   "printNameHint": "Nama cetak",

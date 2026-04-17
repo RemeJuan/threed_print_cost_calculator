@@ -27,6 +27,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settingsNavLabel => 'Impostazioni';
 
   @override
+  String get generalHeader => 'Generale';
+
+  @override
   String get wattLabel => 'Watt (stampante 3D)';
 
   @override

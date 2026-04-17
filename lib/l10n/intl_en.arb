@@ -6,6 +6,8 @@
   "calculatorNavLabel": "Calculator",
   "historyNavLabel": "History",
   "settingsNavLabel": "Settings",
+  "generalHeader": "General",
+  "@generalHeader": {},
   "wattLabel": "Watt (3D Printer)",
   "printWeightLabel": "Print Weight",
   "hoursLabel": "Printing time (hours)",

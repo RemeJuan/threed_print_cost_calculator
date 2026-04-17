@@ -31,7 +31,7 @@ class SettingsPage extends ConsumerWidget {
             AccordionItem(
               headerKey: const ValueKey<String>('settings.general.section'),
               bodyKey: const ValueKey<String>('settings.general.body'),
-              header: Text("General", style: style),
+              header: Text(l10n.generalHeader, style: style),
               body: const GeneralSettings(),
               initiallyExpanded: true,
               isLocked: !isPremium,

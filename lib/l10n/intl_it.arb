@@ -54,6 +54,8 @@
   "historyNavLabel": "Cronologia",
   "@historyNavLabel": {},
   "settingsNavLabel": "Impostazioni",
+  "generalHeader": "Generale",
+  "@generalHeader": {},
   "@settingsNavLabel": {},
   "savePrintButton": "Salva stampa",
   "@savePrintButton": {},

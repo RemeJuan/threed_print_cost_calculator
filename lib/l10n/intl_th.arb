@@ -55,6 +55,8 @@
   "historyNavLabel": "ประวัติ",
   "@historyNavLabel": {},
   "settingsNavLabel": "การตั้งค่า",
+  "generalHeader": "ทั่วไป",
+  "@generalHeader": {},
   "@settingsNavLabel": {},
   "savePrintButton": "บันทึกงานพิมพ์",
   "@savePrintButton": {},

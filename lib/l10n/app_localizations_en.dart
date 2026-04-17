@@ -27,6 +27,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNavLabel => 'Settings';
 
   @override
+  String get generalHeader => 'General';
+
+  @override
   String get wattLabel => 'Watt (3D Printer)';
 
   @override

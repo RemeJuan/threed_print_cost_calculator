@@ -54,6 +54,8 @@
   "historyNavLabel": "Histórico",
   "@historyNavLabel": {},
   "settingsNavLabel": "Configurações",
+  "generalHeader": "Geral",
+  "@generalHeader": {},
   "@settingsNavLabel": {},
   "savePrintButton": "Salvar impressão",
   "@savePrintButton": {},

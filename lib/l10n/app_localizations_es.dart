@@ -27,6 +27,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsNavLabel => 'Configuración';
 
   @override
+  String get generalHeader => 'General';
+
+  @override
   String get wattLabel => 'Vatio (impresora 3D)';
 
   @override

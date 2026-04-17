@@ -27,6 +27,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsNavLabel => 'การตั้งค่า';
 
   @override
+  String get generalHeader => 'ทั่วไป';
+
+  @override
   String get wattLabel => 'วัตต์ (เครื่องพิมพ์ 3D)';
 
   @override

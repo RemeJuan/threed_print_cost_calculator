@@ -55,6 +55,8 @@
   "historyNavLabel": "履歴",
   "@historyNavLabel": {},
   "settingsNavLabel": "設定",
+  "generalHeader": "一般",
+  "@generalHeader": {},
   "@settingsNavLabel": {},
   "savePrintButton": "プリントを保存",
   "@savePrintButton": {},

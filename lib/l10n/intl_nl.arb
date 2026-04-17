@@ -55,6 +55,8 @@
   "historyNavLabel": "Geschiedenis",
   "@historyNavLabel": {},
   "settingsNavLabel": "Instellingen",
+  "generalHeader": "Algemeen",
+  "@generalHeader": {},
   "@settingsNavLabel": {},
   "savePrintButton": "Print opslaan",
   "@savePrintButton": {},
