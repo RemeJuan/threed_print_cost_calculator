@@ -12,7 +12,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
-import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 
 class HistoryItem extends HookConsumerWidget {
@@ -110,6 +109,7 @@ class HistoryItem extends HookConsumerWidget {
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: l10n.deleteButton,
+            borderRadius: BorderRadius.circular(20),
           ),
         ],
       ),
@@ -210,27 +210,6 @@ class HistoryItem extends HookConsumerWidget {
                         ),
                       ],
                     ),
-                    if (data.materialUsages.length > 1)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          formatCountLabel(
-                            l10n.materialsCountLabel(
-                              data.materialUsages.length,
-                            ),
-                            data.materialUsages.length,
-                          ),
-                        ),
-                      ),
-                    if (data.materialUsages.length > 1)
-                      const SizedBox(width: 8),
                     Text(
                       DateFormat('dd MMM yyyy').format(data.date),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
