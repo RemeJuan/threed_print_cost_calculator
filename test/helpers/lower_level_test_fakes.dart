@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dar
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -19,8 +20,10 @@ class FakeCalculatorNotifier extends CalculatorProvider {
   final CalculatorState _initialState;
   int initCalls = 0;
   int submitCalls = 0;
+  int loadFromHistoryCalls = 0;
   final List<String> wattUpdates = [];
   final List<MaterialModel> selectedMaterials = [];
+  HistoryEntry? lastLoadedHistory;
 
   @override
   CalculatorState build() => _initialState;
@@ -33,6 +36,13 @@ class FakeCalculatorNotifier extends CalculatorProvider {
   @override
   void submit() {
     submitCalls += 1;
+  }
+
+  @override
+  Future<bool> loadFromHistory(HistoryEntry entry) async {
+    loadFromHistoryCalls += 1;
+    lastLoadedHistory = entry;
+    return true;
   }
 
   @override

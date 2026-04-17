@@ -129,6 +129,71 @@ void main() {
       expect(notifier.state.results.filament, 0.0);
       expect(notifier.state.results.total, 0.0);
     });
+
+    test('material usage mutations keep total weight synced', () {
+      notifier.addMaterialUsage(
+        const MaterialUsageInput(
+          materialId: 'mat-a',
+          materialName: 'Duplicate Material',
+          costPerKg: 60,
+          weightGrams: 5,
+        ),
+      );
+      expect(notifier.state.materialUsages, hasLength(1));
+
+      notifier.addMaterialUsage(
+        const MaterialUsageInput(
+          materialId: 'mat-b',
+          materialName: 'Material B',
+          costPerKg: 30,
+          weightGrams: 40,
+        ),
+      );
+      expect(notifier.state.materialUsages, hasLength(2));
+
+      notifier.removeMaterialUsageAt(-1);
+      expect(notifier.state.materialUsages, hasLength(2));
+
+      notifier.removeMaterialUsageAt(1);
+      expect(notifier.state.materialUsages, hasLength(1));
+      expect(notifier.state.printWeight.value, 100);
+
+      notifier.updateMaterialUsageWeight(0, -5);
+      expect(notifier.state.materialUsages.single.weightGrams, 0);
+      expect(notifier.state.printWeight.value, 0);
+
+      notifier.updateMaterialUsage(
+        0,
+        const MaterialUsageInput(
+          materialId: 'mat-c',
+          materialName: 'Material C',
+          costPerKg: 25,
+          weightGrams: 25,
+        ),
+      );
+
+      expect(notifier.state.materialUsages.single.materialId, 'mat-c');
+      expect(notifier.state.printWeight.value, 25);
+    });
+
+    test('applySingleTotalWeightToFirstRow normalizes rows', () {
+      notifier
+        ..addMaterialUsage(
+          const MaterialUsageInput(
+            materialId: 'mat-b',
+            materialName: 'Material B',
+            costPerKg: 30,
+            weightGrams: 40,
+          ),
+        )
+        ..updatePrintWeight('140');
+
+      notifier.applySingleTotalWeightToFirstRow();
+
+      expect(notifier.state.printWeight.value, 140);
+      expect(notifier.state.materialUsages.first.weightGrams, 140);
+      expect(notifier.state.materialUsages.last.weightGrams, 0);
+    });
   });
 }
 

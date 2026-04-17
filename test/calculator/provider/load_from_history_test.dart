@@ -236,5 +236,108 @@ void main() {
         expect(state.showHistoryLoadReplacementWarning, isTrue);
       },
     );
+
+    test(
+      'rejects empty or corrupted history snapshots without state churn',
+      () async {
+        final settingsRepository = FakeSettingsRepository(
+          initialSettings: const GeneralSettingsModel(
+            electricityCost: '0.32',
+            wattage: '180',
+            activePrinter: 'printer-current',
+            selectedMaterial: 'material-current',
+            wearAndTear: '1.5',
+            failureRisk: '10',
+            labourRate: '15',
+          ),
+        );
+        final printersRepository = FakePrintersRepository();
+        final materialsRepository = FakeMaterialsRepository();
+
+        final container = ProviderContainer(
+          overrides: [
+            settingsRepositoryProvider.overrideWithValue(settingsRepository),
+            printersRepositoryProvider.overrideWithValue(printersRepository),
+            materialsRepositoryProvider.overrideWithValue(materialsRepository),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final notifier = container.read(calculatorProvider.notifier);
+        notifier.state = CalculatorState(
+          materialUsages: const [
+            MaterialUsageInput(
+              materialId: 'material-current',
+              materialName: 'Current',
+              costPerKg: 99,
+              weightGrams: 1,
+            ),
+          ],
+        );
+
+        var emissions = 0;
+        final sub = container.listen<CalculatorState>(
+          calculatorProvider,
+          (previous, next) => emissions += 1,
+          fireImmediately: false,
+        );
+        addTearDown(sub.close);
+
+        final emptyLoad = await notifier.loadFromHistory(
+          HistoryEntry(
+            key: 'history-empty',
+            model: HistoryModel(
+              name: 'Empty',
+              totalCost: 0,
+              riskCost: 0,
+              filamentCost: 0,
+              electricityCost: 0,
+              labourCost: 0,
+              date: DateTime.utc(2024, 1, 3),
+              printer: 'Prusa MK4',
+              material: 'PLA',
+              weight: 0,
+              timeHours: '00:15',
+              materialUsages: const [],
+            ),
+          ),
+        );
+
+        final badTimeLoad = await notifier.loadFromHistory(
+          HistoryEntry(
+            key: 'history-bad-time',
+            model: HistoryModel(
+              name: 'Bad Time',
+              totalCost: 0,
+              riskCost: 0,
+              filamentCost: 0,
+              electricityCost: 0,
+              labourCost: 0,
+              date: DateTime.utc(2024, 1, 3),
+              printer: 'Prusa MK4',
+              material: 'PLA',
+              weight: 0,
+              timeHours: 'not-a-time',
+              materialUsages: const [
+                {
+                  'materialId': 'mat-1',
+                  'materialName': 'PLA',
+                  'costPerKg': 25,
+                  'weightGrams': 10,
+                },
+              ],
+            ),
+          ),
+        );
+
+        expect(emptyLoad, isFalse);
+        expect(badTimeLoad, isFalse);
+        expect(emissions, 0);
+        expect(
+          container.read(calculatorProvider).materialUsages.single.materialId,
+          'material-current',
+        );
+      },
+    );
   });
 }

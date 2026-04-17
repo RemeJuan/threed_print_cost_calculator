@@ -2,19 +2,18 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_history_loader.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_materials_service.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_settings_sync.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
-import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -27,77 +26,6 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
-
-  num _costPerKgFromSpool({required num spoolWeight, required num spoolCost}) {
-    return spoolWeight <= 0 ? 0 : (spoolCost / spoolWeight) * 1000;
-  }
-
-  NumberInput _dirtyNum(num? value) => NumberInput.dirty(value: value);
-
-  ({int hours, int minutes})? _parseHistoryTime(String value) {
-    final parts = value.split(':');
-    if (parts.length != 2) return null;
-
-    final hours = int.tryParse(parts[0]);
-    final minutes = int.tryParse(parts[1]);
-    if (hours == null || minutes == null) return null;
-
-    return (hours: hours, minutes: minutes);
-  }
-
-  Future<PrinterModel?> _resolvePrinter(
-    String printerName,
-    GeneralSettingsModel settings,
-  ) async {
-    final printersRepository = ref.read(printersRepositoryProvider);
-    final printers = await printersRepository.getPrinters();
-
-    for (final printer in printers) {
-      if (printer.name == printerName) return printer;
-    }
-
-    if (settings.activePrinter.isNotEmpty) {
-      final activePrinter = await printersRepository.getPrinterById(
-        settings.activePrinter,
-      );
-      if (activePrinter != null) return activePrinter;
-    }
-
-    if (printers.isEmpty) return null;
-    return printers.first;
-  }
-
-  Future<MaterialModel?> _resolveFallbackMaterial() async {
-    final materials = await ref
-        .read(materialsRepositoryProvider)
-        .getMaterials();
-    if (materials.isEmpty) return null;
-    return materials.first;
-  }
-
-  List<MaterialUsageInput> _syncedSingleMaterialUsage({
-    String? materialId,
-    String? materialName,
-    num? spoolWeight,
-    num? spoolCost,
-  }) {
-    if (state.materialUsages.length != 1) return state.materialUsages;
-
-    final usage = state.materialUsages.first;
-    final nextSpoolWeight = spoolWeight ?? (state.spoolWeight.value ?? 0);
-    final nextSpoolCost = spoolCost ?? (state.spoolCost.value ?? 0);
-
-    return [
-      usage.copyWith(
-        materialId: materialId ?? usage.materialId,
-        materialName: materialName ?? usage.materialName,
-        costPerKg: _costPerKgFromSpool(
-          spoolWeight: nextSpoolWeight,
-          spoolCost: nextSpoolCost,
-        ),
-      ),
-    ];
-  }
 
   @override
   CalculatorState build() {
@@ -113,101 +41,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> init() async {
-    final settingsRepository = ref.read(settingsRepositoryProvider);
-    final preferencesRepository = ref.read(
-      calculatorPreferencesRepositoryProvider,
-    );
-    final settings = await settingsRepository.getSettings();
-    final printerKey = settings.activePrinter;
-
-    final spoolWeightVal = await preferencesRepository.getStringValue(
-      'spoolWeight',
-    );
-    final spoolCostVal = await preferencesRepository.getStringValue(
-      'spoolCost',
-    );
-
-    if (printerKey.isNotEmpty) {
-      final printer = await ref
-          .read(printersRepositoryProvider)
-          .getPrinterById(printerKey);
-
-      if (printer != null) {
-        updateWatt(printer.wattage.toString());
-      } else {
-        updateWatt(settings.wattage.toString());
-      }
-    } else {
-      updateWatt(settings.wattage.toString());
-    }
-
-    state = CalculatorState(
-      watt: NumberInput.dirty(value: state.watt.value),
-      kwCost: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.electricityCost),
-      ),
-      printWeight: NumberInput.dirty(value: state.printWeight.value),
-      hours: NumberInput.dirty(value: state.hours.value),
-      minutes: NumberInput.dirty(value: state.minutes.value),
-      spoolWeight: NumberInput.dirty(
-        value: tryParseLocalizedNum(spoolWeightVal),
-      ),
-      spoolCost: NumberInput.dirty(value: tryParseLocalizedNum(spoolCostVal)),
-      spoolCostText: spoolCostVal,
-      wearAndTear: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.wearAndTear),
-      ),
-      failureRisk: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.failureRisk),
-      ),
-      labourRate: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.labourRate),
-      ),
-      labourTime: NumberInput.dirty(value: state.labourTime.value),
-      materialUsages: state.materialUsages,
-      results: state.results,
-    );
-
-    await _ensureInitialMaterialUsage(settings.selectedMaterial);
-  }
-
-  Future<void> _ensureInitialMaterialUsage(String selectedMaterialId) async {
-    // Previously this forced a placeholder 'none' material when the list was
-    // empty. Change: allow an empty materialUsages list so users can add
-    // materials only when needed and are required to provide cost for any
-    // material rows they add.
-    if (state.materialUsages.isNotEmpty) return;
-
-    if (selectedMaterialId.isEmpty) {
-      // Leave materialUsages empty instead of adding a placeholder.
-      state = state.copyWith(materialUsages: []);
-      return;
-    }
-
-    final material = await ref
-        .read(materialsRepositoryProvider)
-        .getMaterialById(selectedMaterialId);
-
-    if (material == null) {
-      // Leave empty if selected material not found
-      state = state.copyWith(materialUsages: []);
-      return;
-    }
-
-    final weight = parseLocalizedNumOrFallback(material.weight);
-    final cost = parseLocalizedNumOrFallback(material.cost);
-    final costPerKg = _costPerKgFromSpool(spoolWeight: weight, spoolCost: cost);
-
-    state = state.copyWith(
-      materialUsages: [
-        MaterialUsageInput(
-          materialId: material.id,
-          materialName: material.name,
-          costPerKg: costPerKg,
-          weightGrams: (state.printWeight.value ?? 0).toInt(),
-        ),
-      ],
-    );
+    final settings = await ref.read(settingsServiceProvider).get();
+    state = await ref
+        .read(calculatorSettingsSyncProvider)
+        .load(state, settings);
   }
 
   Future<bool> loadFromHistory(HistoryEntry entry) async {
@@ -222,101 +59,33 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       return false;
     }
 
-    final parsedTime = _parseHistoryTime(entry.model.timeHours);
-    if (parsedTime == null) {
-      _logger.warn(
-        AppLogCategory.provider,
-        'Skipping corrupted history entry load',
-        context: {'historyKey': entry.key, 'timeHours': entry.model.timeHours},
-      );
-      return false;
-    }
+    final settingsService = ref.read(settingsServiceProvider);
 
     try {
-      final settingsRepository = ref.read(settingsRepositoryProvider);
-      final settings = await settingsRepository.getSettings();
-      final resolvedPrinter = await _resolvePrinter(
-        entry.model.printer,
-        settings,
-      );
-      final fallbackMaterial = await _resolveFallbackMaterial();
-
-      var hasReplacement =
-          entry.model.printer.isNotEmpty &&
-          resolvedPrinter != null &&
-          resolvedPrinter.name != entry.model.printer;
-
-      final materialsRepository = ref.read(materialsRepositoryProvider);
-      final materialUsages = <MaterialUsageInput>[];
-
-      for (final rawUsage in entry.model.materialUsages) {
-        final usage = MaterialUsageInput.fromMap(rawUsage);
-        var resolvedUsage = usage;
-        MaterialModel? resolvedMaterial;
-        final rawCostPerKg = rawUsage['costPerKg'];
-        final shouldBackfillCost =
-            !rawUsage.containsKey('costPerKg') ||
-            rawCostPerKg == null ||
-            rawCostPerKg.toString().trim().isEmpty ||
-            (entry.model.materialUsages.length == 1 &&
-                parseLocalizedNumOrFallback(rawCostPerKg) == 0 &&
-                entry.model.filamentCost > 0);
-
-        if (usage.materialId.trim().isNotEmpty) {
-          final material = await materialsRepository.getMaterialById(
-            usage.materialId,
-          );
-          if (material == null && fallbackMaterial != null) {
-            hasReplacement = true;
-            resolvedMaterial = fallbackMaterial;
-            resolvedUsage = usage.copyWith(
-              materialId: fallbackMaterial.id,
-              materialName: fallbackMaterial.name,
-            );
-          } else {
-            resolvedMaterial = material;
-          }
-        }
-
-        if (shouldBackfillCost && resolvedMaterial != null) {
-          resolvedUsage = resolvedUsage.copyWith(
-            costPerKg: _costPerKgFromSpool(
-              spoolWeight: parseLocalizedNumOrFallback(resolvedMaterial.weight),
-              spoolCost: parseLocalizedNumOrFallback(resolvedMaterial.cost),
-            ),
-          );
-        }
-
-        materialUsages.add(resolvedUsage);
+      final settings = await settingsService.get();
+      final result = await ref
+          .read(calculatorHistoryLoaderProvider)
+          .load(entry: entry, currentState: state, settings: settings);
+      if (result == null) {
+        _logger.warn(
+          AppLogCategory.provider,
+          'Skipping corrupted history entry load',
+          context: {
+            'historyKey': entry.key,
+            'timeHours': entry.model.timeHours,
+          },
+        );
+        return false;
       }
 
-      final nextSettings = settings.copyWith(
-        activePrinter: resolvedPrinter?.id ?? settings.activePrinter,
-        selectedMaterial: materialUsages.first.materialId,
+      await settingsService.update(
+        (current) => current.copyWith(
+          activePrinter: result.activePrinterId,
+          selectedMaterial: result.selectedMaterialId ?? '',
+        ),
       );
 
-      await settingsRepository.saveSettings(nextSettings);
-
-      state = state.copyWith(
-        watt: _dirtyNum(
-          parseLocalizedNumOrFallback(
-            resolvedPrinter?.wattage ?? settings.wattage,
-          ),
-        ),
-        printWeight: _dirtyNum(entry.model.weight),
-        materialUsages: materialUsages,
-        hours: _dirtyNum(parsedTime.hours),
-        minutes: _dirtyNum(parsedTime.minutes),
-        results: CalculationResult(
-          electricity: entry.model.electricityCost,
-          filament: entry.model.filamentCost,
-          risk: entry.model.riskCost,
-          labour: entry.model.labourCost,
-          total: entry.model.totalCost,
-        ),
-        showHistoryLoadReplacementWarning: hasReplacement,
-      );
-
+      state = result.state;
       return true;
     } catch (error, stackTrace) {
       _logger.warn(
@@ -361,84 +130,42 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void addMaterialUsage(MaterialUsageInput usage) {
-    // Allow adding any usage; prevent exact duplicate material IDs.
-    final id = usage.materialId.trim();
-    if (id.isNotEmpty) {
-      final exists = state.materialUsages.any(
-        (u) => u.materialId.trim().isNotEmpty && u.materialId.trim() == id,
-      );
-      if (exists) return; // ignore duplicate add
-    }
-
-    state = state.copyWith(materialUsages: [...state.materialUsages, usage]);
+    final usages = ref
+        .read(calculatorMaterialsServiceProvider)
+        .addUsage(state.materialUsages, usage);
+    state = state.copyWith(materialUsages: usages);
   }
 
   void removeMaterialUsageAt(int index) {
-    // Defensive: ensure index is valid
-    if (index < 0 || index >= state.materialUsages.length) return;
-
-    final usages = [...state.materialUsages]..removeAt(index);
-
-    // Do not re-add placeholders; allow the list to be empty.
-
-    // Always update state: update materialUsages and printWeight (sum of weights or 0)
-    final totalWeight = usages.fold<int>(
-      0,
-      (sum, item) => sum + item.weightGrams,
-    );
+    final result = ref
+        .read(calculatorMaterialsServiceProvider)
+        .removeUsageAt(state.materialUsages, index);
 
     state = state.copyWith(
-      materialUsages: usages,
-      printWeight: NumberInput.dirty(value: totalWeight),
+      materialUsages: result.usages,
+      printWeight: NumberInput.dirty(value: result.totalWeight),
     );
   }
 
   void updateMaterialUsageWeight(int index, int grams) {
-    // Validate index
-    if (index < 0 || index >= state.materialUsages.length) return;
-
-    // Ensure non-negative grams
-    final safeGrams = grams < 0 ? 0 : grams;
-
-    final usages = [...state.materialUsages];
-    usages[index] = usages[index].copyWith(weightGrams: safeGrams);
-    final totalWeight = usages.fold<int>(
-      0,
-      (sum, item) => sum + item.weightGrams,
-    );
+    final result = ref
+        .read(calculatorMaterialsServiceProvider)
+        .updateUsageWeight(state.materialUsages, index, grams);
 
     state = state.copyWith(
-      materialUsages: usages,
-      printWeight: NumberInput.dirty(value: totalWeight),
+      materialUsages: result.usages,
+      printWeight: NumberInput.dirty(value: result.totalWeight),
     );
   }
 
-  List<MaterialUsageInput> _normalizedMaterialUsagesForSingleTotalWeight(
-    List<MaterialUsageInput> usages,
-    int totalWeight,
-  ) {
-    if (usages.isEmpty) return usages;
-
-    return List<MaterialUsageInput>.generate(usages.length, (index) {
-      return usages[index].copyWith(weightGrams: index == 0 ? totalWeight : 0);
-    });
-  }
-
-  // New helper: update an entire material usage at an index
   void updateMaterialUsage(int index, MaterialUsageInput usage) {
-    if (index < 0 || index >= state.materialUsages.length) return;
-
-    final usages = [...state.materialUsages];
-    usages[index] = usage;
-
-    final totalWeight = usages.fold<int>(
-      0,
-      (sum, item) => sum + item.weightGrams,
-    );
+    final result = ref
+        .read(calculatorMaterialsServiceProvider)
+        .updateUsage(state.materialUsages, index, usage);
 
     state = state.copyWith(
-      materialUsages: usages,
-      printWeight: NumberInput.dirty(value: totalWeight),
+      materialUsages: result.usages,
+      printWeight: NumberInput.dirty(value: result.totalWeight),
     );
   }
 
@@ -446,10 +173,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     if (state.materialUsages.isEmpty) return;
 
     final total = (state.printWeight.value ?? 0).toInt();
-    final normalizedUsages = _normalizedMaterialUsagesForSingleTotalWeight(
-      state.materialUsages,
-      total,
-    );
+    final normalizedUsages = ref
+        .read(calculatorMaterialsServiceProvider)
+        .normalizedMaterialUsagesForSingleTotalWeight(
+          state.materialUsages,
+          total,
+        );
 
     state = state.copyWith(
       materialUsages: normalizedUsages,
@@ -471,7 +200,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         .saveStringValue('spoolWeight', value.toString());
     state = state.copyWith(
       spoolWeight: NumberInput.dirty(value: value),
-      materialUsages: _syncedSingleMaterialUsage(spoolWeight: value),
+      materialUsages: ref
+          .read(calculatorMaterialsServiceProvider)
+          .syncedSingleMaterialUsage(state: state, spoolWeight: value),
     );
   }
 
@@ -483,7 +214,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(
       spoolCost: NumberInput.dirty(value: parsedCost),
       spoolCostText: value,
-      materialUsages: _syncedSingleMaterialUsage(spoolCost: parsedCost),
+      materialUsages: ref
+          .read(calculatorMaterialsServiceProvider)
+          .syncedSingleMaterialUsage(state: state, spoolCost: parsedCost),
     );
   }
 
@@ -502,26 +235,27 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       spoolWeight: NumberInput.dirty(value: spoolWeight),
       spoolCost: NumberInput.dirty(value: spoolCost),
       spoolCostText: material.cost,
-      materialUsages: _syncedSingleMaterialUsage(
-        materialId: material.id,
-        materialName: material.name,
-        spoolWeight: spoolWeight,
-        spoolCost: spoolCost,
-      ),
+      materialUsages: ref
+          .read(calculatorMaterialsServiceProvider)
+          .syncedSingleMaterialUsage(
+            state: state,
+            materialId: material.id,
+            materialName: material.name,
+            spoolWeight: spoolWeight,
+            spoolCost: spoolCost,
+          ),
     );
 
     submit();
   }
 
   Future<void> updateWearAndTear(num value) async {
-    final settingsRepository = ref.read(settingsRepositoryProvider);
-
     try {
-      final settings = await settingsRepository.getSettings();
-      final updated = settings.copyWith(wearAndTear: value.toString());
-      await settingsRepository.saveSettings(updated);
-
-      // Only update local state after successful DB write
+      await ref
+          .read(settingsServiceProvider)
+          .update(
+            (settings) => settings.copyWith(wearAndTear: value.toString()),
+          );
       state = state.copyWith(wearAndTear: NumberInput.dirty(value: value));
     } catch (e, st) {
       _logger.error(
@@ -536,14 +270,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> updateFailureRisk(num value) async {
-    final settingsRepository = ref.read(settingsRepositoryProvider);
-
     try {
-      final settings = await settingsRepository.getSettings();
-      final updated = settings.copyWith(failureRisk: value.toStringAsFixed(2));
-      await settingsRepository.saveSettings(updated);
-
-      // Only update local state after successful DB write
+      await ref
+          .read(settingsServiceProvider)
+          .update(
+            (settings) =>
+                settings.copyWith(failureRisk: value.toStringAsFixed(2)),
+          );
       state = state.copyWith(failureRisk: NumberInput.dirty(value: value));
     } catch (e, st) {
       _logger.error(
@@ -558,14 +291,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> updateLabourRate(num value) async {
-    final settingsRepository = ref.read(settingsRepositoryProvider);
-
     try {
-      final settings = await settingsRepository.getSettings();
-      final updated = settings.copyWith(labourRate: value.toString());
-      await settingsRepository.saveSettings(updated);
-
-      // Only update local state after successful DB write
+      await ref
+          .read(settingsServiceProvider)
+          .update(
+            (settings) => settings.copyWith(labourRate: value.toString()),
+          );
       state = state.copyWith(labourRate: NumberInput.dirty(value: value));
     } catch (e, st) {
       _logger.error(
