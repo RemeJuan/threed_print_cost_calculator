@@ -233,6 +233,52 @@ class AppLocalizationsJa extends AppLocalizations {
   String get closeButton => '閉じる';
 
   @override
+  String get testDataToolsTitle => 'テストデータツール';
+
+  @override
+  String get testDataToolsBody =>
+      'これらの操作はローカルテスト専用です。投入すると現在のローカル設定がデモデータに置き換わります。消去するとこの端末のローカルアプリデータが完全に削除されます。';
+
+  @override
+  String get seedTestDataButton => 'テストデータを投入';
+
+  @override
+  String get purgeLocalDataButton => 'ローカルデータを消去';
+
+  @override
+  String get enablePremiumButton => 'プレミアムを有効化';
+
+  @override
+  String get enablePremiumTitle => 'プレミアムを有効化';
+
+  @override
+  String get enablePremiumBody => 'ローカルのプレミアムテストを有効にする確認コードを入力してください';
+
+  @override
+  String get invalidConfirmationCodeMessage => '確認コードが無効です';
+
+  @override
+  String get seedTestDataConfirmTitle => 'テストデータを投入しますか？';
+
+  @override
+  String get seedTestDataConfirmBody => '現在のローカル設定が、決定的なデモデータに置き換わります。';
+
+  @override
+  String get purgeLocalDataConfirmTitle => 'ローカルデータを消去しますか？';
+
+  @override
+  String get purgeLocalDataConfirmBody => 'この端末のローカルアプリデータがすべて完全に削除されます。';
+
+  @override
+  String get testDataSeededMessage => 'テストデータを投入しました';
+
+  @override
+  String get testDataPurgedMessage => 'ローカルデータを消去しました';
+
+  @override
+  String get testDataActionFailedMessage => 'テストデータ操作に失敗しました';
+
+  @override
   String get mailClientError => 'メールクライアントを開けませんでした';
 
   @override

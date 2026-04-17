@@ -552,6 +552,96 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get closeButton;
 
+  /// No description provided for @testDataToolsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Test data tools'**
+  String get testDataToolsTitle;
+
+  /// No description provided for @testDataToolsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'These actions are for local testing only. Seeding replaces the current local setup with demo data. Purging permanently removes local app data on this device.'**
+  String get testDataToolsBody;
+
+  /// No description provided for @seedTestDataButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed test data'**
+  String get seedTestDataButton;
+
+  /// No description provided for @purgeLocalDataButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Purge local data'**
+  String get purgeLocalDataButton;
+
+  /// No description provided for @enablePremiumButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable premium'**
+  String get enablePremiumButton;
+
+  /// No description provided for @enablePremiumTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable premium'**
+  String get enablePremiumTitle;
+
+  /// No description provided for @enablePremiumBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter confirmation code to enable local premium testing'**
+  String get enablePremiumBody;
+
+  /// No description provided for @invalidConfirmationCodeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid confirmation code'**
+  String get invalidConfirmationCodeMessage;
+
+  /// No description provided for @seedTestDataConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Seed test data?'**
+  String get seedTestDataConfirmTitle;
+
+  /// No description provided for @seedTestDataConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will replace the current local setup with deterministic demo data.'**
+  String get seedTestDataConfirmBody;
+
+  /// No description provided for @purgeLocalDataConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Purge local data?'**
+  String get purgeLocalDataConfirmTitle;
+
+  /// No description provided for @purgeLocalDataConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently remove all local app data on this device.'**
+  String get purgeLocalDataConfirmBody;
+
+  /// No description provided for @testDataSeededMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Test data seeded'**
+  String get testDataSeededMessage;
+
+  /// No description provided for @testDataPurgedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Local data purged'**
+  String get testDataPurgedMessage;
+
+  /// No description provided for @testDataActionFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Test data action failed'**
+  String get testDataActionFailedMessage;
+
   /// No description provided for @mailClientError.
   ///
   /// In en, this message translates to:

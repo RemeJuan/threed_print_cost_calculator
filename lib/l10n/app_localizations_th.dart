@@ -234,6 +234,55 @@ class AppLocalizationsTh extends AppLocalizations {
   String get closeButton => 'ปิด';
 
   @override
+  String get testDataToolsTitle => 'เครื่องมือข้อมูลทดสอบ';
+
+  @override
+  String get testDataToolsBody =>
+      'การทำงานเหล่านี้มีไว้สำหรับการทดสอบภายในเครื่องเท่านั้น การใส่ข้อมูลจะเปลี่ยนการตั้งค่าท้องถิ่นปัจจุบันเป็นข้อมูลตัวอย่าง การล้างจะลบข้อมูลแอปท้องถิ่นในอุปกรณ์นี้อย่างถาวร';
+
+  @override
+  String get seedTestDataButton => 'ใส่ข้อมูลทดสอบ';
+
+  @override
+  String get purgeLocalDataButton => 'ล้างข้อมูลท้องถิ่น';
+
+  @override
+  String get enablePremiumButton => 'เปิดใช้งานพรีเมียม';
+
+  @override
+  String get enablePremiumTitle => 'เปิดใช้งานพรีเมียม';
+
+  @override
+  String get enablePremiumBody =>
+      'ป้อนรหัสยืนยันเพื่อเปิดการทดสอบพรีเมียมภายในเครื่อง';
+
+  @override
+  String get invalidConfirmationCodeMessage => 'รหัสยืนยันไม่ถูกต้อง';
+
+  @override
+  String get seedTestDataConfirmTitle => 'ใส่ข้อมูลทดสอบหรือไม่?';
+
+  @override
+  String get seedTestDataConfirmBody =>
+      'การดำเนินการนี้จะเปลี่ยนการตั้งค่าท้องถิ่นปัจจุบันเป็นข้อมูลตัวอย่างแบบกำหนดแน่นอน';
+
+  @override
+  String get purgeLocalDataConfirmTitle => 'ล้างข้อมูลท้องถิ่นหรือไม่?';
+
+  @override
+  String get purgeLocalDataConfirmBody =>
+      'การดำเนินการนี้จะลบข้อมูลแอปท้องถิ่นทั้งหมดบนอุปกรณ์นี้อย่างถาวร';
+
+  @override
+  String get testDataSeededMessage => 'ใส่ข้อมูลทดสอบแล้ว';
+
+  @override
+  String get testDataPurgedMessage => 'ล้างข้อมูลท้องถิ่นแล้ว';
+
+  @override
+  String get testDataActionFailedMessage => 'การดำเนินการข้อมูลทดสอบล้มเหลว';
+
+  @override
   String get mailClientError => 'ไม่สามารถเปิดแอปอีเมลได้';
 
   @override

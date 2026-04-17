@@ -235,6 +235,55 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeButton => 'Close';
 
   @override
+  String get testDataToolsTitle => 'Test data tools';
+
+  @override
+  String get testDataToolsBody =>
+      'These actions are for local testing only. Seeding replaces the current local setup with demo data. Purging permanently removes local app data on this device.';
+
+  @override
+  String get seedTestDataButton => 'Seed test data';
+
+  @override
+  String get purgeLocalDataButton => 'Purge local data';
+
+  @override
+  String get enablePremiumButton => 'Enable premium';
+
+  @override
+  String get enablePremiumTitle => 'Enable premium';
+
+  @override
+  String get enablePremiumBody =>
+      'Enter confirmation code to enable local premium testing';
+
+  @override
+  String get invalidConfirmationCodeMessage => 'Invalid confirmation code';
+
+  @override
+  String get seedTestDataConfirmTitle => 'Seed test data?';
+
+  @override
+  String get seedTestDataConfirmBody =>
+      'This will replace the current local setup with deterministic demo data.';
+
+  @override
+  String get purgeLocalDataConfirmTitle => 'Purge local data?';
+
+  @override
+  String get purgeLocalDataConfirmBody =>
+      'This will permanently remove all local app data on this device.';
+
+  @override
+  String get testDataSeededMessage => 'Test data seeded';
+
+  @override
+  String get testDataPurgedMessage => 'Local data purged';
+
+  @override
+  String get testDataActionFailedMessage => 'Test data action failed';
+
+  @override
   String get mailClientError => 'Could not open mail client';
 
   @override

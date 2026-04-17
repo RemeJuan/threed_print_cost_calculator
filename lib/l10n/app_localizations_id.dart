@@ -234,6 +234,55 @@ class AppLocalizationsId extends AppLocalizations {
   String get closeButton => 'Tutup';
 
   @override
+  String get testDataToolsTitle => 'Alat data uji';
+
+  @override
+  String get testDataToolsBody =>
+      'Tindakan ini hanya untuk pengujian lokal. Menanam data akan mengganti pengaturan lokal saat ini dengan data demo. Menghapus akan menghapus permanen data lokal aplikasi di perangkat ini.';
+
+  @override
+  String get seedTestDataButton => 'Tanam data uji';
+
+  @override
+  String get purgeLocalDataButton => 'Hapus data lokal';
+
+  @override
+  String get enablePremiumButton => 'Aktifkan premium';
+
+  @override
+  String get enablePremiumTitle => 'Aktifkan premium';
+
+  @override
+  String get enablePremiumBody =>
+      'Masukkan kode konfirmasi untuk mengaktifkan pengujian premium lokal';
+
+  @override
+  String get invalidConfirmationCodeMessage => 'Kode konfirmasi tidak valid';
+
+  @override
+  String get seedTestDataConfirmTitle => 'Tanam data uji?';
+
+  @override
+  String get seedTestDataConfirmBody =>
+      'Ini akan mengganti pengaturan lokal saat ini dengan data demo deterministik.';
+
+  @override
+  String get purgeLocalDataConfirmTitle => 'Hapus data lokal?';
+
+  @override
+  String get purgeLocalDataConfirmBody =>
+      'Ini akan menghapus permanen semua data lokal aplikasi di perangkat ini.';
+
+  @override
+  String get testDataSeededMessage => 'Data uji ditanam';
+
+  @override
+  String get testDataPurgedMessage => 'Data lokal dihapus';
+
+  @override
+  String get testDataActionFailedMessage => 'Tindakan data uji gagal';
+
+  @override
   String get mailClientError => 'Tidak dapat membuka klien email';
 
   @override

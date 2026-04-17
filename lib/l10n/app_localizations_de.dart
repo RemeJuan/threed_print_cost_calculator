@@ -235,6 +235,55 @@ class AppLocalizationsDe extends AppLocalizations {
   String get closeButton => 'Schließen';
 
   @override
+  String get testDataToolsTitle => 'Testdaten-Tools';
+
+  @override
+  String get testDataToolsBody =>
+      'Diese Aktionen sind nur für lokale Tests. Das Befüllen ersetzt die aktuelle lokale Einrichtung durch Demo-Daten. Das Löschen entfernt alle lokalen App-Daten dauerhaft von diesem Gerät.';
+
+  @override
+  String get seedTestDataButton => 'Testdaten befüllen';
+
+  @override
+  String get purgeLocalDataButton => 'Lokale Daten löschen';
+
+  @override
+  String get enablePremiumButton => 'Premium aktivieren';
+
+  @override
+  String get enablePremiumTitle => 'Premium aktivieren';
+
+  @override
+  String get enablePremiumBody =>
+      'Bestätigungscode eingeben, um lokale Premium-Tests zu aktivieren';
+
+  @override
+  String get invalidConfirmationCodeMessage => 'Ungültiger Bestätigungscode';
+
+  @override
+  String get seedTestDataConfirmTitle => 'Testdaten befüllen?';
+
+  @override
+  String get seedTestDataConfirmBody =>
+      'Dadurch wird die aktuelle lokale Einrichtung durch deterministische Demo-Daten ersetzt.';
+
+  @override
+  String get purgeLocalDataConfirmTitle => 'Lokale Daten löschen?';
+
+  @override
+  String get purgeLocalDataConfirmBody =>
+      'Dadurch werden alle lokalen App-Daten auf diesem Gerät dauerhaft entfernt.';
+
+  @override
+  String get testDataSeededMessage => 'Testdaten befüllt';
+
+  @override
+  String get testDataPurgedMessage => 'Lokale Daten gelöscht';
+
+  @override
+  String get testDataActionFailedMessage => 'Testdatenaktion fehlgeschlagen';
+
+  @override
   String get mailClientError => 'E-Mail-Client konnte nicht geöffnet werden';
 
   @override

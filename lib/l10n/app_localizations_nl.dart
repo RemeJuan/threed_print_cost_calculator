@@ -235,6 +235,55 @@ class AppLocalizationsNl extends AppLocalizations {
   String get closeButton => 'Sluiten';
 
   @override
+  String get testDataToolsTitle => 'Testdatatools';
+
+  @override
+  String get testDataToolsBody =>
+      'Deze acties zijn alleen voor lokale tests. Seeden vervangt de huidige lokale setup door demogegevens. Wissen verwijdert permanent alle lokale appgegevens op dit apparaat.';
+
+  @override
+  String get seedTestDataButton => 'Testgegevens seeden';
+
+  @override
+  String get purgeLocalDataButton => 'Lokale gegevens wissen';
+
+  @override
+  String get enablePremiumButton => 'Premium inschakelen';
+
+  @override
+  String get enablePremiumTitle => 'Premium inschakelen';
+
+  @override
+  String get enablePremiumBody =>
+      'Voer de bevestigingscode in om lokale premiumtests in te schakelen';
+
+  @override
+  String get invalidConfirmationCodeMessage => 'Ongeldige bevestigingscode';
+
+  @override
+  String get seedTestDataConfirmTitle => 'Testgegevens seeden?';
+
+  @override
+  String get seedTestDataConfirmBody =>
+      'Dit vervangt de huidige lokale setup door deterministische demogegevens.';
+
+  @override
+  String get purgeLocalDataConfirmTitle => 'Lokale gegevens wissen?';
+
+  @override
+  String get purgeLocalDataConfirmBody =>
+      'Dit verwijdert permanent alle lokale appgegevens op dit apparaat.';
+
+  @override
+  String get testDataSeededMessage => 'Testgegevens geseed';
+
+  @override
+  String get testDataPurgedMessage => 'Lokale gegevens gewist';
+
+  @override
+  String get testDataActionFailedMessage => 'Actie voor testgegevens mislukt';
+
+  @override
   String get mailClientError => 'Kon e-mailclient niet openen';
 
   @override

@@ -236,6 +236,57 @@ class AppLocalizationsEs extends AppLocalizations {
   String get closeButton => 'Cerrar';
 
   @override
+  String get testDataToolsTitle => 'Herramientas de datos de prueba';
+
+  @override
+  String get testDataToolsBody =>
+      'Estas acciones son solo para pruebas locales. Cargar datos reemplaza la configuración local actual con datos de demostración. Borrar elimina permanentemente los datos locales de la app en este dispositivo.';
+
+  @override
+  String get seedTestDataButton => 'Cargar datos de prueba';
+
+  @override
+  String get purgeLocalDataButton => 'Borrar datos locales';
+
+  @override
+  String get enablePremiumButton => 'Activar premium';
+
+  @override
+  String get enablePremiumTitle => 'Activar premium';
+
+  @override
+  String get enablePremiumBody =>
+      'Introduce el código de confirmación para activar las pruebas locales de premium';
+
+  @override
+  String get invalidConfirmationCodeMessage =>
+      'Código de confirmación inválido';
+
+  @override
+  String get seedTestDataConfirmTitle => '¿Cargar datos de prueba?';
+
+  @override
+  String get seedTestDataConfirmBody =>
+      'Esto reemplazará la configuración local actual con datos de demostración deterministas.';
+
+  @override
+  String get purgeLocalDataConfirmTitle => '¿Borrar datos locales?';
+
+  @override
+  String get purgeLocalDataConfirmBody =>
+      'Esto eliminará permanentemente todos los datos locales de la app en este dispositivo.';
+
+  @override
+  String get testDataSeededMessage => 'Datos de prueba cargados';
+
+  @override
+  String get testDataPurgedMessage => 'Datos locales borrados';
+
+  @override
+  String get testDataActionFailedMessage =>
+      'La acción de datos de prueba falló';
+
+  @override
   String get mailClientError => 'No se pudo abrir el cliente de correo';
 
   @override

@@ -2,10 +2,10 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:threed_print_cost_calculator/shared/components/settings_version_tap_target.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class SupportDialog extends StatelessWidget {
   const SupportDialog({required this.userID, super.key});
@@ -142,23 +142,9 @@ class SupportDialog extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              // App version row (fetched from package info)
               Center(
-                child: FutureBuilder<PackageInfo>(
-                  future: PackageInfo.fromPlatform(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox.shrink();
-                    }
-                    final versionString = snapshot.hasData
-                        ? snapshot.data!.version
-                        : '';
-                    final localized = l10n.versionLabel(versionString);
-                    return Text(
-                      localized,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    );
-                  },
+                child: const SettingsVersionTapTarget(
+                  tapTargetKey: ValueKey<String>('support.version.tapTarget'),
                 ),
               ),
               const SizedBox(height: 16),
