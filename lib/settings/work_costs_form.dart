@@ -153,9 +153,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                  ],
+                  inputFormatters: localizedDecimalInputFormatters,
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: (value) {
                     if (normalizeLocalizedNumber(value).isEmpty) {
@@ -183,9 +181,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                  ],
+                  inputFormatters: localizedDecimalInputFormatters,
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: (value) {
                     if (normalizeLocalizedNumber(value).isEmpty) {
@@ -212,9 +208,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                  ],
+                  inputFormatters: localizedDecimalInputFormatters,
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: (value) {
                     if (normalizeLocalizedNumber(value).isEmpty) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -7,6 +6,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
+import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
@@ -122,9 +122,7 @@ class MaterialForm extends HookConsumerWidget {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                  ],
+                  inputFormatters: localizedDecimalInputFormatters,
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: positiveNumberValidator,
                   autovalidateMode: hasSubmitted.value
@@ -145,9 +143,7 @@ class MaterialForm extends HookConsumerWidget {
                   keyboardType: const TextInputType.numberWithOptions(
                     decimal: true,
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                  ],
+                  inputFormatters: localizedDecimalInputFormatters,
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   validator: positiveNumberValidator,
                   autovalidateMode: hasSubmitted.value
@@ -178,9 +174,7 @@ class MaterialForm extends HookConsumerWidget {
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
-                    ],
+                    inputFormatters: localizedDecimalInputFormatters,
                     inputNormalizer: normalizeLeadingZeroNumericInput,
                     validator: optionalNonNegativeValidator,
                     autovalidateMode: hasSubmitted.value
