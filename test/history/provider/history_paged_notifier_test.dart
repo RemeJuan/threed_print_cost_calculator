@@ -277,6 +277,43 @@ void main() {
     expect(state.debugUsedFallbackScan, isFalse);
   });
 
+  test('stale indexed keys do not overcount partial search hits', () async {
+    final staleKey = await store.add(db, {
+      'name': 'Prusa Ghost',
+      'totalCost': 1.0,
+      'riskCost': 0.0,
+      'filamentCost': 0.0,
+      'electricityCost': 0.0,
+      'labourCost': 0.0,
+      'date': DateTime.utc(2024, 1, 2).toIso8601String(),
+      'printer': 'Prusa',
+      'material': 'PLA',
+      'weight': 10,
+      'timeHours': '01:00',
+      kHistorySearchNameField: 'prusa ghost',
+      kHistorySearchPrinterField: 'prusa',
+    });
+    await db.transaction((txn) async {
+      await HistorySearchIndexHelpers.fromContainer(
+        container,
+      ).addRecordInTransaction(
+        txn: txn,
+        name: 'Prusa Ghost',
+        printer: 'Prusa',
+        recordKey: staleKey,
+      );
+    });
+    await store.record(staleKey).delete(db);
+
+    await container.read(historyPagedProvider.notifier).setQuery('ghost');
+
+    final state = container.read(historyPagedProvider);
+    expect(state.items, isEmpty);
+    expect(state.hasMore, isFalse);
+    expect(state.debugQueryCount, 2);
+    expect(state.debugUsedFallbackScan, isFalse);
+  });
+
   test('explicit refresh still reloads page 1', () async {
     final notifier = container.read(historyPagedProvider.notifier);
 

@@ -156,11 +156,14 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         );
         queryCount++;
       } else {
-        final allEntries = await _historyRepository.getHistoryMatchingQuery(q);
+        final searchPage = await _historyRepository.getHistoryMatchingQueryPage(
+          query: q,
+          limit: _pageSize,
+          offset: offset,
+        );
         queryCount += 2;
-        totalCount = allEntries.length;
-        final slice = allEntries.skip(offset).take(_pageSize).toList();
-        pageEntries.addAll(slice);
+        totalCount = searchPage.totalCount;
+        pageEntries.addAll(searchPage.items);
       }
 
       // Ensure generation matches before applying results — otherwise this load is stale

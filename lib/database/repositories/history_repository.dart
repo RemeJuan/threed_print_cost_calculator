@@ -24,6 +24,9 @@ class HistoryRepository {
   StoreRef<Object?, Object?> get _store =>
       StoreRef<Object?, Object?>(DBName.history.name);
 
+  HistorySearchIndexHelpers get _searchIndex =>
+      HistorySearchIndexHelpers.fromRef(ref);
+
   Future<int> countHistory() => _store.count(_db);
 
   Future<HistoryEntry?> getHistoryByKey(Object key) async {
@@ -65,16 +68,55 @@ class HistoryRepository {
       }
     }
 
-    final entries = <HistoryEntry>[];
-    for (final key in uniqueKeys) {
-      final entry = await getHistoryByKey(key);
-      if (entry != null) {
-        entries.add(entry);
-      }
-    }
+    final snapshots = await _store.records(uniqueKeys).getSnapshots(_db);
+    final entries = snapshots
+        .map(_mapSnapshot)
+        .whereType<HistoryEntry>()
+        .toList();
 
     entries.sort((a, b) => b.model.date.compareTo(a.model.date));
     return entries;
+  }
+
+  Future<HistorySearchPage> getHistoryMatchingQueryPage({
+    required String query,
+    required int limit,
+    required int offset,
+  }) async {
+    final normalizedQuery = normalizeHistorySearchValue(query);
+    if (normalizedQuery.isEmpty) {
+      return const HistorySearchPage(items: <HistoryEntry>[], totalCount: 0);
+    }
+
+    final rawKeys = await _searchIndex.getKeysMatchingQuery(normalizedQuery);
+    final uniqueKeys = <Object>[];
+    final seen = <String>{};
+    for (final key in rawKeys) {
+      if (key == null) continue;
+      if (seen.add(key.toString())) {
+        uniqueKeys.add(key as Object);
+      }
+    }
+    if (uniqueKeys.isEmpty) {
+      return const HistorySearchPage(items: <HistoryEntry>[], totalCount: 0);
+    }
+
+    final filter = Filter.inList(Field.key, uniqueKeys);
+    final totalCount = await _store.count(_db, filter: filter);
+    final snapshots = await _store.find(
+      _db,
+      finder: Finder(
+        filter: filter,
+        sortOrders: [SortOrder('date', false)],
+        limit: limit,
+        offset: offset,
+      ),
+    );
+
+    return HistorySearchPage(
+      items: _mapSnapshots(snapshots),
+      totalCount: totalCount,
+    );
   }
 
   Future<List<HistoryEntry>> getHistoryMatchingQuery(String query) async {
@@ -126,4 +168,11 @@ class HistoryRepository {
   List<HistoryEntry> _mapSnapshots(
     List<RecordSnapshot<Object?, Object?>> snapshots,
   ) => snapshots.map(_mapSnapshot).whereType<HistoryEntry>().toList();
+}
+
+class HistorySearchPage {
+  const HistorySearchPage({required this.items, required this.totalCount});
+
+  final List<HistoryEntry> items;
+  final int totalCount;
 }
