@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -7,6 +8,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/lower_level_test_fakes.dart';
 
 HistoryModel _model() {
   return HistoryModel(
@@ -178,5 +180,137 @@ void main() {
     expect(icon.color, Colors.white);
     expect(trigger.width, 44);
     expect(trigger.height, 44);
+  });
+
+  testWidgets('load action forwards history entry to calculator', (
+    tester,
+  ) async {
+    final fakeCalculator = FakeCalculatorNotifier();
+    final db = await tester.pumpApp(
+      HistoryItem(dbKey: 'history-1', data: _model()),
+      [calculatorProvider.overrideWith(() => fakeCalculator)],
+    );
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.text(lookupAppLocalizations(const Locale('en')).historyLoadAction),
+    );
+    await tester.pumpAndSettle();
+
+    expect(fakeCalculator.loadFromHistoryCalls, 1);
+    expect(fakeCalculator.lastLoadedHistory?.key, 'history-1');
+    expect(
+      fakeCalculator.lastLoadedHistory?.model.name,
+      'Multi Material Benchy',
+    );
+  });
+
+  testWidgets('export action shows success snackbar', (tester) async {
+    var exportCalls = 0;
+    List<HistoryModel> exportedItems = [];
+    String? capturedHeader;
+    String? capturedShareText;
+
+    Future<void> exportCsv(
+      List<HistoryModel> items, {
+      required String csvHeader,
+      required String shareText,
+    }) async {
+      exportCalls += 1;
+      exportedItems = items;
+      capturedHeader = csvHeader;
+      capturedShareText = shareText;
+    }
+
+    final db = await tester.pumpApp(
+      HistoryItem(dbKey: 'history-1', data: _model(), exportCsv: exportCsv),
+    );
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.text(lookupAppLocalizations(const Locale('en')).exportButton),
+    );
+    await tester.pumpAndSettle();
+
+    expect(exportCalls, 1);
+    expect(exportedItems.single.name, 'Multi Material Benchy');
+    expect(
+      capturedHeader,
+      lookupAppLocalizations(const Locale('en')).historyCsvHeader,
+    );
+    expect(
+      capturedShareText,
+      lookupAppLocalizations(const Locale('en')).historyExportShareText,
+    );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).exportSuccess),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('export action shows failure snackbar', (tester) async {
+    final db = await tester.pumpApp(
+      HistoryItem(
+        dbKey: 'history-2',
+        data: _model(),
+        exportCsv: (_, {required csvHeader, required shareText}) async {
+          throw StateError('boom');
+        },
+      ),
+    );
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.text(lookupAppLocalizations(const Locale('en')).exportButton),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.byType(SnackBar), findsWidgets);
+  });
+
+  testWidgets('delete action calls delete handler after confirmation', (
+    tester,
+  ) async {
+    var deletedKey = '';
+
+    final db = await tester.pumpApp(
+      HistoryItem(
+        dbKey: 'history-1',
+        data: _model(),
+        deleteHistoryEntry: (ref, dbKey) async {
+          deletedKey = dbKey;
+        },
+      ),
+    );
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.text(lookupAppLocalizations(const Locale('en')).deleteButton).first,
+    );
+    await tester.pump();
+    await tester.tap(
+      find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.widgetWithText(
+          TextButton,
+          lookupAppLocalizations(const Locale('en')).deleteButton,
+        ),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(deletedKey, 'history-1');
   });
 }

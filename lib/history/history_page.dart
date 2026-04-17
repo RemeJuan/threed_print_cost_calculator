@@ -12,10 +12,11 @@ import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
 
 import 'components/history_export_preview_sheet.dart';
+import 'components/history_empty_state.dart';
 import 'components/history_teaser_state.dart';
-import 'components/history_item.dart';
+import 'components/history_list_view.dart';
+import 'components/history_search_bar.dart';
 import 'components/history_upsell_banner.dart';
-import 'components/history_toolbar.dart';
 
 enum HistoryPageMode { full, teaser }
 
@@ -196,12 +197,9 @@ class HistoryPage extends HookConsumerWidget {
             controller: scrollController,
             slivers: [
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: HistoryToolbar(
-                    controller: controller,
-                    onExportPressed: () => _showExportOptions(context, ref),
-                  ),
+                child: HistorySearchBar(
+                  controller: controller,
+                  onExportPressed: () => _showExportOptions(context, ref),
                 ),
               ),
               SliverToBoxAdapter(
@@ -248,49 +246,18 @@ class HistoryPage extends HookConsumerWidget {
               if (showEmptyState)
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            l10n.historyEmptyTitle,
-                            style: Theme.of(context).textTheme.titleMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            l10n.historyEmptyDescription,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            textAlign: TextAlign.center,
-                          ),
-                          if (shouldShowUpsell) ...[
-                            const SizedBox(height: 16),
-                            HistoryUpsellBanner(
-                              onTap: () =>
-                                  _showHistoryUpsellPaywall(context, ref),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
+                  child: HistoryEmptyState(
+                    showUpsell: shouldShowUpsell,
+                    onUpsellTap: () => _showHistoryUpsellPaywall(context, ref),
                   ),
                 )
               else
-                SliverList.builder(
-                  itemCount: paged.items.length,
-                  itemBuilder: (_, index) {
-                    final entry = paged.items[index];
-                    return HistoryItem(
-                      dbKey: entry.key.toString(),
-                      data: entry.model,
-                      onHistoryLoaded: onHistoryLoaded,
-                      onOverflowMenuOpened: () {
-                        unawaited(markOverflowMenuOpened());
-                        dismissOverflowHint();
-                      },
-                    );
+                HistoryListView(
+                  items: paged.items,
+                  onHistoryLoaded: onHistoryLoaded,
+                  onOverflowMenuOpened: () async {
+                    await markOverflowMenuOpened();
+                    dismissOverflowHint();
                   },
                 ),
               SliverToBoxAdapter(
