@@ -1,0 +1,34 @@
+{
+  "materials": [
+    {
+      "id": "pla_white",
+      "name": "PLA White",
+      "cost": "24.90",
+      "color": "White",
+      "weight": "1000",
+      "autoDeductEnabled": true,
+      "originalWeight": 1000,
+      "remainingWeight": 640
+    },
+    {
+      "id": "petg_black",
+      "name": "PETG Black",
+      "cost": "29.50",
+      "color": "Black",
+      "weight": "1000",
+      "autoDeductEnabled": false,
+      "originalWeight": 1000,
+      "remainingWeight": 1000
+    },
+    {
+      "id": "abs_red",
+      "name": "ABS Red",
+      "cost": "31.20",
+      "color": "Red",
+      "weight": "750",
+      "autoDeductEnabled": true,
+      "originalWeight": 750,
+      "remainingWeight": 520
+    }
+  ]
+}

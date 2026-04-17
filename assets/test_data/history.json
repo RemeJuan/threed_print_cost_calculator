@@ -1,0 +1,76 @@
+{
+  "history": [
+    {
+      "id": "history_calibration_cube",
+      "name": "Calibration Cube",
+      "totalCost": 1.85,
+      "riskCost": 0.09,
+      "filamentCost": 1.25,
+      "electricityCost": 0.07,
+      "labourCost": 0.44,
+      "date": "2026-04-04T10:15:00.000Z",
+      "printer": "Prusa MK4",
+      "material": "PLA White",
+      "weight": 18,
+      "materialUsages": [
+        {
+          "materialId": "pla_white",
+          "materialName": "PLA White",
+          "costPerKg": 24.9,
+          "weightGrams": 18
+        }
+      ],
+      "timeHours": "00:24"
+    },
+    {
+      "id": "history_tool_holder",
+      "name": "Tool Holder",
+      "totalCost": 5.72,
+      "riskCost": 0.29,
+      "filamentCost": 3.84,
+      "electricityCost": 0.18,
+      "labourCost": 1.41,
+      "date": "2026-04-10T14:30:00.000Z",
+      "printer": "Bambu A1 Mini",
+      "material": "PETG Black",
+      "weight": 74,
+      "materialUsages": [
+        {
+          "materialId": "petg_black",
+          "materialName": "PETG Black",
+          "costPerKg": 29.5,
+          "weightGrams": 74
+        }
+      ],
+      "timeHours": "01:40"
+    },
+    {
+      "id": "history_multicolor_spool",
+      "name": "Multicolor Spool Mount",
+      "totalCost": 9.46,
+      "riskCost": 0.42,
+      "filamentCost": 6.71,
+      "electricityCost": 0.22,
+      "labourCost": 2.11,
+      "date": "2026-04-14T09:05:00.000Z",
+      "printer": "Voron V0.2",
+      "material": "PLA White + ABS Red",
+      "weight": 132,
+      "materialUsages": [
+        {
+          "materialId": "pla_white",
+          "materialName": "PLA White",
+          "costPerKg": 24.9,
+          "weightGrams": 92
+        },
+        {
+          "materialId": "abs_red",
+          "materialName": "ABS Red",
+          "costPerKg": 31.2,
+          "weightGrams": 40
+        }
+      ],
+      "timeHours": "02:15"
+    }
+  ]
+}

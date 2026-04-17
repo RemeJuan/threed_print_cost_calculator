@@ -63,6 +63,7 @@ flutter:
   generate: true
   assets:
     - shorebird.yaml
+    - assets/test_data/
 
 cider:
   link_template:
