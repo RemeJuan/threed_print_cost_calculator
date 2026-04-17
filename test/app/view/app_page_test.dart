@@ -1,61 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sembast/sembast.dart';
-import 'package:threed_print_cost_calculator/app/app_page.dart';
-import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
-import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
+import 'app_page_test_support.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(bootstrapAppPageTests);
 
-  late SharedPreferences sharedPreferences;
-
-  setUpAll(() async {
-    await setupTest();
-    PackageInfo.setMockInitialValues(
-      appName: 'App',
-      packageName: 'pkg',
-      version: '1.2.3',
-      buildNumber: '42',
-      buildSignature: 'sig',
-    );
-  });
-
-  setUp(() {
-    SharedPreferences.setMockInitialValues({'run_count': 0});
-  });
-
-  Future<Database> pumpAppPage(
-    WidgetTester tester,
-    FakePurchasesGateway gateway,
-    FakeCalculatorNotifier calculatorNotifier,
-  ) async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    final db = await tester.pumpApp(const AppPage(), [
-      calculatorProvider.overrideWith(() => calculatorNotifier),
-      settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
-      purchasesGatewayProvider.overrideWithValue(gateway),
-      materialsStreamProvider.overrideWith(
-        (ref) => Stream.value(const <MaterialModel>[]),
-      ),
-    ]);
-    addTearDown(db.close);
-    addTearDown(gateway.dispose);
-    return db;
-  }
+  setUp(() => seedAppPagePrefs(runCount: 0));
 
   testWidgets('shows free nav without history', (tester) async {
     SharedPreferences.setMockInitialValues({
@@ -446,6 +405,7 @@ void main() {
   testWidgets('run count increments on resolved non-empty user ids only', (
     tester,
   ) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: true),

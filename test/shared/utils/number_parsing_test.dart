@@ -16,5 +16,12 @@ void main() {
       expect(parseLocalizedNumOrFallback('', fallback: 7), 7);
       expect(parseLocalizedNumOrFallback('abc', fallback: 7), 7);
     });
+
+    test('normalizes object inputs and localized ints consistently', () {
+      expect(normalizeLocalizedNumber(12.5), '12.5');
+      expect(tryParseLocalizedNum(' 08,25 '), 8.25);
+      expect(parseLocalizedInt('08,9'), 8);
+      expect(parseLocalizedInt('08,9', round: true), 9);
+    });
   });
 }
