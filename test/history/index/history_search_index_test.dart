@@ -111,21 +111,27 @@ void main() {
     expect(await helpers.getKeysMatchingQuery('gear'), contains(key));
     expect(await helpers.getKeysMatchingQuery('mini'), contains(key));
 
-    await helpers.updateRecord(
-      oldName: 'Prusa Gear',
-      oldPrinter: 'Prusa Mini',
-      newName: 'Bambu Gear',
-      newPrinter: 'Bambu X1',
-      recordKey: key,
-    );
+    await db.transaction((txn) async {
+      await helpers.updateRecordInTransaction(
+        txn: txn,
+        oldName: 'Prusa Gear',
+        oldPrinter: 'Prusa Mini',
+        newName: 'Bambu Gear',
+        newPrinter: 'Bambu X1',
+        recordKey: key,
+      );
+    });
 
     expect(await helpers.getKeysMatchingQuery('bambu'), contains(key));
 
-    await helpers.removeRecord(
-      name: 'Bambu Gear',
-      printer: 'Bambu X1',
-      recordKey: key,
-    );
+    await db.transaction((txn) async {
+      await helpers.removeRecordInTransaction(
+        txn: txn,
+        name: 'Bambu Gear',
+        printer: 'Bambu X1',
+        recordKey: key,
+      );
+    });
 
     final indexRecords = await stringMapStoreFactory
         .store('history_search_index')

@@ -192,21 +192,6 @@ class HistorySearchIndexHelpers {
     });
   }
 
-  Future<void> addRecord({
-    required String name,
-    required String printer,
-    required dynamic recordKey,
-  }) async {
-    await _db.transaction((txn) async {
-      await addRecordInTransaction(
-        txn: txn,
-        name: name,
-        printer: printer,
-        recordKey: recordKey,
-      );
-    });
-  }
-
   Future<void> addRecordInTransaction({
     required Transaction txn,
     required String name,
@@ -227,7 +212,8 @@ class HistorySearchIndexHelpers {
     }
   }
 
-  Future<void> updateRecord({
+  Future<void> updateRecordInTransaction({
+    required Transaction txn,
     required String oldName,
     required String oldPrinter,
     required String newName,
@@ -238,31 +224,26 @@ class HistorySearchIndexHelpers {
     final newTokens = _recordTokensByField(name: newName, printer: newPrinter);
     final key = recordKey.toString();
 
-    await _db.transaction((txn) async {
-      for (final entry in oldTokens.entries) {
-        if (entry.value.isEmpty) continue;
-        await _removeTokens(
-          txn: txn,
-          tokens: entry.value
-              .map((token) => _indexKey(entry.key, token))
-              .toSet(),
-          recordKey: key,
-        );
-      }
-      for (final entry in newTokens.entries) {
-        if (entry.value.isEmpty) continue;
-        await _addTokens(
-          txn: txn,
-          tokens: entry.value
-              .map((token) => _indexKey(entry.key, token))
-              .toSet(),
-          recordKey: key,
-        );
-      }
-    });
+    for (final entry in oldTokens.entries) {
+      if (entry.value.isEmpty) continue;
+      await _removeTokens(
+        txn: txn,
+        tokens: entry.value.map((token) => _indexKey(entry.key, token)).toSet(),
+        recordKey: key,
+      );
+    }
+    for (final entry in newTokens.entries) {
+      if (entry.value.isEmpty) continue;
+      await _addTokens(
+        txn: txn,
+        tokens: entry.value.map((token) => _indexKey(entry.key, token)).toSet(),
+        recordKey: key,
+      );
+    }
   }
 
-  Future<void> removeRecord({
+  Future<void> removeRecordInTransaction({
+    required Transaction txn,
     required String name,
     required String printer,
     required dynamic recordKey,
@@ -271,18 +252,14 @@ class HistorySearchIndexHelpers {
     final hasTokens = recordTokens.values.any((tokens) => tokens.isNotEmpty);
     if (!hasTokens) return;
 
-    await _db.transaction((txn) async {
-      for (final entry in recordTokens.entries) {
-        if (entry.value.isEmpty) continue;
-        await _removeTokens(
-          txn: txn,
-          tokens: entry.value
-              .map((token) => _indexKey(entry.key, token))
-              .toSet(),
-          recordKey: recordKey.toString(),
-        );
-      }
-    });
+    for (final entry in recordTokens.entries) {
+      if (entry.value.isEmpty) continue;
+      await _removeTokens(
+        txn: txn,
+        tokens: entry.value.map((token) => _indexKey(entry.key, token)).toSet(),
+        recordKey: recordKey.toString(),
+      );
+    }
   }
 
   Future<int> backfillSearchFields() async {
