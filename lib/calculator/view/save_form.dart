@@ -5,11 +5,11 @@ import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpe
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class SaveForm extends HookConsumerWidget {
@@ -42,8 +42,8 @@ class SaveForm extends HookConsumerWidget {
                 ? null
                 : () async {
                     final settings = await ref
-                        .read(settingsRepositoryProvider)
-                        .getSettings();
+                        .read(settingsServiceProvider)
+                        .get();
 
                     String printerName = '';
                     String materialName = '';

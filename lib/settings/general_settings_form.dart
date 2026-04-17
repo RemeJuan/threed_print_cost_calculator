@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
@@ -43,6 +44,7 @@ class GeneralSettings extends HookConsumerWidget {
     }, []);
 
     final settingsRepository = ref.read(settingsRepositoryProvider);
+    final settingsService = ref.read(settingsServiceProvider);
     final logger = ref.read(appLoggerProvider);
 
     Future<void> persistElectricity(String value) async {
@@ -56,9 +58,10 @@ class GeneralSettings extends HookConsumerWidget {
         const Duration(milliseconds: 400),
         () async {
           try {
-            final latest = await settingsRepository.getSettings();
-            final updated = latest.copyWith(electricityCost: parsed.toString());
-            await settingsRepository.saveSettings(updated);
+            await settingsService.update(
+              (settings) =>
+                  settings.copyWith(electricityCost: parsed.toString()),
+            );
           } catch (e, st) {
             logger.error(
               AppLogCategory.ui,
@@ -82,9 +85,9 @@ class GeneralSettings extends HookConsumerWidget {
         const Duration(milliseconds: 400),
         () async {
           try {
-            final latest = await settingsRepository.getSettings();
-            final updated = latest.copyWith(wattage: parsed.toString());
-            await settingsRepository.saveSettings(updated);
+            await settingsService.update(
+              (settings) => settings.copyWith(wattage: parsed.toString()),
+            );
           } catch (e, st) {
             logger.error(
               AppLogCategory.ui,

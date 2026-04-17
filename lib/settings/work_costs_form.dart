@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
+import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
@@ -22,6 +23,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     final wearController = useTextEditingController();
 
     final settingsRepository = ref.read(settingsRepositoryProvider);
+    final settingsService = ref.read(settingsServiceProvider);
     final logger = ref.read(appLoggerProvider);
 
     // Hooks for other fields/debounces: keep at top-level to preserve hook order
@@ -52,9 +54,9 @@ class WorkCostsSettings extends HookConsumerWidget {
           final parsed = tryParseLocalizedNum(value);
           if (parsed == null) return;
           try {
-            final latest = await settingsRepository.getSettings();
-            final updated = latest.copyWith(failureRisk: parsed.toString());
-            await settingsRepository.saveSettings(updated);
+            await settingsService.update(
+              (settings) => settings.copyWith(failureRisk: parsed.toString()),
+            );
           } catch (e, st) {
             logger.error(
               AppLogCategory.ui,
@@ -74,9 +76,9 @@ class WorkCostsSettings extends HookConsumerWidget {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
-          final latest = await settingsRepository.getSettings();
-          final updated = latest.copyWith(labourRate: parsed.toString());
-          await settingsRepository.saveSettings(updated);
+          await settingsService.update(
+            (settings) => settings.copyWith(labourRate: parsed.toString()),
+          );
         } catch (e, st) {
           logger.error(
             AppLogCategory.ui,
@@ -95,9 +97,9 @@ class WorkCostsSettings extends HookConsumerWidget {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
-          final latest = await settingsRepository.getSettings();
-          final updated = latest.copyWith(wearAndTear: parsed.toString());
-          await settingsRepository.saveSettings(updated);
+          await settingsService.update(
+            (settings) => settings.copyWith(wearAndTear: parsed.toString()),
+          );
         } catch (e, st) {
           logger.error(
             AppLogCategory.ui,

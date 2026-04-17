@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 
 class MaterialSelect extends HookConsumerWidget {
   const MaterialSelect({super.key});
@@ -23,9 +23,7 @@ class MaterialSelect extends HookConsumerWidget {
     }
 
     Future<void> getSettings() async {
-      generalSettings.value = await ref
-          .read(settingsRepositoryProvider)
-          .getSettings();
+      generalSettings.value = await ref.read(settingsServiceProvider).get();
       loading.value = false;
     }
 
@@ -93,12 +91,12 @@ class MaterialSelect extends HookConsumerWidget {
 
               final material = data.firstWhere((e) => e.id == v);
 
-              final updated = generalSettings.value.copyWith(
+              await ref
+                  .read(settingsServiceProvider)
+                  .update((settings) => settings.copyWith(selectedMaterial: v));
+              generalSettings.value = generalSettings.value.copyWith(
                 selectedMaterial: v,
               );
-              generalSettings.value = updated;
-
-              await ref.read(settingsRepositoryProvider).saveSettings(updated);
 
               ref.read(calculatorProvider.notifier).selectMaterial(material);
             },

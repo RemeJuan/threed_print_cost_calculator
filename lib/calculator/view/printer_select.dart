@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 
 class PrinterSelect extends ConsumerWidget {
   const PrinterSelect({super.key});
@@ -45,10 +46,11 @@ class PrinterSelect extends ConsumerWidget {
             onChanged: data.length == 1
                 ? null
                 : (v) async {
-                    final updated = generalSettings.copyWith(activePrinter: v!);
                     await ref
-                        .read(settingsRepositoryProvider)
-                        .saveSettings(updated);
+                        .read(settingsServiceProvider)
+                        .update(
+                          (settings) => settings.copyWith(activePrinter: v!),
+                        );
 
                     final wattage = data.firstWhere((e) => e.id == v).wattage;
 
