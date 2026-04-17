@@ -4,6 +4,7 @@
 // Use of this source code is governed by an MIT-style
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
@@ -57,10 +58,11 @@ extension PumpApp on WidgetTester {
       ProviderScope(
         overrides: effectiveOverrides,
         child: MaterialApp(
+          builder: BotToastInit(),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(body: widget),
-          navigatorObservers: [...observers],
+          navigatorObservers: [BotToastNavigatorObserver(), ...observers],
         ),
       ),
     );

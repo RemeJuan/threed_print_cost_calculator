@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/app_page.dart';
@@ -24,6 +25,13 @@ void main() {
 
   setUpAll(() async {
     await setupTest();
+    PackageInfo.setMockInitialValues(
+      appName: 'App',
+      packageName: 'pkg',
+      version: '1.2.3',
+      buildNumber: '42',
+      buildSignature: 'sig',
+    );
   });
 
   setUp(() {
@@ -472,5 +480,72 @@ void main() {
 
     expect(calculatorNotifier.initCalls, greaterThan(0));
     expect(calculatorNotifier.submitCalls, greaterThan(0));
+  });
+
+  testWidgets('enabling premium from support dialog updates app shell', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'run_count': 0,
+      'hideProPromotions': true,
+    });
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
+
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsNothing,
+    );
+
+    await tester.tap(find.byIcon(Icons.help_outline));
+    await tester.pumpAndSettle();
+
+    final versionTapTarget = find.byKey(
+      const ValueKey<String>('support.version.tapTarget'),
+    );
+    await tester.ensureVisible(versionTapTarget);
+    for (var i = 0; i < 5; i++) {
+      await tester.tap(versionTapTarget);
+      await tester.pump(const Duration(milliseconds: 200));
+    }
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.testData.enablePremium.button'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(
+        const ValueKey<String>('settings.testData.enablePremium.code'),
+      ),
+      '${DateTime.now().year.toString().padLeft(4, '0')}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}',
+    );
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.testData.enablePremium.submit.button'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('calculator.save.open.button')),
+      findsOneWidget,
+    );
   });
 }

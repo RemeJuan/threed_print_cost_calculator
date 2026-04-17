@@ -96,16 +96,17 @@ void main() {
       find.byKey(const ValueKey<String>('settings.workCost.section')),
       findsNothing,
     );
-    expect(
-      find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
-      findsOneWidget,
-    );
+    expect(_hideProPromotionsToggle(), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
       findsNothing,
     );
     expect(
       find.byKey(const ValueKey<String>('settings.materials.add.button')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('support.version.tapTarget')),
       findsNothing,
     );
   });
