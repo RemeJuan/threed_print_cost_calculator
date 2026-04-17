@@ -2,6 +2,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 const int _pageSize = 25;
 
@@ -80,7 +81,10 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
   AppLogger get _logger => ref.read(appLoggerProvider);
 
   @override
-  HistoryPagedState build() => HistoryPagedState.initial();
+  HistoryPagedState build() {
+    ref.watch(appRefreshProvider);
+    return HistoryPagedState.initial();
+  }
 
   HistoryRepository get _historyRepository =>
       ref.read(historyRepositoryProvider);

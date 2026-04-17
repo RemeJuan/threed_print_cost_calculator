@@ -36,6 +36,7 @@ class HistoryPage extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
+    final appRefreshTick = ref.watch(appRefreshProvider);
     final paged = ref.watch(historyPagedProvider);
 
     if (mode == HistoryPageMode.teaser) {
@@ -147,7 +148,7 @@ class HistoryPage extends HookConsumerWidget {
         ref.read(historyPagedProvider.notifier).refreshIfNeeded();
       });
       return null;
-    }, const []);
+    }, [appRefreshTick]);
 
     // Infinite scroll: listen to scroll controller and load more when near bottom
     useEffect(() {

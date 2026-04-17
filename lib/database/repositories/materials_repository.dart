@@ -93,5 +93,6 @@ class MaterialsRepository {
 }
 
 final materialsStreamProvider = StreamProvider<List<MaterialModel>>((ref) {
+  ref.watch(appRefreshProvider);
   return ref.read(materialsRepositoryProvider).watchMaterials();
 });

@@ -44,6 +44,7 @@ class CalculatorPage extends HookConsumerWidget {
     final showSave = useState<bool>(false);
     final prefs = ref.read(sharedPreferencesProvider);
     final logger = ref.read(appLoggerProvider);
+    final appRefreshTick = ref.watch(appRefreshProvider);
 
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
@@ -92,7 +93,7 @@ class CalculatorPage extends HookConsumerWidget {
         notifier.submit();
       });
       return null;
-    }, []);
+    }, [appRefreshTick]);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),

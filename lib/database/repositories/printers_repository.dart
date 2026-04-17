@@ -87,5 +87,6 @@ class PrintersRepository {
 }
 
 final printersStreamProvider = StreamProvider<List<PrinterModel>>((ref) {
+  ref.watch(appRefreshProvider);
   return ref.watch(printersRepositoryProvider).watchPrinters();
 });

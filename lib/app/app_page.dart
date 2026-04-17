@@ -30,6 +30,11 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
     final showHistoryTab = ref.watch(shouldShowHistoryTabProvider);
     final showHistoryTeaser = ref.watch(shouldShowHistoryTeaserProvider);
 
+    useEffect(() {
+      registerAppProviderContainer(ProviderScope.containerOf(context));
+      return null;
+    }, const []);
+
     ref.listen<PremiumState>(premiumStateProvider, (previous, next) async {
       if (next.isLoading || next.userId.isEmpty) return;
       if (previous?.isLoading == false && previous?.userId == next.userId) {

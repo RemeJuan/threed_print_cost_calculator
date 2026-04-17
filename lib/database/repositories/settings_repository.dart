@@ -88,5 +88,6 @@ class SettingsRepository {
 }
 
 final settingsStreamProvider = StreamProvider<GeneralSettingsModel>((ref) {
+  ref.watch(appRefreshProvider);
   return ref.watch(settingsRepositoryProvider).watchSettings();
 });
