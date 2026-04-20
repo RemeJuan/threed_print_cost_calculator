@@ -213,7 +213,7 @@ void main() {
           .exists(db),
       isTrue,
     );
-    expect(prefs.getBool(testPremiumOverridePreferenceKey), isNull);
+    expect(prefs.getString(testPremiumOverrideEnabledOnPreferenceKey), isNull);
   });
 
   test('re-running seed replaces existing data', () async {
@@ -266,7 +266,10 @@ void main() {
     final result = await service.enablePremiumAndSeed();
 
     expect(result.success, isTrue);
-    expect(prefs.getBool(testPremiumOverridePreferenceKey), isTrue);
+    expect(
+      prefs.getString(testPremiumOverrideEnabledOnPreferenceKey),
+      formatTestPremiumOverrideDay(DateTime.now()),
+    );
     expect(
       await stringMapStoreFactory.store(DBName.printers.name).count(db),
       3,

@@ -27,6 +27,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   bool _initialized = false;
   bool _disposed = false;
   bool _wasUsingLocalOverride = false;
+  bool _scheduledExpiredOverrideCleanup = false;
 
   @override
   PremiumState build() {
@@ -83,8 +84,54 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
 
   bool _hasLocalOverride() {
     final prefs = _maybePrefs();
-    return prefs != null &&
-        (prefs.getBool(testPremiumOverridePreferenceKey) ?? false);
+    if (prefs == null) return false;
+
+    final enabledOn = prefs.getString(
+      testPremiumOverrideEnabledOnPreferenceKey,
+    );
+
+    if (enabledOn == null) return false;
+
+    if (isTestPremiumOverrideActiveForDate(enabledOn, DateTime.now())) {
+      return true;
+    }
+
+    _scheduleExpiredOverrideCleanup();
+    return false;
+  }
+
+  void _scheduleExpiredOverrideCleanup() {
+    if (_scheduledExpiredOverrideCleanup) return;
+    _scheduledExpiredOverrideCleanup = true;
+
+    () async {
+      bool shouldRefresh = false;
+      try {
+        final service = _maybeTestDataService();
+        if (service != null) {
+          await service.purge();
+        } else {
+          final prefs = _maybePrefs();
+          if (prefs != null) {
+            await prefs.remove(testPremiumOverrideEnabledOnPreferenceKey);
+          }
+        }
+        shouldRefresh = !_disposed;
+      } finally {
+        _scheduledExpiredOverrideCleanup = false;
+        if (shouldRefresh) {
+          ref.read(appRefreshProvider.notifier).refresh();
+        }
+      }
+    }();
+  }
+
+  TestDataService? _maybeTestDataService() {
+    try {
+      return ref.read(testDataServiceProvider);
+    } catch (_) {
+      return null;
+    }
   }
 
   SharedPreferences? _maybePrefs() {

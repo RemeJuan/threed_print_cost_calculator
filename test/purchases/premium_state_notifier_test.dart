@@ -121,7 +121,9 @@ void main() {
     'local premium override ignores gateway updates until removed',
     () async {
       SharedPreferences.setMockInitialValues({
-        testPremiumOverridePreferenceKey: true,
+        testPremiumOverrideEnabledOnPreferenceKey: formatTestPremiumOverrideDay(
+          DateTime.now(),
+        ),
       });
       final prefs = await SharedPreferences.getInstance();
       final gateway = FakePurchasesGateway(
@@ -153,7 +155,7 @@ void main() {
       var state = container.read(premiumStateProvider);
       expect(state.isPremium, isTrue);
 
-      await prefs.remove(testPremiumOverridePreferenceKey);
+      await prefs.remove(testPremiumOverrideEnabledOnPreferenceKey);
       container.read(appRefreshProvider.notifier).refresh();
       for (var i = 0; i < 10; i++) {
         await Future<void>.delayed(Duration.zero);

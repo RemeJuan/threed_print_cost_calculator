@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -145,7 +146,10 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(prefs.getBool('testPremiumOverride'), isTrue);
+    expect(
+      prefs.getString(testPremiumOverrideEnabledOnPreferenceKey),
+      _todayCode(),
+    );
     expect(
       await stringMapStoreFactory.store(DBName.printers.name).count(db),
       3,
@@ -183,6 +187,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Invalid confirmation code'), findsOneWidget);
-    expect(prefs.getBool('testPremiumOverride'), isNull);
+    expect(prefs.getString(testPremiumOverrideEnabledOnPreferenceKey), isNull);
   });
 }

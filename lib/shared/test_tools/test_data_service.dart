@@ -12,7 +12,19 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 
 import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
 
-const testPremiumOverridePreferenceKey = 'testPremiumOverride';
+const testPremiumOverrideEnabledOnPreferenceKey =
+    'testPremiumOverrideEnabledOn';
+
+String formatTestPremiumOverrideDay(DateTime now) {
+  return '${now.year.toString().padLeft(4, '0')}'
+      '${now.month.toString().padLeft(2, '0')}'
+      '${now.day.toString().padLeft(2, '0')}';
+}
+
+bool isTestPremiumOverrideActiveForDate(String? enabledOn, DateTime now) {
+  if (enabledOn == null) return false;
+  return enabledOn == formatTestPremiumOverrideDay(now);
+}
 
 final seedLoaderProvider = Provider<SeedLoader>((_) => SeedLoader());
 
@@ -87,7 +99,10 @@ class TestDataService {
       final result = await seed();
       if (!result.success) return result;
 
-      await _prefs.setBool(testPremiumOverridePreferenceKey, true);
+      await _prefs.setString(
+        testPremiumOverrideEnabledOnPreferenceKey,
+        formatTestPremiumOverrideDay(DateTime.now()),
+      );
       return const TestDataOperationResult.success();
     } catch (error, stackTrace) {
       _logger.error(
