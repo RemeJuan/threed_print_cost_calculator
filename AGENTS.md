@@ -57,3 +57,7 @@
 - Only include changes with user impact
 - Keep structure consistent (Added, Changed, Fixed)
 - New entries go at the top
+
+## Documentation
+- `docs/gcode/` - G-code parser documentation (overview, edge cases, slicer-specific docs)
+- `docs/patrol_ci.md` - Patrol E2E testing guide
