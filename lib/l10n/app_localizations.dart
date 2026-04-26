@@ -969,7 +969,7 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodeButton.
   ///
   /// In en, this message translates to:
-  /// **'Import G-code'**
+  /// **'Import G-code (Auto-fill)'**
   String get importGcodeButton;
 
   /// No description provided for @importGcodePageTitle.
@@ -981,7 +981,7 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodeIntro.
   ///
   /// In en, this message translates to:
-  /// **'Pick a local .gcode file to extract print time and material usage before applying it to the calculator.'**
+  /// **'Pick a local .gcode file. Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.'**
   String get importGcodeIntro;
 
   /// No description provided for @importGcodeSelectFileButton.
@@ -1113,32 +1113,38 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodeWarningUnknownSlicer.
   ///
   /// In en, this message translates to:
-  /// **'Slicer could not be identified. Review values before applying.'**
+  /// **'Slicer not identified. Review values before applying.'**
   String get importGcodeWarningUnknownSlicer;
 
   /// No description provided for @importGcodeWarningMissingDuration.
   ///
   /// In en, this message translates to:
-  /// **'Estimated print duration was not found.'**
+  /// **'Could not detect print time.'**
   String get importGcodeWarningMissingDuration;
 
   /// No description provided for @importGcodeWarningMissingFilament.
   ///
   /// In en, this message translates to:
-  /// **'Filament usage metadata was not found.'**
+  /// **'Filament usage incomplete.'**
   String get importGcodeWarningMissingFilament;
 
   /// No description provided for @importGcodeWarningMissingFilamentWeight.
   ///
   /// In en, this message translates to:
-  /// **'Filament weight was not found, so material weight cannot be prefilled.'**
+  /// **'Filament weight missing.'**
   String get importGcodeWarningMissingFilamentWeight;
 
   /// No description provided for @importGcodeWarningPartialMetadata.
   ///
   /// In en, this message translates to:
-  /// **'Only part of the expected metadata was found.'**
+  /// **'Some metadata missing.'**
   String get importGcodeWarningPartialMetadata;
+
+  /// No description provided for @importGcodeWarningMixedMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple material totals found. Review before applying.'**
+  String get importGcodeWarningMixedMaterials;
 
   /// No description provided for @importGcodeAppliedMessage.
   ///

@@ -471,14 +471,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get durationPickerLabel => 'Printing time (hh:mm)';
 
   @override
-  String get importGcodeButton => 'Import G-code';
+  String get importGcodeButton => 'Import G-code (Auto-fill)';
 
   @override
   String get importGcodePageTitle => 'Import G-code';
 
   @override
   String get importGcodeIntro =>
-      'Pick a local .gcode file to extract print time and material usage before applying it to the calculator.';
+      'Pick a local .gcode file. Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
 
   @override
   String get importGcodeSelectFileButton => 'Choose G-code file';
@@ -548,23 +548,25 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get importGcodeWarningUnknownSlicer =>
-      'Slicer could not be identified. Review values before applying.';
+      'Slicer not identified. Review values before applying.';
 
   @override
   String get importGcodeWarningMissingDuration =>
-      'Estimated print duration was not found.';
+      'Could not detect print time.';
 
   @override
-  String get importGcodeWarningMissingFilament =>
-      'Filament usage metadata was not found.';
+  String get importGcodeWarningMissingFilament => 'Filament usage incomplete.';
 
   @override
   String get importGcodeWarningMissingFilamentWeight =>
-      'Filament weight was not found, so material weight cannot be prefilled.';
+      'Filament weight missing.';
 
   @override
-  String get importGcodeWarningPartialMetadata =>
-      'Only part of the expected metadata was found.';
+  String get importGcodeWarningPartialMetadata => 'Some metadata missing.';
+
+  @override
+  String get importGcodeWarningMixedMaterials =>
+      'Multiple material totals found. Review before applying.';
 
   @override
   String get importGcodeAppliedMessage =>
