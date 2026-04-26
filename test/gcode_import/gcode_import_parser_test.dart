@@ -28,6 +28,39 @@ void main() {
       expect(result.warnings, isEmpty);
     });
 
+    test('handles mixed totals and warns', () {
+      final result = parser.parse(load('mixed_materials.gcode'));
+
+      expect(result.filamentLengthMm, 300);
+      expect(result.filamentWeightG, 4.0);
+      expect(
+        result.warnings.map((warning) => warning.code),
+        contains(GCodeParseWarningCode.mixedMaterials),
+      );
+    });
+
+    test('keeps filament when duration missing', () {
+      final result = parser.parse(load('missing_duration_with_filament.gcode'));
+
+      expect(result.estimatedDuration, isNull);
+      expect(result.filamentLengthMm, 2500);
+      expect(
+        result.warnings.map((warning) => warning.code),
+        contains(GCodeParseWarningCode.missingDuration),
+      );
+    });
+
+    test('keeps duration when filament missing', () {
+      final result = parser.parse(load('missing_filament_with_duration.gcode'));
+
+      expect(result.estimatedDuration, const Duration(seconds: 900));
+      expect(result.filamentLengthMm, isNull);
+      expect(
+        result.warnings.map((warning) => warning.code),
+        contains(GCodeParseWarningCode.missingFilament),
+      );
+    });
+
     test('parses OrcaSlicer cura-style length metadata', () {
       final result = parser.parse(load('orca_slicer_basic.gcode'));
 
@@ -97,6 +130,13 @@ void main() {
           GCodeParseWarningCode.missingFilament,
         ]),
       );
+    });
+
+    test('falls back from unsafe preview metadata', () {
+      final result = parser.parse(load('unsafe_preview.gcode'));
+
+      expect(result.previewMetadata?.present, isTrue);
+      expect(result.hasSafePreview, isFalse);
     });
   });
 }

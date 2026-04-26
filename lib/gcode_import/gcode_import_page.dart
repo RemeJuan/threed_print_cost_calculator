@@ -198,6 +198,8 @@ class GCodeImportPage extends HookConsumerWidget {
         l10n.importGcodeWarningMissingFilamentWeight,
       GCodeParseWarningCode.partialMetadata =>
         l10n.importGcodeWarningPartialMetadata,
+      GCodeParseWarningCode.mixedMaterials =>
+        l10n.importGcodeWarningMixedMaterials,
     };
   }
 
@@ -214,7 +216,7 @@ class GCodeImportPage extends HookConsumerWidget {
 
   String _previewLabel(AppLocalizations l10n, GCodeImportResult result) {
     final preview = result.previewMetadata;
-    if (preview == null || !preview.present) {
+    if (preview == null || !preview.present || !preview.isSafe) {
       return l10n.importGcodePreviewUnavailable;
     }
 

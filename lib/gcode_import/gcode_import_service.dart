@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'gcode_import_file_picker.dart';
@@ -10,17 +11,20 @@ final gcodeImportParserProvider = Provider<GCodeImportParser>((ref) {
 });
 
 final gcodeImportServiceProvider = Provider<GCodeImportService>((ref) {
-  return GCodeImportService(parser: ref.read(gcodeImportParserProvider));
+  return GCodeImportService();
 });
 
 class GCodeImportService {
-  const GCodeImportService({required GCodeImportParser parser})
-    : _parser = parser;
-
-  final GCodeImportParser _parser;
+  const GCodeImportService();
 
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
     final text = await readPickedGCodeText(file);
-    return _parser.parse(text);
+    final wire = await compute(_parseInBackground, text);
+    return GCodeImportResult.fromWireMap(wire);
   }
+}
+
+Map<String, dynamic> _parseInBackground(String text) {
+  const parser = GCodeImportParser();
+  return parser.parse(text).toWireMap();
 }

@@ -10,6 +10,7 @@ class GCodeImportResult {
     required this.previewMetadata,
     required this.warnings,
     required this.rawExtractedValues,
+    this.hasSafePreview = false,
   });
 
   final GCodeSlicer slicer;
@@ -20,6 +21,7 @@ class GCodeImportResult {
   final GCodePreviewMetadata? previewMetadata;
   final List<GCodeParseWarning> warnings;
   final Map<String, String> rawExtractedValues;
+  final bool hasSafePreview;
 
   bool get hasPreviewMetadata => previewMetadata?.present ?? false;
 
@@ -32,6 +34,52 @@ class GCodeImportResult {
       hasPreviewMetadata;
 
   int? get roundedFilamentWeightG => filamentWeightG?.round();
+
+  Map<String, dynamic> toWireMap() {
+    return {
+      'slicer': slicer.name,
+      'estimatedDurationMicros': estimatedDuration?.inMicroseconds,
+      'filamentLengthMm': filamentLengthMm,
+      'filamentWeightG': filamentWeightG,
+      'layerHeightMm': layerHeightMm,
+      'previewMetadata': previewMetadata?.toWireMap(),
+      'warnings': warnings
+          .map((warning) => warning.toWireMap())
+          .toList(growable: false),
+      'rawExtractedValues': rawExtractedValues,
+      'hasSafePreview': hasSafePreview,
+    };
+  }
+
+  factory GCodeImportResult.fromWireMap(Map<String, dynamic> map) {
+    return GCodeImportResult(
+      slicer: GCodeSlicer.values.byName(map['slicer'] as String),
+      estimatedDuration: map['estimatedDurationMicros'] == null
+          ? null
+          : Duration(microseconds: map['estimatedDurationMicros'] as int),
+      filamentLengthMm: (map['filamentLengthMm'] as num?)?.toDouble(),
+      filamentWeightG: (map['filamentWeightG'] as num?)?.toDouble(),
+      layerHeightMm: (map['layerHeightMm'] as num?)?.toDouble(),
+      previewMetadata: map['previewMetadata'] == null
+          ? null
+          : GCodePreviewMetadata.fromWireMap(
+              Map<String, dynamic>.from(
+                map['previewMetadata'] as Map<dynamic, dynamic>,
+              ),
+            ),
+      warnings: (map['warnings'] as List<dynamic>? ?? const [])
+          .map(
+            (warning) => GCodeParseWarning.fromWireMap(
+              Map<String, dynamic>.from(warning as Map<dynamic, dynamic>),
+            ),
+          )
+          .toList(growable: false),
+      rawExtractedValues: Map<String, String>.from(
+        map['rawExtractedValues'] as Map<dynamic, dynamic>? ?? const {},
+      ),
+      hasSafePreview: map['hasSafePreview'] == true,
+    );
+  }
 }
 
 enum GCodeSlicer { prusaSlicer, orcaSlicer, bambuStudio, cura, unknown }
@@ -51,6 +99,17 @@ class GCodeParseWarning {
 
   final GCodeParseWarningCode code;
   final String? details;
+
+  Map<String, dynamic> toWireMap() {
+    return {'code': code.name, 'details': details};
+  }
+
+  factory GCodeParseWarning.fromWireMap(Map<String, dynamic> map) {
+    return GCodeParseWarning(
+      GCodeParseWarningCode.values.byName(map['code'] as String),
+      details: map['details'] as String?,
+    );
+  }
 }
 
 enum GCodeParseWarningCode {
@@ -59,6 +118,7 @@ enum GCodeParseWarningCode {
   missingFilament,
   missingFilamentWeight,
   partialMetadata,
+  mixedMaterials,
 }
 
 class GCodePreviewMetadata {
@@ -67,10 +127,36 @@ class GCodePreviewMetadata {
     required this.format,
     required this.width,
     required this.height,
+    this.isSafe = true,
   });
 
   final bool present;
   final String? format;
   final int? width;
   final int? height;
+  final bool isSafe;
+
+  String get safeSummary => format == null || width == null || height == null
+      ? 'preview'
+      : '$format ${width}x$height';
+
+  Map<String, dynamic> toWireMap() {
+    return {
+      'present': present,
+      'format': format,
+      'width': width,
+      'height': height,
+      'isSafe': isSafe,
+    };
+  }
+
+  factory GCodePreviewMetadata.fromWireMap(Map<String, dynamic> map) {
+    return GCodePreviewMetadata(
+      present: map['present'] == true,
+      format: map['format'] as String?,
+      width: (map['width'] as num?)?.toInt(),
+      height: (map['height'] as num?)?.toInt(),
+      isSafe: map['isSafe'] != false,
+    );
+  }
 }
