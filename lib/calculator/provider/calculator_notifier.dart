@@ -194,6 +194,41 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(minutes: NumberInput.dirty(value: value));
   }
 
+  void applyImportedValues({
+    Duration? estimatedDuration,
+    double? filamentWeightGrams,
+  }) {
+    var nextState = state;
+
+    if (estimatedDuration != null) {
+      final roundedMinutes = (estimatedDuration.inSeconds / 60).round();
+      nextState = nextState.copyWith(
+        hours: NumberInput.dirty(value: roundedMinutes ~/ 60),
+        minutes: NumberInput.dirty(value: roundedMinutes % 60),
+      );
+    }
+
+    if (filamentWeightGrams != null) {
+      final totalWeight = filamentWeightGrams < 0
+          ? 0
+          : filamentWeightGrams.round();
+      final normalizedUsages = ref
+          .read(calculatorMaterialsServiceProvider)
+          .normalizedMaterialUsagesForSingleTotalWeight(
+            nextState.materialUsages,
+            totalWeight,
+          );
+
+      nextState = nextState.copyWith(
+        printWeight: NumberInput.dirty(value: totalWeight),
+        materialUsages: normalizedUsages,
+      );
+    }
+
+    state = nextState;
+    submit();
+  }
+
   void updateSpoolWeight(num value) {
     ref
         .read(calculatorPreferencesRepositoryProvider)

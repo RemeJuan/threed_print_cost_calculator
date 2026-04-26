@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/adjustments_section.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_button.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -106,6 +107,8 @@ class CalculatorPage extends HookConsumerWidget {
             if (state.showHistoryLoadReplacementWarning)
               const HistoryLoadWarningBanner(),
             if (isPremium) const PrinterSelect(),
+            const GCodeImportButton(),
+            const SizedBox(height: 8),
             // Let MaterialsSection manage its own controllers and focus state
             const MaterialsSection(),
             const SizedBox(height: 8),
