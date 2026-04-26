@@ -463,9 +463,127 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Versione $version';
+    return 'Version $version';
   }
 
   @override
   String get materialFallback => 'Materiale';
+
+  @override
+  String get durationPickerLabel => 'Printing time (hh:mm)';
+
+  @override
+  String get importGcodeButton => 'Import G-code';
+
+  @override
+  String get importGcodePageTitle => 'Import G-code';
+
+  @override
+  String get importGcodeIntro =>
+      'Pick a local .gcode file to extract print time and material usage before applying it to the calculator.';
+
+  @override
+  String get importGcodeSelectFileButton => 'Choose G-code file';
+
+  @override
+  String get importGcodePickAnotherButton => 'Choose another file';
+
+  @override
+  String get importGcodeSelectedFileLabel => 'Selected file';
+
+  @override
+  String get importGcodeSummaryTitle => 'Import summary';
+
+  @override
+  String get importGcodeSupportedSlicersNote =>
+      'Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+
+  @override
+  String get importGcodeCalculatorNote =>
+      'Imported values only prefill time and total material weight. Printer, material, and final cost still come from your calculator settings.';
+
+  @override
+  String get importGcodeUseValuesButton => 'Use these values';
+
+  @override
+  String get importGcodeSlicerLabel => 'Slicer';
+
+  @override
+  String get importGcodeDurationLabel => 'Estimated duration';
+
+  @override
+  String get importGcodeFilamentWeightLabel => 'Filament weight';
+
+  @override
+  String get importGcodeFilamentLengthLabel => 'Filament length';
+
+  @override
+  String get importGcodeLayerHeightLabel => 'Layer height';
+
+  @override
+  String get importGcodePreviewLabel => 'Preview metadata';
+
+  @override
+  String get importGcodePreviewAvailable => 'Available';
+
+  @override
+  String get importGcodePreviewUnavailable => 'Not available';
+
+  @override
+  String get importGcodeWarningsTitle => 'Warnings';
+
+  @override
+  String get importGcodeUnsupportedTypeError => 'Please choose a .gcode file.';
+
+  @override
+  String get importGcodeUnsupportedFileError =>
+      'This file did not contain supported G-code metadata.';
+
+  @override
+  String get importGcodeReadError => 'The selected file could not be read.';
+
+  @override
+  String get importGcodeUnknownSlicerValue => 'Unknown';
+
+  @override
+  String get importGcodeMissingValue => 'Not found';
+
+  @override
+  String get importGcodeWarningUnknownSlicer =>
+      'Slicer could not be identified. Review values before applying.';
+
+  @override
+  String get importGcodeWarningMissingDuration =>
+      'Estimated print duration was not found.';
+
+  @override
+  String get importGcodeWarningMissingFilament =>
+      'Filament usage metadata was not found.';
+
+  @override
+  String get importGcodeWarningMissingFilamentWeight =>
+      'Filament weight was not found, so material weight cannot be prefilled.';
+
+  @override
+  String get importGcodeWarningPartialMetadata =>
+      'Only part of the expected metadata was found.';
+
+  @override
+  String get importGcodeAppliedMessage =>
+      'Imported values applied to calculator';
+
+  @override
+  String get slicerPrusaSlicer => 'PrusaSlicer';
+
+  @override
+  String get slicerOrcaSlicer => 'OrcaSlicer';
+
+  @override
+  String get slicerBambuStudio => 'Bambu Studio';
+
+  @override
+  String get slicerCura => 'Cura';
+
+  @override
+  String get slicerUnknown => 'Sconosciuto';
 }

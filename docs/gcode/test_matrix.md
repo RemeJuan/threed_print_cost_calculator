@@ -1,27 +1,10 @@
-# G-code test matrix
+# G-code parser test matrix
 
-Use this table to seed parser fixtures and unit tests. Replace placeholder file names with real samples when added.
-
-| slicer | file name | expected time | expected filament | preview available | notes |
-|---|---|---:|---|---|---|
-| PrusaSlicer | `TODO_prusaslicer_sample.gcode` | `47m 27s` | `2243.91 mm` / `6.47 g` | yes | Footer metadata. Thumbnail block present. |
-| OrcaSlicer | `TODO_orcaslicer_sample.gcode` | `23m 46s` | `1182.01 mm` / `3.53 g` | no | Legacy Bambu-style comments. |
-| Bambu Studio | `TODO_bambu_sample.gcode` | `6m 39s` | `35.16 mm` / `0.11 g` | no | Header block totals. |
-| Cura | `TODO_cura_sample.gcode` | `626 s` | `0.111376 m` | no | `;TIME:` header. |
-
-## Additional cases to add
-
-| slicer | file name | expected time | expected filament | preview available | notes |
-|---|---|---:|---|---|---|
-| OrcaSlicer | `TODO_orcaslicer_cura_header_sample.gcode` | `3708.97 s` | `6.21 m` | no | Newer Cura-compatible header mode. |
-| Cura | `TODO_cura_multimaterial_sample.gcode` | `TODO` | `0.02 m + 0.05 m` | no | Verify sum behavior. |
-| Unknown | `TODO_unknown_partial_sample.gcode` | `TODO` | `TODO` | no | Fallback + confirmation path. |
-
-## Assertions worth keeping stable
-
-- Slicer detection result
-- Raw extracted keys used
-- Normalized time value
-- Normalized filament value and unit conversion
-- Missing-field behavior
-- Preview extraction success/failure without blocking import
+| Case | Fixture | Expected slicer | Metadata covered | Warnings |
+|---|---|---|---|---|
+| PrusaSlicer documented headers | `test/fixtures/gcode/prusa_slicer_basic.gcode` | PrusaSlicer | `estimated printing time (normal mode)`, `filament used [mm]`, `filament used [g]`, `layer_height`, `thumbnail_QOI begin` | none |
+| OrcaSlicer Cura-compatible metadata | `test/fixtures/gcode/orca_slicer_basic.gcode` | OrcaSlicer | `TIME`, multi-value `Filament used`, `Layer height` | missing filament weight |
+| Bambu Studio totals | `test/fixtures/gcode/bambu_studio_basic.gcode` | Bambu Studio | `total estimated time`, `total filament length [mm]`, `total filament weight [g]`, `layer_height` | none |
+| Cura seconds + metres | `test/fixtures/gcode/cura_basic.gcode` | Cura | `TIME`, metre-based `Filament used`, `Layer height` | missing filament weight |
+| Unknown slicer partial import | `test/fixtures/gcode/unknown_basic.gcode` | unknown | duration + filament weight without supported slicer marker | unknown slicer, partial metadata |
+| Missing metadata fallback | `test/fixtures/gcode/missing_metadata.gcode` | unknown | no supported metadata | unknown slicer, missing duration, missing filament |

@@ -959,6 +959,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Material'**
   String get materialFallback;
+
+  /// No description provided for @durationPickerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing time (hh:mm)'**
+  String get durationPickerLabel;
+
+  /// No description provided for @importGcodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code'**
+  String get importGcodeButton;
+
+  /// No description provided for @importGcodePageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code'**
+  String get importGcodePageTitle;
+
+  /// No description provided for @importGcodeIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a local .gcode file to extract print time and material usage before applying it to the calculator.'**
+  String get importGcodeIntro;
+
+  /// No description provided for @importGcodeSelectFileButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose G-code file'**
+  String get importGcodeSelectFileButton;
+
+  /// No description provided for @importGcodePickAnotherButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another file'**
+  String get importGcodePickAnotherButton;
+
+  /// No description provided for @importGcodeSelectedFileLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected file'**
+  String get importGcodeSelectedFileLabel;
+
+  /// No description provided for @importGcodeSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import summary'**
+  String get importGcodeSummaryTitle;
+
+  /// No description provided for @importGcodeSupportedSlicersNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.'**
+  String get importGcodeSupportedSlicersNote;
+
+  /// No description provided for @importGcodeCalculatorNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported values only prefill time and total material weight. Printer, material, and final cost still come from your calculator settings.'**
+  String get importGcodeCalculatorNote;
+
+  /// No description provided for @importGcodeUseValuesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use these values'**
+  String get importGcodeUseValuesButton;
+
+  /// No description provided for @importGcodeSlicerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slicer'**
+  String get importGcodeSlicerLabel;
+
+  /// No description provided for @importGcodeDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated duration'**
+  String get importGcodeDurationLabel;
+
+  /// No description provided for @importGcodeFilamentWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament weight'**
+  String get importGcodeFilamentWeightLabel;
+
+  /// No description provided for @importGcodeFilamentLengthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament length'**
+  String get importGcodeFilamentLengthLabel;
+
+  /// No description provided for @importGcodeLayerHeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Layer height'**
+  String get importGcodeLayerHeightLabel;
+
+  /// No description provided for @importGcodePreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview metadata'**
+  String get importGcodePreviewLabel;
+
+  /// No description provided for @importGcodePreviewAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get importGcodePreviewAvailable;
+
+  /// No description provided for @importGcodePreviewUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get importGcodePreviewUnavailable;
+
+  /// No description provided for @importGcodeWarningsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get importGcodeWarningsTitle;
+
+  /// No description provided for @importGcodeUnsupportedTypeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a .gcode file.'**
+  String get importGcodeUnsupportedTypeError;
+
+  /// No description provided for @importGcodeUnsupportedFileError.
+  ///
+  /// In en, this message translates to:
+  /// **'This file did not contain supported G-code metadata.'**
+  String get importGcodeUnsupportedFileError;
+
+  /// No description provided for @importGcodeReadError.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected file could not be read.'**
+  String get importGcodeReadError;
+
+  /// No description provided for @importGcodeUnknownSlicerValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get importGcodeUnknownSlicerValue;
+
+  /// No description provided for @importGcodeMissingValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get importGcodeMissingValue;
+
+  /// No description provided for @importGcodeWarningUnknownSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'Slicer could not be identified. Review values before applying.'**
+  String get importGcodeWarningUnknownSlicer;
+
+  /// No description provided for @importGcodeWarningMissingDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated print duration was not found.'**
+  String get importGcodeWarningMissingDuration;
+
+  /// No description provided for @importGcodeWarningMissingFilament.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament usage metadata was not found.'**
+  String get importGcodeWarningMissingFilament;
+
+  /// No description provided for @importGcodeWarningMissingFilamentWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament weight was not found, so material weight cannot be prefilled.'**
+  String get importGcodeWarningMissingFilamentWeight;
+
+  /// No description provided for @importGcodeWarningPartialMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Only part of the expected metadata was found.'**
+  String get importGcodeWarningPartialMetadata;
+
+  /// No description provided for @importGcodeAppliedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported values applied to calculator'**
+  String get importGcodeAppliedMessage;
+
+  /// No description provided for @slicerPrusaSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'PrusaSlicer'**
+  String get slicerPrusaSlicer;
+
+  /// No description provided for @slicerOrcaSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'OrcaSlicer'**
+  String get slicerOrcaSlicer;
+
+  /// No description provided for @slicerBambuStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Bambu Studio'**
+  String get slicerBambuStudio;
+
+  /// No description provided for @slicerCura.
+  ///
+  /// In en, this message translates to:
+  /// **'Cura'**
+  String get slicerCura;
+
+  /// No description provided for @slicerUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get slicerUnknown;
 }
 
 class _AppLocalizationsDelegate
