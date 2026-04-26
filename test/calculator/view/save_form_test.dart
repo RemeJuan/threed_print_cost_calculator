@@ -103,6 +103,7 @@ void main() {
       printWeight: const NumberInput.dirty(value: 95),
       hours: const NumberInput.dirty(value: 1),
       minutes: const NumberInput.dirty(value: 5),
+      importedFromGcode: true,
     );
     final calculatorNotifier = FakeCalculatorNotifier(
       initialState: calculatorState,
@@ -156,6 +157,7 @@ void main() {
         ).toMap(),
       ],
     );
+    expect(helpers.lastSavedPrint?.importedFromGcode, isTrue);
     expect(showSave.value, isFalse);
   });
 

@@ -225,7 +225,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       );
     }
 
-    state = nextState;
+    state = nextState.copyWith(importedFromGcode: true);
     submit();
   }
 

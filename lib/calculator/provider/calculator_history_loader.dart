@@ -101,6 +101,7 @@ class CalculatorHistoryLoader {
         total: entry.model.totalCost,
       ),
       showHistoryLoadReplacementWarning: hasReplacement,
+      importedFromGcode: entry.model.importedFromGcode,
     );
 
     return CalculatorHistoryLoadResult(

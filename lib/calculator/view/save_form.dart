@@ -122,6 +122,7 @@ class SaveForm extends HookConsumerWidget {
                       weight: weightVal,
                       materialUsages: usages,
                       timeHours: timeStr,
+                      importedFromGcode: calcState.importedFromGcode,
                     );
                     await ref
                         .read(calculatorHelpersProvider)

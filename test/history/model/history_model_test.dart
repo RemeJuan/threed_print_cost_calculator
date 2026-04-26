@@ -15,6 +15,7 @@ void main() {
       'material': 'PLA',
       'weight': ' 42,5 ',
       'timeHours': '01:00',
+      'importedFromGcode': true,
     });
 
     expect(model.totalCost, 12.5);
@@ -23,5 +24,6 @@ void main() {
     expect(model.electricityCost, 2.5);
     expect(model.labourCost, 1.25);
     expect(model.weight, 42.5);
+    expect(model.importedFromGcode, isTrue);
   });
 }
