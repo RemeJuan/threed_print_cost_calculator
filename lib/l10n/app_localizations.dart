@@ -975,7 +975,7 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodePageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Import G-code'**
+  /// **'Import G-code (Beta)'**
   String get importGcodePageTitle;
 
   /// No description provided for @importGcodeIntro.
@@ -1001,6 +1001,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selected file'**
   String get importGcodeSelectedFileLabel;
+
+  /// No description provided for @gcodeImportFeedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'G-code Import Beta Feedback'**
+  String get gcodeImportFeedbackTitle;
+
+  /// No description provided for @gcodeImportFeedbackBetaFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Beta feature'**
+  String get gcodeImportFeedbackBetaFeature;
+
+  /// No description provided for @gcodeImportFeedbackBetaDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what helped, what broke, or what still looks wrong.'**
+  String get gcodeImportFeedbackBetaDescription;
+
+  /// No description provided for @gcodeImportFeedbackSlicerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slicer'**
+  String get gcodeImportFeedbackSlicerLabel;
+
+  /// No description provided for @gcodeImportFeedbackOtherSlicerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Which slicer?'**
+  String get gcodeImportFeedbackOtherSlicerLabel;
+
+  /// No description provided for @gcodeImportFeedbackPreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview result'**
+  String get gcodeImportFeedbackPreviewLabel;
+
+  /// No description provided for @gcodeImportFeedbackMetadataLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Metadata result'**
+  String get gcodeImportFeedbackMetadataLabel;
+
+  /// No description provided for @gcodeImportFeedbackDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What worked, what broke, or what looks wrong?'**
+  String get gcodeImportFeedbackDescriptionLabel;
+
+  /// No description provided for @gcodeImportFeedbackAttachmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach imported G-code file'**
+  String get gcodeImportFeedbackAttachmentLabel;
+
+  /// No description provided for @gcodeImportFeedbackNoAttachmentAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No imported G-code file available to attach.'**
+  String get gcodeImportFeedbackNoAttachmentAvailable;
+
+  /// No description provided for @gcodeImportFeedbackSendCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get gcodeImportFeedbackSendCta;
+
+  /// No description provided for @gcodeFeedbackPreviewLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview loaded'**
+  String get gcodeFeedbackPreviewLoaded;
+
+  /// No description provided for @gcodeFeedbackPreviewMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview missing'**
+  String get gcodeFeedbackPreviewMissing;
+
+  /// No description provided for @gcodeFeedbackPreviewIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect preview'**
+  String get gcodeFeedbackPreviewIncorrect;
+
+  /// No description provided for @gcodeFeedbackPreviewNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get gcodeFeedbackPreviewNotSure;
+
+  /// No description provided for @gcodeFeedbackMetadataCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks correct'**
+  String get gcodeFeedbackMetadataCorrect;
+
+  /// No description provided for @gcodeFeedbackMetadataMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing data'**
+  String get gcodeFeedbackMetadataMissing;
+
+  /// No description provided for @gcodeFeedbackMetadataIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect data'**
+  String get gcodeFeedbackMetadataIncorrect;
+
+  /// No description provided for @gcodeFeedbackMetadataNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get gcodeFeedbackMetadataNotSure;
 
   /// No description provided for @importGcodeSummaryTitle.
   ///
@@ -1193,6 +1307,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cura'**
   String get slicerCura;
+
+  /// No description provided for @slicerCrealityPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Creality Print'**
+  String get slicerCrealityPrint;
+
+  /// No description provided for @slicerSimplify3D.
+  ///
+  /// In en, this message translates to:
+  /// **'Simplify3D'**
+  String get slicerSimplify3D;
+
+  /// No description provided for @slicerSuperSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'SuperSlicer'**
+  String get slicerSuperSlicer;
+
+  /// No description provided for @slicerIdeaMaker.
+  ///
+  /// In en, this message translates to:
+  /// **'IdeaMaker'**
+  String get slicerIdeaMaker;
+
+  /// No description provided for @slicerOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get slicerOther;
 
   /// No description provided for @slicerUnknown.
   ///

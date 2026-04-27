@@ -474,7 +474,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get importGcodeButton => 'Import G-code (Auto-fill)';
 
   @override
-  String get importGcodePageTitle => 'Import G-code';
+  String get importGcodePageTitle => 'Import G-code (Beta)';
 
   @override
   String get importGcodeIntro =>
@@ -488,6 +488,67 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get importGcodeSelectedFileLabel => 'Selected file';
+
+  @override
+  String get gcodeImportFeedbackTitle => 'G-code Import Beta Feedback';
+
+  @override
+  String get gcodeImportFeedbackBetaFeature => 'Funcionalidade beta';
+
+  @override
+  String get gcodeImportFeedbackBetaDescription =>
+      'Diga-nos o que funcionou, o que falhou ou o que ainda parece errado.';
+
+  @override
+  String get gcodeImportFeedbackSlicerLabel => 'Slicer';
+
+  @override
+  String get gcodeImportFeedbackOtherSlicerLabel => 'Which slicer?';
+
+  @override
+  String get gcodeImportFeedbackPreviewLabel => 'Preview result';
+
+  @override
+  String get gcodeImportFeedbackMetadataLabel => 'Metadata result';
+
+  @override
+  String get gcodeImportFeedbackDescriptionLabel =>
+      'What worked, what broke, or what looks wrong?';
+
+  @override
+  String get gcodeImportFeedbackAttachmentLabel =>
+      'Attach imported G-code file';
+
+  @override
+  String get gcodeImportFeedbackNoAttachmentAvailable =>
+      'No imported G-code file available to attach.';
+
+  @override
+  String get gcodeImportFeedbackSendCta => 'Send feedback';
+
+  @override
+  String get gcodeFeedbackPreviewLoaded => 'Preview loaded';
+
+  @override
+  String get gcodeFeedbackPreviewMissing => 'Preview missing';
+
+  @override
+  String get gcodeFeedbackPreviewIncorrect => 'Incorrect preview';
+
+  @override
+  String get gcodeFeedbackPreviewNotSure => 'Not sure';
+
+  @override
+  String get gcodeFeedbackMetadataCorrect => 'Looks correct';
+
+  @override
+  String get gcodeFeedbackMetadataMissing => 'Missing data';
+
+  @override
+  String get gcodeFeedbackMetadataIncorrect => 'Incorrect data';
+
+  @override
+  String get gcodeFeedbackMetadataNotSure => 'Not sure';
 
   @override
   String get importGcodeSummaryTitle => 'Import summary';
@@ -594,6 +655,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get slicerCura => 'Cura';
+
+  @override
+  String get slicerCrealityPrint => 'Creality Print';
+
+  @override
+  String get slicerSimplify3D => 'Simplify3D';
+
+  @override
+  String get slicerSuperSlicer => 'SuperSlicer';
+
+  @override
+  String get slicerIdeaMaker => 'IdeaMaker';
+
+  @override
+  String get slicerOther => 'Other';
 
   @override
   String get slicerUnknown => 'Desconhecido';
