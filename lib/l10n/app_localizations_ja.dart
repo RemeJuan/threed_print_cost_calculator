@@ -452,26 +452,26 @@ class AppLocalizationsJa extends AppLocalizations {
   String get durationPickerLabel => 'Printing time (hh:mm)';
 
   @override
-  String get importGcodeButton => 'Import G-code (Auto-fill)';
+  String get importGcodeButton => 'G-codeをインポート（自動入力）';
 
   @override
-  String get importGcodePageTitle => 'Import G-code (Beta)';
+  String get importGcodePageTitle => 'G-codeインポート（ベータ）';
 
   @override
   String get importGcodeIntro =>
-      'Pick a local .gcode file. Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+      'ローカルの.gcodeファイルを選択してください。対応スライサー: PrusaSlicer、OrcaSlicer、Bambu Studio、Cura。';
 
   @override
-  String get importGcodeSelectFileButton => 'Choose G-code file';
+  String get importGcodeSelectFileButton => 'G-codeファイルを選択';
 
   @override
-  String get importGcodePickAnotherButton => 'Choose another file';
+  String get importGcodePickAnotherButton => '別のファイルを選択';
 
   @override
-  String get importGcodeSelectedFileLabel => 'Selected file';
+  String get importGcodeSelectedFileLabel => '選択したファイル';
 
   @override
-  String get gcodeImportFeedbackTitle => 'G-code Import Beta Feedback';
+  String get gcodeImportFeedbackTitle => 'G-codeインポート・ベータフィードバック';
 
   @override
   String get gcodeImportFeedbackBetaFeature => 'ベータ機能';
@@ -481,149 +481,144 @@ class AppLocalizationsJa extends AppLocalizations {
       '何が機能したか、何が失敗したか、まだどう見えるかを教えてください。';
 
   @override
-  String get gcodeImportFeedbackSlicerLabel => 'Slicer';
+  String get gcodeImportFeedbackSlicerLabel => 'スライサー';
 
   @override
-  String get gcodeImportFeedbackOtherSlicerLabel => 'Which slicer?';
+  String get gcodeImportFeedbackOtherSlicerLabel => 'どのスライサー?';
 
   @override
-  String get gcodeImportFeedbackPreviewLabel => 'Preview result';
+  String get gcodeImportFeedbackPreviewLabel => 'プレビュー結果';
 
   @override
-  String get gcodeImportFeedbackMetadataLabel => 'Metadata result';
+  String get gcodeImportFeedbackMetadataLabel => 'メタデータ結果';
 
   @override
   String get gcodeImportFeedbackDescriptionLabel =>
-      'What worked, what broke, or what looks wrong?';
+      '何が機能したか、何が失敗したか、何がおかしいですか?';
 
   @override
-  String get gcodeImportFeedbackAttachmentLabel =>
-      'Attach imported G-code file';
+  String get gcodeImportFeedbackAttachmentLabel => 'インポートしたG-codeファイルを添付';
 
   @override
   String get gcodeImportFeedbackNoAttachmentAvailable =>
-      'No imported G-code file available to attach.';
+      '添付できるインポート済みファイルがありません。';
 
   @override
-  String get gcodeImportFeedbackSendCta => 'Send feedback';
+  String get gcodeImportFeedbackSendCta => 'フィードバックを送信';
 
   @override
-  String get gcodeFeedbackPreviewLoaded => 'Preview loaded';
+  String get gcodeFeedbackPreviewLoaded => 'プレビュー読み込み済み';
 
   @override
-  String get gcodeFeedbackPreviewMissing => 'Preview missing';
+  String get gcodeFeedbackPreviewMissing => 'プレビューなし';
 
   @override
-  String get gcodeFeedbackPreviewIncorrect => 'Incorrect preview';
+  String get gcodeFeedbackPreviewIncorrect => 'プレビュー不正確';
 
   @override
-  String get gcodeFeedbackPreviewNotSure => 'Not sure';
+  String get gcodeFeedbackPreviewNotSure => 'わからない';
 
   @override
-  String get gcodeFeedbackMetadataCorrect => 'Looks correct';
+  String get gcodeFeedbackMetadataCorrect => '正しく見える';
 
   @override
-  String get gcodeFeedbackMetadataMissing => 'Missing data';
+  String get gcodeFeedbackMetadataMissing => 'データなし';
 
   @override
-  String get gcodeFeedbackMetadataIncorrect => 'Incorrect data';
+  String get gcodeFeedbackMetadataIncorrect => 'データ不正確';
 
   @override
-  String get gcodeFeedbackMetadataNotSure => 'Not sure';
+  String get gcodeFeedbackMetadataNotSure => 'わからない';
 
   @override
-  String get importGcodeSummaryTitle => 'Import summary';
+  String get importGcodeSummaryTitle => 'インポート概要';
 
   @override
   String get importGcodeSupportedSlicersNote =>
-      'Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+      '対応スライサー: PrusaSlicer、OrcaSlicer、Bambu Studio、Cura。';
 
   @override
   String get importGcodeCalculatorNote =>
-      'Imported values only prefill time and total material weight. Printer, material, and final cost still come from your calculator settings.';
+      'インポートした値は時間と材料の合計重量のみ事前入力されます。プリンター、材料、最終コストは計算機設定から取得されます。';
 
   @override
-  String get importGcodeUseValuesButton => 'Use these values';
+  String get importGcodeUseValuesButton => 'この値を使用';
 
   @override
-  String get importGcodeSlicerLabel => 'Slicer';
+  String get importGcodeSlicerLabel => 'スライサー';
 
   @override
-  String get importGcodeDurationLabel => 'Estimated duration';
+  String get importGcodeDurationLabel => '予定時間';
 
   @override
-  String get importGcodeFilamentWeightLabel => 'Filament weight';
+  String get importGcodeFilamentWeightLabel => 'フィラメント重量';
 
   @override
-  String get importGcodeFilamentLengthLabel => 'Filament length';
+  String get importGcodeFilamentLengthLabel => 'フィラメント長';
 
   @override
-  String get importGcodeLayerHeightLabel => 'Layer height';
+  String get importGcodeLayerHeightLabel => 'レイヤー高さ';
 
   @override
-  String get importGcodePreviewLabel => 'Preview';
+  String get importGcodePreviewLabel => 'プレビュー';
 
   @override
-  String get importGcodePreviewAvailable => 'Available';
+  String get importGcodePreviewAvailable => '利用可能';
 
   @override
-  String get importGcodePreviewView => 'View';
+  String get importGcodePreviewView => '表示';
 
   @override
-  String get importGcodePreviewUnavailable => 'Not available';
+  String get importGcodePreviewUnavailable => '利用不可';
 
   @override
   String get importGcodePreviewDecodeFailed =>
-      'Preview metadata found, but image could not be displayed.';
+      'プレビューメタデータは見つかりましたが、画像を表示できませんでした。';
 
   @override
   String get importGcodePreviewCuraNote =>
-      'Cura previews may require a post-processing script to embed thumbnails in the G-code.';
+      'Curaプレビューにはサムネイルを埋め込む後処理スクリプトが必要な場合があります。';
 
   @override
-  String get importGcodeWarningsTitle => 'Warnings';
+  String get importGcodeWarningsTitle => '警告';
 
   @override
-  String get importGcodeUnsupportedTypeError => 'Please choose a .gcode file.';
+  String get importGcodeUnsupportedTypeError => '.gcodeファイルを選択してください。';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'This file did not contain supported G-code metadata.';
+      'このファイルには対応のG-codeメタデータが含まれていませんでした。';
 
   @override
-  String get importGcodeReadError => 'The selected file could not be read.';
+  String get importGcodeReadError => '選択したファイルを読み込めませんでした。';
 
   @override
-  String get importGcodeUnknownSlicerValue => 'Unknown';
+  String get importGcodeUnknownSlicerValue => '不明';
 
   @override
-  String get importGcodeMissingValue => 'Not found';
+  String get importGcodeMissingValue => '見つからず';
 
   @override
-  String get importGcodeWarningUnknownSlicer =>
-      'Slicer not identified. Review values before applying.';
+  String get importGcodeWarningUnknownSlicer => 'スライサーが特定できません。適用前に値を確認してください。';
 
   @override
-  String get importGcodeWarningMissingDuration =>
-      'Could not detect print time.';
+  String get importGcodeWarningMissingDuration => '印刷時間を検出できませんでした。';
 
   @override
-  String get importGcodeWarningMissingFilament => 'Filament usage incomplete.';
+  String get importGcodeWarningMissingFilament => 'フィラメント使用状況が不完全です。';
 
   @override
-  String get importGcodeWarningMissingFilamentWeight =>
-      'Filament weight missing.';
+  String get importGcodeWarningMissingFilamentWeight => 'フィラメント重量がありません。';
 
   @override
-  String get importGcodeWarningPartialMetadata => 'Some metadata missing.';
+  String get importGcodeWarningPartialMetadata => '一部のメタデータが欠落しています。';
 
   @override
   String get importGcodeWarningMixedMaterials =>
-      'Multiple material totals found. Review before applying.';
+      '複数の材料合計が見つかりました。適用前に確認してください。';
 
   @override
-  String get importGcodeAppliedMessage =>
-      'Imported values applied to calculator';
+  String get importGcodeAppliedMessage => 'インポートした値を計算機に適用しました';
 
   @override
   String get slicerPrusaSlicer => 'PrusaSlicer';

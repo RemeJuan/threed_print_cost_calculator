@@ -460,26 +460,26 @@ class AppLocalizationsId extends AppLocalizations {
   String get durationPickerLabel => 'Printing time (hh:mm)';
 
   @override
-  String get importGcodeButton => 'Import G-code (Auto-fill)';
+  String get importGcodeButton => 'Impor G-code (Isi otomatis)';
 
   @override
-  String get importGcodePageTitle => 'Import G-code (Beta)';
+  String get importGcodePageTitle => 'Impor G-code (Beta)';
 
   @override
   String get importGcodeIntro =>
-      'Pick a local .gcode file. Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+      'Pilih file .gcode lokal. Slicer yang didukung: PrusaSlicer, OrcaSlicer, Bambu Studio, dan Cura.';
 
   @override
-  String get importGcodeSelectFileButton => 'Choose G-code file';
+  String get importGcodeSelectFileButton => 'Pilih file G-code';
 
   @override
-  String get importGcodePickAnotherButton => 'Choose another file';
+  String get importGcodePickAnotherButton => 'Pilih file lain';
 
   @override
-  String get importGcodeSelectedFileLabel => 'Selected file';
+  String get importGcodeSelectedFileLabel => 'File dipilih';
 
   @override
-  String get gcodeImportFeedbackTitle => 'G-code Import Beta Feedback';
+  String get gcodeImportFeedbackTitle => 'Masukan Impor G-code Beta';
 
   @override
   String get gcodeImportFeedbackBetaFeature => 'Fitur beta';
@@ -492,146 +492,146 @@ class AppLocalizationsId extends AppLocalizations {
   String get gcodeImportFeedbackSlicerLabel => 'Slicer';
 
   @override
-  String get gcodeImportFeedbackOtherSlicerLabel => 'Which slicer?';
+  String get gcodeImportFeedbackOtherSlicerLabel => 'Slicer yang mana?';
 
   @override
-  String get gcodeImportFeedbackPreviewLabel => 'Preview result';
+  String get gcodeImportFeedbackPreviewLabel => 'Hasil pratinjau';
 
   @override
-  String get gcodeImportFeedbackMetadataLabel => 'Metadata result';
+  String get gcodeImportFeedbackMetadataLabel => 'Hasil metadata';
 
   @override
   String get gcodeImportFeedbackDescriptionLabel =>
-      'What worked, what broke, or what looks wrong?';
+      'Apa yang berhasil, apa yang bermasalah, atau apa yang terlihat salah?';
 
   @override
   String get gcodeImportFeedbackAttachmentLabel =>
-      'Attach imported G-code file';
+      'Lampirkan file G-code yang diimpor';
 
   @override
   String get gcodeImportFeedbackNoAttachmentAvailable =>
-      'No imported G-code file available to attach.';
+      'Tidak ada file G-code yang diimpor untuk dilampirkan.';
 
   @override
-  String get gcodeImportFeedbackSendCta => 'Send feedback';
+  String get gcodeImportFeedbackSendCta => 'Kirim masukan';
 
   @override
-  String get gcodeFeedbackPreviewLoaded => 'Preview loaded';
+  String get gcodeFeedbackPreviewLoaded => 'Pratinjau dimuat';
 
   @override
-  String get gcodeFeedbackPreviewMissing => 'Preview missing';
+  String get gcodeFeedbackPreviewMissing => 'Pratinjau hilang';
 
   @override
-  String get gcodeFeedbackPreviewIncorrect => 'Incorrect preview';
+  String get gcodeFeedbackPreviewIncorrect => 'Pratinjau tidak benar';
 
   @override
-  String get gcodeFeedbackPreviewNotSure => 'Not sure';
+  String get gcodeFeedbackPreviewNotSure => 'Tidak yakin';
 
   @override
-  String get gcodeFeedbackMetadataCorrect => 'Looks correct';
+  String get gcodeFeedbackMetadataCorrect => 'Terlihat benar';
 
   @override
-  String get gcodeFeedbackMetadataMissing => 'Missing data';
+  String get gcodeFeedbackMetadataMissing => 'Data hilang';
 
   @override
-  String get gcodeFeedbackMetadataIncorrect => 'Incorrect data';
+  String get gcodeFeedbackMetadataIncorrect => 'Data tidak benar';
 
   @override
-  String get gcodeFeedbackMetadataNotSure => 'Not sure';
+  String get gcodeFeedbackMetadataNotSure => 'Tidak yakin';
 
   @override
-  String get importGcodeSummaryTitle => 'Import summary';
+  String get importGcodeSummaryTitle => 'Ringkasan impor';
 
   @override
   String get importGcodeSupportedSlicersNote =>
-      'Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+      'Slicer yang didukung: PrusaSlicer, OrcaSlicer, Bambu Studio, dan Cura.';
 
   @override
   String get importGcodeCalculatorNote =>
-      'Imported values only prefill time and total material weight. Printer, material, and final cost still come from your calculator settings.';
+      'Nilai yang diimpor hanya mengisi ulang waktu dan berat material total. Printer, material, dan biaya akhir berasal dari pengaturan kalkulator Anda.';
 
   @override
-  String get importGcodeUseValuesButton => 'Use these values';
+  String get importGcodeUseValuesButton => 'Gunakan nilai ini';
 
   @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override
-  String get importGcodeDurationLabel => 'Estimated duration';
+  String get importGcodeDurationLabel => 'Durasi estimado';
 
   @override
-  String get importGcodeFilamentWeightLabel => 'Filament weight';
+  String get importGcodeFilamentWeightLabel => 'Berat filamen';
 
   @override
-  String get importGcodeFilamentLengthLabel => 'Filament length';
+  String get importGcodeFilamentLengthLabel => 'Panjang filamen';
 
   @override
-  String get importGcodeLayerHeightLabel => 'Layer height';
+  String get importGcodeLayerHeightLabel => 'Tinggi lapisan';
 
   @override
-  String get importGcodePreviewLabel => 'Preview';
+  String get importGcodePreviewLabel => 'Pratinjau';
 
   @override
-  String get importGcodePreviewAvailable => 'Available';
+  String get importGcodePreviewAvailable => 'Tersedia';
 
   @override
-  String get importGcodePreviewView => 'View';
+  String get importGcodePreviewView => 'Lihat';
 
   @override
-  String get importGcodePreviewUnavailable => 'Not available';
+  String get importGcodePreviewUnavailable => 'Tidak tersedia';
 
   @override
   String get importGcodePreviewDecodeFailed =>
-      'Preview metadata found, but image could not be displayed.';
+      'Metadata pratinjau ditemukan tetapi gambar tidak dapat ditampilkan.';
 
   @override
   String get importGcodePreviewCuraNote =>
-      'Cura previews may require a post-processing script to embed thumbnails in the G-code.';
+      'Pratinjau Cura mungkin memerlukan skrip pasca-pemrosesan untuk menyematkan thumbnail.';
 
   @override
-  String get importGcodeWarningsTitle => 'Warnings';
+  String get importGcodeWarningsTitle => 'Peringatan';
 
   @override
-  String get importGcodeUnsupportedTypeError => 'Please choose a .gcode file.';
+  String get importGcodeUnsupportedTypeError => 'Pilih file .gcode.';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'This file did not contain supported G-code metadata.';
+      'File ini tidak berisi metadata G-code yang didukung.';
 
   @override
-  String get importGcodeReadError => 'The selected file could not be read.';
+  String get importGcodeReadError => 'File yang dipilih tidak dapat dibaca.';
 
   @override
-  String get importGcodeUnknownSlicerValue => 'Unknown';
+  String get importGcodeUnknownSlicerValue => 'Tidak diketahui';
 
   @override
-  String get importGcodeMissingValue => 'Not found';
+  String get importGcodeMissingValue => 'Tidak ditemukan';
 
   @override
   String get importGcodeWarningUnknownSlicer =>
-      'Slicer not identified. Review values before applying.';
+      'Slicer tidak teridentifikasi. Tinjau nilai sebelum applies.';
 
   @override
   String get importGcodeWarningMissingDuration =>
-      'Could not detect print time.';
+      'Waktu cetak tidak dapat dideteksi.';
 
   @override
-  String get importGcodeWarningMissingFilament => 'Filament usage incomplete.';
+  String get importGcodeWarningMissingFilament =>
+      'Penggunaan filamen tidak lengkap.';
 
   @override
-  String get importGcodeWarningMissingFilamentWeight =>
-      'Filament weight missing.';
+  String get importGcodeWarningMissingFilamentWeight => 'Berat filamen hilang.';
 
   @override
-  String get importGcodeWarningPartialMetadata => 'Some metadata missing.';
+  String get importGcodeWarningPartialMetadata => 'Beberapa metadata hilang.';
 
   @override
   String get importGcodeWarningMixedMaterials =>
-      'Multiple material totals found. Review before applying.';
+      'Ditemukan beberapa total material. Tinjau sebelum menerapkan.';
 
   @override
   String get importGcodeAppliedMessage =>
-      'Imported values applied to calculator';
+      'Nilai yang diimpor diterapkan ke kalkulator';
 
   @override
   String get slicerPrusaSlicer => 'PrusaSlicer';

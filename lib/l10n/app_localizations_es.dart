@@ -473,26 +473,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get durationPickerLabel => 'Printing time (hh:mm)';
 
   @override
-  String get importGcodeButton => 'Import G-code (Auto-fill)';
+  String get importGcodeButton => 'Importar G-code (Relleno auto)';
 
   @override
-  String get importGcodePageTitle => 'Import G-code (Beta)';
+  String get importGcodePageTitle => 'Importar G-code (Beta)';
 
   @override
   String get importGcodeIntro =>
-      'Pick a local .gcode file. Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+      'Selecciona un archivo .gcode local. Slicers compatibles: PrusaSlicer, OrcaSlicer, Bambu Studio y Cura.';
 
   @override
-  String get importGcodeSelectFileButton => 'Choose G-code file';
+  String get importGcodeSelectFileButton => 'Seleccionar archivo G-code';
 
   @override
-  String get importGcodePickAnotherButton => 'Choose another file';
+  String get importGcodePickAnotherButton => 'Seleccionar otro archivo';
 
   @override
-  String get importGcodeSelectedFileLabel => 'Selected file';
+  String get importGcodeSelectedFileLabel => 'Archivo seleccionado';
 
   @override
-  String get gcodeImportFeedbackTitle => 'G-code Import Beta Feedback';
+  String get gcodeImportFeedbackTitle => 'Feedback importación G-code Beta';
 
   @override
   String get gcodeImportFeedbackBetaFeature => 'Función beta';
@@ -505,146 +505,148 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gcodeImportFeedbackSlicerLabel => 'Slicer';
 
   @override
-  String get gcodeImportFeedbackOtherSlicerLabel => 'Which slicer?';
+  String get gcodeImportFeedbackOtherSlicerLabel => 'Qué slicer?';
 
   @override
-  String get gcodeImportFeedbackPreviewLabel => 'Preview result';
+  String get gcodeImportFeedbackPreviewLabel => 'Resultado de vista previa';
 
   @override
-  String get gcodeImportFeedbackMetadataLabel => 'Metadata result';
+  String get gcodeImportFeedbackMetadataLabel => 'Resultado de metadatos';
 
   @override
   String get gcodeImportFeedbackDescriptionLabel =>
-      'What worked, what broke, or what looks wrong?';
+      'Qué funcionó, qué falló o qué parece incorrecto?';
 
   @override
   String get gcodeImportFeedbackAttachmentLabel =>
-      'Attach imported G-code file';
+      'Adjuntar archivo G-code importado';
 
   @override
   String get gcodeImportFeedbackNoAttachmentAvailable =>
-      'No imported G-code file available to attach.';
+      'No hay archivo G-code disponible para adjuntar.';
 
   @override
-  String get gcodeImportFeedbackSendCta => 'Send feedback';
+  String get gcodeImportFeedbackSendCta => 'Enviar feedback';
 
   @override
-  String get gcodeFeedbackPreviewLoaded => 'Preview loaded';
+  String get gcodeFeedbackPreviewLoaded => 'Vista previa cargada';
 
   @override
-  String get gcodeFeedbackPreviewMissing => 'Preview missing';
+  String get gcodeFeedbackPreviewMissing => 'Vista previa faltante';
 
   @override
-  String get gcodeFeedbackPreviewIncorrect => 'Incorrect preview';
+  String get gcodeFeedbackPreviewIncorrect => 'Vista previa incorrecta';
 
   @override
-  String get gcodeFeedbackPreviewNotSure => 'Not sure';
+  String get gcodeFeedbackPreviewNotSure => 'No estoy seguro';
 
   @override
-  String get gcodeFeedbackMetadataCorrect => 'Looks correct';
+  String get gcodeFeedbackMetadataCorrect => 'Parece correcto';
 
   @override
-  String get gcodeFeedbackMetadataMissing => 'Missing data';
+  String get gcodeFeedbackMetadataMissing => 'Datos faltantes';
 
   @override
-  String get gcodeFeedbackMetadataIncorrect => 'Incorrect data';
+  String get gcodeFeedbackMetadataIncorrect => 'Datos incorrectos';
 
   @override
-  String get gcodeFeedbackMetadataNotSure => 'Not sure';
+  String get gcodeFeedbackMetadataNotSure => 'No estoy seguro';
 
   @override
-  String get importGcodeSummaryTitle => 'Import summary';
+  String get importGcodeSummaryTitle => 'Resumen de importación';
 
   @override
   String get importGcodeSupportedSlicersNote =>
-      'Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.';
+      'Slicers compatibles: PrusaSlicer, OrcaSlicer, Bambu Studio y Cura.';
 
   @override
   String get importGcodeCalculatorNote =>
-      'Imported values only prefill time and total material weight. Printer, material, and final cost still come from your calculator settings.';
+      'Los valores importados solo prellenan tiempo y peso total del material. La impresora, material y costo final vienen de tu configuración.';
 
   @override
-  String get importGcodeUseValuesButton => 'Use these values';
+  String get importGcodeUseValuesButton => 'Usar estos valores';
 
   @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override
-  String get importGcodeDurationLabel => 'Estimated duration';
+  String get importGcodeDurationLabel => 'Duración estimada';
 
   @override
-  String get importGcodeFilamentWeightLabel => 'Filament weight';
+  String get importGcodeFilamentWeightLabel => 'Peso del filament';
 
   @override
-  String get importGcodeFilamentLengthLabel => 'Filament length';
+  String get importGcodeFilamentLengthLabel => 'Longitud del filament';
 
   @override
-  String get importGcodeLayerHeightLabel => 'Layer height';
+  String get importGcodeLayerHeightLabel => 'Altura de capa';
 
   @override
-  String get importGcodePreviewLabel => 'Preview';
+  String get importGcodePreviewLabel => 'Vista previa';
 
   @override
-  String get importGcodePreviewAvailable => 'Available';
+  String get importGcodePreviewAvailable => 'Disponible';
 
   @override
-  String get importGcodePreviewView => 'View';
+  String get importGcodePreviewView => 'Ver';
 
   @override
-  String get importGcodePreviewUnavailable => 'Not available';
+  String get importGcodePreviewUnavailable => 'No disponible';
 
   @override
   String get importGcodePreviewDecodeFailed =>
-      'Preview metadata found, but image could not be displayed.';
+      'Metadatos de vista previa encontrados pero la imagen no pudo mostrarse.';
 
   @override
   String get importGcodePreviewCuraNote =>
-      'Cura previews may require a post-processing script to embed thumbnails in the G-code.';
+      'Las vistas previas de Cura pueden requerir un script post-procesamiento para embeber miniaturas.';
 
   @override
-  String get importGcodeWarningsTitle => 'Warnings';
+  String get importGcodeWarningsTitle => 'Advertencias';
 
   @override
-  String get importGcodeUnsupportedTypeError => 'Please choose a .gcode file.';
+  String get importGcodeUnsupportedTypeError =>
+      'Por favor selecciona un archivo .gcode.';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'This file did not contain supported G-code metadata.';
+      'Este archivo no contenía metadatos G-code compatibles.';
 
   @override
-  String get importGcodeReadError => 'The selected file could not be read.';
+  String get importGcodeReadError =>
+      'El archivo seleccionado no pudo ser leído.';
 
   @override
-  String get importGcodeUnknownSlicerValue => 'Unknown';
+  String get importGcodeUnknownSlicerValue => 'Desconocido';
 
   @override
-  String get importGcodeMissingValue => 'Not found';
+  String get importGcodeMissingValue => 'No encontrado';
 
   @override
   String get importGcodeWarningUnknownSlicer =>
-      'Slicer not identified. Review values before applying.';
+      'Slicer no identificado. Revisa los valores antes de aplicar.';
 
   @override
   String get importGcodeWarningMissingDuration =>
-      'Could not detect print time.';
+      'El tiempo de impresión no pudo ser detectado.';
 
   @override
-  String get importGcodeWarningMissingFilament => 'Filament usage incomplete.';
+  String get importGcodeWarningMissingFilament => 'Uso de filament incompleto.';
 
   @override
   String get importGcodeWarningMissingFilamentWeight =>
-      'Filament weight missing.';
+      'Peso del filament faltante.';
 
   @override
-  String get importGcodeWarningPartialMetadata => 'Some metadata missing.';
+  String get importGcodeWarningPartialMetadata => 'Algunos metadatos faltan.';
 
   @override
   String get importGcodeWarningMixedMaterials =>
-      'Multiple material totals found. Review before applying.';
+      'Se encontraron múltiples totales de material. Revisa antes de aplicar.';
 
   @override
   String get importGcodeAppliedMessage =>
-      'Imported values applied to calculator';
+      'Valores importados aplicados a la calculadora';
 
   @override
   String get slicerPrusaSlicer => 'PrusaSlicer';
