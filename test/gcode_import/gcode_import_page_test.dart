@@ -63,11 +63,13 @@ void main() {
     expect(find.widgetWithText(TextButton, 'View'), findsOneWidget);
     expect(find.text('Preview metadata found, but image could not be displayed.'), findsNothing);
 
+    await tester.ensureVisible(find.widgetWithText(TextButton, 'View'));
     await tester.tap(find.widgetWithText(TextButton, 'View'));
     await tester.pumpAndSettle();
 
     expect(find.byType(Image), findsOneWidget);
 
+    await tester.ensureVisible(find.byTooltip('Close'));
     await tester.tap(find.byTooltip('Close'));
     await tester.pumpAndSettle();
 
@@ -93,6 +95,7 @@ void main() {
       ),
     ]);
 
+    await tester.ensureVisible(find.widgetWithText(TextButton, 'View'));
     await tester.tap(find.widgetWithText(TextButton, 'View'));
     await tester.pumpAndSettle();
 
@@ -141,6 +144,23 @@ void main() {
 
     expect(find.text('Not available'), findsOneWidget);
     expect(find.textContaining('Cura previews may require'), findsNothing);
+  });
+
+  testWidgets('shows feedback entry point after import result', (tester) async {
+    await tester.pumpApp(const GCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      gcodeImportControllerProvider.overrideWith(
+        () => _FakeController(
+          _successState(
+            slicer: GCodeSlicer.prusaSlicer,
+            previewMetadata: null,
+            previewImageBytes: null,
+          ),
+        ),
+      ),
+    ]);
+
+    expect(find.text('Send feedback'), findsOneWidget);
   });
 }
 
