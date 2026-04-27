@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -88,41 +90,74 @@ class GCodeImportPage extends HookConsumerWidget {
                       _summaryRow(
                         context,
                         l10n.importGcodeSlicerLabel,
-                        _slicerLabel(l10n, state.result!.slicer),
+                        Text(
+                          _slicerLabel(l10n, state.result!.slicer),
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                       _summaryRow(
                         context,
                         l10n.importGcodeDurationLabel,
-                        state.result!.estimatedDuration == null
-                            ? l10n.importGcodeMissingValue
-                            : _formatDuration(state.result!.estimatedDuration!),
+                        Text(
+                          state.result!.estimatedDuration == null
+                              ? l10n.importGcodeMissingValue
+                              : _formatDuration(
+                                  state.result!.estimatedDuration!,
+                                ),
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                       _summaryRow(
                         context,
                         l10n.importGcodeFilamentWeightLabel,
-                        state.result!.filamentWeightG == null
-                            ? l10n.importGcodeMissingValue
-                            : '${state.result!.filamentWeightG!.toStringAsFixed(2)} ${l10n.gramsSuffix}',
+                        Text(
+                          state.result!.filamentWeightG == null
+                              ? l10n.importGcodeMissingValue
+                              : '${state.result!.filamentWeightG!.toStringAsFixed(2)} ${l10n.gramsSuffix}',
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                       _summaryRow(
                         context,
                         l10n.importGcodeFilamentLengthLabel,
-                        state.result!.filamentLengthMm == null
-                            ? l10n.importGcodeMissingValue
-                            : '${state.result!.filamentLengthMm!.toStringAsFixed(2)} mm',
+                        Text(
+                          state.result!.filamentLengthMm == null
+                              ? l10n.importGcodeMissingValue
+                              : '${state.result!.filamentLengthMm!.toStringAsFixed(2)} mm',
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                       _summaryRow(
                         context,
                         l10n.importGcodeLayerHeightLabel,
-                        state.result!.layerHeightMm == null
-                            ? l10n.importGcodeMissingValue
-                            : '${state.result!.layerHeightMm!.toStringAsFixed(2)} mm',
+                        Text(
+                          state.result!.layerHeightMm == null
+                              ? l10n.importGcodeMissingValue
+                              : '${state.result!.layerHeightMm!.toStringAsFixed(2)} mm',
+                          textAlign: TextAlign.end,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ),
                       _summaryRow(
                         context,
                         l10n.importGcodePreviewLabel,
-                        _previewLabel(l10n, state.result!),
+                        _previewValueWidget(
+                          context,
+                          l10n,
+                          state.result!,
+                        ),
                       ),
+                      if (_shouldShowPreviewNote(state.result!)) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          l10n.importGcodePreviewCuraNote,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
                       if (state.result!.warnings.isNotEmpty) ...[
                         const SizedBox(height: 16),
                         Text(
@@ -225,23 +260,110 @@ class GCodeImportPage extends HookConsumerWidget {
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
   }
 
-  String _previewLabel(AppLocalizations l10n, GCodeImportResult result) {
-    final preview = result.previewMetadata;
-    if (preview == null || !preview.present || !preview.isSafe) {
-      return l10n.importGcodePreviewUnavailable;
+  Widget _previewValueWidget(
+    BuildContext context,
+    AppLocalizations l10n,
+    GCodeImportResult result,
+  ) {
+    final previewBytes = result.previewImageBytes;
+    if (previewBytes == null) {
+      return Text(
+        l10n.importGcodePreviewUnavailable,
+        textAlign: TextAlign.end,
+        style: Theme.of(context).textTheme.bodyMedium,
+      );
     }
 
-    final size = preview.width == null || preview.height == null
-        ? null
-        : '${preview.width}x${preview.height}';
-    return [
-      l10n.importGcodePreviewAvailable,
-      preview.format,
-      size,
-    ].whereType<String>().join(' · ');
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton.icon(
+        onPressed: () => _showPreviewDialog(context, l10n, previewBytes),
+        icon: const Icon(Icons.launch),
+        label: Text(l10n.importGcodePreviewView),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: Size.zero,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+          alignment: Alignment.centerRight,
+        ),
+      ),
+    );
   }
 
-  Widget _summaryRow(BuildContext context, String label, String value) {
+  bool _shouldShowPreviewNote(GCodeImportResult result) {
+    return result.slicer == GCodeSlicer.cura && result.previewImageBytes == null;
+  }
+
+  Future<void> _showPreviewDialog(
+    BuildContext context,
+    AppLocalizations l10n,
+    Uint8List bytes,
+  ) {
+    return showDialog<void>(
+      context: context,
+      barrierColor: Colors.black87,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        final mediaQuery = MediaQuery.of(dialogContext);
+        final maxWidth = mediaQuery.size.width - 32;
+        final maxHeight = mediaQuery.size.height - 32;
+
+        return Dialog(
+          backgroundColor: Colors.black,
+          insetPadding: const EdgeInsets.all(16),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: maxWidth,
+              maxHeight: maxHeight,
+            ),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Center(
+                      child: Image.memory(
+                        bytes,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.none,
+                        gaplessPlayback: true,
+                        isAntiAlias: false,
+                        errorBuilder: (context, error, stackTrace) => Center(
+                          child: Text(
+                            l10n.importGcodePreviewDecodeFailed,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: SafeArea(
+                    bottom: false,
+                    left: false,
+                    child: IconButton(
+                      tooltip: MaterialLocalizations.of(dialogContext)
+                          .closeButtonTooltip,
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      icon: const Icon(Icons.close, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _summaryRow(BuildContext context, String label, Widget value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -254,11 +376,7 @@ class GCodeImportPage extends HookConsumerWidget {
           const SizedBox(width: 12),
           Expanded(
             flex: 3,
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            child: value,
           ),
         ],
       ),
