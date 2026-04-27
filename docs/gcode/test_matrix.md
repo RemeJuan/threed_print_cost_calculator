@@ -1,5 +1,7 @@
 # G-code parser test matrix
 
+Populated using real beta test files.
+
 | Case | Fixture | Expected slicer | Extracted values | Preview availability | Correctness notes |
 |---|---|---|---|---|---|
 | PrusaSlicer documented headers | `test/fixtures/gcode/prusa_slicer_basic.gcode` | PrusaSlicer | `estimated printing time (normal mode)`, `filament used [mm]`, `filament used [g]`, `layer_height`, `thumbnail_QOI begin` | available | valid embedded thumbnail |

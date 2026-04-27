@@ -30,6 +30,7 @@ Feature scope:
 - Preview is thumbnail-only; no toolpath rendering
 - Parsing issues are handled silently; missing values are shown at field level
 - The UI prioritises clarity over completeness. Missing data is shown inline rather than via global alerts.
+- Feature validated via small-scale beta across multiple slicers before release.
 
 ## Non-goals
 
@@ -56,3 +57,4 @@ Feature scope:
 - [Preview handling](./preview.md)
 - [Edge cases](./edge_cases.md)
 - [Test matrix](./test_matrix.md)
+- [Beta testing](./beta_testing.md)
