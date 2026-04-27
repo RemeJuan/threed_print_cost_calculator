@@ -20,12 +20,16 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     if (!pickedFile.hasSupportedExtension) {
       state = GCodeImportState.failure(
         selectedFileName: pickedFile.name,
+        selectedFilePath: pickedFile.path,
         error: GCodeImportError.unsupportedType,
       );
       return;
     }
 
-    state = GCodeImportState.loading(selectedFileName: pickedFile.name);
+    state = GCodeImportState.loading(
+      selectedFileName: pickedFile.name,
+      selectedFilePath: pickedFile.path,
+    );
 
     try {
       final result = await ref
@@ -34,6 +38,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
       if (!result.hasAnyExtractedMetadata) {
         state = GCodeImportState.failure(
           selectedFileName: pickedFile.name,
+          selectedFilePath: pickedFile.path,
           error: GCodeImportError.unsupportedFile,
         );
         return;
@@ -41,11 +46,13 @@ class GCodeImportController extends Notifier<GCodeImportState> {
 
       state = GCodeImportState.success(
         selectedFileName: pickedFile.name,
+        selectedFilePath: pickedFile.path,
         result: result,
       );
     } catch (_) {
       state = GCodeImportState.failure(
         selectedFileName: pickedFile.name,
+        selectedFilePath: pickedFile.path,
         error: GCodeImportError.readFailed,
       );
     }
@@ -60,36 +67,46 @@ class GCodeImportState {
   const GCodeImportState({
     this.status = GCodeImportStatus.idle,
     this.selectedFileName,
+    this.selectedFilePath,
     this.result,
     this.error,
   });
 
-  const GCodeImportState.loading({required String selectedFileName})
+  const GCodeImportState.loading({
+    required String selectedFileName,
+    String? selectedFilePath,
+  })
     : this(
         status: GCodeImportStatus.loading,
         selectedFileName: selectedFileName,
+        selectedFilePath: selectedFilePath,
       );
 
   const GCodeImportState.success({
     required String selectedFileName,
+    String? selectedFilePath,
     required GCodeImportResult result,
   }) : this(
          status: GCodeImportStatus.success,
          selectedFileName: selectedFileName,
+         selectedFilePath: selectedFilePath,
          result: result,
        );
 
   const GCodeImportState.failure({
     required String selectedFileName,
+    String? selectedFilePath,
     required GCodeImportError error,
   }) : this(
          status: GCodeImportStatus.failure,
          selectedFileName: selectedFileName,
+         selectedFilePath: selectedFilePath,
          error: error,
        );
 
   final GCodeImportStatus status;
   final String? selectedFileName;
+  final String? selectedFilePath;
   final GCodeImportResult? result;
   final GCodeImportError? error;
 }
