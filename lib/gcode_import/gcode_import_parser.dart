@@ -278,11 +278,16 @@ class GCodeImportParser {
     if (explicit != null) return explicit;
 
     final cm = _sumValues(lines, [
+      RegExp(
+        r'^;\s*filament used \[cm\]\s*=\s*(.+?)\s*$',
+        caseSensitive: false,
+      ),
       RegExp(r'^;.*filament.*cm', caseSensitive: false),
     ], unit: 'cm');
     if (cm != null) return cm;
 
     final m = _sumValues(lines, [
+      RegExp(r'^;\s*filament used \[m\]\s*=\s*(.+?)\s*$', caseSensitive: false),
       RegExp(r'^;.*filament.*m', caseSensitive: false),
     ], unit: 'm');
     if (m != null) return m;
@@ -311,6 +316,16 @@ class GCodeImportParser {
         final match = pattern.firstMatch(line);
         if (match == null) continue;
         final raw = match.group(1) ?? '';
+        final singleValue = RegExp(
+          r'^-?\d+(?:[\.,]\d+)?$',
+        ).firstMatch(raw.trim());
+        if (singleValue != null) {
+          final value = _parseNumber(singleValue.group(0));
+          if (value != null) {
+            values.add(_normalizeValue(value, unit, 'mm'));
+            break;
+          }
+        }
         values.addAll(_parseUnitList(raw, unit));
         break;
       }
@@ -365,8 +380,20 @@ class GCodeImportParser {
   }
 
   bool _hasMixedOrAmbiguousMaterials(List<String> lines) {
-    final joined = lines.join('\n').toLowerCase();
-    return joined.contains('filament used [mm]') && joined.contains(',');
+    const key = 'filament used [mm]';
+    for (final line in lines) {
+      final lower = line.toLowerCase();
+      if (!lower.contains(key)) continue;
+
+      final keyIndex = lower.indexOf(key);
+      var value = line.substring(keyIndex + key.length).trim();
+      if (value.startsWith(':')) {
+        value = value.substring(1).trim();
+      }
+
+      if (value.contains(',')) return true;
+    }
+    return false;
   }
 
   bool _isPartialMetadata({
