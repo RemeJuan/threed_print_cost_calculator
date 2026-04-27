@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'gcode_import_result.dart';
 
@@ -26,6 +27,7 @@ class GCodeImportParser {
     );
 
     final previewMetadata = _parsePreviewMetadata(lines);
+    final previewImageBytes = _parsePreviewImageBytes(lines);
 
     _collectRaw(raw, 'estimatedDuration', _extractDuration(lines));
     _collectRaw(raw, 'filamentLengthMm', _extractFilamentLengthRaw(lines));
@@ -91,6 +93,7 @@ class GCodeImportParser {
       filamentWeightG: filamentWeightG,
       layerHeightMm: layerHeightMm,
       previewMetadata: previewMetadata,
+      previewImageBytes: previewImageBytes,
       warnings: List.unmodifiable(warnings),
       rawExtractedValues: Map.unmodifiable(raw),
       hasSafePreview: previewMetadata?.isSafe ?? false,
@@ -187,6 +190,40 @@ class GCodeImportParser {
       );
     }
     return null;
+  }
+
+  Uint8List? _parsePreviewImageBytes(List<String> lines) {
+    final buffer = StringBuffer();
+    var inPreview = false;
+    for (final line in lines) {
+      final begin = RegExp(
+        r'^;\s*thumbnail(?:_QOI)?\s+begin\s+\d+x\d+\s+\d+\s*$',
+        caseSensitive: false,
+      ).hasMatch(line);
+      final end = RegExp(
+        r'^;\s*thumbnail(?:_QOI)?\s+end\s*$',
+        caseSensitive: false,
+      ).hasMatch(line);
+      if (begin) {
+        inPreview = true;
+        continue;
+      }
+      if (end) {
+        break;
+      }
+      if (!inPreview) continue;
+      final content = line.startsWith(';')
+          ? line.substring(1).trimLeft()
+          : line;
+      if (content.isEmpty) continue;
+      buffer.write(content.trim());
+    }
+    if (buffer.isEmpty) return null;
+    try {
+      return base64.decode(buffer.toString());
+    } catch (_) {
+      return null;
+    }
   }
 
   String? _firstMatchingValue(List<String> lines, List<RegExp> expressions) {

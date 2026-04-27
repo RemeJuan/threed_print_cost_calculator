@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 class GCodeImportResult {
@@ -8,6 +10,7 @@ class GCodeImportResult {
     required this.filamentWeightG,
     required this.layerHeightMm,
     required this.previewMetadata,
+    required this.previewImageBytes,
     required this.warnings,
     required this.rawExtractedValues,
     this.hasSafePreview = false,
@@ -19,6 +22,7 @@ class GCodeImportResult {
   final double? filamentWeightG;
   final double? layerHeightMm;
   final GCodePreviewMetadata? previewMetadata;
+  final Uint8List? previewImageBytes;
   final List<GCodeParseWarning> warnings;
   final Map<String, String> rawExtractedValues;
   final bool hasSafePreview;
@@ -43,6 +47,7 @@ class GCodeImportResult {
       'filamentWeightG': filamentWeightG,
       'layerHeightMm': layerHeightMm,
       'previewMetadata': previewMetadata?.toWireMap(),
+      'previewImageBytes': previewImageBytes,
       'warnings': warnings
           .map((warning) => warning.toWireMap())
           .toList(growable: false),
@@ -67,6 +72,7 @@ class GCodeImportResult {
                 map['previewMetadata'] as Map<dynamic, dynamic>,
               ),
             ),
+      previewImageBytes: map['previewImageBytes'] as Uint8List?,
       warnings: (map['warnings'] as List<dynamic>? ?? const [])
           .map(
             (warning) => GCodeParseWarning.fromWireMap(
@@ -139,6 +145,10 @@ class GCodePreviewMetadata {
   String get safeSummary => format == null || width == null || height == null
       ? 'preview'
       : '$format ${width}x$height';
+
+  String get summary => format == null || width == null || height == null
+      ? 'Available'
+      : 'Available · $format · ${width}x$height';
 
   Map<String, dynamic> toWireMap() {
     return {
