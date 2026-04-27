@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import 'gcode_import_controller.dart';
 import 'gcode_import_result.dart';
@@ -12,6 +14,15 @@ class GCodeImportPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final isPremium = ref.watch(isPremiumProvider);
+
+    if (!isPremium) {
+      return Scaffold(
+        appBar: AppBar(title: Text(l10n.importGcodePageTitle)),
+        body: const Center(child: Subscriptions()),
+      );
+    }
+
     final state = ref.watch(gcodeImportControllerProvider);
     final controller = ref.read(gcodeImportControllerProvider.notifier);
 
