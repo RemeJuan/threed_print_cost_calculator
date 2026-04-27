@@ -1059,7 +1059,7 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodePreviewLabel.
   ///
   /// In en, this message translates to:
-  /// **'Preview metadata'**
+  /// **'Preview'**
   String get importGcodePreviewLabel;
 
   /// No description provided for @importGcodePreviewAvailable.
@@ -1068,11 +1068,29 @@ abstract class AppLocalizations {
   /// **'Available'**
   String get importGcodePreviewAvailable;
 
+  /// No description provided for @importGcodePreviewView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get importGcodePreviewView;
+
   /// No description provided for @importGcodePreviewUnavailable.
   ///
   /// In en, this message translates to:
   /// **'Not available'**
   String get importGcodePreviewUnavailable;
+
+  /// No description provided for @importGcodePreviewDecodeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview metadata found, but image could not be displayed.'**
+  String get importGcodePreviewDecodeFailed;
+
+  /// No description provided for @importGcodePreviewCuraNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Cura previews may require a post-processing script to embed thumbnails in the G-code.'**
+  String get importGcodePreviewCuraNote;
 
   /// No description provided for @importGcodeWarningsTitle.
   ///

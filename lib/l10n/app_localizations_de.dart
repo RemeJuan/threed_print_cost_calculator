@@ -517,13 +517,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String get importGcodeLayerHeightLabel => 'Layer height';
 
   @override
-  String get importGcodePreviewLabel => 'Preview metadata';
+  String get importGcodePreviewLabel => 'Preview';
 
   @override
   String get importGcodePreviewAvailable => 'Available';
 
   @override
+  String get importGcodePreviewView => 'View';
+
+  @override
   String get importGcodePreviewUnavailable => 'Not available';
+
+  @override
+  String get importGcodePreviewDecodeFailed =>
+      'Preview metadata found, but image could not be displayed.';
+
+  @override
+  String get importGcodePreviewCuraNote =>
+      'Cura previews may require a post-processing script to embed thumbnails in the G-code.';
 
   @override
   String get importGcodeWarningsTitle => 'Warnings';
