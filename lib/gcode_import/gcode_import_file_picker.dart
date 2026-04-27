@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:flutter/foundation.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:path/path.dart' as p;
 import 'package:riverpod/riverpod.dart';
@@ -20,13 +19,7 @@ class PlatformGCodeImportFilePicker extends GCodeImportFilePicker {
   @override
   Future<GCodePickedFile?> pick() async {
     final file = await openFile(
-      acceptedTypeGroups: const [
-        XTypeGroup(
-          label: 'G-code',
-          extensions: ['gcode'],
-          uniformTypeIdentifiers: ['public.text'],
-        ),
-      ],
+      acceptedTypeGroups: gCodeAcceptedTypeGroups(defaultTargetPlatform),
     );
 
     if (file == null) return null;
@@ -36,6 +29,26 @@ class PlatformGCodeImportFilePicker extends GCodeImportFilePicker {
       path: file.path,
       readAsBytes: file.readAsBytes,
     );
+  }
+}
+
+@visibleForTesting
+List<XTypeGroup> gCodeAcceptedTypeGroups(TargetPlatform platform) {
+  switch (platform) {
+    case TargetPlatform.iOS:
+      return const [
+        XTypeGroup(
+          label: 'G-code',
+          uniformTypeIdentifiers: ['public.data'],
+        ),
+      ];
+    default:
+      return const [
+        XTypeGroup(
+          label: 'G-code',
+          extensions: ['gcode'],
+        ),
+      ];
   }
 }
 
