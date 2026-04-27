@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_section.dart';
+import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
@@ -145,11 +147,7 @@ class GCodeImportPage extends HookConsumerWidget {
                       _summaryRow(
                         context,
                         l10n.importGcodePreviewLabel,
-                        _previewValueWidget(
-                          context,
-                          l10n,
-                          state.result!,
-                        ),
+                        _previewValueWidget(context, l10n, state.result!),
                       ),
                       if (_shouldShowPreviewNote(state.result!)) ...[
                         const SizedBox(height: 8),
@@ -158,28 +156,6 @@ class GCodeImportPage extends HookConsumerWidget {
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
-                      if (state.result!.warnings.isNotEmpty) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          l10n.importGcodeWarningsTitle,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: 8),
-                        ...state.result!.warnings.map(
-                          (warning) => Padding(
-                            padding: const EdgeInsets.only(bottom: 6),
-                            child: Text(
-                              '• ${_warningMessage(l10n, warning.code)}',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: 16),
-                      Text(
-                        l10n.importGcodeSupportedSlicersNote,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
                       const SizedBox(height: 8),
                       Text(
                         l10n.importGcodeCalculatorNote,
@@ -213,6 +189,33 @@ class GCodeImportPage extends HookConsumerWidget {
                         Navigator.of(context).pop();
                       },
                 child: Text(l10n.importGcodeUseValuesButton),
+              ),
+            ],
+            if (state.status == GCodeImportStatus.success ||
+                state.status == GCodeImportStatus.failure) ...[
+              const SizedBox(height: 16),
+              GCodeImportFeedbackSection(
+                importState: state,
+                importFailureContext:
+                    state.status == GCodeImportStatus.failure &&
+                        state.error != null
+                    ? _errorMessage(l10n, state.error!)
+                    : null,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => GCodeImportFeedbackPage(
+                        importedFileName: state.selectedFileName,
+                        importedFilePath: state.selectedFilePath,
+                        importFailureContext:
+                            state.status == GCodeImportStatus.failure &&
+                                state.error != null
+                            ? _errorMessage(l10n, state.error!)
+                            : null,
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ],
@@ -292,7 +295,8 @@ class GCodeImportPage extends HookConsumerWidget {
   }
 
   bool _shouldShowPreviewNote(GCodeImportResult result) {
-    return result.slicer == GCodeSlicer.cura && result.previewImageBytes == null;
+    return result.slicer == GCodeSlicer.cura &&
+        result.previewImageBytes == null;
   }
 
   Future<void> _showPreviewDialog(
@@ -348,8 +352,9 @@ class GCodeImportPage extends HookConsumerWidget {
                     bottom: false,
                     left: false,
                     child: IconButton(
-                      tooltip: MaterialLocalizations.of(dialogContext)
-                          .closeButtonTooltip,
+                      tooltip: MaterialLocalizations.of(
+                        dialogContext,
+                      ).closeButtonTooltip,
                       onPressed: () => Navigator.of(dialogContext).pop(),
                       icon: const Icon(Icons.close, color: Colors.white),
                     ),
@@ -374,10 +379,7 @@ class GCodeImportPage extends HookConsumerWidget {
             child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
           ),
           const SizedBox(width: 12),
-          Expanded(
-            flex: 3,
-            child: value,
-          ),
+          Expanded(flex: 3, child: value),
         ],
       ),
     );
