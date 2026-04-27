@@ -59,5 +59,10 @@
 - New entries go at the top
 
 ## Documentation
-- `docs/gcode/` - G-code parser documentation (overview, edge cases, slicer-specific docs)
-- `docs/patrol_ci.md` - Patrol E2E testing guide
+- `docs/README.md` - Documentation index
+- `docs/gcode/` - G-code parser docs (overview, edge cases, slicer-specific docs, preview, test matrix)
+- `docs/dev/patrol-ci.md` - Patrol E2E testing guide
+- `docs/architecture/` - Architecture notes (e.g., performance)
+- `docs/decisions/` - Architecture Decision Records (ADRs)
+- `docs/product/` - Product specs and designs
+- `docs/inbox/` - Work-in-progress notes
