@@ -21,7 +21,11 @@ class PlatformGCodeImportFilePicker extends GCodeImportFilePicker {
   Future<GCodePickedFile?> pick() async {
     final file = await openFile(
       acceptedTypeGroups: const [
-        XTypeGroup(label: 'G-code', extensions: ['gcode']),
+        XTypeGroup(
+          label: 'G-code',
+          extensions: ['gcode'],
+          uniformTypeIdentifiers: ['public.text'],
+        ),
       ],
     );
 
