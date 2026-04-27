@@ -6,6 +6,16 @@ import 'gcode_import_result.dart';
 class GCodeImportParser {
   const GCodeImportParser();
 
+  static final _thumbnailBeginRegex = RegExp(
+    r'^;\s*(thumbnail(?:_QOI)?)\s+begin\s+(\d+)x(\d+)\s+(\d+)\s*$',
+    caseSensitive: false,
+  );
+
+  static final _thumbnailEndRegex = RegExp(
+    r'^;\s*thumbnail(?:_QOI)?\s+end\s*$',
+    caseSensitive: false,
+  );
+
   GCodeImportResult parse(String gcodeText) {
     final lines = const LineSplitter().convert(gcodeText);
     final slicer = _detectSlicer(lines);
@@ -161,10 +171,7 @@ class GCodeImportParser {
     GCodePreviewMetadata? largestMetadata;
 
     for (final line in lines) {
-      final match = RegExp(
-        r'^;\s*(thumbnail(?:_QOI)?)\s+begin\s+(\d+)x(\d+)\s+(\d+)',
-        caseSensitive: false,
-      ).firstMatch(line);
+      final match = _thumbnailBeginRegex.firstMatch(line);
       if (match == null) continue;
 
       final width = int.tryParse(match.group(2) ?? '');
@@ -215,20 +222,14 @@ class GCodeImportParser {
     int? currentHeight;
 
     for (final line in lines) {
-      final beginMatch = RegExp(
-        r'^;\s*thumbnail(?:_QOI)?\s+begin\s+(\d+)x(\d+)\s+\d+\s*$',
-        caseSensitive: false,
-      ).firstMatch(line);
-      final end = RegExp(
-        r'^;\s*thumbnail(?:_QOI)?\s+end\s*$',
-        caseSensitive: false,
-      ).hasMatch(line);
+      final beginMatch = _thumbnailBeginRegex.firstMatch(line);
+      final end = _thumbnailEndRegex.hasMatch(line);
 
       if (beginMatch != null) {
         inPreview = true;
         currentBuffer = StringBuffer();
-        currentWidth = int.tryParse(beginMatch.group(1) ?? '');
-        currentHeight = int.tryParse(beginMatch.group(2) ?? '');
+        currentWidth = int.tryParse(beginMatch.group(2) ?? '');
+        currentHeight = int.tryParse(beginMatch.group(3) ?? '');
         continue;
       }
 
@@ -329,7 +330,7 @@ class GCodeImportParser {
         caseSensitive: false,
       ),
     ], unit: 'cm');
-    if (cm != null) return cm;
+    if (cm != null) return _normalizeValue(cm, 'cm', 'mm');
 
     final m = _sumValues(lines, [
       RegExp(r'^;\s*filament used \[m\]\s*=\s*(.+?)\s*$', caseSensitive: false),
@@ -338,7 +339,7 @@ class GCodeImportParser {
         caseSensitive: false,
       ),
     ], unit: 'm');
-    if (m != null) return m;
+    if (m != null) return _normalizeValue(m, 'm', 'mm');
 
     return null;
   }
@@ -370,7 +371,7 @@ class GCodeImportParser {
         if (singleValue != null) {
           final value = _parseNumber(singleValue.group(0));
           if (value != null) {
-            values.add(_normalizeValue(value, unit, 'mm'));
+            values.add(_normalizeValue(value, unit, unit));
             break;
           }
         }
