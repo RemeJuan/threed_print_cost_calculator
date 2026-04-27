@@ -252,6 +252,13 @@
     }
   },
   "materialFallback": "Bahan",
+  "versionLabel": "Versi {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "historyTeaserTitle": "Simpan setiap estimasi cetak di satu tempat",
   "historyTeaserDescription": "Lihat cara kerja riwayat sebelum upgrade. Simpan estimasi yang selesai dan ekspor kapan saja dengan Pro.",
   "historyTeaserCta": "Simpan dan ekspor riwayat dengan Pro",
@@ -263,7 +270,7 @@
   "lockedValuePlaceholder": "Terkunci",
   "hideProPromotionsTitle": "Sembunyikan promosi Pro",
   "hideProPromotionsSubtitle": "Sembunyikan banner dan prompt upgrade",
-  "durationPickerLabel": "Printing time (hh:mm)",
+  "durationPickerLabel": "Waktu pencetakan (hh:mm)",
   "importGcodeButton": "Impor G-code (Isi otomatis)",
   "importGcodePageTitle": "Impor G-code (Beta)",
   "importGcodeIntro": "Pilih file .gcode lokal. Slicer yang didukung: PrusaSlicer, OrcaSlicer, Bambu Studio, dan Cura.",
@@ -296,7 +303,7 @@
   "importGcodeCalculatorNote": "Nilai yang diimpor hanya mengisi ulang waktu dan berat material total. Printer, material, dan biaya akhir berasal dari pengaturan kalkulator Anda.",
   "importGcodeUseValuesButton": "Gunakan nilai ini",
   "importGcodeSlicerLabel": "Slicer",
-  "importGcodeDurationLabel": "Durasi estimado",
+  "importGcodeDurationLabel": "Estimasi durasi",
   "importGcodeFilamentWeightLabel": "Berat filamen",
   "importGcodeFilamentLengthLabel": "Panjang filamen",
   "importGcodeLayerHeightLabel": "Tinggi lapisan",
@@ -312,7 +319,7 @@
   "importGcodeReadError": "File yang dipilih tidak dapat dibaca.",
   "importGcodeUnknownSlicerValue": "Tidak diketahui",
   "importGcodeMissingValue": "Tidak ditemukan",
-  "importGcodeWarningUnknownSlicer": "Slicer tidak teridentifikasi. Tinjau nilai sebelum applies.",
+  "importGcodeWarningUnknownSlicer": "Slicer tidak teridentifikasi. Tinjau nilai sebelum menerapkan.",
   "importGcodeWarningMissingDuration": "Waktu cetak tidak dapat dideteksi.",
   "importGcodeWarningMissingFilament": "Penggunaan filamen tidak lengkap.",
   "importGcodeWarningMissingFilamentWeight": "Berat filamen hilang.",
@@ -327,6 +334,6 @@
   "slicerSimplify3D": "Simplify3D",
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
-  "slicerOther": "Other",
+  "slicerOther": "Lainnya",
   "slicerUnknown": "Tidak Dikenal"
 }

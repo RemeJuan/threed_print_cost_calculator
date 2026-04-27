@@ -450,14 +450,14 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'Versi $version';
   }
 
   @override
   String get materialFallback => 'Bahan';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => 'Waktu pencetakan (hh:mm)';
 
   @override
   String get importGcodeButton => 'Impor G-code (Isi otomatis)';
@@ -560,7 +560,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override
-  String get importGcodeDurationLabel => 'Durasi estimado';
+  String get importGcodeDurationLabel => 'Estimasi durasi';
 
   @override
   String get importGcodeFilamentWeightLabel => 'Berat filamen';
@@ -612,7 +612,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get importGcodeWarningUnknownSlicer =>
-      'Slicer tidak teridentifikasi. Tinjau nilai sebelum applies.';
+      'Slicer tidak teridentifikasi. Tinjau nilai sebelum menerapkan.';
 
   @override
   String get importGcodeWarningMissingDuration =>
@@ -661,7 +661,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get slicerIdeaMaker => 'IdeaMaker';
 
   @override
-  String get slicerOther => 'Other';
+  String get slicerOther => 'Lainnya';
 
   @override
   String get slicerUnknown => 'Tidak Dikenal';

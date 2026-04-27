@@ -157,70 +157,112 @@ class GCodeImportParser {
       ]);
 
   GCodePreviewMetadata? _parsePreviewMetadata(List<String> lines) {
+    int? largestArea;
+    GCodePreviewMetadata? largestMetadata;
+
     for (final line in lines) {
       final match = RegExp(
         r'^;\s*(thumbnail(?:_QOI)?)\s+begin\s+(\d+)x(\d+)\s+(\d+)',
         caseSensitive: false,
       ).firstMatch(line);
       if (match == null) continue;
+
       final width = int.tryParse(match.group(2) ?? '');
       final height = int.tryParse(match.group(3) ?? '');
-      if (width == null ||
-          height == null ||
-          width <= 0 ||
-          height <= 0 ||
-          width > 2048 ||
-          height > 2048) {
-        return const GCodePreviewMetadata(
+
+      if (width == null || height == null || width <= 0 || height <= 0) {
+        continue;
+      }
+
+      if (width > 2048 || height > 2048) {
+        if (largestMetadata == null) {
+          largestMetadata = const GCodePreviewMetadata(
+            present: true,
+            format: null,
+            width: null,
+            height: null,
+            isSafe: false,
+          );
+        }
+        continue;
+      }
+
+      final area = width * height;
+      if (largestArea == null || area > largestArea) {
+        largestArea = area;
+        largestMetadata = GCodePreviewMetadata(
           present: true,
-          format: null,
-          width: null,
-          height: null,
-          isSafe: false,
+          format: (match.group(1) ?? '').toLowerCase().contains('qoi')
+              ? 'QOI'
+              : 'PNG',
+          width: width,
+          height: height,
+          isSafe: true,
         );
       }
-      return GCodePreviewMetadata(
-        present: true,
-        format: (match.group(1) ?? '').toLowerCase().contains('qoi')
-            ? 'QOI'
-            : 'PNG',
-        width: width,
-        height: height,
-        isSafe: true,
-      );
     }
-    return null;
+
+    return largestMetadata;
   }
 
   Uint8List? _parsePreviewImageBytes(List<String> lines) {
-    final buffer = StringBuffer();
+    int? largestArea;
+    String? largestBuffer;
+
     var inPreview = false;
+    var currentBuffer = StringBuffer();
+    int? currentWidth;
+    int? currentHeight;
+
     for (final line in lines) {
-      final begin = RegExp(
-        r'^;\s*thumbnail(?:_QOI)?\s+begin\s+\d+x\d+\s+\d+\s*$',
+      final beginMatch = RegExp(
+        r'^;\s*thumbnail(?:_QOI)?\s+begin\s+(\d+)x(\d+)\s+\d+\s*$',
         caseSensitive: false,
-      ).hasMatch(line);
+      ).firstMatch(line);
       final end = RegExp(
         r'^;\s*thumbnail(?:_QOI)?\s+end\s*$',
         caseSensitive: false,
       ).hasMatch(line);
-      if (begin) {
+
+      if (beginMatch != null) {
         inPreview = true;
+        currentBuffer = StringBuffer();
+        currentWidth = int.tryParse(beginMatch.group(1) ?? '');
+        currentHeight = int.tryParse(beginMatch.group(2) ?? '');
         continue;
       }
+
       if (end) {
-        break;
+        if (inPreview &&
+            currentWidth != null &&
+            currentHeight != null &&
+            currentWidth > 0 &&
+            currentHeight > 0 &&
+            currentWidth <= 2048 &&
+            currentHeight <= 2048) {
+          final area = currentWidth * currentHeight;
+          if (largestArea == null || area > largestArea) {
+            largestArea = area;
+            largestBuffer = currentBuffer.toString();
+          }
+        }
+        inPreview = false;
+        currentBuffer = StringBuffer();
+        currentWidth = null;
+        currentHeight = null;
+        continue;
       }
+
       if (!inPreview) continue;
-      final content = line.startsWith(';')
-          ? line.substring(1).trimLeft()
-          : line;
+      final content =
+          line.startsWith(';') ? line.substring(1).trimLeft() : line;
       if (content.isEmpty) continue;
-      buffer.write(content.trim());
+      currentBuffer.write(content.trim());
     }
-    if (buffer.isEmpty) return null;
+
+    if (largestBuffer == null || largestBuffer.isEmpty) return null;
     try {
-      return base64.decode(buffer.toString());
+      return base64.decode(largestBuffer);
     } catch (_) {
       return null;
     }
@@ -282,13 +324,19 @@ class GCodeImportParser {
         r'^;\s*filament used \[cm\]\s*=\s*(.+?)\s*$',
         caseSensitive: false,
       ),
-      RegExp(r'^;.*filament.*cm', caseSensitive: false),
+      RegExp(
+        r'^;\s*filament\s+(?:used|length)\s*[=:]\s*(.+?)\s*cm\s*$',
+        caseSensitive: false,
+      ),
     ], unit: 'cm');
     if (cm != null) return cm;
 
     final m = _sumValues(lines, [
       RegExp(r'^;\s*filament used \[m\]\s*=\s*(.+?)\s*$', caseSensitive: false),
-      RegExp(r'^;.*filament.*m', caseSensitive: false),
+      RegExp(
+        r'^;\s*filament\s+(?:used|length)\s*[=:]\s*(.+?)\s*m\s*$',
+        caseSensitive: false,
+      ),
     ], unit: 'm');
     if (m != null) return m;
 

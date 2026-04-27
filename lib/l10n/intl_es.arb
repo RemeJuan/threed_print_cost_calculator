@@ -251,6 +251,13 @@
     }
   },
   "materialFallback": "Material genérico",
+  "versionLabel": "Versión {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "historyTeaserTitle": "Guarda cada estimación de impresión en un solo lugar",
   "historyTeaserDescription": "Descubre cómo funciona el historial antes de actualizar. Guarda las estimaciones completadas y expórtalas cuando quieras con Pro.",
   "historyTeaserCta": "Guardar y exportar historial con Pro",
@@ -262,7 +269,7 @@
   "lockedValuePlaceholder": "Bloqueado",
   "hideProPromotionsTitle": "Ocultar promociones Pro",
   "hideProPromotionsSubtitle": "Ocultar banners y avisos de actualización",
-  "durationPickerLabel": "Printing time (hh:mm)",
+  "durationPickerLabel": "Tiempo de impresión (hh:mm)",
   "importGcodeButton": "Importar G-code (Relleno auto)",
   "importGcodePageTitle": "Importar G-code (Beta)",
   "importGcodeIntro": "Selecciona un archivo .gcode local. Slicers compatibles: PrusaSlicer, OrcaSlicer, Bambu Studio y Cura.",
@@ -273,10 +280,10 @@
   "gcodeImportFeedbackBetaFeature": "Función beta",
   "gcodeImportFeedbackBetaDescription": "Cuéntanos qué funcionó, qué falló o qué sigue viendo mal.",
   "gcodeImportFeedbackSlicerLabel": "Slicer",
-  "gcodeImportFeedbackOtherSlicerLabel": "Qué slicer?",
+  "gcodeImportFeedbackOtherSlicerLabel": "¿Qué slicer?",
   "gcodeImportFeedbackPreviewLabel": "Resultado de vista previa",
   "gcodeImportFeedbackMetadataLabel": "Resultado de metadatos",
-  "gcodeImportFeedbackDescriptionLabel": "Qué funcionó, qué falló o qué parece incorrecto?",
+  "gcodeImportFeedbackDescriptionLabel": "¿Qué funcionó, qué falló o qué parece incorrecto?",
   "gcodeImportFeedbackAttachmentLabel": "Adjuntar archivo G-code importado",
   "gcodeImportFeedbackNoAttachmentAvailable": "No hay archivo G-code disponible para adjuntar.",
   "gcodeImportFeedbackSendCta": "Enviar feedback",
@@ -296,8 +303,8 @@
   "importGcodeUseValuesButton": "Usar estos valores",
   "importGcodeSlicerLabel": "Slicer",
   "importGcodeDurationLabel": "Duración estimada",
-  "importGcodeFilamentWeightLabel": "Peso del filament",
-  "importGcodeFilamentLengthLabel": "Longitud del filament",
+  "importGcodeFilamentWeightLabel": "Peso del filamento",
+  "importGcodeFilamentLengthLabel": "Longitud del filamento",
   "importGcodeLayerHeightLabel": "Altura de capa",
   "importGcodePreviewLabel": "Vista previa",
   "importGcodePreviewAvailable": "Disponible",
@@ -313,8 +320,8 @@
   "importGcodeMissingValue": "No encontrado",
   "importGcodeWarningUnknownSlicer": "Slicer no identificado. Revisa los valores antes de aplicar.",
   "importGcodeWarningMissingDuration": "El tiempo de impresión no pudo ser detectado.",
-  "importGcodeWarningMissingFilament": "Uso de filament incompleto.",
-  "importGcodeWarningMissingFilamentWeight": "Peso del filament faltante.",
+  "importGcodeWarningMissingFilament": "Uso de filamento incompleto.",
+  "importGcodeWarningMissingFilamentWeight": "Peso del filamento faltante.",
   "importGcodeWarningPartialMetadata": "Algunos metadatos faltan.",
   "importGcodeWarningMixedMaterials": "Se encontraron múltiples totales de material. Revisa antes de aplicar.",
   "importGcodeAppliedMessage": "Valores importados aplicados a la calculadora",
@@ -326,6 +333,6 @@
   "slicerSimplify3D": "Simplify3D",
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
-  "slicerOther": "Other",
+  "slicerOther": "Otro",
   "slicerUnknown": "Desconocido"
 }

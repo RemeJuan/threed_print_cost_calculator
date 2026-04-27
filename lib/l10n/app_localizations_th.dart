@@ -448,14 +448,14 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'เวอร์ชัน $version';
   }
 
   @override
   String get materialFallback => 'วัสดุ';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => 'เวลาในการพิมพ์ (hh:mm)';
 
   @override
   String get importGcodeButton => 'นำเข้า G-code (เติมอัตโนมัติ)';
@@ -656,7 +656,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get slicerIdeaMaker => 'IdeaMaker';
 
   @override
-  String get slicerOther => 'Other';
+  String get slicerOther => 'อื่นๆ';
 
   @override
   String get slicerUnknown => 'ไม่ทราบ';

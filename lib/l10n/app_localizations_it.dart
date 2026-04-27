@@ -463,14 +463,14 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'Versione $version';
   }
 
   @override
   String get materialFallback => 'Materiale';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => 'Tempo di stampa (hh:mm)';
 
   @override
   String get importGcodeButton => 'Importa G-code (Compilazione auto)';
@@ -576,10 +576,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get importGcodeDurationLabel => 'Durata stimata';
 
   @override
-  String get importGcodeFilamentWeightLabel => 'Peso filament';
+  String get importGcodeFilamentWeightLabel => 'Peso filamento';
 
   @override
-  String get importGcodeFilamentLengthLabel => 'Lunghezza filament';
+  String get importGcodeFilamentLengthLabel => 'Lunghezza filamento';
 
   @override
   String get importGcodeLayerHeightLabel => 'Altezza layer';
@@ -634,11 +634,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get importGcodeWarningMissingFilament =>
-      'Uso del filament incompleto.';
+      'Uso del filamento incompleto.';
 
   @override
   String get importGcodeWarningMissingFilamentWeight =>
-      'Peso del filament mancante.';
+      'Peso del filamento mancante.';
 
   @override
   String get importGcodeWarningPartialMetadata => 'Alcuni metadati mancano.';
@@ -676,7 +676,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get slicerIdeaMaker => 'IdeaMaker';
 
   @override
-  String get slicerOther => 'Other';
+  String get slicerOther => 'Altro';
 
   @override
   String get slicerUnknown => 'Sconosciuto';

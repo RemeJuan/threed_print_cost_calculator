@@ -463,14 +463,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'Versión $version';
   }
 
   @override
   String get materialFallback => 'Material genérico';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => 'Tiempo de impresión (hh:mm)';
 
   @override
   String get importGcodeButton => 'Importar G-code (Relleno auto)';
@@ -505,7 +505,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gcodeImportFeedbackSlicerLabel => 'Slicer';
 
   @override
-  String get gcodeImportFeedbackOtherSlicerLabel => 'Qué slicer?';
+  String get gcodeImportFeedbackOtherSlicerLabel => '¿Qué slicer?';
 
   @override
   String get gcodeImportFeedbackPreviewLabel => 'Resultado de vista previa';
@@ -515,7 +515,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gcodeImportFeedbackDescriptionLabel =>
-      'Qué funcionó, qué falló o qué parece incorrecto?';
+      '¿Qué funcionó, qué falló o qué parece incorrecto?';
 
   @override
   String get gcodeImportFeedbackAttachmentLabel =>
@@ -576,10 +576,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get importGcodeDurationLabel => 'Duración estimada';
 
   @override
-  String get importGcodeFilamentWeightLabel => 'Peso del filament';
+  String get importGcodeFilamentWeightLabel => 'Peso del filamento';
 
   @override
-  String get importGcodeFilamentLengthLabel => 'Longitud del filament';
+  String get importGcodeFilamentLengthLabel => 'Longitud del filamento';
 
   @override
   String get importGcodeLayerHeightLabel => 'Altura de capa';
@@ -634,11 +634,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'El tiempo de impresión no pudo ser detectado.';
 
   @override
-  String get importGcodeWarningMissingFilament => 'Uso de filament incompleto.';
+  String get importGcodeWarningMissingFilament => 'Uso de filamento incompleto.';
 
   @override
   String get importGcodeWarningMissingFilamentWeight =>
-      'Peso del filament faltante.';
+      'Peso del filamento faltante.';
 
   @override
   String get importGcodeWarningPartialMetadata => 'Algunos metadatos faltan.';
@@ -676,7 +676,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get slicerIdeaMaker => 'IdeaMaker';
 
   @override
-  String get slicerOther => 'Other';
+  String get slicerOther => 'Otro';
 
   @override
   String get slicerUnknown => 'Desconocido';

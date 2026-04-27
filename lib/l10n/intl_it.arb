@@ -251,6 +251,13 @@
     }
   },
   "materialFallback": "Materiale",
+  "versionLabel": "Versione {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "historyTeaserTitle": "Conserva ogni preventivo di stampa in un unico posto",
   "historyTeaserDescription": "Scopri come funziona la cronologia prima di passare a Pro. Salva i preventivi completati ed esportali in qualsiasi momento con Pro.",
   "historyTeaserCta": "Salva ed esporta la cronologia con Pro",
@@ -262,7 +269,7 @@
   "lockedValuePlaceholder": "Bloccato",
   "hideProPromotionsTitle": "Nascondi promozioni Pro",
   "hideProPromotionsSubtitle": "Nascondi banner e richieste di aggiornamento",
-  "durationPickerLabel": "Printing time (hh:mm)",
+  "durationPickerLabel": "Tempo di stampa (hh:mm)",
   "importGcodeButton": "Importa G-code (Compilazione auto)",
   "importGcodePageTitle": "Importa G-code (Beta)",
   "importGcodeIntro": "Scegli un file .gcode locale. Slicer supportati: PrusaSlicer, OrcaSlicer, Bambu Studio e Cura.",
@@ -296,8 +303,8 @@
   "importGcodeUseValuesButton": "Usa questi valori",
   "importGcodeSlicerLabel": "Slicer",
   "importGcodeDurationLabel": "Durata stimata",
-  "importGcodeFilamentWeightLabel": "Peso filament",
-  "importGcodeFilamentLengthLabel": "Lunghezza filament",
+  "importGcodeFilamentWeightLabel": "Peso filamento",
+  "importGcodeFilamentLengthLabel": "Lunghezza filamento",
   "importGcodeLayerHeightLabel": "Altezza layer",
   "importGcodePreviewLabel": "Anteprima",
   "importGcodePreviewAvailable": "Disponibile",
@@ -313,8 +320,8 @@
   "importGcodeMissingValue": "Non trovato",
   "importGcodeWarningUnknownSlicer": "Slicer non identificato. Rivedi i valori prima di applicare.",
   "importGcodeWarningMissingDuration": "Il tempo di stampa non poteva essere rilevato.",
-  "importGcodeWarningMissingFilament": "Uso del filament incompleto.",
-  "importGcodeWarningMissingFilamentWeight": "Peso del filament mancante.",
+  "importGcodeWarningMissingFilament": "Uso del filamento incompleto.",
+  "importGcodeWarningMissingFilamentWeight": "Peso del filamento mancante.",
   "importGcodeWarningPartialMetadata": "Alcuni metadati mancano.",
   "importGcodeWarningMixedMaterials": "Trovati più totali materiale. Rivedi prima di applicare.",
   "importGcodeAppliedMessage": "Valori importati applicati al calcolatore",
@@ -326,6 +333,6 @@
   "slicerSimplify3D": "Simplify3D",
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
-  "slicerOther": "Other",
+  "slicerOther": "Altro",
   "slicerUnknown": "Sconosciuto"
 }

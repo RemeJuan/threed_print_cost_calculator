@@ -252,6 +252,13 @@
     }
   },
   "materialFallback": "วัสดุ",
+  "versionLabel": "เวอร์ชัน {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "historyTeaserTitle": "เก็บค่าประมาณการพิมพ์ทุกชิ้นไว้ในที่เดียว",
   "historyTeaserDescription": "ดูว่าประวัติทำงานอย่างไรก่อนอัปเกรด บันทึกค่าประมาณการที่เสร็จแล้วและส่งออกได้ทุกเมื่อด้วย Pro",
   "historyTeaserCta": "บันทึกและส่งออกประวัติกับ Pro",
@@ -263,7 +270,7 @@
   "lockedValuePlaceholder": "ถูกล็อก",
   "hideProPromotionsTitle": "ซ่อนโปรโมชัน Pro",
   "hideProPromotionsSubtitle": "ซ่อนแบนเนอร์และข้อความอัปเกรด",
-  "durationPickerLabel": "Printing time (hh:mm)",
+  "durationPickerLabel": "เวลาในการพิมพ์ (hh:mm)",
   "importGcodeButton": "นำเข้า G-code (เติมอัตโนมัติ)",
   "importGcodePageTitle": "นำเข้า G-code (เบต้า)",
   "importGcodeIntro": "เลือกไฟล์ .gcode ท้องถิ่น สไลเซอร์ที่รองรับ: PrusaSlicer, OrcaSlicer, Bambu Studio และ Cura",
@@ -327,6 +334,6 @@
   "slicerSimplify3D": "Simplify3D",
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
-  "slicerOther": "Other",
+  "slicerOther": "อื่นๆ",
   "slicerUnknown": "ไม่ทราบ"
 }
