@@ -51,6 +51,12 @@ UltiGCode-style alternatives:
 
 No standard embedded-thumbnail comment pattern assumed.
 
+## Preview Support
+
+- Uncommon.
+- Usually needs post-processing or custom export settings.
+- Treat preview as optional and frequently absent.
+
 ## Real snippet
 
 ```gcode

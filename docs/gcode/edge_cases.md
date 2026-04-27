@@ -39,6 +39,12 @@
 - Many files will not include portable thumbnail comments.
 - Strategy: preview optional. Never block import on missing preview.
 
+## Broken preview metadata
+
+- Preview metadata present but dimensions too small or decode fails.
+- Example: 32x32 thumbnail with invalid payload.
+- Strategy: show View only when valid, hide or disable broken preview, fail soft.
+
 ## Fallback rule
 
 When parser confidence not high:

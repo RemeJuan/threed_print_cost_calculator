@@ -62,6 +62,12 @@ Also seen in newer variants:
 ; thumbnail_QOI begin ...
 ```
 
+## Preview Support
+
+- Usually includes thumbnails.
+- High confidence.
+- Size may be small; render only when valid.
+
 ## Real snippet
 
 ```gcode

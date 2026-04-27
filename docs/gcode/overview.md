@@ -16,11 +16,18 @@ Fields in scope:
 - slicer identification
 - preview image when embedded
 
+Feature scope:
+
+- import local G-code files
+- extract metadata only
+- show embedded preview as static thumbnail on demand
+
 ## Product constraints
 
 - Offline-first: parse locally, no network dependency
 - Deterministic: same file must produce same extracted values every time
 - Metadata-first: prefer slicer comments over heuristic model analysis
+- Preview is thumbnail-only; no toolpath rendering
 
 ## Non-goals
 
@@ -28,6 +35,8 @@ Fields in scope:
 - No G-code editing
 - No printer simulation
 - No geometry reconstruction
+- No G-code storage; import is ephemeral and only derived values persist
+- No inline preview; preview opens from the on-demand View action
 
 ## Parse strategy
 
@@ -42,5 +51,6 @@ Fields in scope:
 - [OrcaSlicer parser notes](./parsers/orcaslicer.md)
 - [Bambu Studio parser notes](./parsers/bambu.md)
 - [Cura parser notes](./parsers/cura.md)
+- [Preview handling](./preview.md)
 - [Edge cases](./edge_cases.md)
 - [Test matrix](./test_matrix.md)

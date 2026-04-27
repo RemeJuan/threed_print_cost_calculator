@@ -53,7 +53,13 @@ No single stable layer-height key confirmed from current research. Capture if sa
 
 ### Preview image
 
-No standard plain-G-code thumbnail pattern confirmed. Bambu preview data may live in container/bgcode workflows instead of portable comment blocks.
+Embedded thumbnails may exist in lineage exports. Validate sample files before assuming support.
+
+## Preview Support
+
+- Typically include thumbnails in Bambu/Orca lineage exports.
+- High confidence for embedded previews when present.
+- Validate size and decode before enabling View.
 
 ## Real snippet
 

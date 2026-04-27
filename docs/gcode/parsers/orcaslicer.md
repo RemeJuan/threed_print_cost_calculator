@@ -58,7 +58,13 @@ Seen in Cura-compatible header mode:
 
 ### Preview image
 
-No stable embedded-thumbnail pattern confirmed for plain G-code docs set. Do not assume Prusa-style thumbnail support unless sample file proves it.
+Embedded thumbnails may exist in lineage exports. Validate sample files before assuming support.
+
+## Preview Support
+
+- Typically present in Bambu/Orca lineage exports.
+- Confidence varies by profile and export path.
+- Treat as optional, validate before showing View.
 
 ## Real snippet
 
