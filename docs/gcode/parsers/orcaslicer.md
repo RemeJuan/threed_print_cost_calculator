@@ -93,6 +93,7 @@ Cura-compatible header mode:
 - Time may be text duration or raw seconds.
 - Filament may be mm, g, cm3, or meters depending on header style.
 - Sample-file-driven tests important here.
+- Parser concern only; UI uses field-level fallback, not global alerts.
 
 ## Confidence
 

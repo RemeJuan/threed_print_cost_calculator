@@ -3,18 +3,18 @@
 ## Missing metadata
 
 - File has valid toolpath but no slicer summary comments.
-- Strategy: import detected values only, leave missing fields empty, ask user to confirm.
+- Strategy: import detected values only, leave missing fields empty, use graceful field-level fallback (e.g. `Not found`).
 
 ## Partial files
 
 - Upload may be truncated before footer metadata.
 - Important for Prusa-style files where summary may be near end.
-- Strategy: parse whatever exists, mark result partial, require confirmation.
+- Strategy: parse whatever exists, mark result partial, use graceful field-level fallback, keep parser diagnostics internal.
 
 ## Unknown slicer
 
 - No known slicer marker or keys mismatch all known patterns.
-- Strategy: run generic fallback patterns (`;TIME:`, `;Filament used:`, thumbnail markers), label slicer unknown, confirm with user.
+- Strategy: run generic fallback patterns (`;TIME:`, `;Filament used:`, thumbnail markers), label slicer unknown, use graceful field-level fallback.
 
 ## Multiple materials
 
@@ -50,5 +50,6 @@
 When parser confidence not high:
 
 1. extract best-effort values
-2. show detected source + parsed fields
-3. require user confirmation before save/apply
+2. show detected source + parsed fields inline
+3. keep global UI quiet; no alert banner/dialog
+4. require user confirmation before save/apply only when needed

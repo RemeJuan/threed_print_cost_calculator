@@ -90,6 +90,7 @@ Also seen in newer variants:
 - Length stored in mm.
 - Multiple thumbnail blocks may exist.
 - Weight, length, and volume may all be present; do not derive when direct value exists.
+- Parser concern only; UI uses field-level fallback, not global alerts.
 
 ## Confidence
 

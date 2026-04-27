@@ -73,6 +73,7 @@ No standard embedded-thumbnail comment pattern assumed.
 - Filament unit can be meters or flavor-specific material values.
 - Header order may vary.
 - Best-effort parser target; third-party post-processing can alter comments.
+- Parser concern only; UI uses field-level fallback, not global alerts.
 
 ## Confidence
 

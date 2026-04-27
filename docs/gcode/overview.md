@@ -28,6 +28,8 @@ Feature scope:
 - Deterministic: same file must produce same extracted values every time
 - Metadata-first: prefer slicer comments over heuristic model analysis
 - Preview is thumbnail-only; no toolpath rendering
+- Parsing issues are handled silently; missing values are shown at field level
+- The UI prioritises clarity over completeness. Missing data is shown inline rather than via global alerts.
 
 ## Non-goals
 

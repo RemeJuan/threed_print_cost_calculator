@@ -10,6 +10,8 @@
 
 - Summary shows a `Preview` field.
 - Valid preview shows `View`.
+- Preview may not be available depending on slicer.
+- UI shows `Not available` when missing.
 - `View` opens a modal with the thumbnail image.
 - Broken image decode fails inside the modal, not the import flow.
 

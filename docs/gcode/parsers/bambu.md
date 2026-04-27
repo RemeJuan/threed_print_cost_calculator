@@ -80,6 +80,7 @@ Embedded thumbnails may exist in lineage exports. Validate sample files before a
 - Keys use `total ...` naming, not Prusa/Cura naming.
 - Some releases reportedly changed or omitted certain filament lines.
 - Strong overlap with Orca lineage, but not identical field names.
+- Parser concern only; UI uses field-level fallback, not global alerts.
 
 ## Confidence
 
