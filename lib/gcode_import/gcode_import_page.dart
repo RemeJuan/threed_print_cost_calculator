@@ -232,26 +232,6 @@ class GCodeImportPage extends HookConsumerWidget {
     };
   }
 
-  String _warningMessage(
-    AppLocalizations l10n,
-    GCodeParseWarningCode warningCode,
-  ) {
-    return switch (warningCode) {
-      GCodeParseWarningCode.unknownSlicer =>
-        l10n.importGcodeWarningUnknownSlicer,
-      GCodeParseWarningCode.missingDuration =>
-        l10n.importGcodeWarningMissingDuration,
-      GCodeParseWarningCode.missingFilament =>
-        l10n.importGcodeWarningMissingFilament,
-      GCodeParseWarningCode.missingFilamentWeight =>
-        l10n.importGcodeWarningMissingFilamentWeight,
-      GCodeParseWarningCode.partialMetadata =>
-        l10n.importGcodeWarningPartialMetadata,
-      GCodeParseWarningCode.mixedMaterials =>
-        l10n.importGcodeWarningMixedMaterials,
-    };
-  }
-
   String _slicerLabel(AppLocalizations l10n, GCodeSlicer slicer) {
     return slicer.label(l10n);
   }
@@ -269,7 +249,7 @@ class GCodeImportPage extends HookConsumerWidget {
     GCodeImportResult result,
   ) {
     final previewBytes = result.previewImageBytes;
-    if (previewBytes == null) {
+    if (previewBytes == null || !result.hasSafePreview) {
       return Text(
         l10n.importGcodePreviewUnavailable,
         textAlign: TextAlign.end,

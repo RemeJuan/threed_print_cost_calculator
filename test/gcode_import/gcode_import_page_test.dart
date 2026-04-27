@@ -55,13 +55,17 @@ void main() {
               height: 1,
             ),
             previewImageBytes: _validPngBytes(),
+            hasSafePreview: true,
           ),
         ),
       ),
     ]);
 
     expect(find.widgetWithText(TextButton, 'View'), findsOneWidget);
-    expect(find.text('Preview metadata found, but image could not be displayed.'), findsNothing);
+    expect(
+      find.text('Preview metadata found, but image could not be displayed.'),
+      findsNothing,
+    );
 
     await tester.ensureVisible(find.widgetWithText(TextButton, 'View'));
     await tester.tap(find.widgetWithText(TextButton, 'View'));
@@ -74,6 +78,31 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(Image), findsNothing);
+  });
+
+  testWidgets('hides unsafe preview image', (tester) async {
+    await tester.pumpApp(const GCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      gcodeImportControllerProvider.overrideWith(
+        () => _FakeController(
+          _successState(
+            slicer: GCodeSlicer.prusaSlicer,
+            previewMetadata: const GCodePreviewMetadata(
+              present: true,
+              format: 'PNG',
+              width: 1,
+              height: 1,
+              isSafe: false,
+            ),
+            previewImageBytes: _validPngBytes(),
+            hasSafePreview: false,
+          ),
+        ),
+      ),
+    ]);
+
+    expect(find.widgetWithText(TextButton, 'View'), findsNothing);
+    expect(find.text('Not available'), findsOneWidget);
   });
 
   testWidgets('shows fallback text when preview decode fails', (tester) async {
@@ -90,6 +119,7 @@ void main() {
               height: 1,
             ),
             previewImageBytes: Uint8List.fromList([0, 1, 2, 3]),
+            hasSafePreview: true,
           ),
         ),
       ),
@@ -179,6 +209,7 @@ GCodeImportState _successState({
   required GCodeSlicer slicer,
   required GCodePreviewMetadata? previewMetadata,
   required Uint8List? previewImageBytes,
+  bool hasSafePreview = false,
 }) {
   return GCodeImportState.success(
     selectedFileName: 'preview.gcode',
@@ -192,6 +223,7 @@ GCodeImportState _successState({
       previewImageBytes: previewImageBytes,
       warnings: const [],
       rawExtractedValues: const {},
+      hasSafePreview: hasSafePreview,
     ),
   );
 }
