@@ -507,6 +507,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get gcodeImportFeedbackSendCta => 'フィードバックを送信';
 
   @override
+  String get gcodeImportFeedbackSentMessage => 'フィードバックを送信しました';
+
+  @override
   String get gcodeFeedbackPreviewLoaded => 'プレビュー読み込み済み';
 
   @override

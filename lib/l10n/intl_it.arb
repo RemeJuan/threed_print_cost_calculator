@@ -280,6 +280,8 @@
   "gcodeImportFeedbackAttachmentLabel": "Allega file G-code importato",
   "gcodeImportFeedbackNoAttachmentAvailable": "Nessun file G-code importato disponibile.",
   "gcodeImportFeedbackSendCta": "Invia feedback",
+  "gcodeImportFeedbackSentMessage": "Feedback inviato",
+  "@gcodeImportFeedbackSentMessage": {},
   "gcodeFeedbackPreviewLoaded": "Anteprima caricata",
   "gcodeFeedbackPreviewMissing": "Anteprima mancante",
   "gcodeFeedbackPreviewIncorrect": "Anteprima errata",

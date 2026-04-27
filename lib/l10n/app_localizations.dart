@@ -1068,6 +1068,12 @@ abstract class AppLocalizations {
   /// **'Send feedback'**
   String get gcodeImportFeedbackSendCta;
 
+  /// No description provided for @gcodeImportFeedbackSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback sent'**
+  String get gcodeImportFeedbackSentMessage;
+
   /// No description provided for @gcodeFeedbackPreviewLoaded.
   ///
   /// In en, this message translates to:

@@ -281,6 +281,8 @@
   "gcodeImportFeedbackAttachmentLabel": "インポートしたG-codeファイルを添付",
   "gcodeImportFeedbackNoAttachmentAvailable": "添付できるインポート済みファイルがありません。",
   "gcodeImportFeedbackSendCta": "フィードバックを送信",
+  "gcodeImportFeedbackSentMessage": "フィードバックを送信しました",
+  "@gcodeImportFeedbackSentMessage": {},
   "gcodeFeedbackPreviewLoaded": "プレビュー読み込み済み",
   "gcodeFeedbackPreviewMissing": "プレビューなし",
   "gcodeFeedbackPreviewIncorrect": "プレビュー不正確",

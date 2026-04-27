@@ -281,6 +281,8 @@
   "gcodeImportFeedbackAttachmentLabel": "แนบไฟล์ G-code ที่นำเข้า",
   "gcodeImportFeedbackNoAttachmentAvailable": "ไม่มีไฟล์ G-code ที่นำเข้าให้แนบ",
   "gcodeImportFeedbackSendCta": "ส่งข้อเสนอแนะ",
+  "gcodeImportFeedbackSentMessage": "ส่งข้อเสนอแนะแล้ว",
+  "@gcodeImportFeedbackSentMessage": {},
   "gcodeFeedbackPreviewLoaded": "ตัวอย่างโหลดแล้ว",
   "gcodeFeedbackPreviewMissing": "ตัวอย่างหายไป",
   "gcodeFeedbackPreviewIncorrect": "ตัวอย่างไม่ถูกต้อง",

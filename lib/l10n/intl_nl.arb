@@ -281,6 +281,8 @@
   "gcodeImportFeedbackAttachmentLabel": "Geïmporteerd G-code-bestand bijvoegen",
   "gcodeImportFeedbackNoAttachmentAvailable": "Geen geïmporteerd G-code bestand beschikbaar.",
   "gcodeImportFeedbackSendCta": "Feedback verzenden",
+  "gcodeImportFeedbackSentMessage": "Feedback verzonden",
+  "@gcodeImportFeedbackSentMessage": {},
   "gcodeFeedbackPreviewLoaded": "Voorbeeld geladen",
   "gcodeFeedbackPreviewMissing": "Voorbeeld ontbreekt",
   "gcodeFeedbackPreviewIncorrect": "Voorbeeld onjuist",

@@ -291,6 +291,11 @@ class _GCodeImportFeedbackPageState
       );
 
       await ref.read(gcodeImportFeedbackMailerProvider).send(draft);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.gcodeImportFeedbackSentMessage)),
+      );
+      Navigator.of(context).pop();
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

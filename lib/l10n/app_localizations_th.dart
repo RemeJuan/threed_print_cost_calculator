@@ -513,6 +513,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get gcodeImportFeedbackSendCta => 'ส่งข้อเสนอแนะ';
 
   @override
+  String get gcodeImportFeedbackSentMessage => 'ส่งข้อเสนอแนะแล้ว';
+
+  @override
   String get gcodeFeedbackPreviewLoaded => 'ตัวอย่างโหลดแล้ว';
 
   @override

@@ -281,6 +281,8 @@
   "gcodeImportFeedbackAttachmentLabel": "Importierte G-code-Datei anhängen",
   "gcodeImportFeedbackNoAttachmentAvailable": "Keine importierte G-code-Datei verfügbar.",
   "gcodeImportFeedbackSendCta": "Feedback senden",
+  "gcodeImportFeedbackSentMessage": "Feedback gesendet",
+  "@gcodeImportFeedbackSentMessage": {},
   "gcodeFeedbackPreviewLoaded": "Vorschau geladen",
   "gcodeFeedbackPreviewMissing": "Vorschau fehlt",
   "gcodeFeedbackPreviewIncorrect": "Vorschau falsch",

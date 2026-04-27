@@ -523,6 +523,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get gcodeImportFeedbackSendCta => 'Feedback verzenden';
 
   @override
+  String get gcodeImportFeedbackSentMessage => 'Feedback verzonden';
+
+  @override
   String get gcodeFeedbackPreviewLoaded => 'Voorbeeld geladen';
 
   @override

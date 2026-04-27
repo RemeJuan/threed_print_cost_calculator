@@ -281,6 +281,8 @@
   "gcodeImportFeedbackAttachmentLabel": "Lampirkan file G-code yang diimpor",
   "gcodeImportFeedbackNoAttachmentAvailable": "Tidak ada file G-code yang diimpor untuk dilampirkan.",
   "gcodeImportFeedbackSendCta": "Kirim masukan",
+  "gcodeImportFeedbackSentMessage": "Masukan terkirim",
+  "@gcodeImportFeedbackSentMessage": {},
   "gcodeFeedbackPreviewLoaded": "Pratinjau dimuat",
   "gcodeFeedbackPreviewMissing": "Pratinjau hilang",
   "gcodeFeedbackPreviewIncorrect": "Pratinjau tidak benar",

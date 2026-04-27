@@ -516,6 +516,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get gcodeImportFeedbackSendCta => 'Kirim masukan';
 
   @override
+  String get gcodeImportFeedbackSentMessage => 'Masukan terkirim';
+
+  @override
   String get gcodeFeedbackPreviewLoaded => 'Pratinjau dimuat';
 
   @override

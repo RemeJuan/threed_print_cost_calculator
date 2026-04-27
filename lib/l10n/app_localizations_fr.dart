@@ -532,6 +532,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get gcodeImportFeedbackSendCta => 'Envoyer le feedback';
 
   @override
+  String get gcodeImportFeedbackSentMessage => 'Feedback envoyé';
+
+  @override
   String get gcodeFeedbackPreviewLoaded => 'Aperçu chargé';
 
   @override
