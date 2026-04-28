@@ -183,6 +183,22 @@ class GCodeImportParser {
       currentBuffer.write(content.trim());
     }
 
+    // Handle unclosed thumbnail at end of file
+    if (inPreview &&
+        currentWidth != null &&
+        currentHeight != null &&
+        currentWidth > 0 &&
+        currentHeight > 0) {
+      candidates.add(
+        _PreviewCandidate(
+          width: currentWidth,
+          height: currentHeight,
+          format: currentFormat ?? 'PNG',
+          base64Data: currentBuffer.toString(),
+        ),
+      );
+    }
+
     // Now find the largest safe preview that actually decodes
     int? largestSafeArea;
     GCodePreviewMetadata? winningMetadata;
