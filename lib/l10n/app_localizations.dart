@@ -150,6 +150,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsNavLabel;
 
+  /// No description provided for @newAnnouncementBadgeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newAnnouncementBadgeLabel;
+
   /// No description provided for @generalHeader.
   ///
   /// In en, this message translates to:

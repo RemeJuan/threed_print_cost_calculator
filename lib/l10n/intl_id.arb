@@ -55,7 +55,7 @@
   "historyNavLabel": "Riwayat",
   "@historyNavLabel": {},
   "settingsNavLabel": "Pengaturan",
-  "@settingsNavLabel": {},
+  "newAnnouncementBadgeLabel": "Baru",
   "generalHeader": "Umum",
   "@generalHeader": {},
   "savePrintButton": "Simpan cetakan",

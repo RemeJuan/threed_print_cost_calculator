@@ -55,6 +55,7 @@
   "historyNavLabel": "Historique",
   "@historyNavLabel": {},
   "settingsNavLabel": "Paramètres",
+  "newAnnouncementBadgeLabel": "Nouveau",
   "generalHeader": "Général",
   "@generalHeader": {},
   "@settingsNavLabel": {},

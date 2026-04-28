@@ -55,6 +55,7 @@
   "historyNavLabel": "履歴",
   "@historyNavLabel": {},
   "settingsNavLabel": "設定",
+  "newAnnouncementBadgeLabel": "新規",
   "generalHeader": "一般",
   "@generalHeader": {},
   "@settingsNavLabel": {},

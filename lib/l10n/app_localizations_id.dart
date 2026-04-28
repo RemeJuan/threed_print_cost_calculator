@@ -27,6 +27,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsNavLabel => 'Pengaturan';
 
   @override
+  String get newAnnouncementBadgeLabel => 'Baru';
+
+  @override
   String get generalHeader => 'Umum';
 
   @override

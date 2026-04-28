@@ -6,6 +6,7 @@
   "calculatorNavLabel": "Calculator",
   "historyNavLabel": "History",
   "settingsNavLabel": "Settings",
+  "newAnnouncementBadgeLabel": "New",
   "generalHeader": "General",
   "@generalHeader": {},
   "wattLabel": "Watt (3D Printer)",

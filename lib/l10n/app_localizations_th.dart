@@ -27,6 +27,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsNavLabel => 'การตั้งค่า';
 
   @override
+  String get newAnnouncementBadgeLabel => 'ใหม่';
+
+  @override
   String get generalHeader => 'ทั่วไป';
 
   @override

@@ -27,6 +27,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsNavLabel => 'Configuración';
 
   @override
+  String get newAnnouncementBadgeLabel => 'Nuevo';
+
+  @override
   String get generalHeader => 'General';
 
   @override
