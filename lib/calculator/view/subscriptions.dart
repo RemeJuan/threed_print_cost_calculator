@@ -8,6 +8,13 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+Future<void> showSubscriptionsSheet(BuildContext context) {
+  return showModalBottomSheet<void>(
+    context: context,
+    builder: (_) => const Subscriptions(),
+  );
+}
+
 class Subscriptions extends HookConsumerWidget {
   const Subscriptions({super.key});
 

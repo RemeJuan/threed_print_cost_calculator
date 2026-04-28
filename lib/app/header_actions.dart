@@ -31,10 +31,7 @@ class HeaderActions extends ConsumerWidget {
               ),
             )
           : IconButton(
-              onPressed: () async => showModalBottomSheet(
-                context: context,
-                builder: (_) => const Subscriptions(),
-              ),
+              onPressed: () async => showSubscriptionsSheet(context),
               icon: const Icon(Icons.shopping_cart, color: Colors.white54),
             ),
     );
