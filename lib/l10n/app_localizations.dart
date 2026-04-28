@@ -150,6 +150,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsNavLabel;
 
+  /// No description provided for @newAnnouncementBadgeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get newAnnouncementBadgeLabel;
+
   /// No description provided for @generalHeader.
   ///
   /// In en, this message translates to:
@@ -959,6 +965,396 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Material'**
   String get materialFallback;
+
+  /// No description provided for @durationPickerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing time (hh:mm)'**
+  String get durationPickerLabel;
+
+  /// No description provided for @importGcodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code (Auto-fill)'**
+  String get importGcodeButton;
+
+  /// No description provided for @importGcodePageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code (Beta)'**
+  String get importGcodePageTitle;
+
+  /// No description provided for @importGcodeIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a local .gcode file. Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.'**
+  String get importGcodeIntro;
+
+  /// No description provided for @importGcodeSelectFileButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose G-code file'**
+  String get importGcodeSelectFileButton;
+
+  /// No description provided for @importGcodePickAnotherButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose another file'**
+  String get importGcodePickAnotherButton;
+
+  /// No description provided for @importGcodeSelectedFileLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected file'**
+  String get importGcodeSelectedFileLabel;
+
+  /// No description provided for @gcodeImportFeedbackTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'G-code Import Beta Feedback'**
+  String get gcodeImportFeedbackTitle;
+
+  /// No description provided for @gcodeImportFeedbackBetaFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Beta feature'**
+  String get gcodeImportFeedbackBetaFeature;
+
+  /// No description provided for @gcodeImportFeedbackBetaDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what helped, what broke, or what still looks wrong.'**
+  String get gcodeImportFeedbackBetaDescription;
+
+  /// No description provided for @gcodeImportFeedbackSlicerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slicer'**
+  String get gcodeImportFeedbackSlicerLabel;
+
+  /// No description provided for @gcodeImportFeedbackOtherSlicerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Which slicer?'**
+  String get gcodeImportFeedbackOtherSlicerLabel;
+
+  /// No description provided for @gcodeImportFeedbackPreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview result'**
+  String get gcodeImportFeedbackPreviewLabel;
+
+  /// No description provided for @gcodeImportFeedbackMetadataLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Metadata result'**
+  String get gcodeImportFeedbackMetadataLabel;
+
+  /// No description provided for @gcodeImportFeedbackDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What worked, what broke, or what looks wrong?'**
+  String get gcodeImportFeedbackDescriptionLabel;
+
+  /// No description provided for @gcodeImportFeedbackAttachmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach imported G-code file'**
+  String get gcodeImportFeedbackAttachmentLabel;
+
+  /// No description provided for @gcodeImportFeedbackNoAttachmentAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No imported G-code file available to attach.'**
+  String get gcodeImportFeedbackNoAttachmentAvailable;
+
+  /// No description provided for @gcodeImportFeedbackSendCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get gcodeImportFeedbackSendCta;
+
+  /// No description provided for @gcodeImportFeedbackSentMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback sent'**
+  String get gcodeImportFeedbackSentMessage;
+
+  /// No description provided for @gcodeFeedbackPreviewLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview loaded'**
+  String get gcodeFeedbackPreviewLoaded;
+
+  /// No description provided for @gcodeFeedbackPreviewMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview missing'**
+  String get gcodeFeedbackPreviewMissing;
+
+  /// No description provided for @gcodeFeedbackPreviewIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect preview'**
+  String get gcodeFeedbackPreviewIncorrect;
+
+  /// No description provided for @gcodeFeedbackPreviewNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get gcodeFeedbackPreviewNotSure;
+
+  /// No description provided for @gcodeFeedbackMetadataCorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks correct'**
+  String get gcodeFeedbackMetadataCorrect;
+
+  /// No description provided for @gcodeFeedbackMetadataMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing data'**
+  String get gcodeFeedbackMetadataMissing;
+
+  /// No description provided for @gcodeFeedbackMetadataIncorrect.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect data'**
+  String get gcodeFeedbackMetadataIncorrect;
+
+  /// No description provided for @gcodeFeedbackMetadataNotSure.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sure'**
+  String get gcodeFeedbackMetadataNotSure;
+
+  /// No description provided for @importGcodeSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import summary'**
+  String get importGcodeSummaryTitle;
+
+  /// No description provided for @importGcodeSupportedSlicersNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported slicers: PrusaSlicer, OrcaSlicer, Bambu Studio, and Cura.'**
+  String get importGcodeSupportedSlicersNote;
+
+  /// No description provided for @importGcodeCalculatorNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported values only prefill time and total material weight. Printer, material, and final cost still come from your calculator settings.'**
+  String get importGcodeCalculatorNote;
+
+  /// No description provided for @importGcodeUseValuesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use these values'**
+  String get importGcodeUseValuesButton;
+
+  /// No description provided for @importGcodeSlicerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Slicer'**
+  String get importGcodeSlicerLabel;
+
+  /// No description provided for @importGcodeDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated duration'**
+  String get importGcodeDurationLabel;
+
+  /// No description provided for @importGcodeFilamentWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament weight'**
+  String get importGcodeFilamentWeightLabel;
+
+  /// No description provided for @importGcodeFilamentLengthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament length'**
+  String get importGcodeFilamentLengthLabel;
+
+  /// No description provided for @importGcodeLayerHeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Layer height'**
+  String get importGcodeLayerHeightLabel;
+
+  /// No description provided for @importGcodePreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get importGcodePreviewLabel;
+
+  /// No description provided for @importGcodePreviewAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get importGcodePreviewAvailable;
+
+  /// No description provided for @importGcodePreviewView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get importGcodePreviewView;
+
+  /// No description provided for @importGcodePreviewUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get importGcodePreviewUnavailable;
+
+  /// No description provided for @importGcodePreviewDecodeFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview metadata found, but image could not be displayed.'**
+  String get importGcodePreviewDecodeFailed;
+
+  /// No description provided for @importGcodePreviewCuraNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Cura previews may require a post-processing script to embed thumbnails in the G-code.'**
+  String get importGcodePreviewCuraNote;
+
+  /// No description provided for @importGcodeWarningsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get importGcodeWarningsTitle;
+
+  /// No description provided for @importGcodeUnsupportedTypeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a .gcode file.'**
+  String get importGcodeUnsupportedTypeError;
+
+  /// No description provided for @importGcodeUnsupportedFileError.
+  ///
+  /// In en, this message translates to:
+  /// **'This file did not contain supported G-code metadata.'**
+  String get importGcodeUnsupportedFileError;
+
+  /// No description provided for @importGcodeReadError.
+  ///
+  /// In en, this message translates to:
+  /// **'The selected file could not be read.'**
+  String get importGcodeReadError;
+
+  /// No description provided for @importGcodeUnknownSlicerValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get importGcodeUnknownSlicerValue;
+
+  /// No description provided for @importGcodeMissingValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get importGcodeMissingValue;
+
+  /// No description provided for @importGcodeWarningUnknownSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'Slicer not identified. Review values before applying.'**
+  String get importGcodeWarningUnknownSlicer;
+
+  /// No description provided for @importGcodeWarningMissingDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not detect print time.'**
+  String get importGcodeWarningMissingDuration;
+
+  /// No description provided for @importGcodeWarningMissingFilament.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament usage incomplete.'**
+  String get importGcodeWarningMissingFilament;
+
+  /// No description provided for @importGcodeWarningMissingFilamentWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Filament weight missing.'**
+  String get importGcodeWarningMissingFilamentWeight;
+
+  /// No description provided for @importGcodeWarningPartialMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Some metadata missing.'**
+  String get importGcodeWarningPartialMetadata;
+
+  /// No description provided for @importGcodeWarningMixedMaterials.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple material totals found. Review before applying.'**
+  String get importGcodeWarningMixedMaterials;
+
+  /// No description provided for @importGcodeAppliedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported values applied to calculator'**
+  String get importGcodeAppliedMessage;
+
+  /// No description provided for @slicerPrusaSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'PrusaSlicer'**
+  String get slicerPrusaSlicer;
+
+  /// No description provided for @slicerOrcaSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'OrcaSlicer'**
+  String get slicerOrcaSlicer;
+
+  /// No description provided for @slicerBambuStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Bambu Studio'**
+  String get slicerBambuStudio;
+
+  /// No description provided for @slicerCura.
+  ///
+  /// In en, this message translates to:
+  /// **'Cura'**
+  String get slicerCura;
+
+  /// No description provided for @slicerCrealityPrint.
+  ///
+  /// In en, this message translates to:
+  /// **'Creality Print'**
+  String get slicerCrealityPrint;
+
+  /// No description provided for @slicerSimplify3D.
+  ///
+  /// In en, this message translates to:
+  /// **'Simplify3D'**
+  String get slicerSimplify3D;
+
+  /// No description provided for @slicerSuperSlicer.
+  ///
+  /// In en, this message translates to:
+  /// **'SuperSlicer'**
+  String get slicerSuperSlicer;
+
+  /// No description provided for @slicerIdeaMaker.
+  ///
+  /// In en, this message translates to:
+  /// **'IdeaMaker'**
+  String get slicerIdeaMaker;
+
+  /// No description provided for @slicerOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get slicerOther;
+
+  /// No description provided for @slicerUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get slicerUnknown;
 }
 
 class _AppLocalizationsDelegate

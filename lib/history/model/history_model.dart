@@ -20,6 +20,7 @@ abstract class HistoryModel with _$HistoryModel {
     @Default(<Map<String, dynamic>>[])
     List<Map<String, dynamic>> materialUsages,
     required String timeHours,
+    @Default(false) bool importedFromGcode,
   }) = _HistoryModel;
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
@@ -46,6 +47,7 @@ abstract class HistoryModel with _$HistoryModel {
       weight: parseLocalizedNumOrFallback(map['weight']),
       materialUsages: _parseMaterialUsages(map['materialUsages']),
       timeHours: map['timeHours']?.toString() ?? '00:00',
+      importedFromGcode: map['importedFromGcode'] == true,
     );
   }
 
@@ -73,6 +75,7 @@ extension HistoryModelX on HistoryModel {
       'weight': weight,
       'materialUsages': materialUsages,
       'timeHours': timeHours,
+      'importedFromGcode': importedFromGcode,
     };
   }
 }

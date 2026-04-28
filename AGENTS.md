@@ -57,3 +57,12 @@
 - Only include changes with user impact
 - Keep structure consistent (Added, Changed, Fixed)
 - New entries go at the top
+
+## Documentation
+- `docs/README.md` - Documentation index
+- `docs/gcode/` - G-code parser docs (overview, edge cases, slicer-specific docs, preview, test matrix)
+- `docs/dev/patrol-ci.md` - Patrol E2E testing guide
+- `docs/architecture/` - Architecture notes (e.g., performance)
+- `docs/decisions/` - Architecture Decision Records (ADRs)
+- `docs/product/` - Product specs and designs
+- `docs/inbox/` - Work-in-progress notes

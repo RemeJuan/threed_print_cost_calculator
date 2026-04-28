@@ -56,7 +56,7 @@ class TimeSection extends HookConsumerWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        'Printing time (hh:mm)',
+                        l10n.durationPickerLabel,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ),

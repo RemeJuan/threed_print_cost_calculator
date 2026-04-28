@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import '../../helpers/helpers.dart';
@@ -28,11 +29,17 @@ void main() {
     expect(find.byType(Subscriptions), findsOneWidget);
   });
 
-  testWidgets('premium users do not see the cart action', (tester) async {
+  testWidgets('premium users see the gcode import action', (tester) async {
     await tester.pumpApp(const HeaderActions(), [
       isPremiumProvider.overrideWithValue(true),
     ]);
 
     expect(find.byIcon(Icons.shopping_cart), findsNothing);
+    expect(find.byIcon(Icons.upload_file_outlined), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.upload_file_outlined));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(GCodeImportPage), findsOneWidget);
   });
 }

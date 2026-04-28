@@ -13,6 +13,8 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
+import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 
 enum _AppTab { calculator, history, settings }
 
@@ -23,6 +25,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   Widget build(context, ref) {
     final selectedTab = useState(_AppTab.calculator);
     final tapNavigationTargetIndex = useState<int?>(null);
+    final whatsNewShown = useRef(false);
     final l10n = AppLocalizations.of(context)!;
     final prefs = ref.read(sharedPreferencesProvider);
     final premiumState = ref.watch(premiumStateProvider);
@@ -36,6 +39,20 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       );
       return null;
     }, const []);
+
+    final announcementAsync = ref.watch(currentAnnouncementProvider);
+
+    useEffect(() {
+      announcementAsync.whenData((announcement) {
+        if (announcement == null || whatsNewShown.value) return;
+        whatsNewShown.value = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final dismiss = ref.read(dismissAnnouncementProvider);
+          WhatsNewSheet.show(context, announcement, dismiss);
+        });
+      });
+      return null;
+    }, [announcementAsync]);
 
     ref.listen<PremiumState>(premiumStateProvider, (previous, next) async {
       if (next.isLoading || next.userId.isEmpty) return;

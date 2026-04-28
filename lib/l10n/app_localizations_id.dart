@@ -27,6 +27,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsNavLabel => 'Pengaturan';
 
   @override
+  String get newAnnouncementBadgeLabel => 'Baru';
+
+  @override
   String get generalHeader => 'Umum';
 
   @override
@@ -455,4 +458,214 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get materialFallback => 'Bahan';
+
+  @override
+  String get durationPickerLabel => 'Waktu pencetakan (hh:mm)';
+
+  @override
+  String get importGcodeButton => 'Impor G-code (Isi otomatis)';
+
+  @override
+  String get importGcodePageTitle => 'Impor G-code (Beta)';
+
+  @override
+  String get importGcodeIntro =>
+      'Pilih file .gcode lokal. Slicer yang didukung: PrusaSlicer, OrcaSlicer, Bambu Studio, dan Cura.';
+
+  @override
+  String get importGcodeSelectFileButton => 'Pilih file G-code';
+
+  @override
+  String get importGcodePickAnotherButton => 'Pilih file lain';
+
+  @override
+  String get importGcodeSelectedFileLabel => 'File dipilih';
+
+  @override
+  String get gcodeImportFeedbackTitle => 'Masukan Impor G-code Beta';
+
+  @override
+  String get gcodeImportFeedbackBetaFeature => 'Fitur beta';
+
+  @override
+  String get gcodeImportFeedbackBetaDescription =>
+      'Ceritakan apa yang berhasil, apa yang bermasalah, atau apa yang masih terlihat salah.';
+
+  @override
+  String get gcodeImportFeedbackSlicerLabel => 'Slicer';
+
+  @override
+  String get gcodeImportFeedbackOtherSlicerLabel => 'Slicer yang mana?';
+
+  @override
+  String get gcodeImportFeedbackPreviewLabel => 'Hasil pratinjau';
+
+  @override
+  String get gcodeImportFeedbackMetadataLabel => 'Hasil metadata';
+
+  @override
+  String get gcodeImportFeedbackDescriptionLabel =>
+      'Apa yang berhasil, apa yang bermasalah, atau apa yang terlihat salah?';
+
+  @override
+  String get gcodeImportFeedbackAttachmentLabel =>
+      'Lampirkan file G-code yang diimpor';
+
+  @override
+  String get gcodeImportFeedbackNoAttachmentAvailable =>
+      'Tidak ada file G-code yang diimpor untuk dilampirkan.';
+
+  @override
+  String get gcodeImportFeedbackSendCta => 'Kirim masukan';
+
+  @override
+  String get gcodeImportFeedbackSentMessage => 'Masukan terkirim';
+
+  @override
+  String get gcodeFeedbackPreviewLoaded => 'Pratinjau dimuat';
+
+  @override
+  String get gcodeFeedbackPreviewMissing => 'Pratinjau hilang';
+
+  @override
+  String get gcodeFeedbackPreviewIncorrect => 'Pratinjau tidak benar';
+
+  @override
+  String get gcodeFeedbackPreviewNotSure => 'Tidak yakin';
+
+  @override
+  String get gcodeFeedbackMetadataCorrect => 'Terlihat benar';
+
+  @override
+  String get gcodeFeedbackMetadataMissing => 'Data hilang';
+
+  @override
+  String get gcodeFeedbackMetadataIncorrect => 'Data tidak benar';
+
+  @override
+  String get gcodeFeedbackMetadataNotSure => 'Tidak yakin';
+
+  @override
+  String get importGcodeSummaryTitle => 'Ringkasan impor';
+
+  @override
+  String get importGcodeSupportedSlicersNote =>
+      'Slicer yang didukung: PrusaSlicer, OrcaSlicer, Bambu Studio, dan Cura.';
+
+  @override
+  String get importGcodeCalculatorNote =>
+      'Nilai yang diimpor hanya mengisi ulang waktu dan berat material total. Printer, material, dan biaya akhir berasal dari pengaturan kalkulator Anda.';
+
+  @override
+  String get importGcodeUseValuesButton => 'Gunakan nilai ini';
+
+  @override
+  String get importGcodeSlicerLabel => 'Slicer';
+
+  @override
+  String get importGcodeDurationLabel => 'Estimasi durasi';
+
+  @override
+  String get importGcodeFilamentWeightLabel => 'Berat filamen';
+
+  @override
+  String get importGcodeFilamentLengthLabel => 'Panjang filamen';
+
+  @override
+  String get importGcodeLayerHeightLabel => 'Tinggi lapisan';
+
+  @override
+  String get importGcodePreviewLabel => 'Pratinjau';
+
+  @override
+  String get importGcodePreviewAvailable => 'Tersedia';
+
+  @override
+  String get importGcodePreviewView => 'Lihat';
+
+  @override
+  String get importGcodePreviewUnavailable => 'Tidak tersedia';
+
+  @override
+  String get importGcodePreviewDecodeFailed =>
+      'Metadata pratinjau ditemukan tetapi gambar tidak dapat ditampilkan.';
+
+  @override
+  String get importGcodePreviewCuraNote =>
+      'Pratinjau Cura mungkin memerlukan skrip pasca-pemrosesan untuk menyematkan thumbnail.';
+
+  @override
+  String get importGcodeWarningsTitle => 'Peringatan';
+
+  @override
+  String get importGcodeUnsupportedTypeError => 'Pilih file .gcode.';
+
+  @override
+  String get importGcodeUnsupportedFileError =>
+      'File ini tidak berisi metadata G-code yang didukung.';
+
+  @override
+  String get importGcodeReadError => 'File yang dipilih tidak dapat dibaca.';
+
+  @override
+  String get importGcodeUnknownSlicerValue => 'Tidak diketahui';
+
+  @override
+  String get importGcodeMissingValue => 'Tidak ditemukan';
+
+  @override
+  String get importGcodeWarningUnknownSlicer =>
+      'Slicer tidak teridentifikasi. Tinjau nilai sebelum menerapkan.';
+
+  @override
+  String get importGcodeWarningMissingDuration =>
+      'Waktu cetak tidak dapat dideteksi.';
+
+  @override
+  String get importGcodeWarningMissingFilament =>
+      'Penggunaan filamen tidak lengkap.';
+
+  @override
+  String get importGcodeWarningMissingFilamentWeight => 'Berat filamen hilang.';
+
+  @override
+  String get importGcodeWarningPartialMetadata => 'Beberapa metadata hilang.';
+
+  @override
+  String get importGcodeWarningMixedMaterials =>
+      'Ditemukan beberapa total material. Tinjau sebelum menerapkan.';
+
+  @override
+  String get importGcodeAppliedMessage =>
+      'Nilai yang diimpor diterapkan ke kalkulator';
+
+  @override
+  String get slicerPrusaSlicer => 'PrusaSlicer';
+
+  @override
+  String get slicerOrcaSlicer => 'OrcaSlicer';
+
+  @override
+  String get slicerBambuStudio => 'Bambu Studio';
+
+  @override
+  String get slicerCura => 'Cura';
+
+  @override
+  String get slicerCrealityPrint => 'Creality Print';
+
+  @override
+  String get slicerSimplify3D => 'Simplify3D';
+
+  @override
+  String get slicerSuperSlicer => 'SuperSlicer';
+
+  @override
+  String get slicerIdeaMaker => 'IdeaMaker';
+
+  @override
+  String get slicerOther => 'Lainnya';
+
+  @override
+  String get slicerUnknown => 'Tidak Dikenal';
 }

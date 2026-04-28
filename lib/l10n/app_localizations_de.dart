@@ -27,6 +27,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsNavLabel => 'Einstellungen';
 
   @override
+  String get newAnnouncementBadgeLabel => 'Neu';
+
+  @override
   String get generalHeader => 'Allgemein';
 
   @override
@@ -464,4 +467,217 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get materialFallback => 'Materialtyp';
+
+  @override
+  String get durationPickerLabel => 'Printing time (hh:mm)';
+
+  @override
+  String get importGcodeButton => 'G-code importieren (Autoausfüllen)';
+
+  @override
+  String get importGcodePageTitle => 'G-code importieren (Beta)';
+
+  @override
+  String get importGcodeIntro =>
+      'Wählen Sie eine lokale .gcode-Datei. Unterstützte Slicer: PrusaSlicer, OrcaSlicer, Bambu Studio und Cura.';
+
+  @override
+  String get importGcodeSelectFileButton => 'G-code-Datei auswählen';
+
+  @override
+  String get importGcodePickAnotherButton => 'Andere Datei auswählen';
+
+  @override
+  String get importGcodeSelectedFileLabel => 'Ausgewählte Datei';
+
+  @override
+  String get gcodeImportFeedbackTitle => 'G-code Import Beta-Feedback';
+
+  @override
+  String get gcodeImportFeedbackBetaFeature => 'Beta-Funktion';
+
+  @override
+  String get gcodeImportFeedbackBetaDescription =>
+      'Sagen Sie uns, was geholfen hat, was nicht funktioniert hat oder was noch falsch aussieht.';
+
+  @override
+  String get gcodeImportFeedbackSlicerLabel => 'Slicer';
+
+  @override
+  String get gcodeImportFeedbackOtherSlicerLabel => 'Welcher Slicer?';
+
+  @override
+  String get gcodeImportFeedbackPreviewLabel => 'Vorschau-Ergebnis';
+
+  @override
+  String get gcodeImportFeedbackMetadataLabel => 'Metadaten-Ergebnis';
+
+  @override
+  String get gcodeImportFeedbackDescriptionLabel =>
+      'Was hat funktioniert, was nicht funktioniert hat oder was falsch aussieht?';
+
+  @override
+  String get gcodeImportFeedbackAttachmentLabel =>
+      'Importierte G-code-Datei anhängen';
+
+  @override
+  String get gcodeImportFeedbackNoAttachmentAvailable =>
+      'Keine importierte G-code-Datei verfügbar.';
+
+  @override
+  String get gcodeImportFeedbackSendCta => 'Feedback senden';
+
+  @override
+  String get gcodeImportFeedbackSentMessage => 'Feedback gesendet';
+
+  @override
+  String get gcodeFeedbackPreviewLoaded => 'Vorschau geladen';
+
+  @override
+  String get gcodeFeedbackPreviewMissing => 'Vorschau fehlt';
+
+  @override
+  String get gcodeFeedbackPreviewIncorrect => 'Vorschau falsch';
+
+  @override
+  String get gcodeFeedbackPreviewNotSure => 'Nicht sicher';
+
+  @override
+  String get gcodeFeedbackMetadataCorrect => 'Sieht korrekt aus';
+
+  @override
+  String get gcodeFeedbackMetadataMissing => 'Daten fehlen';
+
+  @override
+  String get gcodeFeedbackMetadataIncorrect => 'Daten falsch';
+
+  @override
+  String get gcodeFeedbackMetadataNotSure => 'Nicht sicher';
+
+  @override
+  String get importGcodeSummaryTitle => 'Import-Zusammenfassung';
+
+  @override
+  String get importGcodeSupportedSlicersNote =>
+      'Unterstützte Slicer: PrusaSlicer, OrcaSlicer, Bambu Studio und Cura.';
+
+  @override
+  String get importGcodeCalculatorNote =>
+      'Importierte Werte füllen nur Zeit und Materialgewicht vor. Drucker, Material und endgültige Kosten stammen aus Ihren Rechnereinstellungen.';
+
+  @override
+  String get importGcodeUseValuesButton => 'Diese Werte verwenden';
+
+  @override
+  String get importGcodeSlicerLabel => 'Slicer';
+
+  @override
+  String get importGcodeDurationLabel => 'Geschätzte Dauer';
+
+  @override
+  String get importGcodeFilamentWeightLabel => 'Filamentgewicht';
+
+  @override
+  String get importGcodeFilamentLengthLabel => 'Filamentlänge';
+
+  @override
+  String get importGcodeLayerHeightLabel => 'Schichthöhe';
+
+  @override
+  String get importGcodePreviewLabel => 'Vorschau';
+
+  @override
+  String get importGcodePreviewAvailable => 'Verfügbar';
+
+  @override
+  String get importGcodePreviewView => 'Ansehen';
+
+  @override
+  String get importGcodePreviewUnavailable => 'Nicht verfügbar';
+
+  @override
+  String get importGcodePreviewDecodeFailed =>
+      'Vorschau-Metadaten gefunden, aber Bild konnte nicht angezeigt werden.';
+
+  @override
+  String get importGcodePreviewCuraNote =>
+      'Cura-Vorschauen erfordern möglicherweise ein Nachbearbeitungsskript, um Thumbnails in die G-code einzubetten.';
+
+  @override
+  String get importGcodeWarningsTitle => 'Warnungen';
+
+  @override
+  String get importGcodeUnsupportedTypeError =>
+      'Bitte wählen Sie eine .gcode-Datei.';
+
+  @override
+  String get importGcodeUnsupportedFileError =>
+      'Diese Datei enthielt keine unterstützten G-code-Metadaten.';
+
+  @override
+  String get importGcodeReadError =>
+      'Die ausgewählte Datei konnte nicht gelesen werden.';
+
+  @override
+  String get importGcodeUnknownSlicerValue => 'Unbekannt';
+
+  @override
+  String get importGcodeMissingValue => 'Nicht gefunden';
+
+  @override
+  String get importGcodeWarningUnknownSlicer =>
+      'Slicer nicht identifiziert. Werte vor dem Anwenden überprüfen.';
+
+  @override
+  String get importGcodeWarningMissingDuration =>
+      'Druckzeit konnte nicht erkannt werden.';
+
+  @override
+  String get importGcodeWarningMissingFilament =>
+      'Filamentnutzung unvollständig.';
+
+  @override
+  String get importGcodeWarningMissingFilamentWeight =>
+      'Filamentgewicht fehlt.';
+
+  @override
+  String get importGcodeWarningPartialMetadata => 'Einige Metadaten fehlen.';
+
+  @override
+  String get importGcodeWarningMixedMaterials =>
+      'Mehrere Materialsummen gefunden. Vor dem Anwenden überprüfen.';
+
+  @override
+  String get importGcodeAppliedMessage =>
+      'Importierte Werte auf Rechner angewendet';
+
+  @override
+  String get slicerPrusaSlicer => 'PrusaSlicer';
+
+  @override
+  String get slicerOrcaSlicer => 'OrcaSlicer';
+
+  @override
+  String get slicerBambuStudio => 'Bambu Studio';
+
+  @override
+  String get slicerCura => 'Cura';
+
+  @override
+  String get slicerCrealityPrint => 'Creality Print';
+
+  @override
+  String get slicerSimplify3D => 'Simplify3D';
+
+  @override
+  String get slicerSuperSlicer => 'SuperSlicer';
+
+  @override
+  String get slicerIdeaMaker => 'IdeaMaker';
+
+  @override
+  String get slicerOther => 'Other';
+
+  @override
+  String get slicerUnknown => 'Unbekannt';
 }
