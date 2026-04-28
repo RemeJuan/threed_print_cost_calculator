@@ -637,7 +637,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'El tiempo de impresión no pudo ser detectado.';
 
   @override
-  String get importGcodeWarningMissingFilament => 'Uso de filamento incompleto.';
+  String get importGcodeWarningMissingFilament =>
+      'Uso de filamento incompleto.';
 
   @override
   String get importGcodeWarningMissingFilamentWeight =>
