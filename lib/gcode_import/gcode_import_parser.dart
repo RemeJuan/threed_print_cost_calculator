@@ -255,8 +255,9 @@ class GCodeImportParser {
       }
 
       if (!inPreview) continue;
-      final content =
-          line.startsWith(';') ? line.substring(1).trimLeft() : line;
+      final content = line.startsWith(';')
+          ? line.substring(1).trimLeft()
+          : line;
       if (content.isEmpty) continue;
       currentBuffer.write(content.trim());
     }
@@ -330,7 +331,7 @@ class GCodeImportParser {
         caseSensitive: false,
       ),
     ], unit: 'cm');
-    if (cm != null) return _normalizeValue(cm, 'cm', 'mm');
+    if (cm != null) return cm;
 
     final m = _sumValues(lines, [
       RegExp(r'^;\s*filament used \[m\]\s*=\s*(.+?)\s*$', caseSensitive: false),
@@ -339,7 +340,7 @@ class GCodeImportParser {
         caseSensitive: false,
       ),
     ], unit: 'm');
-    if (m != null) return _normalizeValue(m, 'm', 'mm');
+    if (m != null) return m;
 
     return null;
   }
@@ -359,6 +360,7 @@ class GCodeImportParser {
     List<RegExp> patterns, {
     required String unit,
   }) {
+    final targetUnit = unit == 'g' ? 'g' : 'mm';
     final values = <double>[];
     for (final line in lines) {
       for (final pattern in patterns) {
@@ -371,11 +373,11 @@ class GCodeImportParser {
         if (singleValue != null) {
           final value = _parseNumber(singleValue.group(0));
           if (value != null) {
-            values.add(_normalizeValue(value, unit, unit));
+            values.add(_normalizeValue(value, unit, targetUnit));
             break;
           }
         }
-        values.addAll(_parseUnitList(raw, unit));
+        values.addAll(_parseUnitList(raw, targetUnit));
         break;
       }
     }
