@@ -1,3 +1,8 @@
+## [2.8.0] - 2026-04-28
+### Added
+- Added G-code file import functionality for premium users. Users can import .gcode files from their device to automatically populate printer settings, material selection, and print dimensions.
+- Added "What's New" feature showing app announcements on startup with a modal sheet display.
+
 ## [2.7.0] - 2026-04-17
 ### Added
 - Added validation feedback for material and printer settings forms.
