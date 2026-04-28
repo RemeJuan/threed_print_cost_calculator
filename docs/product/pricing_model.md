@@ -2,46 +2,350 @@
 
 ## Summary
 
-Adds a client-facing pricing layer on top of the existing cost calculator output. It should let users turn internal cost results into a consistent sell price without changing the underlying cost basis.
+Add client-facing pricing on top of existing calculator cost output.
+Cost math stays unchanged. Pricing reads current cost result, applies a small set of deterministic pricing rules, then produces a final sell price suitable for future shareable quotes.
 
 ## Goals
 
-- Let users apply markup without manual off-app calculation
-- Support both default pricing behavior and per-job overrides
-- Produce predictable final prices for quoting
+- Make pricing deterministic, simple, and explainable
+- Keep cost and price separate
+- Support global defaults with optional per-job pricing overrides
+- Produce stable outputs that can later back shareable quotes
+- Work fully offline
 
-## Scope
+## Core Principles
 
-### In scope
+- Cost remains source of truth for internal calculation
+- Price is additive layer, not replacement
+- Same inputs always produce same price
+- Pricing must be explainable in one sentence: `base cost + markup + setup fee, then rounding`
+- Saved jobs and future quotes must snapshot pricing inputs and computed output so later settings changes do not rewrite past prices
 
-- Markup percentage as a default pricing control
-- Per-job markup override
+## In Scope
+
+- Base cost from existing calculator engine
+- Markup percentage
 - Fixed setup fee
-- Final price rounding options: `.00`, `.99`, or none
+- Final rounding modes: none, `.00`, `.99`
+- Global defaults in settings
+- Optional per-job pricing overrides
+- Persisted computed price for saved jobs / future quote surfaces
 
-### Out of scope
+## Out of Scope
 
-- Taxes, discounts, or coupons
-- Customer-specific price books
-- Marketplace, invoicing, or payment flows
+- Taxes
+- Regional pricing rules
+- Tiered pricing
+- Discounts, coupons, negotiated pricing workflows
+- Hosted quote links, backend sync, server-side pricing
 
-## Key Decisions
+## Pricing Formula
 
-- Markup % supports both a default value and a per-job override.
-- Fixed setup fee is part of pricing output.
-- Final price rounding supports `.00`, `.99`, or no rounding.
+### Definitions
 
-## Open Questions
+- **Base cost**: existing calculator total cost output. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`.
+- **Markup %**: percentage applied to base cost only.
+- **Setup fee**: fixed amount added after markup.
+- **Rounding**: final presentation and storage adjustment applied last.
 
-- Should pricing defaults be global only, or optionally printer-specific later?
+### Final Formula
 
-## Implementation Notes
+```text
+markupAmount = baseCost * (markupPercent / 100)
+subtotal = baseCost + markupAmount + setupFee
+finalPrice = applyRounding(subtotal, roundingMode)
+```
 
-- Build on top of existing calculator totals rather than replacing current cost calculation logic.
-- Persist default pricing preferences locally, likely alongside other app settings in SharedPreferences or Sembast depending on final data shape.
-- Expose pricing state through Riverpod so calculator result views and future quoting flows can share one source of truth.
-- Keep user-facing labels in the existing l10n system.
+### Order of Operations
 
-## Dependencies
+Exact order:
 
-- Depends on existing calculator totals and result presentation.
+1. Compute base cost using existing engine
+2. Read effective pricing config for current job
+3. Compute markup amount from base cost
+4. Add markup amount to base cost
+5. Add setup fee
+6. Apply selected rounding rule to subtotal
+7. Persist/display rounded result as final price
+
+No alternate order allowed.
+
+### Important Notes
+
+- Markup applies to base cost only, not setup fee
+- Setup fee is flat, never percentage-based
+- Rounding happens once, at end
+- Pricing layer must not mutate or feed back into base cost calculation
+
+## Configuration
+
+## Global Defaults
+
+Stored in app settings. Used automatically for every new calculator session and any job without local pricing overrides.
+
+Default fields:
+
+- `defaultMarkupPercent`
+- `defaultSetupFee`
+- `defaultRoundingMode`
+
+## Per-Job Overrides
+
+Per-job pricing may override:
+
+- markup %
+- setup fee
+- rounding mode
+
+Per-job pricing may **not** override:
+
+- base cost math
+- electricity / filament / labour / risk inputs through pricing controls
+- selected cost engine totals
+- global defaults for other jobs
+- saved historical computed prices after save
+
+Recommended shape:
+
+- Default behavior: job uses settings defaults
+- If user enables override for a field, job stores explicit value for that field
+- Effective pricing config resolves per field: override value if present, else global default
+
+This keeps behavior simple and avoids copying defaults into every draft job unless needed.
+
+## Rounding Rules
+
+Rounding logic must be currency-agnostic. It works on numeric values only and does not assume a currency symbol.
+
+### Modes
+
+#### None
+
+- Keep subtotal unchanged except normal numeric precision handling already used by app
+
+#### `.00`
+
+- Round up to next whole number, then format/store as whole-unit price
+- Examples:
+  - `12.00 -> 12.00`
+  - `12.01 -> 13.00`
+  - `12.31 -> 13.00`
+  - `12.99 -> 13.00`
+
+#### `.99`
+
+- Exact rule:
+  - If fractional part is `0`, keep value unchanged
+  - Otherwise produce nearest price ending in `.99` that is **greater than or equal to** subtotal
+- Operational definition:
+  - If `subtotal % 1 == 0`, return `subtotal`
+  - Compute candidate from current whole unit: `floor(subtotal) + 0.99`
+  - If subtotal is less than or equal to candidate, use candidate
+  - Else use `floor(subtotal) + 1 + 0.99`
+- Examples:
+  - `12.00 -> 12.00`
+  - `12.31 -> 12.99`
+  - `12.99 -> 12.99`
+  - `13.00 -> 13.00`
+
+### Zero Handling
+
+To avoid nonsensical positive prices from rounding alone:
+
+- If subtotal `<= 0`, final price is `0`
+- Rounding rules do not transform `0` or negative values into `.99` or next integer
+
+## Data Model
+
+## Settings Storage
+
+Add pricing defaults to settings layer alongside other global calculator defaults.
+
+Recommended home:
+
+- `GeneralSettingsModel`
+- persisted through existing settings repository/service path
+
+Recommended fields:
+
+- `pricingMarkupPercent: String`
+- `pricingSetupFee: String`
+- `pricingRoundingMode: String` or enum-backed serialized value
+
+Reason:
+
+- pricing defaults behave like existing calculator defaults
+- offline persistence already exists here
+- no new storage mechanism needed
+
+## Calculation / Job Storage
+
+Current live calculator state needs pricing inputs and computed outputs separate from cost outputs.
+
+Recommended additions to calculator state:
+
+- `pricingMarkupPercent` input
+- `pricingSetupFee` input
+- `pricingRoundingMode`
+- per-field override flags or nullable override values
+- `pricingBaseCost`
+- `pricingSubtotal`
+- `pricingFinalPrice`
+
+Recommended computed model:
+
+```text
+PricingResult {
+  baseCost
+  markupPercent
+  markupAmount
+  setupFee
+  roundingMode
+  subtotalBeforeRounding
+  finalPrice
+}
+```
+
+Keep this separate from `CalculationResult`.
+
+Reason:
+
+- cost model stays backward-compatible
+- pricing output becomes reusable for future quote view
+- UI can show both internal cost and client price without recomputing from ad hoc fields
+
+## Saved Job / History Storage
+
+Saved records must snapshot both effective pricing inputs and computed outputs at save time.
+
+Recommended additions to saved job model/history model:
+
+- effective `baseCost`
+- effective `markupPercent`
+- effective `markupAmount`
+- effective `setupFee`
+- effective `roundingMode`
+- effective `finalPrice`
+- optional indicator that job used overrides
+
+Do **not** rely on re-reading current settings when opening old jobs or generating future shareable quotes.
+
+## Calculator Integration
+
+## UI Placement
+
+Price should appear in calculator results, below or clearly separated from existing cost outputs.
+
+Recommended display structure:
+
+1. Existing cost breakdown stays as-is
+2. Existing total cost stays as-is
+3. New pricing section shows:
+   - base cost
+   - markup %
+   - setup fee
+   - rounding mode
+   - final price
+
+This preserves current mental model:
+
+- cost = internal math
+- price = what user charges client
+
+## Recalculation Triggers
+
+Pricing recalculates whenever either side changes:
+
+### Base cost changes
+
+- print weight changes
+- material usage changes
+- spool/material cost changes
+- electricity inputs change
+- time changes
+- labour inputs change
+- wear-and-tear / failure-risk inputs change if they affect current base-cost output path
+- imported G-code values applied
+- history entry loaded
+
+### Pricing config changes
+
+- markup % changes
+- setup fee changes
+- rounding mode changes
+- per-job override toggled on/off
+- settings defaults change while job is using defaults
+
+Implementation direction:
+
+- existing cost submit path remains unchanged
+- pricing layer subscribes to resulting cost output and effective pricing config
+- one-way flow: cost -> pricing
+
+## Interaction With Existing Cost Outputs
+
+- Existing cost values remain visible and unchanged
+- Existing `CalculationResult` remains cost-only
+- Existing save/history behavior for cost must keep working
+- Pricing adds new fields and UI, not replacement labels on old cost fields
+
+## Edge Cases
+
+### Zero or Negative Cost
+
+- If base cost `<= 0`, final price = `0`
+- Do not apply markup/setup/rounding into a positive client price when underlying cost is zero or negative
+- UI may still show configured markup/setup inputs, but computed final price stays `0`
+
+### Missing Inputs
+
+- If existing calculator cannot produce a valid base cost yet, pricing output stays unavailable or `0` based on current cost behavior
+- Pricing must not guess missing cost inputs
+- If pricing config input missing, use default fallback:
+  - missing markup -> `0%`
+  - missing setup fee -> `0`
+  - missing rounding mode -> `none`
+
+### Very Small Values
+
+- Very small positive subtotal still follows rounding rule
+- Examples:
+  - `0.04` with none -> `0.04`
+  - `0.04` with `.00` -> `1.00`
+  - `0.04` with `.99` -> `0.99`
+- This is acceptable because user explicitly selected pricing rule
+
+### Existing Risk Output
+
+- Current calculator exposes risk separately from total cost
+- Pricing spec intentionally uses whatever value app defines as base cost today, without changing engine semantics
+- If cost engine later changes what counts toward total cost, pricing must consume that updated single base-cost output rather than duplicate cost logic in pricing layer
+
+## Offline Requirement
+
+- All pricing config, calculations, quote prep state, and saved outputs must work without network access
+- No backend dependency for defaults, overrides, or final price generation
+
+## Non-Goals
+
+- Taxes
+- Regional pricing rules
+- Tiered pricing
+
+## Practical Implementation Notes
+
+- Reuse existing settings persistence path for global defaults
+- Add pricing state/provider next to calculator state rather than mixing sell-price fields into low-level cost helpers
+- Keep price copy localized through existing l10n system
+- Save effective pricing snapshot with history entries needed for future shareable quotes
+- Prefer simple numeric storage and deterministic pure helper functions for rounding
+
+## Acceptance Criteria
+
+- Existing cost calculation output does not change
+- Same cost + same pricing inputs always yields same final price
+- Final formula and rounding behavior are documented and testable
+- New jobs can use global defaults with no extra user setup
+- Users can override markup/setup/rounding per job
+- Saved jobs preserve computed price even after settings defaults later change
+- Spec supports future shareable quotes without inventing second pricing path
