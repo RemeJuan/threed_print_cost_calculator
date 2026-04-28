@@ -1,0 +1,63 @@
+{
+  "wn_id": "gcode_import_2026_04",
+  "en": {
+    "title": "New: Import G-code estimates",
+    "body": "Import supported G-code files to prefill print time, filament usage, and preview data where available. Open it from the header bar icon in the top right.",
+    "cta": "Got it",
+    "unlock_pro_cta": "Unlock Pro"
+  },
+  "de": {
+    "title": "Neu: G-Code-Import",
+    "body": "Importiere unterstützte G-Code-Dateien, um Druckzeit, Materialverbrauch und Vorschaudaten vorauszufüllen. Du findest es über das Symbol in der Kopfzeile oben rechts.",
+    "cta": "Verstanden",
+    "unlock_pro_cta": "Pro freischalten"
+  },
+  "es": {
+    "title": "Nuevo: importar estimaciones de G-code",
+    "body": "Importa archivos G-code compatibles para completar el tiempo de impresión, el uso de filamento y los datos de vista previa cuando estén disponibles. Ábrelo desde el icono de la barra superior, en la esquina superior derecha.",
+    "cta": "Entendido",
+    "unlock_pro_cta": "Desbloquear Pro"
+  },
+  "fr": {
+    "title": "Nouveau : importer les estimations G-code",
+    "body": "Importez des fichiers G-code pris en charge pour préremplir le temps d'impression, l'utilisation du filament et les données d'aperçu lorsqu'elles sont disponibles. Ouvrez-le via l'icône de la barre supérieure, en haut à droite.",
+    "cta": "Compris",
+    "unlock_pro_cta": "Débloquer Pro"
+  },
+  "id": {
+    "title": "Baru: Impor estimasi G-code",
+    "body": "Impor file G-code yang didukung untuk mengisi waktu cetak, penggunaan filamen, dan data pratinjau jika tersedia. Buka dari ikon di bar atas kanan atas.",
+    "cta": "Mengerti",
+    "unlock_pro_cta": "Buka Pro"
+  },
+  "it": {
+    "title": "Novità: importa stime G-code",
+    "body": "Importa i file G-code supportati per precompilare il tempo di stampa, l'uso del filamento e i dati di anteprima, dove disponibili. Aprilo dall'icona nella barra superiore, in alto a destra.",
+    "cta": "Capito",
+    "unlock_pro_cta": "Sblocca Pro"
+  },
+  "ja": {
+    "title": "新機能: G-code 推定値を読み込み",
+    "body": "対応する G-code ファイルを読み込んで、利用可能な場合は印刷時間、フィラメント使用量、プレビュー情報を事前入力します。右上のヘッダーアイコンから開けます。",
+    "cta": "了解",
+    "unlock_pro_cta": "Pro を解放"
+  },
+  "nl": {
+    "title": "Nieuw: G-code schattingen importeren",
+    "body": "Importeer ondersteunde G-codebestanden om afdruktijd, filamentgebruik en voorbeeldgegevens vooraf in te vullen waar beschikbaar. Open het via het pictogram rechtsboven in de balk bovenaan.",
+    "cta": "Begrepen",
+    "unlock_pro_cta": "Pro ontgrendelen"
+  },
+  "pt": {
+    "title": "Novo: importar estimativas de G-code",
+    "body": "Importe arquivos G-code compatíveis para preencher antecipadamente o tempo de impressão, o uso de filamento e os dados de pré-visualização quando disponíveis. Abra pelo ícone na barra superior, no canto superior direito.",
+    "cta": "Entendi",
+    "unlock_pro_cta": "Desbloquear Pro"
+  },
+  "th": {
+    "title": "ใหม่: นำเข้าค่าโดยประมาณจาก G-code",
+    "body": "นำเข้าไฟล์ G-code ที่รองรับเพื่อเติมเวลาพิมพ์ การใช้เส้นพลาสติก และข้อมูลตัวอย่างล่วงหน้าเมื่อมีให้ใช้งาน เปิดได้จากไอคอนที่แถบด้านบนมุมขวาบน",
+    "cta": "เข้าใจแล้ว",
+    "unlock_pro_cta": "ปลดล็อก Pro"
+  }
+}

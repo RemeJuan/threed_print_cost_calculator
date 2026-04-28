@@ -66,6 +66,7 @@ flutter:
   assets:
     - shorebird.yaml
     - assets/test_data/
+    - assets/whats_new.json
 
 cider:
   link_template:
