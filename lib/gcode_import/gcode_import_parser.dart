@@ -36,8 +36,11 @@ class GCodeImportParser {
       ]),
     );
 
-    final previewMetadata = _parsePreviewMetadata(lines);
-    final previewImageBytes = _parsePreviewImageBytes(lines);
+    // Parse preview metadata candidates and image bytes together,
+    // ensuring we only mark as safe if bytes decode successfully
+    final previewResult = _parsePreviewWithValidation(lines);
+    final previewMetadata = previewResult.metadata;
+    final previewImageBytes = previewResult.bytes;
 
     _collectRaw(raw, 'estimatedDuration', _extractDuration(lines));
     _collectRaw(raw, 'filamentLengthMm', _extractFilamentLengthRaw(lines));
@@ -106,7 +109,7 @@ class GCodeImportParser {
       previewImageBytes: previewImageBytes,
       warnings: List.unmodifiable(warnings),
       rawExtractedValues: Map.unmodifiable(raw),
-      hasSafePreview: previewMetadata?.isSafe ?? false,
+      hasSafePreview: previewResult.hasSafePreview,
     );
   }
 
@@ -130,6 +133,119 @@ class GCodeImportParser {
       return GCodeSlicer.cura;
     }
     return GCodeSlicer.unknown;
+  }
+
+  _PreviewParseResult _parsePreviewWithValidation(List<String> lines) {
+    // First, collect all preview candidates
+    final candidates = <_PreviewCandidate>[];
+
+    var inPreview = false;
+    var currentBuffer = StringBuffer();
+    int? currentWidth;
+    int? currentHeight;
+    String? currentFormat;
+
+    for (final line in lines) {
+      final beginMatch = _thumbnailBeginRegex.firstMatch(line);
+      final end = _thumbnailEndRegex.hasMatch(line);
+
+      if (beginMatch != null) {
+        inPreview = true;
+        currentBuffer = StringBuffer();
+        currentWidth = int.tryParse(beginMatch.group(2) ?? '');
+        currentHeight = int.tryParse(beginMatch.group(3) ?? '');
+        currentFormat = (beginMatch.group(1) ?? '').toLowerCase().contains('qoi')
+            ? 'QOI'
+            : 'PNG';
+        continue;
+      }
+
+      if (end) {
+        if (inPreview &&
+            currentWidth != null &&
+            currentHeight != null &&
+            currentWidth > 0 &&
+            currentHeight > 0) {
+          candidates.add(_PreviewCandidate(
+            width: currentWidth,
+            height: currentHeight,
+            format: currentFormat ?? 'PNG',
+            base64Data: currentBuffer.toString(),
+          ));
+        }
+        inPreview = false;
+        currentBuffer = StringBuffer();
+        currentWidth = null;
+        currentHeight = null;
+        currentFormat = null;
+        continue;
+      }
+
+      if (!inPreview) continue;
+      final content = line.startsWith(';')
+          ? line.substring(1).trimLeft()
+          : line;
+      if (content.isEmpty) continue;
+      currentBuffer.write(content.trim());
+    }
+
+    // Now find the largest safe preview that actually decodes
+    int? largestSafeArea;
+    GCodePreviewMetadata? winningMetadata;
+    Uint8List? winningBytes;
+    bool hasSafe = false;
+
+    for (final candidate in candidates) {
+      final area = candidate.width * candidate.height;
+
+      // Check if dimensions are safe
+      if (candidate.width > 2048 || candidate.height > 2048) {
+        // Mark that we found a preview, but it's not safe
+        if (winningMetadata == null) {
+          winningMetadata = const GCodePreviewMetadata(
+            present: true,
+            format: null,
+            width: null,
+            height: null,
+            isSafe: false,
+          );
+        }
+        continue;
+      }
+
+      // Try to decode the base64 data
+      Uint8List? bytes;
+      try {
+        if (candidate.base64Data.isNotEmpty) {
+          bytes = base64.decode(candidate.base64Data);
+        }
+      } catch (_) {
+        // Decoding failed, skip this candidate
+        continue;
+      }
+
+      if (bytes == null || bytes.isEmpty) continue;
+
+      // This candidate is safe and decoded successfully
+      if (largestSafeArea == null || area > largestSafeArea) {
+        largestSafeArea = area;
+        winningMetadata = GCodePreviewMetadata(
+          present: true,
+          format: candidate.format,
+          width: candidate.width,
+          height: candidate.height,
+          isSafe: true,
+        );
+        winningBytes = bytes;
+        hasSafe = true;
+      }
+    }
+
+    return _PreviewParseResult(
+      metadata: winningMetadata,
+      bytes: winningBytes,
+      hasSafePreview: hasSafe,
+    );
   }
 
   String? _extractDuration(List<String> lines) => _firstMatchingValue(lines, [
@@ -165,110 +281,6 @@ class GCodeImportParser {
           caseSensitive: false,
         ),
       ]);
-
-  GCodePreviewMetadata? _parsePreviewMetadata(List<String> lines) {
-    int? largestArea;
-    GCodePreviewMetadata? largestMetadata;
-
-    for (final line in lines) {
-      final match = _thumbnailBeginRegex.firstMatch(line);
-      if (match == null) continue;
-
-      final width = int.tryParse(match.group(2) ?? '');
-      final height = int.tryParse(match.group(3) ?? '');
-
-      if (width == null || height == null || width <= 0 || height <= 0) {
-        continue;
-      }
-
-      if (width > 2048 || height > 2048) {
-        if (largestMetadata == null) {
-          largestMetadata = const GCodePreviewMetadata(
-            present: true,
-            format: null,
-            width: null,
-            height: null,
-            isSafe: false,
-          );
-        }
-        continue;
-      }
-
-      final area = width * height;
-      if (largestArea == null || area > largestArea) {
-        largestArea = area;
-        largestMetadata = GCodePreviewMetadata(
-          present: true,
-          format: (match.group(1) ?? '').toLowerCase().contains('qoi')
-              ? 'QOI'
-              : 'PNG',
-          width: width,
-          height: height,
-          isSafe: true,
-        );
-      }
-    }
-
-    return largestMetadata;
-  }
-
-  Uint8List? _parsePreviewImageBytes(List<String> lines) {
-    int? largestArea;
-    String? largestBuffer;
-
-    var inPreview = false;
-    var currentBuffer = StringBuffer();
-    int? currentWidth;
-    int? currentHeight;
-
-    for (final line in lines) {
-      final beginMatch = _thumbnailBeginRegex.firstMatch(line);
-      final end = _thumbnailEndRegex.hasMatch(line);
-
-      if (beginMatch != null) {
-        inPreview = true;
-        currentBuffer = StringBuffer();
-        currentWidth = int.tryParse(beginMatch.group(2) ?? '');
-        currentHeight = int.tryParse(beginMatch.group(3) ?? '');
-        continue;
-      }
-
-      if (end) {
-        if (inPreview &&
-            currentWidth != null &&
-            currentHeight != null &&
-            currentWidth > 0 &&
-            currentHeight > 0 &&
-            currentWidth <= 2048 &&
-            currentHeight <= 2048) {
-          final area = currentWidth * currentHeight;
-          if (largestArea == null || area > largestArea) {
-            largestArea = area;
-            largestBuffer = currentBuffer.toString();
-          }
-        }
-        inPreview = false;
-        currentBuffer = StringBuffer();
-        currentWidth = null;
-        currentHeight = null;
-        continue;
-      }
-
-      if (!inPreview) continue;
-      final content = line.startsWith(';')
-          ? line.substring(1).trimLeft()
-          : line;
-      if (content.isEmpty) continue;
-      currentBuffer.write(content.trim());
-    }
-
-    if (largestBuffer == null || largestBuffer.isEmpty) return null;
-    try {
-      return base64.decode(largestBuffer);
-    } catch (_) {
-      return null;
-    }
-  }
 
   String? _firstMatchingValue(List<String> lines, List<RegExp> expressions) {
     for (final line in lines) {
@@ -466,4 +478,30 @@ class GCodeImportParser {
     if (value == null || value.trim().isEmpty) return;
     raw[key] = value.trim();
   }
+}
+
+class _PreviewCandidate {
+  const _PreviewCandidate({
+    required this.width,
+    required this.height,
+    required this.format,
+    required this.base64Data,
+  });
+
+  final int width;
+  final int height;
+  final String format;
+  final String base64Data;
+}
+
+class _PreviewParseResult {
+  const _PreviewParseResult({
+    required this.metadata,
+    required this.bytes,
+    required this.hasSafePreview,
+  });
+
+  final GCodePreviewMetadata? metadata;
+  final Uint8List? bytes;
+  final bool hasSafePreview;
 }
