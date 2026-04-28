@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Changelog | 3D Print Cost Calculator</title>
+    <meta name="description" content="Latest updates for the 3D Print Cost Calculator app.">
+    <link rel="icon" href="assets/logo/play_store_feature.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="assets/styles/site.css">
+  </head>
+  <body>
+    <main class="legal">
+      <p><a href="index.html">← Back to homepage</a></p>
+      <h1>Changelog</h1>
+      <article id="changelog-content" class="markdown-content" aria-live="polite">
+        <p>Loading changelog…</p>
+      </article>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      const changelogContent = document.getElementById("changelog-content");
+      const CHANGELOG_URLS = [
+        "https://raw.githubusercontent.com/remej/threed_print_cost_calculator/main/changelog.md",
+        "https://cdn.jsdelivr.net/gh/remej/threed_print_cost_calculator@main/changelog.md"
+      ];
+
+      const fetchFirstAvailableChangelog = async () => {
+        for (const url of CHANGELOG_URLS) {
+          try {
+            const response = await fetch(url, { cache: "no-store" });
+            if (response.ok) {
+              return await response.text();
+            }
+          } catch (error) {
+            // Try the next source.
+          }
+        }
+
+        throw new Error("Failed to fetch changelog from all configured sources.");
+      };
+
+      const loadChangelog = async () => {
+        if (!changelogContent) {
+          return;
+        }
+
+        try {
+          const markdown = await fetchFirstAvailableChangelog();
+          changelogContent.innerHTML = marked.parse(markdown);
+
+          changelogContent.querySelectorAll("a").forEach((link) => {
+            const span = document.createElement("span");
+            span.textContent = link.textContent || "";
+            link.replaceWith(span);
+          });
+        } catch (error) {
+          changelogContent.innerHTML = "";
+          const message = document.createElement("p");
+          message.textContent = "Unable to load changelog content right now.";
+          const details = document.createElement("p");
+          details.className = "markdown-error";
+          details.textContent = error instanceof Error ? error.message : "Unknown error";
+          changelogContent.append(message, details);
+        }
+      };
+
+      loadChangelog();
+    </script>
+  </body>
+</html>
