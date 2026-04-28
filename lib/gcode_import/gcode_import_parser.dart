@@ -6,6 +6,12 @@ import 'gcode_import_result.dart';
 class GCodeImportParser {
   const GCodeImportParser();
 
+  static final List<RegExp> _layerHeightPatterns = [
+    RegExp(r'^;\s*layer_height\s*=\s*(.+?)\s*$', caseSensitive: false),
+    RegExp(r'^;\s*Layer height\s*:\s*(.+?)\s*$', caseSensitive: false),
+    RegExp(r'^;\s*first_layer_height\s*=\s*(.+?)\s*$', caseSensitive: false),
+  ];
+
   static final _thumbnailBeginRegex = RegExp(
     r'^;\s*(thumbnail(?:_QOI)?)\s+begin\s+(\d+)x(\d+)\s+(\d+)\s*$',
     caseSensitive: false,
@@ -22,18 +28,12 @@ class GCodeImportParser {
     final warnings = <GCodeParseWarning>[];
     final raw = <String, String>{};
 
-    final duration = _parseDuration(_extractDuration(lines));
+    final extractedDuration = _extractDuration(lines);
+    final duration = _parseDuration(extractedDuration);
     final filamentLengthMm = _parseFilamentLengthMm(lines);
     final filamentWeightG = _parseFilamentWeightG(lines);
     final layerHeightMm = _parseNumber(
-      _firstMatchingValue(lines, [
-        RegExp(r'^;\s*layer_height\s*=\s*(.+?)\s*$', caseSensitive: false),
-        RegExp(r'^;\s*Layer height\s*:\s*(.+?)\s*$', caseSensitive: false),
-        RegExp(
-          r'^;\s*first_layer_height\s*=\s*(.+?)\s*$',
-          caseSensitive: false,
-        ),
-      ]),
+      _firstMatchingValue(lines, _layerHeightPatterns),
     );
 
     // Parse preview metadata candidates and image bytes together,
@@ -42,20 +42,13 @@ class GCodeImportParser {
     final previewMetadata = previewResult.metadata;
     final previewImageBytes = previewResult.bytes;
 
-    _collectRaw(raw, 'estimatedDuration', _extractDuration(lines));
+    _collectRaw(raw, 'estimatedDuration', extractedDuration);
     _collectRaw(raw, 'filamentLengthMm', _extractFilamentLengthRaw(lines));
     _collectRaw(raw, 'filamentWeightG', _extractFilamentWeightRaw(lines));
     _collectRaw(
       raw,
       'layerHeightMm',
-      _firstMatchingValue(lines, [
-        RegExp(r'^;\s*layer_height\s*=\s*(.+?)\s*$', caseSensitive: false),
-        RegExp(r'^;\s*Layer height\s*:\s*(.+?)\s*$', caseSensitive: false),
-        RegExp(
-          r'^;\s*first_layer_height\s*=\s*(.+?)\s*$',
-          caseSensitive: false,
-        ),
-      ]),
+      _firstMatchingValue(lines, _layerHeightPatterns),
     );
 
     if (slicer == GCodeSlicer.unknown) {
@@ -114,23 +107,21 @@ class GCodeImportParser {
   }
 
   GCodeSlicer _detectSlicer(List<String> lines) {
-    final lower = lines.map((l) => l.toLowerCase()).toList();
-    if (lower.any((l) => l.contains('prusaslicer'))) {
-      return GCodeSlicer.prusaSlicer;
-    }
-    if (lower.any((l) => l.contains('orcaslicer'))) {
-      return GCodeSlicer.orcaSlicer;
-    }
-    if (lower.any(
-      (l) => l.contains('bambustudio') || l.contains('bambu studio'),
-    )) {
-      return GCodeSlicer.bambuStudio;
-    }
-    if (lower.any(
-      (l) =>
-          l.contains('cura_steamengine') || l.contains('generated with cura'),
-    )) {
-      return GCodeSlicer.cura;
+    for (final line in lines) {
+      final lower = line.toLowerCase();
+      if (lower.contains('prusaslicer')) {
+        return GCodeSlicer.prusaSlicer;
+      }
+      if (lower.contains('orcaslicer')) {
+        return GCodeSlicer.orcaSlicer;
+      }
+      if (lower.contains('bambustudio') || lower.contains('bambu studio')) {
+        return GCodeSlicer.bambuStudio;
+      }
+      if (lower.contains('cura_steamengine') ||
+          lower.contains('generated with cura')) {
+        return GCodeSlicer.cura;
+      }
     }
     return GCodeSlicer.unknown;
   }
@@ -154,7 +145,8 @@ class GCodeImportParser {
         currentBuffer = StringBuffer();
         currentWidth = int.tryParse(beginMatch.group(2) ?? '');
         currentHeight = int.tryParse(beginMatch.group(3) ?? '');
-        currentFormat = (beginMatch.group(1) ?? '').toLowerCase().contains('qoi')
+        currentFormat =
+            (beginMatch.group(1) ?? '').toLowerCase().contains('qoi')
             ? 'QOI'
             : 'PNG';
         continue;
@@ -166,12 +158,14 @@ class GCodeImportParser {
             currentHeight != null &&
             currentWidth > 0 &&
             currentHeight > 0) {
-          candidates.add(_PreviewCandidate(
-            width: currentWidth,
-            height: currentHeight,
-            format: currentFormat ?? 'PNG',
-            base64Data: currentBuffer.toString(),
-          ));
+          candidates.add(
+            _PreviewCandidate(
+              width: currentWidth,
+              height: currentHeight,
+              format: currentFormat ?? 'PNG',
+              base64Data: currentBuffer.toString(),
+            ),
+          );
         }
         inPreview = false;
         currentBuffer = StringBuffer();
@@ -201,15 +195,13 @@ class GCodeImportParser {
       // Check if dimensions are safe
       if (candidate.width > 2048 || candidate.height > 2048) {
         // Mark that we found a preview, but it's not safe
-        if (winningMetadata == null) {
-          winningMetadata = const GCodePreviewMetadata(
-            present: true,
-            format: null,
-            width: null,
-            height: null,
-            isSafe: false,
-          );
-        }
+        winningMetadata ??= const GCodePreviewMetadata(
+          present: true,
+          format: null,
+          width: null,
+          height: null,
+          isSafe: false,
+        );
         continue;
       }
 
@@ -443,18 +435,37 @@ class GCodeImportParser {
   }
 
   bool _hasMixedOrAmbiguousMaterials(List<String> lines) {
-    const key = 'filament used [mm]';
     for (final line in lines) {
       final lower = line.toLowerCase();
-      if (!lower.contains(key)) continue;
+      for (final key in const [
+        'filament used [mm]',
+        'filament used [g]',
+        'extruder',
+        'toolchange',
+        't0',
+        't1',
+        'multi-extruder',
+      ]) {
+        if (!lower.contains(key)) continue;
 
-      final keyIndex = lower.indexOf(key);
-      var value = line.substring(keyIndex + key.length).trim();
-      if (value.startsWith(':')) {
-        value = value.substring(1).trim();
+        final keyIndex = lower.indexOf(key);
+        var value = lower.substring(keyIndex + key.length).trim();
+        if (value.startsWith(':')) {
+          value = value.substring(1).trim();
+        }
+
+        if (value.contains(',')) return true;
+        if (key == 'toolchange' || key == 'multi-extruder') return true;
+
+        final extruderTokens = RegExp(
+          r'\b(?:t0|t1|extruder\s*\d+)\b',
+        ).allMatches(lower).length;
+        if (extruderTokens > 1) return true;
+
+        if (key == 'extruder' && RegExp(r'\bextruder\b').hasMatch(lower)) {
+          return true;
+        }
       }
-
-      if (value.contains(',')) return true;
     }
     return false;
   }
