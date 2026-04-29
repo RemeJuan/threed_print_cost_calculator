@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,6 +27,11 @@ class Subscriptions extends HookConsumerWidget {
     ).textTheme.displayMedium?.copyWith(fontSize: 12);
     final l10n = AppLocalizations.of(context)!;
     final logger = ref.read(appLoggerProvider);
+
+    useEffect(() {
+      AppAnalytics.safeLog(() => AppAnalytics.paywallViewed('subscriptions'));
+      return null;
+    }, const []);
 
     return FutureBuilder<Offerings>(
       builder: (_, offerings) {
@@ -101,6 +107,11 @@ class Subscriptions extends HookConsumerWidget {
                             }
 
                             if (customerInfo != null && context.mounted) {
+                              AppAnalytics.safeLog(
+                                () => AppAnalytics.purchaseCompleted(
+                                  'subscriptions',
+                                ),
+                              );
                               Navigator.pop(context);
                             }
                           } on PlatformException catch (e) {

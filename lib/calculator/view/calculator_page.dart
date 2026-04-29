@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -31,8 +32,13 @@ class _RevenueCatPaywallPresenter implements PaywallPresenter {
   const _RevenueCatPaywallPresenter();
 
   @override
-  Future<void> present(String offeringId) {
-    return RevenueCatUI.presentPaywallIfNeeded(offeringId);
+  Future<void> present(String offeringId) async {
+    await RevenueCatUI.presentPaywallIfNeeded(offeringId);
+
+    final customerInfo = await Purchases.getCustomerInfo();
+    if (customerInfo.entitlements.active.isNotEmpty) {
+      AppAnalytics.safeLog(() => AppAnalytics.purchaseCompleted('calculator'));
+    }
   }
 }
 
