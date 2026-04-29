@@ -97,10 +97,34 @@
 ### Calculator usage
 
 - `calculation_created`
-  - params: [`material_count`, `has_failure_risk`, `has_labour_cost`]
+  - params: [`material_count`, `has_failure_risk`, `has_labour`, `has_pricing`]
   - triggered_from: [`lib/calculator/provider/calculator_notifier.dart`]
   - feature: Calculator usage
   - notes: fired after results recomputed
+
+- `pricing_settings_changed`
+  - params: [`pricing_enabled`, `markup_percent`, `setup_fee`, `rounding_mode`]
+  - triggered_from: [`lib/settings/work_costs_form.dart`]
+  - feature: Pricing / Settings
+  - notes: fired when a pricing default changes in settings
+
+- `pricing_override_used`
+  - params: [`field`, `has_overrides`]
+  - triggered_from: [`lib/calculator/view/components/job_pricing_overrides_section.dart`]
+  - feature: Pricing / Calculator
+  - notes: fired when a job-level override field is changed
+
+- `pricing_rounding_used`
+  - params: [`rounding_mode`]
+  - triggered_from: [`lib/calculator/provider/calculator_notifier.dart`]
+  - feature: Pricing / Calculator
+  - notes: fired when rounding is active during calculation
+
+- `pricing_saved`
+  - params: [`has_pricing`, `used_overrides`, `rounding_mode`]
+  - triggered_from: [`lib/calculator/view/save_form.dart`]
+  - feature: Pricing / History
+  - notes: fired when a job is saved with pricing snapshot data
 
 - `multi_material_used`
   - params: [`material_count`]
