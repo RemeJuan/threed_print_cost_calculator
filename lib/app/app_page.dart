@@ -48,7 +48,15 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
         whatsNewShown.value = true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           final dismiss = ref.read(dismissAnnouncementProvider);
-          WhatsNewSheet.show(context, announcement, dismiss);
+          final locale = Localizations.localeOf(context).languageCode;
+          showWhatsNewSheet(
+            context,
+            announcement: announcement,
+            onDismiss: dismiss,
+            wnId: announcement.id,
+            locale: locale,
+            isPremium: isPremium,
+          );
         });
       });
       return null;
