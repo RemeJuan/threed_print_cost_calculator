@@ -286,7 +286,7 @@ Notes:
 
 ### Calculator
 
-Move **Processing Time** next to **Printing Time**.
+Move **Work time** next to **Printing Time**.
 
 Rename existing calculator total label from **Total** to **Cost Total**.
 
@@ -315,7 +315,6 @@ Accordion contains:
 - Wear & tear
 - Failure risk
 - Hourly rate
-- Processing cost inputs
 - Markup
 
 Accordion subheading should show a compact summary, matching the summary pattern used by History cards.
