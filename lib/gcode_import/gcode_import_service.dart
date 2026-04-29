@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'gcode_import_file_picker.dart';
-import 'gcode_import_file_reader.dart';
 import 'gcode_import_parser.dart';
 import 'gcode_import_result.dart';
 
@@ -18,7 +18,12 @@ class GCodeImportService {
   const GCodeImportService();
 
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
-    final text = await readPickedGCodeText(file);
+    final bytes = await file.readAsBytes();
+    return importPickedBytes(bytes);
+  }
+
+  Future<GCodeImportResult> importPickedBytes(Uint8List bytes) async {
+    final text = utf8.decode(bytes, allowMalformed: true);
     final wire = await compute(_parseInBackground, text);
     return GCodeImportResult.fromWireMap(wire);
   }
