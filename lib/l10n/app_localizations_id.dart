@@ -42,6 +42,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get hoursLabel => 'Waktu pencetakan (jam)';
 
   @override
+  String get durationHoursLabel => 'Jam';
+
+  @override
   String get wearAndTearLabel => 'Bahan/Keausan + sobek';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get minutesLabel => 'Menit';
+
+  @override
+  String get durationMinutesLabel => 'Menit';
+
+  @override
+  String get printingTimeDialogTitle => 'Waktu pencetakan';
+
+  @override
+  String get workTimeDialogTitle => 'Waktu kerja';
 
   @override
   String get spoolWeightLabel => 'Berat kumparan/Resin';
@@ -323,6 +335,53 @@ class AppLocalizationsId extends AppLocalizations {
   String get totalCostLabel => 'Total biaya';
 
   @override
+  String get costTotalLabel => 'Total biaya';
+
+  @override
+  String get markupLabel => 'Markup';
+
+  @override
+  String get setupFeeLabel => 'Biaya penyiapan';
+
+  @override
+  String get roundingAdjustmentLabel => 'Penyesuaian pembulatan';
+
+  @override
+  String get finalPriceLabel => 'Harga akhir';
+
+  @override
+  String get jobPricingOverridesLabel => 'Pengaturan tugas';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# override diterapkan',
+      one: '# override diterapkan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '% markup';
+
+  @override
+  String get pricingSetupFeeLabel => 'Biaya penyiapan';
+
+  @override
+  String get pricingRoundingLabel => 'Pembulatan';
+
+  @override
+  String get pricingRoundingNoneLabel => 'Tidak ada';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Bulatan penuh';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Berakhir .99';
+
+  @override
   String get workCostsLabel => 'Biaya kerja';
 
   @override
@@ -394,7 +453,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total';
+      'Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total,% markup,Jumlah markup,Biaya penyiapan,Mode pembulatan,Subtotal sebelum pembulatan,Penyesuaian pembulatan,Harga akhir';
 
   @override
   String get historyExportShareText => 'Ekspor riwayat biaya cetak 3D';

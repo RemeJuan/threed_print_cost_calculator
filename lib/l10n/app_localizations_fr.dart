@@ -42,6 +42,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hoursLabel => 'Temps d\'impression (heures)';
 
   @override
+  String get durationHoursLabel => 'Heures';
+
+  @override
   String get wearAndTearLabel => 'Matières/Usures + déchirures';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get minutesLabel => 'Min.';
+
+  @override
+  String get durationMinutesLabel => 'Min.';
+
+  @override
+  String get printingTimeDialogTitle => 'Temps d\'impression';
+
+  @override
+  String get workTimeDialogTitle => 'Temps de travail';
 
   @override
   String get spoolWeightLabel => 'Poids de la bobine/résine';
@@ -328,6 +340,53 @@ class AppLocalizationsFr extends AppLocalizations {
   String get totalCostLabel => 'Coût total';
 
   @override
+  String get costTotalLabel => 'Coût total';
+
+  @override
+  String get markupLabel => 'Marge';
+
+  @override
+  String get setupFeeLabel => 'Frais d\'installation';
+
+  @override
+  String get roundingAdjustmentLabel => 'Ajustement d\'arrondi';
+
+  @override
+  String get finalPriceLabel => 'Prix final';
+
+  @override
+  String get jobPricingOverridesLabel => 'Paramètres du travail';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# surcharges appliquées',
+      one: '# surcharge appliquée',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '% de marge';
+
+  @override
+  String get pricingSetupFeeLabel => 'Frais d\'installation';
+
+  @override
+  String get pricingRoundingLabel => 'Arrondi';
+
+  @override
+  String get pricingRoundingNoneLabel => 'Aucun';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Montant entier';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Se termine par .99';
+
+  @override
   String get workCostsLabel => 'Coûts de main-d\'œuvre';
 
   @override
@@ -402,7 +461,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Date,Imprimante,Matériau,Matériaux,Poids (g),Temps,Électricité,Filament,Main-d\'œuvre,Risque,Total';
+      'Date,Imprimante,Matériau,Matériaux,Poids (g),Temps,Électricité,Filament,Main-d\'œuvre,Risque,Total,%,Montant de marge,Frais d\'installation,Mode d\'arrondi,Sous-total avant arrondi,Ajustement d\'arrondi,Prix final';
 
   @override
   String get historyExportShareText =>

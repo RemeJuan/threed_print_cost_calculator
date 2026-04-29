@@ -12,11 +12,15 @@
   "wattLabel": "Watt (3D Printer)",
   "printWeightLabel": "Print Weight",
   "hoursLabel": "Printing time (hours)",
+  "durationHoursLabel": "Hours",
   "wearAndTearLabel": "Materials/Wear + tear",
   "labourRateLabel": "Hourly rate",
-  "labourTimeLabel": "Processing time",
+  "labourTimeLabel": "Work time",
   "failureRiskLabel": "Failure risk (%)",
   "minutesLabel": "Minutes",
+  "durationMinutesLabel": "Minutes",
+  "printingTimeDialogTitle": "Printing time",
+  "workTimeDialogTitle": "Work time",
   "spoolWeightLabel": "Material weight",
   "spoolCostLabel": "Material cost",
   "electricityCostLabel": "Electricity",
@@ -124,7 +128,27 @@
   "labourCostLabel": "Labour",
   "riskCostLabel": "Risk",
   "totalCostLabel": "Total",
-  "workCostsLabel": "Work Costs",
+  "costTotalLabel": "Cost total",
+  "markupLabel": "Markup",
+  "setupFeeLabel": "Setup fee",
+  "roundingAdjustmentLabel": "Rounding adjustment",
+  "finalPriceLabel": "Final price",
+  "jobPricingOverridesLabel": "Job settings",
+  "pricingOverridesSummary": "{count, plural, one{# override applied} other{# overrides applied}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "Markup %",
+  "pricingSetupFeeLabel": "Setup fee",
+  "pricingRoundingLabel": "Rounding",
+  "pricingRoundingNoneLabel": "None",
+  "pricingRoundingWholeDollarLabel": "Whole dollar",
+  "pricingRoundingPointNinetyNineLabel": "Ends in .99",
+  "workCostsLabel": "Pricing & Work Costs",
   "enterNumber": "Please enter a number",
   "invalidNumber": "Invalid number",
   "validationRequired": "Required",
@@ -151,7 +175,7 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total",
+  "historyCsvHeader": "Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Markup %,Markup Amount,Setup Fee,Rounding Mode,Subtotal Before Rounding,Rounding Adjustment,Final Price",
   "historyExportShareText": "3D Print Cost History Export",
   "historyTeaserTitle": "Keep every print estimate in one place",
   "historyTeaserDescription": "Review how history works before upgrading. Save completed estimates and export them any time with Pro.",

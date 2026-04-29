@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Geschiedenis",
   "@historyAppBarTitle": {},
   "hoursLabel": "Afdruktijd (uren)",
+  "durationHoursLabel": "Uren",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Verwerkingstijd",
   "@labourTimeLabel": {},
   "minutesLabel": "Minuten",
+  "durationMinutesLabel": "Minuten",
+  "printingTimeDialogTitle": "Afdruktijd",
+  "workTimeDialogTitle": "Werktijd",
   "@minutesLabel": {},
   "premiumHeader": "Alleen voor Premium-gebruikers:",
   "@premiumHeader": {},
@@ -44,6 +48,13 @@
   "@electricityCostSettingsLabel": {},
   "submitButton": "Berekenen",
   "@submitButton": {},
+  "versionLabel": "Versie {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "watt": "Watt",
   "@watt": {},
   "wattLabel": "Watt (3D-printer)",
@@ -169,7 +180,28 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal",
+  "costTotalLabel": "Totale kosten",
+  "markupLabel": "Opslag",
+  "setupFeeLabel": "Instelkosten",
+  "roundingAdjustmentLabel": "Afrondingscorrectie",
+  "finalPriceLabel": "Eindprijs",
+  "jobPricingOverridesLabel": "Taakinstellingen",
+  "pricingOverridesSummary": "{count, plural, one{# overschrijving toegepast} other{# overschrijvingen toegepast}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "Opslag %",
+  "pricingSetupFeeLabel": "Instelkosten",
+  "pricingRoundingLabel": "Afronding",
+  "pricingRoundingNoneLabel": "Geen",
+  "pricingRoundingWholeDollarLabel": "Heel bedrag",
+  "pricingRoundingPointNinetyNineLabel": "Eindigt op .99",
+  "workCostsLabel": "Prijs & werkkosten",
+  "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal,Opslag %,Opslagbedrag,Instelkosten,Afrondingsmodus,Tussenbedrag voor afronding,Afrondingscorrectie,Eindprijs",
   "historyExportShareText": "Export van 3D-printkostenoverzicht",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",

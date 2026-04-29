@@ -42,6 +42,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hoursLabel => '印刷時間（時間）';
 
   @override
+  String get durationHoursLabel => '時間';
+
+  @override
   String get wearAndTearLabel => '材質/摩耗';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get minutesLabel => '分';
+
+  @override
+  String get durationMinutesLabel => '分';
+
+  @override
+  String get printingTimeDialogTitle => '印刷時間';
+
+  @override
+  String get workTimeDialogTitle => '作業時間';
 
   @override
   String get spoolWeightLabel => 'スプール/樹脂重量';
@@ -318,6 +330,53 @@ class AppLocalizationsJa extends AppLocalizations {
   String get totalCostLabel => '総費用';
 
   @override
+  String get costTotalLabel => '合計コスト';
+
+  @override
+  String get markupLabel => '上乗せ';
+
+  @override
+  String get setupFeeLabel => '設定料';
+
+  @override
+  String get roundingAdjustmentLabel => '端数調整';
+
+  @override
+  String get finalPriceLabel => '最終価格';
+
+  @override
+  String get jobPricingOverridesLabel => 'ジョブ設定';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# 件の上書き適用',
+      one: '# 件の上書き適用',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '上乗せ率 %';
+
+  @override
+  String get pricingSetupFeeLabel => '設定料';
+
+  @override
+  String get pricingRoundingLabel => '端数処理';
+
+  @override
+  String get pricingRoundingNoneLabel => 'なし';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => '整数に丸める';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => '.99で終わる';
+
+  @override
   String get workCostsLabel => '作業コスト';
 
   @override
@@ -387,7 +446,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      '日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計';
+      '日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計,上乗せ率 %,上乗せ額,設定料,端数処理,端数処理前小計,端数調整,最終価格';
 
   @override
   String get historyExportShareText => '3Dプリント費用履歴の書き出し';
@@ -445,7 +504,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'バージョン $version';
   }
 
   @override

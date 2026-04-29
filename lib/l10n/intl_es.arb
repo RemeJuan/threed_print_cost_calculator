@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Historial",
   "@historyAppBarTitle": {},
   "hoursLabel": "Tiempo de impresión (horas)",
+  "durationHoursLabel": "Horas",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Tiempo de procesamiento",
   "@labourTimeLabel": {},
   "minutesLabel": "Minutos",
+  "durationMinutesLabel": "Minutos",
+  "printingTimeDialogTitle": "Tiempo de impresión",
+  "workTimeDialogTitle": "Tiempo de trabajo",
   "@minutesLabel": {},
   "premiumHeader": "Sólo usuarios premium:",
   "@premiumHeader": {},
@@ -168,7 +172,28 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total",
+  "costTotalLabel": "Costo total",
+  "markupLabel": "Margen",
+  "setupFeeLabel": "Tarifa de configuración",
+  "roundingAdjustmentLabel": "Ajuste por redondeo",
+  "finalPriceLabel": "Precio final",
+  "jobPricingOverridesLabel": "Configuración del trabajo",
+  "pricingOverridesSummary": "{count, plural, one{# sobrescritura aplicada} other{# sobrescrituras aplicadas}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% de margen",
+  "pricingSetupFeeLabel": "Tarifa de configuración",
+  "pricingRoundingLabel": "Redondeo",
+  "pricingRoundingNoneLabel": "Ninguno",
+  "pricingRoundingWholeDollarLabel": "Dólar entero",
+  "pricingRoundingPointNinetyNineLabel": "Termina en .99",
+  "workCostsLabel": "Precio y costos de trabajo",
+  "historyCsvHeader": "Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total,% de margen,Monto del margen,Tarifa de configuración,Modo de redondeo,Subtotal antes de redondeo,Ajuste por redondeo,Precio final",
   "historyExportShareText": "Exportación del historial de costes de impresión 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de privacidad",

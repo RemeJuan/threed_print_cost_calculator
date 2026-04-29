@@ -180,6 +180,12 @@ abstract class AppLocalizations {
   /// **'Printing time (hours)'**
   String get hoursLabel;
 
+  /// No description provided for @durationHoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get durationHoursLabel;
+
   /// No description provided for @wearAndTearLabel.
   ///
   /// In en, this message translates to:
@@ -195,7 +201,7 @@ abstract class AppLocalizations {
   /// No description provided for @labourTimeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Processing time'**
+  /// **'Work time'**
   String get labourTimeLabel;
 
   /// No description provided for @failureRiskLabel.
@@ -209,6 +215,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Minutes'**
   String get minutesLabel;
+
+  /// No description provided for @durationMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get durationMinutesLabel;
+
+  /// No description provided for @printingTimeDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing time'**
+  String get printingTimeDialogTitle;
+
+  /// No description provided for @workTimeDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work time'**
+  String get workTimeDialogTitle;
 
   /// No description provided for @spoolWeightLabel.
   ///
@@ -720,10 +744,88 @@ abstract class AppLocalizations {
   /// **'Total'**
   String get totalCostLabel;
 
+  /// No description provided for @costTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost total'**
+  String get costTotalLabel;
+
+  /// No description provided for @markupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Markup'**
+  String get markupLabel;
+
+  /// No description provided for @setupFeeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup fee'**
+  String get setupFeeLabel;
+
+  /// No description provided for @roundingAdjustmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounding adjustment'**
+  String get roundingAdjustmentLabel;
+
+  /// No description provided for @finalPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Final price'**
+  String get finalPriceLabel;
+
+  /// No description provided for @jobPricingOverridesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Job settings'**
+  String get jobPricingOverridesLabel;
+
+  /// No description provided for @pricingOverridesSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{# override applied} other{# overrides applied}}'**
+  String pricingOverridesSummary(num count);
+
+  /// No description provided for @pricingMarkupPercentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Markup %'**
+  String get pricingMarkupPercentLabel;
+
+  /// No description provided for @pricingSetupFeeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup fee'**
+  String get pricingSetupFeeLabel;
+
+  /// No description provided for @pricingRoundingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounding'**
+  String get pricingRoundingLabel;
+
+  /// No description provided for @pricingRoundingNoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get pricingRoundingNoneLabel;
+
+  /// No description provided for @pricingRoundingWholeDollarLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole dollar'**
+  String get pricingRoundingWholeDollarLabel;
+
+  /// No description provided for @pricingRoundingPointNinetyNineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in .99'**
+  String get pricingRoundingPointNinetyNineLabel;
+
   /// No description provided for @workCostsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Work Costs'**
+  /// **'Pricing & Work Costs'**
   String get workCostsLabel;
 
   /// No description provided for @enterNumber.
@@ -855,7 +957,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyCsvHeader.
   ///
   /// In en, this message translates to:
-  /// **'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total'**
+  /// **'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Markup %,Markup Amount,Setup Fee,Rounding Mode,Subtotal Before Rounding,Rounding Adjustment,Final Price'**
   String get historyCsvHeader;
 
   /// No description provided for @historyExportShareText.

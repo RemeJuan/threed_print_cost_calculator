@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Histórico",
   "@historyAppBarTitle": {},
   "hoursLabel": "Tempo de impressão (horas)",
+  "durationHoursLabel": "Horas",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Tempo de processamento",
   "@labourTimeLabel": {},
   "minutesLabel": "Minutos",
+  "durationMinutesLabel": "Minutos",
+  "printingTimeDialogTitle": "Tempo de impressão",
+  "workTimeDialogTitle": "Tempo de trabalho",
   "@minutesLabel": {},
   "premiumHeader": "Apenas usuários premium:",
   "@premiumHeader": {},
@@ -43,6 +47,13 @@
   "electricityCostSettingsLabel": "Custo de eletricidade",
   "submitButton": "Calcular",
   "@submitButton": {},
+  "versionLabel": "Versão {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "watt": "Watt",
   "@watt": {},
   "wattLabel": "Watt (impressora 3D)",
@@ -168,7 +179,28 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Data,Impressora,Material,Materiais,Peso (g),Tempo,Eletricidade,Filamento,Mão de obra,Risco,Total",
+  "costTotalLabel": "Custo total",
+  "markupLabel": "Margem",
+  "setupFeeLabel": "Taxa de configuração",
+  "roundingAdjustmentLabel": "Ajuste de arredondamento",
+  "finalPriceLabel": "Preço final",
+  "jobPricingOverridesLabel": "Configurações do trabalho",
+  "pricingOverridesSummary": "{count, plural, one{# substituição aplicada} other{# substituições aplicadas}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% de margem",
+  "pricingSetupFeeLabel": "Taxa de configuração",
+  "pricingRoundingLabel": "Arredondamento",
+  "pricingRoundingNoneLabel": "Nenhum",
+  "pricingRoundingWholeDollarLabel": "Valor inteiro",
+  "pricingRoundingPointNinetyNineLabel": "Termina em .99",
+  "workCostsLabel": "Preço e custos de trabalho",
+  "historyCsvHeader": "Data,Impressora,Material,Materiais,Peso (g),Tempo,Eletricidade,Filamento,Mão de obra,Risco,Total,% de margem,Valor da margem,Taxa de configuração,Modo de arredondamento,Subtotal antes do arredondamento,Ajuste de arredondamento,Preço final",
   "historyExportShareText": "Exportação do histórico de custos de impressão 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de Privacidade",

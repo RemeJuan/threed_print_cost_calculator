@@ -42,19 +42,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hoursLabel => 'Printing time (hours)';
 
   @override
+  String get durationHoursLabel => 'Hours';
+
+  @override
   String get wearAndTearLabel => 'Materials/Wear + tear';
 
   @override
   String get labourRateLabel => 'Hourly rate';
 
   @override
-  String get labourTimeLabel => 'Processing time';
+  String get labourTimeLabel => 'Work time';
 
   @override
   String get failureRiskLabel => 'Failure risk (%)';
 
   @override
   String get minutesLabel => 'Minutes';
+
+  @override
+  String get durationMinutesLabel => 'Minutes';
+
+  @override
+  String get printingTimeDialogTitle => 'Printing time';
+
+  @override
+  String get workTimeDialogTitle => 'Work time';
 
   @override
   String get spoolWeightLabel => 'Material weight';
@@ -324,7 +336,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalCostLabel => 'Total';
 
   @override
-  String get workCostsLabel => 'Work Costs';
+  String get costTotalLabel => 'Cost total';
+
+  @override
+  String get markupLabel => 'Markup';
+
+  @override
+  String get setupFeeLabel => 'Setup fee';
+
+  @override
+  String get roundingAdjustmentLabel => 'Rounding adjustment';
+
+  @override
+  String get finalPriceLabel => 'Final price';
+
+  @override
+  String get jobPricingOverridesLabel => 'Job settings';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# overrides applied',
+      one: '# override applied',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => 'Markup %';
+
+  @override
+  String get pricingSetupFeeLabel => 'Setup fee';
+
+  @override
+  String get pricingRoundingLabel => 'Rounding';
+
+  @override
+  String get pricingRoundingNoneLabel => 'None';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Whole dollar';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Ends in .99';
+
+  @override
+  String get workCostsLabel => 'Pricing & Work Costs';
 
   @override
   String get enterNumber => 'Please enter a number';
@@ -393,7 +452,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Markup %,Markup Amount,Setup Fee,Rounding Mode,Subtotal Before Rounding,Rounding Adjustment,Final Price';
 
   @override
   String get historyExportShareText => '3D Print Cost History Export';

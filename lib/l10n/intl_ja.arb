@@ -9,6 +9,7 @@
   "historyAppBarTitle": "履歴",
   "@historyAppBarTitle": {},
   "hoursLabel": "印刷時間（時間）",
+  "durationHoursLabel": "時間",
   "@hoursLabel": {},
   "kwh": "キロワット時",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "処理時間",
   "@labourTimeLabel": {},
   "minutesLabel": "分",
+  "durationMinutesLabel": "分",
+  "printingTimeDialogTitle": "印刷時間",
+  "workTimeDialogTitle": "作業時間",
   "@minutesLabel": {},
   "premiumHeader": "プレミアムユーザーのみ:",
   "@premiumHeader": {},
@@ -44,6 +48,13 @@
   "@electricityCostSettingsLabel": {},
   "submitButton": "計算する",
   "@submitButton": {},
+  "versionLabel": "バージョン {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "watt": "ワット",
   "@watt": {},
   "wattLabel": "ワット（3Dプリンター）",
@@ -169,7 +180,28 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計",
+  "costTotalLabel": "合計コスト",
+  "markupLabel": "上乗せ",
+  "setupFeeLabel": "設定料",
+  "roundingAdjustmentLabel": "端数調整",
+  "finalPriceLabel": "最終価格",
+  "jobPricingOverridesLabel": "ジョブ設定",
+  "pricingOverridesSummary": "{count, plural, one{# 件の上書き適用} other{# 件の上書き適用}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "上乗せ率 %",
+  "pricingSetupFeeLabel": "設定料",
+  "pricingRoundingLabel": "端数処理",
+  "pricingRoundingNoneLabel": "なし",
+  "pricingRoundingWholeDollarLabel": "整数に丸める",
+  "pricingRoundingPointNinetyNineLabel": ".99で終わる",
+  "workCostsLabel": "価格と作業コスト",
+  "historyCsvHeader": "日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計,上乗せ率 %,上乗せ額,設定料,端数処理,端数処理前小計,端数調整,最終価格",
   "historyExportShareText": "3Dプリント費用履歴の書き出し",
   "@supportIdCopied": {},
   "privacyPolicyLink": "プライバシーポリシー",

@@ -42,6 +42,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get hoursLabel => 'Afdruktijd (uren)';
 
   @override
+  String get durationHoursLabel => 'Uren';
+
+  @override
   String get wearAndTearLabel => 'Materialen/Slijtage';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get minutesLabel => 'Minuten';
+
+  @override
+  String get durationMinutesLabel => 'Minuten';
+
+  @override
+  String get printingTimeDialogTitle => 'Afdruktijd';
+
+  @override
+  String get workTimeDialogTitle => 'Werktijd';
 
   @override
   String get spoolWeightLabel => 'Spoel/harsgewicht';
@@ -324,6 +336,53 @@ class AppLocalizationsNl extends AppLocalizations {
   String get totalCostLabel => 'Totaal';
 
   @override
+  String get costTotalLabel => 'Totale kosten';
+
+  @override
+  String get markupLabel => 'Opslag';
+
+  @override
+  String get setupFeeLabel => 'Instelkosten';
+
+  @override
+  String get roundingAdjustmentLabel => 'Afrondingscorrectie';
+
+  @override
+  String get finalPriceLabel => 'Eindprijs';
+
+  @override
+  String get jobPricingOverridesLabel => 'Taakinstellingen';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# overschrijvingen toegepast',
+      one: '# overschrijving toegepast',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => 'Opslag %';
+
+  @override
+  String get pricingSetupFeeLabel => 'Instelkosten';
+
+  @override
+  String get pricingRoundingLabel => 'Afronding';
+
+  @override
+  String get pricingRoundingNoneLabel => 'Geen';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Heel bedrag';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Eindigt op .99';
+
+  @override
   String get workCostsLabel => 'Arbeidskosten';
 
   @override
@@ -396,7 +455,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal';
+      'Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal,Opslag %,Opslagbedrag,Instelkosten,Afrondingsmodus,Tussenbedrag voor afronding,Afrondingscorrectie,Eindprijs';
 
   @override
   String get historyExportShareText => 'Export van 3D-printkostenoverzicht';
@@ -460,7 +519,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'Versie $version';
   }
 
   @override

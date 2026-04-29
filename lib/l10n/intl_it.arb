@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Cronologia",
   "@historyAppBarTitle": {},
   "hoursLabel": "Tempo di stampa (ore)",
+  "durationHoursLabel": "Ore",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Tempo di elaborazione",
   "@labourTimeLabel": {},
   "minutesLabel": "Minuti",
+  "durationMinutesLabel": "Minuti",
+  "printingTimeDialogTitle": "Tempo di stampa",
+  "workTimeDialogTitle": "Tempo di lavoro",
   "@minutesLabel": {},
   "premiumHeader": "Solo utenti Premium:",
   "@premiumHeader": {},
@@ -168,7 +172,28 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale",
+  "costTotalLabel": "Costo totale",
+  "markupLabel": "Ricarico",
+  "setupFeeLabel": "Costo di configurazione",
+  "roundingAdjustmentLabel": "Aggiustamento arrotondamento",
+  "finalPriceLabel": "Prezzo finale",
+  "jobPricingOverridesLabel": "Impostazioni lavoro",
+  "pricingOverridesSummary": "{count, plural, one{# override applicato} other{# override applicati}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% ricarico",
+  "pricingSetupFeeLabel": "Costo di configurazione",
+  "pricingRoundingLabel": "Arrotondamento",
+  "pricingRoundingNoneLabel": "Nessuno",
+  "pricingRoundingWholeDollarLabel": "Importo intero",
+  "pricingRoundingPointNinetyNineLabel": "Termina con .99",
+  "workCostsLabel": "Prezzi e costi di lavoro",
+  "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale,% ricarico,Importo ricarico,Costo di configurazione,Modalità di arrotondamento,Subtotale prima dell'arrotondamento,Aggiustamento arrotondamento,Prezzo finale",
   "historyExportShareText": "Esportazione della cronologia dei costi di stampa 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Informativa sulla privacy",
