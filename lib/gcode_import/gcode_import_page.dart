@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_section.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -20,6 +22,15 @@ class GCodeImportPage extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final isPremium = ref.watch(isPremiumProvider);
 
+    useEffect(() {
+      if (!isPremium) return null;
+
+      AppAnalytics.safeLog(AppAnalytics.gcodeImportOpened);
+      return () {
+        AppAnalytics.safeLog(AppAnalytics.gcodeImportAbandoned);
+      };
+    }, [isPremium]);
+
     if (!isPremium) {
       return Scaffold(
         appBar: AppBar(title: Text(l10n.importGcodePageTitle)),
@@ -29,6 +40,11 @@ class GCodeImportPage extends HookConsumerWidget {
 
     final state = ref.watch(gcodeImportControllerProvider);
     final controller = ref.read(gcodeImportControllerProvider.notifier);
+
+    final parseStatus = state.result?.hasPartialMetadata == true
+        ? 'partial'
+        : 'success';
+    final fileSizeBytes = state.selectedFileSizeBytes ?? 0;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.importGcodePageTitle)),
@@ -147,7 +163,13 @@ class GCodeImportPage extends HookConsumerWidget {
                       _summaryRow(
                         context,
                         l10n.importGcodePreviewLabel,
-                        _previewValueWidget(context, l10n, state.result!),
+                        _previewValueWidget(
+                          context,
+                          l10n,
+                          state.result!,
+                          fileSizeBytes: fileSizeBytes,
+                          parseStatus: parseStatus,
+                        ),
                       ),
                       if (_shouldShowPreviewNote(state.result!)) ...[
                         const SizedBox(height: 8),
@@ -173,6 +195,14 @@ class GCodeImportPage extends HookConsumerWidget {
                         state.result!.filamentWeightG == null
                     ? null
                     : () {
+                        AppAnalytics.safeLog(
+                          () => AppAnalytics.gcodeApplyToCalculator(
+                            slicer: state.result!.slicer.name,
+                            hasPreview: state.result!.hasPreviewMetadata,
+                            fileSizeBytes: fileSizeBytes,
+                            parseStatus: parseStatus,
+                          ),
+                        );
                         ref
                             .read(calculatorProvider.notifier)
                             .applyImportedValues(
@@ -181,6 +211,14 @@ class GCodeImportPage extends HookConsumerWidget {
                               filamentWeightGrams:
                                   state.result!.filamentWeightG,
                             );
+                        AppAnalytics.safeLog(
+                          () => AppAnalytics.gcodeFlowCompleted(
+                            slicer: state.result!.slicer.name,
+                            hasPreview: state.result!.hasPreviewMetadata,
+                            fileSizeBytes: fileSizeBytes,
+                            parseStatus: parseStatus,
+                          ),
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(l10n.importGcodeAppliedMessage),
@@ -246,8 +284,10 @@ class GCodeImportPage extends HookConsumerWidget {
   Widget _previewValueWidget(
     BuildContext context,
     AppLocalizations l10n,
-    GCodeImportResult result,
-  ) {
+    GCodeImportResult result, {
+    required int fileSizeBytes,
+    required String parseStatus,
+  }) {
     final previewBytes = result.previewImageBytes;
     if (previewBytes == null || !result.hasSafePreview) {
       return Text(
@@ -260,7 +300,17 @@ class GCodeImportPage extends HookConsumerWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton.icon(
-        onPressed: () => _showPreviewDialog(context, l10n, previewBytes),
+        onPressed: () {
+          AppAnalytics.safeLog(
+            () => AppAnalytics.gcodePreviewViewed(
+              slicer: result.slicer.name,
+              hasPreview: result.hasPreviewMetadata,
+              fileSizeBytes: fileSizeBytes,
+              parseStatus: parseStatus,
+            ),
+          );
+          _showPreviewDialog(context, l10n, previewBytes);
+        },
         icon: const Icon(Icons.launch),
         label: Text(l10n.importGcodePreviewView),
         style: TextButton.styleFrom(
