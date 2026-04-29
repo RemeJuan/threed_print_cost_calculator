@@ -1,222 +1,269 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>3D Print Cost Calculator | Real Print Cost, Not Just Filament</title>
-    <meta name="description" content="Calculate the true cost of your 3D prints with filament, electricity, failure risk, labour, and overhead.">
-    <link rel="icon" href="assets/logo/play_store_feature.webp" type="image/webp">
-    <link rel="stylesheet" href="assets/styles/site.css">
-  </head>
-  <body>
-    <header class="site-header">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="#top">
-          <img src="assets/logo/play_store_feature.webp" alt="3D Print Cost Calculator logo">
-          <span>3D Print Cost Calculator</span>
-        </a>
-        <div class="nav-links">
-          <a href="#problem">Problem</a>
-          <a href="#solution">Solution</a>
-          <a href="#features">Features</a>
-          <a href="#privacy">Privacy</a>
-          <a href="#faq">FAQ</a>
-          <a href="#download">Download</a>
-        </div>
-        <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-drawer">
-          <span class="visually-hidden">Toggle menu</span>
-          <span class="nav-toggle-line" aria-hidden="true"></span>
-          <span class="nav-toggle-line" aria-hidden="true"></span>
-          <span class="nav-toggle-line" aria-hidden="true"></span>
-        </button>
-        <div class="mobile-drawer" id="mobile-drawer">
-          <a href="#problem">Problem</a>
-          <a href="#solution">Solution</a>
-          <a href="#features">Features</a>
-          <a href="#privacy">Privacy</a>
-          <a href="#faq">FAQ</a>
-          <a href="#download">Download</a>
-        </div>
-      </nav>
-    </header>
 
-    <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <div>
-          <p class="kicker">Know the real cost before you print</p>
-          <h1 id="hero-title">3D Print Cost Calculator</h1>
-          <p>
-            Calculate the true cost of your 3D prints including filament,
-            electricity, failure risk, labour, and overhead in one fast local-first workflow.
-          </p>
-          <div class="store-buttons">
-            <a href="https://apps.apple.com/us/app/3d-printer-cost-calculator/id6444106268" target="_blank" rel="noopener noreferrer" aria-label="Download on the Apple App Store">
-              <img src="assets/store-badges/app-store-badge.svg" alt="Download on the App Store">
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.threed_print_calculator" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
-              <img src="assets/store-badges/google-play-badge.svg" alt="Get it on Google Play">
-            </a>
-          </div>
-        </div>
-        <aside class="hero-card">
-          <img src="assets/screenshots/calculator.webp" alt="Calculator screen showing detailed print cost breakdown">
-        </aside>
-      </section>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D Print Cost Calculator | Real Print Cost, Not Just Filament</title>
+  <meta name="description"
+    content="Calculate the true cost of your 3D prints with filament, electricity, failure risk, labour, and overhead.">
+  <link rel="icon" href="assets/logo/play_store_feature.webp" type="image/webp">
+  <link rel="stylesheet" href="assets/styles/site.css">
+</head>
 
-      <section class="section" id="problem" aria-labelledby="problem-title">
-        <h2 id="problem-title">The Problem</h2>
-        <p>Filament-only pricing misses the actual print cost. Real-world quoting includes multiple cost drivers:</p>
-        <div class="section-grid">
-          <article class="card"><h3>Filament Alone Is Incomplete</h3><p>Many makers only price by grams used, which underestimates your final cost.</p></article>
-          <article class="card"><h3>Electricity Is Printer-Specific</h3><p>Power draw varies by machine and print length, and should be part of every quote.</p></article>
-          <article class="card"><h3>Failed Prints Are Real Loss</h3><p>A realistic failure risk percentage changes your expected cost outcome.</p></article>
-          <article class="card"><h3>Labour and Overhead Matter</h3><p>Prep, post-processing, and running costs are often ignored but directly impact margin.</p></article>
-        </div>
-      </section>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#top">
+        <img src="assets/logo/play_store_feature.webp" alt="3D Print Cost Calculator logo">
+        <span>3D Print Cost Calculator</span>
+      </a>
+      <div class="nav-links">
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+        <a href="#download">Download</a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-drawer">
+        <span class="visually-hidden">Toggle menu</span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+        <span class="nav-toggle-line" aria-hidden="true"></span>
+      </button>
+      <div class="mobile-drawer" id="mobile-drawer">
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+        <a href="#download">Download</a>
+      </div>
+    </nav>
+  </header>
 
-      <section class="section" id="solution" aria-labelledby="solution-title">
-        <h2 id="solution-title">The Solution</h2>
-        <p>The app calculates true end-to-end print cost with a detailed, understandable breakdown.</p>
-        <ul>
-          <li>Filament cost calculation with multi-material support</li>
-          <li>Electricity cost integration per printer profile</li>
-          <li>Failure risk modelling</li>
-          <li>Labour and processing time input</li>
-          <li>Detailed line-item cost breakdown</li>
-        </ul>
-      </section>
-
-      <section class="section" id="features" aria-labelledby="features-title">
-        <h2 id="features-title">Key Features</h2>
-        <div class="section-grid">
-          <article class="card"><h3>Multi-Material Support</h3><p>Split prints across multiple filaments with weight-based costing.</p></article>
-          <article class="card">
-            <h3>G-code Import (Beta)</h3>
-            <p>Import supported G-code metadata to pre-fill print weight, duration, and preview data where available.</p>
-            <p class="card-note">Availability depends on slicer and export settings. G-code import is in beta; send feedback directly from the app.</p>
-          </article>
-          <article class="card"><h3>Print History</h3><p>Save jobs, search history, review full cost breakdowns, and export CSVs.</p></article>
-          <article class="card"><h3>Material Tracking</h3><p>Track remaining filament stock and automatically deduct usage when saving prints.</p></article>
-          <article class="card"><h3>Printer Profiles</h3><p>Store power usage and settings for multiple printers.</p></article>
-          <article class="card"><h3>Detailed Cost Breakdown</h3><p>Understand electricity, filament, risk, labour, and totals at a glance.</p></article>
-          <article class="card"><h3>CSV Export</h3><p>Export jobs for bookkeeping, reporting, or analysis.</p></article>
-          <article class="card"><h3>Offline by Default</h3><p>Use the app fully offline with no accounts, logins, or cloud dependency for all features.</p></article>
-        </div>
-      </section>
-
-      <section class="section" aria-labelledby="screenshots-title">
-        <h2 id="screenshots-title">Screenshots</h2>
-        <div class="screenshots">
-          <figure>
-            <img src="assets/screenshots/calculator.webp" alt="Calculator tab with materials, risk, and total cost">
-            <figcaption>Calculator workflow</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/screenshots/history.webp" alt="History tab listing saved print jobs with cost totals">
-            <figcaption>Print history</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/screenshots/settings.webp" alt="Settings tab for electricity, printers, materials, and work costs">
-            <figcaption>Configurable settings</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="section" id="privacy" aria-labelledby="privacy-title">
-        <h2 id="privacy-title">Privacy and Local-First Design</h2>
-        <p><strong>Your data stays yours.</strong></p>
-        <ul>
-          <li>No accounts required</li>
-          <li>Calculations run locally on your device</li>
-          <li>No cloud dependency for core functionality</li>
-          <li>Your print data stays under your control</li>
-        </ul>
-      </section>
-
-      <section class="section" aria-labelledby="audience-title">
-        <h2 id="audience-title">Who This Is For</h2>
-        <ul>
-          <li>Hobbyist makers</li>
-          <li>Etsy sellers and side hustles</li>
-          <li>Small print businesses</li>
-          <li>Anyone quoting 3D prints</li>
-        </ul>
-      </section>
-
-      <section class="section faq" id="faq" aria-labelledby="faq-title">
-        <h2 id="faq-title">FAQ</h2>
-        <details>
-          <summary>Does the app require internet?</summary>
-          <p>No. Core calculations run locally on your device.</p>
-        </details>
-        <details>
-          <summary>Can I manage multiple printers?</summary>
-          <p>Yes. You can save and use multiple printer profiles.</p>
-        </details>
-        <details>
-          <summary>Can I export my data?</summary>
-          <p>Yes. You can export as CSV.</p>
-        </details>
-        <details>
-          <summary>Is my data stored in the cloud?</summary>
-          <p>No. Data is not cloud-dependent for core app usage.</p>
-        </details>
-      </section>
-
-      <section class="cta" id="download" aria-labelledby="download-title">
-        <h2 id="download-title">Start calculating your real print costs today</h2>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="kicker">Know the real cost before you print</p>
+        <h1 id="hero-title">3D Print Cost Calculator</h1>
+        <p>
+          Calculate the true cost of your 3D prints including filament,
+          electricity, failure risk, labour, and overhead in one fast local-first workflow.
+        </p>
         <div class="store-buttons">
-          <a href="https://apps.apple.com/us/app/3d-printer-cost-calculator/id6444106268" target="_blank" rel="noopener noreferrer" aria-label="Download on the Apple App Store">
+          <a href="https://apps.apple.com/us/app/3d-printer-cost-calculator/id6444106268" target="_blank"
+            rel="noopener noreferrer" aria-label="Download on the Apple App Store">
             <img src="assets/store-badges/app-store-badge.svg" alt="Download on the App Store">
           </a>
-          <a href="https://play.google.com/store/apps/details?id=com.threed_print_calculator" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+          <a href="https://play.google.com/store/apps/details?id=com.threed_print_calculator" target="_blank"
+            rel="noopener noreferrer" aria-label="Get it on Google Play">
             <img src="assets/store-badges/google-play-badge.svg" alt="Get it on Google Play">
           </a>
         </div>
-      </section>
+      </div>
+      <aside class="hero-card">
+        <img src="assets/screenshots/calculator.webp" alt="Calculator screen showing detailed print cost breakdown">
+      </aside>
+    </section>
 
-      <footer class="footer">
-        <p>Support: <a href="mailto:google@remej.dev">google@remej.dev</a></p>
-        <div class="footer-links">
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="terms.html">Terms of Service</a>
-          <a href="changelog.html">Changelog</a>
-        </div>
-        <p>© 2026 3D Print Cost Calculator</p>
-      </footer>
-    </main>
-    <script>
-      const navToggle = document.getElementById("nav-toggle");
-      const mobileDrawer = document.getElementById("mobile-drawer");
+    <section class="section" id="problem" aria-labelledby="problem-title">
+      <h2 id="problem-title">The Problem</h2>
+      <p>Filament-only pricing misses the actual print cost. Real-world quoting includes multiple cost drivers:</p>
+      <div class="section-grid">
+        <article class="card">
+          <h3>Filament Alone Is Incomplete</h3>
+          <p>Many makers only price by grams used, which underestimates your final cost.</p>
+        </article>
+        <article class="card">
+          <h3>Electricity Is Printer-Specific</h3>
+          <p>Power draw varies by machine and print length, and should be part of every quote.</p>
+        </article>
+        <article class="card">
+          <h3>Failed Prints Are Real Loss</h3>
+          <p>A realistic failure risk percentage changes your expected cost outcome.</p>
+        </article>
+        <article class="card">
+          <h3>Labour and Overhead Matter</h3>
+          <p>Prep, post-processing, and running costs are often ignored but directly impact margin.</p>
+        </article>
+      </div>
+    </section>
 
-      if (navToggle && mobileDrawer) {
-        const closeDrawer = () => {
-          navToggle.setAttribute("aria-expanded", "false");
-          mobileDrawer.classList.remove("is-open");
-        };
+    <section class="section" id="solution" aria-labelledby="solution-title">
+      <h2 id="solution-title">The Solution</h2>
+      <p>The app calculates true end-to-end print cost with a detailed, understandable breakdown.</p>
+      <ul>
+        <li>Filament cost calculation with multi-material support</li>
+        <li>Electricity cost integration per printer profile</li>
+        <li>Failure risk modelling</li>
+        <li>Labour and processing time input</li>
+        <li>Detailed line-item cost breakdown</li>
+      </ul>
+    </section>
 
-        navToggle.addEventListener("click", () => {
-          const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
-          navToggle.setAttribute("aria-expanded", String(!isExpanded));
-          mobileDrawer.classList.toggle("is-open", !isExpanded);
-        });
+    <section class="section" id="features" aria-labelledby="features-title">
+      <h2 id="features-title">Key Features</h2>
+      <div class="section-grid">
+        <article class="card">
+          <h3>Multi-Material Support</h3>
+          <p>Split prints across multiple filaments with weight-based costing.</p>
+        </article>
+        <article class="card">
+          <h3>G-code Import (Beta)</h3>
+          <p>Import supported G-code metadata to pre-fill print weight, duration, and preview data where available.</p>
+          <p class="card-note">Availability depends on slicer and export settings. G-code import is in beta; send
+            feedback directly from the app.</p>
+        </article>
+        <article class="card">
+          <h3>Print History</h3>
+          <p>Save jobs, search history, review full cost breakdowns, and export CSVs.</p>
+        </article>
+        <article class="card">
+          <h3>Material Tracking</h3>
+          <p>Track remaining filament stock and automatically deduct usage when saving prints.</p>
+        </article>
+        <article class="card">
+          <h3>Printer Profiles</h3>
+          <p>Store power usage and settings for multiple printers.</p>
+        </article>
+        <article class="card">
+          <h3>Detailed Cost Breakdown</h3>
+          <p>Understand electricity, filament, risk, labour, and totals at a glance.</p>
+        </article>
+        <article class="card">
+          <h3>CSV Export</h3>
+          <p>Export jobs for bookkeeping, reporting, or analysis.</p>
+        </article>
+        <article class="card">
+          <h3>Offline by Default</h3>
+          <p>Use the app fully offline with no accounts, logins, or cloud dependency for all features.</p>
+        </article>
+      </div>
+    </section>
 
-        mobileDrawer.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", closeDrawer);
-        });
+    <section class="section" aria-labelledby="screenshots-title">
+      <h2 id="screenshots-title">Screenshots</h2>
+      <div class="screenshots">
+        <figure>
+          <img src="assets/screenshots/calculator.webp" alt="Calculator tab with materials, risk, and total cost">
+          <figcaption>Calculator workflow</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/gcode_import.webp" alt="Import supported G-code files">
+          <figcaption>G-Code Import</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/history.webp" alt="History tab listing saved print jobs with cost totals">
+          <figcaption>Print history</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/settings.webp"
+            alt="Settings tab for electricity, printers, materials, and work costs">
+          <figcaption>Configurable settings</figcaption>
+        </figure>
+      </div>
+    </section>
 
-        window.addEventListener("keydown", (event) => {
-          if (event.key === "Escape") {
-            closeDrawer();
-          }
-        });
+    <section class="section" id="privacy" aria-labelledby="privacy-title">
+      <h2 id="privacy-title">Privacy and Local-First Design</h2>
+      <p><strong>Your data stays yours.</strong></p>
+      <ul>
+        <li>No accounts required</li>
+        <li>Calculations run locally on your device</li>
+        <li>No cloud dependency for core functionality</li>
+        <li>Your print data stays under your control</li>
+      </ul>
+    </section>
 
-        window.addEventListener("resize", () => {
-          if (window.innerWidth > 680) {
-            closeDrawer();
-          }
-        });
-      }
-    </script>
-  </body>
+    <section class="section" aria-labelledby="audience-title">
+      <h2 id="audience-title">Who This Is For</h2>
+      <ul>
+        <li>Hobbyist makers</li>
+        <li>Etsy sellers and side hustles</li>
+        <li>Small print businesses</li>
+        <li>Anyone quoting 3D prints</li>
+      </ul>
+    </section>
+
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">FAQ</h2>
+      <details>
+        <summary>Does the app require internet?</summary>
+        <p>No. Core calculations run locally on your device.</p>
+      </details>
+      <details>
+        <summary>Can I manage multiple printers?</summary>
+        <p>Yes. You can save and use multiple printer profiles.</p>
+      </details>
+      <details>
+        <summary>Can I export my data?</summary>
+        <p>Yes. You can export as CSV.</p>
+      </details>
+      <details>
+        <summary>Is my data stored in the cloud?</summary>
+        <p>No. Data is not cloud-dependent for core app usage.</p>
+      </details>
+    </section>
+
+    <section class="cta" id="download" aria-labelledby="download-title">
+      <h2 id="download-title">Start calculating your real print costs today</h2>
+      <div class="store-buttons">
+        <a href="https://apps.apple.com/us/app/3d-printer-cost-calculator/id6444106268" target="_blank"
+          rel="noopener noreferrer" aria-label="Download on the Apple App Store">
+          <img src="assets/store-badges/app-store-badge.svg" alt="Download on the App Store">
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.threed_print_calculator" target="_blank"
+          rel="noopener noreferrer" aria-label="Get it on Google Play">
+          <img src="assets/store-badges/google-play-badge.svg" alt="Get it on Google Play">
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Support: <a href="mailto:google@remej.dev">google@remej.dev</a></p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="changelog.html">Changelog</a>
+      </div>
+      <p>© 2026 3D Print Cost Calculator</p>
+    </footer>
+  </main>
+  <script>
+    const navToggle = document.getElementById("nav-toggle");
+    const mobileDrawer = document.getElementById("mobile-drawer");
+
+    if (navToggle && mobileDrawer) {
+      const closeDrawer = () => {
+        navToggle.setAttribute("aria-expanded", "false");
+        mobileDrawer.classList.remove("is-open");
+      };
+
+      navToggle.addEventListener("click", () => {
+        const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
+        navToggle.setAttribute("aria-expanded", String(!isExpanded));
+        mobileDrawer.classList.toggle("is-open", !isExpanded);
+      });
+
+      mobileDrawer.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeDrawer);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeDrawer();
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 680) {
+          closeDrawer();
+        }
+      });
+    }
+  </script>
+</body>
+
 </html>
