@@ -144,6 +144,7 @@ class AppAnalytics {
     required int materialCount,
     required bool hasFailureRisk,
     required bool hasLabour,
+    required bool hasPricing,
   }) {
     // Firebase Analytics parameter values must be String or num. Don't pass
     // Dart bools directly (they cause an assertion). Encode booleans as 0/1.
@@ -153,7 +154,60 @@ class AppAnalytics {
         'material_count': materialCount,
         'has_failure_risk': hasFailureRisk ? 1 : 0,
         'has_labour_cost': hasLabour ? 1 : 0,
+        'has_pricing': hasPricing ? 1 : 0,
       },
+    );
+  }
+
+  static Future<void> pricingSettingsChanged({
+    required num markupPercent,
+    required num setupFee,
+    required String roundingMode,
+  }) {
+    return log(
+      'pricing_settings_changed',
+      params: {
+        'pricing_enabled':
+            (markupPercent > 0 || setupFee > 0 || roundingMode != 'none') ? 1 : 0,
+        'markup_percent': markupPercent,
+        'setup_fee': setupFee,
+        'rounding_mode': roundingMode,
+      },
+    );
+  }
+
+  static Future<void> pricingOverrideUsed({
+    required String field,
+    required bool hasOverrides,
+  }) {
+    return log(
+      'pricing_override_used',
+      params: {
+        'field': field,
+        'has_overrides': hasOverrides ? 1 : 0,
+      },
+    );
+  }
+
+  static Future<void> pricingSaved({
+    required bool hasPricing,
+    required bool usedOverrides,
+    required String roundingMode,
+  }) {
+    return log(
+      'pricing_saved',
+      params: {
+        'has_pricing': hasPricing ? 1 : 0,
+        'used_overrides': usedOverrides ? 1 : 0,
+        'rounding_mode': roundingMode,
+      },
+    );
+  }
+
+  static Future<void> pricingRoundingUsed({required String roundingMode}) {
+    return log(
+      'pricing_rounding_used',
+      params: {'rounding_mode': roundingMode},
     );
   }
 

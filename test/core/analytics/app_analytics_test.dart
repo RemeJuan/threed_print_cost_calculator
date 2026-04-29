@@ -31,6 +31,7 @@ void main() {
         materialCount: 3,
         hasFailureRisk: true,
         hasLabour: false,
+        hasPricing: true,
       );
 
       expect(fake.lastName, 'calculation_created');
@@ -38,6 +39,7 @@ void main() {
       expect(fake.lastParams!['material_count'], 3);
       expect(fake.lastParams!['has_failure_risk'], 1);
       expect(fake.lastParams!['has_labour_cost'], 0);
+      expect(fake.lastParams!['has_pricing'], 1);
     },
   );
 
@@ -158,5 +160,40 @@ void main() {
 
     expect(fake.lastName, 'paywall_viewed');
     expect(fake.lastParams!['entry_point'], 'manual');
+  });
+
+  test('pricing analytics wrappers use expected param shapes', () async {
+    await AppAnalytics.pricingSettingsChanged(
+      markupPercent: 12.5,
+      setupFee: 3,
+      roundingMode: '.99',
+    );
+    expect(fake.lastName, 'pricing_settings_changed');
+    expect(fake.lastParams, {
+      'pricing_enabled': 1,
+      'markup_percent': 12.5,
+      'setup_fee': 3,
+      'rounding_mode': '.99',
+    });
+
+    await AppAnalytics.pricingOverrideUsed(field: 'markup', hasOverrides: true);
+    expect(fake.lastName, 'pricing_override_used');
+    expect(fake.lastParams, {'field': 'markup', 'has_overrides': 1});
+
+    await AppAnalytics.pricingSaved(
+      hasPricing: true,
+      usedOverrides: false,
+      roundingMode: '.00',
+    );
+    expect(fake.lastName, 'pricing_saved');
+    expect(fake.lastParams, {
+      'has_pricing': 1,
+      'used_overrides': 0,
+      'rounding_mode': '.00',
+    });
+
+    await AppAnalytics.pricingRoundingUsed(roundingMode: 'none');
+    expect(fake.lastName, 'pricing_rounding_used');
+    expect(fake.lastParams, {'rounding_mode': 'none'});
   });
 }
