@@ -181,8 +181,34 @@ class AppAnalytics {
   }
 
   /// Paywall exposure
+  static Future<void> paywallViewed(
+    String triggerFeature, {
+    String defaultEntryPoint = 'manual',
+  }) {
+    return log(
+      'paywall_viewed',
+      params: {
+        'feature': triggerFeature,
+        'entry_point': _entryPointValue(defaultValue: defaultEntryPoint),
+      },
+    );
+  }
+
   static Future<void> paywallShown(String triggerFeature) {
-    return log('paywall_shown', params: {'feature': triggerFeature});
+    return paywallViewed(triggerFeature);
+  }
+
+  static Future<void> purchaseCompleted(
+    String source, {
+    String defaultEntryPoint = 'manual',
+  }) {
+    return log(
+      'purchase_completed',
+      params: {
+        'source': source,
+        'entry_point': _entryPointValue(defaultValue: defaultEntryPoint),
+      },
+    );
   }
 
   /// Locked premium feature tapped
