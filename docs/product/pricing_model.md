@@ -263,25 +263,62 @@ Do **not** rely on re-reading current settings when opening old jobs or generati
 
 ## Calculator Integration
 
-## UI Placement
+### Settings
 
-Price should appear in calculator results, below or clearly separated from existing cost outputs.
+Group pricing defaults under **Pricing & Work Costs**.
 
-Recommended display structure:
+This replaces or expands current **Work Costs** naming so pricing and cost-related defaults live in one place.
 
-1. Existing cost breakdown stays as-is
-2. Existing total cost stays as-is
-3. New pricing section shows:
-   - base cost
-   - markup %
-   - setup fee
-   - rounding mode
-   - final price
+Fields:
+
+- Markup %
+- Setup fee
+- Rounding toggle
+- Rounding mode
+
+Notes:
+
+- Rounding is optional
+- If enabled, rounding always rounds up
+- Pricing controls remain editable only for Pro users
+
+### Calculator
+
+Move **Processing Time** next to **Printing Time**.
+
+Rename existing calculator total label from **Total** to **Cost Total**.
+
+Add a divider after cost outputs, then show a pricing section with:
+
+- Markup
+- Setup fee, if greater than `0`
+- Rounding adjustment, if rounding enabled
+- Final Price (Grand Total)
+
+`Final Price` and `Grand Total` refer to same value. Treat them as equivalent and avoid showing duplicate rows for same number.
 
 This preserves current mental model:
 
 - cost = internal math
 - price = what user charges client
+
+When both values are present, Final Price should be visually primary and Cost Total should remain visible as supporting detail. Price must not replace or overwrite cost.
+
+### Job-Level Overrides
+
+Add a pricing override accordion below **Printing Time**, matching the interaction pattern used by Materials.
+
+Accordion contains:
+
+- Wear & tear
+- Failure risk
+- Hourly rate
+- Processing cost inputs
+- Markup
+
+Accordion subheading should show a compact summary, matching the summary pattern used by History cards.
+
+This section is job-level UI. It can adjust current job inputs without mutating global defaults or redefining cost vs price boundaries.
 
 ## Recalculation Triggers
 
