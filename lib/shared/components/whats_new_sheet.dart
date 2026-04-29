@@ -1,36 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 
-class WhatsNewSheet extends StatelessWidget {
+void showWhatsNewSheet(
+  BuildContext context, {
+  required WhatsNewAnnouncement announcement,
+  required Future<void> Function() onDismiss,
+  required String wnId,
+  required String locale,
+  required bool isPremium,
+}) {
+  showModalBottomSheet(
+    context: context,
+    isDismissible: false,
+    enableDrag: false,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (context) => PopScope(
+      canPop: false,
+      child: WhatsNewSheet(
+        announcement: announcement,
+        onDismiss: onDismiss,
+        wnId: wnId,
+        locale: locale,
+        isPremium: isPremium,
+      ),
+    ),
+  );
+}
+
+class WhatsNewSheet extends StatefulWidget {
   final WhatsNewAnnouncement announcement;
   final Future<void> Function() onDismiss;
+  final String wnId;
+  final String locale;
+  final bool isPremium;
 
   const WhatsNewSheet({
     super.key,
     required this.announcement,
     required this.onDismiss,
+    required this.wnId,
+    required this.locale,
+    required this.isPremium,
   });
 
-  static void show(
-    BuildContext context,
-    WhatsNewAnnouncement announcement,
-    Future<void> Function() onDismiss,
-  ) {
-    showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) => PopScope(
-        canPop: false,
-        child: WhatsNewSheet(
-          announcement: announcement,
-          onDismiss: onDismiss,
-        ),
+  @override
+  State<WhatsNewSheet> createState() => _WhatsNewSheetState();
+}
+
+class _WhatsNewSheetState extends State<WhatsNewSheet> {
+  @override
+  void initState() {
+    super.initState();
+    AppAnalytics.safeLog(
+      () => AppAnalytics.whatsNewShown(
+        wnId: widget.wnId,
+        locale: widget.locale,
+        isPremium: widget.isPremium,
       ),
     );
   }
@@ -38,15 +68,16 @@ class WhatsNewSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context);
-    final languageCode = locale.languageCode;
-    final title = announcement.getLocalizedTitle(languageCode);
-    final body = announcement.getLocalizedBody(languageCode);
-    final cta = announcement.getLocalizedCta(languageCode);
-    final unlockProCta = announcement.getLocalizedUnlockProCta(languageCode);
+    final languageCode = widget.locale;
+    final title = widget.announcement.getLocalizedTitle(languageCode);
+    final body = widget.announcement.getLocalizedBody(languageCode);
+    final cta = widget.announcement.getLocalizedCta(languageCode);
+    final unlockProCta = widget.announcement.getLocalizedUnlockProCta(
+      languageCode,
+    );
 
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -89,23 +120,31 @@ class WhatsNewSheet extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Text(
               body,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: FilledButton(
                 onPressed: () async {
-                  await onDismiss();
+                  await widget.onDismiss();
+                  if (!context.mounted) return;
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.whatsNewDismissed(
+                      wnId: widget.wnId,
+                      locale: widget.locale,
+                      isPremium: widget.isPremium,
+                    ),
+                  );
                   if (!context.mounted) return;
                   Navigator.of(context).pop();
                 },
@@ -117,7 +156,13 @@ class WhatsNewSheet extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: () async {
-                  await onDismiss();
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.whatsNewUnlockProTapped(
+                      wnId: widget.wnId,
+                      locale: widget.locale,
+                    ),
+                  );
+                  await widget.onDismiss();
                   if (!context.mounted) return;
                   Navigator.of(context).pop();
                   await showSubscriptionsSheet(context);
