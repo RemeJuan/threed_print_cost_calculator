@@ -12,6 +12,9 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
     required String wearAndTear,
     required String failureRisk,
     required String labourRate,
+    @Default('') String pricingMarkupPercent,
+    @Default('') String pricingSetupFee,
+    @Default('none') String pricingRoundingMode,
   }) = _GeneralSettingsModel;
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
@@ -23,6 +26,9 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
       wearAndTear: (map['wearAndTear'] ?? '').toString(),
       failureRisk: (map['failureRisk'] ?? '').toString(),
       labourRate: (map['labourRate'] ?? '').toString(),
+      pricingMarkupPercent: (map['pricingMarkupPercent'] ?? '').toString(),
+      pricingSetupFee: (map['pricingSetupFee'] ?? '').toString(),
+      pricingRoundingMode: (map['pricingRoundingMode'] ?? 'none').toString(),
     );
   }
 
@@ -35,6 +41,9 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
       wearAndTear: '',
       failureRisk: '',
       labourRate: '',
+      pricingMarkupPercent: '',
+      pricingSetupFee: '',
+      pricingRoundingMode: 'none',
     );
   }
 }
@@ -49,6 +58,9 @@ extension GeneralSettingsModelX on GeneralSettingsModel {
       'wearAndTear': wearAndTear,
       'failureRisk': failureRisk,
       'labourRate': labourRate,
+      'pricingMarkupPercent': pricingMarkupPercent,
+      'pricingSetupFee': pricingSetupFee,
+      'pricingRoundingMode': pricingRoundingMode,
     };
   }
 }
