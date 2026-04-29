@@ -11,12 +11,14 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sembast/sembast_memory.dart';
-import 'package:threed_print_cost_calculator/app/app.dart';
+import 'package:bot_toast/bot_toast.dart';
+import 'package:threed_print_cost_calculator/app/app_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/mocks.dart';
@@ -53,27 +55,45 @@ void main() {
           databaseProvider.overrideWithValue(db),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           calculatorProvider.overrideWith(() => mockCalculatorProvider),
+          currentAnnouncementProvider.overrideWith((ref) async => null),
         ],
-        child: widget,
+        child: MaterialApp(
+          builder: BotToastInit(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          navigatorObservers: [BotToastNavigatorObserver()],
+          home: widget,
+        ),
       ),
     );
     addTearDown(() => db.close());
+    addTearDown(safeBotToastCleanAll);
     return db;
   }
 
   group('App', () {
-    testWidgets('renders CounterPage', (tester) async {
-      await pumpAppShell(tester, const App());
+    tearDown(() {
+      // Clean up any BotToast state between tests
+    });
+
+    testWidgets('renders CalculatorPage', (tester) async {
+      await pumpAppShell(tester, const AppPage());
       await tester.pumpAndSettle();
       expect(find.byType(CalculatorPage), findsOneWidget);
     });
 
     testWidgets('help button opens the support dialog', (tester) async {
-      await pumpAppShell(tester, const App());
+      await pumpAppShell(tester, const AppPage());
 
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.help_outline));
+      final helpButton = tester.widget<IconButton>(
+        find.ancestor(
+          of: find.byIcon(Icons.help_outline),
+          matching: find.byType(IconButton),
+        ),
+      );
+      helpButton.onPressed?.call();
       await tester.pumpAndSettle();
 
       expect(find.byType(SupportDialog), findsOneWidget);

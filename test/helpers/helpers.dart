@@ -18,6 +18,14 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 
+void safeBotToastCleanAll() {
+  try {
+    BotToast.cleanAll();
+  } catch (_) {
+    // BotToast can already be torn down in some test paths.
+  }
+}
+
 Future<void> setupTest() async {
   SharedPreferences.setMockInitialValues({});
   SharedPreferencesAsyncPlatform.instance =
@@ -66,6 +74,8 @@ extension PumpApp on WidgetTester {
         ),
       ),
     );
+
+    addTearDown(safeBotToastCleanAll);
 
     return db;
   }
