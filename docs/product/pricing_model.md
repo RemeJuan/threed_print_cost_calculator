@@ -494,6 +494,8 @@ Recommended trigger points:
 - Same cost + same pricing inputs always yields same final price
 - Final formula and rounding behavior are documented and testable
 - New jobs can use global defaults with no extra user setup
-- Users can override markup/setup/rounding per job
+- Users can adjust job-level cost inputs and markup where UI exposes overrides
 - Saved jobs preserve computed price even after settings defaults later change
 - Spec supports future shareable quotes without inventing second pricing path
+- Pro-only access and UI placement are unambiguous
+- Rounding behavior is opt-in and always upward
