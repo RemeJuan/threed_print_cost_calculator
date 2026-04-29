@@ -27,13 +27,17 @@ class SettingsRepository {
   }
 
   Stream<GeneralSettingsModel> watchSettings() async* {
-    yield await getSettings();
+    GeneralSettingsModel? lastEmitted;
     await for (final snapshot
         in _store.record(DBName.settings.name).onSnapshot(_db)) {
-      yield await _normalizeSettings(
+      final settings = await _normalizeSettings(
         snapshot?.value,
         key: DBName.settings.name,
       );
+      if (settings != lastEmitted) {
+        lastEmitted = settings;
+        yield settings;
+      }
     }
   }
 
