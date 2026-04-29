@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 
 class PricingCalculator {
@@ -11,11 +9,16 @@ class PricingCalculator {
     required num setupFee,
     required PricingRoundingMode roundingMode,
   }) {
-    final normalizedBaseCost = _roundCurrency(baseCost);
-    final normalizedMarkupPercent = _roundCurrency(markupPercent);
-    final normalizedSetupFee = _roundCurrency(setupFee);
+    final normalizedBaseCost = _fromCents(_toCents(baseCost));
+    final normalizedMarkupPercent = _fromHundredths(
+      _toHundredths(markupPercent),
+    );
+    final normalizedSetupFee = _fromCents(_toCents(setupFee));
+    final baseCostCents = _toCents(normalizedBaseCost);
+    final markupPercentHundredths = _toHundredths(normalizedMarkupPercent);
+    final setupFeeCents = _toCents(normalizedSetupFee);
 
-    if (normalizedBaseCost <= 0) {
+    if (baseCostCents <= 0) {
       return PricingResult(
         baseCost: normalizedBaseCost,
         markupPercent: normalizedMarkupPercent,
@@ -28,44 +31,61 @@ class PricingCalculator {
       );
     }
 
-    final markupAmount = _roundCurrency(
-      normalizedBaseCost * (normalizedMarkupPercent / 100),
+    final markupAmountCents =
+        (baseCostCents * markupPercentHundredths + 5000) ~/ 10000;
+    final subtotalBeforeRoundingCents =
+        baseCostCents + markupAmountCents + setupFeeCents;
+    final finalPriceCents = _applyRoundingCents(
+      subtotalBeforeRoundingCents,
+      roundingMode,
     );
-    final subtotalBeforeRounding = _roundCurrency(
-      normalizedBaseCost + markupAmount + normalizedSetupFee,
-    );
-    final finalPrice = _applyRounding(subtotalBeforeRounding, roundingMode);
-    final roundingAdjustment = _roundCurrency(finalPrice - subtotalBeforeRounding);
+    final roundingAdjustmentCents =
+        finalPriceCents - subtotalBeforeRoundingCents;
 
     return PricingResult(
       baseCost: normalizedBaseCost,
       markupPercent: normalizedMarkupPercent,
-      markupAmount: markupAmount,
+      markupAmount: _fromCents(markupAmountCents),
       setupFee: normalizedSetupFee,
       roundingMode: roundingMode,
-      subtotalBeforeRounding: subtotalBeforeRounding,
-      roundingAdjustment: roundingAdjustment,
-      finalPrice: finalPrice,
+      subtotalBeforeRounding: _fromCents(subtotalBeforeRoundingCents),
+      roundingAdjustment: _fromCents(roundingAdjustmentCents),
+      finalPrice: _fromCents(finalPriceCents),
     );
   }
 
-  static num _applyRounding(num subtotal, PricingRoundingMode roundingMode) {
-    if (subtotal <= 0) return 0;
+  static int _applyRoundingCents(
+    int subtotalCents,
+    PricingRoundingMode roundingMode,
+  ) {
+    if (subtotalCents <= 0) return 0;
 
     switch (roundingMode) {
       case PricingRoundingMode.none:
-        return _roundCurrency(subtotal);
+        return subtotalCents;
       case PricingRoundingMode.wholeDollar:
-        return _roundCurrency(subtotal.ceil());
+        return ((subtotalCents + 99) ~/ 100) * 100;
       case PricingRoundingMode.pointNinetyNine:
-        final floorValue = subtotal.floor();
-        final candidate = floorValue + 0.99;
-        if (subtotal < candidate) {
-          return _roundCurrency(candidate);
+        final wholeDollars = subtotalCents ~/ 100;
+        final candidate = wholeDollars * 100 + 99;
+        if (subtotalCents < candidate) {
+          return candidate;
         }
-        return _roundCurrency(math.max(floorValue + 1, subtotal.ceil()) + 0.99);
+        return (wholeDollars + 1) * 100 + 99;
     }
   }
 
-  static num _roundCurrency(num value) => num.parse(value.toStringAsFixed(2));
+  static int _toCents(num value) {
+    final text = value.toStringAsFixed(2);
+    final negative = text.startsWith('-');
+    final digits = text.replaceFirst('-', '').replaceAll('.', '');
+    final cents = int.parse(digits);
+    return negative ? -cents : cents;
+  }
+
+  static int _toHundredths(num value) => _toCents(value);
+
+  static num _fromCents(int cents) => cents / 100;
+
+  static num _fromHundredths(int hundredths) => hundredths / 100;
 }
