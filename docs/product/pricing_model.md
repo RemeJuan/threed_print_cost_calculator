@@ -15,11 +15,18 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 
 ## Core Principles
 
+- Cost is what the print costs you. Price is what you charge.
 - Cost remains source of truth for internal calculation
 - Price is additive layer, not replacement
 - Same inputs always produce same price
 - Pricing must be explainable in one sentence: `base cost + markup + setup fee, then rounding`
 - Saved jobs and future quotes must snapshot pricing inputs and computed output so later settings changes do not rewrite past prices
+
+## Monetisation
+
+- Pricing model is a Pro-only feature
+- Global pricing defaults are editable only for Pro users
+- Free users may see read-only pricing surfaces or upsell entry points where relevant
 
 ## In Scope
 
@@ -40,6 +47,13 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 - Hosted quote links, backend sync, server-side pricing
 
 ## Pricing Formula
+
+### Cost vs Price
+
+- **Cost**: what the print costs internally
+- **Price**: what user charges client
+
+Cost remains internal. Price is derived from cost and displayed separately.
 
 ### Definitions
 
@@ -288,6 +302,7 @@ Implementation direction:
 - Existing `CalculationResult` remains cost-only
 - Existing save/history behavior for cost must keep working
 - Pricing adds new fields and UI, not replacement labels on old cost fields
+- Cost stays visible even when price is present
 
 ## Edge Cases
 
@@ -339,6 +354,7 @@ Implementation direction:
 - Keep price copy localized through existing l10n system
 - Save effective pricing snapshot with history entries needed for future shareable quotes
 - Prefer simple numeric storage and deterministic pure helper functions for rounding
+- Ensure cost and price labels stay distinct in model names, persistence, analytics, and UI copy
 
 ## Acceptance Criteria
 
