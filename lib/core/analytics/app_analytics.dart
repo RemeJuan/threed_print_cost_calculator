@@ -190,6 +190,180 @@ class AppAnalytics {
     return log('premium_feature_tapped', params: {'feature': feature});
   }
 
+  /// What's New sheet shown
+  static Future<void> whatsNewShown({
+    required String wnId,
+    required String locale,
+    required bool isPremium,
+  }) {
+    return log(
+      'whats_new_shown',
+      params: {
+        'wn_id': wnId,
+        'locale': locale,
+        'is_premium': isPremium ? 1 : 0,
+      },
+    );
+  }
+
+  /// What's New sheet dismissed (Got it)
+  static Future<void> whatsNewDismissed({
+    required String wnId,
+    required String locale,
+    required bool isPremium,
+  }) {
+    return log(
+      'whats_new_dismissed',
+      params: {
+        'wn_id': wnId,
+        'locale': locale,
+        'is_premium': isPremium ? 1 : 0,
+      },
+    );
+  }
+
+  /// What's New unlock Pro CTA tapped
+  static Future<void> whatsNewUnlockProTapped({
+    required String wnId,
+    required String locale,
+  }) {
+    return log(
+      'whats_new_unlock_pro_tapped',
+      params: {'wn_id': wnId, 'locale': locale},
+    );
+  }
+
+  /// G-code import funnel
+  static Future<void> gcodeImportOpened() {
+    _gcodeImportTriggeredThisSession = true;
+    _startGcodeImportFlow();
+    return log('gcode_import_opened', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodeFileSelected({
+    required int fileSizeBytes,
+    String? slicer,
+    required bool hasPreview,
+  }) {
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log('gcode_file_selected', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodeParseSuccess({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+  }) {
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: 'success',
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log('gcode_parse_success', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodeParsePartial({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+  }) {
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: 'partial',
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log('gcode_parse_partial', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodeParseFailed({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+  }) {
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: 'failed',
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log('gcode_parse_failed', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodePreviewViewed({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+    required String parseStatus,
+  }) {
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: parseStatus,
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log('gcode_preview_viewed', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodeApplyToCalculator({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+    required String parseStatus,
+  }) {
+    final timeToValueMs = _gcodeTimeToValueMs();
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: parseStatus,
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log(
+      'gcode_apply_to_calculator',
+      params: {
+        ..._gcodeImportParams(),
+        ...?(timeToValueMs == null
+            ? null
+            : {'gcode_time_to_value_ms': timeToValueMs}),
+      },
+    );
+  }
+
+  static Future<void> gcodeFlowCompleted({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+    required String parseStatus,
+  }) {
+    final timeToValueMs = _gcodeTimeToValueMs();
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: parseStatus,
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    final params = <String, Object?>{
+      ..._gcodeImportParams(),
+      ...?(timeToValueMs == null
+          ? null
+          : {'gcode_time_to_value_ms': timeToValueMs}),
+    };
+    _gcodeImportOpenedAt = null;
+    return log('gcode_flow_completed', params: params);
+  }
+
+  static Future<void> gcodeImportAbandoned() {
+    if (_gcodeImportOpenedAt == null) return Future.value();
+    final params = _gcodeImportParams();
+    _gcodeImportOpenedAt = null;
+    return log('gcode_import_abandoned', params: params);
+  }
+
   static void safeLog(Future<void> Function() callback) {
     unawaited(callback());
   }
