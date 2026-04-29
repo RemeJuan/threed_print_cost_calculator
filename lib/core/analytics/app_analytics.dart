@@ -153,7 +153,7 @@ class AppAnalytics {
       params: {
         'material_count': materialCount,
         'has_failure_risk': hasFailureRisk ? 1 : 0,
-        'has_labour_cost': hasLabour ? 1 : 0,
+        'has_labour': hasLabour ? 1 : 0,
         'has_pricing': hasPricing ? 1 : 0,
       },
     );

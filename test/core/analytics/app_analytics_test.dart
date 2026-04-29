@@ -38,7 +38,7 @@ void main() {
       expect(fake.lastParams, isNotNull);
       expect(fake.lastParams!['material_count'], 3);
       expect(fake.lastParams!['has_failure_risk'], 1);
-      expect(fake.lastParams!['has_labour_cost'], 0);
+      expect(fake.lastParams!['has_labour'], 0);
       expect(fake.lastParams!['has_pricing'], 1);
     },
   );
