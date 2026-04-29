@@ -17,6 +17,74 @@ class AppAnalytics {
   // no-op or a mock to prevent touching Firebase.
   static AnalyticsService service = FirebaseAnalyticsService();
 
+  static bool _gcodeImportTriggeredThisSession = false;
+  static DateTime? _gcodeImportOpenedAt;
+  static String _gcodeImportSlicer = 'unknown';
+  static bool _gcodeImportHasPreview = false;
+  static String _gcodeImportParseStatus = 'unknown';
+  static String _gcodeImportFileSizeBucket = 'unknown';
+
+  static void resetGcodeImportTrackingForTests() {
+    _gcodeImportTriggeredThisSession = false;
+    _gcodeImportOpenedAt = null;
+    _gcodeImportSlicer = 'unknown';
+    _gcodeImportHasPreview = false;
+    _gcodeImportParseStatus = 'unknown';
+    _gcodeImportFileSizeBucket = 'unknown';
+  }
+
+  static String fileSizeBucket(int bytes) {
+    if (bytes < 1 * 1024 * 1024) return '<1MB';
+    if (bytes < 5 * 1024 * 1024) return '1-5MB';
+    if (bytes < 20 * 1024 * 1024) return '5-20MB';
+    return '20MB+';
+  }
+
+  static String slicerValue(String? slicer) {
+    if (slicer == null || slicer.isEmpty) return 'unknown';
+    return slicer;
+  }
+
+  static void _startGcodeImportFlow() {
+    _gcodeImportOpenedAt = DateTime.now();
+    _gcodeImportSlicer = 'unknown';
+    _gcodeImportHasPreview = false;
+    _gcodeImportParseStatus = 'unknown';
+    _gcodeImportFileSizeBucket = 'unknown';
+  }
+
+  static int? _gcodeTimeToValueMs() {
+    final openedAt = _gcodeImportOpenedAt;
+    if (openedAt == null) return null;
+    return DateTime.now().difference(openedAt).inMilliseconds;
+  }
+
+  static Map<String, Object?> _gcodeImportParams({String? entryPoint}) {
+    return {
+      'slicer': _gcodeImportSlicer,
+      'has_preview': _gcodeImportHasPreview ? 1 : 0,
+      'parse_status': _gcodeImportParseStatus,
+      'file_size_bucket': _gcodeImportFileSizeBucket,
+      ...?(entryPoint == null ? null : {'entry_point': entryPoint}),
+    };
+  }
+
+  static void _setGcodeContext({
+    String? slicer,
+    bool? hasPreview,
+    String? parseStatus,
+    String? fileSizeBucket,
+  }) {
+    if (slicer != null) _gcodeImportSlicer = slicer;
+    if (hasPreview != null) _gcodeImportHasPreview = hasPreview;
+    if (parseStatus != null) _gcodeImportParseStatus = parseStatus;
+    if (fileSizeBucket != null) _gcodeImportFileSizeBucket = fileSizeBucket;
+  }
+
+  static String _entryPointValue({String defaultValue = 'manual'}) {
+    return _gcodeImportTriggeredThisSession ? 'gcode_import' : defaultValue;
+  }
+
   static Map<String, Object>? _sanitizeParams(Map<String, Object?>? params) {
     if (params == null) return null;
 
