@@ -192,7 +192,6 @@
   "pricingRoundingNoneLabel": "Ninguno",
   "pricingRoundingWholeDollarLabel": "Dólar entero",
   "pricingRoundingPointNinetyNineLabel": "Termina en .99",
-  "workCostsLabel": "Precio y costos de trabajo",
   "historyCsvHeader": "Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total,% de margen,Monto del margen,Tarifa de configuración,Modo de redondeo,Subtotal antes de redondeo,Ajuste por redondeo,Precio final",
   "historyExportShareText": "Exportación del historial de costes de impresión 3D",
   "@supportIdCopied": {},

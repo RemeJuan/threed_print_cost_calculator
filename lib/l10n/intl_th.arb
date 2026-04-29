@@ -193,7 +193,6 @@
   "pricingRoundingNoneLabel": "ไม่มี",
   "pricingRoundingWholeDollarLabel": "จำนวนเต็ม",
   "pricingRoundingPointNinetyNineLabel": "ลงท้าย .99",
-  "workCostsLabel": "ราคาและต้นทุนงาน",
   "historyCsvHeader": "วันที่,เครื่องพิมพ์,วัสดุ,วัสดุ,น้ำหนัก (ก.),เวลา,ไฟฟ้า,เส้นใย,ค่าแรง,ความเสี่ยง,รวม,% ส่วนเพิ่ม,จำนวนส่วนเพิ่ม,ค่าตั้งค่า,โหมดปัดเศษ,ยอดย่อยก่อนปัดเศษ,การปรับปัดเศษ,ราคาสุดท้าย",
   "historyExportShareText": "การส่งออกประวัติต้นทุนการพิมพ์ 3D",
   "@supportIdCopied": {},

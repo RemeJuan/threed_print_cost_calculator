@@ -200,7 +200,6 @@
   "pricingRoundingNoneLabel": "Geen",
   "pricingRoundingWholeDollarLabel": "Heel bedrag",
   "pricingRoundingPointNinetyNineLabel": "Eindigt op .99",
-  "workCostsLabel": "Prijs & werkkosten",
   "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal,Opslag %,Opslagbedrag,Instelkosten,Afrondingsmodus,Tussenbedrag voor afronding,Afrondingscorrectie,Eindprijs",
   "historyExportShareText": "Export van 3D-printkostenoverzicht",
   "@supportIdCopied": {},

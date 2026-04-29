@@ -192,7 +192,6 @@
   "pricingRoundingNoneLabel": "Tidak ada",
   "pricingRoundingWholeDollarLabel": "Bulatan penuh",
   "pricingRoundingPointNinetyNineLabel": "Berakhir .99",
-  "workCostsLabel": "Harga & biaya kerja",
   "historyCsvHeader": "Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total,% markup,Jumlah markup,Biaya penyiapan,Mode pembulatan,Subtotal sebelum pembulatan,Penyesuaian pembulatan,Harga akhir",
   "historyExportShareText": "Ekspor riwayat biaya cetak 3D",
   "@supportIdCopied": {},

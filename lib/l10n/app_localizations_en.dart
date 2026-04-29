@@ -336,7 +336,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalCostLabel => 'Total';
 
   @override
-  String get costTotalLabel => 'Cost total';
+  String get costTotalLabel => 'Total cost';
 
   @override
   String get markupLabel => 'Markup';

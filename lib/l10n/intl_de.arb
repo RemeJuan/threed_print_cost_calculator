@@ -199,7 +199,6 @@
   "pricingRoundingNoneLabel": "Keine",
   "pricingRoundingWholeDollarLabel": "Ganze Zahl",
   "pricingRoundingPointNinetyNineLabel": "Endet auf .99",
-  "workCostsLabel": "Preis & Arbeitskosten",
   "historyCsvHeader": "Datum,Drucker,Material,Materialien,Gewicht (g),Zeit,Strom,Filament,Arbeit,Risiko,Gesamt,Aufschlag %,Aufschlagbetrag,Einrichtungsgebühr,Rundungsmodus,Zwischensumme vor Rundung,Rundungsanpassung,Endpreis",
   "historyExportShareText": "Export des 3D-Druck-Kostenverlaufs",
   "@supportIdCopied": {},

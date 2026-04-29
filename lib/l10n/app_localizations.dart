@@ -747,7 +747,7 @@ abstract class AppLocalizations {
   /// No description provided for @costTotalLabel.
   ///
   /// In en, this message translates to:
-  /// **'Cost total'**
+  /// **'Total cost'**
   String get costTotalLabel;
 
   /// No description provided for @markupLabel.

@@ -128,7 +128,7 @@
   "labourCostLabel": "Labour",
   "riskCostLabel": "Risk",
   "totalCostLabel": "Total",
-  "costTotalLabel": "Cost total",
+  "costTotalLabel": "Total cost",
   "markupLabel": "Markup",
   "setupFeeLabel": "Setup fee",
   "roundingAdjustmentLabel": "Rounding adjustment",
