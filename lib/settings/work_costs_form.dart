@@ -143,9 +143,8 @@ class WorkCostsSettings extends HookConsumerWidget {
         if (parsed == null) return;
         try {
           await settingsService.update(
-            (settings) => settings.copyWith(
-              pricingMarkupPercent: parsed.toString(),
-            ),
+            (settings) =>
+                settings.copyWith(pricingMarkupPercent: parsed.toString()),
           );
           logPricingSettingsChange(
             markupPercent: parsed,
@@ -168,30 +167,34 @@ class WorkCostsSettings extends HookConsumerWidget {
 
     void persistSetupFee(String value) {
       setupFeeDebounce.value?.cancel();
-      setupFeeDebounce.value = Timer(const Duration(milliseconds: 400), () async {
-        final parsed = tryParseLocalizedNum(value);
-        if (parsed == null) return;
-        try {
-          await settingsService.update(
-            (settings) => settings.copyWith(pricingSetupFee: parsed.toString()),
-          );
-          logPricingSettingsChange(
-            markupPercent: tryParseLocalizedNum(markupController.text) ?? 0,
-            setupFee: parsed,
-            roundingMode: pricingRoundingModeFromStorage(
-              (await settingsRepository.getSettings()).pricingRoundingMode,
-            ).storageValue,
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist pricing setup fee',
-            context: {'setting': 'pricingSetupFee'},
-            error: e,
-            stackTrace: st,
-          );
-        }
-      });
+      setupFeeDebounce.value = Timer(
+        const Duration(milliseconds: 400),
+        () async {
+          final parsed = tryParseLocalizedNum(value);
+          if (parsed == null) return;
+          try {
+            await settingsService.update(
+              (settings) =>
+                  settings.copyWith(pricingSetupFee: parsed.toString()),
+            );
+            logPricingSettingsChange(
+              markupPercent: tryParseLocalizedNum(markupController.text) ?? 0,
+              setupFee: parsed,
+              roundingMode: pricingRoundingModeFromStorage(
+                (await settingsRepository.getSettings()).pricingRoundingMode,
+              ).storageValue,
+            );
+          } catch (e, st) {
+            logger.error(
+              AppLogCategory.ui,
+              'Failed to persist pricing setup fee',
+              context: {'setting': 'pricingSetupFee'},
+              error: e,
+              stackTrace: st,
+            );
+          }
+        },
+      );
     }
 
     return StreamBuilder(
@@ -434,9 +437,13 @@ class WorkCostsSettings extends HookConsumerWidget {
                             );
                             logPricingSettingsChange(
                               markupPercent:
-                                  tryParseLocalizedNum(markupController.text) ?? 0,
+                                  tryParseLocalizedNum(markupController.text) ??
+                                  0,
                               setupFee:
-                                  tryParseLocalizedNum(setupFeeController.text) ?? 0,
+                                  tryParseLocalizedNum(
+                                    setupFeeController.text,
+                                  ) ??
+                                  0,
                               roundingMode: value.storageValue,
                             );
                           } catch (e, st) {

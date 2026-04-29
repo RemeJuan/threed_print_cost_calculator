@@ -156,7 +156,9 @@ class SaveForm extends HookConsumerWidget {
                       pricingMarkupAmount: pricing.isEnabled
                           ? pricing.markupAmount
                           : null,
-                      pricingSetupFee: pricing.isEnabled ? pricing.setupFee : null,
+                      pricingSetupFee: pricing.isEnabled
+                          ? pricing.setupFee
+                          : null,
                       pricingRoundingMode: pricing.isEnabled
                           ? pricing.roundingMode.storageValue
                           : null,

@@ -166,7 +166,7 @@ class CalculatorResults extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, style: style),
-          Text(key: key, value.toStringAsFixed(2), style: style),
+          Text(value.toStringAsFixed(2), key: key, style: style),
         ],
       ),
     );
@@ -226,5 +226,7 @@ class CalculatorResults extends ConsumerWidget {
 
 String _formatPercent(num value) {
   final text = value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 2);
-  return text.replaceFirst(RegExp(r'\.0+$'), '').replaceFirst(RegExp(r'(\.\d*?)0+$'), r'$1');
+  return text
+      .replaceFirst(RegExp(r'\.0+$'), '')
+      .replaceFirst(RegExp(r'(\.\d*?)0+$'), r'$1');
 }

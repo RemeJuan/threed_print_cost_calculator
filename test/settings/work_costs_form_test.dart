@@ -107,7 +107,10 @@ void main() {
       await tester.pump();
 
       expect(find.byType(TextFormField), findsNWidgets(5));
-      expect(find.byType(DropdownButtonFormField<PricingRoundingMode>), findsOneWidget);
+      expect(
+        find.byType(DropdownButtonFormField<PricingRoundingMode>),
+        findsOneWidget,
+      );
     });
 
     testWidgets('persists wear and tear after debounce', (tester) async {
@@ -237,7 +240,11 @@ void main() {
       repo.emit(GeneralSettingsModel.initial());
       await tester.pump();
 
-      await tester.tap(find.byKey(const ValueKey<String>('settings.workCost.pricingRounding.input')));
+      await tester.tap(
+        find.byKey(
+          const ValueKey<String>('settings.workCost.pricingRounding.input'),
+        ),
+      );
       await tester.pumpAndSettle();
       await tester.tap(find.text('Ends in .99').last);
       await tester.pumpAndSettle();
@@ -317,7 +324,10 @@ void main() {
         '27.5',
       );
       expect(
-        tester.widget<TextFormField>(_field('settings.workCost.pricingMarkup.input'))
+        tester
+            .widget<TextFormField>(
+              _field('settings.workCost.pricingMarkup.input'),
+            )
             .controller!
             .text,
         '18',

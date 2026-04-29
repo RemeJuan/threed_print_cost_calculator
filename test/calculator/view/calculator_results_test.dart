@@ -38,13 +38,13 @@ void main() {
     required bool shouldShowProPromotion,
     PricingResult pricingResult = pricing,
   }) async {
-    final db = await tester.pumpApp(
-      CalculatorResults(results: results, pricing: pricingResult),
-      [
-      isPremiumProvider.overrideWithValue(isPremium),
-      shouldShowProPromotionProvider.overrideWithValue(shouldShowProPromotion),
-      ],
-    );
+    final db = await tester
+        .pumpApp(CalculatorResults(results: results, pricing: pricingResult), [
+          isPremiumProvider.overrideWithValue(isPremium),
+          shouldShowProPromotionProvider.overrideWithValue(
+            shouldShowProPromotion,
+          ),
+        ]);
     addTearDown(() => db.close());
     await tester.pumpAndSettle();
   }
@@ -209,19 +209,47 @@ void main() {
     ) async {
       await pumpResults(tester, isPremium: true, shouldShowProPromotion: false);
 
-      expect(find.byKey(const ValueKey('calculator.result.markupAmount')), findsOneWidget);
-      expect(find.byKey(const ValueKey('calculator.result.setupFee')), findsOneWidget);
-      expect(find.byKey(const ValueKey('calculator.result.roundingAdjustment')), findsOneWidget);
-      expect(find.byKey(const ValueKey('calculator.result.finalPrice')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey('calculator.result.markupAmount')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('calculator.result.setupFee')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('calculator.result.roundingAdjustment')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('calculator.result.finalPrice')),
+        findsOneWidget,
+      );
     });
 
     testWidgets('free user does not see pricing output rows', (tester) async {
-      await pumpResults(tester, isPremium: false, shouldShowProPromotion: false);
+      await pumpResults(
+        tester,
+        isPremium: false,
+        shouldShowProPromotion: false,
+      );
 
-      expect(find.byKey(const ValueKey('calculator.result.markupAmount')), findsNothing);
-      expect(find.byKey(const ValueKey('calculator.result.setupFee')), findsNothing);
-      expect(find.byKey(const ValueKey('calculator.result.roundingAdjustment')), findsNothing);
-      expect(find.byKey(const ValueKey('calculator.result.finalPrice')), findsNothing);
+      expect(
+        find.byKey(const ValueKey('calculator.result.markupAmount')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('calculator.result.setupFee')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('calculator.result.roundingAdjustment')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('calculator.result.finalPrice')),
+        findsNothing,
+      );
     });
   });
 }

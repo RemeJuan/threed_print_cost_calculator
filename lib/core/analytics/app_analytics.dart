@@ -168,7 +168,9 @@ class AppAnalytics {
       'pricing_settings_changed',
       params: {
         'pricing_enabled':
-            (markupPercent > 0 || setupFee > 0 || roundingMode != 'none') ? 1 : 0,
+            (markupPercent > 0 || setupFee > 0 || roundingMode != 'none')
+            ? 1
+            : 0,
         'markup_percent': markupPercent,
         'setup_fee': setupFee,
         'rounding_mode': roundingMode,
@@ -182,10 +184,7 @@ class AppAnalytics {
   }) {
     return log(
       'pricing_override_used',
-      params: {
-        'field': field,
-        'has_overrides': hasOverrides ? 1 : 0,
-      },
+      params: {'field': field, 'has_overrides': hasOverrides ? 1 : 0},
     );
   }
 

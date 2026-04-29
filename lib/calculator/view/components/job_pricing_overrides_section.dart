@@ -102,7 +102,9 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               controller: markupController,
               externalText: (state.markupPercent.value ?? 0).toString(),
               label: l10n.pricingMarkupPercentLabel,
-              fieldKey: const ValueKey<String>('calculator.pricing.markup.input'),
+              fieldKey: const ValueKey<String>(
+                'calculator.pricing.markup.input',
+              ),
               onChanged: (value) {
                 final parsed = tryParseLocalizedNum(value);
                 if (parsed == null) return;
