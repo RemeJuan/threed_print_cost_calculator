@@ -29,6 +29,10 @@ class GCodeImportResult {
 
   bool get hasPreviewMetadata => previewMetadata?.present ?? false;
 
+  bool get hasPartialMetadata => warnings.any(
+    (warning) => warning.code == GCodeParseWarningCode.partialMetadata,
+  );
+
   bool get hasAnyExtractedMetadata =>
       slicer != GCodeSlicer.unknown ||
       estimatedDuration != null ||
