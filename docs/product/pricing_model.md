@@ -146,6 +146,7 @@ Rounding is opt-in. If enabled, rounding always rounds up and never rounds subto
 #### `.00`
 
 - Round up to next whole number, then format/store as whole-unit price
+- If subtotal already ends in `.00`, keep that whole number
 - Examples:
   - `12.00 -> 12.00`
   - `12.01 -> 13.00`
@@ -154,19 +155,24 @@ Rounding is opt-in. If enabled, rounding always rounds up and never rounds subto
 
 #### `.99`
 
-- Exact rule:
-  - If fractional part is `0`, keep value unchanged
-  - Otherwise produce nearest price ending in `.99` that is **greater than or equal to** subtotal
+- Produce next price ending in `.99` that is strictly above subtotal
+- Exact integers do not stay exact in this mode
 - Operational definition:
-  - If `subtotal % 1 == 0`, return `subtotal`
   - Compute candidate from current whole unit: `floor(subtotal) + 0.99`
-  - If subtotal is less than or equal to candidate, use candidate
+  - If subtotal is less than candidate, use candidate
   - Else use `floor(subtotal) + 1 + 0.99`
 - Examples:
-  - `12.00 -> 12.00`
+  - `12.00 -> 12.99`
   - `12.31 -> 12.99`
-  - `12.99 -> 12.99`
-  - `13.00 -> 13.00`
+  - `12.99 -> 13.99`
+  - `13.00 -> 13.99`
+
+### Behavior Summary
+
+- `.00` means next whole number at or above subtotal
+- `.99` means next `.99` above subtotal, never below subtotal and never equal when subtotal already ends in `.99`
+- `.00 -> next whole number`
+- `.99 -> next .99 above subtotal`
 
 ### Zero Handling
 
@@ -190,7 +196,7 @@ Recommended fields:
 
 - `pricingMarkupPercent: String`
 - `pricingSetupFee: String`
-- `pricingRoundingMode: String` or enum-backed serialized value
+- `pricingRoundingMode: String` or enum-backed serialized value where `none` means rounding is disabled
 
 Reason:
 
@@ -198,7 +204,9 @@ Reason:
 - offline persistence already exists here
 - no new storage mechanism needed
 
-## Calculation / Job Storage
+No separate rounding-enabled boolean is required. The rounding control can be represented by `pricingRoundingMode`, with `none` acting as the disabled state and `.00` / `.99` acting as enabled states.
+
+### Calculation / Job Storage
 
 Current live calculator state needs pricing inputs and computed outputs separate from cost outputs.
 
