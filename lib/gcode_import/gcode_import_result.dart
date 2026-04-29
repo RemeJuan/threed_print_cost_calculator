@@ -61,9 +61,12 @@ class GCodeImportResult {
   }
 
   factory GCodeImportResult.fromWireMap(Map<String, dynamic> map) {
+    final rawSlicer = map['slicer']?.toString() ?? GCodeSlicer.unknown.name;
+    final rawExtractedValues = map['rawExtractedValues'];
     return GCodeImportResult(
-      slicer: GCodeSlicer.values.byName(
-        map['slicer']?.toString() ?? GCodeSlicer.unknown.name,
+      slicer: GCodeSlicer.values.firstWhere(
+        (slicer) => slicer.name == rawSlicer,
+        orElse: () => GCodeSlicer.unknown,
       ),
       estimatedDuration: map['estimatedDurationMicros'] == null
           ? null
@@ -86,9 +89,11 @@ class GCodeImportResult {
             ),
           )
           .toList(growable: false),
-      rawExtractedValues:
-          (map['rawExtractedValues'] as Map<dynamic, dynamic>? ?? const {})
-              .map((key, value) => MapEntry(key.toString(), value.toString())),
+      rawExtractedValues: rawExtractedValues is Map
+          ? rawExtractedValues.map(
+              (key, value) => MapEntry(key.toString(), value.toString()),
+            )
+          : const <String, String>{},
       hasSafePreview: map['hasSafePreview'] == true,
     );
   }
@@ -117,9 +122,12 @@ class GCodeParseWarning {
   }
 
   factory GCodeParseWarning.fromWireMap(Map<String, dynamic> map) {
+    final rawCode =
+        map['code']?.toString() ?? GCodeParseWarningCode.unknownSlicer.name;
     return GCodeParseWarning(
-      GCodeParseWarningCode.values.byName(
-        map['code']?.toString() ?? GCodeParseWarningCode.unknownSlicer.name,
+      GCodeParseWarningCode.values.firstWhere(
+        (code) => code.name == rawCode,
+        orElse: () => GCodeParseWarningCode.unknownSlicer,
       ),
       details: map['details']?.toString(),
     );
