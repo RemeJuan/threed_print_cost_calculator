@@ -69,8 +69,8 @@ class HistorySearchIndexHelpers {
   final StoreRef<String, Map<String, Object?>> _indexStore =
       stringMapStoreFactory.store(_kSearchIndexStoreName);
 
-  final StoreRef<String, Map<String, Object?>> _historyStore =
-      stringMapStoreFactory.store(DBName.history.name);
+  final StoreRef<Object?, Object?> _historyStore =
+      StoreRef<Object?, Object?>(DBName.history.name);
 
   String _indexKey(String field, String token) => '$field:$token';
 
@@ -156,7 +156,7 @@ class HistorySearchIndexHelpers {
     final records = await _historyStore.find(_db);
 
     for (final record in records) {
-      final value = record.value as Map<String, dynamic>;
+      final value = Map<String, dynamic>.from(record.value as Map);
       final searchName =
           value[kHistorySearchNameField]?.toString() ??
           normalizeHistorySearchValue(value['name']?.toString() ?? '');

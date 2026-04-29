@@ -36,8 +36,8 @@ class PrinterIndexHelpers {
   final StoreRef<String, Map<String, Object?>> _indexStore =
       stringMapStoreFactory.store(_kPrinterIndexStoreName);
 
-  final StoreRef<String, Map<String, Object?>> _historyStore =
-      stringMapStoreFactory.store(DBName.history.name);
+  final StoreRef<Object?, Object?> _historyStore =
+      StoreRef<Object?, Object?>(DBName.history.name);
 
   String _normalize(String s) => s.trim().toLowerCase();
 
@@ -48,7 +48,7 @@ class PrinterIndexHelpers {
     final records = await _historyStore.find(_db);
 
     for (final r in records) {
-      final value = r.value as Map<String, dynamic>;
+      final value = Map<String, dynamic>.from(r.value as Map);
       final printer = (value['printer']?.toString() ?? '').trim();
       final key = r.key;
       final norm = _normalize(printer);

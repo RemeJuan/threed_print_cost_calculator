@@ -62,7 +62,9 @@ class GCodeImportResult {
 
   factory GCodeImportResult.fromWireMap(Map<String, dynamic> map) {
     return GCodeImportResult(
-      slicer: GCodeSlicer.values.byName(map['slicer'] as String),
+      slicer: GCodeSlicer.values.byName(
+        map['slicer']?.toString() ?? GCodeSlicer.unknown.name,
+      ),
       estimatedDuration: map['estimatedDurationMicros'] == null
           ? null
           : Duration(microseconds: map['estimatedDurationMicros'] as int),
@@ -84,9 +86,9 @@ class GCodeImportResult {
             ),
           )
           .toList(growable: false),
-      rawExtractedValues: Map<String, String>.from(
-        map['rawExtractedValues'] as Map<dynamic, dynamic>? ?? const {},
-      ),
+      rawExtractedValues:
+          (map['rawExtractedValues'] as Map<dynamic, dynamic>? ?? const {})
+              .map((key, value) => MapEntry(key.toString(), value.toString())),
       hasSafePreview: map['hasSafePreview'] == true,
     );
   }
@@ -116,8 +118,10 @@ class GCodeParseWarning {
 
   factory GCodeParseWarning.fromWireMap(Map<String, dynamic> map) {
     return GCodeParseWarning(
-      GCodeParseWarningCode.values.byName(map['code'] as String),
-      details: map['details'] as String?,
+      GCodeParseWarningCode.values.byName(
+        map['code']?.toString() ?? GCodeParseWarningCode.unknownSlicer.name,
+      ),
+      details: map['details']?.toString(),
     );
   }
 }
@@ -167,7 +171,7 @@ class GCodePreviewMetadata {
   factory GCodePreviewMetadata.fromWireMap(Map<String, dynamic> map) {
     return GCodePreviewMetadata(
       present: map['present'] == true,
-      format: map['format'] as String?,
+      format: map['format']?.toString(),
       width: (map['width'] as num?)?.toInt(),
       height: (map['height'] as num?)?.toInt(),
       isSafe: map['isSafe'] != false,
