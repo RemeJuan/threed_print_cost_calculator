@@ -209,10 +209,12 @@ GCodeImportState _successState({
   required GCodeSlicer slicer,
   required GCodePreviewMetadata? previewMetadata,
   required Uint8List? previewImageBytes,
+  int selectedFileSizeBytes = 1024,
   bool hasSafePreview = false,
 }) {
   return GCodeImportState.success(
     selectedFileName: 'preview.gcode',
+    selectedFileSizeBytes: selectedFileSizeBytes,
     result: GCodeImportResult(
       slicer: slicer,
       estimatedDuration: const Duration(minutes: 10),
