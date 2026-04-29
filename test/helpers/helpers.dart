@@ -35,6 +35,7 @@ Future<void> setupTest() async {
   // Firebase during tests. Tests that want to assert analytics calls can
   // replace this with a mock.
   AppAnalytics.service = _NoopAnalytics();
+  AppAnalytics.resetGcodeImportTrackingForTests();
 }
 
 class _NoopAnalytics implements AnalyticsService {
