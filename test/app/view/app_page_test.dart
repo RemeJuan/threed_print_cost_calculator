@@ -217,6 +217,8 @@ void main() {
     );
 
     await pumpAppPage(tester, gateway, calculatorNotifier);
+    // Wait for any overlays (rate dialog) to settle
+    await tester.pump(const Duration(seconds: 10));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
