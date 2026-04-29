@@ -169,7 +169,7 @@ class HistoryItem extends HookConsumerWidget {
                       data.pricingSetupFee!,
                       key: ValueKey<String>('$itemKeyPrefix.setupFee'),
                     ),
-                  if ((data.pricingRoundingAdjustment ?? 0) > 0)
+                  if ((data.pricingRoundingAdjustment ?? 0) != 0)
                     _row(
                       context,
                       l10n.roundingAdjustmentLabel,

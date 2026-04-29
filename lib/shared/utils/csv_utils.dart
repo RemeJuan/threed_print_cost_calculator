@@ -51,8 +51,9 @@ String generateCsv(List<HistoryModel> items, String csvHeader) {
     final markupPercent = item.pricingMarkupPercent?.toString() ?? '';
     final markupAmount = item.pricingMarkupAmount?.toString() ?? '';
     final setupFee = item.pricingSetupFee?.toString() ?? '';
-    final roundingMode = item.pricingRoundingMode ?? '';
-    final pricingSubtotal = item.pricingSubtotalBeforeRounding?.toString() ?? '';
+    final roundingMode = _sanitizeForCsv(item.pricingRoundingMode ?? '');
+    final pricingSubtotal =
+        item.pricingSubtotalBeforeRounding?.toString() ?? '';
     final roundingAdjustment = item.pricingRoundingAdjustment?.toString() ?? '';
     final finalPrice = item.finalPrice?.toString() ?? '';
 
