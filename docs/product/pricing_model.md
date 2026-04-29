@@ -93,7 +93,7 @@ No alternate order allowed.
 
 ## Configuration
 
-## Global Defaults
+### Global Defaults
 
 Stored in app settings. Used automatically for every new calculator session and any job without local pricing overrides.
 
@@ -183,7 +183,7 @@ To avoid nonsensical positive prices from rounding alone:
 
 ## Data Model
 
-## Settings Storage
+### Settings Storage
 
 Add pricing defaults to settings layer alongside other global calculator defaults.
 
@@ -243,7 +243,7 @@ Reason:
 - pricing output becomes reusable for future quote view
 - UI can show both internal cost and client price without recomputing from ad hoc fields
 
-## Saved Job / History Storage
+### Saved Job / History Storage
 
 Saved records must snapshot both effective pricing inputs and computed outputs at save time.
 
@@ -389,6 +389,84 @@ Implementation direction:
 - Current calculator exposes risk separately from total cost
 - Pricing spec intentionally uses whatever value app defines as base cost today, without changing engine semantics
 - If cost engine later changes what counts toward total cost, pricing must consume that updated single base-cost output rather than duplicate cost logic in pricing layer
+
+## History and Persistence
+
+History must store:
+
+- cost
+- pricing inputs
+- final price
+
+History UI behavior:
+
+- show final price when present as the primary client-facing value
+- keep cost visible as supporting internal detail
+- do not replace, overwrite, or recompute cost from price
+
+Export behavior:
+
+- include pricing fields alongside cost fields
+- include final price when present
+
+Saved records must remain snapshot-based so future settings changes do not rewrite old prices.
+
+## Migration
+
+New pricing fields default to:
+
+- `markup = 0`
+- `setup fee = 0`
+- `rounding = none`
+
+Existing history remains unchanged. No backfill required.
+
+## Full Flow Example
+
+Example inputs:
+
+- Base cost: `120.00`
+- Markup: `25%`
+- Setup fee: `15.00`
+- Rounding mode: `.99`
+
+Calculation:
+
+1. Base cost remains `120.00`
+2. Markup amount = `120.00 * 25% = 30.00`
+3. Subtotal before rounding = `120.00 + 30.00 + 15.00 = 165.00`
+4. `.99` rounding chooses the next `.99` above subtotal = `165.99`
+5. Final Price / Grand Total = `165.99`
+
+Persisted snapshot:
+
+- baseCost = `120.00`
+- markupPercent = `25`
+- markupAmount = `30.00`
+- setupFee = `15.00`
+- roundingMode = `.99`
+- subtotalBeforeRounding = `165.00`
+- roundingAdjustment = `0.99`
+- finalPrice = `165.99`
+
+Cost remains `120.00`. Price becomes `165.99`. Future settings changes must not alter this saved result.
+
+## Analytics
+
+Track:
+
+- pricing enabled in settings
+- override usage per job
+- markup value distribution
+- rounding usage
+- save with pricing vs without pricing
+
+Recommended trigger points:
+
+- when pricing settings change
+- when job-level override state changes
+- when a job is saved
+- when future quote/client-view entry points use pricing output
 
 ## Offline Requirement
 
