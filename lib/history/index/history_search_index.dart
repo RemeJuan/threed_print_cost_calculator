@@ -69,8 +69,9 @@ class HistorySearchIndexHelpers {
   final StoreRef<String, Map<String, Object?>> _indexStore =
       stringMapStoreFactory.store(_kSearchIndexStoreName);
 
-  final StoreRef<Object?, Object?> _historyStore =
-      StoreRef<Object?, Object?>(DBName.history.name);
+  final StoreRef<Object?, Object?> _historyStore = StoreRef<Object?, Object?>(
+    DBName.history.name,
+  );
 
   String _indexKey(String field, String token) => '$field:$token';
 
@@ -106,6 +107,21 @@ class HistorySearchIndexHelpers {
       kHistorySearchNameField: _recordTokens(name),
       kHistorySearchPrinterField: _recordTokens(printer),
     };
+  }
+
+  Map<String, dynamic>? _recordValueMap(
+    Object? value,
+    Object? key,
+    String context,
+  ) {
+    if (value is! Map) {
+      debugPrint(
+        'Skipping $context record ${key ?? '<unknown>'}: expected Map, got ${value.runtimeType}',
+      );
+      return null;
+    }
+
+    return Map<String, dynamic>.from(value);
   }
 
   List<String> _keysFromIndexValue(Map<String, dynamic>? value) {
@@ -156,7 +172,12 @@ class HistorySearchIndexHelpers {
     final records = await _historyStore.find(_db);
 
     for (final record in records) {
-      final value = Map<String, dynamic>.from(record.value as Map);
+      final value = _recordValueMap(
+        record.value,
+        record.key,
+        'history search rebuild',
+      );
+      if (value == null) continue;
       final searchName =
           value[kHistorySearchNameField]?.toString() ??
           normalizeHistorySearchValue(value['name']?.toString() ?? '');
@@ -269,7 +290,12 @@ class HistorySearchIndexHelpers {
       final records = await _historyStore.find(txn);
 
       for (final record in records) {
-        final value = Map<String, dynamic>.from(record.value as Map);
+        final value = _recordValueMap(
+          record.value,
+          record.key,
+          'history search backfill',
+        );
+        if (value == null) continue;
         final updated = withHistorySearchFields(value);
         if (mapEquals(value, updated)) {
           continue;
