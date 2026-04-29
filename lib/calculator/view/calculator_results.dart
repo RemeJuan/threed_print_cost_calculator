@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -8,8 +9,13 @@ import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visi
 
 class CalculatorResults extends ConsumerWidget {
   final CalculationResult results;
+  final PricingResult pricing;
 
-  const CalculatorResults({required this.results, super.key});
+  const CalculatorResults({
+    required this.results,
+    this.pricing = const PricingResult.empty(),
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -77,30 +83,46 @@ class CalculatorResults extends ConsumerWidget {
               ),
             ),
           ],
-          Divider(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  l10n.resultTotalPrefix,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                Text(
-                  key: const ValueKey<String>('calculator.result.totalCost'),
-                  results.total.toString(),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
-            ),
+          const Divider(),
+          _summaryRow(
+            context,
+            l10n.costTotalLabel,
+            results.total,
+            key: const ValueKey<String>('calculator.result.totalCost'),
+            emphasize: !pricing.isEnabled,
           ),
+          if (isPremium && pricing.isEnabled) ...[
+            const Divider(),
+            _itemRow(
+              context,
+              '${l10n.markupLabel} (${_formatPercent(pricing.markupPercent)}%)',
+              pricing.markupAmount,
+              key: const ValueKey<String>('calculator.result.markupAmount'),
+            ),
+            if (pricing.setupFee > 0)
+              _itemRow(
+                context,
+                l10n.setupFeeLabel,
+                pricing.setupFee,
+                key: const ValueKey<String>('calculator.result.setupFee'),
+              ),
+            if (pricing.roundingAdjustment > 0)
+              _itemRow(
+                context,
+                l10n.roundingAdjustmentLabel,
+                pricing.roundingAdjustment,
+                key: const ValueKey<String>(
+                  'calculator.result.roundingAdjustment',
+                ),
+              ),
+            _summaryRow(
+              context,
+              l10n.finalPriceLabel,
+              pricing.finalPrice,
+              key: const ValueKey<String>('calculator.result.finalPrice'),
+              emphasize: true,
+            ),
+          ],
         ],
       ),
     );
@@ -120,7 +142,31 @@ class CalculatorResults extends ConsumerWidget {
                 ).textTheme.bodyLarge?.copyWith(color: Colors.white70) ??
                 const TextStyle(color: Colors.white70),
           ),
-          Text(value.toString(), key: key),
+          Text(value.toStringAsFixed(2), key: key),
+        ],
+      ),
+    );
+  }
+
+  Padding _summaryRow(
+    BuildContext context,
+    String label,
+    num value, {
+    Key? key,
+    required bool emphasize,
+  }) {
+    final style = Theme.of(context).textTheme.bodyLarge?.copyWith(
+      color: Colors.white,
+      fontWeight: emphasize ? FontWeight.w800 : FontWeight.w600,
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: style),
+          Text(key: key, value.toStringAsFixed(2), style: style),
         ],
       ),
     );
@@ -176,4 +222,9 @@ class CalculatorResults extends ConsumerWidget {
       ),
     );
   }
+}
+
+String _formatPercent(num value) {
+  final text = value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 2);
+  return text.replaceFirst(RegExp(r'\.0+$'), '').replaceFirst(RegExp(r'(\.\d*?)0+$'), r'$1');
 }

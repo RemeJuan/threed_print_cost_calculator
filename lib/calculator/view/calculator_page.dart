@@ -5,7 +5,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/calculator/view/components/adjustments_section.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
@@ -16,8 +15,8 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 
 import 'calculator_results.dart';
 import 'components/history_load_warning_banner.dart';
+import 'components/job_pricing_overrides_section.dart';
 import 'components/materials_selection/materials_section.dart';
-import 'components/rates_section.dart';
 import 'components/time_section.dart';
 
 abstract class PaywallPresenter {
@@ -115,13 +114,11 @@ class CalculatorPage extends HookConsumerWidget {
             // Let MaterialsSection manage its own controllers and focus state
             const MaterialsSection(),
             const SizedBox(height: 8),
-            TimeSection(),
+            const TimeSection(),
             const SizedBox(height: 8),
-            const RatesSection(),
-            const SizedBox(height: 8),
-            const AdjustmentsSection(),
+            if (isPremium) const JobPricingOverridesSection(),
             const SizedBox(height: 16),
-            CalculatorResults(results: state.results),
+            CalculatorResults(results: state.results, pricing: state.pricing),
             if (isPremium && !showSave.value)
               ElevatedButton.icon(
                 key: const ValueKey<String>('calculator.save.open.button'),
@@ -143,7 +140,11 @@ class CalculatorPage extends HookConsumerWidget {
                 ),
               ),
             if (showSave.value)
-              SaveForm(data: state.results, showSave: showSave),
+              SaveForm(
+                data: state.results,
+                pricing: state.pricing,
+                showSave: showSave,
+              ),
             const SizedBox(height: 32),
           ],
         ),

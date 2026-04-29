@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -16,6 +17,17 @@ void main() {
     total: 10.0,
   );
 
+  const pricing = PricingResult(
+    baseCost: 10.0,
+    markupPercent: 25,
+    markupAmount: 2.5,
+    setupFee: 1.25,
+    roundingMode: PricingRoundingMode.wholeDollar,
+    subtotalBeforeRounding: 13.75,
+    roundingAdjustment: 0.25,
+    finalPrice: 14.0,
+  );
+
   setUpAll(() async {
     await setupTest();
   });
@@ -24,11 +36,15 @@ void main() {
     WidgetTester tester, {
     required bool isPremium,
     required bool shouldShowProPromotion,
+    PricingResult pricingResult = pricing,
   }) async {
-    final db = await tester.pumpApp(const CalculatorResults(results: results), [
+    final db = await tester.pumpApp(
+      CalculatorResults(results: results, pricing: pricingResult),
+      [
       isPremiumProvider.overrideWithValue(isPremium),
       shouldShowProPromotionProvider.overrideWithValue(shouldShowProPromotion),
-    ]);
+      ],
+    );
     addTearDown(() => db.close());
     await tester.pumpAndSettle();
   }
@@ -181,11 +197,31 @@ void main() {
         find.byKey(const ValueKey<String>('calculator.result.filamentCost')),
         findsOneWidget,
       );
-      expect(find.text(results.total.toString()), findsOneWidget);
+      expect(find.text(results.total.toStringAsFixed(2)), findsOneWidget);
       expect(
         find.byKey(const ValueKey<String>('calculator.result.totalCost')),
         findsOneWidget,
       );
+    });
+
+    testWidgets('premium user sees pricing rows when pricing enabled', (
+      tester,
+    ) async {
+      await pumpResults(tester, isPremium: true, shouldShowProPromotion: false);
+
+      expect(find.byKey(const ValueKey('calculator.result.markupAmount')), findsOneWidget);
+      expect(find.byKey(const ValueKey('calculator.result.setupFee')), findsOneWidget);
+      expect(find.byKey(const ValueKey('calculator.result.roundingAdjustment')), findsOneWidget);
+      expect(find.byKey(const ValueKey('calculator.result.finalPrice')), findsOneWidget);
+    });
+
+    testWidgets('free user does not see pricing output rows', (tester) async {
+      await pumpResults(tester, isPremium: false, shouldShowProPromotion: false);
+
+      expect(find.byKey(const ValueKey('calculator.result.markupAmount')), findsNothing);
+      expect(find.byKey(const ValueKey('calculator.result.setupFee')), findsNothing);
+      expect(find.byKey(const ValueKey('calculator.result.roundingAdjustment')), findsNothing);
+      expect(find.byKey(const ValueKey('calculator.result.finalPrice')), findsNothing);
     });
   });
 }
