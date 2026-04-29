@@ -128,10 +128,14 @@ class HistoryItem extends HookConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      l10n.totalCostLabel,
+                      data.finalPrice == null
+                          ? l10n.totalCostLabel
+                          : l10n.costTotalLabel,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: data.finalPrice == null
+                            ? FontWeight.w800
+                            : FontWeight.w600,
                       ),
                     ),
                     const Spacer(),
@@ -140,11 +144,61 @@ class HistoryItem extends HookConsumerWidget {
                       data.totalCost.toStringAsFixed(2),
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: data.finalPrice == null
+                            ? FontWeight.w600
+                            : FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
+                if (data.finalPrice != null) ...[
+                  const SizedBox(height: 8),
+                  const Divider(),
+                  const SizedBox(height: 4),
+                  if (data.pricingMarkupAmount != null)
+                    _row(
+                      context,
+                      '${l10n.markupLabel} (${_formatPercent(data.pricingMarkupPercent)}%)',
+                      data.pricingMarkupAmount!,
+                      key: ValueKey<String>('$itemKeyPrefix.markupAmount'),
+                    ),
+                  if ((data.pricingSetupFee ?? 0) > 0)
+                    _row(
+                      context,
+                      l10n.setupFeeLabel,
+                      data.pricingSetupFee!,
+                      key: ValueKey<String>('$itemKeyPrefix.setupFee'),
+                    ),
+                  if ((data.pricingRoundingAdjustment ?? 0) > 0)
+                    _row(
+                      context,
+                      l10n.roundingAdjustmentLabel,
+                      data.pricingRoundingAdjustment ?? 0,
+                      key: ValueKey<String>(
+                        '$itemKeyPrefix.roundingAdjustment',
+                      ),
+                    ),
+                  Row(
+                    children: [
+                      Text(
+                        l10n.finalPriceLabel,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        key: ValueKey<String>('$itemKeyPrefix.finalPrice'),
+                        data.finalPrice!.toStringAsFixed(2),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 8),
                 // Additional summary line: weight (kg) • time (e.g. 6h 20m) • printer • material
                 Builder(
@@ -317,4 +371,10 @@ Widget _row(BuildContext context, String label, num value, {Key? key}) {
       ],
     ),
   );
+}
+
+String _formatPercent(num? value) {
+  final percent = value ?? 0;
+  final text = percent.toStringAsFixed(percent.truncateToDouble() == percent ? 0 : 2);
+  return text.replaceFirst(RegExp(r'\.0+$'), '').replaceFirst(RegExp(r'(\.\d*?)0+$'), r'$1');
 }

@@ -8,7 +8,7 @@ import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 void main() {
   const historyCsvHeader =
-      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Pricing Markup %,Pricing Markup,Pricing Setup Fee,Pricing Rounding,Pricing Subtotal,Pricing Rounding Adjustment,Final Price';
 
   late Database db;
   late ProviderContainer container;
@@ -56,6 +56,14 @@ void main() {
         },
       ],
       timeHours: '01:45',
+      pricingMarkupPercent: 25.0,
+      pricingMarkupAmount: 2.5,
+      pricingSetupFee: 1.25,
+      pricingRoundingMode: '.99',
+      pricingSubtotalBeforeRounding: 13.75,
+      pricingRoundingAdjustment: 0.25,
+      finalPrice: 14.0,
+      pricingUsedOverrides: true,
     );
   }
 
@@ -118,7 +126,14 @@ void main() {
         '"${item.filamentCost}",'
         '"${item.labourCost}",'
         '"${item.riskCost}",'
-        '"${item.totalCost}"';
+        '"${item.totalCost}",'
+        '"${item.pricingMarkupPercent ?? ''}",'
+        '"${item.pricingMarkupAmount ?? ''}",'
+        '"${item.pricingSetupFee ?? ''}",'
+        '"${item.pricingRoundingMode ?? ''}",'
+        '"${item.pricingSubtotalBeforeRounding ?? ''}",'
+        '"${item.pricingRoundingAdjustment ?? ''}",'
+        '"${item.finalPrice ?? ''}"';
   }
 
   Future<String> csvForStoredHistory() async {
@@ -147,6 +162,20 @@ void main() {
         expect(rawSingle['weight'], single.weight);
         expect(rawSingle['timeHours'], single.timeHours);
         expect(rawSingle['materialUsages'], single.materialUsages);
+        expect(rawSingle['pricingMarkupPercent'], single.pricingMarkupPercent);
+        expect(rawSingle['pricingMarkupAmount'], single.pricingMarkupAmount);
+        expect(rawSingle['pricingSetupFee'], single.pricingSetupFee);
+        expect(rawSingle['pricingRoundingMode'], single.pricingRoundingMode);
+        expect(
+          rawSingle['pricingSubtotalBeforeRounding'],
+          single.pricingSubtotalBeforeRounding,
+        );
+        expect(
+          rawSingle['pricingRoundingAdjustment'],
+          single.pricingRoundingAdjustment,
+        );
+        expect(rawSingle['finalPrice'], single.finalPrice);
+        expect(rawSingle['pricingUsedOverrides'], single.pricingUsedOverrides);
 
         expect(rawMulti['totalCost'], multi.totalCost);
         expect(rawMulti['electricityCost'], multi.electricityCost);
@@ -156,6 +185,14 @@ void main() {
         expect(rawMulti['weight'], multi.weight);
         expect(rawMulti['timeHours'], multi.timeHours);
         expect(rawMulti['materialUsages'], multi.materialUsages);
+        expect(rawMulti['pricingMarkupPercent'], isNull);
+        expect(rawMulti['pricingMarkupAmount'], isNull);
+        expect(rawMulti['pricingSetupFee'], isNull);
+        expect(rawMulti['pricingRoundingMode'], isNull);
+        expect(rawMulti['pricingSubtotalBeforeRounding'], isNull);
+        expect(rawMulti['pricingRoundingAdjustment'], isNull);
+        expect(rawMulti['finalPrice'], isNull);
+        expect(rawMulti['pricingUsedOverrides'], isNull);
       },
     );
 
@@ -168,6 +205,31 @@ void main() {
 
         final entry = (await historyRepository.getAllHistory()).single;
         expectSnapshotValues(entry.model, single);
+      },
+    );
+
+    test(
+      'rehydrates_single_material_history_with_pricing_snapshot_values',
+      () async {
+        final single = singleMaterialModel();
+
+        await historyRepository.saveHistory(single);
+
+        final entry = (await historyRepository.getAllHistory()).single;
+        expect(entry.model.pricingMarkupPercent, single.pricingMarkupPercent);
+        expect(entry.model.pricingMarkupAmount, single.pricingMarkupAmount);
+        expect(entry.model.pricingSetupFee, single.pricingSetupFee);
+        expect(entry.model.pricingRoundingMode, single.pricingRoundingMode);
+        expect(
+          entry.model.pricingSubtotalBeforeRounding,
+          single.pricingSubtotalBeforeRounding,
+        );
+        expect(
+          entry.model.pricingRoundingAdjustment,
+          single.pricingRoundingAdjustment,
+        );
+        expect(entry.model.finalPrice, single.finalPrice);
+        expect(entry.model.pricingUsedOverrides, single.pricingUsedOverrides);
       },
     );
 
@@ -185,6 +247,20 @@ void main() {
 
     test(
       'exports_single_material_history_using_stored_snapshot_values',
+      () async {
+        final single = singleMaterialModel();
+
+        await historyRepository.saveHistory(single);
+
+        final csv = await csvForStoredHistory();
+        final lines = csv.split('\n').where((line) => line.isNotEmpty).toList();
+
+        expect(lines, [historyCsvHeader, expectedCsvRow(single)]);
+      },
+    );
+
+    test(
+      'exports_single_material_history_with_pricing_snapshot_values',
       () async {
         final single = singleMaterialModel();
 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -14,9 +16,15 @@ import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class SaveForm extends HookConsumerWidget {
   final CalculationResult data;
+  final PricingResult pricing;
   final ValueNotifier<bool> showSave;
 
-  const SaveForm({required this.data, required this.showSave, super.key});
+  const SaveForm({
+    required this.data,
+    this.pricing = const PricingResult.empty(),
+    required this.showSave,
+    super.key,
+  });
 
   @override
   Widget build(context, ref) {
@@ -108,6 +116,25 @@ class SaveForm extends HookConsumerWidget {
 
                     String twoDigits(int n) => n.toString().padLeft(2, '0');
                     final timeStr = '${twoDigits(hours)}:${twoDigits(minutes)}';
+                    final hasOverrides =
+                        !_sameNum(
+                          calcState.wearAndTear.value ?? 0,
+                          tryParseLocalizedNum(settings.wearAndTear) ?? 0,
+                        ) ||
+                        !_sameNum(
+                          calcState.failureRisk.value ?? 0,
+                          tryParseLocalizedNum(settings.failureRisk) ?? 0,
+                        ) ||
+                        !_sameNum(
+                          calcState.labourRate.value ?? 0,
+                          tryParseLocalizedNum(settings.labourRate) ?? 0,
+                        ) ||
+                        !_sameNum(
+                          calcState.markupPercent.value ?? 0,
+                          tryParseLocalizedNum(settings.pricingMarkupPercent) ??
+                              0,
+                        ) ||
+                        (calcState.labourTime.value ?? 0) > 0;
 
                     final model = HistoryModel(
                       name: name.value,
@@ -123,6 +150,24 @@ class SaveForm extends HookConsumerWidget {
                       materialUsages: usages,
                       timeHours: timeStr,
                       importedFromGcode: calcState.importedFromGcode,
+                      pricingMarkupPercent: pricing.isEnabled
+                          ? pricing.markupPercent
+                          : null,
+                      pricingMarkupAmount: pricing.isEnabled
+                          ? pricing.markupAmount
+                          : null,
+                      pricingSetupFee: pricing.isEnabled ? pricing.setupFee : null,
+                      pricingRoundingMode: pricing.isEnabled
+                          ? pricing.roundingMode.storageValue
+                          : null,
+                      pricingSubtotalBeforeRounding: pricing.isEnabled
+                          ? pricing.subtotalBeforeRounding
+                          : null,
+                      pricingRoundingAdjustment: pricing.isEnabled
+                          ? pricing.roundingAdjustment
+                          : null,
+                      finalPrice: pricing.isEnabled ? pricing.finalPrice : null,
+                      pricingUsedOverrides: hasOverrides,
                     );
                     await ref
                         .read(calculatorHelpersProvider)
@@ -131,6 +176,13 @@ class SaveForm extends HookConsumerWidget {
                           errorMessage: l10n.savePrintErrorMessage,
                           successMessage: l10n.savePrintSuccessMessage,
                         );
+                    AppAnalytics.safeLog(
+                      () => AppAnalytics.pricingSaved(
+                        hasPricing: pricing.isEnabled,
+                        usedOverrides: hasOverrides,
+                        roundingMode: pricing.roundingMode.storageValue,
+                      ),
+                    );
                     showSave.value = false;
                   },
             icon: const Icon(Icons.save),
@@ -146,4 +198,6 @@ class SaveForm extends HookConsumerWidget {
       ),
     );
   }
+
+  bool _sameNum(num a, num b) => (a - b).abs() < 0.001;
 }

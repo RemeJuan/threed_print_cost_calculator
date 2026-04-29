@@ -21,6 +21,14 @@ abstract class HistoryModel with _$HistoryModel {
     List<Map<String, dynamic>> materialUsages,
     required String timeHours,
     @Default(false) bool importedFromGcode,
+    num? pricingMarkupPercent,
+    num? pricingMarkupAmount,
+    num? pricingSetupFee,
+    String? pricingRoundingMode,
+    num? pricingSubtotalBeforeRounding,
+    num? pricingRoundingAdjustment,
+    num? finalPrice,
+    bool? pricingUsedOverrides,
   }) = _HistoryModel;
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
@@ -48,7 +56,26 @@ abstract class HistoryModel with _$HistoryModel {
       materialUsages: _parseMaterialUsages(map['materialUsages']),
       timeHours: map['timeHours']?.toString() ?? '00:00',
       importedFromGcode: map['importedFromGcode'] == true,
+      pricingMarkupPercent: _parseNullableNum(map['pricingMarkupPercent']),
+      pricingMarkupAmount: _parseNullableNum(map['pricingMarkupAmount']),
+      pricingSetupFee: _parseNullableNum(map['pricingSetupFee']),
+      pricingRoundingMode: map['pricingRoundingMode']?.toString(),
+      pricingSubtotalBeforeRounding: _parseNullableNum(
+        map['pricingSubtotalBeforeRounding'],
+      ),
+      pricingRoundingAdjustment: _parseNullableNum(
+        map['pricingRoundingAdjustment'],
+      ),
+      finalPrice: _parseNullableNum(map['finalPrice']),
+      pricingUsedOverrides: map['pricingUsedOverrides'] == null
+          ? null
+          : map['pricingUsedOverrides'] == true,
     );
+  }
+
+  static num? _parseNullableNum(dynamic raw) {
+    if (raw == null) return null;
+    return parseLocalizedNumOrFallback(raw);
   }
 
   static List<Map<String, dynamic>> _parseMaterialUsages(dynamic raw) {
@@ -76,6 +103,14 @@ extension HistoryModelX on HistoryModel {
       'materialUsages': materialUsages,
       'timeHours': timeHours,
       'importedFromGcode': importedFromGcode,
+      'pricingMarkupPercent': pricingMarkupPercent,
+      'pricingMarkupAmount': pricingMarkupAmount,
+      'pricingSetupFee': pricingSetupFee,
+      'pricingRoundingMode': pricingRoundingMode,
+      'pricingSubtotalBeforeRounding': pricingSubtotalBeforeRounding,
+      'pricingRoundingAdjustment': pricingRoundingAdjustment,
+      'finalPrice': finalPrice,
+      'pricingUsedOverrides': pricingUsedOverrides,
     };
   }
 }

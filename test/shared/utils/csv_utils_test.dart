@@ -7,7 +7,7 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 
 void main() {
   const historyCsvHeader =
-      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Pricing Markup %,Pricing Markup,Pricing Setup Fee,Pricing Rounding,Pricing Subtotal,Pricing Rounding Adjustment,Final Price';
 
   group('csv_utils.generateCsv', () {
     test('generates header and properly quoted row for a single item', () {
@@ -39,7 +39,7 @@ void main() {
       // Note: date is output with toIso8601String, which includes milliseconds and Z
       final expectedDate = '2022-01-02T03:04:05.000Z';
       final expectedRow =
-          '"$expectedDate","My,Printer","PLA ""Red""","PLA Red:12g","12.5","01:30","1.23","2.34","3.45","0.12","7.14"';
+          '"$expectedDate","My,Printer","PLA ""Red""","PLA Red:12g","12.5","01:30","1.23","2.34","3.45","0.12","7.14","","","","","","",""';
 
       expect(lines[1], expectedRow);
     });

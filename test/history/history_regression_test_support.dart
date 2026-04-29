@@ -31,7 +31,7 @@ import '../helpers/helpers.dart';
 import '../helpers/lower_level_test_fakes.dart';
 
 const historyCsvHeader =
-    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Pricing Markup %,Pricing Markup,Pricing Setup Fee,Pricing Rounding,Pricing Subtotal,Pricing Rounding Adjustment,Final Price';
 
 final historyStore = StoreRef<Object?, Map<String, dynamic>>('history');
 
@@ -621,7 +621,14 @@ String expectedHistoryCsvRow(HistoryModel item) {
       '"${item.filamentCost}",'
       '"${item.labourCost}",'
       '"${item.riskCost}",'
-      '"${item.totalCost}"';
+      '"${item.totalCost}",'
+      '"${item.pricingMarkupPercent ?? ''}",'
+      '"${item.pricingMarkupAmount ?? ''}",'
+      '"${item.pricingSetupFee ?? ''}",'
+      '"${item.pricingRoundingMode ?? ''}",'
+      '"${item.pricingSubtotalBeforeRounding ?? ''}",'
+      '"${item.pricingRoundingAdjustment ?? ''}",'
+      '"${item.finalPrice ?? ''}"';
 }
 
 String _textByKey(WidgetTester tester, Key key) {
