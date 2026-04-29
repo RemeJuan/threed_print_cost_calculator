@@ -224,6 +224,7 @@ Recommended additions to calculator state:
 
 Recommended computed model:
 
+```ts
 PricingResult {
   baseCost
   markupPercent
@@ -234,6 +235,7 @@ PricingResult {
   roundingAdjustment
   finalPrice
 }
+```
 
 Keep this separate from `CalculationResult`.
 
