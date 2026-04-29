@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/helpers/pricing_calculator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_history_loader.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_materials_service.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_settings_sync.dart';
@@ -358,6 +360,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
+  void setMarkupPercent(num value) {
+    state = state.copyWith(markupPercent: NumberInput.dirty(value: value));
+  }
+
   void updateLabourTime(num value) {
     ref
         .read(calculatorPreferencesRepositoryProvider)
@@ -367,6 +373,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   void updateResults(CalculationResult results) {
     state = state.copyWith(results: results);
+  }
+
+  void updatePricing(PricingResult pricing) {
+    state = state.copyWith(pricing: pricing);
   }
 
   void submit() {
@@ -387,6 +397,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final lr = state.labourRate.value ?? 0;
     final lt = state.labourTime.value ?? 0;
     final fr = state.failureRisk.value ?? 0;
+    final markupPercent = state.markupPercent.value ?? 0;
+    final setupFee = state.setupFee.value ?? 0;
 
     if (w > -1 && (h > -1 || m > -1) && kw > -1) {
       electricityCost = ref
@@ -422,15 +434,31 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
 
-    updateResults(results);
+    final pricing = PricingCalculator.calculate(
+      baseCost: results.total,
+      markupPercent: markupPercent,
+      setupFee: setupFee,
+      roundingMode: state.roundingMode,
+    );
+
+    state = state.copyWith(results: results, pricing: pricing);
 
     AppAnalytics.safeLog(
       () => AppAnalytics.calculationCreated(
         materialCount: state.materialUsages.length,
         hasFailureRisk: fr > 0,
         hasLabour: labourCost > 0,
+        hasPricing: pricing.isEnabled,
       ),
     );
+
+    if (pricing.roundingMode != PricingRoundingMode.none) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.pricingRoundingUsed(
+          roundingMode: pricing.roundingMode.storageValue,
+        ),
+      );
+    }
 
     if (state.materialUsages.length > 1) {
       AppAnalytics.safeLog(

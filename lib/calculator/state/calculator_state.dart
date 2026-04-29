@@ -1,5 +1,6 @@
 import 'package:formz/formz.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
@@ -17,7 +18,11 @@ class CalculatorState with FormzMixin {
   final NumberInput failureRisk;
   final NumberInput labourRate;
   final NumberInput labourTime;
+  final NumberInput markupPercent;
+  final NumberInput setupFee;
+  final PricingRoundingMode roundingMode;
   final CalculationResult results;
+  final PricingResult pricing;
   final bool showHistoryLoadReplacementWarning;
   final bool importedFromGcode;
 
@@ -35,6 +40,9 @@ class CalculatorState with FormzMixin {
     this.failureRisk = const NumberInput.pure(),
     this.labourRate = const NumberInput.pure(),
     this.labourTime = const NumberInput.pure(),
+    this.markupPercent = const NumberInput.pure(),
+    this.setupFee = const NumberInput.pure(),
+    this.roundingMode = PricingRoundingMode.none,
     this.results = const CalculationResult(
       electricity: 0.0,
       filament: 0.0,
@@ -42,6 +50,7 @@ class CalculatorState with FormzMixin {
       labour: 0.0,
       total: 0.0,
     ),
+    this.pricing = const PricingResult.empty(),
     this.showHistoryLoadReplacementWarning = false,
     this.importedFromGcode = false,
   }) : materialUsages = List.unmodifiable(
@@ -62,7 +71,11 @@ class CalculatorState with FormzMixin {
     NumberInput? failureRisk,
     NumberInput? labourRate,
     NumberInput? labourTime,
+    NumberInput? markupPercent,
+    NumberInput? setupFee,
+    PricingRoundingMode? roundingMode,
     CalculationResult? results,
+    PricingResult? pricing,
     bool? showHistoryLoadReplacementWarning,
     bool? importedFromGcode,
   }) {
@@ -80,7 +93,11 @@ class CalculatorState with FormzMixin {
       failureRisk: failureRisk ?? this.failureRisk,
       labourRate: labourRate ?? this.labourRate,
       labourTime: labourTime ?? this.labourTime,
+      markupPercent: markupPercent ?? this.markupPercent,
+      setupFee: setupFee ?? this.setupFee,
+      roundingMode: roundingMode ?? this.roundingMode,
       results: results ?? this.results,
+      pricing: pricing ?? this.pricing,
       showHistoryLoadReplacementWarning:
           showHistoryLoadReplacementWarning ??
           this.showHistoryLoadReplacementWarning,
@@ -101,5 +118,7 @@ class CalculatorState with FormzMixin {
     failureRisk,
     labourRate,
     labourTime,
+    markupPercent,
+    setupFee,
   ];
 }

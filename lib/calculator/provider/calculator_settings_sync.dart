@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -69,8 +70,18 @@ class CalculatorSettingsSync {
         value: tryParseLocalizedNum(settings.labourRate),
       ),
       labourTime: NumberInput.dirty(value: current.labourTime.value),
+      markupPercent: NumberInput.dirty(
+        value: tryParseLocalizedNum(settings.pricingMarkupPercent),
+      ),
+      setupFee: NumberInput.dirty(
+        value: tryParseLocalizedNum(settings.pricingSetupFee),
+      ),
+      roundingMode: pricingRoundingModeFromStorage(
+        settings.pricingRoundingMode,
+      ),
       materialUsages: current.materialUsages,
       results: current.results,
+      pricing: current.pricing,
     );
 
     return ensureInitialMaterialUsage(nextState, settings.selectedMaterial);
