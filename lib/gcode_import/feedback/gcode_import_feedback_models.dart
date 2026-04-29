@@ -38,20 +38,18 @@ extension GCodeImportFeedbackSlicerX on GCodeImportFeedbackSlicer {
   };
 }
 
-enum GCodeImportFeedbackPreviewResult {
-  loaded,
-  missing,
-  incorrect,
-  notSure,
-}
+enum GCodeImportFeedbackPreviewResult { loaded, missing, incorrect, notSure }
 
-extension GCodeImportFeedbackPreviewResultX on GCodeImportFeedbackPreviewResult {
+extension GCodeImportFeedbackPreviewResultX
+    on GCodeImportFeedbackPreviewResult {
   String label(AppLocalizations l10n) => switch (this) {
     GCodeImportFeedbackPreviewResult.loaded => l10n.gcodeFeedbackPreviewLoaded,
-    GCodeImportFeedbackPreviewResult.missing => l10n.gcodeFeedbackPreviewMissing,
+    GCodeImportFeedbackPreviewResult.missing =>
+      l10n.gcodeFeedbackPreviewMissing,
     GCodeImportFeedbackPreviewResult.incorrect =>
       l10n.gcodeFeedbackPreviewIncorrect,
-    GCodeImportFeedbackPreviewResult.notSure => l10n.gcodeFeedbackPreviewNotSure,
+    GCodeImportFeedbackPreviewResult.notSure =>
+      l10n.gcodeFeedbackPreviewNotSure,
   };
 
   String bodyLabel() => switch (this) {
@@ -62,14 +60,10 @@ extension GCodeImportFeedbackPreviewResultX on GCodeImportFeedbackPreviewResult 
   };
 }
 
-enum GCodeImportFeedbackMetadataResult {
-  correct,
-  missing,
-  incorrect,
-  notSure,
-}
+enum GCodeImportFeedbackMetadataResult { correct, missing, incorrect, notSure }
 
-extension GCodeImportFeedbackMetadataResultX on GCodeImportFeedbackMetadataResult {
+extension GCodeImportFeedbackMetadataResultX
+    on GCodeImportFeedbackMetadataResult {
   String label(AppLocalizations l10n) => switch (this) {
     GCodeImportFeedbackMetadataResult.correct =>
       l10n.gcodeFeedbackMetadataCorrect,

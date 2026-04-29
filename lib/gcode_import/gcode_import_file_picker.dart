@@ -37,17 +37,11 @@ List<XTypeGroup> gCodeAcceptedTypeGroups(TargetPlatform platform) {
   switch (platform) {
     case TargetPlatform.iOS:
       return const [
-        XTypeGroup(
-          label: 'G-code',
-          uniformTypeIdentifiers: ['public.data'],
-        ),
+        XTypeGroup(label: 'G-code', uniformTypeIdentifiers: ['public.data']),
       ];
     default:
       return const [
-        XTypeGroup(
-          label: 'G-code',
-          extensions: ['gcode'],
-        ),
+        XTypeGroup(label: 'G-code', extensions: ['gcode']),
       ];
   }
 }

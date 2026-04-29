@@ -8,7 +8,9 @@ final whatsNewServiceProvider = Provider<WhatsNewService>((ref) {
   return WhatsNewService(prefs);
 });
 
-final currentAnnouncementProvider = FutureProvider<WhatsNewAnnouncement?>((ref) async {
+final currentAnnouncementProvider = FutureProvider<WhatsNewAnnouncement?>((
+  ref,
+) async {
   final service = ref.watch(whatsNewServiceProvider);
   final announcement = await service.loadAnnouncement();
   if (announcement == null) return null;

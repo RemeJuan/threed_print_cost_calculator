@@ -6,10 +6,11 @@ import 'package:riverpod/riverpod.dart';
 
 import 'gcode_import_feedback_models.dart';
 
-final gcodeImportFeedbackMailerProvider =
-    Provider<GCodeImportFeedbackMailer>((ref) {
-      return const FlutterGCodeImportFeedbackMailer();
-    });
+final gcodeImportFeedbackMailerProvider = Provider<GCodeImportFeedbackMailer>((
+  ref,
+) {
+  return const FlutterGCodeImportFeedbackMailer();
+});
 
 final gcodeImportFeedbackMetadataSourceProvider =
     Provider<GCodeImportFeedbackMetadataSource>((ref) {
@@ -96,8 +97,7 @@ GCodeImportFeedbackEmailDraft buildGCodeImportFeedbackEmailDraft({
     if (submission.importedFileName != null)
       'Imported file: ${submission.importedFileName}',
     'Attached G-code file: ${attachmentPaths.isNotEmpty ? 'yes' : 'no'}',
-    if (attachmentPaths.isNotEmpty)
-      'Attachment path: ${attachmentPaths.first}',
+    if (attachmentPaths.isNotEmpty) 'Attachment path: ${attachmentPaths.first}',
     if (submission.importFailureContext != null)
       'Import result: Failed - ${submission.importFailureContext}'
     else

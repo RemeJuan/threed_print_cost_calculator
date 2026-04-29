@@ -51,7 +51,11 @@ void main() {
     test('returns null for missing title', () {
       final json = {
         'wn_id': 'test_123',
-        'en': {'body': 'Test Body', 'cta': 'OK', 'unlock_pro_cta': 'Unlock Pro'},
+        'en': {
+          'body': 'Test Body',
+          'cta': 'OK',
+          'unlock_pro_cta': 'Unlock Pro',
+        },
       };
       final announcement = WhatsNewAnnouncement.fromJson(json);
       expect(announcement, isNull);
@@ -60,7 +64,11 @@ void main() {
     test('returns null for missing body', () {
       final json = {
         'wn_id': 'test_123',
-        'en': {'title': 'Test Title', 'cta': 'OK', 'unlock_pro_cta': 'Unlock Pro'},
+        'en': {
+          'title': 'Test Title',
+          'cta': 'OK',
+          'unlock_pro_cta': 'Unlock Pro',
+        },
       };
       final announcement = WhatsNewAnnouncement.fromJson(json);
       expect(announcement, isNull);
@@ -89,28 +97,31 @@ void main() {
       expect(announcement.getLocalizedCta('it'), 'OK');
     });
 
-    test('falls back to English for body but returns empty for missing title', () {
-      final json = {
-        'wn_id': 'test_123',
-        'en': {
-          'title': 'Test Title',
-          'body': 'Test Body',
-          'cta': 'OK',
-          'unlock_pro_cta': 'Unlock Pro',
-        },
-        'de': {
-          'title': 'Test Titel',
-          'body': 'Test Inhalt',
-          'cta': 'Ja',
-          'unlock_pro_cta': 'Pro freischalten',
-        },
-      };
-      final announcement = WhatsNewAnnouncement.fromJson(json)!;
-      expect(announcement.getLocalizedTitle('fr'), 'Test Title');
-      expect(announcement.getLocalizedBody('fr'), 'Test Body');
-      expect(announcement.getLocalizedTitle('de'), 'Test Titel');
-      expect(announcement.getLocalizedUnlockProCta('fr'), 'Unlock Pro');
-    });
+    test(
+      'falls back to English for body but returns empty for missing title',
+      () {
+        final json = {
+          'wn_id': 'test_123',
+          'en': {
+            'title': 'Test Title',
+            'body': 'Test Body',
+            'cta': 'OK',
+            'unlock_pro_cta': 'Unlock Pro',
+          },
+          'de': {
+            'title': 'Test Titel',
+            'body': 'Test Inhalt',
+            'cta': 'Ja',
+            'unlock_pro_cta': 'Pro freischalten',
+          },
+        };
+        final announcement = WhatsNewAnnouncement.fromJson(json)!;
+        expect(announcement.getLocalizedTitle('fr'), 'Test Title');
+        expect(announcement.getLocalizedBody('fr'), 'Test Body');
+        expect(announcement.getLocalizedTitle('de'), 'Test Titel');
+        expect(announcement.getLocalizedUnlockProCta('fr'), 'Unlock Pro');
+      },
+    );
   });
 
   group('WhatsNewService', () {
@@ -218,12 +229,15 @@ void main() {
       expect(service.getDismissedAnnouncementId(), 'test_id');
     });
 
-    test('getDismissedAnnouncementId returns null when nothing stored', () async {
-      final prefs = await SharedPreferences.getInstance();
-      final service = WhatsNewService(prefs);
+    test(
+      'getDismissedAnnouncementId returns null when nothing stored',
+      () async {
+        final prefs = await SharedPreferences.getInstance();
+        final service = WhatsNewService(prefs);
 
-      expect(service.getDismissedAnnouncementId(), isNull);
-    });
+        expect(service.getDismissedAnnouncementId(), isNull);
+      },
+    );
 
     test('loadAnnouncement returns null when JSON file missing', () async {
       final prefs = await SharedPreferences.getInstance();

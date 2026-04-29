@@ -38,10 +38,7 @@ class WhatsNewAnnouncement {
   final String id;
   final Map<String, WhatsNewAnnouncementLocale> locales;
 
-  const WhatsNewAnnouncement({
-    required this.id,
-    required this.locales,
-  });
+  const WhatsNewAnnouncement({required this.id, required this.locales});
 
   static WhatsNewAnnouncement? fromJson(Map<String, dynamic> json) {
     final id = json['wn_id'] as String?;

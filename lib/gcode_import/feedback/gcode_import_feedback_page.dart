@@ -101,7 +101,9 @@ class _GCodeImportFeedbackPageState
               DropdownButtonFormField<GCodeImportFeedbackSlicer>(
                 key: const ValueKey<String>('gcode_feedback.slicer'),
                 initialValue: _slicer,
-                decoration: InputDecoration(labelText: l10n.gcodeImportFeedbackSlicerLabel),
+                decoration: InputDecoration(
+                  labelText: l10n.gcodeImportFeedbackSlicerLabel,
+                ),
                 items: GCodeImportFeedbackSlicer.values
                     .map(
                       (slicer) => DropdownMenuItem(
@@ -298,9 +300,9 @@ class _GCodeImportFeedbackPageState
       Navigator.of(context).pop();
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.mailClientError)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.mailClientError)));
     } finally {
       if (mounted) {
         setState(() {

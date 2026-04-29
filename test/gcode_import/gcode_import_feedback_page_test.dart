@@ -30,11 +30,26 @@ void main() {
     );
 
     expect(find.text('G-code Import Beta Feedback'), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('gcode_feedback.slicer')), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('gcode_feedback.preview')), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('gcode_feedback.metadata')), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('gcode_feedback.description')), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('gcode_feedback.submit')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('gcode_feedback.slicer')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('gcode_feedback.preview')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('gcode_feedback.metadata')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('gcode_feedback.description')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('gcode_feedback.submit')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('other slicer reveals required field', (tester) async {
@@ -54,7 +69,10 @@ void main() {
       ],
     );
 
-    expect(find.byKey(const ValueKey<String>('gcode_feedback.other_slicer')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('gcode_feedback.other_slicer')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('blocks submit until valid', (tester) async {
@@ -73,8 +91,12 @@ void main() {
       ],
     );
 
-    await tester.ensureVisible(find.byKey(const ValueKey<String>('gcode_feedback.submit')));
-    await tester.tap(find.byKey(const ValueKey<String>('gcode_feedback.submit')));
+    await tester.ensureVisible(
+      find.byKey(const ValueKey<String>('gcode_feedback.submit')),
+    );
+    await tester.tap(
+      find.byKey(const ValueKey<String>('gcode_feedback.submit')),
+    );
     await tester.pumpAndSettle();
 
     expect(mailer.drafts, isEmpty);
@@ -99,7 +121,8 @@ void main() {
         attachImportedFile: true,
         importedFileName: 'preview_issue.gcode',
         importedFilePath: '/tmp/preview_issue.gcode',
-        importFailureContext: 'This file did not contain supported G-code metadata.',
+        importFailureContext:
+            'This file did not contain supported G-code metadata.',
       ),
     );
     expect(draft.subject, 'G-code Import Beta Feedback');
@@ -109,7 +132,12 @@ void main() {
     expect(draft.body, contains('Which slicer?: Kiri:Moto'));
     expect(draft.body, contains('Preview result: Preview loaded'));
     expect(draft.body, contains('Metadata result: Looks correct'));
-    expect(draft.body, contains('Import result: Failed - This file did not contain supported G-code metadata.'));
+    expect(
+      draft.body,
+      contains(
+        'Import result: Failed - This file did not contain supported G-code metadata.',
+      ),
+    );
     expect(draft.body, contains('Attached G-code file: yes'));
     expect(draft.body, contains('Attachment path: /tmp/preview_issue.gcode'));
     expect(draft.attachmentPaths, ['/tmp/preview_issue.gcode']);
