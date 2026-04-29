@@ -35,7 +35,7 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 - Fixed setup fee
 - Final rounding modes: none, `.00`, `.99`
 - Global defaults in settings
-- Optional per-job pricing overrides
+- Job-level override support where UI exposes it
 - Persisted computed price for saved jobs / future quote surfaces
 
 ## Out of Scope
@@ -103,33 +103,39 @@ Default fields:
 - `defaultSetupFee`
 - `defaultRoundingMode`
 
-## Per-Job Overrides
+### Per-Job Overrides
 
-Per-job pricing may override:
+Per-job calculator state may override:
 
+- wear & tear
+- failure risk
+- hourly rate
+- processing cost inputs
 - markup %
-- setup fee
-- rounding mode
 
-Per-job pricing may **not** override:
+Per-job calculator state may **not** override through this pricing surface:
 
 - base cost math
-- electricity / filament / labour / risk inputs through pricing controls
+- setup fee
+- rounding mode
 - selected cost engine totals
 - global defaults for other jobs
 - saved historical computed prices after save
 
 Recommended shape:
 
-- Default behavior: job uses settings defaults
-- If user enables override for a field, job stores explicit value for that field
-- Effective pricing config resolves per field: override value if present, else global default
+- Cost inputs keep existing job-level behavior
+- Markup may store explicit job value when user changes it locally
+- Setup fee and rounding resolve from settings defaults unless later product scope changes
 
 This keeps behavior simple and avoids copying defaults into every draft job unless needed.
+
+Setup fee is global-only in v1. Users configure it in settings, and individual jobs inherit it from the effective global pricing configuration. Per-job setup fee overrides are intentionally out of scope for the first implementation.
 
 ## Rounding Rules
 
 Rounding logic must be currency-agnostic. It works on numeric values only and does not assume a currency symbol.
+Rounding is opt-in. If enabled, rounding always rounds up and never rounds subtotal down.
 
 ### Modes
 
@@ -287,7 +293,7 @@ Pricing recalculates whenever either side changes:
 - markup % changes
 - setup fee changes
 - rounding mode changes
-- per-job override toggled on/off
+- job-level markup override changes
 - settings defaults change while job is using defaults
 
 Implementation direction:
