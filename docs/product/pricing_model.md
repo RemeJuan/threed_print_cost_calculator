@@ -215,14 +215,15 @@ Recommended additions to calculator state:
 - `pricingMarkupPercent` input
 - `pricingSetupFee` input
 - `pricingRoundingMode`
-- per-field override flags or nullable override values
+- job-level pricing override state for markup where exposed
 - `pricingBaseCost`
+- `pricingMarkupAmount`
 - `pricingSubtotal`
+- `pricingRoundingAdjustment`
 - `pricingFinalPrice`
 
 Recommended computed model:
 
-```text
 PricingResult {
   baseCost
   markupPercent
@@ -230,9 +231,9 @@ PricingResult {
   setupFee
   roundingMode
   subtotalBeforeRounding
+  roundingAdjustment
   finalPrice
 }
-```
 
 Keep this separate from `CalculationResult`.
 
@@ -253,6 +254,8 @@ Recommended additions to saved job model/history model:
 - effective `markupAmount`
 - effective `setupFee`
 - effective `roundingMode`
+- effective `roundingAdjustment`
+- effective `subtotalBeforeRounding`
 - effective `finalPrice`
 - optional indicator that job used overrides
 
