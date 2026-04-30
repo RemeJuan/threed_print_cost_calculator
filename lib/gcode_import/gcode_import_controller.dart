@@ -1,6 +1,5 @@
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import 'gcode_import_file_picker.dart';
 import 'gcode_import_result.dart';
@@ -20,9 +19,8 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     if (pickedFile == null) return;
 
     final fileType = _fileTypeFromName(pickedFile.name);
-    final isPro = ref.read(isPremiumProvider);
     AppAnalytics.safeLog(
-      () => AppAnalytics.gcodeFileSelected(fileType: fileType, isPro: isPro),
+      () => AppAnalytics.gcodeFileSelected(fileType: fileType),
     );
 
     final bytes = await pickedFile.readAsBytes();

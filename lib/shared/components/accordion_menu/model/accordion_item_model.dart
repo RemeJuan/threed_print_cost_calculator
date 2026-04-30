@@ -19,6 +19,9 @@ class AccordionItem {
   /// shown in the header and can handle its own tap events.
   final Widget? action;
 
+  /// Optional tap handler used when [isLocked] is true.
+  final VoidCallback? onLockedTap;
+
   AccordionItem({
     required this.header,
     required this.body,
@@ -27,5 +30,6 @@ class AccordionItem {
     this.initiallyExpanded = false,
     this.isLocked = false,
     this.action,
+    this.onLockedTap,
   });
 }
