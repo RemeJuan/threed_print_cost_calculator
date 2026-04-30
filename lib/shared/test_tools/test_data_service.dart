@@ -116,27 +116,27 @@ class TestDataService {
   }
 
   Future<void> _clearDbInTransaction(Transaction txn) async {
-    final stores = <StoreRef<String, Object?>>[
-      StoreRef<String, Object?>.main(),
-      stringMapStoreFactory.store(DBName.printers.name),
-      stringMapStoreFactory.store(DBName.materials.name),
-      stringMapStoreFactory.store(DBName.history.name),
-      stringMapStoreFactory.store('printer_index'),
-      stringMapStoreFactory.store('history_search_index'),
-    ];
+    await _clearStore(StoreRef<String, Object?>.main(), txn);
+    await _clearStore(stringMapStoreFactory.store(DBName.printers.name), txn);
+    await _clearStore(stringMapStoreFactory.store(DBName.materials.name), txn);
+    await _clearStore(StoreRef<Object?, Object?>(DBName.history.name), txn);
+    await _clearStore(stringMapStoreFactory.store('printer_index'), txn);
+    await _clearStore(stringMapStoreFactory.store('history_search_index'), txn);
+  }
 
-    for (final store in stores) {
-      final snapshots = await store.find(txn);
-      for (final snapshot in snapshots) {
-        await store.record(snapshot.key).delete(txn);
-      }
+  Future<void> _clearStore<K, V>(StoreRef<K, V> store, Transaction txn) async {
+    final snapshots = await store.find(txn);
+    for (final snapshot in snapshots) {
+      await store.record(snapshot.key).delete(txn);
     }
   }
 
   Future<void> _writeSeedData(Transaction txn, SeedDataBundle bundle) async {
     final printersStore = stringMapStoreFactory.store(DBName.printers.name);
     final materialsStore = stringMapStoreFactory.store(DBName.materials.name);
-    final historyStore = stringMapStoreFactory.store(DBName.history.name);
+    final historyStore = StoreRef<Object?, Map<String, Object?>>(
+      DBName.history.name,
+    );
     final mainStore = StoreRef<String, Object?>.main();
 
     final printerIndex = PrinterIndexHelpers.fromRef(ref);

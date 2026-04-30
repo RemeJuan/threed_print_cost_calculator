@@ -3,12 +3,12 @@ import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpe
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
-import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -176,10 +176,27 @@ class FakeCalculatorHelpers implements CalculatorHelpers {
 class FakePaywallPresenter implements PaywallPresenter {
   int calls = 0;
   String? lastOfferingId;
+  String? lastTriggerFeature;
+  String? lastPurchaseSource;
+  String? lastSource;
+  String? lastDefaultEntryPoint;
+  int? lastLaunchCount;
 
   @override
-  Future<void> present(String offeringId) async {
+  Future<void> present(
+    String offeringId, {
+    required String triggerFeature,
+    required String purchaseSource,
+    String defaultEntryPoint = 'manual',
+    String source = 'unknown',
+    int? launchCount,
+  }) async {
     calls += 1;
     lastOfferingId = offeringId;
+    lastTriggerFeature = triggerFeature;
+    lastPurchaseSource = purchaseSource;
+    lastSource = source;
+    lastDefaultEntryPoint = defaultEntryPoint;
+    lastLaunchCount = launchCount;
   }
 }

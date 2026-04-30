@@ -4,39 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_section.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import 'gcode_import_controller.dart';
 import 'gcode_import_result.dart';
 
 class GCodeImportPage extends HookConsumerWidget {
-  const GCodeImportPage({super.key});
+  const GCodeImportPage({super.key, this.source = 'unknown'});
+
+  final String source;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final isPremium = ref.watch(isPremiumProvider);
 
     useEffect(() {
-      if (!isPremium) return null;
-
       AppAnalytics.safeLog(AppAnalytics.gcodeImportOpened);
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodeImportStarted(source: source),
+      );
       return () {
         AppAnalytics.safeLog(AppAnalytics.gcodeImportAbandoned);
       };
-    }, [isPremium]);
-
-    if (!isPremium) {
-      return Scaffold(
-        appBar: AppBar(title: Text(l10n.importGcodePageTitle)),
-        body: const Center(child: Subscriptions()),
-      );
-    }
+    }, [source]);
 
     final state = ref.watch(gcodeImportControllerProvider);
     final controller = ref.read(gcodeImportControllerProvider.notifier);
@@ -196,11 +189,13 @@ class GCodeImportPage extends HookConsumerWidget {
                     ? null
                     : () {
                         AppAnalytics.safeLog(
-                          () => AppAnalytics.gcodeApplyToCalculator(
-                            slicer: state.result!.slicer.name,
+                          () => AppAnalytics.gcodeImportSuccess(
+                            hasPrintTime:
+                                state.result!.estimatedDuration != null,
+                            hasFilamentUsage:
+                                state.result!.filamentWeightG != null ||
+                                state.result!.filamentLengthMm != null,
                             hasPreview: state.result!.hasPreviewMetadata,
-                            fileSizeBytes: fileSizeBytes,
-                            parseStatus: parseStatus,
                           ),
                         );
                         ref

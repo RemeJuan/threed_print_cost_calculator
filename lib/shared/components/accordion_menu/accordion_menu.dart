@@ -81,7 +81,7 @@ class AccordionMenu extends HookConsumerWidget {
                 child: InkWell(
                   key: item.headerKey,
                   onTap: item.isLocked
-                      ? null
+                      ? item.onLockedTap
                       : () => ref
                             .read(accordionOpenPanelProvider.notifier)
                             .toggle(index),

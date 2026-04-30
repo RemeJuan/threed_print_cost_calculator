@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/history/components/history_export_preview_sheet.dart';
-import 'package:threed_print_cost_calculator/history/components/history_teaser_state.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
@@ -287,10 +286,12 @@ void main() {
     expect(csvUtils.lastRange, ExportRange.last7Days);
   });
 
-  testWidgets('renders teaser state with sample export preview', (
-    tester,
-  ) async {
-    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.teaser));
+  testWidgets('renders teaser state with premium entry CTAs', (tester) async {
+    final paywallPresenter = FakePaywallPresenter();
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.teaser), [
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+    ]);
 
     await tester.pumpAndSettle();
 
@@ -304,31 +305,33 @@ void main() {
       findsOneWidget,
     );
 
+    await tester.tap(find.byKey(const ValueKey<String>('history.teaser.cta')));
+    await tester.pump();
+
+    expect(paywallPresenter.calls, 1);
+    expect(paywallPresenter.lastOfferingId, 'pro');
+    expect(paywallPresenter.lastTriggerFeature, 'history');
+    expect(paywallPresenter.lastPurchaseSource, 'history_teaser_primary');
+    expect(paywallPresenter.lastSource, 'history_teaser_primary');
+
     await tester.tap(
       find.byKey(const ValueKey<String>('history.export.preview.entry')),
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('[Sample]'), findsWidgets);
-    final csvPreviewFinder = find.byKey(
-      const ValueKey<String>('history.export.preview.csv'),
-    );
-    expect(csvPreviewFinder, findsOneWidget);
-
-    final csvPreview =
-        tester.widget<SelectableText>(csvPreviewFinder).data ?? '';
-    expect(csvPreview, contains('Bambu Lab A1'));
-    expect(csvPreview, contains('Prusa MK4S'));
+    expect(find.byType(HistoryExportPreviewSheet), findsOneWidget);
+    expect(paywallPresenter.calls, 1);
 
     await tester.tap(
       find.byKey(
         const ValueKey<String>('history.export.preview.download.button'),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
 
-    expect(find.byType(HistoryExportPreviewSheet), findsOneWidget);
-    expect(find.byType(HistoryTeaserState), findsOneWidget);
+    expect(paywallPresenter.calls, 2);
+    expect(paywallPresenter.lastPurchaseSource, 'history_teaser_secondary');
+    expect(paywallPresenter.lastSource, 'history_teaser_secondary');
   });
 
   testWidgets('premium history mode shows full controls without teaser', (

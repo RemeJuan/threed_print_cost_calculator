@@ -7,7 +7,7 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 void main() {
   late Database db;
   late ProviderContainer container;
-  final store = stringMapStoreFactory.store('history');
+  final store = StoreRef<Object?, Map<String, Object?>>('history');
 
   setUp(() async {
     final name =
@@ -22,6 +22,11 @@ void main() {
     await store.add(db, {
       'name': 'Ender Bracket',
       'printer': 'Ender 3',
+      'date': DateTime.now().toIso8601String(),
+    });
+    await store.record('legacy-string-key').put(db, {
+      'name': 'Prusa Legacy',
+      'printer': 'Prusa Mini',
       'date': DateTime.now().toIso8601String(),
     });
 
@@ -40,12 +45,12 @@ void main() {
     await helpers.backfillSearchFields();
     await helpers.rebuildIndex();
 
-    final byName = await helpers.getKeysMatchingQuery('gear');
+    final byName = await helpers.getKeysMatchingQuery('prusa');
     final byPrinter = await helpers.getKeysMatchingQuery('mini');
 
-    expect(byName.length, 1);
-    expect(byPrinter.length, 1);
-    expect(byName.first, byPrinter.first);
+    expect(byName.length, 2);
+    expect(byPrinter.length, 2);
+    expect(byName.toSet(), equals(byPrinter.toSet()));
 
     final records = await store.find(db);
     final indexed = records.firstWhere(
@@ -67,14 +72,14 @@ void main() {
   test('getKeysMatchingQuery lazily rebuilds an empty index', () async {
     final helpers = HistorySearchIndexHelpers.fromContainer(container);
     final keys = await helpers.getKeysMatchingQuery('prusa');
-    expect(keys.length, 1);
+    expect(keys.length, 2);
 
     final records = await store.find(db);
     expect(records.first.value[kHistorySearchTextField], isNotEmpty);
   });
 
   test('backfillSearchFields normalizes missing search fields', () async {
-    final helperStore = stringMapStoreFactory.store('history');
+    final helperStore = StoreRef<Object?, Map<String, Object?>>('history');
     await helperStore.add(db, {
       'name': '  Gear -- Fix  ',
       'printer': 'MK4, Mini!',
@@ -84,7 +89,7 @@ void main() {
     final helpers = HistorySearchIndexHelpers.fromContainer(container);
     final updated = await helpers.backfillSearchFields();
 
-    expect(updated, 3);
+    expect(updated, 4);
 
     final records = await helperStore.find(db);
     final normalized = records
@@ -97,7 +102,7 @@ void main() {
   });
 
   test('updateRecord and removeRecord keep index tokens in sync', () async {
-    final helperStore = stringMapStoreFactory.store('history');
+    final helperStore = StoreRef<Object?, Map<String, Object?>>('history');
     final key = await helperStore.add(db, {
       'name': 'Prusa Gear',
       'printer': 'Prusa Mini',

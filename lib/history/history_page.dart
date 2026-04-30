@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
-import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
+import 'package:threed_print_cost_calculator/history/components/history_export_preview_sheet.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
 
-import 'components/history_export_preview_sheet.dart';
 import 'components/history_empty_state.dart';
 import 'components/history_teaser_state.dart';
 import 'components/history_list_view.dart';
@@ -41,25 +41,20 @@ class HistoryPage extends HookConsumerWidget {
     final paged = ref.watch(historyPagedProvider);
 
     if (mode == HistoryPageMode.teaser) {
+      final isPremium = ref.watch(isPremiumProvider);
       return HistoryTeaserState(
-        onUpgradePressed: () => _showPaywall(context),
-        onExportPreviewPressed: () {
-          showModalBottomSheet<void>(
-            context: context,
-            isScrollControlled: true,
-            builder: (sheetContext) {
-              return HistoryExportPreviewSheet(
-                csvPreview: generateSampleCsvPreview(
-                  csvHeader: l10n.historyCsvHeader,
-                ),
-                onDownloadPressed: () {
-                  Navigator.pop(sheetContext);
-                  _showPaywall(context);
-                },
-              );
-            },
-          );
-        },
+        onUpgradePressed: () => _showTeaserPaywall(
+          context,
+          ref: ref,
+          isPremium: isPremium,
+          source: 'history_teaser_primary',
+        ),
+        onExportPreviewPressed: () => _showTeaserPreview(
+          context,
+          ref: ref,
+          isPremium: isPremium,
+          source: 'history_teaser_secondary',
+        ),
       );
     }
 
@@ -360,19 +355,89 @@ class HistoryPage extends HookConsumerWidget {
     );
   }
 
-  void _showPaywall(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (_) => const Subscriptions(),
+  Future<void> _showTeaserPreview(
+    BuildContext context, {
+    required WidgetRef ref,
+    required bool isPremium,
+    required String source,
+  }) async {
+    AppAnalytics.safeLog(
+      () => AppAnalytics.premiumFeatureTapped(
+        'history',
+        isPro: isPremium,
+        source: source,
+      ),
     );
+
+    final l10n = AppLocalizations.of(context)!;
+    final csvPreview = [
+      l10n.historyCsvHeader,
+      '"Benchy",19.25,12.50,3.00,2.50,123,06:20',
+      '"Prusa MK4S",24.10,15.75,3.40,2.75,142,05:10',
+    ].join('\n');
+
+    if (!context.mounted) return;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (sheetContext) {
+        return HistoryExportPreviewSheet(
+          csvPreview: csvPreview,
+          onDownloadPressed: () async {
+            Navigator.of(sheetContext).pop();
+            await _showTeaserPaywall(
+              context,
+              ref: ref,
+              isPremium: isPremium,
+              source: source,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _showTeaserPaywall(
+    BuildContext context, {
+    required WidgetRef ref,
+    required bool isPremium,
+    required String source,
+  }) async {
+    AppAnalytics.safeLog(
+      () => AppAnalytics.premiumFeatureTapped(
+        'history',
+        isPro: isPremium,
+        source: source,
+      ),
+    );
+    await ref
+        .read(paywallPresenterProvider)
+        .present(
+          'pro',
+          triggerFeature: 'history',
+          purchaseSource: source,
+          source: source,
+        );
   }
 
   Future<void> _showHistoryUpsellPaywall(
     BuildContext context,
     WidgetRef ref,
   ) async {
-    AppAnalytics.safeLog(() => AppAnalytics.premiumFeatureTapped('history'));
-    AppAnalytics.safeLog(() => AppAnalytics.paywallShown('history'));
-    await ref.read(paywallPresenterProvider).present('pro');
+    AppAnalytics.safeLog(
+      () => AppAnalytics.premiumFeatureTapped('history', isPro: false),
+    );
+    await ref
+        .read(paywallPresenterProvider)
+        .present(
+          'pro',
+          triggerFeature: 'history',
+          purchaseSource: 'history',
+          source: 'premium_feature',
+          launchCount:
+              ref.read(sharedPreferencesProvider).getInt('run_count') ?? 0,
+        );
   }
 }

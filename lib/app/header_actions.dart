@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 class HeaderActions extends ConsumerWidget {
@@ -21,7 +22,7 @@ class HeaderActions extends ConsumerWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const GCodeImportPage(),
+                    builder: (_) => const GCodeImportPage(source: 'header'),
                   ),
                 );
               },
@@ -31,7 +32,23 @@ class HeaderActions extends ConsumerWidget {
               ),
             )
           : IconButton(
-              onPressed: () async => showSubscriptionsSheet(context),
+              onPressed: () async {
+                AppAnalytics.safeLog(
+                  () => AppAnalytics.premiumFeatureTapped(
+                    'pro',
+                    isPro: isPremium,
+                    source: 'header',
+                  ),
+                );
+                await ref
+                    .read(paywallPresenterProvider)
+                    .present(
+                      'pro',
+                      triggerFeature: 'pro',
+                      purchaseSource: 'header',
+                      source: 'header',
+                    );
+              },
               icon: const Icon(Icons.shopping_cart, color: Colors.white54),
             ),
     );

@@ -217,7 +217,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get supportEmailPrefix => 'Si tienes algún problema, escríbeme a ';
 
   @override
-  String get supportEmail => 'google@remej.dev';
+  String get supportEmail => '3d@printcostcalc.app';
 
   @override
   String get supportIdLabel => 'Incluye tu ID de soporte: ';

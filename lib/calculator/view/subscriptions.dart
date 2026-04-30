@@ -7,17 +7,42 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<void> showSubscriptionsSheet(BuildContext context) {
-  return showModalBottomSheet<void>(
-    context: context,
-    builder: (_) => const Subscriptions(),
+Future<void> showSubscriptionsSheet(
+  BuildContext context, {
+  required String feature,
+  required String source,
+  String defaultEntryPoint = 'manual',
+  int? launchCount,
+}) async {
+  await PaywallPresentationGate.show(
+    () => showModalBottomSheet<void>(
+      context: context,
+      builder: (_) => Subscriptions(
+        feature: feature,
+        source: source,
+        defaultEntryPoint: defaultEntryPoint,
+        launchCount: launchCount,
+      ),
+    ),
   );
 }
 
 class Subscriptions extends HookConsumerWidget {
-  const Subscriptions({super.key});
+  const Subscriptions({
+    super.key,
+    required this.feature,
+    required this.source,
+    this.defaultEntryPoint = 'manual',
+    this.launchCount,
+  });
+
+  final String feature;
+  final String source;
+  final String defaultEntryPoint;
+  final int? launchCount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,9 +54,16 @@ class Subscriptions extends HookConsumerWidget {
     final logger = ref.read(appLoggerProvider);
 
     useEffect(() {
-      AppAnalytics.safeLog(() => AppAnalytics.paywallViewed('subscriptions'));
+      AppAnalytics.safeLog(
+        () => AppAnalytics.paywallShown(
+          feature,
+          defaultEntryPoint: defaultEntryPoint,
+          source: source,
+          launchCount: launchCount,
+        ),
+      );
       return null;
-    }, const []);
+    }, [feature, source, defaultEntryPoint, launchCount]);
 
     return FutureBuilder<Offerings>(
       builder: (_, offerings) {
@@ -109,7 +141,8 @@ class Subscriptions extends HookConsumerWidget {
                             if (customerInfo != null && context.mounted) {
                               AppAnalytics.safeLog(
                                 () => AppAnalytics.purchaseCompleted(
-                                  'subscriptions',
+                                  source,
+                                  defaultEntryPoint: defaultEntryPoint,
                                 ),
                               );
                               Navigator.pop(context);

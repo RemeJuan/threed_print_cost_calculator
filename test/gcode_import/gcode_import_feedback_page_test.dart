@@ -104,7 +104,7 @@ void main() {
 
   testWidgets('builds email body with attachment path', (tester) async {
     final draft = buildGCodeImportFeedbackEmailDraft(
-      recipient: 'google@remej.dev',
+      recipient: '3d@printcostcalc.app',
       metadata: const GCodeImportFeedbackMetadata(
         appVersion: '1.2.3',
         buildNumber: '45',
@@ -145,7 +145,7 @@ void main() {
 
   testWidgets('builds email body without attachment', (tester) async {
     final draft = buildGCodeImportFeedbackEmailDraft(
-      recipient: 'google@remej.dev',
+      recipient: '3d@printcostcalc.app',
       metadata: const GCodeImportFeedbackMetadata(
         appVersion: '1.2.3',
         buildNumber: '45',

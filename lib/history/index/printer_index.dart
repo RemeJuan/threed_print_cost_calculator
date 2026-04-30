@@ -37,9 +37,8 @@ class PrinterIndexHelpers {
   final StoreRef<String, Map<String, Object?>> _indexStore =
       stringMapStoreFactory.store(_kPrinterIndexStoreName);
 
-  final StoreRef<Object?, Object?> _historyStore = StoreRef<Object?, Object?>(
-    DBName.history.name,
-  );
+  final StoreRef<Object?, Map<String, Object?>> _historyStore =
+      StoreRef<Object?, Map<String, Object?>>(DBName.history.name);
 
   String _normalize(String s) => s.trim().toLowerCase();
 
@@ -113,7 +112,7 @@ class PrinterIndexHelpers {
     final existing =
         await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
     final keys = <String>[
-      ...?existing?['keys']?.cast<String>() as List<String>?,
+      ...?(existing?['keys'] as List?)?.map((k) => k.toString()),
     ];
 
     if (!keys.contains(recordKeyStr)) {
@@ -146,7 +145,7 @@ class PrinterIndexHelpers {
     if (existing == null) return;
 
     final keys = <String>[
-      ...?existing['keys']?.cast<String>() as List<String>?,
+      ...?(existing['keys'] as List?)?.map((k) => k.toString()),
     ];
     keys.removeWhere((k) => k == recordKeyStr);
 

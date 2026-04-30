@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
-import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import '../helpers/helpers.dart';
@@ -18,15 +17,12 @@ void main() {
     await setupTest();
   });
 
-  testWidgets('non-premium users see the upgrade prompt', (tester) async {
-    await tester.pumpApp(const GCodeImportPage(), [
-      isPremiumProvider.overrideWithValue(false),
-    ]);
+  testWidgets('gcode import page renders the import flow', (tester) async {
+    await tester.pumpApp(const GCodeImportPage());
 
-    expect(find.byType(Subscriptions), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('gcode_import.select_file.button')),
-      findsNothing,
+      findsOneWidget,
     );
   });
 

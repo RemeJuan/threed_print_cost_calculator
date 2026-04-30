@@ -18,16 +18,13 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     final pickedFile = await ref.read(gcodeImportFilePickerProvider).pick();
     if (pickedFile == null) return;
 
+    final fileType = _fileTypeFromName(pickedFile.name);
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeFileSelected(fileType: fileType),
+    );
+
     final bytes = await pickedFile.readAsBytes();
     final fileSizeBytes = bytes.length;
-
-    AppAnalytics.safeLog(
-      () => AppAnalytics.gcodeFileSelected(
-        fileSizeBytes: fileSizeBytes,
-        slicer: 'unknown',
-        hasPreview: false,
-      ),
-    );
 
     if (!pickedFile.hasSupportedExtension) {
       AppAnalytics.safeLog(
@@ -109,6 +106,12 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         error: GCodeImportError.readFailed,
       );
     }
+  }
+
+  String _fileTypeFromName(String name) {
+    final dotIndex = name.lastIndexOf('.');
+    if (dotIndex < 0 || dotIndex == name.length - 1) return 'unknown';
+    return name.substring(dotIndex + 1).toLowerCase();
   }
 }
 

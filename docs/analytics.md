@@ -33,10 +33,10 @@
   - notes: fired after dismiss callback, before sheet close
 
 - `whats_new_unlock_pro_tapped`
-  - params: [`wn_id`, `locale`]
+  - params: [`wn_id`, `locale`, `source`]
   - triggered_from: [`lib/shared/components/whats_new_sheet.dart`]
   - feature: What's New
-  - notes: fired before dismiss + subscriptions sheet open
+  - notes: `source=whats_new`; fires before paywall presentation and before the What’s New sheet is dismissed; paywall path also logs `premium_feature_tapped` with `feature=whats_new`
 
 ### G-code import
 
@@ -46,6 +46,12 @@
   - feature: G-code import
   - notes: only for premium users; starts funnel session context
 
+- `gcode_import_started`
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `source`]
+  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
+  - feature: G-code import
+  - notes: entry attribution for calculator/header; emitted on import flow open
+
 - `gcode_import_abandoned`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
@@ -53,10 +59,10 @@
   - notes: fired on page dispose if import flow opened and not completed
 
 - `gcode_file_selected`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
+  - params: [`file_type`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: fired immediately after file bytes read; initial values usually `unknown/0/unknown`
+  - notes: low-cardinality file extension only; no filename/path/content logged
 
 - `gcode_parse_success`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
@@ -86,13 +92,19 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: fired before imported values applied to calculator
+  - notes: helper exists in analytics code, but current page flow does not emit this event
 
 - `gcode_flow_completed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
   - notes: fired after values applied; clears open-flow timer state
+
+- `gcode_import_success`
+  - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
+  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
+  - feature: G-code import
+  - notes: success milestone when parsed values are applied to calculator
 
 ### Calculator usage
 
@@ -155,22 +167,28 @@
 ### Premium / RevenueCat
 
 - `premium_feature_tapped`
-  - params: [`feature`]
-  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`]
+  - params: [`feature`, `is_pro`, `source`]
+  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`, `lib/app/header_actions.dart`, `lib/settings/settings_page.dart`, `lib/shared/components/whats_new_sheet.dart`]
   - feature: Premium / RevenueCat
-  - notes: current values: `multi_printer`, `history`
+  - notes: current values: `multi_printer`, `history`, `pro`, `settings`, `whats_new`; `is_pro` reflects user state at tap time; `source` is only present on some call sites
 
 - `paywall_viewed`
-  - params: [`feature`, `entry_point`]
-  - triggered_from: [`lib/calculator/view/subscriptions.dart`, `lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`]
+  - params: [`feature`, `entry_point`, `source`, `launch_count`]
+  - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
   - feature: Premium / RevenueCat
-  - notes: `AppAnalytics.paywallShown(...)` aliases to this same event name; `entry_point` defaults `manual`, becomes `gcode_import` if import flow triggered earlier in same session
+  - notes: `AppAnalytics.paywallShown(...)` aliases to this same event name; `source` explains trigger path (`whats_new`, `premium_feature`, `header`, `history_teaser_primary`, `history_teaser_secondary`, `unknown`); `launch_count` comes from local run counter when available
 
 - `purchase_completed`
   - params: [`source`, `entry_point`]
-  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/calculator/view/subscriptions.dart`]
+  - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
   - feature: Premium / RevenueCat
-  - notes: only local success tracked; sources currently `calculator`, `subscriptions`
+  - notes: only local success tracked; sources currently `calculator`, `header`, `history`, `history_teaser_primary`, `history_teaser_secondary`, `whats_new`
+
+- `paywall_present_error`
+  - params: [`error`, `stack`]
+  - triggered_from: [`lib/purchases/paywall_presenter.dart`]
+  - feature: Premium / RevenueCat
+  - notes: local error logging when RevenueCat paywall presentation throws
 
 ### Settings
 
@@ -205,12 +223,13 @@
 
 ### G-code import
 
-- entry point: partial — page open tracked as `gcode_import_opened`, but only for premium users
+- entry point: yes — `gcode_import_opened` plus attributable `gcode_import_started`
 - file select: yes — `gcode_file_selected`
 - parse success/fail: yes — `gcode_parse_success`, `gcode_parse_partial`, `gcode_parse_failed`
-- estimate applied: yes — `gcode_apply_to_calculator`
+- estimate applied: no — helper exists but current import flow does not emit `gcode_apply_to_calculator`
+- calculator success: yes — `gcode_import_success`
 - flow completed: yes — `gcode_flow_completed`
-- upgrade entry: no proven upgrade/paywall event tied to non-premium G-code access path in `lib/gcode_import/gcode_import_page.dart`; non-premium users see `Subscriptions()` directly
+- upgrade entry: partial — G-code open/start attribution exists, but the current UI does not route free users into G-code import; header access is premium-only
 - preview viewed: yes — `gcode_preview_viewed`
 - abandon: yes — `gcode_import_abandoned`
 
@@ -229,8 +248,8 @@
 - No dedicated purchase-started event.
 - No dedicated purchase-cancelled or purchase-failed event. RevenueCat errors only logged locally.
 - No dedicated restore-purchases analytics.
-- Non-premium G-code entry path shows subscriptions UI, but no proven analytics event for that upgrade entry.
 - `gcode_parse_failed` exists, but missing failure reason/context param distinguishing unsupported type vs unsupported contents vs read failure.
+- Paywall routing is centralized in `lib/purchases/paywall_presenter.dart`; `subscriptions.dart` is the sheet implementation, not the only paywall entry.
 - History flow lacks load/delete analytics:
   - no history entry loaded event
   - no history delete success/failure event

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/accordion_menu.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/model/accordion_item_model.dart';
@@ -35,6 +36,15 @@ class SettingsPage extends ConsumerWidget {
               body: const GeneralSettings(),
               initiallyExpanded: true,
               isLocked: !isPremium,
+              onLockedTap: () {
+                AppAnalytics.safeLog(
+                  () => AppAnalytics.premiumFeatureTapped(
+                    'settings',
+                    isPro: isPremium,
+                    source: 'settings',
+                  ),
+                );
+              },
             ),
             if (isPremium) ...[
               AccordionItem(

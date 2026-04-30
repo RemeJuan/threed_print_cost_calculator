@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:threed_print_cost_calculator/calculator/view/subscriptions.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 
 void showWhatsNewSheet(
@@ -32,7 +33,7 @@ void showWhatsNewSheet(
   );
 }
 
-class WhatsNewSheet extends StatefulWidget {
+class WhatsNewSheet extends ConsumerStatefulWidget {
   final WhatsNewAnnouncement announcement;
   final Future<void> Function() onDismiss;
   final String wnId;
@@ -49,10 +50,10 @@ class WhatsNewSheet extends StatefulWidget {
   });
 
   @override
-  State<WhatsNewSheet> createState() => _WhatsNewSheetState();
+  ConsumerState<WhatsNewSheet> createState() => _WhatsNewSheetState();
 }
 
-class _WhatsNewSheetState extends State<WhatsNewSheet> {
+class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
   @override
   void initState() {
     super.initState();
@@ -162,12 +163,26 @@ class _WhatsNewSheetState extends State<WhatsNewSheet> {
                     () => AppAnalytics.whatsNewUnlockProTapped(
                       wnId: widget.wnId,
                       locale: widget.locale,
+                      source: 'whats_new',
+                    ),
+                  );
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.premiumFeatureTapped(
+                      'whats_new',
+                      isPro: widget.isPremium,
+                      source: 'whats_new',
                     ),
                   );
                   await widget.onDismiss();
                   if (!context.mounted) return;
+                  final presenter = ref.read(paywallPresenterProvider);
                   Navigator.of(context).pop();
-                  await showSubscriptionsSheet(context);
+                  await presenter.present(
+                    'pro',
+                    triggerFeature: 'whats_new',
+                    purchaseSource: 'whats_new',
+                    source: 'whats_new',
+                  );
                 },
                 child: Text(unlockProCta),
               ),
