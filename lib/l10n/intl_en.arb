@@ -74,7 +74,7 @@
   "wattsSuffix": "w",
   "needHelpTitle": "Need Help?",
   "supportEmailPrefix": "For any issues, please mail me at ",
-  "supportEmail": "google@remej.dev",
+  "supportEmail": "3d@printcostcalc.app",
   "supportIdLabel": "Please include your Support ID: ",
   "clickToCopy": "(click to copy)",
   "materialWeightExplanation": "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",

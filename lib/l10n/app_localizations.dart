@@ -495,7 +495,7 @@ abstract class AppLocalizations {
   /// No description provided for @supportEmail.
   ///
   /// In en, this message translates to:
-  /// **'google@remej.dev'**
+  /// **'3d@printcostcalc.app'**
   String get supportEmail;
 
   /// No description provided for @supportIdLabel.

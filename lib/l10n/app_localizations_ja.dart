@@ -202,7 +202,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get supportEmailPrefix => '問題がある場合は、次のアドレスまでメールしてください: ';
 
   @override
-  String get supportEmail => 'google@remej.dev';
+  String get supportEmail => '3d@printcostcalc.app';
 
   @override
   String get supportIdLabel => 'サポートIDを含めてください: ';

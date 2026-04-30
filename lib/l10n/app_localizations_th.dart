@@ -203,7 +203,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get supportEmailPrefix => 'หากมีปัญหา กรุณาส่งอีเมลมาที่ ';
 
   @override
-  String get supportEmail => 'google@remej.dev';
+  String get supportEmail => '3d@printcostcalc.app';
 
   @override
   String get supportIdLabel => 'โปรดระบุรหัสสนับสนุนของคุณ: ';
