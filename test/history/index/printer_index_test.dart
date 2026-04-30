@@ -7,7 +7,7 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 void main() {
   late Database db;
   late ProviderContainer container;
-  final store = stringMapStoreFactory.store('history');
+  final store = StoreRef<Object?, Map<String, Object?>>('history');
 
   setUp(() async {
     final name = 'test_index_${DateTime.now().microsecondsSinceEpoch}.db';
@@ -26,6 +26,11 @@ void main() {
     await store.add(db, {
       'name': 'C',
       'printer': 'Ender',
+      'date': DateTime.now().toIso8601String(),
+    });
+    await store.record('legacy-string-key').put(db, {
+      'name': 'D',
+      'printer': 'Prusa',
       'date': DateTime.now().toIso8601String(),
     });
 
@@ -59,8 +64,7 @@ void main() {
         .map((record) => record.key)
         .toList();
 
-    // Should find both 'prusa' and 'prusa mini' entries -> at least 2 keys
-    expect(keys.length, 2);
+    expect(keys.length, 3);
     expect(keys, unorderedEquals(expectedKeys));
   });
 

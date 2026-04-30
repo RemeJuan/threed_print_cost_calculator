@@ -69,8 +69,8 @@ class HistorySearchIndexHelpers {
   final StoreRef<String, Map<String, Object?>> _indexStore =
       stringMapStoreFactory.store(_kSearchIndexStoreName);
 
-  final StoreRef<String, Map<String, Object?>> _historyStore =
-      stringMapStoreFactory.store(DBName.history.name);
+  final StoreRef<Object?, Map<String, Object?>> _historyStore =
+      StoreRef<Object?, Map<String, Object?>>(DBName.history.name);
 
   String _indexKey(String field, String token) => '$field:$token';
 

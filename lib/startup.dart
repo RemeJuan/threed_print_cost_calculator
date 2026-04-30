@@ -73,7 +73,7 @@ Future<void> startupMigration(
 }
 
 Future<void> migrateLegacyHistoryRecords(Database db) async {
-  final historyStore = stringMapStoreFactory.store('history');
+  final historyStore = StoreRef<Object?, Object?>('history');
   final records = await historyStore.find(db);
 
   for (final record in records) {
