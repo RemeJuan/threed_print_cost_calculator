@@ -48,6 +48,11 @@
 - Unlock Pro CTA (`unlock_pro_cta`) opens paywall; after return, mark announcement seen.
 - No persistent UI, badges, inline rows, or icon replacement.
 
+## Analytics
+- Sheet open/dismiss still tracked by `whats_new_shown` / `whats_new_dismissed`.
+- Unlock Pro CTA now logs `whats_new_unlock_pro_tapped` with `wn_id` and `source=whats_new`.
+- Pro CTA attribution stays low-cardinality; no body/title text is logged.
+
 ## Rationale
 
 This preserves clean UI, avoids dark patterns, and still informs free users about hidden Pro features without adding persistent clutter.
