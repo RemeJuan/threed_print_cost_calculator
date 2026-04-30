@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/adjustments_section.dart';
@@ -19,28 +17,7 @@ import 'components/history_load_warning_banner.dart';
 import 'components/materials_selection/materials_section.dart';
 import 'components/rates_section.dart';
 import 'components/time_section.dart';
-
-abstract class PaywallPresenter {
-  Future<void> present(String offeringId);
-}
-
-final paywallPresenterProvider = Provider<PaywallPresenter>((ref) {
-  return const _RevenueCatPaywallPresenter();
-});
-
-class _RevenueCatPaywallPresenter implements PaywallPresenter {
-  const _RevenueCatPaywallPresenter();
-
-  @override
-  Future<void> present(String offeringId) async {
-    await RevenueCatUI.presentPaywallIfNeeded(offeringId);
-
-    final customerInfo = await Purchases.getCustomerInfo();
-    if (customerInfo.entitlements.active.isNotEmpty) {
-      AppAnalytics.safeLog(() => AppAnalytics.purchaseCompleted('calculator'));
-    }
-  }
-}
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 
 class CalculatorPage extends HookConsumerWidget {
   const CalculatorPage({super.key});
@@ -71,18 +48,20 @@ class CalculatorPage extends HookConsumerWidget {
               () => AppAnalytics.premiumFeatureTapped(
                 'multi_printer',
                 isPro: isPremium,
+                source: 'premium_feature',
               ),
             );
             await prefs.setBool('paywall', true);
             await Future.delayed(const Duration(seconds: 2));
-            AppAnalytics.safeLog(
-              () => AppAnalytics.paywallShown(
-                'multi_printer',
-                source: 'premium_feature',
-                launchCount: runCount,
-              ),
-            );
-            await ref.read(paywallPresenterProvider).present("pro");
+            await ref
+                .read(paywallPresenterProvider)
+                .present(
+                  'pro',
+                  triggerFeature: 'multi_printer',
+                  purchaseSource: 'calculator',
+                  source: 'premium_feature',
+                  launchCount: runCount,
+                );
           } catch (e) {
             logger.warn(
               AppLogCategory.billing,

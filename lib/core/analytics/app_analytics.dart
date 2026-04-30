@@ -200,11 +200,13 @@ class AppAnalytics {
 
   static Future<void> paywallShown(
     String triggerFeature, {
+    String defaultEntryPoint = 'manual',
     String source = 'unknown',
     int? launchCount,
   }) {
     return paywallViewed(
       triggerFeature,
+      defaultEntryPoint: defaultEntryPoint,
       source: source,
       launchCount: launchCount,
     );
@@ -227,10 +229,15 @@ class AppAnalytics {
   static Future<void> premiumFeatureTapped(
     String feature, {
     required bool isPro,
+    String? source,
   }) {
     return log(
       'premium_feature_tapped',
-      params: {'feature': feature, 'is_pro': isPro ? 1 : 0},
+      params: {
+        'feature': feature,
+        'is_pro': isPro ? 1 : 0,
+        ...?(source == null ? null : {'source': source}),
+      },
     );
   }
 
@@ -285,28 +292,15 @@ class AppAnalytics {
     return log('gcode_import_opened', params: _gcodeImportParams());
   }
 
-  static Future<void> gcodeImportStarted({
-    String source = 'unknown',
-    required bool isPro,
-  }) {
+  static Future<void> gcodeImportStarted({String source = 'unknown'}) {
     return log(
       'gcode_import_started',
-      params: {
-        ..._gcodeImportParams(),
-        'source': source,
-        'is_pro': isPro ? 1 : 0,
-      },
+      params: {..._gcodeImportParams(), 'source': source},
     );
   }
 
-  static Future<void> gcodeFileSelected({
-    required String fileType,
-    required bool isPro,
-  }) {
-    return log(
-      'gcode_file_selected',
-      params: {'file_type': fileType, 'is_pro': isPro ? 1 : 0},
-    );
+  static Future<void> gcodeFileSelected({required String fileType}) {
+    return log('gcode_file_selected', params: {'file_type': fileType});
   }
 
   static Future<void> gcodeParseSuccess({
@@ -424,7 +418,6 @@ class AppAnalytics {
     required bool hasPrintTime,
     required bool hasFilamentUsage,
     required bool hasPreview,
-    required bool isPro,
   }) {
     return log(
       'gcode_import_success',
@@ -432,7 +425,6 @@ class AppAnalytics {
         'has_print_time': hasPrintTime ? 1 : 0,
         'has_filament_usage': hasFilamentUsage ? 1 : 0,
         'has_preview': hasPreview ? 1 : 0,
-        'is_pro': isPro ? 1 : 0,
       },
     );
   }

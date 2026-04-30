@@ -117,7 +117,7 @@ void main() {
       'file_size_bucket': 'unknown',
     });
 
-    await AppAnalytics.gcodeImportStarted(source: 'calculator', isPro: false);
+    await AppAnalytics.gcodeImportStarted(source: 'calculator');
     expect(fake.lastName, 'gcode_import_started');
     expect(fake.lastParams, {
       'slicer': 'unknown',
@@ -125,12 +125,11 @@ void main() {
       'parse_status': 'unknown',
       'file_size_bucket': 'unknown',
       'source': 'calculator',
-      'is_pro': 0,
     });
 
-    await AppAnalytics.gcodeFileSelected(fileType: 'gcode', isPro: false);
+    await AppAnalytics.gcodeFileSelected(fileType: 'gcode');
     expect(fake.lastName, 'gcode_file_selected');
-    expect(fake.lastParams, {'file_type': 'gcode', 'is_pro': 0});
+    expect(fake.lastParams, {'file_type': 'gcode'});
 
     await AppAnalytics.gcodeParsePartial(
       slicer: 'prusaSlicer',
@@ -158,14 +157,12 @@ void main() {
       hasPrintTime: true,
       hasFilamentUsage: true,
       hasPreview: true,
-      isPro: false,
     );
     expect(fake.lastName, 'gcode_import_success');
     expect(fake.lastParams, {
       'has_print_time': 1,
       'has_filament_usage': 1,
       'has_preview': 1,
-      'is_pro': 0,
     });
 
     await AppAnalytics.paywallViewed('subscriptions');
@@ -182,5 +179,20 @@ void main() {
 
     expect(fake.lastName, 'paywall_viewed');
     expect(fake.lastParams!['entry_point'], 'manual');
+  });
+
+  test('premium feature tapped keeps optional source', () async {
+    await AppAnalytics.premiumFeatureTapped(
+      'history',
+      isPro: false,
+      source: 'history_teaser_primary',
+    );
+
+    expect(fake.lastName, 'premium_feature_tapped');
+    expect(fake.lastParams, {
+      'feature': 'history',
+      'is_pro': 0,
+      'source': 'history_teaser_primary',
+    });
   });
 }
