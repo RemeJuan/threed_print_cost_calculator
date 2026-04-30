@@ -19,3 +19,4 @@ Related feature: [G-code import (in-progress)](../product/gcode-import.md)
 
 ## Status
 - partial
+- Initial upload + preview scope shipped; later calculator application and analytics wiring expanded the live funnel.

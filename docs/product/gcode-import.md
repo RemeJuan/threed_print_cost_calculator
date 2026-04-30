@@ -7,7 +7,7 @@ Decision doc: [2026-04-gcode-import](../decisions/2026-04-gcode-import.md)
 
 ## Decisions
 - Implement in phases.
-- Initial phase limited to upload + preview.
+- Initial phase started with upload + preview, then expanded into calculator application and feedback capture.
 
 ## Tradeoffs
 - Limited format/support in early milestone.
@@ -20,19 +20,21 @@ Decision doc: [2026-04-gcode-import](../decisions/2026-04-gcode-import.md)
 ## Implementation Notes
 - Candidate library noted: `gcode_view`.
 - TODO: verify in code whether this library is still the active choice.
+- Current app shell routes the import page from the header for premium users.
+- The reusable import button defaults to `calculator`, but is not wired into the current app shell.
 
 ## Analytics
-- Funnel now tracked as `gcode_import_opened` -> `gcode_import_started` -> `gcode_file_selected` -> `gcode_import_success` / `gcode_import_abandoned`.
-- Start attribution uses `source` values: `calculator`, `header`, `whats_new`.
+- Funnel now tracked as `gcode_import_opened` -> `gcode_import_started` -> `gcode_file_selected` -> `gcode_parse_*` -> `gcode_preview_viewed` -> `gcode_import_success` -> `gcode_flow_completed` / `gcode_import_abandoned`.
+- Start attribution currently uses `source` from the live header caller; the reusable button defaults to `calculator`.
 - File select logs only the extension as `file_type`; no filename, path, or G-code content is logged.
-- Success logs low-cardinality flags for print time, filament usage, preview, and Pro state.
+- Success logs low-cardinality flags for print time, filament usage, and preview.
+- `gcode_apply_to_calculator` exists as a helper but is not currently emitted by the page flow.
 
 ## Known Issues
-- Feature is incomplete and not yet end-to-end.
-- TODO: verify in code current parser/preview limitations by format and size.
+- Feature is still partial for parser coverage and preview handling across slicers.
+- TODO: verify current parser/preview limitations by format and size.
 
 ## TODOs
-- Build upload flow.
-- Add preview UI.
 - Validate file formats.
+- Expand parser edge-case coverage.
 - Run beta testing.

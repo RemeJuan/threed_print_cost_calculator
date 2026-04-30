@@ -36,7 +36,7 @@
   - params: [`wn_id`, `locale`, `source`]
   - triggered_from: [`lib/shared/components/whats_new_sheet.dart`]
   - feature: What's New
-  - notes: `source=whats_new`; fired before dismiss + subscriptions sheet open
+  - notes: `source=whats_new`; fires before paywall presentation and before the What’s New sheet is dismissed; paywall path also logs `premium_feature_tapped` with `feature=whats_new`
 
 ### G-code import
 
@@ -47,10 +47,10 @@
   - notes: only for premium users; starts funnel session context
 
 - `gcode_import_started`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `source`, `is_pro`]
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `source`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: entry attribution for calculator/header/whats_new; emitted on import flow open
+  - notes: entry attribution for calculator/header; emitted on import flow open
 
 - `gcode_import_abandoned`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
@@ -59,7 +59,7 @@
   - notes: fired on page dispose if import flow opened and not completed
 
 - `gcode_file_selected`
-  - params: [`file_type`, `is_pro`]
+  - params: [`file_type`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
   - notes: low-cardinality file extension only; no filename/path/content logged
@@ -92,7 +92,7 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: fired before imported values applied to calculator
+  - notes: helper exists in analytics code, but current page flow does not emit this event
 
 - `gcode_flow_completed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
@@ -101,7 +101,7 @@
   - notes: fired after values applied; clears open-flow timer state
 
 - `gcode_import_success`
-  - params: [`has_print_time`, `has_filament_usage`, `has_preview`, `is_pro`]
+  - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
   - notes: success milestone when parsed values are applied to calculator
@@ -143,22 +143,28 @@
 ### Premium / RevenueCat
 
 - `premium_feature_tapped`
-  - params: [`feature`, `is_pro`]
-  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`]
+  - params: [`feature`, `is_pro`, `source`]
+  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`, `lib/app/header_actions.dart`, `lib/settings/settings_page.dart`, `lib/shared/components/whats_new_sheet.dart`]
   - feature: Premium / RevenueCat
-  - notes: current values: `multi_printer`, `history`; `is_pro` reflects user state at tap time
+  - notes: current values: `multi_printer`, `history`, `pro`, `settings`, `whats_new`; `is_pro` reflects user state at tap time; `source` is only present on some call sites
 
 - `paywall_viewed`
   - params: [`feature`, `entry_point`, `source`, `launch_count`]
-  - triggered_from: [`lib/calculator/view/subscriptions.dart`, `lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`]
+  - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
   - feature: Premium / RevenueCat
-  - notes: `AppAnalytics.paywallShown(...)` aliases to this same event name; `source` explains trigger path (`whats_new`, `premium_feature`, `gcode_import`, `settings`, `unknown`); `launch_count` comes from local run counter when available
+  - notes: `AppAnalytics.paywallShown(...)` aliases to this same event name; `source` explains trigger path (`whats_new`, `premium_feature`, `header`, `history_teaser_primary`, `history_teaser_secondary`, `unknown`); `launch_count` comes from local run counter when available
 
 - `purchase_completed`
   - params: [`source`, `entry_point`]
-  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/calculator/view/subscriptions.dart`]
+  - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
   - feature: Premium / RevenueCat
-  - notes: only local success tracked; sources currently `calculator`, `subscriptions`
+  - notes: only local success tracked; sources currently `calculator`, `header`, `history`, `history_teaser_primary`, `history_teaser_secondary`, `whats_new`
+
+- `paywall_present_error`
+  - params: [`error`, `stack`]
+  - triggered_from: [`lib/purchases/paywall_presenter.dart`]
+  - feature: Premium / RevenueCat
+  - notes: local error logging when RevenueCat paywall presentation throws
 
 ### Settings
 
@@ -196,10 +202,10 @@
 - entry point: yes — `gcode_import_opened` plus attributable `gcode_import_started`
 - file select: yes — `gcode_file_selected`
 - parse success/fail: yes — `gcode_parse_success`, `gcode_parse_partial`, `gcode_parse_failed`
-- estimate applied: yes — `gcode_apply_to_calculator`
+- estimate applied: no — helper exists but current import flow does not emit `gcode_apply_to_calculator`
 - calculator success: yes — `gcode_import_success`
 - flow completed: yes — `gcode_flow_completed`
-- upgrade entry: yes — source attribution now available on paywall and G-code start events
+- upgrade entry: partial — G-code open/start attribution exists, but the current UI does not route free users into G-code import; header access is premium-only
 - preview viewed: yes — `gcode_preview_viewed`
 - abandon: yes — `gcode_import_abandoned`
 
@@ -218,8 +224,8 @@
 - No dedicated purchase-started event.
 - No dedicated purchase-cancelled or purchase-failed event. RevenueCat errors only logged locally.
 - No dedicated restore-purchases analytics.
-- Non-premium G-code entry path still shows subscriptions UI, but attribution now exists for open/start and paywall surfaces.
 - `gcode_parse_failed` exists, but missing failure reason/context param distinguishing unsupported type vs unsupported contents vs read failure.
+- Paywall routing is centralized in `lib/purchases/paywall_presenter.dart`; `subscriptions.dart` is the sheet implementation, not the only paywall entry.
 - History flow lacks load/delete analytics:
   - no history entry loaded event
   - no history delete success/failure event
