@@ -93,10 +93,18 @@ void main() {
     expect(fake.lastName, 'whats_new_dismissed');
     expect(fake.lastParams, {'wn_id': 'wn_2', 'locale': 'de', 'is_premium': 0});
 
-    await AppAnalytics.whatsNewUnlockProTapped(wnId: 'wn_3', locale: 'fr');
+    await AppAnalytics.whatsNewUnlockProTapped(
+      wnId: 'wn_3',
+      locale: 'fr',
+      source: 'whats_new',
+    );
 
     expect(fake.lastName, 'whats_new_unlock_pro_tapped');
-    expect(fake.lastParams, {'wn_id': 'wn_3', 'locale': 'fr'});
+    expect(fake.lastParams, {
+      'wn_id': 'wn_3',
+      'locale': 'fr',
+      'source': 'whats_new',
+    });
   });
 
   test('gcode import analytics carry funnel context', () async {
@@ -109,18 +117,20 @@ void main() {
       'file_size_bucket': 'unknown',
     });
 
-    await AppAnalytics.gcodeFileSelected(
-      fileSizeBytes: 512 * 1024,
-      slicer: 'unknown',
-      hasPreview: false,
-    );
-    expect(fake.lastName, 'gcode_file_selected');
+    await AppAnalytics.gcodeImportStarted(source: 'calculator', isPro: false);
+    expect(fake.lastName, 'gcode_import_started');
     expect(fake.lastParams, {
       'slicer': 'unknown',
       'has_preview': 0,
       'parse_status': 'unknown',
-      'file_size_bucket': '<1MB',
+      'file_size_bucket': 'unknown',
+      'source': 'calculator',
+      'is_pro': 0,
     });
+
+    await AppAnalytics.gcodeFileSelected(fileType: 'gcode', isPro: false);
+    expect(fake.lastName, 'gcode_file_selected');
+    expect(fake.lastParams, {'file_type': 'gcode', 'is_pro': 0});
 
     await AppAnalytics.gcodeParsePartial(
       slicer: 'prusaSlicer',
@@ -143,6 +153,20 @@ void main() {
     );
     expect(fake.lastName, 'gcode_apply_to_calculator');
     expect(fake.lastParams!['gcode_time_to_value_ms'], isA<num>());
+
+    await AppAnalytics.gcodeImportSuccess(
+      hasPrintTime: true,
+      hasFilamentUsage: true,
+      hasPreview: true,
+      isPro: false,
+    );
+    expect(fake.lastName, 'gcode_import_success');
+    expect(fake.lastParams, {
+      'has_print_time': 1,
+      'has_filament_usage': 1,
+      'has_preview': 1,
+      'is_pro': 0,
+    });
 
     await AppAnalytics.paywallViewed('subscriptions');
     expect(fake.lastName, 'paywall_viewed');
