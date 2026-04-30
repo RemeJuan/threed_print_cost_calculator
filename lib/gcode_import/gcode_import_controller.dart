@@ -1,5 +1,6 @@
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import 'gcode_import_file_picker.dart';
 import 'gcode_import_result.dart';
@@ -18,16 +19,14 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     final pickedFile = await ref.read(gcodeImportFilePickerProvider).pick();
     if (pickedFile == null) return;
 
+    final fileType = _fileTypeFromName(pickedFile.name);
+    final isPro = ref.read(isPremiumProvider);
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeFileSelected(fileType: fileType, isPro: isPro),
+    );
+
     final bytes = await pickedFile.readAsBytes();
     final fileSizeBytes = bytes.length;
-
-    AppAnalytics.safeLog(
-      () => AppAnalytics.gcodeFileSelected(
-        fileSizeBytes: fileSizeBytes,
-        slicer: 'unknown',
-        hasPreview: false,
-      ),
-    );
 
     if (!pickedFile.hasSupportedExtension) {
       AppAnalytics.safeLog(
@@ -109,6 +108,12 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         error: GCodeImportError.readFailed,
       );
     }
+  }
+
+  String _fileTypeFromName(String name) {
+    final dotIndex = name.lastIndexOf('.');
+    if (dotIndex < 0 || dotIndex == name.length - 1) return 'unknown';
+    return name.substring(dotIndex + 1).toLowerCase();
   }
 }
 

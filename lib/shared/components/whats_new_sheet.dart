@@ -162,6 +162,7 @@ class _WhatsNewSheetState extends State<WhatsNewSheet> {
                     () => AppAnalytics.whatsNewUnlockProTapped(
                       wnId: widget.wnId,
                       locale: widget.locale,
+                      source: 'whats_new',
                     ),
                   );
                   await widget.onDismiss();

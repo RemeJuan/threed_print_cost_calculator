@@ -68,12 +68,19 @@ class CalculatorPage extends HookConsumerWidget {
         if (runCount > 2 && !paywall) {
           try {
             AppAnalytics.safeLog(
-              () => AppAnalytics.premiumFeatureTapped('multi_printer'),
+              () => AppAnalytics.premiumFeatureTapped(
+                'multi_printer',
+                isPro: isPremium,
+              ),
             );
             await prefs.setBool('paywall', true);
             await Future.delayed(const Duration(seconds: 2));
             AppAnalytics.safeLog(
-              () => AppAnalytics.paywallShown('multi_printer'),
+              () => AppAnalytics.paywallShown(
+                'multi_printer',
+                source: 'premium_feature',
+                launchCount: runCount,
+              ),
             );
             await ref.read(paywallPresenterProvider).present("pro");
           } catch (e) {

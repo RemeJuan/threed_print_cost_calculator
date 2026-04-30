@@ -15,7 +15,9 @@ import 'gcode_import_controller.dart';
 import 'gcode_import_result.dart';
 
 class GCodeImportPage extends HookConsumerWidget {
-  const GCodeImportPage({super.key});
+  const GCodeImportPage({super.key, this.source = 'unknown'});
+
+  final String source;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,10 +28,13 @@ class GCodeImportPage extends HookConsumerWidget {
       if (!isPremium) return null;
 
       AppAnalytics.safeLog(AppAnalytics.gcodeImportOpened);
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodeImportStarted(source: source, isPro: isPremium),
+      );
       return () {
         AppAnalytics.safeLog(AppAnalytics.gcodeImportAbandoned);
       };
-    }, [isPremium]);
+    }, [isPremium, source]);
 
     if (!isPremium) {
       return Scaffold(
@@ -196,11 +201,14 @@ class GCodeImportPage extends HookConsumerWidget {
                     ? null
                     : () {
                         AppAnalytics.safeLog(
-                          () => AppAnalytics.gcodeApplyToCalculator(
-                            slicer: state.result!.slicer.name,
+                          () => AppAnalytics.gcodeImportSuccess(
+                            hasPrintTime:
+                                state.result!.estimatedDuration != null,
+                            hasFilamentUsage:
+                                state.result!.filamentWeightG != null ||
+                                state.result!.filamentLengthMm != null,
                             hasPreview: state.result!.hasPreviewMetadata,
-                            fileSizeBytes: fileSizeBytes,
-                            parseStatus: parseStatus,
+                            isPro: isPremium,
                           ),
                         );
                         ref

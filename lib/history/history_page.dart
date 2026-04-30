@@ -371,8 +371,17 @@ class HistoryPage extends HookConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) async {
-    AppAnalytics.safeLog(() => AppAnalytics.premiumFeatureTapped('history'));
-    AppAnalytics.safeLog(() => AppAnalytics.paywallShown('history'));
+    AppAnalytics.safeLog(
+      () => AppAnalytics.premiumFeatureTapped('history', isPro: false),
+    );
+    AppAnalytics.safeLog(
+      () => AppAnalytics.paywallShown(
+        'history',
+        source: 'premium_feature',
+        launchCount:
+            ref.read(sharedPreferencesProvider).getInt('run_count') ?? 0,
+      ),
+    );
     await ref.read(paywallPresenterProvider).present('pro');
   }
 }

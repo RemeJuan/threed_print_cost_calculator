@@ -184,18 +184,30 @@ class AppAnalytics {
   static Future<void> paywallViewed(
     String triggerFeature, {
     String defaultEntryPoint = 'manual',
+    String source = 'unknown',
+    int? launchCount,
   }) {
     return log(
       'paywall_viewed',
       params: {
         'feature': triggerFeature,
         'entry_point': _entryPointValue(defaultValue: defaultEntryPoint),
+        'source': source,
+        ...?(launchCount == null ? null : {'launch_count': launchCount}),
       },
     );
   }
 
-  static Future<void> paywallShown(String triggerFeature) {
-    return paywallViewed(triggerFeature);
+  static Future<void> paywallShown(
+    String triggerFeature, {
+    String source = 'unknown',
+    int? launchCount,
+  }) {
+    return paywallViewed(
+      triggerFeature,
+      source: source,
+      launchCount: launchCount,
+    );
   }
 
   static Future<void> purchaseCompleted(
@@ -212,8 +224,14 @@ class AppAnalytics {
   }
 
   /// Locked premium feature tapped
-  static Future<void> premiumFeatureTapped(String feature) {
-    return log('premium_feature_tapped', params: {'feature': feature});
+  static Future<void> premiumFeatureTapped(
+    String feature, {
+    required bool isPro,
+  }) {
+    return log(
+      'premium_feature_tapped',
+      params: {'feature': feature, 'is_pro': isPro ? 1 : 0},
+    );
   }
 
   /// What's New sheet shown
@@ -252,10 +270,11 @@ class AppAnalytics {
   static Future<void> whatsNewUnlockProTapped({
     required String wnId,
     required String locale,
+    required String source,
   }) {
     return log(
       'whats_new_unlock_pro_tapped',
-      params: {'wn_id': wnId, 'locale': locale},
+      params: {'wn_id': wnId, 'locale': locale, 'source': source},
     );
   }
 
@@ -266,17 +285,28 @@ class AppAnalytics {
     return log('gcode_import_opened', params: _gcodeImportParams());
   }
 
-  static Future<void> gcodeFileSelected({
-    required int fileSizeBytes,
-    String? slicer,
-    required bool hasPreview,
+  static Future<void> gcodeImportStarted({
+    String source = 'unknown',
+    required bool isPro,
   }) {
-    _setGcodeContext(
-      slicer: slicerValue(slicer),
-      hasPreview: hasPreview,
-      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    return log(
+      'gcode_import_started',
+      params: {
+        ..._gcodeImportParams(),
+        'source': source,
+        'is_pro': isPro ? 1 : 0,
+      },
     );
-    return log('gcode_file_selected', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodeFileSelected({
+    required String fileType,
+    required bool isPro,
+  }) {
+    return log(
+      'gcode_file_selected',
+      params: {'file_type': fileType, 'is_pro': isPro ? 1 : 0},
+    );
   }
 
   static Future<void> gcodeParseSuccess({
@@ -388,6 +418,23 @@ class AppAnalytics {
     final params = _gcodeImportParams();
     _gcodeImportOpenedAt = null;
     return log('gcode_import_abandoned', params: params);
+  }
+
+  static Future<void> gcodeImportSuccess({
+    required bool hasPrintTime,
+    required bool hasFilamentUsage,
+    required bool hasPreview,
+    required bool isPro,
+  }) {
+    return log(
+      'gcode_import_success',
+      params: {
+        'has_print_time': hasPrintTime ? 1 : 0,
+        'has_filament_usage': hasFilamentUsage ? 1 : 0,
+        'has_preview': hasPreview ? 1 : 0,
+        'is_pro': isPro ? 1 : 0,
+      },
+    );
   }
 
   static void safeLog(Future<void> Function() callback) {

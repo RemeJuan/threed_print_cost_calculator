@@ -21,7 +21,7 @@ class HeaderActions extends ConsumerWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute<void>(
-                    builder: (_) => const GCodeImportPage(),
+                    builder: (_) => const GCodeImportPage(source: 'header'),
                   ),
                 );
               },
