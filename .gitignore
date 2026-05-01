@@ -131,3 +131,5 @@ app.*.map.json
 
 # Patrol
 patrol_test/test_bundle.dart
+
+untranslated-messages.json
