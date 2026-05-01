@@ -31,7 +31,7 @@ class FocusSafeTextField extends StatefulWidget {
     this.keyboardType,
     this.obscureText,
     this.textInputAction,
-    this.maxLines,
+    this.maxLines = 1,
     this.inputFormatters,
     this.inputNormalizer,
   });

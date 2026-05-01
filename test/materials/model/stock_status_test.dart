@@ -56,10 +56,10 @@ void main() {
       );
     });
 
-    test('returns lowStock when remaining <= 15%', () {
+    test('returns lowStock when remaining < 15%', () {
       expect(
         calculateStockStatus(
-          _mat(autoDeduct: true, remaining: 150, original: 1000),
+          _mat(autoDeduct: true, remaining: 149, original: 1000),
         ),
         StockStatus.lowStock,
       );

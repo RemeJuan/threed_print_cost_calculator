@@ -165,7 +165,7 @@ void main() {
     expect(prefs.getBool('hideProPromotions'), isTrue);
   });
 
-  testWidgets('premium users see printers materials and work cost sections', (
+  testWidgets('premium users see printers and work cost sections but not materials', (
     tester,
   ) async {
     final settingsRepo = _FakeSettingsRepository();
