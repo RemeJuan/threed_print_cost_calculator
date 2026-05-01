@@ -57,14 +57,55 @@ Cost remains internal. Price is derived from cost and displayed separately.
 
 ### Definitions
 
-- **Base cost**: existing calculator total cost output. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`.
+- **Base cost**: existing calculator total cost output, including any additional cost (sundry) amount. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`; `additionalCostAmount` is summed into `CalculationResult.total` before pricing receives it.
 - **Markup %**: percentage applied to base cost only.
 - **Setup fee**: fixed amount added after markup.
 - **Rounding**: final presentation and storage adjustment applied last.
 
+## Additional Costs (Sundry)
+
+### Summary
+
+Single per-job additional cost with optional note. Included in base cost before pricing is applied.
+
+### Behavior
+
+- One numeric input for amount
+- Optional free-text note
+- Included in base cost before markup, setup fee, and rounding
+
+### UI
+
+- Located in Job Costs accordion
+- Inline amount input
+- Pencil/edit icon opens note modal
+
+### Data Model
+
+Stored per job/calculation.
+
+- `additionalCostAmount: number`
+- `additionalCostNote: string?`
+
+### History
+
+- Amount always visible
+- Note visible via expand/accordion
+
+### Constraints
+
+- Single entry only
+- No categories
+- No presets
+
+### Dependency
+
+Feeds into pricing model calculation through base cost.
+
 ### Final Formula
 
 ```text
+baseCost = calculatorOutputTotal + additionalCostAmount
 markupAmount = baseCost * (markupPercent / 100)
 subtotal = baseCost + markupAmount + setupFee
 finalPrice = applyRounding(subtotal, roundingMode)
@@ -75,18 +116,20 @@ finalPrice = applyRounding(subtotal, roundingMode)
 Exact order:
 
 1. Compute base cost using existing engine
-2. Read effective pricing config for current job
-3. Compute markup amount from base cost
-4. Add markup amount to base cost
-5. Add setup fee
-6. Apply selected rounding rule to subtotal
-7. Persist/display rounded result as final price
+2. Include single additional cost amount in base cost when present
+3. Read effective pricing config for current job
+4. Compute markup amount from base cost
+5. Add markup amount to base cost
+6. Add setup fee
+7. Apply selected rounding rule to subtotal
+8. Persist/display rounded result as final price
 
 No alternate order allowed.
 
 ### Important Notes
 
 - Markup applies to base cost only, not setup fee
+- Additional cost feeds base cost before markup
 - Setup fee is flat, never percentage-based
 - Rounding happens once, at end
 - Pricing layer must not mutate or feed back into base cost calculation
@@ -212,6 +255,8 @@ Current live calculator state needs pricing inputs and computed outputs separate
 
 Recommended additions to calculator state:
 
+- `additionalCostAmount`
+- `additionalCostNote`
 - `pricingMarkupPercent` input
 - `pricingSetupFee` input
 - `pricingRoundingMode`
@@ -251,6 +296,8 @@ Saved records must snapshot both effective pricing inputs and computed outputs a
 
 Recommended additions to saved job model/history model:
 
+- effective `additionalCostAmount`
+- effective `additionalCostNote`
 - effective `baseCost`
 - effective `markupPercent`
 - effective `markupAmount`
@@ -451,6 +498,37 @@ Persisted snapshot:
 - finalPrice = `165.99`
 
 Cost remains `120.00`. Price becomes `165.99`. Future settings changes must not alter this saved result.
+
+### With Additional Cost
+
+Example inputs:
+
+- Calculator output total: `120.00`
+- Additional cost (sundry): `15.00`
+- Markup: `25%`
+- Setup fee: `15.00`
+- Rounding mode: `.99`
+
+Calculation:
+
+1. baseCost = `120.00 + 15.00 = 135.00`
+2. Markup amount = `135.00 * 25% = 33.75`
+3. Subtotal before rounding = `135.00 + 33.75 + 15.00 = 183.75`
+4. `.99` rounding → next `.99` above subtotal = `183.99`
+5. Final Price / Grand Total = `183.99`
+
+Persisted snapshot:
+
+- additionalCostAmount = `15.00`
+- additionalCostNote = `null` (optional)
+- baseCost = `135.00`
+- markupPercent = `25`
+- markupAmount = `33.75`
+- setupFee = `15.00`
+- roundingMode = `.99`
+- subtotalBeforeRounding = `183.75`
+- roundingAdjustment = `0.24`
+- finalPrice = `183.99`
 
 ## Analytics
 
