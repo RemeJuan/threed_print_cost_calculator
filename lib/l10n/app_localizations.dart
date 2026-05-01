@@ -432,6 +432,12 @@ abstract class AppLocalizations {
   /// **'Print saved'**
   String get savePrintSuccessMessage;
 
+  /// Shown when a material is deleted successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Material deleted'**
+  String get deleteMaterialSuccessMessage;
+
   /// No description provided for @historyLoadAction.
   ///
   /// In en, this message translates to:
@@ -1527,7 +1533,7 @@ abstract class AppLocalizations {
   /// No description provided for @csvImportSuccessMessage.
   ///
   /// In en, this message translates to:
-  /// **'Imported {count} materials'**
+  /// **'{count, plural, one{Imported 1 material} other{Imported {count} materials}}'**
   String csvImportSuccessMessage(int count);
 
   /// No description provided for @csvPreviewSummary.

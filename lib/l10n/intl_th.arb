@@ -176,7 +176,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "นโยบายความเป็นส่วนตัว",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "เว็บไซต์",
   "@websiteLink": {},
   "termsOfUseLink": "ข้อกำหนดการใช้งาน",
   "@termsOfUseLink": {},
@@ -367,7 +367,9 @@
   "csvSpoolWeightPositiveError": "น้ำหนักสปูลต้องมากกว่า 0",
   "csvCostRequiredError": "ต้นทุนจำเป็น",
   "csvCostPositiveError": "ต้นทุนต้องมากกว่า 0",
-  "csvImportSuccessMessage": "นำเข้า {count} วัสดุ",
+  "csvImportSuccessMessage": "{count, plural, one{นำเข้า 1 วัสดุ} other{นำเข้า {count} วัสดุ}}",
+  "deleteMaterialSuccessMessage": "ลบวัสดุแล้ว",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

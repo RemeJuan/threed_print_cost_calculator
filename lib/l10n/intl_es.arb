@@ -175,7 +175,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de privacidad",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "Sitio web",
   "@websiteLink": {},
   "termsOfUseLink": "Términos de uso",
   "@termsOfUseLink": {},
@@ -366,7 +366,9 @@
   "csvSpoolWeightPositiveError": "El peso del carrete debe ser > 0",
   "csvCostRequiredError": "El costo es obligatorio",
   "csvCostPositiveError": "El costo debe ser > 0",
-  "csvImportSuccessMessage": "{count} materiales importados",
+  "csvImportSuccessMessage": "{count, plural, one{1 material importado} other{{count} materiales importados}}",
+  "deleteMaterialSuccessMessage": "Material eliminado",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

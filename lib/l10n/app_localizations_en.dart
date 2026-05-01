@@ -169,6 +169,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savePrintSuccessMessage => 'Print saved';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material deleted';
+
+  @override
   String get historyLoadAction => 'Use in calculator';
 
   @override
@@ -759,7 +762,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String csvImportSuccessMessage(int count) {
-    return 'Imported $count materials';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Imported $count materials',
+      one: 'Imported 1 material',
+    );
+    return '$_temp0';
   }
 
   @override

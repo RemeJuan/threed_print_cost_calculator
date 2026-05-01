@@ -171,6 +171,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get savePrintSuccessMessage => 'Impression enregistrée';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Matériau supprimé';
+
+  @override
   String get historyLoadAction => 'Modifier dans la calculatrice';
 
   @override
@@ -238,7 +241,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get privacyPolicyLink => 'Politique de confidentialité';
 
   @override
-  String get websiteLink => 'Website';
+  String get websiteLink => 'Site web';
 
   @override
   String get termsOfUseLink => 'Conditions d\'utilisation';
@@ -778,7 +781,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String csvImportSuccessMessage(int count) {
-    return '$count matériaux importés';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count matériaux importés',
+      one: '1 matériau importé',
+    );
+    return '$_temp0';
   }
 
   @override

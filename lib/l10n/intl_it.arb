@@ -175,7 +175,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Informativa sulla privacy",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "Sito web",
   "@websiteLink": {},
   "termsOfUseLink": "Termini di utilizzo",
   "@termsOfUseLink": {},
@@ -366,7 +366,9 @@
   "csvSpoolWeightPositiveError": "Il peso della bobina deve essere > 0",
   "csvCostRequiredError": "Il costo è obbligatorio",
   "csvCostPositiveError": "Il costo deve essere > 0",
-  "csvImportSuccessMessage": "{count} materiali importati",
+  "csvImportSuccessMessage": "{count, plural, one{1 materiale importato} other{{count} materiali importati}}",
+  "deleteMaterialSuccessMessage": "Materiale eliminato",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

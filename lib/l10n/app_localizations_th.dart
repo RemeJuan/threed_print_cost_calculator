@@ -168,6 +168,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get savePrintSuccessMessage => 'บันทึกงานพิมพ์แล้ว';
 
   @override
+  String get deleteMaterialSuccessMessage => 'ลบวัสดุแล้ว';
+
+  @override
   String get historyLoadAction => 'แก้ไขในเครื่องคิดเลข';
 
   @override
@@ -234,7 +237,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get privacyPolicyLink => 'นโยบายความเป็นส่วนตัว';
 
   @override
-  String get websiteLink => 'Website';
+  String get websiteLink => 'เว็บไซต์';
 
   @override
   String get termsOfUseLink => 'ข้อกำหนดการใช้งาน';
@@ -750,7 +753,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String csvImportSuccessMessage(int count) {
-    return 'นำเข้า $count วัสดุ';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'นำเข้า $count วัสดุ',
+      one: 'นำเข้า 1 วัสดุ',
+    );
+    return '$_temp0';
   }
 
   @override

@@ -175,7 +175,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Datenschutzrichtlinie",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "Webseite",
   "@websiteLink": {},
   "termsOfUseLink": "Nutzungsbedingungen",
   "@termsOfUseLink": {},
@@ -360,7 +360,9 @@
   "csvSpoolWeightPositiveError": "Spoolgewicht muss > 0 sein",
   "csvCostRequiredError": "Kosten sind erforderlich",
   "csvCostPositiveError": "Kosten müssen > 0 sein",
-  "csvImportSuccessMessage": "{count} Materialien importiert",
+  "csvImportSuccessMessage": "{count, plural, one{1 Material importiert} other{{count} Materialien importiert}}",
+  "deleteMaterialSuccessMessage": "Material gelöscht",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

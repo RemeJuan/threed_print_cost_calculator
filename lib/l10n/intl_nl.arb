@@ -176,7 +176,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "Webpagina",
   "@websiteLink": {},
   "termsOfUseLink": "Gebruiksvoorwaarden",
   "@termsOfUseLink": {},
@@ -360,7 +360,9 @@
   "csvSpoolWeightPositiveError": "Spoelgewicht moet > 0 zijn",
   "csvCostRequiredError": "Kosten zijn verplicht",
   "csvCostPositiveError": "Kosten moeten > 0 zijn",
-  "csvImportSuccessMessage": "{count} materialen geïmporteerd",
+  "csvImportSuccessMessage": "{count, plural, one{1 materiaal geïmporteerd} other{{count} materialen geïmporteerd}}",
+  "deleteMaterialSuccessMessage": "Materiaal verwijderd",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

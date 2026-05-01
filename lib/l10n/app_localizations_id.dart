@@ -168,6 +168,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get savePrintSuccessMessage => 'Hasil cetak disimpan';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material dihapus';
+
+  @override
   String get historyLoadAction => 'Edit di kalkulator';
 
   @override
@@ -234,7 +237,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get privacyPolicyLink => 'Kebijakan Privasi';
 
   @override
-  String get websiteLink => 'Website';
+  String get websiteLink => 'Situs web';
 
   @override
   String get termsOfUseLink => 'Ketentuan Penggunaan';
@@ -755,7 +758,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String csvImportSuccessMessage(int count) {
-    return '$count material diimpor';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count material diimpor',
+      one: '1 material diimpor',
+    );
+    return '$_temp0';
   }
 
   @override

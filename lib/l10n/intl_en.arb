@@ -54,6 +54,10 @@
   "savePrintErrorMessage": "Error saving print",
   "deleteRecordErrorMessage": "Error removing record",
   "savePrintSuccessMessage": "Print saved",
+  "deleteMaterialSuccessMessage": "Material deleted",
+  "@deleteMaterialSuccessMessage": {
+    "description": "Shown when a material is deleted successfully"
+  },
   "historyLoadAction": "Use in calculator",
   "historyLoadSuccessMessage": "Loaded from history",
   "historyLoadReplacementWarning": "Some items were unavailable and replaced",
@@ -285,7 +289,7 @@
   "csvSpoolWeightPositiveError": "Spool weight must be > 0",
   "csvCostRequiredError": "Cost is required",
   "csvCostPositiveError": "Cost must be > 0",
-  "csvImportSuccessMessage": "Imported {count} materials",
+  "csvImportSuccessMessage": "{count, plural, one{Imported 1 material} other{Imported {count} materials}}",
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

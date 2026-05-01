@@ -168,6 +168,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get savePrintSuccessMessage => 'プリントを保存しました';
 
   @override
+  String get deleteMaterialSuccessMessage => '材料を削除しました';
+
+  @override
   String get historyLoadAction => '計算機で編集';
 
   @override
@@ -233,7 +236,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get privacyPolicyLink => 'プライバシーポリシー';
 
   @override
-  String get websiteLink => 'Website';
+  String get websiteLink => 'ウェブサイト';
 
   @override
   String get termsOfUseLink => '利用規約';
@@ -742,7 +745,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String csvImportSuccessMessage(int count) {
-    return '$count件の材料をインポートしました';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count件の材料をインポートしました',
+      one: '1件の材料をインポートしました',
+    );
+    return '$_temp0';
   }
 
   @override

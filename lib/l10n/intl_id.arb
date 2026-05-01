@@ -175,7 +175,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Kebijakan Privasi",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "Situs web",
   "@websiteLink": {},
   "termsOfUseLink": "Ketentuan Penggunaan",
   "@termsOfUseLink": {},
@@ -366,7 +366,9 @@
   "csvSpoolWeightPositiveError": "Berat spool harus > 0",
   "csvCostRequiredError": "Biaya wajib diisi",
   "csvCostPositiveError": "Biaya harus > 0",
-  "csvImportSuccessMessage": "{count} material diimpor",
+  "csvImportSuccessMessage": "{count, plural, one{1 material diimpor} other{{count} material diimpor}}",
+  "deleteMaterialSuccessMessage": "Material dihapus",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {

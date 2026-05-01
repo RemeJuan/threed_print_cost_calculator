@@ -175,7 +175,7 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de Privacidade",
   "@privacyPolicyLink": {},
-  "websiteLink": "Website",
+  "websiteLink": "Site",
   "@websiteLink": {},
   "termsOfUseLink": "Termos de Uso",
   "@termsOfUseLink": {},
@@ -360,7 +360,9 @@
   "csvSpoolWeightPositiveError": "Peso do carretel deve ser > 0",
   "csvCostRequiredError": "Custo é obrigatório",
   "csvCostPositiveError": "Custo deve ser > 0",
-  "csvImportSuccessMessage": "{count} materiais importados",
+  "csvImportSuccessMessage": "{count, plural, one{1 material importado} other{{count} materiais importados}}",
+  "deleteMaterialSuccessMessage": "Material removido",
+  "@deleteMaterialSuccessMessage": {},
   "@csvImportSuccessMessage": {
     "placeholders": {
       "count": {
