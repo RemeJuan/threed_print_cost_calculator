@@ -143,6 +143,9 @@ class SaveForm extends HookConsumerWidget {
                       totalCost: data.total,
                       riskCost: data.risk,
                       labourCost: data.labour,
+                      additionalCostAmount:
+                          calcState.additionalCostAmount.value ?? 0,
+                      additionalCostNote: calcState.additionalCostNote,
                       date: DateTime.now(),
                       printer: printerName,
                       material: materialName,

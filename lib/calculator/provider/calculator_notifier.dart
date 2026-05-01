@@ -360,6 +360,21 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
+  void setAdditionalCostAmount(num value) {
+    state = state.copyWith(
+      additionalCostAmount: NumberInput.dirty(value: value),
+    );
+  }
+
+  void setAdditionalCostNote(String? value) {
+    final normalized = value?.trim();
+    state = state.copyWith(
+      additionalCostNote: normalized == null || normalized.isEmpty
+          ? null
+          : normalized,
+    );
+  }
+
   void setMarkupPercent(num value) {
     state = state.copyWith(markupPercent: NumberInput.dirty(value: value));
   }
@@ -396,6 +411,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final wt = state.wearAndTear.value ?? 0;
     final lr = state.labourRate.value ?? 0;
     final lt = state.labourTime.value ?? 0;
+    final additionalCostAmount = state.additionalCostAmount.value ?? 0;
     final fr = state.failureRisk.value ?? 0;
     final markupPercent = state.markupPercent.value ?? 0;
     final setupFee = state.setupFee.value ?? 0;
@@ -423,7 +439,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       labourCost = CalculatorHelpers.labourCost(lr, lt);
     }
 
-    final totalCost = electricityCost + filamentCost + wt + labourCost;
+    final totalCost =
+        electricityCost + filamentCost + wt + labourCost + additionalCostAmount;
     final frCost = fr / 100 * totalCost;
 
     final results = CalculationResult(

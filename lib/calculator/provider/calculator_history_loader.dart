@@ -93,6 +93,10 @@ class CalculatorHistoryLoader {
       materialUsages: materialUsages,
       hours: NumberInput.dirty(value: parsedTime.hours),
       minutes: NumberInput.dirty(value: parsedTime.minutes),
+      additionalCostAmount: NumberInput.dirty(
+        value: entry.model.additionalCostAmount,
+      ),
+      additionalCostNote: entry.model.additionalCostNote,
       results: CalculationResult(
         electricity: entry.model.electricityCost,
         filament: entry.model.filamentCost,
