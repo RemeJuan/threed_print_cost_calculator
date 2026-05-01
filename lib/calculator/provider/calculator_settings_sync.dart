@@ -18,17 +18,14 @@ class CalculatorSettingsSync {
 
   final Ref ref;
 
-  /// Returns [current]'s value if it has been explicitly set, otherwise
-  /// parses and returns [settingsValue] as a dirty [NumberInput].
-  NumberInput _overrideOrSettings(NumberInput current, String? settingsValue) {
-    if (current.value != null) return current;
+  NumberInput _settingsNumber(String? settingsValue) {
     return NumberInput.dirty(value: tryParseLocalizedNum(settingsValue));
   }
 
   Future<CalculatorState> load(
-    CalculatorState current,
-    GeneralSettingsModel settings,
-  ) async {
+    GeneralSettingsModel settings, {
+    bool seedInitialMaterialUsage = false,
+  }) async {
     final preferencesRepository = ref.read(
       calculatorPreferencesRepositoryProvider,
     );
@@ -55,50 +52,38 @@ class CalculatorSettingsSync {
     }
 
     final nextState = CalculatorState(
+      activePrinterId: settings.activePrinter,
+      selectedMaterialId: '',
       watt: NumberInput.dirty(value: watt),
-      kwCost: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.electricityCost),
-      ),
-      printWeight: NumberInput.dirty(value: current.printWeight.value),
-      hours: NumberInput.dirty(value: current.hours.value),
-      minutes: NumberInput.dirty(value: current.minutes.value),
+      kwCost: _settingsNumber(settings.electricityCost),
       spoolWeight: NumberInput.dirty(
         value: tryParseLocalizedNum(spoolWeightVal),
       ),
       spoolCost: NumberInput.dirty(value: tryParseLocalizedNum(spoolCostVal)),
       spoolCostText: spoolCostVal,
-      wearAndTear: _overrideOrSettings(
-        current.wearAndTear,
-        settings.wearAndTear,
+      wearAndTear: _settingsNumber(settings.wearAndTear),
+      failureRisk: _settingsNumber(settings.failureRisk),
+      labourRate: _settingsNumber(settings.labourRate),
+      markupPercent: _settingsNumber(settings.pricingMarkupPercent),
+      setupFee: _settingsNumber(settings.pricingSetupFee),
+      roundingMode: pricingRoundingModeFromStorage(
+        settings.pricingRoundingMode,
       ),
-      failureRisk: _overrideOrSettings(
-        current.failureRisk,
-        settings.failureRisk,
-      ),
-      labourRate: _overrideOrSettings(
-        current.labourRate,
-        settings.labourRate,
-      ),
-      labourTime: NumberInput.dirty(value: current.labourTime.value),
-      markupPercent: _overrideOrSettings(
-        current.markupPercent,
+      hasHydratedDefaults: true,
+      baselineWearAndTear: tryParseLocalizedNum(settings.wearAndTear),
+      baselineFailureRisk: tryParseLocalizedNum(settings.failureRisk),
+      baselineLabourRate: tryParseLocalizedNum(settings.labourRate),
+      baselineLabourTime: 0,
+      baselineMarkupPercent: tryParseLocalizedNum(
         settings.pricingMarkupPercent,
       ),
-      setupFee: _overrideOrSettings(
-        current.setupFee,
-        settings.pricingSetupFee,
+      baselineSetupFee: tryParseLocalizedNum(settings.pricingSetupFee),
+      baselineRoundingMode: pricingRoundingModeFromStorage(
+        settings.pricingRoundingMode,
       ),
-      roundingMode: current.roundingMode != PricingRoundingMode.none
-          ? current.roundingMode
-          : pricingRoundingModeFromStorage(settings.pricingRoundingMode),
-      additionalCostAmount: current.additionalCostAmount.value != null
-          ? current.additionalCostAmount
-          : const NumberInput.pure(),
-      additionalCostNote: current.additionalCostNote,
-      materialUsages: current.materialUsages,
-      results: current.results,
-      pricing: current.pricing,
     );
+
+    if (!seedInitialMaterialUsage) return nextState;
 
     return ensureInitialMaterialUsage(nextState, settings.selectedMaterial);
   }
