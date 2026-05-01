@@ -105,26 +105,68 @@ class CalculatorPage extends HookConsumerWidget {
             if (isPremium) const JobPricingOverridesSection(),
             const SizedBox(height: 16),
             CalculatorResults(results: state.results, pricing: state.pricing),
-            if (isPremium && !showSave.value)
-              ElevatedButton.icon(
-                key: const ValueKey<String>('calculator.save.open.button'),
-                onPressed: () {
-                  showSave.value = true;
-                },
-                icon: const Icon(Icons.save),
-                label: Text(l10n.savePrintButton),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: DEEP_BLUE,
-                  foregroundColor: LIGHT_BLUE,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    key: const ValueKey<String>('calculator.reset.button'),
+                    onPressed: () async {
+                      final shouldReset = await showDialog<bool>(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: Text(l10n.resetCalculationTitle),
+                          content: Text(l10n.resetCalculationBody),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(false),
+                              child: Text(l10n.cancelButton),
+                            ),
+                            FilledButton(
+                              onPressed: () =>
+                                  Navigator.of(dialogContext).pop(true),
+                              child: Text(l10n.resetButtonLabel),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (shouldReset != true) return;
+                      showSave.value = false;
+                      await notifier.resetToDefaults();
+                    },
+                    icon: const Icon(Icons.refresh),
+                    label: Text(l10n.resetButtonLabel),
                   ),
                 ),
-              ),
+                if (isPremium && !showSave.value) ...[
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      key: const ValueKey<String>(
+                        'calculator.save.open.button',
+                      ),
+                      onPressed: () {
+                        showSave.value = true;
+                      },
+                      icon: const Icon(Icons.save),
+                      label: Text(l10n.savePrintButton),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: DEEP_BLUE,
+                        foregroundColor: LIGHT_BLUE,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
             if (showSave.value)
               SaveForm(
                 data: state.results,
