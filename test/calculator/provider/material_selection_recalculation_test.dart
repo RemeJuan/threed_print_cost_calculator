@@ -2,10 +2,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
+
+class _FakeAnalytics implements AnalyticsService {
+  final events = <String>[];
+  final paramsByEvent = <String, Map<String, Object>?>{};
+  String? lastName;
+  Map<String, Object>? lastParams;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(name);
+    paramsByEvent[name] = params;
+    lastName = name;
+    lastParams = params;
+  }
+}
 
 MaterialModel _material({
   required String id,
@@ -27,10 +44,13 @@ void main() {
   group('Material selection recalculation', () {
     late ProviderContainer container;
     late CalculatorProvider notifier;
+    late _FakeAnalytics analytics;
 
     setUpAll(setupTest);
 
     setUp(() {
+      analytics = _FakeAnalytics();
+      AppAnalytics.service = analytics;
       container = ProviderContainer(
         overrides: [
           calculatorPreferencesRepositoryProvider.overrideWith(
@@ -51,6 +71,11 @@ void main() {
           ),
         )
         ..submit();
+
+      analytics.events.clear();
+      analytics.paramsByEvent.clear();
+      analytics.lastName = null;
+      analytics.lastParams = null;
     });
 
     tearDown(() {
@@ -58,7 +83,11 @@ void main() {
     });
 
     test('material change updates total for non-zero to non-zero cost', () {
-      final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
+      final materialA = _material(
+        id: 'mat-a',
+        name: 'Material A',
+        cost: '60',
+      ).copyWith(brand: 'Sunlu', materialType: 'PLA', autoDeductEnabled: true);
       final materialB = _material(id: 'mat-b', name: 'Material B', cost: '30');
 
       notifier.selectMaterial(materialA);
@@ -67,6 +96,23 @@ void main() {
       expect(notifier.state.materialUsages.single.costPerKg, 60);
       expect(notifier.state.results.filament, 6.0);
       expect(notifier.state.results.total, 6.0);
+      expect(analytics.events, contains('material_selected_in_calculator'));
+      expect(analytics.events, contains('calculation_created'));
+      expect(
+        analytics.events.indexOf('material_selected_in_calculator'),
+        lessThan(analytics.events.indexOf('calculation_created')),
+      );
+      expect(
+        analytics.events
+            .where((e) => e == 'material_selected_in_calculator')
+            .length,
+        1,
+      );
+      expect(analytics.paramsByEvent['material_selected_in_calculator'], {
+        'has_tracking': 1,
+        'material_type': 'PLA',
+        'brand': 'Sunlu',
+      });
 
       notifier.selectMaterial(materialB);
 
