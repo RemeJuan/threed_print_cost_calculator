@@ -411,8 +411,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       labourCost = CalculatorHelpers.labourCost(lr, lt);
     }
 
-    final totalCost = electricityCost + filamentCost + wt + labourCost;
-    final frCost = fr / 100 * totalCost;
+    final basePrintCost = electricityCost + filamentCost + labourCost;
+    final frCost = basePrintCost * fr / 100;
+    final totalCost = basePrintCost + frCost + wt;
 
     final results = CalculationResult(
       electricity: electricityCost,
