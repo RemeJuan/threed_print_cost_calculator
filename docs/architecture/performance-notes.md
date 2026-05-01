@@ -21,6 +21,13 @@
 ## Known Issues
 - Performance regressions can still appear with large local datasets.
 
+## Recent improvements
+
+- Calculator form: eliminated redundant settings/defaults rehydration on every
+  `init()` call (May 2026). `hasHydratedDefaults` sentinel returns early after
+  first hydration. Reset/remount/tab-switch no longer trigger full settings load
+  and state rebuild. See [ADR 2026-05](../decisions/2026-05-calculator-form-state-ownership.md).
+
 ## TODOs
 - Add performance tests.
 - Add performance logging.
