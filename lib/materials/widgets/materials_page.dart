@@ -119,16 +119,16 @@ class MaterialsPage extends HookConsumerWidget {
                               if (!context.mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(l10n.savePrintSuccessMessage),
+                                  content: Text(
+                                    l10n.deleteMaterialSuccessMessage,
+                                  ),
                                 ),
                               );
                             } catch (e) {
                               if (!context.mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                    l10n.deleteRecordErrorMessage,
-                                  ),
+                                  content: Text(l10n.deleteRecordErrorMessage),
                                 ),
                               );
                             }
