@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
-import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 
 class PrinterSelect extends ConsumerWidget {
   const PrinterSelect({super.key});
@@ -13,21 +11,28 @@ class PrinterSelect extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final printersAsync = ref.watch(printersStreamProvider);
-    final settingsAsync = ref.watch(settingsStreamProvider);
+    final calculatorState = ref.watch(calculatorProvider);
 
-    return settingsAsync.when(
-      data: (generalSettings) => printersAsync.when(
-        data: (data) {
-          if (data.isEmpty) return const SizedBox.shrink();
+    return printersAsync.when(
+      data: (data) {
+        if (data.isEmpty) return const SizedBox.shrink();
 
-          return DropdownButtonFormField<String>(
-            key: const ValueKey<String>('calculator.printer.select'),
+        final selectedPrinterId = calculatorState.activePrinterId.isEmpty
+            ? null
+            : calculatorState.activePrinterId;
+
+        return KeyedSubtree(
+          key: const ValueKey<String>('calculator.printer.select'),
+          child: DropdownButtonFormField<String>(
+            key: ValueKey<String>(
+              'calculator.printer.field.$selectedPrinterId',
+            ),
             hint: Text(l10n.selectPrinterHint),
             alignment: AlignmentDirectional.centerStart,
             isExpanded: true,
-            initialValue: generalSettings.activePrinter.isEmpty
-                ? null
-                : generalSettings.activePrinter,
+            initialValue: data.any((printer) => printer.id == selectedPrinterId)
+                ? selectedPrinterId
+                : null,
             items: data.map((e) {
               return DropdownMenuItem(
                 key: ValueKey<String>('calculator.printer.option.${e.name}'),
@@ -46,23 +51,14 @@ class PrinterSelect extends ConsumerWidget {
             onChanged: data.length == 1
                 ? null
                 : (v) async {
+                    if (v == null) return;
                     await ref
-                        .read(settingsServiceProvider)
-                        .update(
-                          (settings) => settings.copyWith(activePrinter: v!),
-                        );
-
-                    final wattage = data.firstWhere((e) => e.id == v).wattage;
-
-                    ref
                         .read(calculatorProvider.notifier)
-                        .updateWatt(wattage.toString());
+                        .selectPrinter(v);
                   },
-          );
-        },
-        loading: () => const SizedBox.shrink(),
-        error: (error, stackTrace) => const SizedBox.shrink(),
-      ),
+          ),
+        );
+      },
       loading: () => const SizedBox.shrink(),
       error: (error, stackTrace) => const SizedBox.shrink(),
     );

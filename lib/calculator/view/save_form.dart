@@ -11,7 +11,6 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
-import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class SaveForm extends HookConsumerWidget {
@@ -49,22 +48,20 @@ class SaveForm extends HookConsumerWidget {
             onPressed: name.value.isEmpty
                 ? null
                 : () async {
-                    final settings = await ref
-                        .read(settingsServiceProvider)
-                        .get();
+                    final calcState = ref.read(calculatorProvider);
 
                     String printerName = '';
                     String materialName = '';
 
-                    if (settings.activePrinter.isNotEmpty) {
+                    final activePrinterId = calcState.activePrinterId;
+                    final selectedMaterialId = calcState.selectedMaterialId;
+
+                    if (activePrinterId.isNotEmpty) {
                       final printer = await ref
                           .read(printersRepositoryProvider)
-                          .getPrinterById(settings.activePrinter);
+                          .getPrinterById(activePrinterId);
                       printerName = printer?.name ?? '';
                     }
-
-                    // Read calculator state for weight and time
-                    final calcState = ref.read(calculatorProvider);
 
                     final num materialsSum = calcState.materialUsages.fold<int>(
                       0,
@@ -86,10 +83,10 @@ class SaveForm extends HookConsumerWidget {
                       materialName = count > 1
                           ? '$firstName +${count - 1}'
                           : firstName;
-                    } else if (settings.selectedMaterial.isNotEmpty) {
+                    } else if (selectedMaterialId.isNotEmpty) {
                       final material = await ref
                           .read(materialsRepositoryProvider)
-                          .getMaterialById(settings.selectedMaterial);
+                          .getMaterialById(selectedMaterialId);
                       if (material != null) {
                         final spoolWeight = parseLocalizedNumOrFallback(
                           material.weight,
@@ -103,7 +100,7 @@ class SaveForm extends HookConsumerWidget {
                         materialName = material.name;
                         usages.add(
                           MaterialUsageInput(
-                            materialId: settings.selectedMaterial,
+                            materialId: selectedMaterialId,
                             materialName: materialName,
                             costPerKg: costPerKg,
                             weightGrams: weightVal.toInt(),
@@ -119,22 +116,30 @@ class SaveForm extends HookConsumerWidget {
                     final hasOverrides =
                         !_sameNum(
                           calcState.wearAndTear.value ?? 0,
-                          tryParseLocalizedNum(settings.wearAndTear) ?? 0,
+                          calcState.baselineWearAndTear ?? 0,
                         ) ||
                         !_sameNum(
                           calcState.failureRisk.value ?? 0,
-                          tryParseLocalizedNum(settings.failureRisk) ?? 0,
+                          calcState.baselineFailureRisk ?? 0,
                         ) ||
                         !_sameNum(
                           calcState.labourRate.value ?? 0,
-                          tryParseLocalizedNum(settings.labourRate) ?? 0,
+                          calcState.baselineLabourRate ?? 0,
                         ) ||
                         !_sameNum(
                           calcState.markupPercent.value ?? 0,
-                          tryParseLocalizedNum(settings.pricingMarkupPercent) ??
-                              0,
+                          calcState.baselineMarkupPercent ?? 0,
                         ) ||
-                        (calcState.labourTime.value ?? 0) > 0;
+                        !_sameNum(
+                          calcState.setupFee.value ?? 0,
+                          calcState.baselineSetupFee ?? 0,
+                        ) ||
+                        calcState.roundingMode !=
+                            calcState.baselineRoundingMode ||
+                        !_sameNum(
+                          calcState.labourTime.value ?? 0,
+                          calcState.baselineLabourTime,
+                        );
 
                     final model = HistoryModel(
                       name: name.value,
