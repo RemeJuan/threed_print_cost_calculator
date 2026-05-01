@@ -1,12 +1,14 @@
 import 'package:formz/formz.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
-import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
 const _unsetCalculatorStateValue = Object();
 
 class CalculatorState with FormzMixin {
+  final String activePrinterId;
+  final String selectedMaterialId;
   final NumberInput watt;
   final NumberInput kwCost;
   final NumberInput printWeight;
@@ -15,7 +17,7 @@ class CalculatorState with FormzMixin {
   final NumberInput minutes;
   final NumberInput spoolWeight;
   final NumberInput spoolCost;
-  final String spoolCostText; // Raw text input for spool cost
+  final String spoolCostText;
   final NumberInput wearAndTear;
   final NumberInput failureRisk;
   final NumberInput labourRate;
@@ -29,8 +31,18 @@ class CalculatorState with FormzMixin {
   final PricingResult pricing;
   final bool showHistoryLoadReplacementWarning;
   final bool importedFromGcode;
+  final bool hasHydratedDefaults;
+  final num? baselineWearAndTear;
+  final num? baselineFailureRisk;
+  final num? baselineLabourRate;
+  final num baselineLabourTime;
+  final num? baselineMarkupPercent;
+  final num? baselineSetupFee;
+  final PricingRoundingMode baselineRoundingMode;
 
   CalculatorState({
+    this.activePrinterId = '',
+    this.selectedMaterialId = '',
     this.watt = const NumberInput.pure(),
     this.kwCost = const NumberInput.pure(),
     this.printWeight = const NumberInput.pure(),
@@ -59,11 +71,21 @@ class CalculatorState with FormzMixin {
     this.pricing = const PricingResult.empty(),
     this.showHistoryLoadReplacementWarning = false,
     this.importedFromGcode = false,
+    this.hasHydratedDefaults = false,
+    this.baselineWearAndTear,
+    this.baselineFailureRisk,
+    this.baselineLabourRate,
+    this.baselineLabourTime = 0,
+    this.baselineMarkupPercent,
+    this.baselineSetupFee,
+    this.baselineRoundingMode = PricingRoundingMode.none,
   }) : materialUsages = List.unmodifiable(
          materialUsages ?? const <MaterialUsageInput>[],
        );
 
   CalculatorState copyWith({
+    String? activePrinterId,
+    String? selectedMaterialId,
     NumberInput? watt,
     NumberInput? kwCost,
     NumberInput? printWeight,
@@ -86,8 +108,18 @@ class CalculatorState with FormzMixin {
     PricingResult? pricing,
     bool? showHistoryLoadReplacementWarning,
     bool? importedFromGcode,
+    bool? hasHydratedDefaults,
+    Object? baselineWearAndTear = _unsetCalculatorStateValue,
+    Object? baselineFailureRisk = _unsetCalculatorStateValue,
+    Object? baselineLabourRate = _unsetCalculatorStateValue,
+    num? baselineLabourTime,
+    Object? baselineMarkupPercent = _unsetCalculatorStateValue,
+    Object? baselineSetupFee = _unsetCalculatorStateValue,
+    PricingRoundingMode? baselineRoundingMode,
   }) {
     return CalculatorState(
+      activePrinterId: activePrinterId ?? this.activePrinterId,
+      selectedMaterialId: selectedMaterialId ?? this.selectedMaterialId,
       watt: watt ?? this.watt,
       kwCost: kwCost ?? this.kwCost,
       printWeight: printWeight ?? this.printWeight,
@@ -102,10 +134,8 @@ class CalculatorState with FormzMixin {
       labourRate: labourRate ?? this.labourRate,
       labourTime: labourTime ?? this.labourTime,
       additionalCostAmount: additionalCostAmount ?? this.additionalCostAmount,
-      additionalCostNote: identical(
-            additionalCostNote,
-            _unsetCalculatorStateValue,
-          )
+      additionalCostNote:
+          identical(additionalCostNote, _unsetCalculatorStateValue)
           ? this.additionalCostNote
           : additionalCostNote as String?,
       markupPercent: markupPercent ?? this.markupPercent,
@@ -117,6 +147,28 @@ class CalculatorState with FormzMixin {
           showHistoryLoadReplacementWarning ??
           this.showHistoryLoadReplacementWarning,
       importedFromGcode: importedFromGcode ?? this.importedFromGcode,
+      hasHydratedDefaults: hasHydratedDefaults ?? this.hasHydratedDefaults,
+      baselineWearAndTear:
+          identical(baselineWearAndTear, _unsetCalculatorStateValue)
+          ? this.baselineWearAndTear
+          : baselineWearAndTear as num?,
+      baselineFailureRisk:
+          identical(baselineFailureRisk, _unsetCalculatorStateValue)
+          ? this.baselineFailureRisk
+          : baselineFailureRisk as num?,
+      baselineLabourRate:
+          identical(baselineLabourRate, _unsetCalculatorStateValue)
+          ? this.baselineLabourRate
+          : baselineLabourRate as num?,
+      baselineLabourTime: baselineLabourTime ?? this.baselineLabourTime,
+      baselineMarkupPercent:
+          identical(baselineMarkupPercent, _unsetCalculatorStateValue)
+          ? this.baselineMarkupPercent
+          : baselineMarkupPercent as num?,
+      baselineSetupFee: identical(baselineSetupFee, _unsetCalculatorStateValue)
+          ? this.baselineSetupFee
+          : baselineSetupFee as num?,
+      baselineRoundingMode: baselineRoundingMode ?? this.baselineRoundingMode,
     );
   }
 
