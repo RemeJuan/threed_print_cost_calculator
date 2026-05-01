@@ -4,7 +4,9 @@ import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 void main() {
   group('colorFromMaterial', () {
     test('parses 6-char hex', () {
-      final c = colorFromMaterial(const MaterialColorInput(colorHex: '#FF0000'));
+      final c = colorFromMaterial(
+        const MaterialColorInput(colorHex: '#FF0000'),
+      );
       expect((c.r * 255).round(), 255);
       expect((c.g * 255).round(), 0);
       expect((c.b * 255).round(), 0);
@@ -45,7 +47,9 @@ void main() {
     });
 
     test('matches named color case-insensitive', () {
-      final c = colorFromMaterial(const MaterialColorInput(colorName: 'DARK RED'));
+      final c = colorFromMaterial(
+        const MaterialColorInput(colorName: 'DARK RED'),
+      );
       expect((c.r * 255).round(), 139);
       expect((c.g * 255).round(), 0);
       expect((c.b * 255).round(), 0);
@@ -62,10 +66,7 @@ void main() {
 
     test('hex takes priority over color name', () {
       final c = colorFromMaterial(
-        const MaterialColorInput(
-          colorName: 'Red',
-          colorHex: '#0000FF',
-        ),
+        const MaterialColorInput(colorName: 'Red', colorHex: '#0000FF'),
       );
       expect((c.r * 255).round(), 0);
       expect((c.g * 255).round(), 0);
@@ -91,7 +92,8 @@ void main() {
       final c2 = colorFromMaterial(
         const MaterialColorInput(colorName: 'BazQux'),
       );
-      final same = (c1.r * 255).round() == (c2.r * 255).round() &&
+      final same =
+          (c1.r * 255).round() == (c2.r * 255).round() &&
           (c1.g * 255).round() == (c2.g * 255).round() &&
           (c1.b * 255).round() == (c2.b * 255).round();
       expect(same, isFalse);
@@ -103,7 +105,9 @@ void main() {
     });
 
     test('handles transparent named color', () {
-      final c = colorFromMaterial(const MaterialColorInput(colorName: 'transparent'));
+      final c = colorFromMaterial(
+        const MaterialColorInput(colorName: 'transparent'),
+      );
       expect((c.a * 255).round(), 0);
     });
   });

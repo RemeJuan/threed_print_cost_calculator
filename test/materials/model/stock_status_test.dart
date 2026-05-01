@@ -31,14 +31,18 @@ void main() {
 
     test('returns noTracking when originalWeight <= 0', () {
       expect(
-        calculateStockStatus(_mat(autoDeduct: true, remaining: 500, original: 0)),
+        calculateStockStatus(
+          _mat(autoDeduct: true, remaining: 500, original: 0),
+        ),
         StockStatus.noTracking,
       );
     });
 
     test('returns outOfStock when remaining <= 0', () {
       expect(
-        calculateStockStatus(_mat(autoDeduct: true, remaining: 0, original: 1000)),
+        calculateStockStatus(
+          _mat(autoDeduct: true, remaining: 0, original: 1000),
+        ),
         StockStatus.outOfStock,
       );
     });
@@ -54,28 +58,36 @@ void main() {
 
     test('returns lowStock when remaining <= 15%', () {
       expect(
-        calculateStockStatus(_mat(autoDeduct: true, remaining: 150, original: 1000)),
+        calculateStockStatus(
+          _mat(autoDeduct: true, remaining: 150, original: 1000),
+        ),
         StockStatus.lowStock,
       );
     });
 
     test('returns lowStock at exactly 15% threshold', () {
       expect(
-        calculateStockStatus(_mat(autoDeduct: true, remaining: 150, original: 1000)),
+        calculateStockStatus(
+          _mat(autoDeduct: true, remaining: 150, original: 1000),
+        ),
         StockStatus.lowStock,
       );
     });
 
     test('returns inStock when remaining > 15%', () {
       expect(
-        calculateStockStatus(_mat(autoDeduct: true, remaining: 151, original: 1000)),
+        calculateStockStatus(
+          _mat(autoDeduct: true, remaining: 151, original: 1000),
+        ),
         StockStatus.inStock,
       );
     });
 
     test('returns inStock when remaining is full', () {
       expect(
-        calculateStockStatus(_mat(autoDeduct: true, remaining: 1000, original: 1000)),
+        calculateStockStatus(
+          _mat(autoDeduct: true, remaining: 1000, original: 1000),
+        ),
         StockStatus.inStock,
       );
     });
@@ -87,7 +99,10 @@ void main() {
     });
 
     test('returns 1 when originalWeight <= 0', () {
-      expect(stockPercent(_mat(autoDeduct: true, remaining: 500, original: 0)), 1);
+      expect(
+        stockPercent(_mat(autoDeduct: true, remaining: 500, original: 0)),
+        1,
+      );
     });
 
     test('returns correct ratio', () {

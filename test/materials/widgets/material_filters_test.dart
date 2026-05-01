@@ -52,10 +52,9 @@ void main() {
         ),
       ];
       final repo = FakeMaterialsRepository(watchResponses: [materials]);
-      final db = await tester.pumpApp(
-        const MaterialFilters(),
-        [materialsRepositoryProvider.overrideWithValue(repo)],
-      );
+      final db = await tester.pumpApp(const MaterialFilters(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+      ]);
       await tester.pumpAndSettle();
       addTearDown(db.close);
 

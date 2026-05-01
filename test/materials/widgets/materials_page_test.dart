@@ -18,10 +18,9 @@ void main() {
   group('MaterialsPage', () {
     testWidgets('shows empty state when no materials', (tester) async {
       final repo = FakeMaterialsRepository();
-      final db = await tester.pumpApp(
-        const MaterialsPage(),
-        [materialsRepositoryProvider.overrideWithValue(repo)],
-      );
+      final db = await tester.pumpApp(const MaterialsPage(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+      ]);
       await tester.pumpAndSettle();
       addTearDown(db.close);
 
@@ -53,10 +52,9 @@ void main() {
         ),
       ];
       final repo = FakeMaterialsRepository(watchResponses: [materials]);
-      final db = await tester.pumpApp(
-        const MaterialsPage(),
-        [materialsRepositoryProvider.overrideWithValue(repo)],
-      );
+      final db = await tester.pumpApp(const MaterialsPage(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+      ]);
       await tester.pumpAndSettle();
       addTearDown(db.close);
 
@@ -68,10 +66,9 @@ void main() {
 
     testWidgets('add FAB opens material form dialog', (tester) async {
       final repo = FakeMaterialsRepository();
-      final db = await tester.pumpApp(
-        const MaterialsPage(),
-        [materialsRepositoryProvider.overrideWithValue(repo)],
-      );
+      final db = await tester.pumpApp(const MaterialsPage(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+      ]);
       await tester.pumpAndSettle();
       addTearDown(db.close);
 
@@ -84,9 +81,7 @@ void main() {
 
       expect(find.byType(Dialog), findsOneWidget);
       expect(
-        find.text(
-          lookupAppLocalizations(const Locale('en')).materialNameLabel,
-        ),
+        find.text(lookupAppLocalizations(const Locale('en')).materialNameLabel),
         findsOneWidget,
       );
     });

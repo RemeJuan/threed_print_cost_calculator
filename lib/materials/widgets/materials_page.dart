@@ -37,8 +37,9 @@ class MaterialsPage extends HookConsumerWidget {
                         onPressed: () {
                           searchController.clear();
                           ref
-                              .read(materialsSearchQueryProvider.notifier)
-                              .state = '';
+                                  .read(materialsSearchQueryProvider.notifier)
+                                  .state =
+                              '';
                         },
                       )
                     : null,

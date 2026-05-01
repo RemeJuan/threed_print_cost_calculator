@@ -18,7 +18,7 @@
 
 ## Implementation Notes
 - Migration is ongoing/incomplete based on backfill context.
-- Materials CSV import and stock badge UI were audited and moved to l10n-backed strings.
+- Materials CSV import, search/filter copy, and stock badge UI were audited and moved to l10n-backed strings.
 - New materials keys were propagated across all currently supported locales: `en`, `pt`, `es`, `fr`, `de`, `it`, `ja`, `nl`, `th`, `id`.
 
 ## Known Issues

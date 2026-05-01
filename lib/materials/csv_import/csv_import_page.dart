@@ -10,7 +10,8 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
-const _csvHeader = 'name,brand,material_type,color,color_hex,spool_weight,'
+const _csvHeader =
+    'name,brand,material_type,color,color_hex,spool_weight,'
     'remaining_weight,spool_cost,notes';
 
 final _sampleRow1 = 'PLA Pro+,Sunlu,PLA,Black,,1000,950,24.99,';
@@ -47,9 +48,9 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     if (result == null) return;
     if (!result.name.toLowerCase().endsWith('.csv')) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_l10n!.csvFileTypeError)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_l10n!.csvFileTypeError)));
       return;
     }
 
@@ -58,7 +59,11 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
   }
 
   void _parseCsv(String content) {
-    final lines = content.split('\n').map((l) => l.trim()).where((l) => l.isNotEmpty).toList();
+    final lines = content
+        .split('\n')
+        .map((l) => l.trim())
+        .where((l) => l.isNotEmpty)
+        .toList();
     if (lines.isEmpty) return;
 
     final headers = _parseCsvLine(lines[0]);
@@ -175,8 +180,8 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
         color: row.color,
         weight: row.spoolWeight.toString(),
         archived: false,
-        autoDeductEnabled: row.remainingWeight > 0 &&
-            row.remainingWeight != row.spoolWeight,
+        autoDeductEnabled:
+            row.remainingWeight > 0 && row.remainingWeight != row.spoolWeight,
         originalWeight: row.spoolWeight,
         remainingWeight: row.remainingWeight,
         brand: row.brand,
@@ -277,7 +282,9 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
                 child: ListTile(
                   title: Text(
-                    row.name.isNotEmpty ? row.name : l10n.csvEmptyNamePlaceholder,
+                    row.name.isNotEmpty
+                        ? row.name
+                        : l10n.csvEmptyNamePlaceholder,
                     style: TextStyle(
                       color: hasErrors ? Colors.red[300] : Colors.white,
                     ),
@@ -285,7 +292,10 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                   subtitle: hasErrors
                       ? Text(
                           row.errors.join(', '),
-                          style: TextStyle(color: Colors.red[200], fontSize: 12),
+                          style: TextStyle(
+                            color: Colors.red[200],
+                            fontSize: 12,
+                          ),
                         )
                       : Text(
                           '${row.brand.isNotEmpty ? '${row.brand} · ' : ''}'
@@ -298,8 +308,10 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                         ),
                   trailing: hasErrors
                       ? const Icon(Icons.error_outline, color: Colors.red)
-                      : const Icon(Icons.check_circle_outline,
-                          color: Colors.green),
+                      : const Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.green,
+                        ),
                 ),
               );
             },

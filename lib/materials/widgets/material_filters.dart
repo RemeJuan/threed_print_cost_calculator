@@ -96,30 +96,28 @@ class _FilterSection extends StatelessWidget {
               const SizedBox(width: 8),
             ],
             ...chips.asMap().entries.map(
-                  (entry) => Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      label: Text(entry.value.label),
-                      selected: entry.value.selected,
-                      onSelected: (_) => onSelected(entry.key),
-                      visualDensity: VisualDensity.compact,
-                      labelStyle: TextStyle(
-                        fontSize: 12,
-                        color: entry.value.selected
-                            ? Colors.white
-                            : Colors.white70,
-                      ),
-                      selectedColor: const Color.fromRGBO(84, 153, 254, 0.3),
-                      checkmarkColor: Colors.white,
-                      backgroundColor: const Color.fromRGBO(26, 28, 43, 1),
-                      side: BorderSide(
-                        color: entry.value.selected
-                            ? const Color.fromRGBO(84, 153, 254, 0.6)
-                            : Colors.white24,
-                      ),
-                    ),
+              (entry) => Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: FilterChip(
+                  label: Text(entry.value.label),
+                  selected: entry.value.selected,
+                  onSelected: (_) => onSelected(entry.key),
+                  visualDensity: VisualDensity.compact,
+                  labelStyle: TextStyle(
+                    fontSize: 12,
+                    color: entry.value.selected ? Colors.white : Colors.white70,
+                  ),
+                  selectedColor: const Color.fromRGBO(84, 153, 254, 0.3),
+                  checkmarkColor: Colors.white,
+                  backgroundColor: const Color.fromRGBO(26, 28, 43, 1),
+                  side: BorderSide(
+                    color: entry.value.selected
+                        ? const Color.fromRGBO(84, 153, 254, 0.6)
+                        : Colors.white24,
                   ),
                 ),
+              ),
+            ),
           ],
         ),
       ),

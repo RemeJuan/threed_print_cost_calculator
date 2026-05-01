@@ -102,10 +102,10 @@ class MaterialForm extends HookConsumerWidget {
                   onChanged: notifier.updateName,
                 ),
 
-          _BrandTypeahead(
-            initialValue: state.brand.value,
-            onChanged: notifier.updateBrand,
-          ),
+                _BrandTypeahead(
+                  initialValue: state.brand.value,
+                  onChanged: notifier.updateBrand,
+                ),
 
                 _MaterialTypeTypeahead(
                   initialValue: state.materialType.value,
@@ -130,13 +130,13 @@ class MaterialForm extends HookConsumerWidget {
                   key: const ValueKey<String>(
                     'settings.materials.color_hex.input',
                   ),
-                  controller: useTextEditingController(text: state.colorHex.value),
+                  controller: useTextEditingController(
+                    text: state.colorHex.value,
+                  ),
                   externalText: state.colorHex.value,
                   focusNode: useFocusNode(),
                   keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: l10n.colorHexLabel,
-                  ),
+                  decoration: InputDecoration(labelText: l10n.colorHexLabel),
                   onChanged: notifier.updateColorHex,
                 ),
 
@@ -218,9 +218,7 @@ class MaterialForm extends HookConsumerWidget {
                 const SizedBox(height: 8),
 
                 FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.materials.notes.input',
-                  ),
+                  key: const ValueKey<String>('settings.materials.notes.input'),
                   controller: notesController,
                   externalText: state.notes.value,
                   focusNode: notesFocus,
@@ -312,10 +310,7 @@ class _BrandTypeahead extends HookConsumerWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
-  const _BrandTypeahead({
-    required this.initialValue,
-    required this.onChanged,
-  });
+  const _BrandTypeahead({required this.initialValue, required this.onChanged});
 
   @override
   Widget build(context, ref) {
@@ -331,6 +326,7 @@ class _BrandTypeahead extends HookConsumerWidget {
           showSuggestions.value = false;
         });
       }
+
       focusNode.addListener(onBlur);
       return () => focusNode.removeListener(onBlur);
     }, [focusNode]);
@@ -359,7 +355,10 @@ class _BrandTypeahead extends HookConsumerWidget {
             ),
             onChanged: (v) {
               onChanged(v);
-              if (v.isNotEmpty && brands.any((b) => b.toLowerCase().contains(v.toLowerCase()))) {
+              if (v.isNotEmpty &&
+                  brands.any(
+                    (b) => b.toLowerCase().contains(v.toLowerCase()),
+                  )) {
                 showSuggestions.value = true;
               } else {
                 showSuggestions.value = false;
@@ -384,7 +383,8 @@ class _BrandTypeahead extends HookConsumerWidget {
                     itemBuilder: (_, i) {
                       final brand = brands.elementAt(i);
                       final query = controller.text.toLowerCase();
-                      if (query.isNotEmpty && !brand.toLowerCase().contains(query)) {
+                      if (query.isNotEmpty &&
+                          !brand.toLowerCase().contains(query)) {
                         return const SizedBox.shrink();
                       }
                       return InkWell(
@@ -434,6 +434,7 @@ class _MaterialTypeTypeahead extends HookConsumerWidget {
           showSuggestions.value = false;
         });
       }
+
       focusNode.addListener(onBlur);
       return () => focusNode.removeListener(onBlur);
     }, [focusNode]);
@@ -453,7 +454,9 @@ class _MaterialTypeTypeahead extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FocusSafeTextField(
-            key: const ValueKey<String>('settings.materials.material_type.input'),
+            key: const ValueKey<String>(
+              'settings.materials.material_type.input',
+            ),
             controller: controller,
             externalText: initialValue,
             focusNode: focusNode,
@@ -463,7 +466,8 @@ class _MaterialTypeTypeahead extends HookConsumerWidget {
             ),
             onChanged: (v) {
               onChanged(v);
-              if (v.isNotEmpty && types.any((t) => t.toLowerCase().contains(v.toLowerCase()))) {
+              if (v.isNotEmpty &&
+                  types.any((t) => t.toLowerCase().contains(v.toLowerCase()))) {
                 showSuggestions.value = true;
               } else {
                 showSuggestions.value = false;
@@ -488,7 +492,8 @@ class _MaterialTypeTypeahead extends HookConsumerWidget {
                     itemBuilder: (_, i) {
                       final type = types.elementAt(i);
                       final query = controller.text.toLowerCase();
-                      if (query.isNotEmpty && !type.toLowerCase().contains(query)) {
+                      if (query.isNotEmpty &&
+                          !type.toLowerCase().contains(query)) {
                         return const SizedBox.shrink();
                       }
                       return InkWell(

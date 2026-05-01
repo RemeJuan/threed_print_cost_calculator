@@ -71,11 +71,13 @@ void main() {
     testWidgets('fires onEdit callback on tap', (tester) async {
       var edited = false;
       await tester.pumpWidget(
-        _wrap(MaterialCard(
-          material: base,
-          onEdit: () => edited = true,
-          onDelete: () {},
-        )),
+        _wrap(
+          MaterialCard(
+            material: base,
+            onEdit: () => edited = true,
+            onDelete: () {},
+          ),
+        ),
       );
       await tester.pumpAndSettle();
 

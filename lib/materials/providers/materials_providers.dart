@@ -11,16 +11,21 @@ final materialsTypeFilterProvider = StateProvider<String?>((ref) => null);
 final materialsStockFilterProvider = StateProvider<StockStatus?>((ref) => null);
 
 List<MaterialModel> _materialsOrEmpty(Ref ref) {
-  return ref.watch(materialsStreamProvider).when(
-    data: (m) => m,
-    loading: () => <MaterialModel>[],
-    error: (_, _) => <MaterialModel>[],
-  );
+  return ref
+      .watch(materialsStreamProvider)
+      .when(
+        data: (m) => m,
+        loading: () => <MaterialModel>[],
+        error: (_, _) => <MaterialModel>[],
+      );
 }
 
 final materialTypesProvider = Provider<Set<String>>((ref) {
   final materials = _materialsOrEmpty(ref);
-  return materials.map((m) => m.materialType).where((t) => t.isNotEmpty).toSet();
+  return materials
+      .map((m) => m.materialType)
+      .where((t) => t.isNotEmpty)
+      .toSet();
 });
 
 final materialBrandsProvider = Provider<Set<String>>((ref) {
