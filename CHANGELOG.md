@@ -1,3 +1,8 @@
+## [2.8.2] - 2026-05-01
+### Fixed
+- Corrected risk calculation logic to apply risk percentage only to base print costs, producing more accurate pricing.
+- Fixed settings page from sometimes producing duplicate updates.
+
 ## [2.8.0] - 2026-04-28
 ### Added
 - Added G-code file import functionality for premium users. Users can import .gcode files from their device to automatically populate printer settings, material selection, and print dimensions.
