@@ -110,10 +110,10 @@ void main() {
       expect(state.wearAndTear.value, 2.5);
       expect(state.failureRisk.value, 11.5);
       expect(state.labourRate.value, 30);
-      expect(state.materialUsages, hasLength(1));
-      expect(state.materialUsages.first.materialId, 'material-1');
-      expect(state.materialUsages.first.materialName, 'PLA');
-      expect(state.materialUsages.first.costPerKg, 25);
+      expect(state.activePrinterId, 'printer-1');
+      expect(state.selectedMaterialId, '');
+      expect(state.hasHydratedDefaults, isTrue);
+      expect(state.materialUsages, isEmpty);
 
       final savedSettings = await container
           .read(settingsRepositoryProvider)
@@ -215,6 +215,25 @@ void main() {
       },
     );
 
+    test('cleared field stays cleared across re-init', () async {
+      await seedCalculatorData();
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      notifier.updateKwCost('');
+      var state = container.read(calculatorProvider);
+      expect(state.kwCost.value, isNull);
+
+      await notifier.init();
+
+      state = container.read(calculatorProvider);
+      expect(
+        state.kwCost.value,
+        isNull,
+        reason: 'blank active value must not silently reload settings default',
+      );
+    });
+
     test('zero override survives re-init', () async {
       await seedCalculatorData();
       final notifier = container.read(calculatorProvider.notifier);
@@ -231,10 +250,12 @@ void main() {
       await notifier.init();
 
       state = container.read(calculatorProvider);
-      expect(state.wearAndTear.value, 0,
-          reason: '0 must persist, not be reloaded from settings (1.5)');
-    },
-    );
+      expect(
+        state.wearAndTear.value,
+        0,
+        reason: '0 must persist, not be reloaded from settings (1.5)',
+      );
+    });
 
     test('override cleared to zero does not reload settings default', () async {
       await seedCalculatorData();
@@ -255,10 +276,12 @@ void main() {
       await notifier.init();
 
       state = container.read(calculatorProvider);
-      expect(state.markupPercent.value, 0,
-          reason: 'cleared value must stay 0, not reload settings default 10');
-    },
-    );
+      expect(
+        state.markupPercent.value,
+        0,
+        reason: 'cleared value must stay 0, not reload settings default 10',
+      );
+    });
 
     test('submit uses current overrides, not settings defaults', () async {
       await seedCalculatorData();
@@ -277,7 +300,52 @@ void main() {
       state = container.read(calculatorProvider);
       expect(state.pricing.markupPercent, 25);
       expect(state.pricing.markupAmount, greaterThan(0));
-    },
+    });
+
+    test(
+      'changing settings does not mutate in-progress form until reset',
+      () async {
+        await seedCalculatorData();
+        final notifier = container.read(calculatorProvider.notifier);
+        await notifier.init();
+
+        notifier.setMarkupPercent(25);
+        notifier.updateKwCost('0.77');
+
+        await container
+            .read(settingsRepositoryProvider)
+            .saveSettings(
+              GeneralSettingsModel(
+                electricityCost: '0.99',
+                wattage: '100',
+                activePrinter: 'printer-1',
+                selectedMaterial: 'material-1',
+                wearAndTear: '1.50',
+                failureRisk: '5.00',
+                labourRate: '20',
+                pricingMarkupPercent: '40',
+                pricingSetupFee: '8',
+                pricingRoundingMode: '.00',
+              ),
+            );
+
+        await notifier.init();
+
+        var state = container.read(calculatorProvider);
+        expect(state.markupPercent.value, 25);
+        expect(state.kwCost.value, 0.77);
+        expect(state.setupFee.value, 5);
+        expect(state.roundingMode, PricingRoundingMode.none);
+
+        await notifier.resetToDefaults();
+
+        state = container.read(calculatorProvider);
+        expect(state.markupPercent.value, 40);
+        expect(state.kwCost.value, 0.99);
+        expect(state.setupFee.value, 8);
+        expect(state.roundingMode, PricingRoundingMode.wholeDollar);
+        expect(state.materialUsages, isEmpty);
+      },
     );
   });
 }

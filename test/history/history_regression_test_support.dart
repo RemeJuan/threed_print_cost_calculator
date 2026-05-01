@@ -167,12 +167,16 @@ class HistoryRegressionFixtures {
   );
 
   static final fallbackState = CalculatorState(
+    activePrinterId: fallbackPrinter.id,
+    selectedMaterialId: fallbackMaterial.id,
     printWeight: NumberInput.dirty(value: 14),
     hours: NumberInput.dirty(value: 1),
     minutes: NumberInput.dirty(value: 0),
   );
 
   static final initializedState = CalculatorState(
+    activePrinterId: initializedPrinter.id,
+    selectedMaterialId: initializedMaterial.id,
     materialUsages: [
       MaterialUsageInput(
         materialId: 'mat-standard',

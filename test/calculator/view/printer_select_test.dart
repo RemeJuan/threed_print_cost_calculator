@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
@@ -33,9 +34,13 @@ void main() {
         activePrinter: 'printer-a',
       ),
     );
+    final calculatorNotifier = FakeCalculatorNotifier(
+      initialState: CalculatorState(activePrinterId: 'printer-a'),
+    );
     final printers = {'printer-a': printer('printer-a', 'Printer A', '120')};
 
     await tester.pumpApp(const PrinterSelect(), [
+      calculatorProvider.overrideWith(() => calculatorNotifier),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
       printersStreamProvider.overrideWith(
         (ref) => Stream.value(printers.values.toList()),
@@ -45,15 +50,14 @@ void main() {
     await tester.pumpAndSettle();
 
     final dropdown = tester.widget<DropdownButtonFormField<String>>(
-      find.byKey(const ValueKey<String>('calculator.printer.select')),
+      find.byType(DropdownButtonFormField<String>),
     );
     expect(dropdown.initialValue, 'printer-a');
   });
 
-  testWidgets('changing printer saves settings and updates wattage', (
+  testWidgets('changing printer delegates to calculator form state', (
     tester,
   ) async {
-    final settingsRepo = FakeSettingsRepository();
     final calculatorNotifier = FakeCalculatorNotifier();
     final printers = [
       printer('printer-a', 'Printer A', '120'),
@@ -62,23 +66,18 @@ void main() {
 
     await tester.pumpApp(const PrinterSelect(), [
       calculatorProvider.overrideWith(() => calculatorNotifier),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
       printersStreamProvider.overrideWith((ref) => Stream.value(printers)),
     ]);
 
     await tester.pumpAndSettle();
 
-    await tester.tap(
-      find.byKey(const ValueKey<String>('calculator.printer.select')),
+    final dropdown = tester.widget<DropdownButtonFormField<String>>(
+      find.byType(DropdownButtonFormField<String>),
     );
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.byKey(const ValueKey<String>('calculator.printer.option.Printer B')),
-    );
+    dropdown.onChanged?.call('printer-b');
     await tester.pumpAndSettle();
 
-    expect(settingsRepo.lastSavedSettings?.activePrinter, 'printer-b');
-    expect(calculatorNotifier.wattUpdates, ['700']);
+    expect(calculatorNotifier.selectedPrinters, ['printer-b']);
   });
 
   testWidgets('empty printer data hides the select', (tester) async {

@@ -21,7 +21,9 @@ class FakeCalculatorNotifier extends CalculatorProvider {
   int initCalls = 0;
   int submitCalls = 0;
   int loadFromHistoryCalls = 0;
+  int resetCalls = 0;
   final List<String> wattUpdates = [];
+  final List<String> selectedPrinters = [];
   final List<MaterialModel> selectedMaterials = [];
   HistoryEntry? lastLoadedHistory;
 
@@ -46,12 +48,22 @@ class FakeCalculatorNotifier extends CalculatorProvider {
   }
 
   @override
+  Future<void> resetToDefaults() async {
+    resetCalls += 1;
+  }
+
+  @override
   void updateWatt(String value) {
     wattUpdates.add(value);
   }
 
   @override
-  void selectMaterial(MaterialModel material) {
+  Future<void> selectPrinter(String printerId) async {
+    selectedPrinters.add(printerId);
+  }
+
+  @override
+  Future<void> selectMaterial(MaterialModel material) async {
     selectedMaterials.add(material);
   }
 }

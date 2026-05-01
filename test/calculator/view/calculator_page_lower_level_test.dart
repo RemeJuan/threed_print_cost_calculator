@@ -93,6 +93,31 @@ void main() {
     expect(paywallPresenter.calls, 0);
   });
 
+  testWidgets('reset action confirms before calling notifier reset', (
+    tester,
+  ) async {
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
+    );
+    final paywallPresenter = FakePaywallPresenter();
+
+    await pumpPage(tester, gateway, calculatorNotifier, paywallPresenter);
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('calculator.reset.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(calculatorNotifier.resetCalls, 0);
+
+    await tester.tap(find.widgetWithText(FilledButton, 'Reset'));
+    await tester.pumpAndSettle();
+
+    expect(calculatorNotifier.resetCalls, 1);
+  });
+
   testWidgets('loading users do not trigger paywall unexpectedly', (
     tester,
   ) async {

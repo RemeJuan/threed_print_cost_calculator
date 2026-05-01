@@ -3,9 +3,11 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/lower_level_test_fakes.dart';
 
 MaterialModel _material({
   required String id,
@@ -36,6 +38,9 @@ void main() {
           calculatorPreferencesRepositoryProvider.overrideWith(
             _FakeCalculatorPreferencesRepository.new,
           ),
+          settingsRepositoryProvider.overrideWithValue(
+            FakeSettingsRepository(),
+          ),
         ],
       );
       notifier = container.read(calculatorProvider.notifier);
@@ -57,34 +62,45 @@ void main() {
       container.dispose();
     });
 
-    test('material change updates total for non-zero to non-zero cost', () {
-      final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
-      final materialB = _material(id: 'mat-b', name: 'Material B', cost: '30');
+    test(
+      'material change updates total for non-zero to non-zero cost',
+      () async {
+        final materialA = _material(
+          id: 'mat-a',
+          name: 'Material A',
+          cost: '60',
+        );
+        final materialB = _material(
+          id: 'mat-b',
+          name: 'Material B',
+          cost: '30',
+        );
 
-      notifier.selectMaterial(materialA);
-      expect(notifier.state.spoolCost.value, 60);
-      expect(notifier.state.materialUsages.single.materialId, 'mat-a');
-      expect(notifier.state.materialUsages.single.costPerKg, 60);
-      expect(notifier.state.results.filament, 6.0);
-      expect(notifier.state.results.total, 6.0);
+        await notifier.selectMaterial(materialA);
+        expect(notifier.state.spoolCost.value, 60);
+        expect(notifier.state.materialUsages.single.materialId, 'mat-a');
+        expect(notifier.state.materialUsages.single.costPerKg, 60);
+        expect(notifier.state.results.filament, 6.0);
+        expect(notifier.state.results.total, 6.0);
 
-      notifier.selectMaterial(materialB);
+        await notifier.selectMaterial(materialB);
 
-      expect(notifier.state.spoolCost.value, 30);
-      expect(notifier.state.materialUsages.single.materialId, 'mat-b');
-      expect(notifier.state.materialUsages.single.costPerKg, 30);
-      expect(notifier.state.results.filament, 3.0);
-      expect(notifier.state.results.total, 3.0);
-    });
+        expect(notifier.state.spoolCost.value, 30);
+        expect(notifier.state.materialUsages.single.materialId, 'mat-b');
+        expect(notifier.state.materialUsages.single.costPerKg, 30);
+        expect(notifier.state.results.filament, 3.0);
+        expect(notifier.state.results.total, 3.0);
+      },
+    );
 
-    test('material change updates total for non-zero to zero cost', () {
+    test('material change updates total for non-zero to zero cost', () async {
       final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
       final materialC = _material(id: 'mat-c', name: 'Material C', cost: '0.0');
 
-      notifier.selectMaterial(materialA);
+      await notifier.selectMaterial(materialA);
       expect(notifier.state.results.total, 6.0);
 
-      notifier.selectMaterial(materialC);
+      await notifier.selectMaterial(materialC);
 
       expect(notifier.state.spoolCost.value, 0.0);
       expect(notifier.state.materialUsages.single.materialId, 'mat-c');
@@ -93,14 +109,14 @@ void main() {
       expect(notifier.state.results.total, 0.0);
     });
 
-    test('material change updates total for zero to non-zero cost', () {
+    test('material change updates total for zero to non-zero cost', () async {
       final materialC = _material(id: 'mat-c', name: 'Material C', cost: '0');
       final materialD = _material(id: 'mat-d', name: 'Material D', cost: '45');
 
-      notifier.selectMaterial(materialC);
+      await notifier.selectMaterial(materialC);
       expect(notifier.state.results.total, 0.0);
 
-      notifier.selectMaterial(materialD);
+      await notifier.selectMaterial(materialD);
 
       expect(notifier.state.spoolCost.value, 45);
       expect(notifier.state.materialUsages.single.materialId, 'mat-d');
