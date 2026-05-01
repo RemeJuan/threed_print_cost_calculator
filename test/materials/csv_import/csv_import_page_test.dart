@@ -22,6 +22,7 @@ void main() {
 
       final l10n = lookupAppLocalizations(const Locale('en'));
       expect(find.text(l10n.csvImportTitle), findsOneWidget);
+      expect(find.text(l10n.csvImportIntro), findsOneWidget);
       expect(find.text(l10n.csvSelectFileButton), findsOneWidget);
       expect(find.text(l10n.csvTemplateButton), findsOneWidget);
     });

@@ -14,8 +14,8 @@ const _csvHeader =
     'name,brand,material_type,color,color_hex,spool_weight,'
     'remaining_weight,spool_cost,notes';
 
-final _sampleRow1 = 'PLA Pro+,Sunlu,PLA,Black,,1000,950,24.99,';
-final _sampleRow2 = 'PETG Black,Overture,PETG,White,,1000,950,24.99,';
+const _sampleRow1 = 'PLA Pro+,Sunlu,PLA,Black,,1000,950,24.99,';
+const _sampleRow2 = 'PETG Black,Overture,PETG,White,,1000,950,24.99,';
 
 class CsvImportPage extends ConsumerStatefulWidget {
   const CsvImportPage({super.key});
@@ -32,14 +32,29 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
   String get _csvTemplate => '$_csvHeader\n$_sampleRow1\n$_sampleRow2';
 
   Future<void> _downloadTemplate() async {
-    final file = File(
-      '${(await getTemporaryDirectory()).path}/material_template.csv',
-    );
-    await file.writeAsString(_csvTemplate);
+    File? tempFile;
+    try {
+      tempFile = File(
+        '${(await getTemporaryDirectory()).path}/material_template.csv',
+      );
+      await tempFile.writeAsString(_csvTemplate);
 
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], text: 'Material CSV Template'),
-    );
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile(tempFile.path)],
+          text: _l10n!.csvTemplateShareText,
+        ),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_l10n!.csvTemplateError)),
+      );
+    } finally {
+      if (tempFile != null && await tempFile.exists()) {
+        await tempFile.delete();
+      }
+    }
   }
 
   Future<void> _pickFile() async {
@@ -54,8 +69,15 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       return;
     }
 
-    final content = await result.readAsString();
-    _parseCsv(content);
+    try {
+      final content = await result.readAsString();
+      _parseCsv(content);
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_l10n!.csvReadError)),
+      );
+    }
   }
 
   void _parseCsv(String content) {
