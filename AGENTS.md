@@ -50,8 +50,26 @@
 - Shared hidden test-tool widgets/services belong under `lib/shared/test_tools/`, not `lib/testing/`.
 
 ## Workflow notes
-- Prefer FVM-backed commands locally even if some CI jobs call plain `flutter`/`dart`.
-- `make bump_fix`, `make bump_feat`, `make bump_build` update app version; maintenance workflow uses `make bump_fix` after analyze/test pass.
+- Agents must read `docs/navigation.md` before broad exploration.
+- Exploration budget before first plan: max 8 `Read`, 4 `Grep`, 2 `Bash` calls.
+- Prefer targeted `rg`/content search over broad filesystem scans.
+- Produce a short plan before code changes.
+
+- MCP usage (optional, not primary):
+  - Use `codebase-memory-mcp_search_graph` only after reading `docs/navigation.md`.
+  - Use MCP to confirm relationships or locate cross-feature links, not for initial discovery.
+  - Limit to max 2 MCP queries per task unless clearly justified.
+
+- Exploration priority order:
+  1. `docs/navigation.md`
+  2. Known entry points / feature roots
+  3. Targeted `rg` searches
+  4. MCP queries (fallback)
+
+- Anti-patterns:
+  - Do not start tasks with MCP queries.
+  - Do not use MCP for simple file lookups.
+  - Avoid repeated or redundant MCP calls.
 
 ## Changelog rules
 - CHANGELOG.md is user-facing but more detailed than store notes
@@ -60,6 +78,9 @@
 - New entries go at the top
 
 ## Documentation
+- `docs/navigation.md` - Repo navigation map for agents before broad exploration.
+- `docs/feature-map.md` - Feature-by-feature path map, state, services, models, and tests.
+- `docs/architecture.md` - Current architecture, persistence, premium, localization, testing, and CI notes.
 - `docs/README.md` - Documentation index
 - `docs/gcode/` - G-code parser docs (overview, edge cases, slicer-specific docs, preview, test matrix)
 - `docs/dev/patrol-ci.md` - Patrol E2E testing guide
