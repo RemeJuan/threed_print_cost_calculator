@@ -20,11 +20,21 @@ class JobPricingOverridesSection extends HookConsumerWidget {
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
 
-    final wearController = useTextEditingController();
-    final failureController = useTextEditingController();
-    final labourRateController = useTextEditingController();
-    final markupController = useTextEditingController();
-    final additionalCostController = useTextEditingController();
+    final wearController = useTextEditingController(
+      text: (state.wearAndTear.value ?? 0).toString(),
+    );
+    final failureController = useTextEditingController(
+      text: (state.failureRisk.value ?? 0).toString(),
+    );
+    final labourRateController = useTextEditingController(
+      text: (state.labourRate.value ?? 0).toString(),
+    );
+    final markupController = useTextEditingController(
+      text: (state.markupPercent.value ?? 0).toString(),
+    );
+    final additionalCostController = useTextEditingController(
+      text: (state.additionalCostAmount.value ?? 0).toString(),
+    );
 
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -43,8 +53,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                 'calculator.rates.wearAndTear.input',
               ),
               onChanged: (value) {
-                final parsed = tryParseLocalizedNum(value);
-                if (parsed == null) return;
+                final parsed = tryParseLocalizedNum(value) ?? 0;
                 notifier
                   ..setWearAndTear(parsed)
                   ..submitDebounced();
@@ -64,8 +73,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                 'calculator.rates.failureRisk.input',
               ),
               onChanged: (value) {
-                final parsed = tryParseLocalizedNum(value);
-                if (parsed == null) return;
+                final parsed = tryParseLocalizedNum(value) ?? 0;
                 notifier
                   ..setFailureRisk(parsed)
                   ..submitDebounced();
@@ -88,8 +96,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                 'calculator.adjustments.labourRate.input',
               ),
               onChanged: (value) {
-                final parsed = tryParseLocalizedNum(value);
-                if (parsed == null) return;
+                final parsed = tryParseLocalizedNum(value) ?? 0;
                 notifier
                   ..setLabourRate(parsed)
                   ..submitDebounced();
@@ -109,8 +116,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                 'calculator.pricing.markup.input',
               ),
               onChanged: (value) {
-                final parsed = tryParseLocalizedNum(value);
-                if (parsed == null) return;
+                final parsed = tryParseLocalizedNum(value) ?? 0;
                 notifier
                   ..setMarkupPercent(parsed)
                   ..submitDebounced();
@@ -137,8 +143,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                     'calculator.additionalCost.input',
                   ),
                   onChanged: (value) {
-                    final parsed = tryParseLocalizedNum(value);
-                    if (parsed == null) return;
+                    final parsed = tryParseLocalizedNum(value) ?? 0;
                     notifier
                       ..setAdditionalCostAmount(parsed)
                       ..submitDebounced();
