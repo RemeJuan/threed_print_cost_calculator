@@ -179,7 +179,7 @@ void main() {
     await tester.pump();
 
     expect(
-      tester
+       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
        3,
@@ -193,11 +193,11 @@ void main() {
     await tester.pump();
 
     expect(
-      tester
+       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      1,
-    );
+       1,
+     );
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
       findsNothing,
@@ -248,10 +248,10 @@ void main() {
     await tester.pump();
 
     expect(
-      tester
+       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      2,
+       2,
     );
   });
 
@@ -376,11 +376,11 @@ void main() {
     await tester.pump();
 
     expect(
-       tester
+      tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-       1,
-     );
+      1,
+    );
     final container = ProviderScope.containerOf(
       tester.element(find.byType(BottomNavigationBar)),
     );
@@ -400,7 +400,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-       2,
+      2,
     );
   });
 

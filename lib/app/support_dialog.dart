@@ -20,7 +20,6 @@ class SupportDialog extends ConsumerWidget {
     final linkFont = Theme.of(
       context,
     ).textTheme.displayMedium?.copyWith(fontSize: 12);
-    debugPrint('the userid, $userId');
     return Dialog(
       child: // Replace fixed height SizedBox with a ConstrainedBox + SingleChildScrollView
       ConstrainedBox(
