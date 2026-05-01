@@ -329,6 +329,15 @@ class AppLocalizationsTh extends AppLocalizations {
   String get labourCostLabel => 'ค่าแรง';
 
   @override
+  String get additionalCostLabel => 'ค่าใช้จ่ายเพิ่มเติม';
+
+  @override
+  String get additionalCostNoteLabel => 'หมายเหตุค่าใช้จ่ายเพิ่มเติม';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'หมายเหตุค่าใช้จ่ายเพิ่มเติม';
+
+  @override
   String get riskCostLabel => 'ความเสี่ยง';
 
   @override

@@ -331,6 +331,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labourCostLabel => 'Arbeitskosten';
 
   @override
+  String get additionalCostLabel => 'Zusatzkosten';
+
+  @override
+  String get additionalCostNoteLabel => 'Notiz zu Zusatzkosten';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'Notiz zu Zusatzkosten';
+
+  @override
   String get riskCostLabel => 'Risikokosten';
 
   @override

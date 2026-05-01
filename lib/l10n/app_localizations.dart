@@ -732,6 +732,24 @@ abstract class AppLocalizations {
   /// **'Labour'**
   String get labourCostLabel;
 
+  /// No description provided for @additionalCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional cost'**
+  String get additionalCostLabel;
+
+  /// No description provided for @additionalCostNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional cost note'**
+  String get additionalCostNoteLabel;
+
+  /// No description provided for @additionalCostNoteDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional cost note'**
+  String get additionalCostNoteDialogTitle;
+
   /// No description provided for @riskCostLabel.
   ///
   /// In en, this message translates to:

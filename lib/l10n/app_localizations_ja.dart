@@ -324,6 +324,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get labourCostLabel => '人件費';
 
   @override
+  String get additionalCostLabel => '追加費用';
+
+  @override
+  String get additionalCostNoteLabel => '追加費用メモ';
+
+  @override
+  String get additionalCostNoteDialogTitle => '追加費用メモ';
+
+  @override
   String get riskCostLabel => 'リスク';
 
   @override

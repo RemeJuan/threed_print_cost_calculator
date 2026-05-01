@@ -329,6 +329,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get labourCostLabel => 'Tenaga kerja';
 
   @override
+  String get additionalCostLabel => 'Biaya tambahan';
+
+  @override
+  String get additionalCostNoteLabel => 'Catatan biaya tambahan';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'Catatan biaya tambahan';
+
+  @override
   String get riskCostLabel => 'Risiko';
 
   @override
