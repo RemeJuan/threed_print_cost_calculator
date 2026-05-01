@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
@@ -151,6 +152,18 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
 
     final isHistoryTeaserSelected =
         showHistoryTeaser && renderedTab == _AppTab.history;
+
+    useEffect(() {
+      if (renderedTab != _AppTab.materials) {
+        return null;
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppAnalytics.safeLog(AppAnalytics.materialsViewOpened);
+      });
+
+      return null;
+    }, [renderedTab]);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
