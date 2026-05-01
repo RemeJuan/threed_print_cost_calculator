@@ -55,6 +55,12 @@
 - Prefer targeted `rg`/content search over broad filesystem scans.
 - Produce a short plan before code changes.
 
+- Documentation updates:
+  - Update docs when feature behavior, analytics/events, or app flows change.
+  - Prefer updating `docs/feature-map.md` for feature-level changes.
+  - Update `docs/architecture.md` when patterns, persistence, or integrations change.
+  - Keep docs aligned in the same task when possible.
+
 - MCP usage (optional, not primary):
   - Use `codebase-memory-mcp_search_graph` only after reading `docs/navigation.md`.
   - Use MCP to confirm relationships or locate cross-feature links, not for initial discovery.
