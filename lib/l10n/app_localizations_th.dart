@@ -209,6 +209,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get supportIdLabel => 'โปรดระบุรหัสสนับสนุนของคุณ: ';
 
   @override
+  String get supportEmailSubject => 'การสนับสนุน 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(แตะเพื่อคัดลอก)';
 
   @override
@@ -229,6 +232,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'นโยบายความเป็นส่วนตัว';
+
+  @override
+  String get websiteLink => 'Website';
 
   @override
   String get termsOfUseLink => 'ข้อกำหนดการใช้งาน';

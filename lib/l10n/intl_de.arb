@@ -133,6 +133,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Bitte geben Sie Ihre Support-ID an: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Support für 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(zum Kopieren klicken)",
   "materialWeightExplanation": "Das Materialgewicht ist das Gesamtgewicht des Ausgangsmaterials, also der gesamten Filamentrolle. Die Kosten sind die Kosten der gesamten Einheit.",
   "@materialWeightExplanation": {
@@ -173,6 +175,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Datenschutzrichtlinie",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "Nutzungsbedingungen",
   "@termsOfUseLink": {},
   "separator": " | ",

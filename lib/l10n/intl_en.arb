@@ -76,6 +76,7 @@
   "supportEmailPrefix": "For any issues, please mail me at ",
   "supportEmail": "3d@printcostcalc.app",
   "supportIdLabel": "Please include your Support ID: ",
+  "supportEmailSubject": "3D Print Cost Calculator Support",
   "clickToCopy": "(click to copy)",
   "materialWeightExplanation": "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
   "@materialWeightExplanation": {
@@ -95,6 +96,7 @@
     "description": "Label for export action in history list"
   },
   "privacyPolicyLink": "Privacy Policy",
+  "websiteLink": "Website",
   "termsOfUseLink": "Terms of Use",
   "separator": " | ",
   "closeButton": "Close",

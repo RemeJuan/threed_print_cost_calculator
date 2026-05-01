@@ -504,6 +504,12 @@ abstract class AppLocalizations {
   /// **'Please include your Support ID: '**
   String get supportIdLabel;
 
+  /// No description provided for @supportEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost Calculator Support'**
+  String get supportEmailSubject;
+
   /// No description provided for @clickToCopy.
   ///
   /// In en, this message translates to:
@@ -545,6 +551,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicyLink;
+
+  /// No description provided for @websiteLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get websiteLink;
 
   /// No description provided for @termsOfUseLink.
   ///

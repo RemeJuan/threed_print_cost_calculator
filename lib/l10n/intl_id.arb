@@ -133,6 +133,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Harap sertakan ID Dukungan Anda: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Dukungan 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(ketuk untuk menyalin)",
   "materialWeightExplanation": "Berat bahan adalah total berat bahan sumber, yaitu seluruh gulungan filamen. Biaya adalah harga seluruh unit.",
   "@materialWeightExplanation": {
@@ -173,6 +175,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Kebijakan Privasi",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "Ketentuan Penggunaan",
   "@termsOfUseLink": {},
   "separator": " | ",

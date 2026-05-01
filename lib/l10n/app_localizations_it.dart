@@ -213,6 +213,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get supportIdLabel => 'Includi il tuo ID di supporto: ';
 
   @override
+  String get supportEmailSubject => 'Supporto 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(tocca per copiare)';
 
   @override
@@ -233,6 +236,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Informativa sulla privacy';
+
+  @override
+  String get websiteLink => 'Website';
 
   @override
   String get termsOfUseLink => 'Termini di utilizzo';

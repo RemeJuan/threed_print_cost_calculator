@@ -134,6 +134,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Veuillez inclure votre ID de support : ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Assistance pour 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(cliquer pour copier)",
   "materialWeightExplanation": "Le poids du matériau est le poids total du matériau source, c'est-à-dire toute la bobine de filament. Le coût est celui de l'unité complète.",
   "@materialWeightExplanation": {
@@ -174,6 +176,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Politique de confidentialité",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "Conditions d'utilisation",
   "@termsOfUseLink": {},
   "separator": " | ",

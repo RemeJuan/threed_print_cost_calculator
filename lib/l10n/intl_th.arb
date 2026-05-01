@@ -134,6 +134,8 @@
   "@supportEmail": {},
   "supportIdLabel": "โปรดระบุรหัสสนับสนุนของคุณ: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "การสนับสนุน 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(แตะเพื่อคัดลอก)",
   "materialWeightExplanation": "น้ำหนักวัสดุคือน้ำหนักรวมของวัสดุต้นทาง หรือก็คือน้ำหนักของม้วนฟิลาเมนต์ทั้งม้วน ค่าใช้จ่ายคือราคาของหน่วยทั้งหมด",
   "@materialWeightExplanation": {
@@ -174,6 +176,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "นโยบายความเป็นส่วนตัว",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "ข้อกำหนดการใช้งาน",
   "@termsOfUseLink": {},
   "separator": " | ",

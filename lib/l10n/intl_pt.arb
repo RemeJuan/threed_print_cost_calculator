@@ -133,6 +133,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Inclua seu ID de suporte: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Suporte do 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(toque para copiar)",
   "materialWeightExplanation": "O peso do material é o peso total do material de origem, ou seja, todo o rolo de filamento. O custo é o custo da unidade inteira.",
   "@materialWeightExplanation": {
@@ -173,6 +175,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de Privacidade",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "Termos de Uso",
   "@termsOfUseLink": {},
   "separator": " | ",

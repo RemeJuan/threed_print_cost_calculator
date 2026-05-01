@@ -134,6 +134,8 @@
   "@supportEmail": {},
   "supportIdLabel": "サポートIDを含めてください: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "3D Print Cost Calculator サポート",
+  "@supportEmailSubject": {},
   "clickToCopy": "（タップしてコピー）",
   "materialWeightExplanation": "材料重量は元の材料全体の重量、つまりフィラメントロール全体の重量です。コストはユニット全体の価格です。",
   "@materialWeightExplanation": {
@@ -174,6 +176,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "プライバシーポリシー",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "利用規約",
   "@termsOfUseLink": {},
   "separator": " | ",

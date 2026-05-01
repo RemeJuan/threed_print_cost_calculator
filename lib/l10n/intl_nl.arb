@@ -134,6 +134,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Voeg je support-ID toe: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Ondersteuning voor 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(klik om te kopiëren)",
   "materialWeightExplanation": "Materiaalgewicht is het totale gewicht van het bronmateriaal, dus de volledige rol filament. De kosten zijn de kosten van de volledige eenheid.",
   "@materialWeightExplanation": {
@@ -174,6 +176,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",
   "@privacyPolicyLink": {},
+  "websiteLink": "Website",
+  "@websiteLink": {},
   "termsOfUseLink": "Gebruiksvoorwaarden",
   "@termsOfUseLink": {},
   "separator": " | ",
