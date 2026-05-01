@@ -151,6 +151,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get cancelButton => 'Abbrechen';
 
   @override
+  String get resetButtonLabel => 'Zurücksetzen';
+
+  @override
+  String get resetCalculationTitle => 'Berechnung zurücksetzen?';
+
+  @override
+  String get resetCalculationBody =>
+      'Dadurch werden die aktuellen Rechnerwerte verworfen und die aktuellen Standardwerte neu geladen.';
+
+  @override
   String get deleteButton => 'Löschen';
 
   @override

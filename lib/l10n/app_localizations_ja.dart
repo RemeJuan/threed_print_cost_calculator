@@ -150,6 +150,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cancelButton => 'キャンセル';
 
   @override
+  String get resetButtonLabel => 'リセット';
+
+  @override
+  String get resetCalculationTitle => '計算をリセットしますか？';
+
+  @override
+  String get resetCalculationBody => '現在の計算機の値を破棄し、現在のデフォルト値を再読み込みします。';
+
+  @override
   String get deleteButton => '削除';
 
   @override

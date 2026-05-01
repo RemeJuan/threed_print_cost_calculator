@@ -151,6 +151,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelButton => 'Cancel';
 
   @override
+  String get resetButtonLabel => 'Reset';
+
+  @override
+  String get resetCalculationTitle => 'Reset calculation?';
+
+  @override
+  String get resetCalculationBody =>
+      'This will discard your current calculator values and reload current defaults.';
+
+  @override
   String get deleteButton => 'Delete';
 
   @override

@@ -150,6 +150,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String get cancelButton => 'ยกเลิก';
 
   @override
+  String get resetButtonLabel => 'รีเซ็ต';
+
+  @override
+  String get resetCalculationTitle => 'รีเซ็ตการคำนวณหรือไม่?';
+
+  @override
+  String get resetCalculationBody =>
+      'การดำเนินการนี้จะลบค่าปัจจุบันในเครื่องคำนวณ และโหลดค่าเริ่มต้นปัจจุบันใหม่';
+
+  @override
   String get deleteButton => 'ลบ';
 
   @override

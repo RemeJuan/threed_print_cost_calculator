@@ -396,6 +396,24 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancelButton;
 
+  /// No description provided for @resetButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetButtonLabel;
+
+  /// No description provided for @resetCalculationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset calculation?'**
+  String get resetCalculationTitle;
+
+  /// No description provided for @resetCalculationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will discard your current calculator values and reload current defaults.'**
+  String get resetCalculationBody;
+
   /// No description provided for @deleteButton.
   ///
   /// In en, this message translates to:

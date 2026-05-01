@@ -151,6 +151,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get cancelButton => 'Cancelar';
 
   @override
+  String get resetButtonLabel => 'Redefinir';
+
+  @override
+  String get resetCalculationTitle => 'Redefinir cálculo?';
+
+  @override
+  String get resetCalculationBody =>
+      'Isso descartará os valores atuais da calculadora e recarregará os padrões atuais.';
+
+  @override
   String get deleteButton => 'Excluir';
 
   @override

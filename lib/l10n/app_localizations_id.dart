@@ -150,6 +150,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get cancelButton => 'Batal';
 
   @override
+  String get resetButtonLabel => 'Reset';
+
+  @override
+  String get resetCalculationTitle => 'Reset perhitungan?';
+
+  @override
+  String get resetCalculationBody =>
+      'Ini akan membuang nilai kalkulator saat ini dan memuat ulang nilai default saat ini.';
+
+  @override
   String get deleteButton => 'Hapus';
 
   @override
