@@ -10,6 +10,7 @@
 .buildlog/
 .history
 .svn/
+untranslated-messages.json
 
 # IntelliJ related
 *.iml
