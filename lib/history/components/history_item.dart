@@ -116,6 +116,13 @@ class HistoryItem extends HookConsumerWidget {
                   data.labourCost,
                   key: ValueKey<String>('$itemKeyPrefix.labourCost'),
                 ),
+                if (data.additionalCostAmount > 0)
+                  _row(
+                    context,
+                    l10n.additionalCostLabel,
+                    data.additionalCostAmount,
+                    key: ValueKey<String>('$itemKeyPrefix.additionalCost'),
+                  ),
                 _row(
                   context,
                   l10n.riskCostLabel,
@@ -329,6 +336,45 @@ class HistoryItem extends HookConsumerWidget {
                                           ],
                                         );
                                       },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                        if ((data.additionalCostNote ?? '').trim().isNotEmpty) ...[
+                          const SizedBox(height: 8),
+                          Theme(
+                            data: Theme.of(
+                              context,
+                            ).copyWith(dividerColor: Colors.transparent),
+                            child: ExpansionTile(
+                              tilePadding: EdgeInsets.zero,
+                              childrenPadding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              collapsedBackgroundColor: Colors.transparent,
+                              iconColor: Colors.white70,
+                              collapsedIconColor: Colors.white54,
+                              title: Text(
+                                l10n.additionalCostNoteLabel,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Colors.white70),
+                              ),
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Text(
+                                      data.additionalCostNote!,
+                                      key: ValueKey<String>(
+                                        '$itemKeyPrefix.additionalCostNote',
+                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(color: Colors.white70),
                                     ),
                                   ),
                                 ),

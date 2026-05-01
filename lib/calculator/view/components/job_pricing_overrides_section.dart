@@ -9,6 +9,8 @@ import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatte
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
+import 'additional_cost_note_dialog.dart';
+
 class JobPricingOverridesSection extends HookConsumerWidget {
   const JobPricingOverridesSection({super.key});
 
@@ -22,6 +24,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
     final failureController = useTextEditingController();
     final labourRateController = useTextEditingController();
     final markupController = useTextEditingController();
+    final additionalCostController = useTextEditingController();
 
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -119,6 +122,56 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                 );
               },
             ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _numberField(
+                  controller: additionalCostController,
+                  externalText:
+                      (state.additionalCostAmount.value ?? 0).toString(),
+                  label: l10n.additionalCostLabel,
+                  fieldKey: const ValueKey<String>(
+                    'calculator.additionalCost.input',
+                  ),
+                  onChanged: (value) {
+                    final parsed = tryParseLocalizedNum(value);
+                    if (parsed == null) return;
+                    notifier
+                      ..setAdditionalCostAmount(parsed)
+                      ..submitDebounced();
+                    AppAnalytics.safeLog(
+                      () => AppAnalytics.pricingOverrideUsed(
+                        field: 'additional_cost',
+                        hasOverrides: true,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                key: const ValueKey<String>('calculator.additionalCost.note.button'),
+                tooltip: l10n.additionalCostNoteLabel,
+                onPressed: () async {
+                  final note = await showDialog<String>(
+                    context: context,
+                    builder: (_) => AdditionalCostNoteDialog(
+                      initialValue: state.additionalCostNote,
+                    ),
+                  );
+                  if (note == null) return;
+                  notifier.setAdditionalCostNote(note);
+                },
+                icon: Icon(
+                  state.additionalCostNote == null
+                      ? Icons.edit_outlined
+                      : Icons.sticky_note_2_outlined,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
         ],

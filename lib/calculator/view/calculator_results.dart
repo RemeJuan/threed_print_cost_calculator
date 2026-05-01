@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -22,6 +23,9 @@ class CalculatorResults extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final isPremium = ref.watch(isPremiumProvider);
     final shouldShowProPromotion = ref.watch(shouldShowProPromotionProvider);
+    final additionalCostAmount = ref.watch(
+      calculatorProvider.select((state) => state.additionalCostAmount.value ?? 0),
+    );
     const width = kIsWeb ? 250.0 : null;
 
     return Container(
@@ -59,6 +63,13 @@ class CalculatorResults extends ConsumerWidget {
               results.labour,
               key: const ValueKey<String>('calculator.result.labourCost'),
             ),
+            if (additionalCostAmount > 0)
+              _itemRow(
+                context,
+                l10n.additionalCostLabel,
+                additionalCostAmount,
+                key: const ValueKey<String>('calculator.result.additionalCost'),
+              ),
           ] else if (shouldShowProPromotion) ...[
             _lockedPromoRow(
               context,
