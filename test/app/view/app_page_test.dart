@@ -182,7 +182,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      2,
+      3,
     );
 
     gateway.emit(
@@ -196,7 +196,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      1,
+      2,
     );
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
@@ -281,7 +281,7 @@ void main() {
         tester
             .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
             .currentIndex,
-        1,
+        2,
       );
 
       final container = ProviderScope.containerOf(
@@ -379,7 +379,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      1,
+      2,
     );
     final container = ProviderScope.containerOf(
       tester.element(find.byType(BottomNavigationBar)),
@@ -400,7 +400,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      2,
+      3,
     );
   });
 

@@ -8,6 +8,8 @@ import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
+import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
@@ -16,7 +18,7 @@ import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visi
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 
-enum _AppTab { calculator, history, settings }
+enum _AppTab { calculator, materials, history, settings }
 
 class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   const AppPage({super.key});
@@ -91,19 +93,22 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
     int tabToIndex(_AppTab tab) {
       return switch (tab) {
         _AppTab.calculator => 0,
-        _AppTab.history => 1,
-        _AppTab.settings => showHistoryTab ? 2 : 1,
+        _AppTab.materials => 1,
+        _AppTab.history => showHistoryTab ? 2 : 0,
+        _AppTab.settings => showHistoryTab ? 3 : 2,
       };
     }
 
     _AppTab tabFromIndex(int index) {
       if (index == 0) return _AppTab.calculator;
-      if (showHistoryTab && index == 1) return _AppTab.history;
+      if (index == 1) return _AppTab.materials;
+      if (showHistoryTab && index == 2) return _AppTab.history;
       return _AppTab.settings;
     }
 
     final pages = <Widget>[
       const CalculatorPage(),
+      const MaterialsPage(),
       if (showHistoryTab)
         HistoryPage(
           mode: showHistoryTeaser
@@ -126,6 +131,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
 
     final headings = [
       l10n.calculatorAppBarTitle,
+      l10n.materialsAppBarTitle,
       if (showHistoryTab) l10n.historyAppBarTitle,
       l10n.settingsAppBarTitle,
     ];
@@ -150,7 +156,26 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       appBar: AppBar(
         centerTitle: true,
         title: Text(headings[selectedIndex]),
-        actions: isHistoryTeaserSelected ? const [] : const [HeaderActions()],
+        actions: isHistoryTeaserSelected
+            ? const []
+            : selectedTab.value == _AppTab.materials
+                ? [
+                    IconButton(
+                      tooltip: l10n.csvImportTitle,
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const CsvImportPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.file_upload_outlined,
+                        color: Colors.white54,
+                      ),
+                    ),
+                  ]
+                : const [HeaderActions()],
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () {
@@ -202,6 +227,13 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
               key: ValueKey<String>('nav.calculator.button'),
             ),
             label: l10n.calculatorNavLabel,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(
+              Icons.inventory_2_outlined,
+              key: ValueKey<String>('nav.materials.button'),
+            ),
+            label: l10n.materialsNavLabel,
           ),
           if (showHistoryTab)
             BottomNavigationBarItem(

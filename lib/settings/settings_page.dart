@@ -6,12 +6,9 @@ import 'package:threed_print_cost_calculator/shared/components/accordion_menu/ac
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/model/accordion_item_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
-import 'package:threed_print_cost_calculator/settings/materials/materials.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
 import 'package:threed_print_cost_calculator/settings/work_costs_form.dart';
-
-import 'materials/material_form.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -57,18 +54,6 @@ class SettingsPage extends ConsumerWidget {
                   const AddPrinter(),
                   const Icon(Icons.add),
                   const ValueKey<String>('settings.printers.add.button'),
-                ),
-              ),
-              AccordionItem(
-                headerKey: const ValueKey<String>('settings.materials.section'),
-                bodyKey: const ValueKey<String>('settings.materials.body'),
-                header: Text(l10n.materialsHeader, style: style),
-                body: const Materials(),
-                action: _action(
-                  context,
-                  const MaterialForm(),
-                  const Icon(Icons.add),
-                  const ValueKey<String>('settings.materials.add.button'),
                 ),
               ),
               AccordionItem(

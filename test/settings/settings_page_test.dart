@@ -187,7 +187,7 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('settings.materials.section')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const ValueKey<String>('settings.workCost.section')),
@@ -199,7 +199,7 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('settings.materials.add.button')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
@@ -240,40 +240,4 @@ void main() {
     );
   });
 
-  testWidgets('material add action opens MaterialForm dialog', (tester) async {
-    final settingsRepo = _FakeSettingsRepository();
-    final db = await tester.pumpApp(const SettingsPage(), [
-      isPremiumProvider.overrideWithValue(true),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ]);
-    addTearDown(db.close);
-    addTearDown(settingsRepo.dispose);
-
-    settingsRepo.emit(GeneralSettingsModel.initial());
-
-    await tester.pumpAndSettle();
-
-    await tester.tap(
-      find.byKey(const ValueKey<String>('settings.materials.add.button')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const ValueKey<String>('settings.materials.name.input')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.materials.color.input')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.materials.weight.input')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.materials.cost.input')),
-      findsOneWidget,
-    );
-  });
 }
