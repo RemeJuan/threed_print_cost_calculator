@@ -545,7 +545,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get materialFallback => 'Materiaal';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => 'Afdruktijd (uu:mm)';
 
   @override
   String get importGcodeButton => 'G-code importeren (Auto-invullen)';
@@ -750,7 +750,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get slicerIdeaMaker => 'IdeaMaker';
 
   @override
-  String get slicerOther => 'Other';
+  String get slicerOther => 'Overig';
 
   @override
   String get slicerUnknown => 'Onbekend';

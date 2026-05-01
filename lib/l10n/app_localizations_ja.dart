@@ -529,7 +529,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get materialFallback => '素材';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => '印刷時間（hh:mm）';
 
   @override
   String get importGcodeButton => 'G-codeをインポート（自動入力）';

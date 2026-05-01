@@ -307,7 +307,7 @@
   "historyExportPreviewDescription": "書き出しがどう見えるか確認できます。ダウンロードと共有はProで有効になります。",
   "historyExportPreviewSampleLabel": "[サンプル]",
   "historyExportPreviewAction": "Proでダウンロード / 共有",
-  "durationPickerLabel": "Printing time (hh:mm)",
+  "durationPickerLabel": "印刷時間（hh:mm）",
   "importGcodeButton": "G-codeをインポート（自動入力）",
   "importGcodePageTitle": "G-codeインポート（ベータ）",
   "importGcodeIntro": "ローカルの.gcodeファイルを選択してください。対応スライサー: PrusaSlicer、OrcaSlicer、Bambu Studio、Cura。",
