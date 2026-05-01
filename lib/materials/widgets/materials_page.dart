@@ -17,6 +17,7 @@ class MaterialsPage extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final materials = ref.watch(filteredMaterialsProvider);
     final searchController = useTextEditingController();
+    useListenable(searchController);
     final searchFocus = useFocusNode();
     final materialsRepo = ref.read(materialsRepositoryProvider);
 
@@ -113,7 +114,24 @@ class MaterialsPage extends HookConsumerWidget {
                             ),
                           );
                           if (confirm == true) {
-                            materialsRepo.deleteMaterial(material.id);
+                            try {
+                              await materialsRepo.deleteMaterial(material.id);
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.savePrintSuccessMessage),
+                                ),
+                              );
+                            } catch (e) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    l10n.deleteRecordErrorMessage,
+                                  ),
+                                ),
+                              );
+                            }
                           }
                         },
                       );
