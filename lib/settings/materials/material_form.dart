@@ -51,6 +51,11 @@ class MaterialForm extends HookConsumerWidget {
     final notesController = useTextEditingController(text: state.notes.value);
     final notesFocus = useFocusNode();
 
+    final colorHexController = useTextEditingController(
+      text: state.colorHex.value,
+    );
+    final colorHexFocus = useFocusNode();
+
     String? requiredTextValidator(String? value) {
       return localizedValidationMessage(l10n, validateRequiredText(value));
     }
@@ -130,11 +135,9 @@ class MaterialForm extends HookConsumerWidget {
                   key: const ValueKey<String>(
                     'settings.materials.color_hex.input',
                   ),
-                  controller: useTextEditingController(
-                    text: state.colorHex.value,
-                  ),
+                  controller: colorHexController,
                   externalText: state.colorHex.value,
-                  focusNode: useFocusNode(),
+                  focusNode: colorHexFocus,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(labelText: l10n.colorHexLabel),
                   onChanged: notifier.updateColorHex,
@@ -306,15 +309,24 @@ class MaterialForm extends HookConsumerWidget {
   }
 }
 
-class _BrandTypeahead extends HookConsumerWidget {
+class _SuggestionTypeahead extends HookWidget {
+  final List<String> suggestions;
+  final String labelText;
   final String initialValue;
   final ValueChanged<String> onChanged;
+  final ValueKey<String>? fieldKey;
 
-  const _BrandTypeahead({required this.initialValue, required this.onChanged});
+  const _SuggestionTypeahead({
+    super.key,
+    required this.suggestions,
+    required this.labelText,
+    required this.initialValue,
+    required this.onChanged,
+    this.fieldKey,
+  });
 
   @override
-  Widget build(context, ref) {
-    final brands = ref.watch(materialBrandsProvider).toList()..sort();
+  Widget build(context) {
     final controller = useTextEditingController(text: initialValue);
     final focusNode = useFocusNode();
     final layerLink = useMemoized(() => LayerLink());
@@ -331,12 +343,12 @@ class _BrandTypeahead extends HookConsumerWidget {
       return () => focusNode.removeListener(onBlur);
     }, [focusNode]);
 
-    void selectBrand(String brand) {
-      controller.text = brand;
+    void select(String value) {
+      controller.text = value;
       controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: brand.length),
+        TextPosition(offset: value.length),
       );
-      onChanged(brand);
+      onChanged(value);
       showSuggestions.value = false;
     }
 
@@ -346,18 +358,17 @@ class _BrandTypeahead extends HookConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           FocusSafeTextField(
+            key: fieldKey,
             controller: controller,
             externalText: initialValue,
             focusNode: focusNode,
             keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.brandLabel,
-            ),
+            decoration: InputDecoration(labelText: labelText),
             onChanged: (v) {
               onChanged(v);
               if (v.isNotEmpty &&
-                  brands.any(
-                    (b) => b.toLowerCase().contains(v.toLowerCase()),
+                  suggestions.any(
+                    (s) => s.toLowerCase().contains(v.toLowerCase()),
                   )) {
                 showSuggestions.value = true;
               } else {
@@ -379,23 +390,23 @@ class _BrandTypeahead extends HookConsumerWidget {
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    itemCount: brands.length,
+                    itemCount: suggestions.length,
                     itemBuilder: (_, i) {
-                      final brand = brands.elementAt(i);
+                      final item = suggestions.elementAt(i);
                       final query = controller.text.toLowerCase();
                       if (query.isNotEmpty &&
-                          !brand.toLowerCase().contains(query)) {
+                          !item.toLowerCase().contains(query)) {
                         return const SizedBox.shrink();
                       }
                       return InkWell(
-                        onTap: () => selectBrand(brand),
+                        onTap: () => select(item),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 10,
                           ),
                           child: Text(
-                            brand,
+                            item,
                             style: const TextStyle(color: Colors.white70),
                           ),
                         ),
@@ -411,7 +422,25 @@ class _BrandTypeahead extends HookConsumerWidget {
   }
 }
 
-class _MaterialTypeTypeahead extends HookConsumerWidget {
+class _BrandTypeahead extends ConsumerWidget {
+  final String initialValue;
+  final ValueChanged<String> onChanged;
+
+  const _BrandTypeahead({required this.initialValue, required this.onChanged});
+
+  @override
+  Widget build(context, ref) {
+    final brands = ref.watch(materialBrandsProvider).toList()..sort();
+    return _SuggestionTypeahead(
+      suggestions: brands,
+      labelText: AppLocalizations.of(context)!.brandLabel,
+      initialValue: initialValue,
+      onChanged: onChanged,
+    );
+  }
+}
+
+class _MaterialTypeTypeahead extends ConsumerWidget {
   final String initialValue;
   final ValueChanged<String> onChanged;
 
@@ -423,99 +452,13 @@ class _MaterialTypeTypeahead extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final types = ref.watch(materialTypesProvider).toList()..sort();
-    final controller = useTextEditingController(text: initialValue);
-    final focusNode = useFocusNode();
-    final layerLink = useMemoized(() => LayerLink());
-    final showSuggestions = useState(false);
-
-    useEffect(() {
-      void onBlur() {
-        Future.delayed(const Duration(milliseconds: 200), () {
-          showSuggestions.value = false;
-        });
-      }
-
-      focusNode.addListener(onBlur);
-      return () => focusNode.removeListener(onBlur);
-    }, [focusNode]);
-
-    void selectType(String type) {
-      controller.text = type;
-      controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: type.length),
-      );
-      onChanged(type);
-      showSuggestions.value = false;
-    }
-
-    return CompositedTransformTarget(
-      link: layerLink,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          FocusSafeTextField(
-            key: const ValueKey<String>(
-              'settings.materials.material_type.input',
-            ),
-            controller: controller,
-            externalText: initialValue,
-            focusNode: focusNode,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.materialTypeLabel,
-            ),
-            onChanged: (v) {
-              onChanged(v);
-              if (v.isNotEmpty &&
-                  types.any((t) => t.toLowerCase().contains(v.toLowerCase()))) {
-                showSuggestions.value = true;
-              } else {
-                showSuggestions.value = false;
-              }
-            },
-          ),
-          if (showSuggestions.value)
-            CompositedTransformFollower(
-              link: layerLink,
-              showWhenUnlinked: false,
-              offset: const Offset(0, 0),
-              child: Material(
-                elevation: 4,
-                color: const Color.fromRGBO(26, 28, 43, 1),
-                borderRadius: BorderRadius.circular(8),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 200),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: types.length,
-                    itemBuilder: (_, i) {
-                      final type = types.elementAt(i);
-                      final query = controller.text.toLowerCase();
-                      if (query.isNotEmpty &&
-                          !type.toLowerCase().contains(query)) {
-                        return const SizedBox.shrink();
-                      }
-                      return InkWell(
-                        onTap: () => selectType(type),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                          child: Text(
-                            type,
-                            style: const TextStyle(color: Colors.white70),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
+    return _SuggestionTypeahead(
+      key: const ValueKey<String>('settings.materials.material_type.input'),
+      fieldKey: const ValueKey<String>('settings.materials.material_type.input'),
+      suggestions: types,
+      labelText: AppLocalizations.of(context)!.materialTypeLabel,
+      initialValue: initialValue,
+      onChanged: onChanged,
     );
   }
 }
