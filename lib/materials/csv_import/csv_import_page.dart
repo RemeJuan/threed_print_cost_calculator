@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -47,9 +48,9 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       );
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_l10n!.csvTemplateError)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_l10n!.csvTemplateError)));
     } finally {
       if (tempFile != null && await tempFile.exists()) {
         await tempFile.delete();
@@ -71,12 +72,13 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
 
     try {
       final content = await result.readAsString();
+      AppAnalytics.safeLog(AppAnalytics.csvImportStarted);
       _parseCsv(content);
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(_l10n!.csvReadError)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(_l10n!.csvReadError)));
     }
   }
 
@@ -189,7 +191,14 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
 
   Future<void> _importValid() async {
     final valid = _rows.where((r) => r.errors.isEmpty).toList();
-    if (valid.isEmpty) return;
+    final failed = _rows.length - valid.length;
+    if (valid.isEmpty) {
+      AppAnalytics.safeLog(
+        () =>
+            AppAnalytics.csvImportCompleted(rowsSuccess: 0, rowsFailed: failed),
+      );
+      return;
+    }
 
     final repo = ref.read(materialsRepositoryProvider);
     var imported = 0;
@@ -214,6 +223,13 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       await repo.saveMaterial(material);
       imported++;
     }
+
+    AppAnalytics.safeLog(
+      () => AppAnalytics.csvImportCompleted(
+        rowsSuccess: imported,
+        rowsFailed: failed,
+      ),
+    );
 
     if (!context.mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
