@@ -18,6 +18,13 @@ class CalculatorSettingsSync {
 
   final Ref ref;
 
+  /// Returns [current]'s value if it has been explicitly set, otherwise
+  /// parses and returns [settingsValue] as a dirty [NumberInput].
+  NumberInput _overrideOrSettings(NumberInput current, String? settingsValue) {
+    if (current.value != null) return current;
+    return NumberInput.dirty(value: tryParseLocalizedNum(settingsValue));
+  }
+
   Future<CalculatorState> load(
     CalculatorState current,
     GeneralSettingsModel settings,
@@ -60,25 +67,34 @@ class CalculatorSettingsSync {
       ),
       spoolCost: NumberInput.dirty(value: tryParseLocalizedNum(spoolCostVal)),
       spoolCostText: spoolCostVal,
-      wearAndTear: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.wearAndTear),
+      wearAndTear: _overrideOrSettings(
+        current.wearAndTear,
+        settings.wearAndTear,
       ),
-      failureRisk: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.failureRisk),
+      failureRisk: _overrideOrSettings(
+        current.failureRisk,
+        settings.failureRisk,
       ),
-      labourRate: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.labourRate),
+      labourRate: _overrideOrSettings(
+        current.labourRate,
+        settings.labourRate,
       ),
       labourTime: NumberInput.dirty(value: current.labourTime.value),
-      markupPercent: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.pricingMarkupPercent),
+      markupPercent: _overrideOrSettings(
+        current.markupPercent,
+        settings.pricingMarkupPercent,
       ),
-      setupFee: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.pricingSetupFee),
+      setupFee: _overrideOrSettings(
+        current.setupFee,
+        settings.pricingSetupFee,
       ),
-      roundingMode: pricingRoundingModeFromStorage(
-        settings.pricingRoundingMode,
-      ),
+      roundingMode: current.roundingMode != PricingRoundingMode.none
+          ? current.roundingMode
+          : pricingRoundingModeFromStorage(settings.pricingRoundingMode),
+      additionalCostAmount: current.additionalCostAmount.value != null
+          ? current.additionalCostAmount
+          : const NumberInput.pure(),
+      additionalCostNote: current.additionalCostNote,
       materialUsages: current.materialUsages,
       results: current.results,
       pricing: current.pricing,
