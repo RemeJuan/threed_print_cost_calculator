@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
@@ -46,6 +47,9 @@ class MaterialForm extends HookConsumerWidget {
 
     final costController = useTextEditingController(text: state.costText);
     final costFocus = useFocusNode();
+
+    final notesController = useTextEditingController(text: state.notes.value);
+    final notesFocus = useFocusNode();
 
     String? requiredTextValidator(String? value) {
       return localizedValidationMessage(l10n, validateRequiredText(value));
@@ -98,6 +102,16 @@ class MaterialForm extends HookConsumerWidget {
                   onChanged: notifier.updateName,
                 ),
 
+          _BrandTypeahead(
+            initialValue: state.brand.value,
+            onChanged: notifier.updateBrand,
+          ),
+
+                _MaterialTypeTypeahead(
+                  initialValue: state.materialType.value,
+                  onChanged: notifier.updateMaterialType,
+                ),
+
                 FocusSafeTextField(
                   key: const ValueKey<String>('settings.materials.color.input'),
                   controller: colorController,
@@ -110,6 +124,20 @@ class MaterialForm extends HookConsumerWidget {
                       : AutovalidateMode.disabled,
                   decoration: InputDecoration(labelText: l10n.colorLabel),
                   onChanged: notifier.updateColor,
+                ),
+
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.materials.color_hex.input',
+                  ),
+                  controller: useTextEditingController(text: state.colorHex.value),
+                  externalText: state.colorHex.value,
+                  focusNode: useFocusNode(),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: l10n.colorHexLabel,
+                  ),
+                  onChanged: notifier.updateColorHex,
                 ),
 
                 FocusSafeTextField(
@@ -187,6 +215,29 @@ class MaterialForm extends HookConsumerWidget {
                     onChanged: notifier.updateRemainingWeight,
                   ),
 
+                const SizedBox(height: 8),
+
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.materials.notes.input',
+                  ),
+                  controller: notesController,
+                  externalText: state.notes.value,
+                  focusNode: notesFocus,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: l10n.notesLabel,
+                    filled: true,
+                    fillColor: const Color.fromRGBO(26, 28, 43, 1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.white24),
+                    ),
+                  ),
+                  onChanged: notifier.updateNotes,
+                ),
+
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -252,6 +303,213 @@ class MaterialForm extends HookConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BrandTypeahead extends HookConsumerWidget {
+  final String initialValue;
+  final ValueChanged<String> onChanged;
+
+  const _BrandTypeahead({
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(context, ref) {
+    final brands = ref.watch(materialBrandsProvider).toList()..sort();
+    final controller = useTextEditingController(text: initialValue);
+    final focusNode = useFocusNode();
+    final layerLink = useMemoized(() => LayerLink());
+    final showSuggestions = useState(false);
+
+    useEffect(() {
+      void onBlur() {
+        Future.delayed(const Duration(milliseconds: 200), () {
+          showSuggestions.value = false;
+        });
+      }
+      focusNode.addListener(onBlur);
+      return () => focusNode.removeListener(onBlur);
+    }, [focusNode]);
+
+    void selectBrand(String brand) {
+      controller.text = brand;
+      controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: brand.length),
+      );
+      onChanged(brand);
+      showSuggestions.value = false;
+    }
+
+    return CompositedTransformTarget(
+      link: layerLink,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FocusSafeTextField(
+            controller: controller,
+            externalText: initialValue,
+            focusNode: focusNode,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.brandLabel,
+            ),
+            onChanged: (v) {
+              onChanged(v);
+              if (v.isNotEmpty && brands.any((b) => b.toLowerCase().contains(v.toLowerCase()))) {
+                showSuggestions.value = true;
+              } else {
+                showSuggestions.value = false;
+              }
+            },
+          ),
+          if (showSuggestions.value)
+            CompositedTransformFollower(
+              link: layerLink,
+              showWhenUnlinked: false,
+              offset: const Offset(0, 0),
+              child: Material(
+                elevation: 4,
+                color: const Color.fromRGBO(26, 28, 43, 1),
+                borderRadius: BorderRadius.circular(8),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 200),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: brands.length,
+                    itemBuilder: (_, i) {
+                      final brand = brands.elementAt(i);
+                      final query = controller.text.toLowerCase();
+                      if (query.isNotEmpty && !brand.toLowerCase().contains(query)) {
+                        return const SizedBox.shrink();
+                      }
+                      return InkWell(
+                        onTap: () => selectBrand(brand),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                          child: Text(
+                            brand,
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MaterialTypeTypeahead extends HookConsumerWidget {
+  final String initialValue;
+  final ValueChanged<String> onChanged;
+
+  const _MaterialTypeTypeahead({
+    required this.initialValue,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(context, ref) {
+    final types = ref.watch(materialTypesProvider).toList()..sort();
+    final controller = useTextEditingController(text: initialValue);
+    final focusNode = useFocusNode();
+    final layerLink = useMemoized(() => LayerLink());
+    final showSuggestions = useState(false);
+
+    useEffect(() {
+      void onBlur() {
+        Future.delayed(const Duration(milliseconds: 200), () {
+          showSuggestions.value = false;
+        });
+      }
+      focusNode.addListener(onBlur);
+      return () => focusNode.removeListener(onBlur);
+    }, [focusNode]);
+
+    void selectType(String type) {
+      controller.text = type;
+      controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: type.length),
+      );
+      onChanged(type);
+      showSuggestions.value = false;
+    }
+
+    return CompositedTransformTarget(
+      link: layerLink,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          FocusSafeTextField(
+            key: const ValueKey<String>('settings.materials.material_type.input'),
+            controller: controller,
+            externalText: initialValue,
+            focusNode: focusNode,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.materialTypeLabel,
+            ),
+            onChanged: (v) {
+              onChanged(v);
+              if (v.isNotEmpty && types.any((t) => t.toLowerCase().contains(v.toLowerCase()))) {
+                showSuggestions.value = true;
+              } else {
+                showSuggestions.value = false;
+              }
+            },
+          ),
+          if (showSuggestions.value)
+            CompositedTransformFollower(
+              link: layerLink,
+              showWhenUnlinked: false,
+              offset: const Offset(0, 0),
+              child: Material(
+                elevation: 4,
+                color: const Color.fromRGBO(26, 28, 43, 1),
+                borderRadius: BorderRadius.circular(8),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 200),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: types.length,
+                    itemBuilder: (_, i) {
+                      final type = types.elementAt(i);
+                      final query = controller.text.toLowerCase();
+                      if (query.isNotEmpty && !type.toLowerCase().contains(query)) {
+                        return const SizedBox.shrink();
+                      }
+                      return InkWell(
+                        onTap: () => selectType(type),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
+                          ),
+                          child: Text(
+                            type,
+                            style: const TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
