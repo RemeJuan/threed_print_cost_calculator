@@ -4,6 +4,8 @@ import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dar
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 
+const _unsetCalculatorStateValue = Object();
+
 class CalculatorState with FormzMixin {
   final NumberInput watt;
   final NumberInput kwCost;
@@ -18,6 +20,8 @@ class CalculatorState with FormzMixin {
   final NumberInput failureRisk;
   final NumberInput labourRate;
   final NumberInput labourTime;
+  final NumberInput additionalCostAmount;
+  final String? additionalCostNote;
   final NumberInput markupPercent;
   final NumberInput setupFee;
   final PricingRoundingMode roundingMode;
@@ -40,6 +44,8 @@ class CalculatorState with FormzMixin {
     this.failureRisk = const NumberInput.pure(),
     this.labourRate = const NumberInput.pure(),
     this.labourTime = const NumberInput.pure(),
+    this.additionalCostAmount = const NumberInput.pure(),
+    this.additionalCostNote,
     this.markupPercent = const NumberInput.pure(),
     this.setupFee = const NumberInput.pure(),
     this.roundingMode = PricingRoundingMode.none,
@@ -71,6 +77,8 @@ class CalculatorState with FormzMixin {
     NumberInput? failureRisk,
     NumberInput? labourRate,
     NumberInput? labourTime,
+    NumberInput? additionalCostAmount,
+    Object? additionalCostNote = _unsetCalculatorStateValue,
     NumberInput? markupPercent,
     NumberInput? setupFee,
     PricingRoundingMode? roundingMode,
@@ -93,6 +101,13 @@ class CalculatorState with FormzMixin {
       failureRisk: failureRisk ?? this.failureRisk,
       labourRate: labourRate ?? this.labourRate,
       labourTime: labourTime ?? this.labourTime,
+      additionalCostAmount: additionalCostAmount ?? this.additionalCostAmount,
+      additionalCostNote: identical(
+            additionalCostNote,
+            _unsetCalculatorStateValue,
+          )
+          ? this.additionalCostNote
+          : additionalCostNote as String?,
       markupPercent: markupPercent ?? this.markupPercent,
       setupFee: setupFee ?? this.setupFee,
       roundingMode: roundingMode ?? this.roundingMode,
@@ -118,6 +133,7 @@ class CalculatorState with FormzMixin {
     failureRisk,
     labourRate,
     labourTime,
+    additionalCostAmount,
     markupPercent,
     setupFee,
   ];
