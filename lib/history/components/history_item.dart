@@ -343,7 +343,9 @@ class HistoryItem extends HookConsumerWidget {
                             ),
                           ),
                         ],
-                        if ((data.additionalCostNote ?? '').trim().isNotEmpty) ...[
+                        if ((data.additionalCostNote ?? '')
+                            .trim()
+                            .isNotEmpty) ...[
                           const SizedBox(height: 8),
                           Theme(
                             data: Theme.of(

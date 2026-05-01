@@ -53,7 +53,9 @@ class _AdditionalCostNoteDialogState extends State<AdditionalCostNoteDialog> {
           child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
         ),
         TextButton(
-          key: const ValueKey<String>('calculator.additionalCost.note.save.button'),
+          key: const ValueKey<String>(
+            'calculator.additionalCost.note.save.button',
+          ),
           onPressed: () => Navigator.of(context).pop(_controller.text),
           child: Text(MaterialLocalizations.of(context).okButtonLabel),
         ),

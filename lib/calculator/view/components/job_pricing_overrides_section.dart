@@ -136,8 +136,8 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               Expanded(
                 child: _numberField(
                   controller: additionalCostController,
-                  externalText:
-                      (state.additionalCostAmount.value ?? 0).toString(),
+                  externalText: (state.additionalCostAmount.value ?? 0)
+                      .toString(),
                   label: l10n.additionalCostLabel,
                   fieldKey: const ValueKey<String>(
                     'calculator.additionalCost.input',
@@ -158,7 +158,9 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               ),
               const SizedBox(width: 4),
               IconButton(
-                key: const ValueKey<String>('calculator.additionalCost.note.button'),
+                key: const ValueKey<String>(
+                  'calculator.additionalCost.note.button',
+                ),
                 tooltip: l10n.additionalCostNoteLabel,
                 onPressed: () async {
                   final note = await showDialog<String>(

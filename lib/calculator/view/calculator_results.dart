@@ -24,7 +24,9 @@ class CalculatorResults extends ConsumerWidget {
     final isPremium = ref.watch(isPremiumProvider);
     final shouldShowProPromotion = ref.watch(shouldShowProPromotionProvider);
     final additionalCostAmount = ref.watch(
-      calculatorProvider.select((state) => state.additionalCostAmount.value ?? 0),
+      calculatorProvider.select(
+        (state) => state.additionalCostAmount.value ?? 0,
+      ),
     );
     const width = kIsWeb ? 250.0 : null;
 
