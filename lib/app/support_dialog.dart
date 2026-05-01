@@ -2,35 +2,35 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/settings_version_tap_target.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SupportDialog extends StatelessWidget {
-  const SupportDialog({required this.userID, super.key});
-
-  final String userID;
+class SupportDialog extends ConsumerWidget {
+  const SupportDialog({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(premiumStateProvider.select((v) => v.userId));
     final l10n = AppLocalizations.of(context)!;
     final linkFont = Theme.of(
       context,
     ).textTheme.displayMedium?.copyWith(fontSize: 12);
-
+    debugPrint('the userid, $userId');
     return Dialog(
       child: // Replace fixed height SizedBox with a ConstrainedBox + SingleChildScrollView
       ConstrainedBox(
         constraints: BoxConstraints(
-          // allow the dialog to grow with its content but cap it to 90% of screen height
           maxHeight: MediaQuery.of(context).size.height * 0.9,
         ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            // Let the column size itself to its children instead of stretching to available space
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
@@ -53,12 +53,15 @@ class SupportDialog extends StatelessWidget {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          final uri =
-                              'mailto:${l10n.supportEmail}?subject=3D%20Print%20Cost'
-                              '%20Calculator%20Support&body=Support%20ID:'
-                              '%20$userID';
                           try {
-                            await launchUrl(Uri.parse(uri));
+                            await FlutterEmailSender.send(
+                              Email(
+                                recipients: [l10n.supportEmail],
+                                subject: l10n.supportEmailSubject,
+                                body: '${l10n.supportIdLabel}$userId',
+                                isHTML: false,
+                              ),
+                            );
                           } catch (e) {
                             BotToast.showText(text: l10n.mailClientError);
                           }
@@ -94,11 +97,11 @@ class SupportDialog extends StatelessWidget {
                   const SizedBox(height: 6),
                   GestureDetector(
                     onTap: () async {
-                      await Clipboard.setData(ClipboardData(text: userID));
+                      await Clipboard.setData(ClipboardData(text: userId));
                       BotToast.showText(text: l10n.supportIdCopied);
                     },
                     child: Text(
-                      userID,
+                      userId,
                       style: const TextStyle(
                         color: LIGHT_BLUE,
                         decoration: TextDecoration.underline,
@@ -110,34 +113,33 @@ class SupportDialog extends StatelessWidget {
               const SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: RawMaterialButton(
-                      onPressed: () async {
-                        await launchUrl(
-                          Uri.parse(
-                            'https://github.com/RemeJuan/threed_print_cost_calculator/blob/main/privacy_policy.md',
-                          ),
-                        );
-                      },
-                      child: Text(l10n.privacyPolicyLink, style: linkFont),
-                    ),
+                  RawMaterialButton(
+                    onPressed: () async {
+                      await launchUrl(Uri.parse('https://printcostcalc.app'));
+                    },
+                    child: Text(l10n.websiteLink, style: linkFont),
                   ),
                   Text(l10n.separator, style: linkFont),
-                  Container(
-                    alignment: Alignment.center,
-                    child: RawMaterialButton(
-                      onPressed: () async {
-                        await launchUrl(
-                          Uri.parse(
-                            'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
-                          ),
-                        );
-                      },
-                      child: Text(l10n.termsOfUseLink, style: linkFont),
-                    ),
+                  RawMaterialButton(
+                    onPressed: () async {
+                      await launchUrl(
+                        Uri.parse('https://printcostcalc.app/privacy.html'),
+                      );
+                    },
+                    child: Text(l10n.privacyPolicyLink, style: linkFont),
+                  ),
+                  Text(l10n.separator, style: linkFont),
+                  RawMaterialButton(
+                    onPressed: () async {
+                      await launchUrl(
+                        Uri.parse(
+                          'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
+                        ),
+                      );
+                    },
+                    child: Text(l10n.termsOfUseLink, style: linkFont),
                   ),
                 ],
               ),

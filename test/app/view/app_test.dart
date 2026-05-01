@@ -100,7 +100,7 @@ void main() {
     });
 
     testWidgets('support dialog renders directly', (tester) async {
-      final db = await tester.pumpApp(const SupportDialog(userID: 'direct'));
+      final db = await tester.pumpApp(const SupportDialog());
       addTearDown(() => db.close());
 
       await tester.pumpAndSettle();

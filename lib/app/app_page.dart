@@ -180,7 +180,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             BotToast.showCustomNotification(
               duration: const Duration(minutes: 5),
               onlyOne: true,
-              toastBuilder: (_) => SupportDialog(userID: premiumState.userId),
+              toastBuilder: (_) => const SupportDialog(),
             );
           },
         ),

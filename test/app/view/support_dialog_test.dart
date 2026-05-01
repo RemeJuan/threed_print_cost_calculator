@@ -43,7 +43,7 @@ void main() {
   });
 
   testWidgets('renders support details and app version', (tester) async {
-    final db = await tester.pumpApp(const SupportDialog(userID: 'support-123'));
+    final db = await tester.pumpApp(const SupportDialog());
     addTearDown(() => db.close());
     await tester.pumpAndSettle();
 
@@ -82,7 +82,7 @@ void main() {
   testWidgets('version label opens test data tools after five taps', (
     tester,
   ) async {
-    final db = await tester.pumpApp(const SupportDialog(userID: 'support-123'));
+    final db = await tester.pumpApp(const SupportDialog());
     addTearDown(() => db.close());
 
     await tester.pumpAndSettle();
@@ -95,7 +95,7 @@ void main() {
   });
 
   testWidgets('version tap counter resets after timeout', (tester) async {
-    final db = await tester.pumpApp(const SupportDialog(userID: 'support-123'));
+    final db = await tester.pumpApp(const SupportDialog());
     addTearDown(() => db.close());
 
     await tester.pumpAndSettle();
@@ -120,7 +120,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
 
     final prefs = await SharedPreferences.getInstance();
-    final db = await tester.pumpApp(const SupportDialog(userID: 'support-123'));
+    final db = await tester.pumpApp(const SupportDialog());
     addTearDown(() => db.close());
 
     await tester.pumpAndSettle();
@@ -160,7 +160,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
 
     final prefs = await SharedPreferences.getInstance();
-    final db = await tester.pumpApp(const SupportDialog(userID: 'support-123'));
+    final db = await tester.pumpApp(const SupportDialog());
     addTearDown(() => db.close());
 
     await tester.pumpAndSettle();
