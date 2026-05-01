@@ -15,6 +15,10 @@ abstract class MaterialModel with _$MaterialModel {
     @Default(false) bool autoDeductEnabled,
     @Default(0) double originalWeight,
     @Default(0) double remainingWeight,
+    @Default('') String brand,
+    @Default('') String materialType,
+    @Default('') String colorHex,
+    @Default('') String notes,
   }) = _MaterialModel;
 
   factory MaterialModel.fromMap(Map<String, dynamic> map, String key) {
@@ -38,6 +42,10 @@ abstract class MaterialModel with _$MaterialModel {
       autoDeductEnabled: map['autoDeductEnabled'] == true,
       originalWeight: parsedOriginal,
       remainingWeight: parsedRemaining,
+      brand: (map['brand'] as String?) ?? '',
+      materialType: (map['materialType'] as String?) ?? '',
+      colorHex: (map['colorHex'] as String?) ?? '',
+      notes: (map['notes'] as String?) ?? '',
     );
   }
 }
@@ -52,6 +60,10 @@ extension MaterialModelX on MaterialModel {
       'autoDeductEnabled': autoDeductEnabled,
       'originalWeight': originalWeight,
       'remainingWeight': remainingWeight,
+      'brand': brand,
+      'materialType': materialType,
+      'colorHex': colorHex,
+      'notes': notes,
     };
   }
 }
