@@ -97,12 +97,22 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       _AppTab.settings,
     ];
 
+    useEffect(() {
+      if (tabs.contains(selectedTab.value)) {
+        return null;
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!tabs.contains(selectedTab.value)) {
+          selectedTab.value = _AppTab.calculator;
+        }
+      });
+
+      return null;
+    }, [isPremium, showHistoryTab, selectedTab.value]);
+
     int tabToIndex(_AppTab tab) => tabs.indexOf(tab);
     _AppTab tabFromIndex(int index) => tabs[index];
-
-    if (!tabs.contains(selectedTab.value)) {
-      selectedTab.value = _AppTab.calculator;
-    }
 
     final pages = [
       const CalculatorPage(),
@@ -134,10 +144,13 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       _AppTab.settings => l10n.settingsAppBarTitle,
     };
 
-    final selectedIndex = tabToIndex(selectedTab.value);
+    final renderedTab = tabs.contains(selectedTab.value)
+        ? selectedTab.value
+        : _AppTab.calculator;
+    final selectedIndex = tabToIndex(renderedTab);
 
     final isHistoryTeaserSelected =
-        showHistoryTeaser && selectedTab.value == _AppTab.history;
+        showHistoryTeaser && renderedTab == _AppTab.history;
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -153,10 +166,10 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(titleForTab(tabs[selectedIndex])),
+        title: Text(titleForTab(renderedTab)),
         actions: isHistoryTeaserSelected
             ? const []
-            : selectedTab.value == _AppTab.materials
+            : renderedTab == _AppTab.materials
             ? [
                 IconButton(
                   tooltip: l10n.csvImportTitle,
