@@ -718,6 +718,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get csvTemplateButton => 'Sjabloon';
 
   @override
+  String get csvTemplateShareText => 'Materialen CSV-sjabloon';
+
+  @override
+  String get csvTemplateError => 'Kon het sjabloon niet delen.';
+
+  @override
   String get csvImportIntro => 'Importeer materialen uit een CSV-bestand.';
 
   @override
@@ -725,6 +731,10 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get csvImportButton => 'Geldige rijen importeren';
+
+  @override
+  String get csvReadError =>
+      'Het geselecteerde bestand kon niet worden gelezen.';
 
   @override
   String get csvFileTypeError => 'Kies een .csv-bestand';

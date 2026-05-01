@@ -696,6 +696,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvTemplateButton => 'テンプレート';
 
   @override
+  String get csvTemplateShareText => '材料CSVテンプレート';
+
+  @override
+  String get csvTemplateError => 'テンプレートを共有できませんでした。';
+
+  @override
   String get csvImportIntro => 'CSVファイルから材料をインポートします。';
 
   @override
@@ -703,6 +709,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get csvImportButton => '有効な行をインポート';
+
+  @override
+  String get csvReadError => '選択されたファイルを読み取れませんでした。';
 
   @override
   String get csvFileTypeError => '.csvファイルを選択してください';

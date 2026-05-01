@@ -713,6 +713,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get csvTemplateButton => 'Template';
 
   @override
+  String get csvTemplateShareText => 'Material CSV Template';
+
+  @override
+  String get csvTemplateError => 'Could not share the template.';
+
+  @override
   String get csvImportIntro => 'Import materials from a CSV file.';
 
   @override
@@ -720,6 +726,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get csvImportButton => 'Import valid rows';
+
+  @override
+  String get csvReadError => 'Could not read the selected file.';
 
   @override
   String get csvFileTypeError => 'Please select a .csv file';

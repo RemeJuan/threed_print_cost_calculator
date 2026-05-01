@@ -725,6 +725,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get csvTemplateButton => 'Plantilla';
 
   @override
+  String get csvTemplateShareText => 'Plantilla CSV de materiales';
+
+  @override
+  String get csvTemplateError => 'No se pudo compartir la plantilla.';
+
+  @override
   String get csvImportIntro => 'Importa materiales desde un archivo CSV.';
 
   @override
@@ -732,6 +738,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get csvImportButton => 'Importar filas válidas';
+
+  @override
+  String get csvReadError => 'No se pudo leer el archivo seleccionado.';
 
   @override
   String get csvFileTypeError => 'Selecciona un archivo .csv';

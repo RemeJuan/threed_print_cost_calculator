@@ -704,6 +704,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvTemplateButton => 'เทมเพลต';
 
   @override
+  String get csvTemplateShareText => 'เทมเพลต CSV วัสดุ';
+
+  @override
+  String get csvTemplateError => 'ไม่สามารถแชร์เทมเพลตได้';
+
+  @override
   String get csvImportIntro => 'นำเข้าวัสดุจากไฟล์ CSV';
 
   @override
@@ -711,6 +717,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get csvImportButton => 'นำเข้าแถวที่ถูกต้อง';
+
+  @override
+  String get csvReadError => 'ไม่สามารถอ่านไฟล์ที่เลือกได้';
 
   @override
   String get csvFileTypeError => 'กรุณาเลือกไฟล์ .csv';

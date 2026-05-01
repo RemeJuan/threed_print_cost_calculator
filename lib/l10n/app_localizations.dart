@@ -1434,6 +1434,18 @@ abstract class AppLocalizations {
   /// **'Template'**
   String get csvTemplateButton;
 
+  /// No description provided for @csvTemplateShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Material CSV Template'**
+  String get csvTemplateShareText;
+
+  /// No description provided for @csvTemplateError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share the template.'**
+  String get csvTemplateError;
+
   /// No description provided for @csvImportIntro.
   ///
   /// In en, this message translates to:
@@ -1451,6 +1463,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Import valid rows'**
   String get csvImportButton;
+
+  /// No description provided for @csvReadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the selected file.'**
+  String get csvReadError;
 
   /// No description provided for @csvFileTypeError.
   ///
