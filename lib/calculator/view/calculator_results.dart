@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 
 class CalculatorResults extends ConsumerWidget {
   final CalculationResult results;
@@ -108,7 +109,7 @@ class CalculatorResults extends ConsumerWidget {
             const Divider(),
             _itemRow(
               context,
-              '${l10n.markupLabel} (${_formatPercent(pricing.markupPercent)}%)',
+              '${l10n.markupLabel} (${formatPercent(pricing.markupPercent)}%)',
               pricing.markupAmount,
               key: const ValueKey<String>('calculator.result.markupAmount'),
             ),
@@ -237,9 +238,4 @@ class CalculatorResults extends ConsumerWidget {
   }
 }
 
-String _formatPercent(num value) {
-  final text = value.toStringAsFixed(value.truncateToDouble() == value ? 0 : 2);
-  return text
-      .replaceFirst(RegExp(r'\.0+$'), '')
-      .replaceFirst(RegExp(r'(\.\d*?)0+$'), r'$1');
-}
+

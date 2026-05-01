@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item_actions.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
@@ -165,7 +166,7 @@ class HistoryItem extends HookConsumerWidget {
                   if (data.pricingMarkupAmount != null)
                     _row(
                       context,
-                      '${l10n.markupLabel} (${_formatPercent(data.pricingMarkupPercent)}%)',
+                      '${l10n.markupLabel} (${formatPercent(data.pricingMarkupPercent)}%)',
                       data.pricingMarkupAmount!,
                       key: ValueKey<String>('$itemKeyPrefix.markupAmount'),
                     ),
@@ -421,12 +422,4 @@ Widget _row(BuildContext context, String label, num value, {Key? key}) {
   );
 }
 
-String _formatPercent(num? value) {
-  final percent = value ?? 0;
-  final text = percent.toStringAsFixed(
-    percent.truncateToDouble() == percent ? 0 : 2,
-  );
-  return text
-      .replaceFirst(RegExp(r'\.0+$'), '')
-      .replaceFirst(RegExp(r'(\.\d*?)0+$'), r'$1');
-}
+
