@@ -300,7 +300,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                       : Text(
                           '${row.brand.isNotEmpty ? '${row.brand} · ' : ''}'
                           '${row.materialType.isNotEmpty ? '${row.materialType} · ' : ''}'
-                          '\$${row.cost.toStringAsFixed(2)}',
+                          '${row.cost.toStringAsFixed(2)}',
                           style: const TextStyle(
                             color: Colors.white54,
                             fontSize: 12,

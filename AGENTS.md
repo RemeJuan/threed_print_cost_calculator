@@ -22,6 +22,7 @@
 - Root widget: `lib/app/app.dart`. Main shell: `lib/app/app_page.dart`.
 - Main feature boundaries: `lib/calculator/`, `lib/history/`, `lib/settings/`, `lib/database/`, `lib/purchases/`, `lib/shared/`.
 - `HistoryPage` exists only for premium users; `AppPage` dynamically removes that tab for free users.
+- **Currency-agnostic**: The project is currency-agnostic. All values are raw numbers without currency symbols. No UI label, format helper, or display surface should show `$`, `€`, `£`, `¥`, or any currency symbol. Format numbers as plain numeric values only.
 
 ## Testing quirks
 - Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.

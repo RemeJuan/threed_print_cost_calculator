@@ -41,7 +41,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('PLA Pro'), findsOneWidget);
-      expect(find.text('\$24.99/kg'), findsOneWidget);
+      expect(find.text('24.99/kg'), findsOneWidget);
     });
 
     testWidgets('merges brand, type and cost into single line', (tester) async {
@@ -51,7 +51,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('PLA · Sunlu · \$24.99/kg'), findsOneWidget);
+      expect(find.text('PLA · Sunlu · 24.99/kg'), findsOneWidget);
     });
 
     testWidgets('shows remaining weight when tracking enabled', (tester) async {

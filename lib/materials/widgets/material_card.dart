@@ -111,8 +111,8 @@ class _MergedInfoLine extends StatelessWidget {
     final cost = double.tryParse(material.cost);
     final weight = double.tryParse(material.weight);
     if (cost != null && weight != null && weight > 0 && cost > 0) {
-      final perKg = (cost / weight * 1000).toStringAsFixed(2);
-      parts.add('\$$perKg/kg');
+      final perKg = cost / weight * 1000;
+      parts.add('$perKg/kg');
     }
 
     if (parts.isEmpty) return const SizedBox.shrink();
