@@ -56,6 +56,11 @@
   - `test/materials/`
   - `test/settings/materials/`
   - `test/settings/providers/materials_notifier_test.dart`
+- Analytics events:
+  - `materials_view_opened` — tab opens on first frame (`lib/app/app_page.dart`)
+  - `material_created` / `material_edited` — params: `has_tracking`, optional `material_type`, `brand` (`lib/settings/providers/materials_notifier.dart`)
+  - `csv_import_started` / `csv_import_completed` — params: `rows_success`, `rows_failed` (`lib/materials/csv_import/csv_import_page.dart`)
+  - `material_selected_in_calculator` — params: `has_tracking`, optional `material_type`, `brand` (`lib/calculator/provider/calculator_notifier.dart`)
 - Common search terms:
   - `MaterialsPage`
   - `materialsStreamProvider`
