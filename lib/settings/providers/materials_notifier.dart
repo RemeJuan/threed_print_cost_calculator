@@ -156,7 +156,19 @@ class MaterialsProvider extends Notifier<MaterialState> {
     );
 
     final key = await _materialsRepository.saveMaterial(material, id: dbRef);
-    AppAnalytics.safeLog(AppAnalytics.materialCreated);
+    AppAnalytics.safeLog(
+      () => dbRef == null
+          ? AppAnalytics.materialCreated(
+              hasTracking: material.autoDeductEnabled,
+              materialType: material.materialType,
+              brand: material.brand,
+            )
+          : AppAnalytics.materialEdited(
+              hasTracking: material.autoDeductEnabled,
+              materialType: material.materialType,
+              brand: material.brand,
+            ),
+    );
     return key;
   }
 

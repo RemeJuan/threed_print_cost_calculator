@@ -1,17 +1,33 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 
 import '../settings_test_fakes.dart';
 
+class _FakeAnalytics implements AnalyticsService {
+  String? lastName;
+  Map<String, Object>? lastParams;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    lastName = name;
+    lastParams = params;
+  }
+}
+
 void main() {
   group('MaterialsProvider localized parsing', () {
     late ProviderContainer container;
     late MaterialsProvider notifier;
+    late _FakeAnalytics analytics;
 
     setUp(() {
+      analytics = _FakeAnalytics();
+      AppAnalytics.service = analytics;
       container = ProviderContainer();
       notifier = container.read(materialsProvider.notifier);
     });
@@ -144,6 +160,57 @@ void main() {
         expect(saved.autoDeductEnabled, isTrue);
         expect(saved.originalWeight, 750);
         expect(saved.remainingWeight, 750);
+      },
+    );
+
+    test(
+      'submit logs create and edit analytics with material metadata',
+      () async {
+        final materialsRepository = FakeMaterialsRepository();
+        final analyticsContainer = ProviderContainer(
+          overrides: [
+            materialsRepositoryProvider.overrideWithValue(materialsRepository),
+          ],
+        );
+        addTearDown(analyticsContainer.dispose);
+
+        final analyticsNotifier = analyticsContainer.read(
+          materialsProvider.notifier,
+        );
+        analyticsNotifier
+          ..updateName('PLA')
+          ..updateColor('Black')
+          ..updateWeight('1000')
+          ..updateCost('24.99')
+          ..updateAutoDeductEnabled(true)
+          ..updateBrand('Sunlu')
+          ..updateMaterialType('PLA');
+
+        final createdKey = await analyticsNotifier.submit(null);
+
+        expect(createdKey, isNotNull);
+        expect(analytics.lastName, 'material_created');
+        expect(analytics.lastParams, {
+          'has_tracking': 1,
+          'material_type': 'PLA',
+          'brand': 'Sunlu',
+        });
+
+        final savedId = createdKey.toString();
+        analyticsNotifier.init(savedId);
+        await Future<void>.delayed(Duration.zero);
+        analyticsNotifier
+          ..updateBrand('Overture')
+          ..updateAutoDeductEnabled(false);
+
+        await analyticsNotifier.submit(savedId);
+
+        expect(analytics.lastName, 'material_edited');
+        expect(analytics.lastParams, {
+          'has_tracking': 0,
+          'material_type': 'PLA',
+          'brand': 'Overture',
+        });
       },
     );
   });
