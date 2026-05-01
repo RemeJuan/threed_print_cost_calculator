@@ -15,6 +15,7 @@ class FocusSafeTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final bool? obscureText;
   final TextInputAction? textInputAction;
+  final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
   final String Function(String)? inputNormalizer;
 
@@ -30,6 +31,7 @@ class FocusSafeTextField extends StatefulWidget {
     this.keyboardType,
     this.obscureText,
     this.textInputAction,
+    this.maxLines,
     this.inputFormatters,
     this.inputNormalizer,
   });
@@ -157,6 +159,7 @@ class _FocusSafeTextFieldState extends State<FocusSafeTextField> {
       validator: widget.validator,
       autovalidateMode: widget.autovalidateMode,
       keyboardType: widget.keyboardType,
+      maxLines: widget.maxLines,
       decoration: widget.decoration,
       obscureText: widget.obscureText ?? false,
       textInputAction: widget.textInputAction,
