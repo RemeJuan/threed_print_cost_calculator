@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dar
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -112,7 +113,9 @@ void main() {
 
     expect(calculatorNotifier.resetCalls, 0);
 
-    await tester.tap(find.widgetWithText(FilledButton, 'Reset'));
+    final dialogContext = tester.element(find.byType(AlertDialog));
+    final l10n = AppLocalizations.of(dialogContext)!;
+    await tester.tap(find.widgetWithText(FilledButton, l10n.resetButtonLabel));
     await tester.pumpAndSettle();
 
     expect(calculatorNotifier.resetCalls, 1);
