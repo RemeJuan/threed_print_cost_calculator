@@ -22,19 +22,20 @@
 ## Rejected Ideas
 - Full inventory management subsystem.
 - Automatic cross-device sync.
-- Premium-gating the materials tab.
 
 ## Implementation Notes
 - Stock deduction is tied to history save action.
 - Materials UI lives in `lib/materials/` and is reachable from the main tab bar.
 - Search matches material name and brand.
 - Filters are dynamic from saved material types plus stock chips.
+- Both filter rows use implicit "all" behavior: no explicit "All" chip, and tapping an already-selected chip clears that filter.
 - Stock states:
   - `outOfStock`: remaining weight `<= 0`
   - `lowStock`: remaining/original weight `<= 15%`
   - `inStock`: above low-stock threshold
   - `noTracking`: auto-deduct disabled or original weight missing/invalid
 - Material cards show a color swatch from `colorHex` when present, else a named-color lookup, else deterministic fallback color.
+- Material cards merge `materialType`, `brand`, and derived `cost/kg` into one metadata line, allow the name to wrap to two lines, and sort list results by stock state priority so out-of-stock items sink to the bottom.
 - CSV import columns: `name,brand,material_type,color,color_hex,spool_weight,remaining_weight,spool_cost,notes`.
 - CSV validation currently requires `name`, `color`, positive `spool_weight`, and positive `spool_cost`.
 

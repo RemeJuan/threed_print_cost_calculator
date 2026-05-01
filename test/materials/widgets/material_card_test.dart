@@ -34,25 +34,24 @@ void main() {
       archived: false,
     );
 
-    testWidgets('renders name and cost', (tester) async {
+    testWidgets('renders name and cost-per-kg', (tester) async {
       await tester.pumpWidget(
         _wrap(MaterialCard(material: base, onEdit: () {}, onDelete: () {})),
       );
       await tester.pumpAndSettle();
 
       expect(find.text('PLA Pro'), findsOneWidget);
-      expect(find.text('\$24.99'), findsOneWidget);
+      expect(find.text('\$24.99/kg'), findsOneWidget);
     });
 
-    testWidgets('shows brand and material type with unit cost', (tester) async {
+    testWidgets('merges brand, type and cost into single line', (tester) async {
       final m = base.copyWith(brand: 'Sunlu', materialType: 'PLA');
       await tester.pumpWidget(
         _wrap(MaterialCard(material: m, onEdit: () {}, onDelete: () {})),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Sunlu'), findsOneWidget);
-      expect(find.text('PLA · \$24.99/kg'), findsOneWidget);
+      expect(find.text('PLA · Sunlu · \$24.99/kg'), findsOneWidget);
     });
 
     testWidgets('shows remaining weight when tracking enabled', (tester) async {

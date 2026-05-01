@@ -18,15 +18,13 @@ void main() {
   group('MaterialFilters', () {
     testWidgets('shows stock chips when no types', (tester) async {
       final repo = FakeMaterialsRepository();
-      final db = await tester.pumpApp(
-        const MaterialFilters(),
-        [materialsRepositoryProvider.overrideWithValue(repo)],
-      );
+      final db = await tester.pumpApp(const MaterialFilters(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+      ]);
       await tester.pumpAndSettle();
       addTearDown(db.close);
 
       final l10n = lookupAppLocalizations(const Locale('en'));
-      expect(find.text(l10n.materialsFilterAll), findsOneWidget);
       expect(find.text(l10n.materialsFilterInStock), findsOneWidget);
       expect(find.text(l10n.materialsFilterLowStock), findsOneWidget);
       expect(find.text(l10n.materialsFilterOutOfStock), findsOneWidget);

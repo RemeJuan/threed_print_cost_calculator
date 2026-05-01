@@ -64,65 +64,23 @@ class MaterialCard extends ConsumerWidget {
                   children: [
                     Text(
                       material.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: Colors.white),
-                      maxLines: 1,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(color: Colors.white),
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
-                    if (material.materialType.isNotEmpty &&
-                        material.cost.isNotEmpty &&
-                        double.tryParse(material.cost) != null &&
-                        material.weight.isNotEmpty &&
-                        double.tryParse(material.weight) != null)
-                      Text(
-                        '${material.materialType} · \$${(double.parse(material.cost) / double.parse(material.weight) * 1000).toStringAsFixed(2)}/kg',
-                        style: const TextStyle(
-                          color: Colors.white54,
-                          fontSize: 12,
-                        ),
-                      ),
-                    if (material.brand.isNotEmpty)
-                      Text(
-                        material.brand,
-                        style: const TextStyle(
-                          color: Colors.white54,
-                          fontSize: 12,
-                        ),
-                      ),
+                    _MergedInfoLine(material: material),
                     const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        if (material.cost.isNotEmpty &&
-                            double.tryParse(material.cost) != null &&
-                            double.parse(material.cost) > 0)
-                          Text(
-                            '\$${material.cost}',
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 13,
-                            ),
-                          ),
-                        if (material.cost.isNotEmpty &&
-                            double.tryParse(material.cost) != null &&
-                            double.parse(material.cost) > 0 &&
-                            material.autoDeductEnabled)
-                          const Text(
-                            ' · ',
-                            style: TextStyle(color: Colors.white38),
-                          ),
-                        if (material.autoDeductEnabled)
-                          Text(
-                            '${formatWeight(material.remainingWeight)}${l10n.gramsSuffix}',
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 13,
-                            ),
-                          ),
-                      ],
-                    ),
+                    if (material.autoDeductEnabled)
+                      Text(
+                        '${formatWeight(material.remainingWeight)}${l10n.gramsSuffix}',
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 13,
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -132,6 +90,36 @@ class MaterialCard extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _MergedInfoLine extends StatelessWidget {
+  final MaterialModel material;
+
+  const _MergedInfoLine({required this.material});
+
+  @override
+  Widget build(BuildContext context) {
+    final parts = <String>[];
+    if (material.materialType.isNotEmpty) {
+      parts.add(material.materialType);
+    }
+    if (material.brand.isNotEmpty) {
+      parts.add(material.brand);
+    }
+    final cost = double.tryParse(material.cost);
+    final weight = double.tryParse(material.weight);
+    if (cost != null && weight != null && weight > 0 && cost > 0) {
+      final perKg = (cost / weight * 1000).toStringAsFixed(2);
+      parts.add('\$$perKg/kg');
+    }
+
+    if (parts.isEmpty) return const SizedBox.shrink();
+
+    return Text(
+      parts.join(' · '),
+      style: const TextStyle(color: Colors.white54, fontSize: 12),
     );
   }
 }

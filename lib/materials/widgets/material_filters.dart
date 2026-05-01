@@ -21,29 +21,19 @@ class MaterialFilters extends ConsumerWidget {
           _FilterSection(
             label: '',
             chips: [
-              _FilterChipData(
-                label: l10n.materialsFilterAll,
-                selected: selectedType == null,
-              ),
               ...types.map(
-                (t) => _FilterChipData(
-                  label: t,
-                  selected: selectedType == t,
-                ),
+                (t) => _FilterChipData(label: t, selected: selectedType == t),
               ),
             ],
             onSelected: (index) {
+              final type = types[index];
               ref.read(materialsTypeFilterProvider.notifier).state =
-                  index == 0 ? null : types[index - 1];
+                  selectedType == type ? null : type;
             },
           ),
         _FilterSection(
           label: '',
           chips: [
-            _FilterChipData(
-              label: l10n.materialsFilterAll,
-              selected: selectedStock == null,
-            ),
             _FilterChipData(
               label: l10n.materialsFilterInStock,
               selected: selectedStock == StockStatus.inStock,
@@ -58,14 +48,14 @@ class MaterialFilters extends ConsumerWidget {
             ),
           ],
           onSelected: (index) {
-            ref.read(materialsStockFilterProvider.notifier).state =
-                switch (index) {
-              0 => null,
-              1 => StockStatus.inStock,
-              2 => StockStatus.lowStock,
-              3 => StockStatus.outOfStock,
+            final status = switch (index) {
+              0 => StockStatus.inStock,
+              1 => StockStatus.lowStock,
+              2 => StockStatus.outOfStock,
               _ => null,
             };
+            ref.read(materialsStockFilterProvider.notifier).state =
+                selectedStock == status ? null : status;
           },
         ),
       ],

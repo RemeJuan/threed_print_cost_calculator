@@ -28,13 +28,20 @@ final materialBrandsProvider = Provider<Set<String>>((ref) {
   return materials.map((m) => m.brand).where((b) => b.isNotEmpty).toSet();
 });
 
+int _stockSortPriority(StockStatus status) => switch (status) {
+  StockStatus.inStock => 0,
+  StockStatus.lowStock => 1,
+  StockStatus.noTracking => 2,
+  StockStatus.outOfStock => 3,
+};
+
 final filteredMaterialsProvider = Provider<List<MaterialModel>>((ref) {
   final materials = _materialsOrEmpty(ref);
   final query = ref.watch(materialsSearchQueryProvider).toLowerCase().trim();
   final typeFilter = ref.watch(materialsTypeFilterProvider);
   final stockFilter = ref.watch(materialsStockFilterProvider);
 
-  return materials.where((m) {
+  final result = materials.where((m) {
     if (query.isNotEmpty) {
       final name = m.name.toLowerCase();
       final brand = m.brand.toLowerCase();
@@ -49,4 +56,12 @@ final filteredMaterialsProvider = Provider<List<MaterialModel>>((ref) {
 
     return true;
   }).toList();
+
+  result.sort((a, b) {
+    final pa = _stockSortPriority(calculateStockStatus(a));
+    final pb = _stockSortPriority(calculateStockStatus(b));
+    return pa.compareTo(pb);
+  });
+
+  return result;
 });
