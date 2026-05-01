@@ -90,25 +90,23 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       return null;
     }, [showHistoryTab, selectedTab.value]);
 
-    int tabToIndex(_AppTab tab) {
-      return switch (tab) {
-        _AppTab.calculator => 0,
-        _AppTab.materials => 1,
-        _AppTab.history => showHistoryTab ? 2 : 0,
-        _AppTab.settings => showHistoryTab ? 3 : 2,
-      };
+    final tabs = <_AppTab>[
+      _AppTab.calculator,
+      if (isPremium) _AppTab.materials,
+      if (showHistoryTab) _AppTab.history,
+      _AppTab.settings,
+    ];
+
+    int tabToIndex(_AppTab tab) => tabs.indexOf(tab);
+    _AppTab tabFromIndex(int index) => tabs[index];
+
+    if (!tabs.contains(selectedTab.value)) {
+      selectedTab.value = _AppTab.calculator;
     }
 
-    _AppTab tabFromIndex(int index) {
-      if (index == 0) return _AppTab.calculator;
-      if (index == 1) return _AppTab.materials;
-      if (showHistoryTab && index == 2) return _AppTab.history;
-      return _AppTab.settings;
-    }
-
-    final pages = <Widget>[
+    final pages = [
       const CalculatorPage(),
-      const MaterialsPage(),
+      if (isPremium) const MaterialsPage(),
       if (showHistoryTab)
         HistoryPage(
           mode: showHistoryTeaser
@@ -129,12 +127,12 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       const SettingsPage(),
     ];
 
-    final headings = [
-      l10n.calculatorAppBarTitle,
-      l10n.materialsAppBarTitle,
-      if (showHistoryTab) l10n.historyAppBarTitle,
-      l10n.settingsAppBarTitle,
-    ];
+    String titleForTab(_AppTab tab) => switch (tab) {
+      _AppTab.calculator => l10n.calculatorAppBarTitle,
+      _AppTab.materials => l10n.materialsAppBarTitle,
+      _AppTab.history => l10n.historyAppBarTitle,
+      _AppTab.settings => l10n.settingsAppBarTitle,
+    };
 
     final selectedIndex = tabToIndex(selectedTab.value);
 
@@ -155,27 +153,27 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(headings[selectedIndex]),
+        title: Text(titleForTab(tabs[selectedIndex])),
         actions: isHistoryTeaserSelected
             ? const []
             : selectedTab.value == _AppTab.materials
-                ? [
-                    IconButton(
-                      tooltip: l10n.csvImportTitle,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const CsvImportPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.file_upload_outlined,
-                        color: Colors.white54,
+            ? [
+                IconButton(
+                  tooltip: l10n.csvImportTitle,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const CsvImportPage(),
                       ),
-                    ),
-                  ]
-                : const [HeaderActions()],
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.file_upload_outlined,
+                    color: Colors.white54,
+                  ),
+                ),
+              ]
+            : const [HeaderActions()],
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () {
@@ -220,39 +218,41 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             curve: Curves.ease,
           );
         },
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.calculate,
-              key: ValueKey<String>('nav.calculator.button'),
+        items: tabs.map((tab) {
+          final (Widget icon, String label) = switch (tab) {
+            _AppTab.calculator => (
+              const Icon(
+                Icons.calculate,
+                key: ValueKey<String>('nav.calculator.button'),
+              ),
+              l10n.calculatorNavLabel,
             ),
-            label: l10n.calculatorNavLabel,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.inventory_2_outlined,
-              key: ValueKey<String>('nav.materials.button'),
+            _AppTab.materials => (
+              const Icon(
+                Icons.inventory_2_outlined,
+                key: ValueKey<String>('nav.materials.button'),
+              ),
+              l10n.materialsNavLabel,
             ),
-            label: l10n.materialsNavLabel,
-          ),
-          if (showHistoryTab)
-            BottomNavigationBarItem(
-              icon: isPremium
+            _AppTab.history => (
+              isPremium
                   ? const Icon(
                       Icons.history,
                       key: ValueKey<String>('nav.history.button'),
                     )
                   : const PromoHistoryTabIcon(),
-              label: l10n.historyNavLabel,
+              l10n.historyNavLabel,
             ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.settings,
-              key: ValueKey<String>('nav.settings.button'),
+            _AppTab.settings => (
+              const Icon(
+                Icons.settings,
+                key: ValueKey<String>('nav.settings.button'),
+              ),
+              l10n.settingsNavLabel,
             ),
-            label: l10n.settingsNavLabel,
-          ),
-        ],
+          };
+          return BottomNavigationBarItem(icon: icon, label: label);
+        }).toList(),
       ),
     );
   }

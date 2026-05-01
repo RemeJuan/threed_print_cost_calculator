@@ -8,7 +8,7 @@
 - Display remaining stock.
 - Deduct stock on save action.
 - Surface materials in a dedicated app tab between Calculator and History.
-- Keep materials available to free and Pro users because they support core calculator setup.
+- Premium-gate the materials tab — available only to Pro subscribers.
 - Store richer material metadata: `brand`, `materialType`, `colorHex`, and `notes`.
 - Support CSV import for bulk material creation.
 - Derive stock state from remaining/original weight percentage instead of absolute grams.
