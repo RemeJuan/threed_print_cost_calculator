@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
@@ -22,7 +23,6 @@ class MaterialCard extends ConsumerWidget {
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
     final status = calculateStockStatus(material);
-    final pct = stockPercent(material);
 
     String formatWeight(double value) {
       return value % 1 == 0
@@ -85,7 +85,7 @@ class MaterialCard extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              _StockBadge(status: status, percent: pct, l10n: l10n),
+              _StockBadge(status: status, l10n: l10n),
             ],
           ),
         ),
@@ -126,14 +126,9 @@ class _MergedInfoLine extends StatelessWidget {
 
 class _StockBadge extends StatelessWidget {
   final StockStatus status;
-  final double percent;
   final AppLocalizations l10n;
 
-  const _StockBadge({
-    required this.status,
-    required this.percent,
-    required this.l10n,
-  });
+  const _StockBadge({required this.status, required this.l10n});
 
   @override
   Widget build(BuildContext context) {

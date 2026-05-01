@@ -19,7 +19,6 @@ class MaterialFilters extends ConsumerWidget {
       children: [
         if (types.isNotEmpty)
           _FilterSection(
-            label: '',
             chips: [
               ...types.map(
                 (t) => _FilterChipData(label: t, selected: selectedType == t),
@@ -32,7 +31,6 @@ class MaterialFilters extends ConsumerWidget {
             },
           ),
         _FilterSection(
-          label: '',
           chips: [
             _FilterChipData(
               label: l10n.materialsFilterInStock,
@@ -75,7 +73,7 @@ class _FilterSection extends StatelessWidget {
   final void Function(int index) onSelected;
 
   const _FilterSection({
-    required this.label,
+    this.label = '',
     required this.chips,
     required this.onSelected,
   });

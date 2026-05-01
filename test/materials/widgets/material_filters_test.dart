@@ -58,8 +58,6 @@ void main() {
       await tester.pumpAndSettle();
       addTearDown(db.close);
 
-      await tester.pumpAndSettle();
-
       expect(find.text('PLA'), findsOneWidget);
       expect(find.text('PETG'), findsOneWidget);
     });
