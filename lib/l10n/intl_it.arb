@@ -233,7 +233,7 @@
   "addMaterialButton": "Aggiungi materiale",
   "useSingleTotalWeightAction": "Usa peso totale singolo",
   "addAtLeastOneMaterial": "Aggiungi almeno un materiale.",
-  "searchMaterialsHint": "Cerca materiali",
+  "searchMaterialsHint": "Cerca nome o marca",
   "materialBreakdownLabel": "Dettaglio materiali",
   "materialsCountLabel": "{count, plural, one{# materiale} other{# materiali}}",
   "totalMaterialWeightLabel": "Peso totale materiale: {grams}g",
@@ -335,5 +335,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Altro",
-  "slicerUnknown": "Sconosciuto"
+  "slicerUnknown": "Sconosciuto",
+  "materialsAppBarTitle": "Materiali",
+  "materialsNavLabel": "Materiali",
+  "brandLabel": "Marca",
+  "materialTypeLabel": "Tipo di materiale",
+  "colorHexLabel": "Hex colore (opzionale)",
+  "notesLabel": "Note",
+  "materialsEmpty": "Nessun materiale ancora. Tocca + per aggiungerne uno.",
+  "materialsFilterAll": "Tutti",
+  "materialsFilterInStock": "Disponibile",
+  "materialsFilterLowStock": "Scorte basse",
+  "materialsFilterOutOfStock": "Esaurito",
+  "csvImportTitle": "Importa materiali",
+  "csvTemplateButton": "Modello",
+  "csvImportIntro": "Importa materiali da un file CSV.",
+  "csvSelectFileButton": "Scegli file CSV",
+  "csvImportButton": "Importa righe valide",
+  "csvFileTypeError": "Seleziona un file .csv",
+  "csvNameRequiredError": "Il nome è obbligatorio",
+  "csvColorRequiredError": "Il colore è obbligatorio",
+  "csvSpoolWeightRequiredError": "Il peso della bobina è obbligatorio",
+  "csvSpoolWeightPositiveError": "Il peso della bobina deve essere > 0",
+  "csvCostRequiredError": "Il costo è obbligatorio",
+  "csvCostPositiveError": "Il costo deve essere > 0",
+  "csvImportSuccessMessage": "{count} materiali importati",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} righe: {valid} valide, {invalid} con errori",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(vuoto)",
+  "stockBadgeOut": "Esaurito",
+  "stockBadgeLow": "Scorta bassa",
+  "stockBadgeInStock": "Disponibile",
+  "stockBadgeNoTracking": "Non tracciato"
 }

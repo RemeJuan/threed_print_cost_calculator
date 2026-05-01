@@ -233,7 +233,7 @@
   "addMaterialButton": "Material hinzufügen",
   "useSingleTotalWeightAction": "Gesamtgewicht verwenden",
   "addAtLeastOneMaterial": "Mindestens ein Material hinzufügen.",
-  "searchMaterialsHint": "Materialien suchen",
+  "searchMaterialsHint": "Name oder Marke suchen",
   "materialBreakdownLabel": "Materialaufschlüsselung",
   "materialsCountLabel": "{count, plural, one{# Material} other{# Materialien}}",
   "totalMaterialWeightLabel": "Gesamtes Materialgewicht: {grams}g",
@@ -265,7 +265,7 @@
   "hideProPromotionsTitle": "Pro-Aktionen ausblenden",
   "hideProPromotionsSubtitle": "Upgrade-Banner und Hinweise ausblenden",
   "durationPickerLabel": "Printing time (hh:mm)",
-"importGcodeButton": "G-code importieren (Autoausfüllen)",
+  "importGcodeButton": "G-code importieren (Autoausfüllen)",
   "importGcodePageTitle": "G-code importieren (Beta)",
   "importGcodeIntro": "Wählen Sie eine lokale .gcode-Datei. Unterstützte Slicer: PrusaSlicer, OrcaSlicer, Bambu Studio und Cura.",
   "importGcodeSelectFileButton": "G-code-Datei auswählen",
@@ -329,5 +329,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "Unbekannt"
+  "slicerUnknown": "Unbekannt",
+  "materialsAppBarTitle": "Materialien",
+  "materialsNavLabel": "Materialien",
+  "brandLabel": "Marke",
+  "materialTypeLabel": "Materialtyp",
+  "colorHexLabel": "Farbe Hex (optional)",
+  "notesLabel": "Notizen",
+  "materialsEmpty": "Noch keine Materialien. Tippe auf +, um eins hinzuzufügen.",
+  "materialsFilterAll": "Alle",
+  "materialsFilterInStock": "Auf Lager",
+  "materialsFilterLowStock": "Niedrig",
+  "materialsFilterOutOfStock": "Ausverkauft",
+  "csvImportTitle": "Materialien importieren",
+  "csvTemplateButton": "Vorlage",
+  "csvImportIntro": "Materialien aus einer CSV-Datei importieren.",
+  "csvSelectFileButton": "CSV-Datei auswählen",
+  "csvImportButton": "Gültige Zeilen importieren",
+  "csvFileTypeError": "Bitte wählen Sie eine .csv-Datei",
+  "csvNameRequiredError": "Name ist erforderlich",
+  "csvColorRequiredError": "Farbe ist erforderlich",
+  "csvSpoolWeightRequiredError": "Spoolgewicht ist erforderlich",
+  "csvSpoolWeightPositiveError": "Spoolgewicht muss > 0 sein",
+  "csvCostRequiredError": "Kosten sind erforderlich",
+  "csvCostPositiveError": "Kosten müssen > 0 sein",
+  "csvImportSuccessMessage": "{count} Materialien importiert",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} Zeilen: {valid} gültig, {invalid} mit Fehlern",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(leer)",
+  "stockBadgeOut": "Ausverkauft",
+  "stockBadgeLow": "Niedriger Bestand",
+  "stockBadgeInStock": "Auf Lager",
+  "stockBadgeNoTracking": "Keine Verfolgung"
 }

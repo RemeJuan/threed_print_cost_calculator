@@ -234,7 +234,7 @@
   "addMaterialButton": "Materiaal toevoegen",
   "useSingleTotalWeightAction": "Gebruik enkel totaalgewicht",
   "addAtLeastOneMaterial": "Voeg minimaal één materiaal toe.",
-  "searchMaterialsHint": "Materialen zoeken",
+  "searchMaterialsHint": "Zoek naam of merk",
   "materialBreakdownLabel": "Materiaaluitsplitsing",
   "materialsCountLabel": "{count, plural, =1{# materiaal} other{# materialen}}",
   "totalMaterialWeightLabel": "Totaal materiaalgewicht: {grams}g",
@@ -328,6 +328,56 @@
   "slicerSimplify3D": "Simplify3D",
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
-  "slicerOther": "Other",
-  "slicerUnknown": "Onbekend"
+  "slicerOther": "Overig",
+  "slicerUnknown": "Onbekend",
+  "materialsAppBarTitle": "Materialen",
+  "materialsNavLabel": "Materialen",
+  "brandLabel": "Merk",
+  "materialTypeLabel": "Materiaaltype",
+  "colorHexLabel": "Kleur hex (optioneel)",
+  "notesLabel": "Notities",
+  "materialsEmpty": "Nog geen materialen. Tik op + om er een toe te voegen.",
+  "materialsFilterAll": "Alles",
+  "materialsFilterInStock": "Op voorraad",
+  "materialsFilterLowStock": "Weinig",
+  "materialsFilterOutOfStock": "Uitverkocht",
+  "csvImportTitle": "Materialen importeren",
+  "csvTemplateButton": "Sjabloon",
+  "csvImportIntro": "Importeer materialen uit een CSV-bestand.",
+  "csvSelectFileButton": "Kies CSV-bestand",
+  "csvImportButton": "Geldige rijen importeren",
+  "csvFileTypeError": "Kies een .csv-bestand",
+  "csvNameRequiredError": "Naam is verplicht",
+  "csvColorRequiredError": "Kleur is verplicht",
+  "csvSpoolWeightRequiredError": "Spoelgewicht is verplicht",
+  "csvSpoolWeightPositiveError": "Spoelgewicht moet > 0 zijn",
+  "csvCostRequiredError": "Kosten zijn verplicht",
+  "csvCostPositiveError": "Kosten moeten > 0 zijn",
+  "csvImportSuccessMessage": "{count} materialen geïmporteerd",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} rijen: {valid} geldig, {invalid} met fouten",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(leeg)",
+  "stockBadgeOut": "Uitverkocht",
+  "stockBadgeLow": "Lage voorraad",
+  "stockBadgeInStock": "Op voorraad",
+  "stockBadgeNoTracking": "Niet bijgehouden"
 }

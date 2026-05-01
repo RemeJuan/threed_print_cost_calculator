@@ -234,7 +234,7 @@
   "addMaterialButton": "Ajouter un matériau",
   "useSingleTotalWeightAction": "Utiliser le poids total unique",
   "addAtLeastOneMaterial": "Ajoutez au moins un matériau.",
-  "searchMaterialsHint": "Rechercher des matériaux",
+  "searchMaterialsHint": "Chercher nom ou marque",
   "materialBreakdownLabel": "Répartition des matériaux",
   "materialsCountLabel": "{count, plural, one{# matériau} other{# matériaux}}",
   "totalMaterialWeightLabel": "Poids total du matériau : {grams}g",
@@ -330,5 +330,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "Inconnu"
+  "slicerUnknown": "Inconnu",
+  "materialsAppBarTitle": "Matériaux",
+  "materialsNavLabel": "Matériaux",
+  "brandLabel": "Marque",
+  "materialTypeLabel": "Type de matériau",
+  "colorHexLabel": "Code hex (optionnel)",
+  "notesLabel": "Notes",
+  "materialsEmpty": "Aucun matériau pour l'instant. Appuyez sur + pour en ajouter.",
+  "materialsFilterAll": "Tout",
+  "materialsFilterInStock": "En stock",
+  "materialsFilterLowStock": "Stock bas",
+  "materialsFilterOutOfStock": "Rupture de stock",
+  "csvImportTitle": "Importer des matériaux",
+  "csvTemplateButton": "Modèle",
+  "csvImportIntro": "Importez des matériaux depuis un fichier CSV.",
+  "csvSelectFileButton": "Choisir un fichier CSV",
+  "csvImportButton": "Importer les lignes valides",
+  "csvFileTypeError": "Sélectionnez un fichier .csv",
+  "csvNameRequiredError": "Le nom est obligatoire",
+  "csvColorRequiredError": "La couleur est obligatoire",
+  "csvSpoolWeightRequiredError": "Le poids de la bobine est obligatoire",
+  "csvSpoolWeightPositiveError": "Le poids de la bobine doit être > 0",
+  "csvCostRequiredError": "Le coût est obligatoire",
+  "csvCostPositiveError": "Le coût doit être > 0",
+  "csvImportSuccessMessage": "{count} matériaux importés",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} lignes: {valid} valides, {invalid} avec erreurs",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(vide)",
+  "stockBadgeOut": "Rupture",
+  "stockBadgeLow": "Stock faible",
+  "stockBadgeInStock": "En stock",
+  "stockBadgeNoTracking": "Non suivi"
 }

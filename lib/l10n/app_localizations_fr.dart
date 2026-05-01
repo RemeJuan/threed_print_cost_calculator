@@ -446,7 +446,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Ajoutez au moins un matériau.';
 
   @override
-  String get searchMaterialsHint => 'Rechercher des matériaux';
+  String get searchMaterialsHint => 'Chercher nom ou marque';
 
   @override
   String get materialBreakdownLabel => 'Répartition des matériaux';
@@ -688,4 +688,101 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Inconnu';
+
+  @override
+  String get materialsAppBarTitle => 'Matériaux';
+
+  @override
+  String get materialsNavLabel => 'Matériaux';
+
+  @override
+  String get brandLabel => 'Marque';
+
+  @override
+  String get materialTypeLabel => 'Type de matériau';
+
+  @override
+  String get colorHexLabel => 'Code hex (optionnel)';
+
+  @override
+  String get notesLabel => 'Notes';
+
+  @override
+  String get materialsEmpty =>
+      'Aucun matériau pour l\'instant. Appuyez sur + pour en ajouter.';
+
+  @override
+  String get materialsFilterAll => 'Tout';
+
+  @override
+  String get materialsFilterInStock => 'En stock';
+
+  @override
+  String get materialsFilterLowStock => 'Stock bas';
+
+  @override
+  String get materialsFilterOutOfStock => 'Rupture de stock';
+
+  @override
+  String get csvImportTitle => 'Importer des matériaux';
+
+  @override
+  String get csvTemplateButton => 'Modèle';
+
+  @override
+  String get csvImportIntro => 'Importez des matériaux depuis un fichier CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Choisir un fichier CSV';
+
+  @override
+  String get csvImportButton => 'Importer les lignes valides';
+
+  @override
+  String get csvFileTypeError => 'Sélectionnez un fichier .csv';
+
+  @override
+  String get csvNameRequiredError => 'Le nom est obligatoire';
+
+  @override
+  String get csvColorRequiredError => 'La couleur est obligatoire';
+
+  @override
+  String get csvSpoolWeightRequiredError =>
+      'Le poids de la bobine est obligatoire';
+
+  @override
+  String get csvSpoolWeightPositiveError =>
+      'Le poids de la bobine doit être > 0';
+
+  @override
+  String get csvCostRequiredError => 'Le coût est obligatoire';
+
+  @override
+  String get csvCostPositiveError => 'Le coût doit être > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    return '$count matériaux importés';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total lignes: $valid valides, $invalid avec erreurs';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vide)';
+
+  @override
+  String get stockBadgeOut => 'Rupture';
+
+  @override
+  String get stockBadgeLow => 'Stock faible';
+
+  @override
+  String get stockBadgeInStock => 'En stock';
+
+  @override
+  String get stockBadgeNoTracking => 'Non suivi';
 }

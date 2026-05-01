@@ -233,7 +233,7 @@
   "addMaterialButton": "Tambahkan bahan",
   "useSingleTotalWeightAction": "Gunakan total berat tunggal",
   "addAtLeastOneMaterial": "Tambahkan setidaknya satu material.",
-  "searchMaterialsHint": "Cari bahan",
+  "searchMaterialsHint": "Cari nama atau merek",
   "materialBreakdownLabel": "Rincian bahan",
   "materialsCountLabel": "{count} bahan",
   "totalMaterialWeightLabel": "Total berat material: {grams}g",
@@ -335,5 +335,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Lainnya",
-  "slicerUnknown": "Tidak Dikenal"
+  "slicerUnknown": "Tidak Dikenal",
+  "materialsAppBarTitle": "Material",
+  "materialsNavLabel": "Material",
+  "brandLabel": "Merek",
+  "materialTypeLabel": "Jenis material",
+  "colorHexLabel": "Hex warna (opsional)",
+  "notesLabel": "Catatan",
+  "materialsEmpty": "Belum ada material. Ketuk + untuk menambah.",
+  "materialsFilterAll": "Semua",
+  "materialsFilterInStock": "Tersedia",
+  "materialsFilterLowStock": "Stok rendah",
+  "materialsFilterOutOfStock": "Habis",
+  "csvImportTitle": "Impor material",
+  "csvTemplateButton": "Template",
+  "csvImportIntro": "Impor material dari file CSV.",
+  "csvSelectFileButton": "Pilih file CSV",
+  "csvImportButton": "Impor baris yang valid",
+  "csvFileTypeError": "Pilih file .csv",
+  "csvNameRequiredError": "Nama wajib diisi",
+  "csvColorRequiredError": "Warna wajib diisi",
+  "csvSpoolWeightRequiredError": "Berat spool wajib diisi",
+  "csvSpoolWeightPositiveError": "Berat spool harus > 0",
+  "csvCostRequiredError": "Biaya wajib diisi",
+  "csvCostPositiveError": "Biaya harus > 0",
+  "csvImportSuccessMessage": "{count} material diimpor",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} baris: {valid} valid, {invalid} dengan error",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(kosong)",
+  "stockBadgeOut": "Habis",
+  "stockBadgeLow": "Stok rendah",
+  "stockBadgeInStock": "Tersedia",
+  "stockBadgeNoTracking": "Tidak dilacak"
 }

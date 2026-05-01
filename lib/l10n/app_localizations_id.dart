@@ -436,7 +436,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Tambahkan setidaknya satu material.';
 
   @override
-  String get searchMaterialsHint => 'Cari bahan';
+  String get searchMaterialsHint => 'Cari nama atau merek';
 
   @override
   String get materialBreakdownLabel => 'Rincian bahan';
@@ -668,4 +668,98 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Tidak Dikenal';
+
+  @override
+  String get materialsAppBarTitle => 'Material';
+
+  @override
+  String get materialsNavLabel => 'Material';
+
+  @override
+  String get brandLabel => 'Merek';
+
+  @override
+  String get materialTypeLabel => 'Jenis material';
+
+  @override
+  String get colorHexLabel => 'Hex warna (opsional)';
+
+  @override
+  String get notesLabel => 'Catatan';
+
+  @override
+  String get materialsEmpty => 'Belum ada material. Ketuk + untuk menambah.';
+
+  @override
+  String get materialsFilterAll => 'Semua';
+
+  @override
+  String get materialsFilterInStock => 'Tersedia';
+
+  @override
+  String get materialsFilterLowStock => 'Stok rendah';
+
+  @override
+  String get materialsFilterOutOfStock => 'Habis';
+
+  @override
+  String get csvImportTitle => 'Impor material';
+
+  @override
+  String get csvTemplateButton => 'Template';
+
+  @override
+  String get csvImportIntro => 'Impor material dari file CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Pilih file CSV';
+
+  @override
+  String get csvImportButton => 'Impor baris yang valid';
+
+  @override
+  String get csvFileTypeError => 'Pilih file .csv';
+
+  @override
+  String get csvNameRequiredError => 'Nama wajib diisi';
+
+  @override
+  String get csvColorRequiredError => 'Warna wajib diisi';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Berat spool wajib diisi';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Berat spool harus > 0';
+
+  @override
+  String get csvCostRequiredError => 'Biaya wajib diisi';
+
+  @override
+  String get csvCostPositiveError => 'Biaya harus > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    return '$count material diimpor';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total baris: $valid valid, $invalid dengan error';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(kosong)';
+
+  @override
+  String get stockBadgeOut => 'Habis';
+
+  @override
+  String get stockBadgeLow => 'Stok rendah';
+
+  @override
+  String get stockBadgeInStock => 'Tersedia';
+
+  @override
+  String get stockBadgeNoTracking => 'Tidak dilacak';
 }

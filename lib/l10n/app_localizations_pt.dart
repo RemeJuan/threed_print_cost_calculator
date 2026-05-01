@@ -441,7 +441,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Adicione pelo menos um material.';
 
   @override
-  String get searchMaterialsHint => 'Pesquisar materiais';
+  String get searchMaterialsHint => 'Pesquisar nome ou marca';
 
   @override
   String get materialBreakdownLabel => 'Detalhamento de materiais';
@@ -680,4 +680,99 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Desconhecido';
+
+  @override
+  String get materialsAppBarTitle => 'Materiais';
+
+  @override
+  String get materialsNavLabel => 'Materiais';
+
+  @override
+  String get brandLabel => 'Marca';
+
+  @override
+  String get materialTypeLabel => 'Tipo de material';
+
+  @override
+  String get colorHexLabel => 'Cor hex (opcional)';
+
+  @override
+  String get notesLabel => 'Notas';
+
+  @override
+  String get materialsEmpty =>
+      'Nenhum material ainda. Toque em + para adicionar.';
+
+  @override
+  String get materialsFilterAll => 'Todos';
+
+  @override
+  String get materialsFilterInStock => 'Em estoque';
+
+  @override
+  String get materialsFilterLowStock => 'Estoque baixo';
+
+  @override
+  String get materialsFilterOutOfStock => 'Fora de estoque';
+
+  @override
+  String get csvImportTitle => 'Importar materiais';
+
+  @override
+  String get csvTemplateButton => 'Modelo';
+
+  @override
+  String get csvImportIntro => 'Importe materiais de um arquivo CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Escolher arquivo CSV';
+
+  @override
+  String get csvImportButton => 'Importar linhas válidas';
+
+  @override
+  String get csvFileTypeError => 'Selecione um arquivo .csv';
+
+  @override
+  String get csvNameRequiredError => 'Nome é obrigatório';
+
+  @override
+  String get csvColorRequiredError => 'Cor é obrigatória';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Peso do carretel é obrigatório';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Peso do carretel deve ser > 0';
+
+  @override
+  String get csvCostRequiredError => 'Custo é obrigatório';
+
+  @override
+  String get csvCostPositiveError => 'Custo deve ser > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    return '$count materiais importados';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total linhas: $valid válidas, $invalid com erros';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vazio)';
+
+  @override
+  String get stockBadgeOut => 'Sem estoque';
+
+  @override
+  String get stockBadgeLow => 'Estoque baixo';
+
+  @override
+  String get stockBadgeInStock => 'Em estoque';
+
+  @override
+  String get stockBadgeNoTracking => 'Sem rastreio';
 }

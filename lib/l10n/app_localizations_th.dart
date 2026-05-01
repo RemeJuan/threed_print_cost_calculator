@@ -434,7 +434,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get addAtLeastOneMaterial => 'เพิ่มวัสดุอย่างน้อย 1 รายการ';
 
   @override
-  String get searchMaterialsHint => 'ค้นหาวัสดุ';
+  String get searchMaterialsHint => 'ค้นหาชื่อหรือแบรนด์';
 
   @override
   String get materialBreakdownLabel => 'รายละเอียดวัสดุ';
@@ -663,4 +663,98 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'ไม่ทราบ';
+
+  @override
+  String get materialsAppBarTitle => 'วัสดุ';
+
+  @override
+  String get materialsNavLabel => 'วัสดุ';
+
+  @override
+  String get brandLabel => 'ยี่ห้อ';
+
+  @override
+  String get materialTypeLabel => 'ประเภทวัสดุ';
+
+  @override
+  String get colorHexLabel => 'เลขฐานสิบหกสี (ไม่บังคับ)';
+
+  @override
+  String get notesLabel => 'หมายเหตุ';
+
+  @override
+  String get materialsEmpty => 'ยังไม่มีวัสดุ แตะ + เพื่อเพิ่ม';
+
+  @override
+  String get materialsFilterAll => 'ทั้งหมด';
+
+  @override
+  String get materialsFilterInStock => 'ในสต็อก';
+
+  @override
+  String get materialsFilterLowStock => 'สต็อกต่ำ';
+
+  @override
+  String get materialsFilterOutOfStock => 'หมดสต็อก';
+
+  @override
+  String get csvImportTitle => 'นำเข้าวัสดุ';
+
+  @override
+  String get csvTemplateButton => 'เทมเพลต';
+
+  @override
+  String get csvImportIntro => 'นำเข้าวัสดุจากไฟล์ CSV';
+
+  @override
+  String get csvSelectFileButton => 'เลือกไฟล์ CSV';
+
+  @override
+  String get csvImportButton => 'นำเข้าแถวที่ถูกต้อง';
+
+  @override
+  String get csvFileTypeError => 'กรุณาเลือกไฟล์ .csv';
+
+  @override
+  String get csvNameRequiredError => 'ชื่อจำเป็น';
+
+  @override
+  String get csvColorRequiredError => 'สีจำเป็น';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'น้ำหนักสปูลจำเป็น';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'น้ำหนักสปูลต้องมากกว่า 0';
+
+  @override
+  String get csvCostRequiredError => 'ต้นทุนจำเป็น';
+
+  @override
+  String get csvCostPositiveError => 'ต้นทุนต้องมากกว่า 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    return 'นำเข้า $count วัสดุ';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total แถว: $valid ถูกต้อง, $invalid มีข้อผิดพลาด';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(ว่าง)';
+
+  @override
+  String get stockBadgeOut => 'หมดสต็อก';
+
+  @override
+  String get stockBadgeLow => 'สต็อกต่ำ';
+
+  @override
+  String get stockBadgeInStock => 'มีสต็อก';
+
+  @override
+  String get stockBadgeNoTracking => 'ไม่ติดตาม';
 }

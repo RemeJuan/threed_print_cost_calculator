@@ -234,7 +234,7 @@
   "addMaterialButton": "เพิ่มวัสดุ",
   "useSingleTotalWeightAction": "ใช้ค่าน้ำหนักรวมเดียว",
   "addAtLeastOneMaterial": "เพิ่มวัสดุอย่างน้อย 1 รายการ",
-  "searchMaterialsHint": "ค้นหาวัสดุ",
+  "searchMaterialsHint": "ค้นหาชื่อหรือแบรนด์",
   "materialBreakdownLabel": "รายละเอียดวัสดุ",
   "materialsCountLabel": "{count} วัสดุ",
   "totalMaterialWeightLabel": "น้ำหนักวัสดุรวม: {grams}g",
@@ -336,5 +336,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "อื่นๆ",
-  "slicerUnknown": "ไม่ทราบ"
+  "slicerUnknown": "ไม่ทราบ",
+  "materialsAppBarTitle": "วัสดุ",
+  "materialsNavLabel": "วัสดุ",
+  "brandLabel": "ยี่ห้อ",
+  "materialTypeLabel": "ประเภทวัสดุ",
+  "colorHexLabel": "เลขฐานสิบหกสี (ไม่บังคับ)",
+  "notesLabel": "หมายเหตุ",
+  "materialsEmpty": "ยังไม่มีวัสดุ แตะ + เพื่อเพิ่ม",
+  "materialsFilterAll": "ทั้งหมด",
+  "materialsFilterInStock": "ในสต็อก",
+  "materialsFilterLowStock": "สต็อกต่ำ",
+  "materialsFilterOutOfStock": "หมดสต็อก",
+  "csvImportTitle": "นำเข้าวัสดุ",
+  "csvTemplateButton": "เทมเพลต",
+  "csvImportIntro": "นำเข้าวัสดุจากไฟล์ CSV",
+  "csvSelectFileButton": "เลือกไฟล์ CSV",
+  "csvImportButton": "นำเข้าแถวที่ถูกต้อง",
+  "csvFileTypeError": "กรุณาเลือกไฟล์ .csv",
+  "csvNameRequiredError": "ชื่อจำเป็น",
+  "csvColorRequiredError": "สีจำเป็น",
+  "csvSpoolWeightRequiredError": "น้ำหนักสปูลจำเป็น",
+  "csvSpoolWeightPositiveError": "น้ำหนักสปูลต้องมากกว่า 0",
+  "csvCostRequiredError": "ต้นทุนจำเป็น",
+  "csvCostPositiveError": "ต้นทุนต้องมากกว่า 0",
+  "csvImportSuccessMessage": "นำเข้า {count} วัสดุ",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} แถว: {valid} ถูกต้อง, {invalid} มีข้อผิดพลาด",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(ว่าง)",
+  "stockBadgeOut": "หมดสต็อก",
+  "stockBadgeLow": "สต็อกต่ำ",
+  "stockBadgeInStock": "มีสต็อก",
+  "stockBadgeNoTracking": "ไม่ติดตาม"
 }

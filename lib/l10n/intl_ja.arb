@@ -234,7 +234,7 @@
   "addMaterialButton": "素材を追加",
   "useSingleTotalWeightAction": "単一の合計重量を使用",
   "addAtLeastOneMaterial": "少なくとも1つの素材を追加してください。",
-  "searchMaterialsHint": "素材を検索",
+  "searchMaterialsHint": "名前またはブランドを検索",
   "materialBreakdownLabel": "素材内訳",
   "materialsCountLabel": "{count} 件の素材",
   "totalMaterialWeightLabel": "素材の合計重量: {grams}g",
@@ -329,5 +329,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "不明"
+  "slicerUnknown": "不明",
+  "materialsAppBarTitle": "材料",
+  "materialsNavLabel": "材料",
+  "brandLabel": "ブランド",
+  "materialTypeLabel": "素材タイプ",
+  "colorHexLabel": "色のhex（任意）",
+  "notesLabel": "メモ",
+  "materialsEmpty": "材料がまだありません。+をタップして追加",
+  "materialsFilterAll": "すべて",
+  "materialsFilterInStock": "在庫あり",
+  "materialsFilterLowStock": "残りわずか",
+  "materialsFilterOutOfStock": "在庫切れ",
+  "csvImportTitle": "材料をインポート",
+  "csvTemplateButton": "テンプレート",
+  "csvImportIntro": "CSVファイルから材料をインポートします。",
+  "csvSelectFileButton": "CSVファイルを選択",
+  "csvImportButton": "有効な行をインポート",
+  "csvFileTypeError": ".csvファイルを選択してください",
+  "csvNameRequiredError": "名前は必須です",
+  "csvColorRequiredError": "色は必須です",
+  "csvSpoolWeightRequiredError": "スプール重量は必須です",
+  "csvSpoolWeightPositiveError": "スプール重量は0より大きい必要があります",
+  "csvCostRequiredError": "コストは必須です",
+  "csvCostPositiveError": "コストは0より大きい必要があります",
+  "csvImportSuccessMessage": "{count}件の材料をインポートしました",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total}行: {valid}件有効, {invalid}件エラー",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(空白)",
+  "stockBadgeOut": "在庫切れ",
+  "stockBadgeLow": "残りわずか",
+  "stockBadgeInStock": "在庫あり",
+  "stockBadgeNoTracking": "追跡なし"
 }

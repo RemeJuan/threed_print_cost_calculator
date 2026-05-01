@@ -233,7 +233,7 @@
   "addMaterialButton": "Adicionar",
   "useSingleTotalWeightAction": "Usar peso total único",
   "addAtLeastOneMaterial": "Adicione pelo menos um material.",
-  "searchMaterialsHint": "Pesquisar materiais",
+  "searchMaterialsHint": "Pesquisar nome ou marca",
   "materialBreakdownLabel": "Detalhamento de materiais",
   "materialsCountLabel": "{count, plural, one{# material} other{# materiais}}",
   "totalMaterialWeightLabel": "Peso total do material: {grams}g",
@@ -329,5 +329,55 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "Desconhecido"
+  "slicerUnknown": "Desconhecido",
+  "materialsAppBarTitle": "Materiais",
+  "materialsNavLabel": "Materiais",
+  "brandLabel": "Marca",
+  "materialTypeLabel": "Tipo de material",
+  "colorHexLabel": "Cor hex (opcional)",
+  "notesLabel": "Notas",
+  "materialsEmpty": "Nenhum material ainda. Toque em + para adicionar.",
+  "materialsFilterAll": "Todos",
+  "materialsFilterInStock": "Em estoque",
+  "materialsFilterLowStock": "Estoque baixo",
+  "materialsFilterOutOfStock": "Fora de estoque",
+  "csvImportTitle": "Importar materiais",
+  "csvTemplateButton": "Modelo",
+  "csvImportIntro": "Importe materiais de um arquivo CSV.",
+  "csvSelectFileButton": "Escolher arquivo CSV",
+  "csvImportButton": "Importar linhas válidas",
+  "csvFileTypeError": "Selecione um arquivo .csv",
+  "csvNameRequiredError": "Nome é obrigatório",
+  "csvColorRequiredError": "Cor é obrigatória",
+  "csvSpoolWeightRequiredError": "Peso do carretel é obrigatório",
+  "csvSpoolWeightPositiveError": "Peso do carretel deve ser > 0",
+  "csvCostRequiredError": "Custo é obrigatório",
+  "csvCostPositiveError": "Custo deve ser > 0",
+  "csvImportSuccessMessage": "{count} materiais importados",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} linhas: {valid} válidas, {invalid} com erros",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(vazio)",
+  "stockBadgeOut": "Sem estoque",
+  "stockBadgeLow": "Estoque baixo",
+  "stockBadgeInStock": "Em estoque",
+  "stockBadgeNoTracking": "Sem rastreio"
 }
