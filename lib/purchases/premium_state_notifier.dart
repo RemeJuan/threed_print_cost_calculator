@@ -28,6 +28,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   bool _disposed = false;
   bool _wasUsingLocalOverride = false;
   bool _scheduledExpiredOverrideCleanup = false;
+  int _fetchToken = 0;
 
   @override
   PremiumState build() {
@@ -89,12 +90,14 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   }
 
   Future<void> _loadInitialState(PurchasesGateway gateway) async {
+    final fetchToken = ++_fetchToken;
+
     try {
       final premiumState = await gateway.fetchPremiumState();
-      if (_disposed) return;
+      if (_disposed || fetchToken != _fetchToken) return;
       state = _applyOverride(premiumState);
     } catch (_) {
-      if (_disposed) return;
+      if (_disposed || fetchToken != _fetchToken) return;
       state = PremiumState(
         isPremium: _hasLocalOverride(),
         isLoading: false,
