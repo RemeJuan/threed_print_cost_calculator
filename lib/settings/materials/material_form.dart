@@ -3,7 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
+import 'package:threed_print_cost_calculator/settings/materials/brand_typeahead.dart';
+import 'package:threed_print_cost_calculator/settings/materials/material_type_typeahead.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
@@ -107,12 +108,12 @@ class MaterialForm extends HookConsumerWidget {
                   onChanged: notifier.updateName,
                 ),
 
-                _BrandTypeahead(
+                BrandTypeahead(
                   initialValue: state.brand.value,
                   onChanged: notifier.updateBrand,
                 ),
 
-                _MaterialTypeTypeahead(
+                MaterialTypeTypeahead(
                   initialValue: state.materialType.value,
                   onChanged: notifier.updateMaterialType,
                 ),
@@ -305,160 +306,6 @@ class MaterialForm extends HookConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _SuggestionTypeahead extends HookWidget {
-  final List<String> suggestions;
-  final String labelText;
-  final String initialValue;
-  final ValueChanged<String> onChanged;
-  final ValueKey<String>? fieldKey;
-
-  const _SuggestionTypeahead({
-    super.key,
-    required this.suggestions,
-    required this.labelText,
-    required this.initialValue,
-    required this.onChanged,
-    this.fieldKey,
-  });
-
-  @override
-  Widget build(context) {
-    final controller = useTextEditingController(text: initialValue);
-    final focusNode = useFocusNode();
-    final layerLink = useMemoized(() => LayerLink());
-    final showSuggestions = useState(false);
-
-    useEffect(() {
-      void onBlur() {
-        Future.delayed(const Duration(milliseconds: 200), () {
-          showSuggestions.value = false;
-        });
-      }
-
-      focusNode.addListener(onBlur);
-      return () => focusNode.removeListener(onBlur);
-    }, [focusNode]);
-
-    void select(String value) {
-      controller.text = value;
-      controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: value.length),
-      );
-      onChanged(value);
-      showSuggestions.value = false;
-    }
-
-    return CompositedTransformTarget(
-      link: layerLink,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          FocusSafeTextField(
-            key: fieldKey,
-            controller: controller,
-            externalText: initialValue,
-            focusNode: focusNode,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(labelText: labelText),
-            onChanged: (v) {
-              onChanged(v);
-              if (v.isNotEmpty &&
-                  suggestions.any(
-                    (s) => s.toLowerCase().contains(v.toLowerCase()),
-                  )) {
-                showSuggestions.value = true;
-              } else {
-                showSuggestions.value = false;
-              }
-            },
-          ),
-          if (showSuggestions.value)
-            CompositedTransformFollower(
-              link: layerLink,
-              showWhenUnlinked: false,
-              offset: const Offset(0, 0),
-              child: Material(
-                elevation: 4,
-                color: const Color.fromRGBO(26, 28, 43, 1),
-                borderRadius: BorderRadius.circular(8),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 200),
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: suggestions.length,
-                    itemBuilder: (_, i) {
-                      final item = suggestions.elementAt(i);
-                      final query = controller.text.toLowerCase();
-                      if (query.isNotEmpty &&
-                          !item.toLowerCase().contains(query)) {
-                        return const SizedBox.shrink();
-                      }
-                      return InkWell(
-                        onTap: () => select(item),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
-                          ),
-                          child: Text(
-                            item,
-                            style: const TextStyle(color: Colors.white70),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BrandTypeahead extends ConsumerWidget {
-  final String initialValue;
-  final ValueChanged<String> onChanged;
-
-  const _BrandTypeahead({required this.initialValue, required this.onChanged});
-
-  @override
-  Widget build(context, ref) {
-    final brands = ref.watch(materialBrandsProvider).toList()..sort();
-    return _SuggestionTypeahead(
-      suggestions: brands,
-      labelText: AppLocalizations.of(context)!.brandLabel,
-      initialValue: initialValue,
-      onChanged: onChanged,
-    );
-  }
-}
-
-class _MaterialTypeTypeahead extends ConsumerWidget {
-  final String initialValue;
-  final ValueChanged<String> onChanged;
-
-  const _MaterialTypeTypeahead({
-    required this.initialValue,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(context, ref) {
-    final types = ref.watch(materialTypesProvider).toList()..sort();
-    return _SuggestionTypeahead(
-      key: const ValueKey<String>('settings.materials.material_type.input'),
-      fieldKey: const ValueKey<String>('settings.materials.material_type.input'),
-      suggestions: types,
-      labelText: AppLocalizations.of(context)!.materialTypeLabel,
-      initialValue: initialValue,
-      onChanged: onChanged,
     );
   }
 }
