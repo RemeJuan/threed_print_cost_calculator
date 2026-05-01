@@ -120,7 +120,7 @@ class CalculatorResults extends ConsumerWidget {
                 pricing.setupFee,
                 key: const ValueKey<String>('calculator.result.setupFee'),
               ),
-            if (pricing.roundingAdjustment > 0)
+            if (pricing.roundingAdjustment != 0)
               _itemRow(
                 context,
                 l10n.roundingAdjustmentLabel,
