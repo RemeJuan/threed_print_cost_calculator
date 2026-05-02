@@ -111,7 +111,7 @@ void main() {
       expect(state.failureRisk.value, 11.5);
       expect(state.labourRate.value, 30);
       expect(state.activePrinterId, 'printer-1');
-      expect(state.selectedMaterialId, '');
+      expect(state.selectedMaterialId, 'material-1');
       expect(state.hasHydratedDefaults, isTrue);
       expect(state.materialUsages, isEmpty);
 

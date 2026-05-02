@@ -53,7 +53,7 @@ class CalculatorSettingsSync {
 
     final nextState = CalculatorState(
       activePrinterId: settings.activePrinter,
-      selectedMaterialId: '',
+      selectedMaterialId: settings.selectedMaterial,
       watt: NumberInput.dirty(value: watt),
       kwCost: _settingsNumber(settings.electricityCost),
       spoolWeight: NumberInput.dirty(
@@ -84,7 +84,7 @@ class CalculatorSettingsSync {
     );
 
     if (!seedInitialMaterialUsage) return nextState;
-    if (spoolWeightVal.trim().isNotEmpty || spoolCostVal.trim().isNotEmpty) {
+    if (spoolWeightVal.trim().isNotEmpty && spoolCostVal.trim().isNotEmpty) {
       return nextState;
     }
 
