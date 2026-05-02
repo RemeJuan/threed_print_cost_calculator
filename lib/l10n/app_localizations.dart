@@ -951,7 +951,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchMaterialsHint.
   ///
   /// In en, this message translates to:
-  /// **'Search name or brand'**
+  /// **'Search by name or brand'**
   String get searchMaterialsHint;
 
   /// No description provided for @materialBreakdownLabel.

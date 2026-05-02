@@ -343,7 +343,7 @@
   "materialsEmpty": "Nog geen materialen. Tik op + om er een toe te voegen.",
   "materialsFilterAll": "Alles",
   "materialsFilterInStock": "Op voorraad",
-  "materialsFilterLowStock": "Weinig",
+  "materialsFilterLowStock": "Lage voorraad",
   "materialsFilterOutOfStock": "Uitverkocht",
   "csvImportTitle": "Materialen importeren",
   "csvTemplateButton": "Sjabloon",

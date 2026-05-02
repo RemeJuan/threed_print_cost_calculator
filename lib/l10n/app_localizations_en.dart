@@ -443,7 +443,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Add at least one material.';
 
   @override
-  String get searchMaterialsHint => 'Search name or brand';
+  String get searchMaterialsHint => 'Search by name or brand';
 
   @override
   String get materialBreakdownLabel => 'Material breakdown';

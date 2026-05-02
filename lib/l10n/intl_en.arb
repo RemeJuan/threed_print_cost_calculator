@@ -170,7 +170,7 @@
   "addMaterialButton": "Add",
   "useSingleTotalWeightAction": "Use single total weight",
   "addAtLeastOneMaterial": "Add at least one material.",
-  "searchMaterialsHint": "Search name or brand",
+  "searchMaterialsHint": "Search by name or brand",
   "materialBreakdownLabel": "Material breakdown",
   "materialsCountLabel": "{count, plural, one{# material} other{# materials}}",
   "totalMaterialWeightLabel": "Total material weight: {grams}g",

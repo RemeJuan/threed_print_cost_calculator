@@ -716,7 +716,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get materialsFilterInStock => 'Op voorraad';
 
   @override
-  String get materialsFilterLowStock => 'Weinig';
+  String get materialsFilterLowStock => 'Lage voorraad';
 
   @override
   String get materialsFilterOutOfStock => 'Uitverkocht';
