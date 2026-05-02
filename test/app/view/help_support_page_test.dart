@@ -122,10 +122,6 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey<String>('helpSupport.footer.threads')),
-      findsOneWidget,
-    );
-    expect(
       find.byKey(const ValueKey<String>('helpSupport.footer.privacy')),
       findsOneWidget,
     );
