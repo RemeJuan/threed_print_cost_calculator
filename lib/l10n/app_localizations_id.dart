@@ -668,4 +668,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Tidak Dikenal';
+
+  @override
+  String get startFreeTrialCta => 'Mulai uji coba gratis';
 }

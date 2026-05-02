@@ -676,4 +676,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Onbekend';
+
+  @override
+  String get startFreeTrialCta => 'Start gratis proefperiode';
 }

@@ -655,4 +655,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get slicerUnknown => '不明';
+
+  @override
+  String get startFreeTrialCta => '無料トライアルを開始';
 }

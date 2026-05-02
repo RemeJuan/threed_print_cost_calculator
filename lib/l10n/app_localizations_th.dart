@@ -663,4 +663,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'ไม่ทราบ';
+
+  @override
+  String get startFreeTrialCta => 'เริ่มทดลองใช้ฟรี';
 }

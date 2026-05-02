@@ -680,4 +680,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Unbekannt';
+
+  @override
+  String get startFreeTrialCta => 'Kostenlose Testversion starten';
 }

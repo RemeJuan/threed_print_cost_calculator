@@ -7,9 +7,9 @@
   "wn_id": "gcode_import_2026_04",
   "en": {
     "title": "New: Import G-code estimates",
-    "body": "Import supported G-code files to prefill print time, filament usage, and preview data where available. Premium users can open it from the header bar icon in the top right.",
+    "body": "Import supported G-code files to prefill print time, filament usage, and preview data where available. Open it from the header bar icon in the top right.",
     "cta": "Got it",
-    "unlock_pro_cta": "Unlock Pro"
+    "unlock_pro_cta": "Start free trial"
   }
 }
 ```
@@ -18,12 +18,12 @@
 
 | Field | Type | Description |
 |-------|------|------------|
-| `wn_id` | String | Announcement identity and persistence key source. |
+| `wn_id` | String | Announcement identity used by the payload. |
 | `{locale}` | Object | Locale-specific content (e.g., `en`, `de`, `fr`). |
 | `title` | String | **Required** localized title. |
 | `body` | String | **Required** localized body. |
 | `cta` | String | Primary CTA button text. Optional. |
-| `unlock_pro_cta` | String | Upsell CTA button text. Optional. |
+| `unlock_pro_cta` | String | Trial CTA button text. Optional. |
 
 ## Localization Rules
 
@@ -45,7 +45,7 @@
 - Show to **all users** (free and premium).
 - Do **not** respect "hide upsells" preference — this is an announcement, not persistent upsell UI.
 - Primary CTA (`cta`) dismisses the sheet and stores `wn_id`.
-- Unlock Pro CTA (`unlock_pro_cta`) logs upgrade attribution, dismisses the sheet, and then opens the paywall.
+- Unlock Pro CTA (`unlock_pro_cta`) logs trial attribution, dismisses the sheet, and then opens the paywall.
 - No persistent UI, badges, inline rows, or icon replacement.
 
 ## Analytics
