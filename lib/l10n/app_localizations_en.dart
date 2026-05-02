@@ -237,6 +237,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'Support ID: (not available)\nApp version: $version\n\nDescribe the issue here.';
+  }
+
+  @override
   String get helpSupportFaqTitle => 'FAQs';
 
   @override
@@ -252,7 +257,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpSupportFaqElectricityAnswer =>
-      'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.';
+      'Long prints and high-wattage printers can add real cost. Skipping electricity usually underprices the job.';
 
   @override
   String get helpSupportFaqRiskQuestion => 'How is failure risk calculated?';

@@ -16,8 +16,8 @@ When contacting support, include:
 **What weight should I enter?**  
 Enter the *total spool weight* (e.g. 1kg, 750g). The app calculates per-gram cost from this.
 
-**Why does electricity matter?**  
-Long prints and high wattage printers can significantly impact cost. Ignoring this leads to underpricing.
+**Why does electricity matter?**
+Long prints and high-wattage printers can significantly impact cost. Ignoring this leads to underpricing.
 
 **How is failure risk calculated?**  
 Risk % is applied only to *base print costs* (filament + electricity). It models expected loss from failed prints.

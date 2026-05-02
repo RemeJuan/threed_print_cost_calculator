@@ -94,11 +94,17 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "Support ID: (not available)\nApp version: {version}\n\nDescribe the issue here.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "FAQs",
   "helpSupportFaqWeightQuestion": "What weight should I enter?",
   "helpSupportFaqWeightAnswer": "Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.",
   "helpSupportFaqElectricityQuestion": "Why does electricity matter?",
-  "helpSupportFaqElectricityAnswer": "Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.",
+  "helpSupportFaqElectricityAnswer": "Long prints and high-wattage printers can add real cost. Skipping electricity usually underprices the job.",
   "helpSupportFaqRiskQuestion": "How is failure risk calculated?",
   "helpSupportFaqRiskAnswer": "Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.",
   "helpSupportFaqLabourQuestion": "What is labour / processing time?",

@@ -546,6 +546,12 @@ abstract class AppLocalizations {
   /// **'Support ID: {supportId}\nApp version: {version}\n\nDescribe the issue here.'**
   String helpSupportContactEmailBody(Object supportId, Object version);
 
+  /// No description provided for @helpSupportContactEmailBodyNoSupportId.
+  ///
+  /// In en, this message translates to:
+  /// **'Support ID: (not available)\nApp version: {version}\n\nDescribe the issue here.'**
+  String helpSupportContactEmailBodyNoSupportId(Object version);
+
   /// No description provided for @helpSupportFaqTitle.
   ///
   /// In en, this message translates to:

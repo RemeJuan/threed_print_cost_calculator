@@ -240,6 +240,11 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID supporto: (non disponibile)\nVersione app: $version\n\nDescrivi il problema qui.';
+  }
+
+  @override
   String get helpSupportFaqTitle => 'FAQs';
 
   @override

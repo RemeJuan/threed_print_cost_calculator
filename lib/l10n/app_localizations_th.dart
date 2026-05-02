@@ -236,6 +236,11 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'รหัสสนับสนุน: (ไม่พร้อมใช้งาน)\nเวอร์ชันแอป: $version\n\nอธิบายปัญหาที่นี่';
+  }
+
+  @override
   String get helpSupportFaqTitle => 'FAQs';
 
   @override
