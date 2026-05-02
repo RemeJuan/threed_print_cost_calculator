@@ -202,6 +202,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
 
     final repo = ref.read(materialsRepositoryProvider);
     var imported = 0;
+    final failedRows = <_ImportRow>[];
 
     for (final row in valid) {
       final material = MaterialModel(
@@ -220,14 +221,23 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
         colorHex: row.colorHex,
         notes: row.notes,
       );
-      await repo.saveMaterial(material);
-      imported++;
+      try {
+        await repo.saveMaterial(material);
+        imported++;
+      } catch (error, stackTrace) {
+        failedRows.add(row);
+        debugPrint(
+          'CSV import failed for row ${row.lineNumber} '
+          '(name: ${row.name}): $error',
+        );
+        debugPrint(stackTrace.toString());
+      }
     }
 
     AppAnalytics.safeLog(
       () => AppAnalytics.csvImportCompleted(
         rowsSuccess: imported,
-        rowsFailed: failed,
+        rowsFailed: failed + failedRows.length,
       ),
     );
 
