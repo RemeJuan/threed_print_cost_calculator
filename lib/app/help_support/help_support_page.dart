@@ -264,14 +264,6 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
               icon: HugeIcon(icon: HugeIcons.strokeRoundedNewTwitter, size: 18),
               onPressed: () => _openUrl('https://x.com/PrintCostCalc'),
             ),
-            const SizedBox(width: 8),
-            _footerIconButton(
-              key: const ValueKey<String>('helpSupport.footer.threads'),
-              tooltip: l10n.helpSupportThreadsLabel,
-              icon: HugeIcon(icon: HugeIcons.strokeRoundedThreads, size: 18),
-              onPressed: () =>
-                  _openUrl('https://www.threads.com/@printcostcalc'),
-            ),
           ],
         ),
         const SizedBox(height: 10),
