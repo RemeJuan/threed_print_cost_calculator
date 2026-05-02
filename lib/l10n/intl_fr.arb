@@ -145,12 +145,67 @@
   "@wattsSuffix": {},
   "needHelpTitle": "Besoin d'aide ?",
   "@needHelpTitle": {},
+  "helpSupportSupportTitle": "Support",
+  "helpSupportSupportIntro": "Utilisez ces détails lorsque vous contactez le support.",
+  "helpSupportWebsiteLabel": "Site web",
+  "helpSupportEmailLabel": "E-mail",
+  "helpSupportSupportIdLabel": "ID de support",
+  "helpSupportCopySupportIdTooltip": "Copier l'ID de support",
+  "helpSupportAppVersionRow": "Version de l'app {version}",
+  "@helpSupportAppVersionRow": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportContactSupportButton": "Contacter le support",
+  "helpSupportContactEmailSubject": "Support Calculateur de Coût d'Impression 3D",
+  "helpSupportContactEmailBody": "ID de support : {supportId}\nVersion de l'app : {version}\n\nDécrivez le problème ici.",
+  "@helpSupportContactEmailBody": {
+    "placeholders": {
+      "supportId": {},
+      "version": {}
+    }
+  },
+  "helpSupportContactEmailBodyNoSupportId": "ID de support : (non disponible)\nVersion de l'app : {version}\n\nDécrivez le problème ici.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportFaqTitle": "FAQ",
+  "helpSupportFaqWeightQuestion": "Quel poids dois-je entrer ?",
+  "helpSupportFaqWeightAnswer": "Entrez le poids total de la bobine, pas le filament restant. L'application utilise le poids du rouleau complet pour calculer le coût par gramme.",
+  "helpSupportFaqElectricityQuestion": "Pourquoi l'électricité est-elle importante ?",
+  "helpSupportFaqElectricityAnswer": "Les longues impressions et les imprimantes à forte puissance peuvent ajouter un coût réel. Ignorer l'électricité sous-estime généralement le prix du travail.",
+  "helpSupportFaqRiskQuestion": "Comment le risque d'échec est-il calculé ?",
+  "helpSupportFaqRiskAnswer": "Le risque est appliqué uniquement aux coûts d'impression de base comme le filament et l'électricité. Il estime la perte attendue des impressions échouées.",
+  "helpSupportFaqLabourQuestion": "Qu'est-ce que le temps de main-d'œuvre / traitement ?",
+  "helpSupportFaqLabourAnswer": "Il couvre la préparation, le nettoyage, le post-traitement et la surveillance. Gardez-le activé pour les services où votre temps compte.",
+  "helpSupportFaqMarkupQuestion": "Qu'est-ce que la majoration ?",
+  "helpSupportFaqMarkupAnswer": "La majoration est le pourcentage ajouté au coût total pour atteindre votre prix de vente. Elle couvre la marge, les frais généraux et le profit.",
+  "helpSupportFaqSetupQuestion": "Qu'est-ce qu'un frais de configuration ?",
+  "helpSupportFaqSetupAnswer": "Un frais de configuration est un coût fixe par travail pour l'étalonnage, la préparation de la machine et l'administration. Il aide les petites impressions à couvrir les frais généraux.",
+  "helpSupportLinksTitle": "Liens",
+  "helpSupportPrivacyPolicyLabel": "Politique de confidentialité",
+  "helpSupportTermsOfUseLabel": "Conditions d'utilisation",
+  "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportThreadsLabel": "Threads",
+  "helpSupportAboutTitle": "À propos",
+  "helpSupportAboutIntro": "Le Calculateur de Coût d'Impression 3D est conçu pour une tarification locale d'abord. Il aide les créateurs et les petites entreprises d'impression à établir des devis avec moins de surprises.",
+  "helpSupportTrustNoAccounts": "Pas de comptes",
+  "helpSupportTrustNoCloudSync": "Pas de synchronisation cloud",
+  "helpSupportTrustNoTracking": "Pas de suivi",
+  "helpSupportTrustLocalData": "Données locales",
+  "helpSupportAboutCalculator": "Le calculateur combine le coût du filament, l'électricité, le risque d'échec, la main-d'œuvre et des outils de tarification optionnels comme la majoration et les frais de configuration.",
+  "helpSupportAboutOutcome": "Cela maintient les devis liés au coût réel, pas seulement aux dépenses matérielles.",
   "supportEmailPrefix": "En cas de problème, envoyez-moi un e-mail à ",
   "@supportEmailPrefix": {},
   "supportEmail": "3d@printcostcalc.app",
   "@supportEmail": {},
   "supportIdLabel": "Veuillez inclure votre ID de support : ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Assistance pour 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(cliquer pour copier)",
   "materialWeightExplanation": "Le poids du matériau est le poids total du matériau source, c'est-à-dire toute la bobine de filament. Le coût est celui de l'unité complète.",
   "@materialWeightExplanation": {
@@ -211,6 +266,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Politique de confidentialité",
   "@privacyPolicyLink": {},
+  "websiteLink": "Site web",
+  "@websiteLink": {},
   "termsOfUseLink": "Conditions d'utilisation",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -277,7 +334,7 @@
   "addMaterialButton": "Ajouter un matériau",
   "useSingleTotalWeightAction": "Utiliser le poids total unique",
   "addAtLeastOneMaterial": "Ajoutez au moins un matériau.",
-  "searchMaterialsHint": "Rechercher des matériaux",
+  "searchMaterialsHint": "Chercher nom ou marque",
   "materialBreakdownLabel": "Répartition des matériaux",
   "materialsCountLabel": "{count, plural, one{# matériau} other{# matériaux}}",
   "totalMaterialWeightLabel": "Poids total du matériau : {grams}g",
@@ -374,5 +431,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
   "slicerUnknown": "Inconnu",
-  "startFreeTrialCta": "Commencer l'essai gratuit"
+  "materialsAppBarTitle": "Matériaux",
+  "materialsNavLabel": "Matériaux",
+  "brandLabel": "Marque",
+  "materialTypeLabel": "Type de matériau",
+  "colorHexLabel": "Code hex (optionnel)",
+  "notesLabel": "Notes",
+  "materialsEmpty": "Aucun matériau pour l'instant. Appuyez sur + pour en ajouter.",
+  "materialsFilterAll": "Tout",
+  "materialsFilterInStock": "En stock",
+  "materialsFilterLowStock": "Stock bas",
+  "materialsFilterOutOfStock": "Rupture de stock",
+  "csvImportTitle": "Importer des matériaux",
+  "csvTemplateButton": "Modèle",
+  "csvTemplateShareText": "Matériaux - Modèle CSV",
+  "csvTemplateError": "Impossible de partager le modèle.",
+  "csvImportIntro": "Importez des matériaux depuis un fichier CSV.",
+  "csvSelectFileButton": "Choisir un fichier CSV",
+  "csvImportButton": "Importer les lignes valides",
+  "csvReadError": "Le fichier sélectionné n'a pas pu être lu.",
+  "csvFileTypeError": "Sélectionnez un fichier .csv",
+  "csvNameRequiredError": "Le nom est obligatoire",
+  "csvColorRequiredError": "La couleur est obligatoire",
+  "csvSpoolWeightRequiredError": "Le poids de la bobine est obligatoire",
+  "csvSpoolWeightPositiveError": "Le poids de la bobine doit être > 0",
+  "csvCostRequiredError": "Le coût est obligatoire",
+  "csvCostPositiveError": "Le coût doit être > 0",
+  "csvImportSuccessMessage": "{count, plural, one{1 matériau importé} other{{count} matériaux importés}}",
+  "deleteMaterialSuccessMessage": "Matériau supprimé",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} lignes: {valid} valides, {invalid} avec erreurs",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(vide)",
+  "stockBadgeOut": "Rupture",
+  "stockBadgeLow": "Stock faible",
+  "stockBadgeInStock": "En stock",
+  "stockBadgeNoTracking": "Non suivi"
 }

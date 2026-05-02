@@ -304,6 +304,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     await ref
         .read(settingsServiceProvider)
         .update((settings) => settings.copyWith(selectedMaterial: material.id));
+    AppAnalytics.safeLog(
+      () => AppAnalytics.materialSelectedInCalculator(
+        hasTracking: material.autoDeductEnabled,
+        materialType: material.materialType,
+        brand: material.brand,
+      ),
+    );
 
     ref
         .read(calculatorPreferencesRepositoryProvider)

@@ -190,6 +190,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get savePrintSuccessMessage => 'Hasil cetak disimpan';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material dihapus';
+
+  @override
   String get historyLoadAction => 'Edit di kalkulator';
 
   @override
@@ -222,6 +225,137 @@ class AppLocalizationsId extends AppLocalizations {
   String get needHelpTitle => 'Butuh bantuan?';
 
   @override
+  String get helpSupportSupportTitle => 'Dukungan';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Gunakan detail ini saat menghubungi dukungan.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Situs web';
+
+  @override
+  String get helpSupportEmailLabel => 'Email';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID Dukungan';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Salin ID dukungan';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Versi aplikasi $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Hubungi dukungan';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Dukungan Kalkulator Biaya Cetak 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID Dukungan: $supportId\nVersi aplikasi: $version\n\nJelaskan masalahnya di sini.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID Dukungan: (tidak tersedia)\nVersi aplikasi: $version\n\nJelaskan masalahnya di sini.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQ';
+
+  @override
+  String get helpSupportFaqWeightQuestion =>
+      'Berat apa yang harus saya masukkan?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Masukkan berat total spul, bukan filamen sisa. Aplikasi menggunakan berat gulungan penuh untuk menghitung biaya per gram.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion => 'Mengapa listrik penting?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Pencetakan lama dan printer berdaya tinggi dapat menambah biaya nyata. Melewatkan listrik biasanya membuat harga terlalu rendah.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Bagaimana risiko kegagalan dihitung?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Risiko diterapkan hanya pada biaya cetak dasar seperti filamen dan listrik. Ini memperkirakan kerugian yang diharapkan dari pencetakan yang gagal.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Apa itu waktu tenaga kerja / pengolahan?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Ini mencakup persiapan, pembersihan, pasca-pemrosesan, dan pemantauan. Tetap aktifkan untuk layanan di mana waktu Anda penting.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Apa itu markup?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'Markup adalah persentase yang ditambahkan di atas biaya total untuk mencapai harga jual Anda. Ini mencakup margin, overhead, dan keuntungan.';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'Apa itu biaya setup?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Biaya setup adalah biaya tetap per pekerjaan untuk kalibrasi, persiapan mesin, dan administrasi. Ini membantu cetakan kecil menutupi overhead.';
+
+  @override
+  String get helpSupportLinksTitle => 'Tautan';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Kebijakan privasi';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Ketentuan penggunaan';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'Tentang';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Kalkulator Biaya Cetak 3D dibuat untuk penetapan harga lokal terlebih dahulu. Ini membantu pembuat dan bisnis cetak kecil mengutip pekerjaan dengan lebih sedikit kejutan.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Tanpa akun';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Tanpa sinkronisasi cloud';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Tanpa pelacakan';
+
+  @override
+  String get helpSupportTrustLocalData => 'Data lokal';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Kalkulator menggabungkan biaya filamen, listrik, risiko kegagalan, tenaga kerja, dan alat penetapan harga opsional seperti markup dan biaya setup.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Itu membuat kutipan tetap terikat pada biaya sebenarnya, bukan hanya pengeluaran material.';
+
+  @override
   String get supportEmailPrefix => 'Jika ada masalah, silakan email saya di ';
 
   @override
@@ -229,6 +363,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get supportIdLabel => 'Harap sertakan ID Dukungan Anda: ';
+
+  @override
+  String get supportEmailSubject => 'Dukungan 3D Print Cost Calculator';
 
   @override
   String get clickToCopy => '(ketuk untuk menyalin)';
@@ -251,6 +388,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Kebijakan Privasi';
+
+  @override
+  String get websiteLink => 'Situs web';
 
   @override
   String get termsOfUseLink => 'Ketentuan Penggunaan';
@@ -514,7 +654,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Tambahkan setidaknya satu material.';
 
   @override
-  String get searchMaterialsHint => 'Cari bahan';
+  String get searchMaterialsHint => 'Cari nama atau merek';
 
   @override
   String get materialBreakdownLabel => 'Rincian bahan';
@@ -748,5 +888,111 @@ class AppLocalizationsId extends AppLocalizations {
   String get slicerUnknown => 'Tidak Dikenal';
 
   @override
-  String get startFreeTrialCta => 'Mulai uji coba gratis';
+  String get materialsAppBarTitle => 'Material';
+
+  @override
+  String get materialsNavLabel => 'Material';
+
+  @override
+  String get brandLabel => 'Merek';
+
+  @override
+  String get materialTypeLabel => 'Jenis material';
+
+  @override
+  String get colorHexLabel => 'Hex warna (opsional)';
+
+  @override
+  String get notesLabel => 'Catatan';
+
+  @override
+  String get materialsEmpty => 'Belum ada material. Ketuk + untuk menambah.';
+
+  @override
+  String get materialsFilterAll => 'Semua';
+
+  @override
+  String get materialsFilterInStock => 'Tersedia';
+
+  @override
+  String get materialsFilterLowStock => 'Stok rendah';
+
+  @override
+  String get materialsFilterOutOfStock => 'Habis';
+
+  @override
+  String get csvImportTitle => 'Impor material';
+
+  @override
+  String get csvTemplateButton => 'Template';
+
+  @override
+  String get csvTemplateShareText => 'Template CSV material';
+
+  @override
+  String get csvTemplateError => 'Tidak dapat membagikan template.';
+
+  @override
+  String get csvImportIntro => 'Impor material dari file CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Pilih file CSV';
+
+  @override
+  String get csvImportButton => 'Impor baris yang valid';
+
+  @override
+  String get csvReadError => 'File yang dipilih tidak dapat dibaca.';
+
+  @override
+  String get csvFileTypeError => 'Pilih file .csv';
+
+  @override
+  String get csvNameRequiredError => 'Nama wajib diisi';
+
+  @override
+  String get csvColorRequiredError => 'Warna wajib diisi';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Berat spool wajib diisi';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Berat spool harus > 0';
+
+  @override
+  String get csvCostRequiredError => 'Biaya wajib diisi';
+
+  @override
+  String get csvCostPositiveError => 'Biaya harus > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count material diimpor',
+      one: '1 material diimpor',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total baris: $valid valid, $invalid dengan error';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(kosong)';
+
+  @override
+  String get stockBadgeOut => 'Habis';
+
+  @override
+  String get stockBadgeLow => 'Stok rendah';
+
+  @override
+  String get stockBadgeInStock => 'Tersedia';
+
+  @override
+  String get stockBadgeNoTracking => 'Tidak dilacak';
 }

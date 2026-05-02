@@ -191,6 +191,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savePrintSuccessMessage => 'Print saved';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material deleted';
+
+  @override
   String get historyLoadAction => 'Use in calculator';
 
   @override
@@ -223,6 +226,136 @@ class AppLocalizationsEn extends AppLocalizations {
   String get needHelpTitle => 'Need Help?';
 
   @override
+  String get helpSupportSupportTitle => 'Support';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Use these details when contacting support.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Website';
+
+  @override
+  String get helpSupportEmailLabel => 'Email';
+
+  @override
+  String get helpSupportSupportIdLabel => 'Support ID';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Copy support ID';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'App version $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Contact support';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      '3D Print Cost Calculator Support';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'Support ID: $supportId\nApp version: $version\n\nDescribe the issue here.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'Support ID: (not available)\nApp version: $version\n\nDescribe the issue here.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQs';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'What weight should I enter?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Why does electricity matter?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Long prints and high-wattage printers can add real cost. Skipping electricity usually underprices the job.';
+
+  @override
+  String get helpSupportFaqRiskQuestion => 'How is failure risk calculated?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'What is labour / processing time?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'It covers preparation, cleanup, post-processing, and monitoring. Keep it on for services where your time matters.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'What is markup?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'Markup is the percentage added on top of total cost to reach your selling price. It covers margin, overhead, and profit.';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'What is a setup fee?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.';
+
+  @override
+  String get helpSupportLinksTitle => 'Links';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Privacy policy';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Terms of use';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'About';
+
+  @override
+  String get helpSupportAboutIntro =>
+      '3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'No accounts';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'No cloud sync';
+
+  @override
+  String get helpSupportTrustNoTracking => 'No tracking';
+
+  @override
+  String get helpSupportTrustLocalData => 'Local data';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'The calculator combines filament cost, electricity, failure risk, labour, and optional pricing tools like markup and setup fees.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'That keeps quotes tied to true cost, not just material spend.';
+
+  @override
   String get supportEmailPrefix => 'For any issues, please mail me at ';
 
   @override
@@ -230,6 +363,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get supportIdLabel => 'Please include your Support ID: ';
+
+  @override
+  String get supportEmailSubject => '3D Print Cost Calculator Support';
 
   @override
   String get clickToCopy => '(click to copy)';
@@ -252,6 +388,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Privacy Policy';
+
+  @override
+  String get websiteLink => 'Website';
 
   @override
   String get termsOfUseLink => 'Terms of Use';
@@ -512,7 +651,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Add at least one material.';
 
   @override
-  String get searchMaterialsHint => 'Search materials';
+  String get searchMaterialsHint => 'Search by name or brand';
 
   @override
   String get materialBreakdownLabel => 'Material breakdown';
@@ -752,5 +891,111 @@ class AppLocalizationsEn extends AppLocalizations {
   String get slicerUnknown => 'Unknown';
 
   @override
-  String get startFreeTrialCta => 'Start free trial';
+  String get materialsAppBarTitle => 'Materials';
+
+  @override
+  String get materialsNavLabel => 'Materials';
+
+  @override
+  String get brandLabel => 'Brand';
+
+  @override
+  String get materialTypeLabel => 'Material type';
+
+  @override
+  String get colorHexLabel => 'Color hex (optional)';
+
+  @override
+  String get notesLabel => 'Notes';
+
+  @override
+  String get materialsEmpty => 'No materials yet. Tap + to add one.';
+
+  @override
+  String get materialsFilterAll => 'All';
+
+  @override
+  String get materialsFilterInStock => 'In stock';
+
+  @override
+  String get materialsFilterLowStock => 'Low stock';
+
+  @override
+  String get materialsFilterOutOfStock => 'Out of stock';
+
+  @override
+  String get csvImportTitle => 'Import materials';
+
+  @override
+  String get csvTemplateButton => 'Template';
+
+  @override
+  String get csvTemplateShareText => 'Material CSV Template';
+
+  @override
+  String get csvTemplateError => 'Could not share the template.';
+
+  @override
+  String get csvImportIntro => 'Import materials from a CSV file.';
+
+  @override
+  String get csvSelectFileButton => 'Choose CSV file';
+
+  @override
+  String get csvImportButton => 'Import valid rows';
+
+  @override
+  String get csvReadError => 'Could not read the selected file.';
+
+  @override
+  String get csvFileTypeError => 'Please select a .csv file';
+
+  @override
+  String get csvNameRequiredError => 'Name is required';
+
+  @override
+  String get csvColorRequiredError => 'Color is required';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Spool weight is required';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Spool weight must be > 0';
+
+  @override
+  String get csvCostRequiredError => 'Cost is required';
+
+  @override
+  String get csvCostPositiveError => 'Cost must be > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Imported $count materials',
+      one: 'Imported 1 material',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total rows: $valid valid, $invalid with errors';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(empty)';
+
+  @override
+  String get stockBadgeOut => 'Out of stock';
+
+  @override
+  String get stockBadgeLow => 'Low stock';
+
+  @override
+  String get stockBadgeInStock => 'In stock';
+
+  @override
+  String get stockBadgeNoTracking => 'No tracking';
 }

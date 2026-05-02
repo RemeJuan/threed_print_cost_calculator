@@ -19,7 +19,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
   PrintersRepository get _printersRepository =>
       ref.read(printersRepositoryProvider);
 
-  void init(String? key) async {
+  Future<void> init(String? key) async {
     if (key != null) {
       final printer = await _printersRepository.getPrinterById(key);
       if (printer == null) return;

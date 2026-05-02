@@ -194,6 +194,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get savePrintSuccessMessage => 'Stampa salvata';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Materiale eliminato';
+
+  @override
   String get historyLoadAction => 'Modifica nel calcolatore';
 
   @override
@@ -226,6 +229,138 @@ class AppLocalizationsIt extends AppLocalizations {
   String get needHelpTitle => 'Hai bisogno di aiuto?';
 
   @override
+  String get helpSupportSupportTitle => 'Supporto';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Usa questi dettagli quando contatti il supporto.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Sito web';
+
+  @override
+  String get helpSupportEmailLabel => 'E-mail';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID supporto';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Copia ID supporto';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Versione app $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Contatta supporto';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Supporto Calcolatore Costi Stampa 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID supporto: $supportId\nVersione app: $version\n\nDescrivi il problema qui.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID supporto: (non disponibile)\nVersione app: $version\n\nDescrivi il problema qui.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQ';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'Che peso devo inserire?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Inserisci il peso totale della bobina, non il filamento rimasto. L\'app usa il peso del rotolo completo per calcolare il costo per grammo.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Perché l\'elettricità è importante?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Stampe lunghe e stampanti ad alto wattaggio possono aggiungere costi reali. Saltare l\'elettricità di solito sottostima il prezzo del lavoro.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Come viene calcolato il rischio di guasto?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Il rischio è applicato solo ai costi di stampa base come filamento ed elettricità. Stima la perdita prevista da stampe fallite.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Cos\'è il tempo di lavoro / elaborazione?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Copre preparazione, pulizia, post-elaborazione e monitoraggio. Tienilo attivo per servizi dove il tuo tempo conta.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Cos\'è il ricarico?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'Il ricarico è la percentuale aggiunta sopra il costo totale per raggiungere il tuo prezzo di vendita. Copre margine, spese generali e profitto.';
+
+  @override
+  String get helpSupportFaqSetupQuestion =>
+      'Cos\'è una tariffa di configurazione?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Una tariffa di configurazione è un costo fisso per lavoro per calibrazione, preparazione macchina e amministrazione. Aiuta le stampe piccole a coprire le spese generali.';
+
+  @override
+  String get helpSupportLinksTitle => 'Link';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Informativa sulla privacy';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Termini di utilizzo';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'Informazioni';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Il Calcolatore Costi Stampa 3D è costruito per prezzi local-first. Aiuta i creatori e le piccole imprese di stampa a quotare lavori con meno sorprese.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Nessun account';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Nessuna sincronizzazione cloud';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Nessun tracciamento';
+
+  @override
+  String get helpSupportTrustLocalData => 'Dati locali';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Il calcolatore combina costo filamento, elettricità, rischio guasto, lavoro e strumenti di prezzi opzionali come ricarico e tariffe di configurazione.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Questo mantiene le quotazioni legate al costo reale, non solo alla spesa materiale.';
+
+  @override
   String get supportEmailPrefix => 'Per qualsiasi problema, scrivimi a ';
 
   @override
@@ -233,6 +368,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get supportIdLabel => 'Includi il tuo ID di supporto: ';
+
+  @override
+  String get supportEmailSubject => 'Supporto 3D Print Cost Calculator';
 
   @override
   String get clickToCopy => '(tocca per copiare)';
@@ -255,6 +393,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Informativa sulla privacy';
+
+  @override
+  String get websiteLink => 'Sito web';
 
   @override
   String get termsOfUseLink => 'Termini di utilizzo';
@@ -521,7 +662,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Aggiungi almeno un materiale.';
 
   @override
-  String get searchMaterialsHint => 'Cerca materiali';
+  String get searchMaterialsHint => 'Cerca nome o marca';
 
   @override
   String get materialBreakdownLabel => 'Dettaglio materiali';
@@ -763,5 +904,114 @@ class AppLocalizationsIt extends AppLocalizations {
   String get slicerUnknown => 'Sconosciuto';
 
   @override
-  String get startFreeTrialCta => 'Inizia la prova gratuita';
+  String get materialsAppBarTitle => 'Materiali';
+
+  @override
+  String get materialsNavLabel => 'Materiali';
+
+  @override
+  String get brandLabel => 'Marca';
+
+  @override
+  String get materialTypeLabel => 'Tipo di materiale';
+
+  @override
+  String get colorHexLabel => 'Hex colore (opzionale)';
+
+  @override
+  String get notesLabel => 'Note';
+
+  @override
+  String get materialsEmpty =>
+      'Nessun materiale ancora. Tocca + per aggiungerne uno.';
+
+  @override
+  String get materialsFilterAll => 'Tutti';
+
+  @override
+  String get materialsFilterInStock => 'Disponibile';
+
+  @override
+  String get materialsFilterLowStock => 'Scorte basse';
+
+  @override
+  String get materialsFilterOutOfStock => 'Esaurito';
+
+  @override
+  String get csvImportTitle => 'Importa materiali';
+
+  @override
+  String get csvTemplateButton => 'Modello';
+
+  @override
+  String get csvTemplateShareText => 'Modello CSV materiali';
+
+  @override
+  String get csvTemplateError => 'Impossibile condividere il modello.';
+
+  @override
+  String get csvImportIntro => 'Importa materiali da un file CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Scegli file CSV';
+
+  @override
+  String get csvImportButton => 'Importa righe valide';
+
+  @override
+  String get csvReadError => 'Il file selezionato non può essere letto.';
+
+  @override
+  String get csvFileTypeError => 'Seleziona un file .csv';
+
+  @override
+  String get csvNameRequiredError => 'Il nome è obbligatorio';
+
+  @override
+  String get csvColorRequiredError => 'Il colore è obbligatorio';
+
+  @override
+  String get csvSpoolWeightRequiredError =>
+      'Il peso della bobina è obbligatorio';
+
+  @override
+  String get csvSpoolWeightPositiveError =>
+      'Il peso della bobina deve essere > 0';
+
+  @override
+  String get csvCostRequiredError => 'Il costo è obbligatorio';
+
+  @override
+  String get csvCostPositiveError => 'Il costo deve essere > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count materiali importati',
+      one: '1 materiale importato',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total righe: $valid valide, $invalid con errori';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vuoto)';
+
+  @override
+  String get stockBadgeOut => 'Esaurito';
+
+  @override
+  String get stockBadgeLow => 'Scorta bassa';
+
+  @override
+  String get stockBadgeInStock => 'Disponibile';
+
+  @override
+  String get stockBadgeNoTracking => 'Non tracciato';
 }

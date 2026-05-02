@@ -193,6 +193,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get savePrintSuccessMessage => 'Impression enregistrée';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Matériau supprimé';
+
+  @override
   String get historyLoadAction => 'Modifier dans la calculatrice';
 
   @override
@@ -225,6 +228,138 @@ class AppLocalizationsFr extends AppLocalizations {
   String get needHelpTitle => 'Besoin d\'aide ?';
 
   @override
+  String get helpSupportSupportTitle => 'Support';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Utilisez ces détails lorsque vous contactez le support.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Site web';
+
+  @override
+  String get helpSupportEmailLabel => 'E-mail';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID de support';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Copier l\'ID de support';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Version de l\'app $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Contacter le support';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Support Calculateur de Coût d\'Impression 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID de support : $supportId\nVersion de l\'app : $version\n\nDécrivez le problème ici.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID de support : (non disponible)\nVersion de l\'app : $version\n\nDécrivez le problème ici.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQ';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'Quel poids dois-je entrer ?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Entrez le poids total de la bobine, pas le filament restant. L\'application utilise le poids du rouleau complet pour calculer le coût par gramme.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Pourquoi l\'électricité est-elle importante ?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Les longues impressions et les imprimantes à forte puissance peuvent ajouter un coût réel. Ignorer l\'électricité sous-estime généralement le prix du travail.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Comment le risque d\'échec est-il calculé ?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Le risque est appliqué uniquement aux coûts d\'impression de base comme le filament et l\'électricité. Il estime la perte attendue des impressions échouées.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Qu\'est-ce que le temps de main-d\'œuvre / traitement ?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Il couvre la préparation, le nettoyage, le post-traitement et la surveillance. Gardez-le activé pour les services où votre temps compte.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Qu\'est-ce que la majoration ?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'La majoration est le pourcentage ajouté au coût total pour atteindre votre prix de vente. Elle couvre la marge, les frais généraux et le profit.';
+
+  @override
+  String get helpSupportFaqSetupQuestion =>
+      'Qu\'est-ce qu\'un frais de configuration ?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Un frais de configuration est un coût fixe par travail pour l\'étalonnage, la préparation de la machine et l\'administration. Il aide les petites impressions à couvrir les frais généraux.';
+
+  @override
+  String get helpSupportLinksTitle => 'Liens';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Politique de confidentialité';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Conditions d\'utilisation';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'À propos';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Le Calculateur de Coût d\'Impression 3D est conçu pour une tarification locale d\'abord. Il aide les créateurs et les petites entreprises d\'impression à établir des devis avec moins de surprises.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Pas de comptes';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Pas de synchronisation cloud';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Pas de suivi';
+
+  @override
+  String get helpSupportTrustLocalData => 'Données locales';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Le calculateur combine le coût du filament, l\'électricité, le risque d\'échec, la main-d\'œuvre et des outils de tarification optionnels comme la majoration et les frais de configuration.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Cela maintient les devis liés au coût réel, pas seulement aux dépenses matérielles.';
+
+  @override
   String get supportEmailPrefix =>
       'En cas de problème, envoyez-moi un e-mail à ';
 
@@ -233,6 +368,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get supportIdLabel => 'Veuillez inclure votre ID de support : ';
+
+  @override
+  String get supportEmailSubject => 'Assistance pour 3D Print Cost Calculator';
 
   @override
   String get clickToCopy => '(cliquer pour copier)';
@@ -255,6 +393,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Politique de confidentialité';
+
+  @override
+  String get websiteLink => 'Site web';
 
   @override
   String get termsOfUseLink => 'Conditions d\'utilisation';
@@ -524,7 +665,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Ajoutez au moins un matériau.';
 
   @override
-  String get searchMaterialsHint => 'Rechercher des matériaux';
+  String get searchMaterialsHint => 'Chercher nom ou marque';
 
   @override
   String get materialBreakdownLabel => 'Répartition des matériaux';
@@ -768,5 +909,114 @@ class AppLocalizationsFr extends AppLocalizations {
   String get slicerUnknown => 'Inconnu';
 
   @override
-  String get startFreeTrialCta => 'Commencer l\'essai gratuit';
+  String get materialsAppBarTitle => 'Matériaux';
+
+  @override
+  String get materialsNavLabel => 'Matériaux';
+
+  @override
+  String get brandLabel => 'Marque';
+
+  @override
+  String get materialTypeLabel => 'Type de matériau';
+
+  @override
+  String get colorHexLabel => 'Code hex (optionnel)';
+
+  @override
+  String get notesLabel => 'Notes';
+
+  @override
+  String get materialsEmpty =>
+      'Aucun matériau pour l\'instant. Appuyez sur + pour en ajouter.';
+
+  @override
+  String get materialsFilterAll => 'Tout';
+
+  @override
+  String get materialsFilterInStock => 'En stock';
+
+  @override
+  String get materialsFilterLowStock => 'Stock bas';
+
+  @override
+  String get materialsFilterOutOfStock => 'Rupture de stock';
+
+  @override
+  String get csvImportTitle => 'Importer des matériaux';
+
+  @override
+  String get csvTemplateButton => 'Modèle';
+
+  @override
+  String get csvTemplateShareText => 'Matériaux - Modèle CSV';
+
+  @override
+  String get csvTemplateError => 'Impossible de partager le modèle.';
+
+  @override
+  String get csvImportIntro => 'Importez des matériaux depuis un fichier CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Choisir un fichier CSV';
+
+  @override
+  String get csvImportButton => 'Importer les lignes valides';
+
+  @override
+  String get csvReadError => 'Le fichier sélectionné n\'a pas pu être lu.';
+
+  @override
+  String get csvFileTypeError => 'Sélectionnez un fichier .csv';
+
+  @override
+  String get csvNameRequiredError => 'Le nom est obligatoire';
+
+  @override
+  String get csvColorRequiredError => 'La couleur est obligatoire';
+
+  @override
+  String get csvSpoolWeightRequiredError =>
+      'Le poids de la bobine est obligatoire';
+
+  @override
+  String get csvSpoolWeightPositiveError =>
+      'Le poids de la bobine doit être > 0';
+
+  @override
+  String get csvCostRequiredError => 'Le coût est obligatoire';
+
+  @override
+  String get csvCostPositiveError => 'Le coût doit être > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count matériaux importés',
+      one: '1 matériau importé',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total lignes: $valid valides, $invalid avec erreurs';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vide)';
+
+  @override
+  String get stockBadgeOut => 'Rupture';
+
+  @override
+  String get stockBadgeLow => 'Stock faible';
+
+  @override
+  String get stockBadgeInStock => 'En stock';
+
+  @override
+  String get stockBadgeNoTracking => 'Non suivi';
 }

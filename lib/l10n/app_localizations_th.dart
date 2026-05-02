@@ -190,6 +190,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get savePrintSuccessMessage => 'บันทึกงานพิมพ์แล้ว';
 
   @override
+  String get deleteMaterialSuccessMessage => 'ลบวัสดุแล้ว';
+
+  @override
   String get historyLoadAction => 'แก้ไขในเครื่องคิดเลข';
 
   @override
@@ -222,6 +225,135 @@ class AppLocalizationsTh extends AppLocalizations {
   String get needHelpTitle => 'ต้องการความช่วยเหลือ?';
 
   @override
+  String get helpSupportSupportTitle => 'การสนับสนุน';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'ใช้รายละเอียดเหล่านี้เมื่อติดต่อฝ่ายสนับสนุน';
+
+  @override
+  String get helpSupportWebsiteLabel => 'เว็บไซต์';
+
+  @override
+  String get helpSupportEmailLabel => 'อีเมล';
+
+  @override
+  String get helpSupportSupportIdLabel => 'รหัสสนับสนุน';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'คัดลอกรหัสสนับสนุน';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'เวอร์ชันแอป $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'ติดต่อฝ่ายสนับสนุน';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'การสนับสนุนเครื่องคำนวณต้นทุนการพิมพ์ 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'รหัสสนับสนุน: $supportId\nเวอร์ชันแอป: $version\n\nอธิบายปัญหาที่นี่';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'รหัสสนับสนุน: (ไม่พร้อมใช้งาน)\nเวอร์ชันแอป: $version\n\nอธิบายปัญหาที่นี่';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'คำถามที่พบบ่อย';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'ฉันควรป้อนน้ำหนักเท่าไร?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'ป้อนน้ำหนักของม้วนทั้งหมด ไม่ใช่ฟิลาเมนต์ที่เหลือ แอปใช้น้ำหนักม้วนเต็มเพื่อคำนวณต้นทุนต่อกรัม';
+
+  @override
+  String get helpSupportFaqElectricityQuestion => 'ทำไมค่าไฟฟ้าจึงสำคัญ?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'การพิมพ์แบบยาวและเครื่องพิมพ์กำลังไฟสูงสามารถเพิ่มต้นทุนที่แท้จริงได้ การข้ามค่าไฟฟ้ามักทำให้ราคางานต่ำเกินไป';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'ความเสี่ยงจากความล้มเหลวคำนวณอย่างไร?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'ความเสี่ยงถูกนำไปใช้กับต้นทุนการพิมพ์พื้นฐานเท่านั้น เช่น ฟิลาเมนต์และไฟฟ้า มันประเมินการสูญเสียที่คาดหวังจากการพิมพ์ที่ล้มเหลว';
+
+  @override
+  String get helpSupportFaqLabourQuestion => 'เวลาแรงงาน / การประมวลผลคืออะไร?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'ครอบคลุมการเตรียมการ การทำความสะอาด การประมวลผลหลังการพิมพ์ และการตรวจสอบ เปิดไว้สำหรับบริการที่เวลาของคุณมีความสำคัญ';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'มาร์กอัปคืออะไร?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'มาร์กอัปคือเปอร์เซ็นต์ที่เพิ่มขึ้นจากต้นทุนทั้งหมดเพื่อไปถึงราคาขายของคุณ ครอบคลุมกำไร ค่าใช้จ่ายทั่วไป และกำไร';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'ค่าธรรมเนียมการตั้งค่าคืออะไร?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'ค่าธรรมเนียมการตั้งค่าคือต้นทุนคงที่ต่อหนึ่งงานสำหรับการปรับเทียบ การเตรียมเครื่อง และการบริหาร ช่วยให้งานพิมพ์ขนาดเล็กสามารถครอบคลุมค่าใช้จ่ายทั่วไปได้';
+
+  @override
+  String get helpSupportLinksTitle => 'ลิงก์';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'นโยบายความเป็นส่วนตัว';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'ข้อกำหนดการใช้งาน';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'เกี่ยวกับ';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'เครื่องคำนวณต้นทุนการพิมพ์ 3D ถูกสร้างขึ้นสำหรับการกำหนดราคาแบบท้องถิ่นก่อน ช่วยเหลือผู้สร้างและธุรกิจพิมพ์ขนาดเล็กในการประเมินราคางานด้วยความประหลาดใจน้อยลง';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'ไม่มีบัญชี';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'ไม่มีการซิงค์คลาวด์';
+
+  @override
+  String get helpSupportTrustNoTracking => 'ไม่มีการติดตาม';
+
+  @override
+  String get helpSupportTrustLocalData => 'ข้อมูลท้องถิ่น';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'เครื่องคำนวณผสมผสานต้นทุนฟิลาเมนต์ ไฟฟ้า ความเสี่ยงจากความล้มเหลว แรงงาน และเครื่องมือกำหนดราคาเสริมเช่นมาร์กอัปและค่าธรรมเนียมการตั้งค่า';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'ทำให้ใบเสนอราคาเชื่อมโยงกับต้นทุนที่แท้จริง ไม่ใช่แค่ค่าใช้จ่ายวัสดุเท่านั้น';
+
+  @override
   String get supportEmailPrefix => 'หากมีปัญหา กรุณาส่งอีเมลมาที่ ';
 
   @override
@@ -229,6 +361,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get supportIdLabel => 'โปรดระบุรหัสสนับสนุนของคุณ: ';
+
+  @override
+  String get supportEmailSubject => 'การสนับสนุน 3D Print Cost Calculator';
 
   @override
   String get clickToCopy => '(แตะเพื่อคัดลอก)';
@@ -251,6 +386,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'นโยบายความเป็นส่วนตัว';
+
+  @override
+  String get websiteLink => 'เว็บไซต์';
 
   @override
   String get termsOfUseLink => 'ข้อกำหนดการใช้งาน';
@@ -512,7 +650,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get addAtLeastOneMaterial => 'เพิ่มวัสดุอย่างน้อย 1 รายการ';
 
   @override
-  String get searchMaterialsHint => 'ค้นหาวัสดุ';
+  String get searchMaterialsHint => 'ค้นหาชื่อหรือแบรนด์';
 
   @override
   String get materialBreakdownLabel => 'รายละเอียดวัสดุ';
@@ -743,5 +881,111 @@ class AppLocalizationsTh extends AppLocalizations {
   String get slicerUnknown => 'ไม่ทราบ';
 
   @override
-  String get startFreeTrialCta => 'เริ่มทดลองใช้ฟรี';
+  String get materialsAppBarTitle => 'วัสดุ';
+
+  @override
+  String get materialsNavLabel => 'วัสดุ';
+
+  @override
+  String get brandLabel => 'ยี่ห้อ';
+
+  @override
+  String get materialTypeLabel => 'ประเภทวัสดุ';
+
+  @override
+  String get colorHexLabel => 'เลขฐานสิบหกสี (ไม่บังคับ)';
+
+  @override
+  String get notesLabel => 'หมายเหตุ';
+
+  @override
+  String get materialsEmpty => 'ยังไม่มีวัสดุ แตะ + เพื่อเพิ่ม';
+
+  @override
+  String get materialsFilterAll => 'ทั้งหมด';
+
+  @override
+  String get materialsFilterInStock => 'ในสต็อก';
+
+  @override
+  String get materialsFilterLowStock => 'สต็อกต่ำ';
+
+  @override
+  String get materialsFilterOutOfStock => 'หมดสต็อก';
+
+  @override
+  String get csvImportTitle => 'นำเข้าวัสดุ';
+
+  @override
+  String get csvTemplateButton => 'เทมเพลต';
+
+  @override
+  String get csvTemplateShareText => 'เทมเพลต CSV วัสดุ';
+
+  @override
+  String get csvTemplateError => 'ไม่สามารถแชร์เทมเพลตได้';
+
+  @override
+  String get csvImportIntro => 'นำเข้าวัสดุจากไฟล์ CSV';
+
+  @override
+  String get csvSelectFileButton => 'เลือกไฟล์ CSV';
+
+  @override
+  String get csvImportButton => 'นำเข้าแถวที่ถูกต้อง';
+
+  @override
+  String get csvReadError => 'ไม่สามารถอ่านไฟล์ที่เลือกได้';
+
+  @override
+  String get csvFileTypeError => 'กรุณาเลือกไฟล์ .csv';
+
+  @override
+  String get csvNameRequiredError => 'ชื่อจำเป็น';
+
+  @override
+  String get csvColorRequiredError => 'สีจำเป็น';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'น้ำหนักสปูลจำเป็น';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'น้ำหนักสปูลต้องมากกว่า 0';
+
+  @override
+  String get csvCostRequiredError => 'ต้นทุนจำเป็น';
+
+  @override
+  String get csvCostPositiveError => 'ต้นทุนต้องมากกว่า 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'นำเข้า $count วัสดุ',
+      one: 'นำเข้า 1 วัสดุ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total แถว: $valid ถูกต้อง, $invalid มีข้อผิดพลาด';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(ว่าง)';
+
+  @override
+  String get stockBadgeOut => 'หมดสต็อก';
+
+  @override
+  String get stockBadgeLow => 'สต็อกต่ำ';
+
+  @override
+  String get stockBadgeInStock => 'มีสต็อก';
+
+  @override
+  String get stockBadgeNoTracking => 'ไม่ติดตาม';
 }

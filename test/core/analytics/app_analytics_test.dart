@@ -198,38 +198,48 @@ void main() {
     });
   });
 
-  test('pricing analytics wrappers use expected param shapes', () async {
-    await AppAnalytics.pricingSettingsChanged(
-      markupPercent: 12.5,
-      setupFee: 3,
-      roundingMode: '.99',
-    );
-    expect(fake.lastName, 'pricing_settings_changed');
-    expect(fake.lastParams, {
-      'pricing_enabled': 1,
-      'markup_percent': 12.5,
-      'setup_fee': 3,
-      'rounding_mode': '.99',
-    });
+  test(
+    'materials analytics wrappers keep payloads small and consistent',
+    () async {
+      await AppAnalytics.materialsViewOpened();
+      expect(fake.lastName, 'materials_view_opened');
+      expect(fake.lastParams, isNull);
 
-    await AppAnalytics.pricingOverrideUsed(field: 'markup', hasOverrides: true);
-    expect(fake.lastName, 'pricing_override_used');
-    expect(fake.lastParams, {'field': 'markup', 'has_overrides': 1});
+      await AppAnalytics.materialCreated(
+        hasTracking: true,
+        materialType: 'PLA',
+        brand: 'Sunlu',
+      );
+      expect(fake.lastName, 'material_created');
+      expect(fake.lastParams, {
+        'has_tracking': 1,
+        'material_type': 'PLA',
+        'brand': 'Sunlu',
+      });
 
-    await AppAnalytics.pricingSaved(
-      hasPricing: true,
-      usedOverrides: false,
-      roundingMode: '.00',
-    );
-    expect(fake.lastName, 'pricing_saved');
-    expect(fake.lastParams, {
-      'has_pricing': 1,
-      'used_overrides': 0,
-      'rounding_mode': '.00',
-    });
+      await AppAnalytics.materialEdited(hasTracking: false, materialType: '');
+      expect(fake.lastName, 'material_edited');
+      expect(fake.lastParams, {'has_tracking': 0});
 
-    await AppAnalytics.pricingRoundingUsed(roundingMode: 'none');
-    expect(fake.lastName, 'pricing_rounding_used');
-    expect(fake.lastParams, {'rounding_mode': 'none'});
-  });
+      await AppAnalytics.csvImportStarted();
+      expect(fake.lastName, 'csv_import_started');
+      expect(fake.lastParams, isNull);
+
+      await AppAnalytics.csvImportCompleted(rowsSuccess: 3, rowsFailed: 1);
+      expect(fake.lastName, 'csv_import_completed');
+      expect(fake.lastParams, {'rows_success': 3, 'rows_failed': 1});
+
+      await AppAnalytics.materialSelectedInCalculator(
+        hasTracking: true,
+        materialType: 'PETG',
+        brand: 'Overture',
+      );
+      expect(fake.lastName, 'material_selected_in_calculator');
+      expect(fake.lastParams, {
+        'has_tracking': 1,
+        'material_type': 'PETG',
+        'brand': 'Overture',
+      });
+    },
+  );
 }

@@ -145,12 +145,67 @@
   "@wattsSuffix": {},
   "needHelpTitle": "ヘルプが必要ですか？",
   "@needHelpTitle": {},
+  "helpSupportSupportTitle": "サポート",
+  "helpSupportSupportIntro": "サポートに連絡するときはこれらの詳細を使用してください。",
+  "helpSupportWebsiteLabel": "ウェブサイト",
+  "helpSupportEmailLabel": "メール",
+  "helpSupportSupportIdLabel": "サポートID",
+  "helpSupportCopySupportIdTooltip": "サポートIDをコピー",
+  "helpSupportAppVersionRow": "アプリバージョン {version}",
+  "@helpSupportAppVersionRow": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportContactSupportButton": "サポートに連絡",
+  "helpSupportContactEmailSubject": "3Dプリント費用計算機サポート",
+  "helpSupportContactEmailBody": "サポートID: {supportId}\nアプリバージョン: {version}\n\nここで問題を説明してください。",
+  "@helpSupportContactEmailBody": {
+    "placeholders": {
+      "supportId": {},
+      "version": {}
+    }
+  },
+  "helpSupportContactEmailBodyNoSupportId": "サポートID: (利用できません)\nアプリバージョン: {version}\n\nここで問題を説明してください。",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportFaqTitle": "よくある質問",
+  "helpSupportFaqWeightQuestion": "どの重量を入力すればよいですか？",
+  "helpSupportFaqWeightAnswer": "残りのフィラメントではなく、スプールの総重量を入力してください。アプリは完全なロールの重量を使用してグラムあたりのコストを計算します。",
+  "helpSupportFaqElectricityQuestion": "なぜ電気が重要ですか？",
+  "helpSupportFaqElectricityAnswer": "長時間の印刷と高ワット数のプリンターは実際のコストを追加できます。電気をスキップすると通常、仕事の価格が低くなります。",
+  "helpSupportFaqRiskQuestion": "失敗リスクはどのように計算されますか？",
+  "helpSupportFaqRiskAnswer": "リスクはフィラメントや電気などの基本印刷コストにのみ適用されます。失敗した印刷からの予想損失を推定します。",
+  "helpSupportFaqLabourQuestion": "労働/処理時間とは何ですか？",
+  "helpSupportFaqLabourAnswer": "準備、清掃、後処理、監視をカバーします。あなたの時間が重要なサービスではオンにしておいてください。",
+  "helpSupportFaqMarkupQuestion": "マークアップとは何ですか？",
+  "helpSupportFaqMarkupAnswer": "マークアップは、販売価格に到達するために総コストの上に追加されるパーセンテージです。利益率、諸経費、利益をカバーします。",
+  "helpSupportFaqSetupQuestion": "セットアップ料金とは何ですか？",
+  "helpSupportFaqSetupAnswer": "セットアップ料金は、キャリブレーション、マシン準備、管理のためのジョブごとの固定コストです。小さな印刷が諸経費をカバーするのに役立ちます。",
+  "helpSupportLinksTitle": "リンク",
+  "helpSupportPrivacyPolicyLabel": "プライバシーポリシー",
+  "helpSupportTermsOfUseLabel": "利用規約",
+  "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportThreadsLabel": "Threads",
+  "helpSupportAboutTitle": "について",
+  "helpSupportAboutIntro": "3Dプリント費用計算機はローカルファースト価格設定のために構築されています。メーカーや小規模印刷ビジネスが、より少ない驚きで仕事を見積もるのに役立ちます。",
+  "helpSupportTrustNoAccounts": "アカウント不要",
+  "helpSupportTrustNoCloudSync": "クラウド同期なし",
+  "helpSupportTrustNoTracking": "追跡なし",
+  "helpSupportTrustLocalData": "ローカルデータ",
+  "helpSupportAboutCalculator": "計算機は、フィラメントコスト、電気、失敗リスク、労働、およびマークアップやセットアップ料金などのオプションの価格設定ツールを組み合わせます。",
+  "helpSupportAboutOutcome": "それは見積もりを真のコストに結び付け、材料費だけではありません。",
   "supportEmailPrefix": "問題がある場合は、次のアドレスまでメールしてください: ",
   "@supportEmailPrefix": {},
   "supportEmail": "3d@printcostcalc.app",
   "@supportEmail": {},
   "supportIdLabel": "サポートIDを含めてください: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "3D Print Cost Calculator サポート",
+  "@supportEmailSubject": {},
   "clickToCopy": "（タップしてコピー）",
   "materialWeightExplanation": "材料重量は元の材料全体の重量、つまりフィラメントロール全体の重量です。コストはユニット全体の価格です。",
   "@materialWeightExplanation": {
@@ -211,6 +266,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "プライバシーポリシー",
   "@privacyPolicyLink": {},
+  "websiteLink": "ウェブサイト",
+  "@websiteLink": {},
   "termsOfUseLink": "利用規約",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -277,7 +334,7 @@
   "addMaterialButton": "素材を追加",
   "useSingleTotalWeightAction": "単一の合計重量を使用",
   "addAtLeastOneMaterial": "少なくとも1つの素材を追加してください。",
-  "searchMaterialsHint": "素材を検索",
+  "searchMaterialsHint": "名前またはブランドを検索",
   "materialBreakdownLabel": "素材内訳",
   "materialsCountLabel": "{count} 件の素材",
   "totalMaterialWeightLabel": "素材の合計重量: {grams}g",
@@ -373,5 +430,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
   "slicerUnknown": "不明",
-  "startFreeTrialCta": "無料トライアルを開始"
+  "materialsAppBarTitle": "材料",
+  "materialsNavLabel": "材料",
+  "brandLabel": "ブランド",
+  "materialTypeLabel": "素材タイプ",
+  "colorHexLabel": "色のhex（任意）",
+  "notesLabel": "メモ",
+  "materialsEmpty": "材料がまだありません。+をタップして追加",
+  "materialsFilterAll": "すべて",
+  "materialsFilterInStock": "在庫あり",
+  "materialsFilterLowStock": "残りわずか",
+  "materialsFilterOutOfStock": "在庫切れ",
+  "csvImportTitle": "材料をインポート",
+  "csvTemplateButton": "テンプレート",
+  "csvTemplateShareText": "材料CSVテンプレート",
+  "csvTemplateError": "テンプレートを共有できませんでした。",
+  "csvImportIntro": "CSVファイルから材料をインポートします。",
+  "csvSelectFileButton": "CSVファイルを選択",
+  "csvImportButton": "有効な行をインポート",
+  "csvReadError": "選択されたファイルを読み取れませんでした。",
+  "csvFileTypeError": ".csvファイルを選択してください",
+  "csvNameRequiredError": "名前は必須です",
+  "csvColorRequiredError": "色は必須です",
+  "csvSpoolWeightRequiredError": "スプール重量は必須です",
+  "csvSpoolWeightPositiveError": "スプール重量は0より大きい必要があります",
+  "csvCostRequiredError": "コストは必須です",
+  "csvCostPositiveError": "コストは0より大きい必要があります",
+  "csvImportSuccessMessage": "{count, plural, one{1件の材料をインポートしました} other{{count}件の材料をインポートしました}}",
+  "deleteMaterialSuccessMessage": "材料を削除しました",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total}行: {valid}件有効, {invalid}件エラー",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(空白)",
+  "stockBadgeOut": "在庫切れ",
+  "stockBadgeLow": "残りわずか",
+  "stockBadgeInStock": "在庫あり",
+  "stockBadgeNoTracking": "追跡なし"
 }

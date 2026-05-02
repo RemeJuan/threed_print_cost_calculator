@@ -143,13 +143,67 @@
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "Brauchen Sie Hilfe?",
-  "@needHelpTitle": {},
+  "helpSupportSupportTitle": "Support",
+  "helpSupportSupportIntro": "Verwenden Sie diese Details, wenn Sie den Support kontaktieren.",
+  "helpSupportWebsiteLabel": "Website",
+  "helpSupportEmailLabel": "E-Mail",
+  "helpSupportSupportIdLabel": "Support-ID",
+  "helpSupportCopySupportIdTooltip": "Support-ID kopieren",
+  "helpSupportAppVersionRow": "App-Version {version}",
+  "@helpSupportAppVersionRow": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportContactSupportButton": "Support kontaktieren",
+  "helpSupportContactEmailSubject": "3D-Druck-Kostenrechner Support",
+  "helpSupportContactEmailBody": "Support-ID: {supportId}\nApp-Version: {version}\n\nBeschreiben Sie hier das Problem.",
+  "@helpSupportContactEmailBody": {
+    "placeholders": {
+      "supportId": {},
+      "version": {}
+    }
+  },
+  "helpSupportContactEmailBodyNoSupportId": "Support-ID: (nicht verfügbar)\nApp-Version: {version}\n\nBeschreiben Sie hier das Problem.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportFaqTitle": "Häufig gestellte Fragen",
+  "helpSupportFaqWeightQuestion": "Welches Gewicht soll ich eingeben?",
+  "helpSupportFaqWeightAnswer": "Geben Sie das Gesamtgewicht der Spule ein, nicht das übriggebliebene Filament. Die App verwendet das volle Rollengewicht zur Berechnung der Kosten pro Gramm.",
+  "helpSupportFaqElectricityQuestion": "Warum ist Elektrizität wichtig?",
+  "helpSupportFaqElectricityAnswer": "Lange Drucke und Drucker mit hoher Wattzahl können echte Kosten verursachen. Elektrizität zu überspringen führt normalerweise zu Unterpreisen.",
+  "helpSupportFaqRiskQuestion": "Wie wird das Ausfallrisiko berechnet?",
+  "helpSupportFaqRiskAnswer": "Das Risiko wird nur auf Basisdruck-Kosten wie Filament und Elektrizität angewendet. Es schätzt den erwarteten Verlust durch fehlgeschlagene Drucke.",
+  "helpSupportFaqLabourQuestion": "Was ist Arbeits-/Bearbeitungszeit?",
+  "helpSupportFaqLabourAnswer": "Es umfasst Vorbereitung, Reinigung, Nachbearbeitung und Überwachung. Lassen Sie es für Dienste eingeschaltet, bei denen Ihre Zeit wichtig ist.",
+  "helpSupportFaqMarkupQuestion": "Was ist Aufschlag?",
+  "helpSupportFaqMarkupAnswer": "Aufschlag ist der Prozentsatz, der zu den Gesamtkosten hinzugefügt wird, um Ihren Verkaufspreis zu erreichen. Er deckt Marge, Gemeinkosten und Gewinn ab.",
+  "helpSupportFaqSetupQuestion": "Was ist eine Einrichtungsgebühr?",
+  "helpSupportFaqSetupAnswer": "Eine Einrichtungsgebühr ist ein fester Kostenbetrag pro Auftrag für Kalibrierung, Maschinenvorbereitung und Verwaltung. Sie hilft bei kleinen Drucken, Gemeinkosten zu decken.",
+  "helpSupportLinksTitle": "Links",
+  "helpSupportPrivacyPolicyLabel": "Datenschutzrichtlinie",
+  "helpSupportTermsOfUseLabel": "Nutzungsbedingungen",
+  "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportThreadsLabel": "Threads",
+  "helpSupportAboutTitle": "Über",
+  "helpSupportAboutIntro": "Der 3D-Druck-Kostenrechner ist für lokale Preisgestaltung konzipiert. Er hilft Machern und kleinen Druckbetrieben, Arbeiten mit weniger Überraschungen zu kalkulieren.",
+  "helpSupportTrustNoAccounts": "Keine Konten",
+  "helpSupportTrustNoCloudSync": "Keine Cloud-Synchronisation",
+  "helpSupportTrustNoTracking": "Kein Tracking",
+  "helpSupportTrustLocalData": "Lokale Daten",
+  "helpSupportAboutCalculator": "Der Rechner kombiniert Filamentkosten, Elektrizität, Ausfallrisiko, Arbeit und optionale Preisgestaltungstools wie Aufschlag und Einrichtungsgebühren.",
+  "helpSupportAboutOutcome": "Das hält Angebote an echte Kosten gebunden, nicht nur an Materialausgaben.",
   "supportEmailPrefix": "Bei Problemen schreiben Sie mir bitte an ",
   "@supportEmailPrefix": {},
   "supportEmail": "3d@printcostcalc.app",
   "@supportEmail": {},
   "supportIdLabel": "Bitte geben Sie Ihre Support-ID an: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Support für 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(zum Kopieren klicken)",
   "materialWeightExplanation": "Das Materialgewicht ist das Gesamtgewicht des Ausgangsmaterials, also der gesamten Filamentrolle. Die Kosten sind die Kosten der gesamten Einheit.",
   "@materialWeightExplanation": {
@@ -210,6 +264,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Datenschutzrichtlinie",
   "@privacyPolicyLink": {},
+  "websiteLink": "Webseite",
+  "@websiteLink": {},
   "termsOfUseLink": "Nutzungsbedingungen",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -276,7 +332,7 @@
   "addMaterialButton": "Material hinzufügen",
   "useSingleTotalWeightAction": "Gesamtgewicht verwenden",
   "addAtLeastOneMaterial": "Mindestens ein Material hinzufügen.",
-  "searchMaterialsHint": "Materialien suchen",
+  "searchMaterialsHint": "Name oder Marke suchen",
   "materialBreakdownLabel": "Materialaufschlüsselung",
   "materialsCountLabel": "{count, plural, one{# Material} other{# Materialien}}",
   "totalMaterialWeightLabel": "Gesamtes Materialgewicht: {grams}g",
@@ -308,7 +364,7 @@
   "hideProPromotionsTitle": "Pro-Aktionen ausblenden",
   "hideProPromotionsSubtitle": "Upgrade-Banner und Hinweise ausblenden",
   "durationPickerLabel": "Printing time (hh:mm)",
-"importGcodeButton": "G-code importieren (Autoausfüllen)",
+  "importGcodeButton": "G-code importieren (Autoausfüllen)",
   "importGcodePageTitle": "G-code importieren (Beta)",
   "importGcodeIntro": "Wählen Sie eine lokale .gcode-Datei. Unterstützte Slicer: PrusaSlicer, OrcaSlicer, Bambu Studio und Cura.",
   "importGcodeSelectFileButton": "G-code-Datei auswählen",
@@ -373,5 +429,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
   "slicerUnknown": "Unbekannt",
-  "startFreeTrialCta": "Kostenlose Testversion starten"
+  "materialsAppBarTitle": "Materialien",
+  "materialsNavLabel": "Materialien",
+  "brandLabel": "Marke",
+  "materialTypeLabel": "Materialtyp",
+  "colorHexLabel": "Farbe Hex (optional)",
+  "notesLabel": "Notizen",
+  "materialsEmpty": "Noch keine Materialien. Tippe auf +, um eins hinzuzufügen.",
+  "materialsFilterAll": "Alle",
+  "materialsFilterInStock": "Auf Lager",
+  "materialsFilterLowStock": "Niedrig",
+  "materialsFilterOutOfStock": "Ausverkauft",
+  "csvImportTitle": "Materialien importieren",
+  "csvTemplateButton": "Vorlage",
+  "csvTemplateShareText": "Material-CSV-Vorlage",
+  "csvTemplateError": "Vorlage konnte nicht geteilt werden.",
+  "csvImportIntro": "Materialien aus einer CSV-Datei importieren.",
+  "csvSelectFileButton": "CSV-Datei auswählen",
+  "csvImportButton": "Gültige Zeilen importieren",
+  "csvReadError": "Die ausgewählte Datei konnte nicht gelesen werden.",
+  "csvFileTypeError": "Bitte wählen Sie eine .csv-Datei",
+  "csvNameRequiredError": "Name ist erforderlich",
+  "csvColorRequiredError": "Farbe ist erforderlich",
+  "csvSpoolWeightRequiredError": "Spoolgewicht ist erforderlich",
+  "csvSpoolWeightPositiveError": "Spoolgewicht muss > 0 sein",
+  "csvCostRequiredError": "Kosten sind erforderlich",
+  "csvCostPositiveError": "Kosten müssen > 0 sein",
+  "csvImportSuccessMessage": "{count, plural, one{1 Material importiert} other{{count} Materialien importiert}}",
+  "deleteMaterialSuccessMessage": "Material gelöscht",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} Zeilen: {valid} gültig, {invalid} mit Fehlern",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(leer)",
+  "stockBadgeOut": "Ausverkauft",
+  "stockBadgeLow": "Niedriger Bestand",
+  "stockBadgeInStock": "Auf Lager",
+  "stockBadgeNoTracking": "Keine Verfolgung"
 }

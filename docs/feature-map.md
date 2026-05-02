@@ -1,0 +1,238 @@
+# Feature map
+
+## Calculator
+
+- Main screens/widgets:
+  - `lib/calculator/view/calculator_page.dart`
+  - `lib/calculator/view/calculator_results.dart`
+  - `lib/calculator/view/save_form.dart`
+  - `lib/calculator/view/printer_select.dart`
+  - `lib/calculator/view/material_select.dart`
+  - `lib/calculator/view/components/materials_selection/`
+- Providers/state:
+  - `lib/calculator/provider/calculator_notifier.dart` (`calculatorProvider`)
+  - `lib/calculator/provider/calculator_history_loader.dart`
+  - `lib/calculator/provider/calculator_settings_sync.dart`
+  - `lib/calculator/provider/calculator_materials_service.dart`
+  - `lib/calculator/state/calculator_state.dart`
+  - `lib/calculator/state/calculation_results_state.dart`
+- Repositories/services:
+  - `lib/database/repositories/calculator_preferences_repository.dart`
+  - `lib/settings/services/settings_service.dart`
+- Models:
+  - `lib/calculator/model/material_usage_input.dart`
+- Tests:
+  - `test/calculator/provider/`
+  - `test/calculator/view/`
+  - `test/calculator/helpers/`
+- Common search terms:
+  - `calculatorProvider`
+  - `CalculatorPage`
+  - `CalculatorState`
+  - `applyImportedValues`
+  - `loadFromHistory`
+  - `material_usage_input`
+
+## Materials
+
+- Main screens/widgets:
+  - `lib/materials/widgets/materials_page.dart`
+  - `lib/materials/widgets/material_card.dart`
+  - `lib/materials/widgets/material_filters.dart`
+  - `lib/materials/csv_import/csv_import_page.dart`
+  - `lib/settings/materials/materials.dart`
+  - `lib/settings/materials/material_form.dart`
+- Providers/state:
+  - `lib/materials/providers/materials_providers.dart`
+  - `lib/settings/providers/materials_notifier.dart` (`materialsProvider`)
+  - `lib/settings/state/material_state.dart`
+- Repositories/services:
+  - `lib/database/repositories/materials_repository.dart`
+  - `lib/database/services/material_stock_service.dart`
+- Models:
+  - `lib/settings/model/material_model.dart`
+  - `lib/materials/model/stock_status.dart`
+- Tests:
+  - `test/materials/`
+  - `test/settings/materials/`
+  - `test/settings/providers/materials_notifier_test.dart`
+- Analytics events:
+  - `materials_view_opened` — tab opens on first frame (`lib/app/app_page.dart`)
+  - `material_created` / `material_edited` — params: `has_tracking`, optional `material_type`, `brand` (`lib/settings/providers/materials_notifier.dart`)
+  - `csv_import_started` / `csv_import_completed` — params: `rows_success`, `rows_failed` (`lib/materials/csv_import/csv_import_page.dart`)
+  - `material_selected_in_calculator` — params: `has_tracking`, optional `material_type`, `brand` (`lib/calculator/provider/calculator_notifier.dart`)
+- Common search terms:
+  - `MaterialsPage`
+  - `materialsStreamProvider`
+  - `filteredMaterialsProvider`
+  - `MaterialsProvider`
+  - `material_form`
+  - `csv_import`
+
+## History
+
+- Main screens/widgets:
+  - `lib/history/history_page.dart`
+  - `lib/history/components/history_list_view.dart`
+  - `lib/history/components/history_item.dart`
+  - `lib/history/components/history_search_bar.dart`
+  - `lib/history/components/history_toolbar.dart`
+  - `lib/history/components/history_upsell_banner.dart`
+- Providers/state:
+  - `lib/history/provider/history_paged_notifier.dart`
+  - `lib/history/provider/history_providers.dart`
+  - `lib/history/index/history_search_index.dart`
+  - `lib/history/index/printer_index.dart`
+- Repositories/services:
+  - `lib/database/repositories/history_repository.dart`
+  - `lib/database/history_record_store.dart`
+- Models:
+  - `lib/history/model/history_entry.dart`
+  - `lib/history/model/history_model.dart`
+- Tests:
+  - `test/history/`
+  - `integration_test/premium_history_filtering_test.dart`
+  - `patrol_test/premium_calculate_save_history_journey_test.dart`
+- Common search terms:
+  - `HistoryPage`
+  - `HistoryPagedNotifier`
+  - `historyRepositoryProvider`
+  - `historySearchIndex`
+  - `HistoryPageMode`
+  - `history_upsell`
+
+## Premium / RevenueCat
+
+- Main screens/widgets:
+  - `lib/calculator/view/subscriptions.dart`
+  - `lib/history/components/history_upsell_banner.dart`
+  - `lib/app/header_actions.dart`
+  - `lib/app/promo_history_tab_icon.dart`
+- Providers/state:
+  - `lib/purchases/premium_state_notifier.dart` (`premiumStateProvider`, `isPremiumProvider`)
+  - `lib/purchases/premium_state.dart`
+  - `lib/shared/providers/pro_promotion_visibility.dart`
+- Repositories/services:
+  - `lib/purchases/purchases_gateway.dart`
+  - `lib/purchases/paywall_presenter.dart`
+- Models:
+  - `lib/purchases/premium_state.dart`
+- Tests:
+  - `test/purchases/`
+  - `test_support/fake_purchases_gateway.dart`
+  - `integration_test/premium_*.dart`
+  - `patrol_test/premium_calculate_save_history_journey_test.dart`
+- Common search terms:
+  - `premiumStateProvider`
+  - `isPremium`
+  - `RevenueCatPurchasesGateway`
+  - `paywall`
+  - `Purchases.configure`
+  - `history_teaser`
+
+## G-code import
+
+- Main screens/widgets:
+  - `lib/gcode_import/gcode_import_page.dart`
+  - `lib/gcode_import/gcode_import_button.dart`
+  - `lib/gcode_import/feedback/gcode_import_feedback_page.dart`
+- Providers/state:
+  - `lib/gcode_import/gcode_import_controller.dart`
+  - `lib/gcode_import/gcode_import_result.dart`
+- Repositories/services:
+  - `lib/gcode_import/gcode_import_service.dart`
+  - `lib/gcode_import/gcode_import_file_picker.dart`
+  - `lib/gcode_import/gcode_import_file_reader.dart`
+- Models:
+  - `lib/gcode_import/gcode_import_result.dart`
+  - `lib/gcode_import/feedback/gcode_import_feedback_models.dart`
+- Tests:
+  - `test/gcode_import/`
+  - `docs/gcode/`
+- Common search terms:
+  - `GCodeImport`
+  - `gcode_import_parser`
+  - `pickAndParse`
+  - `importPickedFile`
+  - `gcode_preview`
+  - `feedback_page`
+
+## Analytics
+
+- Main screens/widgets:
+  - No dedicated screen. Events fire from feature screens.
+- Providers/state:
+  - Static facade in `lib/core/analytics/app_analytics.dart`
+- Repositories/services:
+  - `lib/core/analytics/analytics_service.dart`
+  - `lib/core/analytics/firebase_analytics_service.dart`
+- Models:
+  - Event payload helpers in `lib/core/analytics/app_analytics.dart`
+- Tests:
+  - `test/core/analytics/app_analytics_test.dart`
+  - Event catalogue: `docs/analytics.md`
+- Common search terms:
+  - `AppAnalytics`
+  - `safeLog`
+  - `logEvent`
+  - `FirebaseAnalyticsService`
+  - `paywall_viewed`
+  - `gcode_import_`
+
+## Settings
+
+- Main screens/widgets:
+  - `lib/settings/settings_page.dart`
+  - `lib/settings/general_settings_form.dart`
+  - `lib/settings/work_costs_form.dart`
+  - `lib/settings/printers/printers.dart`
+  - `lib/settings/printers/add_printer.dart`
+  - `lib/settings/materials/materials.dart`
+  - `lib/settings/materials/material_form.dart`
+- Providers/state:
+  - `lib/settings/providers/printers_notifier.dart` (`printersProvider`)
+  - `lib/settings/providers/materials_notifier.dart` (`materialsProvider`)
+  - `lib/settings/state/printer_state.dart`
+  - `lib/settings/state/material_state.dart`
+- Repositories/services:
+  - `lib/settings/services/settings_service.dart`
+  - `lib/database/repositories/settings_repository.dart`
+  - `lib/database/repositories/printers_repository.dart`
+  - `lib/database/repositories/materials_repository.dart`
+- Models:
+  - `lib/settings/model/general_settings_model.dart`
+  - `lib/settings/model/printer_model.dart`
+  - `lib/settings/model/material_model.dart`
+- Tests:
+  - `test/settings/`
+  - `integration_test/premium_settings_journey_test.dart`
+- Common search terms:
+  - `SettingsPage`
+  - `settingsServiceProvider`
+  - `GeneralSettingsModel`
+  - `PrintersNotifier`
+  - `MaterialsProvider`
+  - `work_costs_form`
+
+## Localization
+
+- Main screens/widgets:
+  - Root wiring: `lib/app/app.dart`
+  - Common usage from feature screens via `AppLocalizations.of(context)!`
+- Providers/state:
+  - No Riverpod provider. Generated delegate access via `AppLocalizations`.
+- Repositories/services:
+  - Config file `l10n.yaml`
+- Models:
+  - Generated class `lib/l10n/app_localizations.dart`
+- Tests:
+  - Widget/integration helpers seed delegates:
+    - `test/helpers/helpers.dart`
+    - `integration_test/helpers/integration_test_harness.dart`
+- Common search terms:
+  - `AppLocalizations`
+  - `localizationsDelegates`
+  - `supportedLocales`
+  - `intl_en.arb`
+  - `gen-l10n`
+  - `historyLoadSuccessMessage`

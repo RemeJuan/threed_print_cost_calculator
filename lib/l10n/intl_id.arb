@@ -137,12 +137,67 @@
   "@wattsSuffix": {},
   "needHelpTitle": "Butuh bantuan?",
   "@needHelpTitle": {},
+  "helpSupportSupportTitle": "Dukungan",
+  "helpSupportSupportIntro": "Gunakan detail ini saat menghubungi dukungan.",
+  "helpSupportWebsiteLabel": "Situs web",
+  "helpSupportEmailLabel": "Email",
+  "helpSupportSupportIdLabel": "ID Dukungan",
+  "helpSupportCopySupportIdTooltip": "Salin ID dukungan",
+  "helpSupportAppVersionRow": "Versi aplikasi {version}",
+  "@helpSupportAppVersionRow": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportContactSupportButton": "Hubungi dukungan",
+  "helpSupportContactEmailSubject": "Dukungan Kalkulator Biaya Cetak 3D",
+  "helpSupportContactEmailBody": "ID Dukungan: {supportId}\nVersi aplikasi: {version}\n\nJelaskan masalahnya di sini.",
+  "@helpSupportContactEmailBody": {
+    "placeholders": {
+      "supportId": {},
+      "version": {}
+    }
+  },
+  "helpSupportContactEmailBodyNoSupportId": "ID Dukungan: (tidak tersedia)\nVersi aplikasi: {version}\n\nJelaskan masalahnya di sini.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportFaqTitle": "FAQ",
+  "helpSupportFaqWeightQuestion": "Berat apa yang harus saya masukkan?",
+  "helpSupportFaqWeightAnswer": "Masukkan berat total spul, bukan filamen sisa. Aplikasi menggunakan berat gulungan penuh untuk menghitung biaya per gram.",
+  "helpSupportFaqElectricityQuestion": "Mengapa listrik penting?",
+  "helpSupportFaqElectricityAnswer": "Pencetakan lama dan printer berdaya tinggi dapat menambah biaya nyata. Melewatkan listrik biasanya membuat harga terlalu rendah.",
+  "helpSupportFaqRiskQuestion": "Bagaimana risiko kegagalan dihitung?",
+  "helpSupportFaqRiskAnswer": "Risiko diterapkan hanya pada biaya cetak dasar seperti filamen dan listrik. Ini memperkirakan kerugian yang diharapkan dari pencetakan yang gagal.",
+  "helpSupportFaqLabourQuestion": "Apa itu waktu tenaga kerja / pengolahan?",
+  "helpSupportFaqLabourAnswer": "Ini mencakup persiapan, pembersihan, pasca-pemrosesan, dan pemantauan. Tetap aktifkan untuk layanan di mana waktu Anda penting.",
+  "helpSupportFaqMarkupQuestion": "Apa itu markup?",
+  "helpSupportFaqMarkupAnswer": "Markup adalah persentase yang ditambahkan di atas biaya total untuk mencapai harga jual Anda. Ini mencakup margin, overhead, dan keuntungan.",
+  "helpSupportFaqSetupQuestion": "Apa itu biaya setup?",
+  "helpSupportFaqSetupAnswer": "Biaya setup adalah biaya tetap per pekerjaan untuk kalibrasi, persiapan mesin, dan administrasi. Ini membantu cetakan kecil menutupi overhead.",
+  "helpSupportLinksTitle": "Tautan",
+  "helpSupportPrivacyPolicyLabel": "Kebijakan privasi",
+  "helpSupportTermsOfUseLabel": "Ketentuan penggunaan",
+  "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportThreadsLabel": "Threads",
+  "helpSupportAboutTitle": "Tentang",
+  "helpSupportAboutIntro": "Kalkulator Biaya Cetak 3D dibuat untuk penetapan harga lokal terlebih dahulu. Ini membantu pembuat dan bisnis cetak kecil mengutip pekerjaan dengan lebih sedikit kejutan.",
+  "helpSupportTrustNoAccounts": "Tanpa akun",
+  "helpSupportTrustNoCloudSync": "Tanpa sinkronisasi cloud",
+  "helpSupportTrustNoTracking": "Tanpa pelacakan",
+  "helpSupportTrustLocalData": "Data lokal",
+  "helpSupportAboutCalculator": "Kalkulator menggabungkan biaya filamen, listrik, risiko kegagalan, tenaga kerja, dan alat penetapan harga opsional seperti markup dan biaya setup.",
+  "helpSupportAboutOutcome": "Itu membuat kutipan tetap terikat pada biaya sebenarnya, bukan hanya pengeluaran material.",
   "supportEmailPrefix": "Jika ada masalah, silakan email saya di ",
   "@supportEmailPrefix": {},
   "supportEmail": "3d@printcostcalc.app",
   "@supportEmail": {},
   "supportIdLabel": "Harap sertakan ID Dukungan Anda: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Dukungan 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(ketuk untuk menyalin)",
   "materialWeightExplanation": "Berat bahan adalah total berat bahan sumber, yaitu seluruh gulungan filamen. Biaya adalah harga seluruh unit.",
   "@materialWeightExplanation": {
@@ -203,6 +258,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Kebijakan Privasi",
   "@privacyPolicyLink": {},
+  "websiteLink": "Situs web",
+  "@websiteLink": {},
   "termsOfUseLink": "Ketentuan Penggunaan",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -269,7 +326,7 @@
   "addMaterialButton": "Tambahkan bahan",
   "useSingleTotalWeightAction": "Gunakan total berat tunggal",
   "addAtLeastOneMaterial": "Tambahkan setidaknya satu material.",
-  "searchMaterialsHint": "Cari bahan",
+  "searchMaterialsHint": "Cari nama atau merek",
   "materialBreakdownLabel": "Rincian bahan",
   "materialsCountLabel": "{count} bahan",
   "totalMaterialWeightLabel": "Total berat material: {grams}g",
@@ -372,5 +429,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Lainnya",
   "slicerUnknown": "Tidak Dikenal",
-  "startFreeTrialCta": "Mulai uji coba gratis"
+  "materialsAppBarTitle": "Material",
+  "materialsNavLabel": "Material",
+  "brandLabel": "Merek",
+  "materialTypeLabel": "Jenis material",
+  "colorHexLabel": "Hex warna (opsional)",
+  "notesLabel": "Catatan",
+  "materialsEmpty": "Belum ada material. Ketuk + untuk menambah.",
+  "materialsFilterAll": "Semua",
+  "materialsFilterInStock": "Tersedia",
+  "materialsFilterLowStock": "Stok rendah",
+  "materialsFilterOutOfStock": "Habis",
+  "csvImportTitle": "Impor material",
+  "csvTemplateButton": "Template",
+  "csvTemplateShareText": "Template CSV material",
+  "csvTemplateError": "Tidak dapat membagikan template.",
+  "csvImportIntro": "Impor material dari file CSV.",
+  "csvSelectFileButton": "Pilih file CSV",
+  "csvImportButton": "Impor baris yang valid",
+  "csvReadError": "File yang dipilih tidak dapat dibaca.",
+  "csvFileTypeError": "Pilih file .csv",
+  "csvNameRequiredError": "Nama wajib diisi",
+  "csvColorRequiredError": "Warna wajib diisi",
+  "csvSpoolWeightRequiredError": "Berat spool wajib diisi",
+  "csvSpoolWeightPositiveError": "Berat spool harus > 0",
+  "csvCostRequiredError": "Biaya wajib diisi",
+  "csvCostPositiveError": "Biaya harus > 0",
+  "csvImportSuccessMessage": "{count, plural, one{1 material diimpor} other{{count} material diimpor}}",
+  "deleteMaterialSuccessMessage": "Material dihapus",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} baris: {valid} valid, {invalid} dengan error",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(kosong)",
+  "stockBadgeOut": "Habis",
+  "stockBadgeLow": "Stok rendah",
+  "stockBadgeInStock": "Tersedia",
+  "stockBadgeNoTracking": "Tidak dilacak"
 }

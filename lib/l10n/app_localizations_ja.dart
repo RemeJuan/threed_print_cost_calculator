@@ -189,6 +189,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get savePrintSuccessMessage => 'プリントを保存しました';
 
   @override
+  String get deleteMaterialSuccessMessage => '材料を削除しました';
+
+  @override
   String get historyLoadAction => '計算機で編集';
 
   @override
@@ -220,6 +223,131 @@ class AppLocalizationsJa extends AppLocalizations {
   String get needHelpTitle => 'ヘルプが必要ですか？';
 
   @override
+  String get helpSupportSupportTitle => 'サポート';
+
+  @override
+  String get helpSupportSupportIntro => 'サポートに連絡するときはこれらの詳細を使用してください。';
+
+  @override
+  String get helpSupportWebsiteLabel => 'ウェブサイト';
+
+  @override
+  String get helpSupportEmailLabel => 'メール';
+
+  @override
+  String get helpSupportSupportIdLabel => 'サポートID';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'サポートIDをコピー';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'アプリバージョン $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'サポートに連絡';
+
+  @override
+  String get helpSupportContactEmailSubject => '3Dプリント費用計算機サポート';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'サポートID: $supportId\nアプリバージョン: $version\n\nここで問題を説明してください。';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'サポートID: (利用できません)\nアプリバージョン: $version\n\nここで問題を説明してください。';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'よくある質問';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'どの重量を入力すればよいですか？';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      '残りのフィラメントではなく、スプールの総重量を入力してください。アプリは完全なロールの重量を使用してグラムあたりのコストを計算します。';
+
+  @override
+  String get helpSupportFaqElectricityQuestion => 'なぜ電気が重要ですか？';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      '長時間の印刷と高ワット数のプリンターは実際のコストを追加できます。電気をスキップすると通常、仕事の価格が低くなります。';
+
+  @override
+  String get helpSupportFaqRiskQuestion => '失敗リスクはどのように計算されますか？';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'リスクはフィラメントや電気などの基本印刷コストにのみ適用されます。失敗した印刷からの予想損失を推定します。';
+
+  @override
+  String get helpSupportFaqLabourQuestion => '労働/処理時間とは何ですか？';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      '準備、清掃、後処理、監視をカバーします。あなたの時間が重要なサービスではオンにしておいてください。';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'マークアップとは何ですか？';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'マークアップは、販売価格に到達するために総コストの上に追加されるパーセンテージです。利益率、諸経費、利益をカバーします。';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'セットアップ料金とは何ですか？';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'セットアップ料金は、キャリブレーション、マシン準備、管理のためのジョブごとの固定コストです。小さな印刷が諸経費をカバーするのに役立ちます。';
+
+  @override
+  String get helpSupportLinksTitle => 'リンク';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'プライバシーポリシー';
+
+  @override
+  String get helpSupportTermsOfUseLabel => '利用規約';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'について';
+
+  @override
+  String get helpSupportAboutIntro =>
+      '3Dプリント費用計算機はローカルファースト価格設定のために構築されています。メーカーや小規模印刷ビジネスが、より少ない驚きで仕事を見積もるのに役立ちます。';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'アカウント不要';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'クラウド同期なし';
+
+  @override
+  String get helpSupportTrustNoTracking => '追跡なし';
+
+  @override
+  String get helpSupportTrustLocalData => 'ローカルデータ';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      '計算機は、フィラメントコスト、電気、失敗リスク、労働、およびマークアップやセットアップ料金などのオプションの価格設定ツールを組み合わせます。';
+
+  @override
+  String get helpSupportAboutOutcome => 'それは見積もりを真のコストに結び付け、材料費だけではありません。';
+
+  @override
   String get supportEmailPrefix => '問題がある場合は、次のアドレスまでメールしてください: ';
 
   @override
@@ -227,6 +355,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get supportIdLabel => 'サポートIDを含めてください: ';
+
+  @override
+  String get supportEmailSubject => '3D Print Cost Calculator サポート';
 
   @override
   String get clickToCopy => '（タップしてコピー）';
@@ -249,6 +380,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'プライバシーポリシー';
+
+  @override
+  String get websiteLink => 'ウェブサイト';
 
   @override
   String get termsOfUseLink => '利用規約';
@@ -505,7 +639,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addAtLeastOneMaterial => '少なくとも1つの素材を追加してください。';
 
   @override
-  String get searchMaterialsHint => '素材を検索';
+  String get searchMaterialsHint => '名前またはブランドを検索';
 
   @override
   String get materialBreakdownLabel => '素材内訳';
@@ -734,5 +868,111 @@ class AppLocalizationsJa extends AppLocalizations {
   String get slicerUnknown => '不明';
 
   @override
-  String get startFreeTrialCta => '無料トライアルを開始';
+  String get materialsAppBarTitle => '材料';
+
+  @override
+  String get materialsNavLabel => '材料';
+
+  @override
+  String get brandLabel => 'ブランド';
+
+  @override
+  String get materialTypeLabel => '素材タイプ';
+
+  @override
+  String get colorHexLabel => '色のhex（任意）';
+
+  @override
+  String get notesLabel => 'メモ';
+
+  @override
+  String get materialsEmpty => '材料がまだありません。+をタップして追加';
+
+  @override
+  String get materialsFilterAll => 'すべて';
+
+  @override
+  String get materialsFilterInStock => '在庫あり';
+
+  @override
+  String get materialsFilterLowStock => '残りわずか';
+
+  @override
+  String get materialsFilterOutOfStock => '在庫切れ';
+
+  @override
+  String get csvImportTitle => '材料をインポート';
+
+  @override
+  String get csvTemplateButton => 'テンプレート';
+
+  @override
+  String get csvTemplateShareText => '材料CSVテンプレート';
+
+  @override
+  String get csvTemplateError => 'テンプレートを共有できませんでした。';
+
+  @override
+  String get csvImportIntro => 'CSVファイルから材料をインポートします。';
+
+  @override
+  String get csvSelectFileButton => 'CSVファイルを選択';
+
+  @override
+  String get csvImportButton => '有効な行をインポート';
+
+  @override
+  String get csvReadError => '選択されたファイルを読み取れませんでした。';
+
+  @override
+  String get csvFileTypeError => '.csvファイルを選択してください';
+
+  @override
+  String get csvNameRequiredError => '名前は必須です';
+
+  @override
+  String get csvColorRequiredError => '色は必須です';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'スプール重量は必須です';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'スプール重量は0より大きい必要があります';
+
+  @override
+  String get csvCostRequiredError => 'コストは必須です';
+
+  @override
+  String get csvCostPositiveError => 'コストは0より大きい必要があります';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count件の材料をインポートしました',
+      one: '1件の材料をインポートしました',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total行: $valid件有効, $invalid件エラー';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(空白)';
+
+  @override
+  String get stockBadgeOut => '在庫切れ';
+
+  @override
+  String get stockBadgeLow => '残りわずか';
+
+  @override
+  String get stockBadgeInStock => '在庫あり';
+
+  @override
+  String get stockBadgeNoTracking => '追跡なし';
 }
