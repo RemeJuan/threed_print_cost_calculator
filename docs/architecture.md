@@ -15,6 +15,12 @@
 - UI shell uses hooks-based widgets (`HookConsumerWidget` in `lib/app/app_page.dart`) for page controller and effect wiring.
 - `bloc` remains in repo for bootstrap logging (`lib/bootstrap.dart`), but feature state flow is Riverpod-led rather than Bloc/Cubit-led.
 
+## Bootstrap sequence
+
+- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, Crashlytics, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, and Sembast DB.
+- Startup migrations from `lib/startup.dart` run after those services are ready and before the root Riverpod `ProviderScope` is applied.
+- That order matters for downstream code: SharedPreferences-backed test overrides, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
+
 ## Data persistence approach
 
 - Local persistence uses Sembast (`pubspec.yaml`, `lib/database/`).
