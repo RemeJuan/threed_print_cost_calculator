@@ -125,119 +125,92 @@ void main() {
   });
 
   group('WhatsNewService', () {
-    test('shows announcement when no dismissed id stored', () async {
+    const currentAnnouncement = WhatsNewAnnouncement(
+      id: 'gcode_import_2026_04',
+      locales: {
+        'en': WhatsNewAnnouncementLocale(
+          title: 'Title',
+          body: 'Body',
+          cta: 'Got it',
+          unlockProCta: 'Start free trial',
+        ),
+      },
+    );
+
+    test('shows when announcement id is not dismissed', () async {
       final prefs = await SharedPreferences.getInstance();
       final service = WhatsNewService(prefs);
 
-      final announcement = WhatsNewAnnouncement(
-        id: 'test_id',
-        locales: {
-          'en': const WhatsNewAnnouncementLocale(
-            title: 'Test',
-            body: 'Body',
-            cta: 'OK',
-            unlockProCta: 'Unlock Pro',
-          ),
-        },
+      final shouldShow = await service.shouldShowAnnouncement(
+        currentAnnouncement,
       );
-      final shouldShow = await service.shouldShowAnnouncement(announcement);
 
       expect(shouldShow, true);
     });
 
-    test('does not show after dismissal', () async {
+    test('does not show for same announcement id after dismiss', () async {
       final prefs = await SharedPreferences.getInstance();
       final service = WhatsNewService(prefs);
 
-      final announcement = WhatsNewAnnouncement(
-        id: 'test_id',
-        locales: {
-          'en': const WhatsNewAnnouncementLocale(
-            title: 'Test',
-            body: 'Body',
-            cta: 'OK',
-            unlockProCta: 'Unlock Pro',
-          ),
-        },
+      await service.dismissAnnouncement(currentAnnouncement);
+      final shouldShow = await service.shouldShowAnnouncement(
+        currentAnnouncement,
       );
-      await service.dismissAnnouncement(announcement);
-      final shouldShow = await service.shouldShowAnnouncement(announcement);
 
       expect(shouldShow, false);
     });
 
-    test('shows again when JSON id changes', () async {
+    test('shows again when announcement id changes', () async {
       final prefs = await SharedPreferences.getInstance();
       final service = WhatsNewService(prefs);
 
-      final oldAnnouncement = WhatsNewAnnouncement(
-        id: 'old_id',
-        locales: {
-          'en': const WhatsNewAnnouncementLocale(
-            title: 'Old',
-            body: 'Old Body',
-            cta: 'OK',
-            unlockProCta: 'Unlock Pro',
-          ),
-        },
+      await service.dismissAnnouncement(
+        const WhatsNewAnnouncement(
+          id: 'old_id',
+          locales: {
+            'en': WhatsNewAnnouncementLocale(
+              title: 'Old',
+              body: 'Old Body',
+              cta: 'Got it',
+              unlockProCta: 'Start free trial',
+            ),
+          },
+        ),
       );
-      await service.dismissAnnouncement(oldAnnouncement);
-
-      final newAnnouncement = WhatsNewAnnouncement(
-        id: 'different_id',
-        locales: {
-          'en': const WhatsNewAnnouncementLocale(
-            title: 'New Feature',
-            body: 'Description',
-            cta: 'OK',
-            unlockProCta: 'Unlock Pro',
-          ),
-        },
+      final shouldShow = await service.shouldShowAnnouncement(
+        currentAnnouncement,
       );
-      final shouldShow = await service.shouldShowAnnouncement(newAnnouncement);
 
       expect(shouldShow, true);
     });
 
-    test('dismiss persists id in SharedPreferences', () async {
+    test('dismiss persists dismissed_announcement_id', () async {
       final prefs = await SharedPreferences.getInstance();
       final service = WhatsNewService(prefs);
 
-      final announcement = WhatsNewAnnouncement(
-        id: 'test_id',
-        locales: {
-          'en': const WhatsNewAnnouncementLocale(
-            title: 'Test',
-            body: 'Body',
-            cta: 'OK',
-            unlockProCta: 'Unlock Pro',
-          ),
-        },
-      );
-      await service.dismissAnnouncement(announcement);
+      await service.dismissAnnouncement(currentAnnouncement);
 
-      expect(prefs.getString('dismissed_announcement_id'), 'test_id');
+      expect(prefs.getString('dismissed_announcement_id'), currentAnnouncement.id);
     });
 
-    test('getDismissedAnnouncementId returns stored id', () async {
+    test('migrates legacy launch markers to the current announcement', () async {
       SharedPreferences.setMockInitialValues({
-        'dismissed_announcement_id': 'test_id',
+        'has_launched_before': true,
+        'last_seen_version': '1.2.3',
       });
       final prefs = await SharedPreferences.getInstance();
       final service = WhatsNewService(prefs);
 
-      expect(service.getDismissedAnnouncementId(), 'test_id');
+      final shouldShow = await service.shouldShowAnnouncement(
+        currentAnnouncement,
+      );
+
+      expect(shouldShow, false);
+      expect(
+        prefs.getString('dismissed_announcement_id'),
+        currentAnnouncement.id,
+      );
     });
-
-    test(
-      'getDismissedAnnouncementId returns null when nothing stored',
-      () async {
-        final prefs = await SharedPreferences.getInstance();
-        final service = WhatsNewService(prefs);
-
-        expect(service.getDismissedAnnouncementId(), isNull);
-      },
-    );
 
     test('loadAnnouncement returns null when JSON file missing', () async {
       final prefs = await SharedPreferences.getInstance();

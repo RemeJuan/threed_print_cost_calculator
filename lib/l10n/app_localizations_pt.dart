@@ -799,4 +799,5 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Sem rastreio';
+  String get startFreeTrialCta => 'Iniciar teste gratuito';
 }

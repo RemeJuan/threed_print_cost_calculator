@@ -790,4 +790,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'No tracking';
+  String get startFreeTrialCta => 'Start free trial';
 }

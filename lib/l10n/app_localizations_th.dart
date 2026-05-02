@@ -781,4 +781,5 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'ไม่ติดตาม';
+  String get startFreeTrialCta => 'เริ่มทดลองใช้ฟรี';
 }

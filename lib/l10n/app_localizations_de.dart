@@ -691,6 +691,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get slicerUnknown => 'Unbekannt';
 
   @override
+  String get startFreeTrialCta => 'Kostenlose Testversion starten';
+
+  @override
   String get materialsAppBarTitle => 'Materialien';
 
   @override

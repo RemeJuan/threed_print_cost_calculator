@@ -23,9 +23,8 @@ final dismissAnnouncementProvider = Provider<Future<void> Function()>((ref) {
   final service = ref.watch(whatsNewServiceProvider);
   return () async {
     final announcement = await service.loadAnnouncement();
-    if (announcement != null) {
-      await service.dismissAnnouncement(announcement);
-      ref.invalidate(currentAnnouncementProvider);
-    }
+    if (announcement == null) return;
+    await service.dismissAnnouncement(announcement);
+    ref.invalidate(currentAnnouncementProvider);
   };
 });

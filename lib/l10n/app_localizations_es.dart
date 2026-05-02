@@ -803,4 +803,5 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Sin seguimiento';
+  String get startFreeTrialCta => 'Iniciar prueba gratuita';
 }
