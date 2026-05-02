@@ -149,9 +149,6 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
         : _AppTab.calculator;
     final selectedIndex = tabToIndex(renderedTab);
 
-    final isHistoryTeaserSelected =
-        showHistoryTeaser && renderedTab == _AppTab.history;
-
     useEffect(() {
       if (renderedTab != _AppTab.materials) {
         return null;
@@ -179,26 +176,27 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       appBar: AppBar(
         centerTitle: true,
         title: Text(titleForTab(renderedTab)),
-        actions: isHistoryTeaserSelected
-            ? const []
-            : renderedTab == _AppTab.materials
-            ? [
-                IconButton(
-                  tooltip: l10n.csvImportTitle,
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const CsvImportPage(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.file_upload_outlined,
-                    color: Colors.white54,
+        actions: switch (renderedTab) {
+          _AppTab.calculator => const [HeaderActions()],
+          _AppTab.materials => [
+            IconButton(
+              tooltip: l10n.csvImportTitle,
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const CsvImportPage(),
                   ),
-                ),
-              ]
-            : const [HeaderActions()],
+                );
+              },
+              icon: const Icon(
+                Icons.file_upload_outlined,
+                color: Colors.white54,
+              ),
+            ),
+          ],
+          _AppTab.history => const [],
+          _AppTab.settings => const [],
+        },
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () => Navigator.of(context).push(
