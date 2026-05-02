@@ -31,6 +31,7 @@ class SuggestionTypeahead extends HookWidget {
       Timer? blurTimer;
 
       void onBlur() {
+        if (focusNode.hasFocus) return;
         blurTimer?.cancel();
         blurTimer = Timer(const Duration(milliseconds: 200), () {
           showSuggestions.value = false;

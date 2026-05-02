@@ -16,7 +16,7 @@ class MaterialTypeTypeahead extends ConsumerWidget {
   });
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final types = ref.watch(materialTypesProvider).toList()..sort();
     return SuggestionTypeahead(
       key: const ValueKey<String>('settings.materials.material_type.input'),

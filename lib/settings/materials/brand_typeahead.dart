@@ -16,7 +16,7 @@ class BrandTypeahead extends ConsumerWidget {
   });
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final brands = ref.watch(materialBrandsProvider).toList()..sort();
     return SuggestionTypeahead(
       suggestions: brands,
