@@ -183,10 +183,10 @@
   },
   "active": "0365f79942b26501",
   "lastOpenFiles": [
+    "product/help_support_faq.md",
     "navigation.md",
     "feature-map.md",
     "architecture.md",
-    "product/help_support_faq.md",
     "decisions/2026-05-calculator-form-state-ownership.md",
     "product/gcode-import.md",
     "gcode/parsers/orcaslicer.md",
@@ -199,6 +199,8 @@
     "product/batch_costing.md",
     "product/backup_and_restore.md",
     "analytics.md",
+    "Untitled.base",
+    "Untitled.canvas",
     "README.md"
   ]
 }
