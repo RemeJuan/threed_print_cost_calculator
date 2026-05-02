@@ -76,6 +76,8 @@ class PricingCalculator {
   }
 
   static int _toCents(num value) {
+    if (!value.isFinite) return 0;
+
     final text = value.toStringAsFixed(2);
     final negative = text.startsWith('-');
     final digits = text.replaceFirst('-', '').replaceAll('.', '');
