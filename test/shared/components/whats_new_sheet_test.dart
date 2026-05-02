@@ -31,7 +31,7 @@ void main() {
         title: 'Title',
         body: 'Body',
         cta: 'Got it',
-        unlockProCta: 'Unlock Pro',
+        unlockProCta: 'Start free trial',
       ),
     },
   );
@@ -97,7 +97,7 @@ void main() {
     });
   });
 
-  testWidgets('unlock pro opens paywall presenter', (tester) async {
+  testWidgets('start free trial opens paywall presenter', (tester) async {
     final paywallPresenter = FakePaywallPresenter();
     var dismissCount = 0;
 
@@ -137,7 +137,9 @@ void main() {
     await tester.tap(find.text('Open'));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Unlock Pro'));
+    expect(find.text('Start free trial'), findsOneWidget);
+
+    await tester.tap(find.text('Start free trial'));
     await tester.pumpAndSettle();
 
     expect(dismissCount, 1);

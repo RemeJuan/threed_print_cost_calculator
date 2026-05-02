@@ -814,4 +814,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Desconocido';
+
+  @override
+  String get startFreeTrialCta => 'Iniciar prueba gratuita';
 }

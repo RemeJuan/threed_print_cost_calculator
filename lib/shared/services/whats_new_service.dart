@@ -4,7 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 
 class WhatsNewService {
-  static const String _dismissedAnnouncementKey = 'dismissed_announcement_id';
+  static const String _dismissedAnnouncementIdKey = 'dismissed_announcement_id';
+  static const String _legacyHasLaunchedBeforeKey = 'has_launched_before';
+  static const String _legacyLastSeenVersionKey = 'last_seen_version';
 
   final SharedPreferences _prefs;
 
@@ -21,15 +23,25 @@ class WhatsNewService {
   }
 
   Future<bool> shouldShowAnnouncement(WhatsNewAnnouncement announcement) async {
-    final dismissedId = _prefs.getString(_dismissedAnnouncementKey);
-    return dismissedId != announcement.id;
+    final dismissedAnnouncementId = _prefs.getString(
+      _dismissedAnnouncementIdKey,
+    );
+    if (dismissedAnnouncementId != null) {
+      return dismissedAnnouncementId != announcement.id;
+    }
+
+    final hasLegacyLaunchMarker =
+        _prefs.getBool(_legacyHasLaunchedBeforeKey) == true ||
+        _prefs.containsKey(_legacyLastSeenVersionKey);
+    if (hasLegacyLaunchMarker) {
+      await _prefs.setString(_dismissedAnnouncementIdKey, announcement.id);
+      return false;
+    }
+
+    return true;
   }
 
   Future<void> dismissAnnouncement(WhatsNewAnnouncement announcement) async {
-    await _prefs.setString(_dismissedAnnouncementKey, announcement.id);
-  }
-
-  String? getDismissedAnnouncementId() {
-    return _prefs.getString(_dismissedAnnouncementKey);
+    await _prefs.setString(_dismissedAnnouncementIdKey, announcement.id);
   }
 }

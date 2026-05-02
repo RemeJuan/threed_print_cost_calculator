@@ -818,4 +818,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Inconnu';
+
+  @override
+  String get startFreeTrialCta => 'Commencer l\'essai gratuit';
 }

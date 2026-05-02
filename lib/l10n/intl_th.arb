@@ -389,5 +389,6 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "อื่นๆ",
-  "slicerUnknown": "ไม่ทราบ"
+  "slicerUnknown": "ไม่ทราบ",
+  "startFreeTrialCta": "เริ่มทดลองใช้ฟรี"
 }

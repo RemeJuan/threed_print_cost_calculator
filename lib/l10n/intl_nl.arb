@@ -382,5 +382,6 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "Onbekend"
+  "slicerUnknown": "Onbekend",
+  "startFreeTrialCta": "Start gratis proefperiode"
 }

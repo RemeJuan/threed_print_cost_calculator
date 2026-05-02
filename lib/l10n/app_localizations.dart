@@ -1577,6 +1577,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unknown'**
   String get slicerUnknown;
+
+  /// No description provided for @startFreeTrialCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Start free trial'**
+  String get startFreeTrialCta;
 }
 
 class _AppLocalizationsDelegate

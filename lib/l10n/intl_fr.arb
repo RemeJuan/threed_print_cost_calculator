@@ -383,5 +383,6 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "Inconnu"
+  "slicerUnknown": "Inconnu",
+  "startFreeTrialCta": "Commencer l'essai gratuit"
 }
