@@ -1,3 +1,17 @@
+## [2.9.0] - 2026-05-02
+### Added
+- New Help page with FAQs, support links, and app information.
+- Pro Materials tab with search, filters, stock tracking, color indicators, and bulk CSV import.
+
+### Changed
+- Improved material tracking with richer data and automatic stock deduction after saves.
+- Updated navigation by moving support into the new Help page.
+- Refined “What’s New” experience for clearer announcements.
+
+### Fixed
+- Improved material form search and typeahead behavior.
+- Clarified stock handling and filtering labels.
+
 ## [2.8.2] - 2026-05-01
 ### Fixed
 - Corrected risk calculation logic to apply risk percentage only to base print costs, producing more accurate pricing.
@@ -128,6 +142,9 @@
 
 [2.6.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.2...2.6.0
 [2.7.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.6.0...2.7.0+6
+[2.8.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.7.0+6...2.8.0
+[2.8.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.8.0+1...2.8.2
+[2.9.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.8.2...2.9.0
 [2.5.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.5.0
