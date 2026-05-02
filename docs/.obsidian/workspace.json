@@ -184,12 +184,13 @@
   "active": "0365f79942b26501",
   "lastOpenFiles": [
     "product/help_support_faq.md",
+    "navigation.md",
+    "feature-map.md",
+    "architecture.md",
+    "decisions/2026-05-calculator-form-state-ownership.md",
     "product/gcode-import.md",
     "gcode/parsers/orcaslicer.md",
-    "architecture.md",
-    "feature-map.md",
-    "navigation.md",
-    "decisions/2026-05-calculator-form-state-ownership.md",
+    "product/Help Support FAQ.md",
     "product/whats-new-announcement.md",
     "product/pricing_model.md",
     "product/preset_import.md",
@@ -198,6 +199,8 @@
     "product/batch_costing.md",
     "product/backup_and_restore.md",
     "analytics.md",
+    "Untitled.base",
+    "Untitled.canvas",
     "README.md"
   ]
 }
