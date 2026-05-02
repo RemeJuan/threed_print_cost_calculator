@@ -147,6 +147,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "ID de soporte: (no disponible)\nVersión de la app: {version}\n\nDescribe el problema aquí.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "Preguntas frecuentes",
   "helpSupportFaqWeightQuestion": "¿Qué peso debo ingresar?",
   "helpSupportFaqWeightAnswer": "Ingresa el peso total del carrete, no el filamento sobrante. La app usa el peso del rollo completo para calcular el coste por gramo.",

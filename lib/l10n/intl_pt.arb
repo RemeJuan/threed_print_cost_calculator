@@ -148,6 +148,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "ID de suporte: (não disponível)\nVersão do app: {version}\n\nDescreva o problema aqui.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "Perguntas frequentes",
   "helpSupportFaqWeightQuestion": "Que peso devo inserir?",
   "helpSupportFaqWeightAnswer": "Insira o peso total do carretel, não o filamento restante. O app usa o peso do rolo completo para calcular o custo por grama.",

@@ -94,6 +94,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "Support ID: (not available)\nApp version: {version}\n\nDescribe the issue here.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "FAQs",
   "helpSupportFaqWeightQuestion": "What weight should I enter?",
   "helpSupportFaqWeightAnswer": "Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.",

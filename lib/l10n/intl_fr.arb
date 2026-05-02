@@ -149,6 +149,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "ID de support : (non disponible)\nVersion de l'app : {version}\n\nDécrivez le problème ici.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "FAQ",
   "helpSupportFaqWeightQuestion": "Quel poids dois-je entrer ?",
   "helpSupportFaqWeightAnswer": "Entrez le poids total de la bobine, pas le filament restant. L'application utilise le poids du rouleau complet pour calculer le coût par gramme.",

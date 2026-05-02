@@ -149,6 +149,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "รหัสสนับสนุน: (ไม่พร้อมใช้งาน)\nเวอร์ชันแอป: {version}\n\nอธิบายปัญหาที่นี่",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "คำถามที่พบบ่อย",
   "helpSupportFaqWeightQuestion": "ฉันควรป้อนน้ำหนักเท่าไร?",
   "helpSupportFaqWeightAnswer": "ป้อนน้ำหนักของม้วนทั้งหมด ไม่ใช่ฟิลาเมนต์ที่เหลือ แอปใช้น้ำหนักม้วนเต็มเพื่อคำนวณต้นทุนต่อกรัม",

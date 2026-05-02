@@ -149,6 +149,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "サポートID: (利用できません)\nアプリバージョン: {version}\n\nここで問題を説明してください。",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "よくある質問",
   "helpSupportFaqWeightQuestion": "どの重量を入力すればよいですか？",
   "helpSupportFaqWeightAnswer": "残りのフィラメントではなく、スプールの総重量を入力してください。アプリは完全なロールの重量を使用してグラムあたりのコストを計算します。",

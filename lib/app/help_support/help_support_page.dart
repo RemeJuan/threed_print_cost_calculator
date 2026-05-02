@@ -325,8 +325,7 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
       onPressed: onPressed,
       style: TextButton.styleFrom(
         padding: EdgeInsets.zero,
-        minimumSize: Size.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        minimumSize: const Size(48, 48),
       ),
       child: Text(label, style: style),
     );
@@ -403,13 +402,24 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
   }
 
   Future<void> _contactSupport(AppLocalizations l10n, String supportId) async {
-    final packageInfo = await _packageInfoFuture;
+    PackageInfo? packageInfo;
+    try {
+      packageInfo = await _packageInfoFuture;
+    } catch (_) {
+      // Fallback to safe defaults if PackageInfo fetch fails
+    }
+
     final String emailBody;
 
     if (supportId.isEmpty || supportId.trim().isEmpty) {
-      emailBody = 'Support ID: (not available)\nApp version: ${packageInfo.version}\n\nDescribe the issue here.';
+      emailBody = l10n.helpSupportContactEmailBodyNoSupportId(
+        packageInfo?.version ?? '—',
+      );
     } else {
-      emailBody = l10n.helpSupportContactEmailBody(supportId, packageInfo.version);
+      emailBody = l10n.helpSupportContactEmailBody(
+        supportId,
+        packageInfo?.version ?? '—',
+      );
     }
 
     await _sendEmail(

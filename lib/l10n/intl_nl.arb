@@ -149,6 +149,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "Ondersteunings-ID: (niet beschikbaar)\nApp-versie: {version}\n\nBeschrijf het probleem hier.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "Veelgestelde vragen",
   "helpSupportFaqWeightQuestion": "Welk gewicht moet ik invoeren?",
   "helpSupportFaqWeightAnswer": "Voer het totale spoelgewicht in, niet het overgebleven filament. De app gebruikt het volledige rolgewicht om de kosten per gram te berekenen.",

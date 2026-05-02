@@ -237,6 +237,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'Support ID: (not available)\nApp version: $version\n\nDescribe the issue here.';
+  }
+
+  @override
   String get helpSupportFaqTitle => 'FAQs';
 
   @override

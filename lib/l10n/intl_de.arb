@@ -147,6 +147,12 @@
       "version": {}
     }
   },
+  "helpSupportContactEmailBodyNoSupportId": "Support-ID: (nicht verfügbar)\nApp-Version: {version}\n\nBeschreiben Sie hier das Problem.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
   "helpSupportFaqTitle": "Häufig gestellte Fragen",
   "helpSupportFaqWeightQuestion": "Welches Gewicht soll ich eingeben?",
   "helpSupportFaqWeightAnswer": "Geben Sie das Gesamtgewicht der Spule ein, nicht das übriggebliebene Filament. Die App verwendet das volle Rollengewicht zur Berechnung der Kosten pro Gramm.",
