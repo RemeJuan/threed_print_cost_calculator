@@ -5,8 +5,6 @@ import 'package:threed_print_cost_calculator/shared/models/whats_new_announcemen
 
 class WhatsNewService {
   static const String _dismissedAnnouncementIdKey = 'dismissed_announcement_id';
-  static const String _legacyHasLaunchedBeforeKey = 'has_launched_before';
-  static const String _legacyLastSeenVersionKey = 'last_seen_version';
 
   final SharedPreferences _prefs;
 
@@ -26,19 +24,7 @@ class WhatsNewService {
     final dismissedAnnouncementId = _prefs.getString(
       _dismissedAnnouncementIdKey,
     );
-    if (dismissedAnnouncementId != null) {
-      return dismissedAnnouncementId != announcement.id;
-    }
-
-    final hasLegacyLaunchMarker =
-        _prefs.getBool(_legacyHasLaunchedBeforeKey) == true ||
-        _prefs.containsKey(_legacyLastSeenVersionKey);
-    if (hasLegacyLaunchMarker) {
-      await _prefs.setString(_dismissedAnnouncementIdKey, announcement.id);
-      return false;
-    }
-
-    return true;
+    return dismissedAnnouncementId != announcement.id;
   }
 
   Future<void> dismissAnnouncement(WhatsNewAnnouncement announcement) async {

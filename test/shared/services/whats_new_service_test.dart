@@ -193,7 +193,7 @@ void main() {
       expect(prefs.getString('dismissed_announcement_id'), currentAnnouncement.id);
     });
 
-    test('migrates legacy launch markers to the current announcement', () async {
+    test('legacy launch markers do not suppress a new announcement', () async {
       SharedPreferences.setMockInitialValues({
         'has_launched_before': true,
         'last_seen_version': '1.2.3',
@@ -205,10 +205,67 @@ void main() {
         currentAnnouncement,
       );
 
-      expect(shouldShow, false);
+      expect(shouldShow, true);
+      expect(prefs.getString('dismissed_announcement_id'), isNull);
+    });
+
+    test('shows once per wn_id across 2.7 to 2.8 to 2.9 upgrade path', () async {
+      SharedPreferences.setMockInitialValues({
+        'has_launched_before': true,
+        'last_seen_version': '2.7.0',
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final service = WhatsNewService(prefs);
+      const announcement28 = WhatsNewAnnouncement(
+        id: 'gcode_import_2026_04',
+        locales: {
+          'en': WhatsNewAnnouncementLocale(
+            title: '2.8 Title',
+            body: '2.8 Body',
+            cta: 'Got it',
+            unlockProCta: 'Start free trial',
+          ),
+        },
+      );
+      const announcement29 = WhatsNewAnnouncement(
+        id: 'materials_help_2026_05',
+        locales: {
+          'en': WhatsNewAnnouncementLocale(
+            title: '2.9 Title',
+            body: '2.9 Body',
+            cta: 'Got it',
+            unlockProCta: 'Start free trial',
+          ),
+        },
+      );
+
+      final shouldShow28First = await service.shouldShowAnnouncement(
+        announcement28,
+      );
+      expect(shouldShow28First, true);
+
+      await service.dismissAnnouncement(announcement28);
+
+      final shouldShow28Second = await service.shouldShowAnnouncement(
+        announcement28,
+      );
+      expect(shouldShow28Second, false);
+
+      final shouldShow29First = await service.shouldShowAnnouncement(
+        announcement29,
+      );
+      expect(shouldShow29First, true);
+
+      await service.dismissAnnouncement(announcement29);
+
+      final shouldShow29Second = await service.shouldShowAnnouncement(
+        announcement29,
+      );
+      expect(shouldShow29Second, false);
+
       expect(
         prefs.getString('dismissed_announcement_id'),
-        currentAnnouncement.id,
+        announcement29.id,
       );
     });
 

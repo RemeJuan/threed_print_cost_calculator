@@ -22,23 +22,23 @@
 | `{locale}` | Object | Locale-specific content (e.g., `en`, `de`, `fr`). |
 | `title` | String | **Required** localized title. |
 | `body` | String | **Required** localized body. |
-| `cta` | String | Primary CTA button text. Optional. |
-| `unlock_pro_cta` | String | Trial CTA button text. Optional. |
+| `cta` | String | Required primary CTA button text. |
+| `unlock_pro_cta` | String | Required trial CTA button text. |
 
 ## Localization Rules
 
 - Locales are top-level keys (e.g., `en`, `de`, `fr`).
 - Resolve locale via `Localizations.localeOf(context).languageCode`.
 - Fallback to `en` if missing.
-- Required localized fields: `title`, `body`.
-- Optional localized fields: `cta`, `unlock_pro_cta`.
+- Required localized fields: `title`, `body`, `cta`, `unlock_pro_cta`.
 - Missing required fields or invalid JSON should fail silently.
 
 ## Persistence
 
 - Store dismissed ID using `dismissed_announcement_id`.
 - Show once per `wn_id`.
-- If legacy version-based state exists, seed the current `wn_id` once so existing users do not see the same announcement again.
+- App version does not participate in display logic.
+- Legacy version-based state is ignored for announcement gating.
 - User dismisses → save `wn_id` to prefs → don't show again.
 
 ## Display Rules
