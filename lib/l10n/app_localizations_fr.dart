@@ -809,5 +809,4 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Non suivi';
-  String get startFreeTrialCta => 'Commencer l\'essai gratuit';
 }

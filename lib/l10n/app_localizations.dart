@@ -1571,12 +1571,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tracking'**
   String get stockBadgeNoTracking;
-
-  /// No description provided for @startFreeTrialCta.
-  ///
-  /// In en, this message translates to:
-  /// **'Start free trial'**
-  String get startFreeTrialCta;
 }
 
 class _AppLocalizationsDelegate

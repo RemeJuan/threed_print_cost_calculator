@@ -786,5 +786,4 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Tidak dilacak';
-  String get startFreeTrialCta => 'Mulai uji coba gratis';
 }

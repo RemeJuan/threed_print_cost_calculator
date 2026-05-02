@@ -797,5 +797,4 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Niet bijgehouden';
-  String get startFreeTrialCta => 'Start gratis proefperiode';
 }

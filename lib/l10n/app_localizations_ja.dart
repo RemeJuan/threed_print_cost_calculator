@@ -773,5 +773,4 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => '追跡なし';
-  String get startFreeTrialCta => '無料トライアルを開始';
 }
