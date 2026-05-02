@@ -222,6 +222,67 @@ void main() {
     );
   });
 
+  testWidgets('premium app bar icons match the source of truth', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'run_count': 0,
+      'hideProPromotions': true,
+    });
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(premiumUser());
+
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await settleAppPage(tester);
+
+    expect(find.byIcon(Icons.help_outline), findsOneWidget);
+    expect(find.byIcon(Icons.upload_file_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.shopping_cart), findsNothing);
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('nav.materials.button')),
+    );
+    await settleAppPage(tester);
+
+    expect(find.byIcon(Icons.file_upload_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.upload_file_outlined), findsNothing);
+
+    await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
+    await settleAppPage(tester);
+
+    expect(find.byIcon(Icons.shopping_cart), findsNothing);
+    expect(find.byIcon(Icons.upload_file_outlined), findsNothing);
+    expect(find.byIcon(Icons.file_upload_outlined), findsNothing);
+
+    await tester.tap(find.byKey(const ValueKey<String>('nav.settings.button')));
+    await settleAppPage(tester);
+
+    expect(find.byIcon(Icons.shopping_cart), findsNothing);
+    expect(find.byIcon(Icons.upload_file_outlined), findsNothing);
+    expect(find.byIcon(Icons.file_upload_outlined), findsNothing);
+  });
+
+  testWidgets('free app bar icons match the source of truth', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      'run_count': 0,
+      'hideProPromotions': false,
+    });
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(freeUser());
+
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await settleAppPage(tester);
+
+    expect(find.byIcon(Icons.help_outline), findsOneWidget);
+    expect(find.byIcon(Icons.shopping_cart), findsOneWidget);
+    expect(find.byIcon(Icons.upload_file_outlined), findsNothing);
+
+    await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
+    await settleAppPage(tester);
+
+    expect(find.byIcon(Icons.shopping_cart), findsNothing);
+  });
+
   testWidgets('selected index clamps when history tab disappears', (
     tester,
   ) async {
