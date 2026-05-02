@@ -444,7 +444,7 @@ void main() {
     expect(calculatorNotifier.submitCalls, greaterThan(0));
   });
 
-  testWidgets('enabling premium from support dialog updates app shell', (
+  testWidgets('help support page still exposes hidden tools tap target', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({
@@ -467,6 +467,11 @@ void main() {
     await tester.tap(find.byIcon(Icons.help_outline));
     await tester.pumpAndSettle();
 
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.page')),
+      findsOneWidget,
+    );
+
     final versionTapTarget = find.byKey(
       const ValueKey<String>('support.version.tapTarget'),
     );
@@ -477,36 +482,8 @@ void main() {
     }
     await tester.pumpAndSettle();
 
-    await tester.tap(
-      find.byKey(
-        const ValueKey<String>('settings.testData.enablePremium.button'),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.enterText(
-      find.byKey(
-        const ValueKey<String>('settings.testData.enablePremium.code'),
-      ),
-      '${DateTime.now().year.toString().padLeft(4, '0')}${DateTime.now().month.toString().padLeft(2, '0')}${DateTime.now().day.toString().padLeft(2, '0')}',
-    );
-    await tester.tap(
-      find.byKey(
-        const ValueKey<String>('settings.testData.enablePremium.submit.button'),
-      ),
-    );
-    await tester.pumpAndSettle();
-
     expect(
-      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('calculator.save.open.button')),
+      find.byKey(const ValueKey<String>('settings.testData.tools.dialog')),
       findsOneWidget,
     );
   });

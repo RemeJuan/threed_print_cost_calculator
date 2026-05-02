@@ -73,6 +73,59 @@
   "retryButton": "Retry",
   "wattsSuffix": "w",
   "needHelpTitle": "Need Help?",
+  "helpSupportSupportTitle": "Support",
+  "helpSupportSupportIntro": "Use these details when contacting support.",
+  "helpSupportWebsiteLabel": "Website",
+  "helpSupportEmailLabel": "Email",
+  "helpSupportSupportIdLabel": "Support ID",
+  "helpSupportCopySupportIdTooltip": "Copy support ID",
+  "helpSupportAppVersionRow": "App version {version}",
+  "@helpSupportAppVersionRow": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportContactSupportButton": "Contact support",
+  "helpSupportContactEmailSubject": "3D Print Cost Calculator Support",
+  "helpSupportContactEmailBody": "Support ID: {supportId}\nApp version: {version}\n\nDescribe the issue here.",
+  "@helpSupportContactEmailBody": {
+    "placeholders": {
+      "supportId": {},
+      "version": {}
+    }
+  },
+  "helpSupportContactEmailBodyNoSupportId": "Support ID: (not available)\nApp version: {version}\n\nDescribe the issue here.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportFaqTitle": "FAQs",
+  "helpSupportFaqWeightQuestion": "What weight should I enter?",
+  "helpSupportFaqWeightAnswer": "Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.",
+  "helpSupportFaqElectricityQuestion": "Why does electricity matter?",
+  "helpSupportFaqElectricityAnswer": "Long prints and high-wattage printers can add real cost. Skipping electricity usually underprices the job.",
+  "helpSupportFaqRiskQuestion": "How is failure risk calculated?",
+  "helpSupportFaqRiskAnswer": "Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.",
+  "helpSupportFaqLabourQuestion": "What is labour / processing time?",
+  "helpSupportFaqLabourAnswer": "It covers preparation, cleanup, post-processing, and monitoring. Keep it on for services where your time matters.",
+  "helpSupportFaqMarkupQuestion": "What is markup?",
+  "helpSupportFaqMarkupAnswer": "Markup is the percentage added on top of total cost to reach your selling price. It covers margin, overhead, and profit.",
+  "helpSupportFaqSetupQuestion": "What is a setup fee?",
+  "helpSupportFaqSetupAnswer": "A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.",
+  "helpSupportLinksTitle": "Links",
+  "helpSupportPrivacyPolicyLabel": "Privacy policy",
+  "helpSupportTermsOfUseLabel": "Terms of use",
+  "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportThreadsLabel": "Threads",
+  "helpSupportAboutTitle": "About",
+  "helpSupportAboutIntro": "3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.",
+  "helpSupportTrustNoAccounts": "No accounts",
+  "helpSupportTrustNoCloudSync": "No cloud sync",
+  "helpSupportTrustNoTracking": "No tracking",
+  "helpSupportTrustLocalData": "Local data",
+  "helpSupportAboutCalculator": "The calculator combines filament cost, electricity, failure risk, labour, and optional pricing tools like markup and setup fees.",
+  "helpSupportAboutOutcome": "That keeps quotes tied to true cost, not just material spend.",
   "supportEmailPrefix": "For any issues, please mail me at ",
   "supportEmail": "3d@printcostcalc.app",
   "supportIdLabel": "Please include your Support ID: ",

@@ -186,7 +186,6 @@
     "product/help_support_faq.md",
     "product/gcode-import.md",
     "gcode/parsers/orcaslicer.md",
-    "product/Help Support FAQ.md",
     "architecture.md",
     "feature-map.md",
     "navigation.md",
@@ -199,8 +198,6 @@
     "product/batch_costing.md",
     "product/backup_and_restore.md",
     "analytics.md",
-    "Untitled.base",
-    "Untitled.canvas",
     "README.md"
   ]
 }
