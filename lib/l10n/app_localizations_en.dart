@@ -750,4 +750,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get slicerUnknown => 'Unknown';
+
+  @override
+  String get startFreeTrialCta => 'Start free trial';
 }

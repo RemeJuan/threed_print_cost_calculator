@@ -372,5 +372,6 @@
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
-  "slicerUnknown": "不明"
+  "slicerUnknown": "不明",
+  "startFreeTrialCta": "無料トライアルを開始"
 }
