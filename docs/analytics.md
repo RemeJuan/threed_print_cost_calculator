@@ -166,17 +166,49 @@
   - feature: Premium / RevenueCat
   - notes: local error logging when RevenueCat paywall presentation throws
 
+### Materials
+
+- `materials_view_opened`
+  - params: []
+  - triggered_from: [`lib/app/app_page.dart`]
+  - feature: Materials
+  - notes: fired once per tab open via post-frame callback when Materials tab becomes the active rendered tab
+
+- `material_created`
+  - params: [`has_tracking`, `material_type`?, `brand`?]
+  - triggered_from: [`lib/settings/providers/materials_notifier.dart`]
+  - feature: Materials
+  - notes: fired after successful save when `dbRef == null` (new material); `has_tracking` encoded `0/1`; `material_type` and `brand` omitted when empty
+
+- `material_edited`
+  - params: [`has_tracking`, `material_type`?, `brand`?]
+  - triggered_from: [`lib/settings/providers/materials_notifier.dart`]
+  - feature: Materials
+  - notes: fired after successful save when `dbRef != null` (existing material); params same as `material_created`
+
+- `csv_import_started`
+  - params: []
+  - triggered_from: [`lib/materials/csv_import/csv_import_page.dart`]
+  - feature: Materials
+  - notes: fired after successful file read, before CSV parse
+
+- `csv_import_completed`
+  - params: [`rows_success`, `rows_failed`]
+  - triggered_from: [`lib/materials/csv_import/csv_import_page.dart`]
+  - feature: Materials
+  - notes: fired after import save loop completes or when all rows invalid; `rows_success` = 0 when every row has errors
+
+- `material_selected_in_calculator`
+  - params: [`has_tracking`, `material_type`?, `brand`?]
+  - triggered_from: [`lib/calculator/provider/calculator_notifier.dart`]
+  - feature: Materials
+  - notes: fired from `selectMaterial()` in calculator; signals a saved material was chosen for use in a calculation
+
 ### Settings
 
 - `printer_profile_created`
   - params: []
   - triggered_from: [`lib/settings/providers/printers_notifier.dart`]
-  - feature: Settings
-  - notes: fired after successful save; same event used for create and edit submits
-
-- `material_created`
-  - params: []
-  - triggered_from: [`lib/settings/providers/materials_notifier.dart`]
   - feature: Settings
   - notes: fired after successful save; same event used for create and edit submits
 
@@ -209,6 +241,15 @@
 - preview viewed: yes — `gcode_preview_viewed`
 - abandon: yes — `gcode_import_abandoned`
 
+### Materials
+
+- tab opened: yes — `materials_view_opened`
+- material created: yes — `material_created` (with `has_tracking`, type, brand)
+- material edited: yes — `material_edited` (with `has_tracking`, type, brand)
+- saved material selected in calculator: yes — `material_selected_in_calculator`
+- CSV import started: yes — `csv_import_started`
+- CSV import completed: yes — `csv_import_completed` (success/fail counts)
+
 ### Upgrade / monetisation
 
 - upgrade CTA taps: yes — `premium_feature_tapped`, `whats_new_unlock_pro_tapped`
@@ -230,7 +271,6 @@
   - no history entry loaded event
   - no history delete success/failure event
   - no history page load success/failure event
-- Settings save events exist, but missing create-vs-edit context.
 - `purchase_completed` missing product/offering/package context.
 - Calculator flow has success-style usage events only; no invalid/failed submit event.
 

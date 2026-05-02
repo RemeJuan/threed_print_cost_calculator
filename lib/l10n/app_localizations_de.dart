@@ -170,6 +170,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get savePrintSuccessMessage => 'Druck gespeichert';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material gelöscht';
+
+  @override
   String get historyLoadAction => 'Im Rechner bearbeiten';
 
   @override
@@ -342,6 +345,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get supportIdLabel => 'Bitte geben Sie Ihre Support-ID an: ';
 
   @override
+  String get supportEmailSubject => 'Support für 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(zum Kopieren klicken)';
 
   @override
@@ -362,6 +368,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Datenschutzrichtlinie';
+
+  @override
+  String get websiteLink => 'Webseite';
 
   @override
   String get termsOfUseLink => 'Nutzungsbedingungen';
@@ -570,7 +579,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Mindestens ein Material hinzufügen.';
 
   @override
-  String get searchMaterialsHint => 'Materialien suchen';
+  String get searchMaterialsHint => 'Name oder Marke suchen';
 
   @override
   String get materialBreakdownLabel => 'Materialaufschlüsselung';
@@ -813,5 +822,113 @@ class AppLocalizationsDe extends AppLocalizations {
   String get slicerUnknown => 'Unbekannt';
 
   @override
-  String get startFreeTrialCta => 'Kostenlose Testversion starten';
+  String get materialsAppBarTitle => 'Materialien';
+
+  @override
+  String get materialsNavLabel => 'Materialien';
+
+  @override
+  String get brandLabel => 'Marke';
+
+  @override
+  String get materialTypeLabel => 'Materialtyp';
+
+  @override
+  String get colorHexLabel => 'Farbe Hex (optional)';
+
+  @override
+  String get notesLabel => 'Notizen';
+
+  @override
+  String get materialsEmpty =>
+      'Noch keine Materialien. Tippe auf +, um eins hinzuzufügen.';
+
+  @override
+  String get materialsFilterAll => 'Alle';
+
+  @override
+  String get materialsFilterInStock => 'Auf Lager';
+
+  @override
+  String get materialsFilterLowStock => 'Niedrig';
+
+  @override
+  String get materialsFilterOutOfStock => 'Ausverkauft';
+
+  @override
+  String get csvImportTitle => 'Materialien importieren';
+
+  @override
+  String get csvTemplateButton => 'Vorlage';
+
+  @override
+  String get csvTemplateShareText => 'Material-CSV-Vorlage';
+
+  @override
+  String get csvTemplateError => 'Vorlage konnte nicht geteilt werden.';
+
+  @override
+  String get csvImportIntro => 'Materialien aus einer CSV-Datei importieren.';
+
+  @override
+  String get csvSelectFileButton => 'CSV-Datei auswählen';
+
+  @override
+  String get csvImportButton => 'Gültige Zeilen importieren';
+
+  @override
+  String get csvReadError =>
+      'Die ausgewählte Datei konnte nicht gelesen werden.';
+
+  @override
+  String get csvFileTypeError => 'Bitte wählen Sie eine .csv-Datei';
+
+  @override
+  String get csvNameRequiredError => 'Name ist erforderlich';
+
+  @override
+  String get csvColorRequiredError => 'Farbe ist erforderlich';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Spoolgewicht ist erforderlich';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Spoolgewicht muss > 0 sein';
+
+  @override
+  String get csvCostRequiredError => 'Kosten sind erforderlich';
+
+  @override
+  String get csvCostPositiveError => 'Kosten müssen > 0 sein';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Materialien importiert',
+      one: '1 Material importiert',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total Zeilen: $valid gültig, $invalid mit Fehlern';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(leer)';
+
+  @override
+  String get stockBadgeOut => 'Ausverkauft';
+
+  @override
+  String get stockBadgeLow => 'Niedriger Bestand';
+
+  @override
+  String get stockBadgeInStock => 'Auf Lager';
+
+  @override
+  String get stockBadgeNoTracking => 'Keine Verfolgung';
 }

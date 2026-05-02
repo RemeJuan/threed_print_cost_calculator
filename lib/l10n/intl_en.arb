@@ -54,6 +54,10 @@
   "savePrintErrorMessage": "Error saving print",
   "deleteRecordErrorMessage": "Error removing record",
   "savePrintSuccessMessage": "Print saved",
+  "deleteMaterialSuccessMessage": "Material deleted",
+  "@deleteMaterialSuccessMessage": {
+    "description": "Shown when a material is deleted successfully"
+  },
   "historyLoadAction": "Use in calculator",
   "historyLoadSuccessMessage": "Loaded from history",
   "historyLoadReplacementWarning": "Some items were unavailable and replaced",
@@ -129,6 +133,7 @@
   "supportEmailPrefix": "For any issues, please mail me at ",
   "supportEmail": "3d@printcostcalc.app",
   "supportIdLabel": "Please include your Support ID: ",
+  "supportEmailSubject": "3D Print Cost Calculator Support",
   "clickToCopy": "(click to copy)",
   "materialWeightExplanation": "Material weight is the total weight for the source material, so the entire roll of filament. The cost is the cost of the entire unit.",
   "@materialWeightExplanation": {
@@ -148,6 +153,7 @@
     "description": "Label for export action in history list"
   },
   "privacyPolicyLink": "Privacy Policy",
+  "websiteLink": "Website",
   "termsOfUseLink": "Terms of Use",
   "separator": " | ",
   "closeButton": "Close",
@@ -217,7 +223,7 @@
   "addMaterialButton": "Add",
   "useSingleTotalWeightAction": "Use single total weight",
   "addAtLeastOneMaterial": "Add at least one material.",
-  "searchMaterialsHint": "Search materials",
+  "searchMaterialsHint": "Search by name or brand",
   "materialBreakdownLabel": "Material breakdown",
   "materialsCountLabel": "{count, plural, one{# material} other{# materials}}",
   "totalMaterialWeightLabel": "Total material weight: {grams}g",
@@ -310,5 +316,57 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Other",
   "slicerUnknown": "Unknown",
-  "startFreeTrialCta": "Start free trial"
+  "materialsAppBarTitle": "Materials",
+  "materialsNavLabel": "Materials",
+  "brandLabel": "Brand",
+  "materialTypeLabel": "Material type",
+  "colorHexLabel": "Color hex (optional)",
+  "notesLabel": "Notes",
+  "materialsEmpty": "No materials yet. Tap + to add one.",
+  "materialsFilterAll": "All",
+  "materialsFilterInStock": "In stock",
+  "materialsFilterLowStock": "Low stock",
+  "materialsFilterOutOfStock": "Out of stock",
+  "csvImportTitle": "Import materials",
+  "csvTemplateButton": "Template",
+  "csvTemplateShareText": "Material CSV Template",
+  "csvTemplateError": "Could not share the template.",
+  "csvImportIntro": "Import materials from a CSV file.",
+  "csvSelectFileButton": "Choose CSV file",
+  "csvImportButton": "Import valid rows",
+  "csvReadError": "Could not read the selected file.",
+  "csvFileTypeError": "Please select a .csv file",
+  "csvNameRequiredError": "Name is required",
+  "csvColorRequiredError": "Color is required",
+  "csvSpoolWeightRequiredError": "Spool weight is required",
+  "csvSpoolWeightPositiveError": "Spool weight must be > 0",
+  "csvCostRequiredError": "Cost is required",
+  "csvCostPositiveError": "Cost must be > 0",
+  "csvImportSuccessMessage": "{count, plural, one{Imported 1 material} other{Imported {count} materials}}",
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} rows: {valid} valid, {invalid} with errors",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(empty)",
+  "stockBadgeOut": "Out of stock",
+  "stockBadgeLow": "Low stock",
+  "stockBadgeInStock": "In stock",
+  "stockBadgeNoTracking": "No tracking"
 }

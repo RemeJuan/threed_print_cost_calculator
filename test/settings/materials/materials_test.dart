@@ -253,6 +253,10 @@ void main() {
     await tester.enterText(_field('settings.materials.color.input'), 'Blue');
     await tester.enterText(_field('settings.materials.weight.input'), '1000');
     await tester.enterText(_field('settings.materials.cost.input'), '24.5');
+    await tester.ensureVisible(
+      find.byKey(const ValueKey<String>('settings.materials.save.button')),
+    );
+    await tester.pumpAndSettle();
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.materials.save.button')),
     );
@@ -291,6 +295,10 @@ void main() {
     await tester.enterText(_field('settings.materials.color.input'), 'Blue');
     await tester.enterText(_field('settings.materials.weight.input'), '1000');
     await tester.enterText(_field('settings.materials.cost.input'), '24.5');
+    await tester.ensureVisible(
+      find.byKey(const ValueKey<String>('settings.materials.save.button')),
+    );
+    await tester.pumpAndSettle();
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.materials.save.button')),
     );

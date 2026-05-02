@@ -21,6 +21,7 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 - Same inputs always produce same price
 - Pricing must be explainable in one sentence: `base cost + markup + setup fee, then rounding`
 - Saved jobs and future quotes must snapshot pricing inputs and computed output so later settings changes do not rewrite past prices
+- **Currency-agnostic**: The entire project treats values as raw numbers. No currency symbol (`$`, `€`, `£`, `¥`, etc.) appears anywhere in the UI. All values display as plain numeric strings.
 
 ## Monetisation
 

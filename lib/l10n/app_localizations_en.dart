@@ -169,6 +169,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get savePrintSuccessMessage => 'Print saved';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material deleted';
+
+  @override
   String get historyLoadAction => 'Use in calculator';
 
   @override
@@ -340,6 +343,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get supportIdLabel => 'Please include your Support ID: ';
 
   @override
+  String get supportEmailSubject => '3D Print Cost Calculator Support';
+
+  @override
   String get clickToCopy => '(click to copy)';
 
   @override
@@ -360,6 +366,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Privacy Policy';
+
+  @override
+  String get websiteLink => 'Website';
 
   @override
   String get termsOfUseLink => 'Terms of Use';
@@ -564,7 +573,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Add at least one material.';
 
   @override
-  String get searchMaterialsHint => 'Search materials';
+  String get searchMaterialsHint => 'Search by name or brand';
 
   @override
   String get materialBreakdownLabel => 'Material breakdown';
@@ -804,5 +813,111 @@ class AppLocalizationsEn extends AppLocalizations {
   String get slicerUnknown => 'Unknown';
 
   @override
-  String get startFreeTrialCta => 'Start free trial';
+  String get materialsAppBarTitle => 'Materials';
+
+  @override
+  String get materialsNavLabel => 'Materials';
+
+  @override
+  String get brandLabel => 'Brand';
+
+  @override
+  String get materialTypeLabel => 'Material type';
+
+  @override
+  String get colorHexLabel => 'Color hex (optional)';
+
+  @override
+  String get notesLabel => 'Notes';
+
+  @override
+  String get materialsEmpty => 'No materials yet. Tap + to add one.';
+
+  @override
+  String get materialsFilterAll => 'All';
+
+  @override
+  String get materialsFilterInStock => 'In stock';
+
+  @override
+  String get materialsFilterLowStock => 'Low stock';
+
+  @override
+  String get materialsFilterOutOfStock => 'Out of stock';
+
+  @override
+  String get csvImportTitle => 'Import materials';
+
+  @override
+  String get csvTemplateButton => 'Template';
+
+  @override
+  String get csvTemplateShareText => 'Material CSV Template';
+
+  @override
+  String get csvTemplateError => 'Could not share the template.';
+
+  @override
+  String get csvImportIntro => 'Import materials from a CSV file.';
+
+  @override
+  String get csvSelectFileButton => 'Choose CSV file';
+
+  @override
+  String get csvImportButton => 'Import valid rows';
+
+  @override
+  String get csvReadError => 'Could not read the selected file.';
+
+  @override
+  String get csvFileTypeError => 'Please select a .csv file';
+
+  @override
+  String get csvNameRequiredError => 'Name is required';
+
+  @override
+  String get csvColorRequiredError => 'Color is required';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Spool weight is required';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Spool weight must be > 0';
+
+  @override
+  String get csvCostRequiredError => 'Cost is required';
+
+  @override
+  String get csvCostPositiveError => 'Cost must be > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Imported $count materials',
+      one: 'Imported 1 material',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total rows: $valid valid, $invalid with errors';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(empty)';
+
+  @override
+  String get stockBadgeOut => 'Out of stock';
+
+  @override
+  String get stockBadgeLow => 'Low stock';
+
+  @override
+  String get stockBadgeInStock => 'In stock';
+
+  @override
+  String get stockBadgeNoTracking => 'No tracking';
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
@@ -10,11 +12,26 @@ import '../../helpers/lower_level_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
 import 'app_page_test_support.dart';
 
+class _FakeAnalytics implements AnalyticsService {
+  final events = <String>[];
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(name);
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   setUpAll(bootstrapAppPageTests);
 
-  setUp(() => seedAppPagePrefs(runCount: 0));
+  late _FakeAnalytics analytics;
+
+  setUp(() {
+    analytics = _FakeAnalytics();
+    AppAnalytics.service = analytics;
+    seedAppPagePrefs(runCount: 0);
+  });
 
   testWidgets('shows free nav without history', (tester) async {
     SharedPreferences.setMockInitialValues({
@@ -158,6 +175,53 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
   });
 
+  testWidgets('opening materials tab logs analytics once per open', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'run_count': 0,
+      'hideProPromotions': true,
+    });
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(premiumUser());
+
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await settleAppPage(tester);
+
+    expect(
+      analytics.events.where((e) => e == 'materials_view_opened'),
+      isEmpty,
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('nav.materials.button')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(
+      analytics.events.where((e) => e == 'materials_view_opened').length,
+      1,
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('nav.calculator.button')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('nav.materials.button')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(
+      analytics.events.where((e) => e == 'materials_view_opened').length,
+      2,
+    );
+  });
+
   testWidgets('selected index clamps when history tab disappears', (
     tester,
   ) async {
@@ -182,7 +246,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      2,
+      3,
     );
 
     gateway.emit(

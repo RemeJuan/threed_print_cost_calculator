@@ -432,6 +432,12 @@ abstract class AppLocalizations {
   /// **'Print saved'**
   String get savePrintSuccessMessage;
 
+  /// Shown when a material is deleted successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Material deleted'**
+  String get deleteMaterialSuccessMessage;
+
   /// No description provided for @historyLoadAction.
   ///
   /// In en, this message translates to:
@@ -726,6 +732,12 @@ abstract class AppLocalizations {
   /// **'Please include your Support ID: '**
   String get supportIdLabel;
 
+  /// No description provided for @supportEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost Calculator Support'**
+  String get supportEmailSubject;
+
   /// No description provided for @clickToCopy.
   ///
   /// In en, this message translates to:
@@ -767,6 +779,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicyLink;
+
+  /// No description provided for @websiteLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get websiteLink;
 
   /// No description provided for @termsOfUseLink.
   ///
@@ -1155,7 +1173,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchMaterialsHint.
   ///
   /// In en, this message translates to:
-  /// **'Search materials'**
+  /// **'Search by name or brand'**
   String get searchMaterialsHint;
 
   /// No description provided for @materialBreakdownLabel.
@@ -1578,11 +1596,203 @@ abstract class AppLocalizations {
   /// **'Unknown'**
   String get slicerUnknown;
 
-  /// No description provided for @startFreeTrialCta.
+  /// No description provided for @materialsAppBarTitle.
   ///
   /// In en, this message translates to:
-  /// **'Start free trial'**
-  String get startFreeTrialCta;
+  /// **'Materials'**
+  String get materialsAppBarTitle;
+
+  /// No description provided for @materialsNavLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get materialsNavLabel;
+
+  /// No description provided for @brandLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get brandLabel;
+
+  /// No description provided for @materialTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Material type'**
+  String get materialTypeLabel;
+
+  /// No description provided for @colorHexLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Color hex (optional)'**
+  String get colorHexLabel;
+
+  /// No description provided for @notesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notesLabel;
+
+  /// No description provided for @materialsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No materials yet. Tap + to add one.'**
+  String get materialsEmpty;
+
+  /// No description provided for @materialsFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get materialsFilterAll;
+
+  /// No description provided for @materialsFilterInStock.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get materialsFilterInStock;
+
+  /// No description provided for @materialsFilterLowStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Low stock'**
+  String get materialsFilterLowStock;
+
+  /// No description provided for @materialsFilterOutOfStock.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of stock'**
+  String get materialsFilterOutOfStock;
+
+  /// No description provided for @csvImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import materials'**
+  String get csvImportTitle;
+
+  /// No description provided for @csvTemplateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Template'**
+  String get csvTemplateButton;
+
+  /// No description provided for @csvTemplateShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Material CSV Template'**
+  String get csvTemplateShareText;
+
+  /// No description provided for @csvTemplateError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not share the template.'**
+  String get csvTemplateError;
+
+  /// No description provided for @csvImportIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Import materials from a CSV file.'**
+  String get csvImportIntro;
+
+  /// No description provided for @csvSelectFileButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose CSV file'**
+  String get csvSelectFileButton;
+
+  /// No description provided for @csvImportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import valid rows'**
+  String get csvImportButton;
+
+  /// No description provided for @csvReadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the selected file.'**
+  String get csvReadError;
+
+  /// No description provided for @csvFileTypeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a .csv file'**
+  String get csvFileTypeError;
+
+  /// No description provided for @csvNameRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get csvNameRequiredError;
+
+  /// No description provided for @csvColorRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Color is required'**
+  String get csvColorRequiredError;
+
+  /// No description provided for @csvSpoolWeightRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Spool weight is required'**
+  String get csvSpoolWeightRequiredError;
+
+  /// No description provided for @csvSpoolWeightPositiveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Spool weight must be > 0'**
+  String get csvSpoolWeightPositiveError;
+
+  /// No description provided for @csvCostRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost is required'**
+  String get csvCostRequiredError;
+
+  /// No description provided for @csvCostPositiveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost must be > 0'**
+  String get csvCostPositiveError;
+
+  /// No description provided for @csvImportSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Imported 1 material} other{Imported {count} materials}}'**
+  String csvImportSuccessMessage(int count);
+
+  /// No description provided for @csvPreviewSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{total} rows: {valid} valid, {invalid} with errors'**
+  String csvPreviewSummary(int total, int valid, int invalid);
+
+  /// No description provided for @csvEmptyNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'(empty)'**
+  String get csvEmptyNamePlaceholder;
+
+  /// No description provided for @stockBadgeOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of stock'**
+  String get stockBadgeOut;
+
+  /// No description provided for @stockBadgeLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Low stock'**
+  String get stockBadgeLow;
+
+  /// No description provided for @stockBadgeInStock.
+  ///
+  /// In en, this message translates to:
+  /// **'In stock'**
+  String get stockBadgeInStock;
+
+  /// No description provided for @stockBadgeNoTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'No tracking'**
+  String get stockBadgeNoTracking;
 }
 
 class _AppLocalizationsDelegate

@@ -171,6 +171,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get savePrintSuccessMessage => 'Impression enregistrée';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Matériau supprimé';
+
+  @override
   String get historyLoadAction => 'Modifier dans la calculatrice';
 
   @override
@@ -345,6 +348,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get supportIdLabel => 'Veuillez inclure votre ID de support : ';
 
   @override
+  String get supportEmailSubject => 'Assistance pour 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(cliquer pour copier)';
 
   @override
@@ -365,6 +371,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Politique de confidentialité';
+
+  @override
+  String get websiteLink => 'Site web';
 
   @override
   String get termsOfUseLink => 'Conditions d\'utilisation';
@@ -578,7 +587,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Ajoutez au moins un matériau.';
 
   @override
-  String get searchMaterialsHint => 'Rechercher des matériaux';
+  String get searchMaterialsHint => 'Chercher nom ou marque';
 
   @override
   String get materialBreakdownLabel => 'Répartition des matériaux';
@@ -822,5 +831,114 @@ class AppLocalizationsFr extends AppLocalizations {
   String get slicerUnknown => 'Inconnu';
 
   @override
-  String get startFreeTrialCta => 'Commencer l\'essai gratuit';
+  String get materialsAppBarTitle => 'Matériaux';
+
+  @override
+  String get materialsNavLabel => 'Matériaux';
+
+  @override
+  String get brandLabel => 'Marque';
+
+  @override
+  String get materialTypeLabel => 'Type de matériau';
+
+  @override
+  String get colorHexLabel => 'Code hex (optionnel)';
+
+  @override
+  String get notesLabel => 'Notes';
+
+  @override
+  String get materialsEmpty =>
+      'Aucun matériau pour l\'instant. Appuyez sur + pour en ajouter.';
+
+  @override
+  String get materialsFilterAll => 'Tout';
+
+  @override
+  String get materialsFilterInStock => 'En stock';
+
+  @override
+  String get materialsFilterLowStock => 'Stock bas';
+
+  @override
+  String get materialsFilterOutOfStock => 'Rupture de stock';
+
+  @override
+  String get csvImportTitle => 'Importer des matériaux';
+
+  @override
+  String get csvTemplateButton => 'Modèle';
+
+  @override
+  String get csvTemplateShareText => 'Matériaux - Modèle CSV';
+
+  @override
+  String get csvTemplateError => 'Impossible de partager le modèle.';
+
+  @override
+  String get csvImportIntro => 'Importez des matériaux depuis un fichier CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Choisir un fichier CSV';
+
+  @override
+  String get csvImportButton => 'Importer les lignes valides';
+
+  @override
+  String get csvReadError => 'Le fichier sélectionné n\'a pas pu être lu.';
+
+  @override
+  String get csvFileTypeError => 'Sélectionnez un fichier .csv';
+
+  @override
+  String get csvNameRequiredError => 'Le nom est obligatoire';
+
+  @override
+  String get csvColorRequiredError => 'La couleur est obligatoire';
+
+  @override
+  String get csvSpoolWeightRequiredError =>
+      'Le poids de la bobine est obligatoire';
+
+  @override
+  String get csvSpoolWeightPositiveError =>
+      'Le poids de la bobine doit être > 0';
+
+  @override
+  String get csvCostRequiredError => 'Le coût est obligatoire';
+
+  @override
+  String get csvCostPositiveError => 'Le coût doit être > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count matériaux importés',
+      one: '1 matériau importé',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total lignes: $valid valides, $invalid avec erreurs';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vide)';
+
+  @override
+  String get stockBadgeOut => 'Rupture';
+
+  @override
+  String get stockBadgeLow => 'Stock faible';
+
+  @override
+  String get stockBadgeInStock => 'En stock';
+
+  @override
+  String get stockBadgeNoTracking => 'Non suivi';
 }

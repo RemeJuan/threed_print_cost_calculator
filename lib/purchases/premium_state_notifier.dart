@@ -28,26 +28,36 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   bool _disposed = false;
   bool _wasUsingLocalOverride = false;
   bool _scheduledExpiredOverrideCleanup = false;
+  int _fetchToken = 0;
 
   @override
   PremiumState build() {
     ref.watch(appRefreshProvider);
+    _disposed = false;
 
     final hasLocalOverride = _hasLocalOverride();
-
     if (hasLocalOverride) {
       _wasUsingLocalOverride = true;
-      return const PremiumState(isPremium: true, isLoading: false);
+      if (_initialized) {
+        state = PremiumState(
+          isPremium: true,
+          isLoading: state.isLoading,
+          userId: state.userId,
+        );
+        return state;
+      }
     }
 
     final gateway = ref.read(purchasesGatewayProvider);
 
     if (!_initialized) {
       _initialized = true;
+      if (hasLocalOverride) {
+        _wasUsingLocalOverride = true;
+      }
       _subscription = gateway.watchPremiumState().listen((premiumState) {
         if (_disposed) return;
-        if (_hasLocalOverride()) return;
-        state = premiumState;
+        state = _applyOverride(premiumState);
       });
 
       ref.onDispose(() {
@@ -57,28 +67,42 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
 
       unawaited(_loadInitialState(gateway));
 
-      return const PremiumState.loading();
+      return _applyOverride(const PremiumState.loading());
     }
 
-    if (_wasUsingLocalOverride) {
+    if (_wasUsingLocalOverride && !hasLocalOverride) {
       _wasUsingLocalOverride = false;
+      state = const PremiumState.loading();
       unawaited(_loadInitialState(gateway));
-      return const PremiumState.loading();
+      return state;
     }
 
     return state;
   }
 
+  PremiumState _applyOverride(PremiumState premiumState) {
+    if (!_hasLocalOverride()) return premiumState;
+    return PremiumState(
+      isPremium: true,
+      isLoading: premiumState.isLoading,
+      userId: premiumState.userId,
+    );
+  }
+
   Future<void> _loadInitialState(PurchasesGateway gateway) async {
+    final fetchToken = ++_fetchToken;
+
     try {
       final premiumState = await gateway.fetchPremiumState();
-      if (_disposed) return;
-      if (_hasLocalOverride()) return;
-      state = premiumState;
+      if (_disposed || fetchToken != _fetchToken) return;
+      state = _applyOverride(premiumState);
     } catch (_) {
-      if (_disposed) return;
-      if (_hasLocalOverride()) return;
-      state = const PremiumState(isPremium: false, isLoading: false);
+      if (_disposed || fetchToken != _fetchToken) return;
+      state = PremiumState(
+        isPremium: _hasLocalOverride(),
+        isLoading: false,
+        userId: state.userId,
+      );
     }
   }
 

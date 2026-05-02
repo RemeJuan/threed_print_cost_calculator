@@ -168,6 +168,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get savePrintSuccessMessage => 'プリントを保存しました';
 
   @override
+  String get deleteMaterialSuccessMessage => '材料を削除しました';
+
+  @override
   String get historyLoadAction => '計算機で編集';
 
   @override
@@ -333,6 +336,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get supportIdLabel => 'サポートIDを含めてください: ';
 
   @override
+  String get supportEmailSubject => '3D Print Cost Calculator サポート';
+
+  @override
   String get clickToCopy => '（タップしてコピー）';
 
   @override
@@ -353,6 +359,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'プライバシーポリシー';
+
+  @override
+  String get websiteLink => 'ウェブサイト';
 
   @override
   String get termsOfUseLink => '利用規約';
@@ -553,7 +562,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addAtLeastOneMaterial => '少なくとも1つの素材を追加してください。';
 
   @override
-  String get searchMaterialsHint => '素材を検索';
+  String get searchMaterialsHint => '名前またはブランドを検索';
 
   @override
   String get materialBreakdownLabel => '素材内訳';
@@ -782,5 +791,111 @@ class AppLocalizationsJa extends AppLocalizations {
   String get slicerUnknown => '不明';
 
   @override
-  String get startFreeTrialCta => '無料トライアルを開始';
+  String get materialsAppBarTitle => '材料';
+
+  @override
+  String get materialsNavLabel => '材料';
+
+  @override
+  String get brandLabel => 'ブランド';
+
+  @override
+  String get materialTypeLabel => '素材タイプ';
+
+  @override
+  String get colorHexLabel => '色のhex（任意）';
+
+  @override
+  String get notesLabel => 'メモ';
+
+  @override
+  String get materialsEmpty => '材料がまだありません。+をタップして追加';
+
+  @override
+  String get materialsFilterAll => 'すべて';
+
+  @override
+  String get materialsFilterInStock => '在庫あり';
+
+  @override
+  String get materialsFilterLowStock => '残りわずか';
+
+  @override
+  String get materialsFilterOutOfStock => '在庫切れ';
+
+  @override
+  String get csvImportTitle => '材料をインポート';
+
+  @override
+  String get csvTemplateButton => 'テンプレート';
+
+  @override
+  String get csvTemplateShareText => '材料CSVテンプレート';
+
+  @override
+  String get csvTemplateError => 'テンプレートを共有できませんでした。';
+
+  @override
+  String get csvImportIntro => 'CSVファイルから材料をインポートします。';
+
+  @override
+  String get csvSelectFileButton => 'CSVファイルを選択';
+
+  @override
+  String get csvImportButton => '有効な行をインポート';
+
+  @override
+  String get csvReadError => '選択されたファイルを読み取れませんでした。';
+
+  @override
+  String get csvFileTypeError => '.csvファイルを選択してください';
+
+  @override
+  String get csvNameRequiredError => '名前は必須です';
+
+  @override
+  String get csvColorRequiredError => '色は必須です';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'スプール重量は必須です';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'スプール重量は0より大きい必要があります';
+
+  @override
+  String get csvCostRequiredError => 'コストは必須です';
+
+  @override
+  String get csvCostPositiveError => 'コストは0より大きい必要があります';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count件の材料をインポートしました',
+      one: '1件の材料をインポートしました',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total行: $valid件有効, $invalid件エラー';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(空白)';
+
+  @override
+  String get stockBadgeOut => '在庫切れ';
+
+  @override
+  String get stockBadgeLow => '残りわずか';
+
+  @override
+  String get stockBadgeInStock => '在庫あり';
+
+  @override
+  String get stockBadgeNoTracking => '追跡なし';
 }

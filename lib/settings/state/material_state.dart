@@ -12,6 +12,10 @@ class MaterialState with FormzMixin {
   final bool autoDeductEnabled;
   final NumberInput remainingWeight;
   final String remainingWeightText;
+  final StringInput brand;
+  final StringInput materialType;
+  final StringInput colorHex;
+  final StringInput notes;
 
   MaterialState({
     this.name = const StringInput.pure(),
@@ -23,6 +27,10 @@ class MaterialState with FormzMixin {
     this.autoDeductEnabled = false,
     this.remainingWeight = const NumberInput.pure(),
     this.remainingWeightText = '',
+    this.brand = const StringInput.pure(),
+    this.materialType = const StringInput.pure(),
+    this.colorHex = const StringInput.pure(),
+    this.notes = const StringInput.pure(),
   });
 
   MaterialState copyWith({
@@ -35,6 +43,10 @@ class MaterialState with FormzMixin {
     bool? autoDeductEnabled,
     NumberInput? remainingWeight,
     String? remainingWeightText,
+    StringInput? brand,
+    StringInput? materialType,
+    StringInput? colorHex,
+    StringInput? notes,
   }) {
     return MaterialState(
       name: name ?? this.name,
@@ -46,6 +58,10 @@ class MaterialState with FormzMixin {
       autoDeductEnabled: autoDeductEnabled ?? this.autoDeductEnabled,
       remainingWeight: remainingWeight ?? this.remainingWeight,
       remainingWeightText: remainingWeightText ?? this.remainingWeightText,
+      brand: brand ?? this.brand,
+      materialType: materialType ?? this.materialType,
+      colorHex: colorHex ?? this.colorHex,
+      notes: notes ?? this.notes,
     );
   }
 

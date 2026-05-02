@@ -169,6 +169,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get savePrintSuccessMessage => 'Impressão salva';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Material removido';
+
+  @override
   String get historyLoadAction => 'Editar na calculadora';
 
   @override
@@ -341,6 +344,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get supportIdLabel => 'Inclua seu ID de suporte: ';
 
   @override
+  String get supportEmailSubject => 'Suporte do 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(toque para copiar)';
 
   @override
@@ -361,6 +367,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Política de Privacidade';
+
+  @override
+  String get websiteLink => 'Site';
 
   @override
   String get termsOfUseLink => 'Termos de Uso';
@@ -571,7 +580,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Adicione pelo menos um material.';
 
   @override
-  String get searchMaterialsHint => 'Pesquisar materiais';
+  String get searchMaterialsHint => 'Pesquisar nome ou marca';
 
   @override
   String get materialBreakdownLabel => 'Detalhamento de materiais';
@@ -812,5 +821,112 @@ class AppLocalizationsPt extends AppLocalizations {
   String get slicerUnknown => 'Desconhecido';
 
   @override
-  String get startFreeTrialCta => 'Iniciar teste gratuito';
+  String get materialsAppBarTitle => 'Materiais';
+
+  @override
+  String get materialsNavLabel => 'Materiais';
+
+  @override
+  String get brandLabel => 'Marca';
+
+  @override
+  String get materialTypeLabel => 'Tipo de material';
+
+  @override
+  String get colorHexLabel => 'Cor hex (opcional)';
+
+  @override
+  String get notesLabel => 'Notas';
+
+  @override
+  String get materialsEmpty =>
+      'Nenhum material ainda. Toque em + para adicionar.';
+
+  @override
+  String get materialsFilterAll => 'Todos';
+
+  @override
+  String get materialsFilterInStock => 'Em estoque';
+
+  @override
+  String get materialsFilterLowStock => 'Estoque baixo';
+
+  @override
+  String get materialsFilterOutOfStock => 'Fora de estoque';
+
+  @override
+  String get csvImportTitle => 'Importar materiais';
+
+  @override
+  String get csvTemplateButton => 'Modelo';
+
+  @override
+  String get csvTemplateShareText => 'Modelo CSV de materiais';
+
+  @override
+  String get csvTemplateError => 'Não foi possível compartilhar o modelo.';
+
+  @override
+  String get csvImportIntro => 'Importe materiais de um arquivo CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Escolher arquivo CSV';
+
+  @override
+  String get csvImportButton => 'Importar linhas válidas';
+
+  @override
+  String get csvReadError => 'Não foi possível ler o arquivo selecionado.';
+
+  @override
+  String get csvFileTypeError => 'Selecione um arquivo .csv';
+
+  @override
+  String get csvNameRequiredError => 'Nome é obrigatório';
+
+  @override
+  String get csvColorRequiredError => 'Cor é obrigatória';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Peso do carretel é obrigatório';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Peso do carretel deve ser > 0';
+
+  @override
+  String get csvCostRequiredError => 'Custo é obrigatório';
+
+  @override
+  String get csvCostPositiveError => 'Custo deve ser > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count materiais importados',
+      one: '1 material importado',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total linhas: $valid válidas, $invalid com erros';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vazio)';
+
+  @override
+  String get stockBadgeOut => 'Sem estoque';
+
+  @override
+  String get stockBadgeLow => 'Estoque baixo';
+
+  @override
+  String get stockBadgeInStock => 'Em estoque';
+
+  @override
+  String get stockBadgeNoTracking => 'Sem rastreio';
 }

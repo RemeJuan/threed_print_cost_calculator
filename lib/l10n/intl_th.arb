@@ -187,6 +187,8 @@
   "@supportEmail": {},
   "supportIdLabel": "โปรดระบุรหัสสนับสนุนของคุณ: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "การสนับสนุน 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(แตะเพื่อคัดลอก)",
   "materialWeightExplanation": "น้ำหนักวัสดุคือน้ำหนักรวมของวัสดุต้นทาง หรือก็คือน้ำหนักของม้วนฟิลาเมนต์ทั้งม้วน ค่าใช้จ่ายคือราคาของหน่วยทั้งหมด",
   "@materialWeightExplanation": {
@@ -227,6 +229,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "นโยบายความเป็นส่วนตัว",
   "@privacyPolicyLink": {},
+  "websiteLink": "เว็บไซต์",
+  "@websiteLink": {},
   "termsOfUseLink": "ข้อกำหนดการใช้งาน",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -287,7 +291,7 @@
   "addMaterialButton": "เพิ่มวัสดุ",
   "useSingleTotalWeightAction": "ใช้ค่าน้ำหนักรวมเดียว",
   "addAtLeastOneMaterial": "เพิ่มวัสดุอย่างน้อย 1 รายการ",
-  "searchMaterialsHint": "ค้นหาวัสดุ",
+  "searchMaterialsHint": "ค้นหาชื่อหรือแบรนด์",
   "materialBreakdownLabel": "รายละเอียดวัสดุ",
   "materialsCountLabel": "{count} วัสดุ",
   "totalMaterialWeightLabel": "น้ำหนักวัสดุรวม: {grams}g",
@@ -390,5 +394,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "อื่นๆ",
   "slicerUnknown": "ไม่ทราบ",
-  "startFreeTrialCta": "เริ่มทดลองใช้ฟรี"
+  "materialsAppBarTitle": "วัสดุ",
+  "materialsNavLabel": "วัสดุ",
+  "brandLabel": "ยี่ห้อ",
+  "materialTypeLabel": "ประเภทวัสดุ",
+  "colorHexLabel": "เลขฐานสิบหกสี (ไม่บังคับ)",
+  "notesLabel": "หมายเหตุ",
+  "materialsEmpty": "ยังไม่มีวัสดุ แตะ + เพื่อเพิ่ม",
+  "materialsFilterAll": "ทั้งหมด",
+  "materialsFilterInStock": "ในสต็อก",
+  "materialsFilterLowStock": "สต็อกต่ำ",
+  "materialsFilterOutOfStock": "หมดสต็อก",
+  "csvImportTitle": "นำเข้าวัสดุ",
+  "csvTemplateButton": "เทมเพลต",
+  "csvTemplateShareText": "เทมเพลต CSV วัสดุ",
+  "csvTemplateError": "ไม่สามารถแชร์เทมเพลตได้",
+  "csvImportIntro": "นำเข้าวัสดุจากไฟล์ CSV",
+  "csvSelectFileButton": "เลือกไฟล์ CSV",
+  "csvImportButton": "นำเข้าแถวที่ถูกต้อง",
+  "csvReadError": "ไม่สามารถอ่านไฟล์ที่เลือกได้",
+  "csvFileTypeError": "กรุณาเลือกไฟล์ .csv",
+  "csvNameRequiredError": "ชื่อจำเป็น",
+  "csvColorRequiredError": "สีจำเป็น",
+  "csvSpoolWeightRequiredError": "น้ำหนักสปูลจำเป็น",
+  "csvSpoolWeightPositiveError": "น้ำหนักสปูลต้องมากกว่า 0",
+  "csvCostRequiredError": "ต้นทุนจำเป็น",
+  "csvCostPositiveError": "ต้นทุนต้องมากกว่า 0",
+  "csvImportSuccessMessage": "{count, plural, one{นำเข้า 1 วัสดุ} other{นำเข้า {count} วัสดุ}}",
+  "deleteMaterialSuccessMessage": "ลบวัสดุแล้ว",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} แถว: {valid} ถูกต้อง, {invalid} มีข้อผิดพลาด",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(ว่าง)",
+  "stockBadgeOut": "หมดสต็อก",
+  "stockBadgeLow": "สต็อกต่ำ",
+  "stockBadgeInStock": "มีสต็อก",
+  "stockBadgeNoTracking": "ไม่ติดตาม"
 }

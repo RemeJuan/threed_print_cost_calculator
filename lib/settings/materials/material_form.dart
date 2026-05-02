@@ -3,6 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/materials/brand_typeahead.dart';
+import 'package:threed_print_cost_calculator/settings/materials/material_type_typeahead.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
@@ -16,17 +18,15 @@ class MaterialForm extends HookConsumerWidget {
   const MaterialForm({this.dbRef, super.key});
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(materialsProvider.notifier);
-    final state = ref.watch(materialsProvider);
     final l10n = AppLocalizations.of(context)!;
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final hasSubmitted = useState(false);
 
-    useEffect(() {
-      notifier.init(dbRef);
-      return null;
-    }, [dbRef]);
+    final loadFuture = useMemoized(() => notifier.init(dbRef), [dbRef]);
+    final loadSnapshot = useFuture(loadFuture);
+    final state = ref.watch(materialsProvider);
 
     // Create controllers and focus nodes at the top-level of the build to keep
     // hook calls linear and avoid wrapping fields in Builders.
@@ -46,6 +46,18 @@ class MaterialForm extends HookConsumerWidget {
 
     final costController = useTextEditingController(text: state.costText);
     final costFocus = useFocusNode();
+
+    final notesController = useTextEditingController(text: state.notes.value);
+    final notesFocus = useFocusNode();
+
+    final colorHexController = useTextEditingController(
+      text: state.colorHex.value,
+    );
+    final colorHexFocus = useFocusNode();
+
+    if (loadSnapshot.connectionState != ConnectionState.done) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     String? requiredTextValidator(String? value) {
       return localizedValidationMessage(l10n, validateRequiredText(value));
@@ -98,6 +110,16 @@ class MaterialForm extends HookConsumerWidget {
                   onChanged: notifier.updateName,
                 ),
 
+                BrandTypeahead(
+                  initialValue: state.brand.value,
+                  onChanged: notifier.updateBrand,
+                ),
+
+                MaterialTypeTypeahead(
+                  initialValue: state.materialType.value,
+                  onChanged: notifier.updateMaterialType,
+                ),
+
                 FocusSafeTextField(
                   key: const ValueKey<String>('settings.materials.color.input'),
                   controller: colorController,
@@ -110,6 +132,18 @@ class MaterialForm extends HookConsumerWidget {
                       : AutovalidateMode.disabled,
                   decoration: InputDecoration(labelText: l10n.colorLabel),
                   onChanged: notifier.updateColor,
+                ),
+
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.materials.color_hex.input',
+                  ),
+                  controller: colorHexController,
+                  externalText: state.colorHex.value,
+                  focusNode: colorHexFocus,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(labelText: l10n.colorHexLabel),
+                  onChanged: notifier.updateColorHex,
                 ),
 
                 FocusSafeTextField(
@@ -186,6 +220,27 @@ class MaterialForm extends HookConsumerWidget {
                     ),
                     onChanged: notifier.updateRemainingWeight,
                   ),
+
+                const SizedBox(height: 8),
+
+                FocusSafeTextField(
+                  key: const ValueKey<String>('settings.materials.notes.input'),
+                  controller: notesController,
+                  externalText: state.notes.value,
+                  focusNode: notesFocus,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: l10n.notesLabel,
+                    filled: true,
+                    fillColor: const Color.fromRGBO(26, 28, 43, 1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: Colors.white24),
+                    ),
+                  ),
+                  onChanged: notifier.updateNotes,
+                ),
 
                 const SizedBox(height: 16),
                 Row(

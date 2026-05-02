@@ -5,8 +5,11 @@ import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
+import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
@@ -15,7 +18,7 @@ import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visi
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 
-enum _AppTab { calculator, history, settings }
+enum _AppTab { calculator, materials, history, settings }
 
 class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
   const AppPage({super.key});
@@ -87,22 +90,33 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       return null;
     }, [showHistoryTab, selectedTab.value]);
 
-    int tabToIndex(_AppTab tab) {
-      return switch (tab) {
-        _AppTab.calculator => 0,
-        _AppTab.history => 1,
-        _AppTab.settings => showHistoryTab ? 2 : 1,
-      };
-    }
+    final tabs = <_AppTab>[
+      _AppTab.calculator,
+      if (isPremium) _AppTab.materials,
+      if (showHistoryTab) _AppTab.history,
+      _AppTab.settings,
+    ];
 
-    _AppTab tabFromIndex(int index) {
-      if (index == 0) return _AppTab.calculator;
-      if (showHistoryTab && index == 1) return _AppTab.history;
-      return _AppTab.settings;
-    }
+    useEffect(() {
+      if (tabs.contains(selectedTab.value)) {
+        return null;
+      }
 
-    final pages = <Widget>[
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!tabs.contains(selectedTab.value)) {
+          selectedTab.value = _AppTab.calculator;
+        }
+      });
+
+      return null;
+    }, [isPremium, showHistoryTab, selectedTab.value]);
+
+    int tabToIndex(_AppTab tab) => tabs.indexOf(tab);
+    _AppTab tabFromIndex(int index) => tabs[index];
+
+    final pages = [
       const CalculatorPage(),
+      if (isPremium) const MaterialsPage(),
       if (showHistoryTab)
         HistoryPage(
           mode: showHistoryTeaser
@@ -123,16 +137,32 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       const SettingsPage(),
     ];
 
-    final headings = [
-      l10n.calculatorAppBarTitle,
-      if (showHistoryTab) l10n.historyAppBarTitle,
-      l10n.settingsAppBarTitle,
-    ];
+    String titleForTab(_AppTab tab) => switch (tab) {
+      _AppTab.calculator => l10n.calculatorAppBarTitle,
+      _AppTab.materials => l10n.materialsAppBarTitle,
+      _AppTab.history => l10n.historyAppBarTitle,
+      _AppTab.settings => l10n.settingsAppBarTitle,
+    };
 
-    final selectedIndex = tabToIndex(selectedTab.value);
+    final renderedTab = tabs.contains(selectedTab.value)
+        ? selectedTab.value
+        : _AppTab.calculator;
+    final selectedIndex = tabToIndex(renderedTab);
 
     final isHistoryTeaserSelected =
-        showHistoryTeaser && selectedTab.value == _AppTab.history;
+        showHistoryTeaser && renderedTab == _AppTab.history;
+
+    useEffect(() {
+      if (renderedTab != _AppTab.materials) {
+        return null;
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppAnalytics.safeLog(AppAnalytics.materialsViewOpened);
+      });
+
+      return null;
+    }, [renderedTab]);
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -148,8 +178,27 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(headings[selectedIndex]),
-        actions: isHistoryTeaserSelected ? const [] : const [HeaderActions()],
+        title: Text(titleForTab(renderedTab)),
+        actions: isHistoryTeaserSelected
+            ? const []
+            : renderedTab == _AppTab.materials
+            ? [
+                IconButton(
+                  tooltip: l10n.csvImportTitle,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const CsvImportPage(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.file_upload_outlined,
+                    color: Colors.white54,
+                  ),
+                ),
+              ]
+            : const [HeaderActions()],
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () => Navigator.of(context).push(
@@ -190,32 +239,41 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             curve: Curves.ease,
           );
         },
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.calculate,
-              key: ValueKey<String>('nav.calculator.button'),
+        items: tabs.map((tab) {
+          final (Widget icon, String label) = switch (tab) {
+            _AppTab.calculator => (
+              const Icon(
+                Icons.calculate,
+                key: ValueKey<String>('nav.calculator.button'),
+              ),
+              l10n.calculatorNavLabel,
             ),
-            label: l10n.calculatorNavLabel,
-          ),
-          if (showHistoryTab)
-            BottomNavigationBarItem(
-              icon: isPremium
+            _AppTab.materials => (
+              const Icon(
+                Icons.inventory_2_outlined,
+                key: ValueKey<String>('nav.materials.button'),
+              ),
+              l10n.materialsNavLabel,
+            ),
+            _AppTab.history => (
+              isPremium
                   ? const Icon(
                       Icons.history,
                       key: ValueKey<String>('nav.history.button'),
                     )
                   : const PromoHistoryTabIcon(),
-              label: l10n.historyNavLabel,
+              l10n.historyNavLabel,
             ),
-          BottomNavigationBarItem(
-            icon: const Icon(
-              Icons.settings,
-              key: ValueKey<String>('nav.settings.button'),
+            _AppTab.settings => (
+              const Icon(
+                Icons.settings,
+                key: ValueKey<String>('nav.settings.button'),
+              ),
+              l10n.settingsNavLabel,
             ),
-            label: l10n.settingsNavLabel,
-          ),
-        ],
+          };
+          return BottomNavigationBarItem(icon: icon, label: label);
+        }).toList(),
       ),
     );
   }

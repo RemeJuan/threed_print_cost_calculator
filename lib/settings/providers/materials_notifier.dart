@@ -15,6 +15,8 @@ final materialsProvider = NotifierProvider<MaterialsProvider, MaterialState>(
 );
 
 class MaterialsProvider extends Notifier<MaterialState> {
+  var _materialsLoadToken = 0;
+
   @override
   MaterialState build() {
     return MaterialState();
@@ -23,9 +25,12 @@ class MaterialsProvider extends Notifier<MaterialState> {
   MaterialsRepository get _materialsRepository =>
       ref.read(materialsRepositoryProvider);
 
-  void init(final String? key) async {
+  Future<void> init(final String? key) async {
+    final loadToken = ++_materialsLoadToken;
+
     if (key != null) {
       final material = await _materialsRepository.getMaterialById(key);
+      if (loadToken != _materialsLoadToken) return;
       if (material == null) return;
 
       state = state.copyWith(
@@ -42,6 +47,10 @@ class MaterialsProvider extends Notifier<MaterialState> {
         remainingWeightText: material.autoDeductEnabled
             ? material.remainingWeight.toString()
             : '',
+        brand: StringInput.dirty(value: material.brand),
+        materialType: StringInput.dirty(value: material.materialType),
+        colorHex: StringInput.dirty(value: material.colorHex),
+        notes: StringInput.dirty(value: material.notes),
       );
     }
   }
@@ -97,6 +106,22 @@ class MaterialsProvider extends Notifier<MaterialState> {
     );
   }
 
+  void updateBrand(String value) {
+    state = state.copyWith(brand: StringInput.dirty(value: value));
+  }
+
+  void updateMaterialType(String value) {
+    state = state.copyWith(materialType: StringInput.dirty(value: value));
+  }
+
+  void updateColorHex(String value) {
+    state = state.copyWith(colorHex: StringInput.dirty(value: value));
+  }
+
+  void updateNotes(String value) {
+    state = state.copyWith(notes: StringInput.dirty(value: value));
+  }
+
   Future<Object?> submit(String? dbRef) async {
     if (!_isValidForSubmit) {
       return null;
@@ -129,10 +154,26 @@ class MaterialsProvider extends Notifier<MaterialState> {
       remainingWeight: isTrackingEnabled
           ? math.max(0, parsedRemainingWeight)
           : parsedWeight,
+      brand: state.brand.value.trim(),
+      materialType: state.materialType.value.trim(),
+      colorHex: state.colorHex.value.trim(),
+      notes: state.notes.value.trim(),
     );
 
     final key = await _materialsRepository.saveMaterial(material, id: dbRef);
-    AppAnalytics.safeLog(AppAnalytics.materialCreated);
+    AppAnalytics.safeLog(
+      () => dbRef == null
+          ? AppAnalytics.materialCreated(
+              hasTracking: material.autoDeductEnabled,
+              materialType: material.materialType,
+              brand: material.brand,
+            )
+          : AppAnalytics.materialEdited(
+              hasTracking: material.autoDeductEnabled,
+              materialType: material.materialType,
+              brand: material.brand,
+            ),
+    );
     return key;
   }
 

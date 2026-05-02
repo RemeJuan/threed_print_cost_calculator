@@ -186,6 +186,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Harap sertakan ID Dukungan Anda: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Dukungan 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(ketuk untuk menyalin)",
   "materialWeightExplanation": "Berat bahan adalah total berat bahan sumber, yaitu seluruh gulungan filamen. Biaya adalah harga seluruh unit.",
   "@materialWeightExplanation": {
@@ -226,6 +228,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Kebijakan Privasi",
   "@privacyPolicyLink": {},
+  "websiteLink": "Situs web",
+  "@websiteLink": {},
   "termsOfUseLink": "Ketentuan Penggunaan",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -286,7 +290,7 @@
   "addMaterialButton": "Tambahkan bahan",
   "useSingleTotalWeightAction": "Gunakan total berat tunggal",
   "addAtLeastOneMaterial": "Tambahkan setidaknya satu material.",
-  "searchMaterialsHint": "Cari bahan",
+  "searchMaterialsHint": "Cari nama atau merek",
   "materialBreakdownLabel": "Rincian bahan",
   "materialsCountLabel": "{count} bahan",
   "totalMaterialWeightLabel": "Total berat material: {grams}g",
@@ -389,5 +393,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Lainnya",
   "slicerUnknown": "Tidak Dikenal",
-  "startFreeTrialCta": "Mulai uji coba gratis"
+  "materialsAppBarTitle": "Material",
+  "materialsNavLabel": "Material",
+  "brandLabel": "Merek",
+  "materialTypeLabel": "Jenis material",
+  "colorHexLabel": "Hex warna (opsional)",
+  "notesLabel": "Catatan",
+  "materialsEmpty": "Belum ada material. Ketuk + untuk menambah.",
+  "materialsFilterAll": "Semua",
+  "materialsFilterInStock": "Tersedia",
+  "materialsFilterLowStock": "Stok rendah",
+  "materialsFilterOutOfStock": "Habis",
+  "csvImportTitle": "Impor material",
+  "csvTemplateButton": "Template",
+  "csvTemplateShareText": "Template CSV material",
+  "csvTemplateError": "Tidak dapat membagikan template.",
+  "csvImportIntro": "Impor material dari file CSV.",
+  "csvSelectFileButton": "Pilih file CSV",
+  "csvImportButton": "Impor baris yang valid",
+  "csvReadError": "File yang dipilih tidak dapat dibaca.",
+  "csvFileTypeError": "Pilih file .csv",
+  "csvNameRequiredError": "Nama wajib diisi",
+  "csvColorRequiredError": "Warna wajib diisi",
+  "csvSpoolWeightRequiredError": "Berat spool wajib diisi",
+  "csvSpoolWeightPositiveError": "Berat spool harus > 0",
+  "csvCostRequiredError": "Biaya wajib diisi",
+  "csvCostPositiveError": "Biaya harus > 0",
+  "csvImportSuccessMessage": "{count, plural, one{1 material diimpor} other{{count} material diimpor}}",
+  "deleteMaterialSuccessMessage": "Material dihapus",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} baris: {valid} valid, {invalid} dengan error",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(kosong)",
+  "stockBadgeOut": "Habis",
+  "stockBadgeLow": "Stok rendah",
+  "stockBadgeInStock": "Tersedia",
+  "stockBadgeNoTracking": "Tidak dilacak"
 }

@@ -259,6 +259,14 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final spoolWeight = parseLocalizedNumOrFallback(material.weight);
     final spoolCost = parseLocalizedNumOrFallback(material.cost);
 
+    AppAnalytics.safeLog(
+      () => AppAnalytics.materialSelectedInCalculator(
+        hasTracking: material.autoDeductEnabled,
+        materialType: material.materialType,
+        brand: material.brand,
+      ),
+    );
+
     ref
         .read(calculatorPreferencesRepositoryProvider)
         .saveStringValue('spoolWeight', material.weight);

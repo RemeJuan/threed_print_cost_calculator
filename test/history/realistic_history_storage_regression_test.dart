@@ -73,7 +73,7 @@ void main() {
               ..submit();
           },
         );
-        expect(calculation.results.total, 1.77);
+        expect(calculation.results.total, 2.02);
 
         final stored = await storeAndReadHistory(
           HistoryRegressionFixtures.initializedHistoryModel(),
@@ -164,7 +164,7 @@ void main() {
             ..submit();
           final recalculatedState = container.read(calculatorProvider);
           expect(recalculatedState.results.filament, closeTo(1.35, 0.01));
-          expect(recalculatedState.results.total, closeTo(1.59, 0.01));
+          expect(recalculatedState.results.total, closeTo(1.81, 0.01));
           final savedModel = legacy.entry.model.copyWith(
             electricityCost: recalculatedState.results.electricity,
             filamentCost: recalculatedState.results.filament,

@@ -168,6 +168,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get savePrintSuccessMessage => 'บันทึกงานพิมพ์แล้ว';
 
   @override
+  String get deleteMaterialSuccessMessage => 'ลบวัสดุแล้ว';
+
+  @override
   String get historyLoadAction => 'แก้ไขในเครื่องคิดเลข';
 
   @override
@@ -338,6 +341,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get supportIdLabel => 'โปรดระบุรหัสสนับสนุนของคุณ: ';
 
   @override
+  String get supportEmailSubject => 'การสนับสนุน 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(แตะเพื่อคัดลอก)';
 
   @override
@@ -358,6 +364,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'นโยบายความเป็นส่วนตัว';
+
+  @override
+  String get websiteLink => 'เว็บไซต์';
 
   @override
   String get termsOfUseLink => 'ข้อกำหนดการใช้งาน';
@@ -563,7 +572,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get addAtLeastOneMaterial => 'เพิ่มวัสดุอย่างน้อย 1 รายการ';
 
   @override
-  String get searchMaterialsHint => 'ค้นหาวัสดุ';
+  String get searchMaterialsHint => 'ค้นหาชื่อหรือแบรนด์';
 
   @override
   String get materialBreakdownLabel => 'รายละเอียดวัสดุ';
@@ -794,5 +803,111 @@ class AppLocalizationsTh extends AppLocalizations {
   String get slicerUnknown => 'ไม่ทราบ';
 
   @override
-  String get startFreeTrialCta => 'เริ่มทดลองใช้ฟรี';
+  String get materialsAppBarTitle => 'วัสดุ';
+
+  @override
+  String get materialsNavLabel => 'วัสดุ';
+
+  @override
+  String get brandLabel => 'ยี่ห้อ';
+
+  @override
+  String get materialTypeLabel => 'ประเภทวัสดุ';
+
+  @override
+  String get colorHexLabel => 'เลขฐานสิบหกสี (ไม่บังคับ)';
+
+  @override
+  String get notesLabel => 'หมายเหตุ';
+
+  @override
+  String get materialsEmpty => 'ยังไม่มีวัสดุ แตะ + เพื่อเพิ่ม';
+
+  @override
+  String get materialsFilterAll => 'ทั้งหมด';
+
+  @override
+  String get materialsFilterInStock => 'ในสต็อก';
+
+  @override
+  String get materialsFilterLowStock => 'สต็อกต่ำ';
+
+  @override
+  String get materialsFilterOutOfStock => 'หมดสต็อก';
+
+  @override
+  String get csvImportTitle => 'นำเข้าวัสดุ';
+
+  @override
+  String get csvTemplateButton => 'เทมเพลต';
+
+  @override
+  String get csvTemplateShareText => 'เทมเพลต CSV วัสดุ';
+
+  @override
+  String get csvTemplateError => 'ไม่สามารถแชร์เทมเพลตได้';
+
+  @override
+  String get csvImportIntro => 'นำเข้าวัสดุจากไฟล์ CSV';
+
+  @override
+  String get csvSelectFileButton => 'เลือกไฟล์ CSV';
+
+  @override
+  String get csvImportButton => 'นำเข้าแถวที่ถูกต้อง';
+
+  @override
+  String get csvReadError => 'ไม่สามารถอ่านไฟล์ที่เลือกได้';
+
+  @override
+  String get csvFileTypeError => 'กรุณาเลือกไฟล์ .csv';
+
+  @override
+  String get csvNameRequiredError => 'ชื่อจำเป็น';
+
+  @override
+  String get csvColorRequiredError => 'สีจำเป็น';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'น้ำหนักสปูลจำเป็น';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'น้ำหนักสปูลต้องมากกว่า 0';
+
+  @override
+  String get csvCostRequiredError => 'ต้นทุนจำเป็น';
+
+  @override
+  String get csvCostPositiveError => 'ต้นทุนต้องมากกว่า 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'นำเข้า $count วัสดุ',
+      one: 'นำเข้า 1 วัสดุ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total แถว: $valid ถูกต้อง, $invalid มีข้อผิดพลาด';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(ว่าง)';
+
+  @override
+  String get stockBadgeOut => 'หมดสต็อก';
+
+  @override
+  String get stockBadgeLow => 'สต็อกต่ำ';
+
+  @override
+  String get stockBadgeInStock => 'มีสต็อก';
+
+  @override
+  String get stockBadgeNoTracking => 'ไม่ติดตาม';
 }

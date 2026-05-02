@@ -169,6 +169,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get savePrintSuccessMessage => 'Print opgeslagen';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Materiaal verwijderd';
+
+  @override
   String get historyLoadAction => 'Bewerken in calculator';
 
   @override
@@ -340,6 +343,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get supportIdLabel => 'Voeg je support-ID toe: ';
 
   @override
+  String get supportEmailSubject =>
+      'Ondersteuning voor 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(klik om te kopiëren)';
 
   @override
@@ -360,6 +367,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Privacybeleid';
+
+  @override
+  String get websiteLink => 'Webpagina';
 
   @override
   String get termsOfUseLink => 'Gebruiksvoorwaarden';
@@ -567,7 +577,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Voeg minimaal één materiaal toe.';
 
   @override
-  String get searchMaterialsHint => 'Materialen zoeken';
+  String get searchMaterialsHint => 'Zoek naam of merk';
 
   @override
   String get materialBreakdownLabel => 'Materiaaluitsplitsing';
@@ -802,11 +812,119 @@ class AppLocalizationsNl extends AppLocalizations {
   String get slicerIdeaMaker => 'IdeaMaker';
 
   @override
-  String get slicerOther => 'Other';
+  String get slicerOther => 'Overig';
 
   @override
   String get slicerUnknown => 'Onbekend';
 
   @override
-  String get startFreeTrialCta => 'Start gratis proefperiode';
+  String get materialsAppBarTitle => 'Materialen';
+
+  @override
+  String get materialsNavLabel => 'Materialen';
+
+  @override
+  String get brandLabel => 'Merk';
+
+  @override
+  String get materialTypeLabel => 'Materiaaltype';
+
+  @override
+  String get colorHexLabel => 'Kleur hex (optioneel)';
+
+  @override
+  String get notesLabel => 'Notities';
+
+  @override
+  String get materialsEmpty =>
+      'Nog geen materialen. Tik op + om er een toe te voegen.';
+
+  @override
+  String get materialsFilterAll => 'Alles';
+
+  @override
+  String get materialsFilterInStock => 'Op voorraad';
+
+  @override
+  String get materialsFilterLowStock => 'Lage voorraad';
+
+  @override
+  String get materialsFilterOutOfStock => 'Uitverkocht';
+
+  @override
+  String get csvImportTitle => 'Materialen importeren';
+
+  @override
+  String get csvTemplateButton => 'Sjabloon';
+
+  @override
+  String get csvTemplateShareText => 'Materialen CSV-sjabloon';
+
+  @override
+  String get csvTemplateError => 'Kon het sjabloon niet delen.';
+
+  @override
+  String get csvImportIntro => 'Importeer materialen uit een CSV-bestand.';
+
+  @override
+  String get csvSelectFileButton => 'Kies CSV-bestand';
+
+  @override
+  String get csvImportButton => 'Geldige rijen importeren';
+
+  @override
+  String get csvReadError =>
+      'Het geselecteerde bestand kon niet worden gelezen.';
+
+  @override
+  String get csvFileTypeError => 'Kies een .csv-bestand';
+
+  @override
+  String get csvNameRequiredError => 'Naam is verplicht';
+
+  @override
+  String get csvColorRequiredError => 'Kleur is verplicht';
+
+  @override
+  String get csvSpoolWeightRequiredError => 'Spoelgewicht is verplicht';
+
+  @override
+  String get csvSpoolWeightPositiveError => 'Spoelgewicht moet > 0 zijn';
+
+  @override
+  String get csvCostRequiredError => 'Kosten zijn verplicht';
+
+  @override
+  String get csvCostPositiveError => 'Kosten moeten > 0 zijn';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count materialen geïmporteerd',
+      one: '1 materiaal geïmporteerd',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total rijen: $valid geldig, $invalid met fouten';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(leeg)';
+
+  @override
+  String get stockBadgeOut => 'Uitverkocht';
+
+  @override
+  String get stockBadgeLow => 'Lage voorraad';
+
+  @override
+  String get stockBadgeInStock => 'Op voorraad';
+
+  @override
+  String get stockBadgeNoTracking => 'Niet bijgehouden';
 }

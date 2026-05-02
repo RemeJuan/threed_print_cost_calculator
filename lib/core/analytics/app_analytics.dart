@@ -85,6 +85,23 @@ class AppAnalytics {
     return _gcodeImportTriggeredThisSession ? 'gcode_import' : defaultValue;
   }
 
+  static String? _optionalString(String value) {
+    final trimmed = value.trim();
+    return trimmed.isEmpty ? null : trimmed;
+  }
+
+  static Map<String, Object?> _materialParams({
+    required bool hasTracking,
+    String? materialType,
+    String? brand,
+  }) {
+    return {
+      'has_tracking': hasTracking,
+      'material_type': materialType,
+      'brand': brand,
+    };
+  }
+
   static Map<String, Object>? _sanitizeParams(Map<String, Object?>? params) {
     if (params == null) return null;
 
@@ -171,8 +188,67 @@ class AppAnalytics {
   }
 
   /// Material creation
-  static Future<void> materialCreated() {
-    return log('material_created');
+  static Future<void> materialCreated({
+    required bool hasTracking,
+    String materialType = '',
+    String brand = '',
+  }) {
+    return log(
+      'material_created',
+      params: _materialParams(
+        hasTracking: hasTracking,
+        materialType: _optionalString(materialType),
+        brand: _optionalString(brand),
+      ),
+    );
+  }
+
+  static Future<void> materialEdited({
+    required bool hasTracking,
+    String materialType = '',
+    String brand = '',
+  }) {
+    return log(
+      'material_edited',
+      params: _materialParams(
+        hasTracking: hasTracking,
+        materialType: _optionalString(materialType),
+        brand: _optionalString(brand),
+      ),
+    );
+  }
+
+  static Future<void> materialsViewOpened() {
+    return log('materials_view_opened');
+  }
+
+  static Future<void> csvImportStarted() {
+    return log('csv_import_started');
+  }
+
+  static Future<void> csvImportCompleted({
+    required int rowsSuccess,
+    required int rowsFailed,
+  }) {
+    return log(
+      'csv_import_completed',
+      params: {'rows_success': rowsSuccess, 'rows_failed': rowsFailed},
+    );
+  }
+
+  static Future<void> materialSelectedInCalculator({
+    required bool hasTracking,
+    String materialType = '',
+    String brand = '',
+  }) {
+    return log(
+      'material_selected_in_calculator',
+      params: _materialParams(
+        hasTracking: hasTracking,
+        materialType: _optionalString(materialType),
+        brand: _optionalString(brand),
+      ),
+    );
   }
 
   /// Export events

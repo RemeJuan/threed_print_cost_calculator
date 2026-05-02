@@ -185,6 +185,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Incluye tu ID de soporte: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Soporte de 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(haz clic para copiar)",
   "materialWeightExplanation": "El peso del material es el peso total del material de origen, es decir, todo el rollo de filamento. El costo es el costo de la unidad completa.",
   "@materialWeightExplanation": {
@@ -225,6 +227,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de privacidad",
   "@privacyPolicyLink": {},
+  "websiteLink": "Sitio web",
+  "@websiteLink": {},
   "termsOfUseLink": "Términos de uso",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -285,7 +289,7 @@
   "addMaterialButton": "Añadir material",
   "useSingleTotalWeightAction": "Usar peso total único",
   "addAtLeastOneMaterial": "Añade al menos un material.",
-  "searchMaterialsHint": "Buscar materiales",
+  "searchMaterialsHint": "Buscar nombre o marca",
   "materialBreakdownLabel": "Desglose de materiales",
   "materialsCountLabel": "{count, plural, one{# material} other{# materiales}}",
   "totalMaterialWeightLabel": "Peso total del material: {grams}g",
@@ -388,5 +392,59 @@
   "slicerIdeaMaker": "IdeaMaker",
   "slicerOther": "Otro",
   "slicerUnknown": "Desconocido",
-  "startFreeTrialCta": "Iniciar prueba gratuita"
+  "materialsAppBarTitle": "Materiales",
+  "materialsNavLabel": "Materiales",
+  "brandLabel": "Marca",
+  "materialTypeLabel": "Tipo de material",
+  "colorHexLabel": "Color hex (opcional)",
+  "notesLabel": "Notas",
+  "materialsEmpty": "Aún no hay materiales. Toca + para añadir uno.",
+  "materialsFilterAll": "Todos",
+  "materialsFilterInStock": "En stock",
+  "materialsFilterLowStock": "Stock bajo",
+  "materialsFilterOutOfStock": "Agotado",
+  "csvImportTitle": "Importar materiales",
+  "csvTemplateButton": "Plantilla",
+  "csvTemplateShareText": "Plantilla CSV de materiales",
+  "csvTemplateError": "No se pudo compartir la plantilla.",
+  "csvImportIntro": "Importa materiales desde un archivo CSV.",
+  "csvSelectFileButton": "Elegir archivo CSV",
+  "csvImportButton": "Importar filas válidas",
+  "csvReadError": "No se pudo leer el archivo seleccionado.",
+  "csvFileTypeError": "Selecciona un archivo .csv",
+  "csvNameRequiredError": "El nombre es obligatorio",
+  "csvColorRequiredError": "El color es obligatorio",
+  "csvSpoolWeightRequiredError": "El peso del carrete es obligatorio",
+  "csvSpoolWeightPositiveError": "El peso del carrete debe ser > 0",
+  "csvCostRequiredError": "El costo es obligatorio",
+  "csvCostPositiveError": "El costo debe ser > 0",
+  "csvImportSuccessMessage": "{count, plural, one{1 material importado} other{{count} materiales importados}}",
+  "deleteMaterialSuccessMessage": "Material eliminado",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} filas: {valid} válidas, {invalid} con errores",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(vacío)",
+  "stockBadgeOut": "Agotado",
+  "stockBadgeLow": "Stock bajo",
+  "stockBadgeInStock": "En stock",
+  "stockBadgeNoTracking": "Sin seguimiento"
 }

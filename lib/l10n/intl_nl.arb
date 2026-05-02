@@ -187,6 +187,8 @@
   "@supportEmail": {},
   "supportIdLabel": "Voeg je support-ID toe: ",
   "@supportIdLabel": {},
+  "supportEmailSubject": "Ondersteuning voor 3D Print Cost Calculator",
+  "@supportEmailSubject": {},
   "clickToCopy": "(klik om te kopiëren)",
   "materialWeightExplanation": "Materiaalgewicht is het totale gewicht van het bronmateriaal, dus de volledige rol filament. De kosten zijn de kosten van de volledige eenheid.",
   "@materialWeightExplanation": {
@@ -227,6 +229,8 @@
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",
   "@privacyPolicyLink": {},
+  "websiteLink": "Webpagina",
+  "@websiteLink": {},
   "termsOfUseLink": "Gebruiksvoorwaarden",
   "@termsOfUseLink": {},
   "separator": " | ",
@@ -287,7 +291,7 @@
   "addMaterialButton": "Materiaal toevoegen",
   "useSingleTotalWeightAction": "Gebruik enkel totaalgewicht",
   "addAtLeastOneMaterial": "Voeg minimaal één materiaal toe.",
-  "searchMaterialsHint": "Materialen zoeken",
+  "searchMaterialsHint": "Zoek naam of merk",
   "materialBreakdownLabel": "Materiaaluitsplitsing",
   "materialsCountLabel": "{count, plural, =1{# materiaal} other{# materialen}}",
   "totalMaterialWeightLabel": "Totaal materiaalgewicht: {grams}g",
@@ -381,7 +385,61 @@
   "slicerSimplify3D": "Simplify3D",
   "slicerSuperSlicer": "SuperSlicer",
   "slicerIdeaMaker": "IdeaMaker",
-  "slicerOther": "Other",
+  "slicerOther": "Overig",
   "slicerUnknown": "Onbekend",
-  "startFreeTrialCta": "Start gratis proefperiode"
+  "materialsAppBarTitle": "Materialen",
+  "materialsNavLabel": "Materialen",
+  "brandLabel": "Merk",
+  "materialTypeLabel": "Materiaaltype",
+  "colorHexLabel": "Kleur hex (optioneel)",
+  "notesLabel": "Notities",
+  "materialsEmpty": "Nog geen materialen. Tik op + om er een toe te voegen.",
+  "materialsFilterAll": "Alles",
+  "materialsFilterInStock": "Op voorraad",
+  "materialsFilterLowStock": "Lage voorraad",
+  "materialsFilterOutOfStock": "Uitverkocht",
+  "csvImportTitle": "Materialen importeren",
+  "csvTemplateButton": "Sjabloon",
+  "csvTemplateShareText": "Materialen CSV-sjabloon",
+  "csvTemplateError": "Kon het sjabloon niet delen.",
+  "csvImportIntro": "Importeer materialen uit een CSV-bestand.",
+  "csvSelectFileButton": "Kies CSV-bestand",
+  "csvImportButton": "Geldige rijen importeren",
+  "csvReadError": "Het geselecteerde bestand kon niet worden gelezen.",
+  "csvFileTypeError": "Kies een .csv-bestand",
+  "csvNameRequiredError": "Naam is verplicht",
+  "csvColorRequiredError": "Kleur is verplicht",
+  "csvSpoolWeightRequiredError": "Spoelgewicht is verplicht",
+  "csvSpoolWeightPositiveError": "Spoelgewicht moet > 0 zijn",
+  "csvCostRequiredError": "Kosten zijn verplicht",
+  "csvCostPositiveError": "Kosten moeten > 0 zijn",
+  "csvImportSuccessMessage": "{count, plural, one{1 materiaal geïmporteerd} other{{count} materialen geïmporteerd}}",
+  "deleteMaterialSuccessMessage": "Materiaal verwijderd",
+  "@deleteMaterialSuccessMessage": {},
+  "@csvImportSuccessMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "csvPreviewSummary": "{total} rijen: {valid} geldig, {invalid} met fouten",
+  "@csvPreviewSummary": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      },
+      "valid": {
+        "type": "int"
+      },
+      "invalid": {
+        "type": "int"
+      }
+    }
+  },
+  "csvEmptyNamePlaceholder": "(leeg)",
+  "stockBadgeOut": "Uitverkocht",
+  "stockBadgeLow": "Lage voorraad",
+  "stockBadgeInStock": "Op voorraad",
+  "stockBadgeNoTracking": "Niet bijgehouden"
 }

@@ -195,4 +195,49 @@ void main() {
       'source': 'history_teaser_primary',
     });
   });
+
+  test(
+    'materials analytics wrappers keep payloads small and consistent',
+    () async {
+      await AppAnalytics.materialsViewOpened();
+      expect(fake.lastName, 'materials_view_opened');
+      expect(fake.lastParams, isNull);
+
+      await AppAnalytics.materialCreated(
+        hasTracking: true,
+        materialType: 'PLA',
+        brand: 'Sunlu',
+      );
+      expect(fake.lastName, 'material_created');
+      expect(fake.lastParams, {
+        'has_tracking': 1,
+        'material_type': 'PLA',
+        'brand': 'Sunlu',
+      });
+
+      await AppAnalytics.materialEdited(hasTracking: false, materialType: '');
+      expect(fake.lastName, 'material_edited');
+      expect(fake.lastParams, {'has_tracking': 0});
+
+      await AppAnalytics.csvImportStarted();
+      expect(fake.lastName, 'csv_import_started');
+      expect(fake.lastParams, isNull);
+
+      await AppAnalytics.csvImportCompleted(rowsSuccess: 3, rowsFailed: 1);
+      expect(fake.lastName, 'csv_import_completed');
+      expect(fake.lastParams, {'rows_success': 3, 'rows_failed': 1});
+
+      await AppAnalytics.materialSelectedInCalculator(
+        hasTracking: true,
+        materialType: 'PETG',
+        brand: 'Overture',
+      );
+      expect(fake.lastName, 'material_selected_in_calculator');
+      expect(fake.lastParams, {
+        'has_tracking': 1,
+        'material_type': 'PETG',
+        'brand': 'Overture',
+      });
+    },
+  );
 }

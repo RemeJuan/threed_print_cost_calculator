@@ -172,6 +172,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get savePrintSuccessMessage => 'Stampa salvata';
 
   @override
+  String get deleteMaterialSuccessMessage => 'Materiale eliminato';
+
+  @override
   String get historyLoadAction => 'Modifica nel calcolatore';
 
   @override
@@ -345,6 +348,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get supportIdLabel => 'Includi il tuo ID di supporto: ';
 
   @override
+  String get supportEmailSubject => 'Supporto 3D Print Cost Calculator';
+
+  @override
   String get clickToCopy => '(tocca per copiare)';
 
   @override
@@ -365,6 +371,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get privacyPolicyLink => 'Informativa sulla privacy';
+
+  @override
+  String get websiteLink => 'Sito web';
 
   @override
   String get termsOfUseLink => 'Termini di utilizzo';
@@ -575,7 +584,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get addAtLeastOneMaterial => 'Aggiungi almeno un materiale.';
 
   @override
-  String get searchMaterialsHint => 'Cerca materiali';
+  String get searchMaterialsHint => 'Cerca nome o marca';
 
   @override
   String get materialBreakdownLabel => 'Dettaglio materiali';
@@ -817,5 +826,114 @@ class AppLocalizationsIt extends AppLocalizations {
   String get slicerUnknown => 'Sconosciuto';
 
   @override
-  String get startFreeTrialCta => 'Inizia la prova gratuita';
+  String get materialsAppBarTitle => 'Materiali';
+
+  @override
+  String get materialsNavLabel => 'Materiali';
+
+  @override
+  String get brandLabel => 'Marca';
+
+  @override
+  String get materialTypeLabel => 'Tipo di materiale';
+
+  @override
+  String get colorHexLabel => 'Hex colore (opzionale)';
+
+  @override
+  String get notesLabel => 'Note';
+
+  @override
+  String get materialsEmpty =>
+      'Nessun materiale ancora. Tocca + per aggiungerne uno.';
+
+  @override
+  String get materialsFilterAll => 'Tutti';
+
+  @override
+  String get materialsFilterInStock => 'Disponibile';
+
+  @override
+  String get materialsFilterLowStock => 'Scorte basse';
+
+  @override
+  String get materialsFilterOutOfStock => 'Esaurito';
+
+  @override
+  String get csvImportTitle => 'Importa materiali';
+
+  @override
+  String get csvTemplateButton => 'Modello';
+
+  @override
+  String get csvTemplateShareText => 'Modello CSV materiali';
+
+  @override
+  String get csvTemplateError => 'Impossibile condividere il modello.';
+
+  @override
+  String get csvImportIntro => 'Importa materiali da un file CSV.';
+
+  @override
+  String get csvSelectFileButton => 'Scegli file CSV';
+
+  @override
+  String get csvImportButton => 'Importa righe valide';
+
+  @override
+  String get csvReadError => 'Il file selezionato non può essere letto.';
+
+  @override
+  String get csvFileTypeError => 'Seleziona un file .csv';
+
+  @override
+  String get csvNameRequiredError => 'Il nome è obbligatorio';
+
+  @override
+  String get csvColorRequiredError => 'Il colore è obbligatorio';
+
+  @override
+  String get csvSpoolWeightRequiredError =>
+      'Il peso della bobina è obbligatorio';
+
+  @override
+  String get csvSpoolWeightPositiveError =>
+      'Il peso della bobina deve essere > 0';
+
+  @override
+  String get csvCostRequiredError => 'Il costo è obbligatorio';
+
+  @override
+  String get csvCostPositiveError => 'Il costo deve essere > 0';
+
+  @override
+  String csvImportSuccessMessage(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count materiali importati',
+      one: '1 materiale importato',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String csvPreviewSummary(int total, int valid, int invalid) {
+    return '$total righe: $valid valide, $invalid con errori';
+  }
+
+  @override
+  String get csvEmptyNamePlaceholder => '(vuoto)';
+
+  @override
+  String get stockBadgeOut => 'Esaurito';
+
+  @override
+  String get stockBadgeLow => 'Scorta bassa';
+
+  @override
+  String get stockBadgeInStock => 'Disponibile';
+
+  @override
+  String get stockBadgeNoTracking => 'Non tracciato';
 }
