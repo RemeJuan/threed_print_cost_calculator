@@ -486,6 +486,222 @@ abstract class AppLocalizations {
   /// **'Need Help?'**
   String get needHelpTitle;
 
+  /// No description provided for @helpSupportSupportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get helpSupportSupportTitle;
+
+  /// No description provided for @helpSupportSupportIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Use these details when contacting support.'**
+  String get helpSupportSupportIntro;
+
+  /// No description provided for @helpSupportWebsiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get helpSupportWebsiteLabel;
+
+  /// No description provided for @helpSupportEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get helpSupportEmailLabel;
+
+  /// No description provided for @helpSupportSupportIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Support ID'**
+  String get helpSupportSupportIdLabel;
+
+  /// No description provided for @helpSupportCopySupportIdTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy support ID'**
+  String get helpSupportCopySupportIdTooltip;
+
+  /// No description provided for @helpSupportAppVersionRow.
+  ///
+  /// In en, this message translates to:
+  /// **'App version {version}'**
+  String helpSupportAppVersionRow(Object version);
+
+  /// No description provided for @helpSupportContactSupportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get helpSupportContactSupportButton;
+
+  /// No description provided for @helpSupportContactEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost Calculator Support'**
+  String get helpSupportContactEmailSubject;
+
+  /// No description provided for @helpSupportContactEmailBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Support ID: {supportId}\nApp version: {version}\n\nDescribe the issue here.'**
+  String helpSupportContactEmailBody(Object supportId, Object version);
+
+  /// No description provided for @helpSupportFaqTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs'**
+  String get helpSupportFaqTitle;
+
+  /// No description provided for @helpSupportFaqWeightQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What weight should I enter?'**
+  String get helpSupportFaqWeightQuestion;
+
+  /// No description provided for @helpSupportFaqWeightAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.'**
+  String get helpSupportFaqWeightAnswer;
+
+  /// No description provided for @helpSupportFaqElectricityQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Why does electricity matter?'**
+  String get helpSupportFaqElectricityQuestion;
+
+  /// No description provided for @helpSupportFaqElectricityAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.'**
+  String get helpSupportFaqElectricityAnswer;
+
+  /// No description provided for @helpSupportFaqRiskQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'How is failure risk calculated?'**
+  String get helpSupportFaqRiskQuestion;
+
+  /// No description provided for @helpSupportFaqRiskAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.'**
+  String get helpSupportFaqRiskAnswer;
+
+  /// No description provided for @helpSupportFaqLabourQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What is labour / processing time?'**
+  String get helpSupportFaqLabourQuestion;
+
+  /// No description provided for @helpSupportFaqLabourAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'It covers preparation, cleanup, post-processing, and monitoring. Keep it on for services where your time matters.'**
+  String get helpSupportFaqLabourAnswer;
+
+  /// No description provided for @helpSupportFaqMarkupQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What is markup?'**
+  String get helpSupportFaqMarkupQuestion;
+
+  /// No description provided for @helpSupportFaqMarkupAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Markup is the percentage added on top of total cost to reach your selling price. It covers margin, overhead, and profit.'**
+  String get helpSupportFaqMarkupAnswer;
+
+  /// No description provided for @helpSupportFaqSetupQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What is a setup fee?'**
+  String get helpSupportFaqSetupQuestion;
+
+  /// No description provided for @helpSupportFaqSetupAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.'**
+  String get helpSupportFaqSetupAnswer;
+
+  /// No description provided for @helpSupportLinksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Links'**
+  String get helpSupportLinksTitle;
+
+  /// No description provided for @helpSupportPrivacyPolicyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get helpSupportPrivacyPolicyLabel;
+
+  /// No description provided for @helpSupportTermsOfUseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of use'**
+  String get helpSupportTermsOfUseLabel;
+
+  /// No description provided for @helpSupportXTwitterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'X / Twitter'**
+  String get helpSupportXTwitterLabel;
+
+  /// No description provided for @helpSupportThreadsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get helpSupportThreadsLabel;
+
+  /// No description provided for @helpSupportAboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get helpSupportAboutTitle;
+
+  /// No description provided for @helpSupportAboutIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.'**
+  String get helpSupportAboutIntro;
+
+  /// No description provided for @helpSupportTrustNoAccounts.
+  ///
+  /// In en, this message translates to:
+  /// **'No accounts'**
+  String get helpSupportTrustNoAccounts;
+
+  /// No description provided for @helpSupportTrustNoCloudSync.
+  ///
+  /// In en, this message translates to:
+  /// **'No cloud sync'**
+  String get helpSupportTrustNoCloudSync;
+
+  /// No description provided for @helpSupportTrustNoTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'No tracking'**
+  String get helpSupportTrustNoTracking;
+
+  /// No description provided for @helpSupportTrustLocalData.
+  ///
+  /// In en, this message translates to:
+  /// **'Local data'**
+  String get helpSupportTrustLocalData;
+
+  /// No description provided for @helpSupportAboutCalculator.
+  ///
+  /// In en, this message translates to:
+  /// **'The calculator combines filament cost, electricity, failure risk, labour, and optional pricing tools like markup and setup fees.'**
+  String get helpSupportAboutCalculator;
+
+  /// No description provided for @helpSupportAboutOutcome.
+  ///
+  /// In en, this message translates to:
+  /// **'That keeps quotes tied to true cost, not just material spend.'**
+  String get helpSupportAboutOutcome;
+
   /// No description provided for @supportEmailPrefix.
   ///
   /// In en, this message translates to:
