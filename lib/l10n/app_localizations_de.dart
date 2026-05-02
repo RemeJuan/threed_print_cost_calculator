@@ -205,6 +205,137 @@ class AppLocalizationsDe extends AppLocalizations {
   String get needHelpTitle => 'Brauchen Sie Hilfe?';
 
   @override
+  String get helpSupportSupportTitle => 'Support';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Verwenden Sie diese Details, wenn Sie den Support kontaktieren.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Website';
+
+  @override
+  String get helpSupportEmailLabel => 'E-Mail';
+
+  @override
+  String get helpSupportSupportIdLabel => 'Support-ID';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Support-ID kopieren';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'App-Version $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Support kontaktieren';
+
+  @override
+  String get helpSupportContactEmailSubject => '3D-Druck-Kostenrechner Support';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'Support-ID: $supportId\nApp-Version: $version\n\nBeschreiben Sie hier das Problem.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'Support-ID: (nicht verfügbar)\nApp-Version: $version\n\nBeschreiben Sie hier das Problem.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'Häufig gestellte Fragen';
+
+  @override
+  String get helpSupportFaqWeightQuestion =>
+      'Welches Gewicht soll ich eingeben?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Geben Sie das Gesamtgewicht der Spule ein, nicht das übriggebliebene Filament. Die App verwendet das volle Rollengewicht zur Berechnung der Kosten pro Gramm.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Warum ist Elektrizität wichtig?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Lange Drucke und Drucker mit hoher Wattzahl können echte Kosten verursachen. Elektrizität zu überspringen führt normalerweise zu Unterpreisen.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Wie wird das Ausfallrisiko berechnet?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Das Risiko wird nur auf Basisdruck-Kosten wie Filament und Elektrizität angewendet. Es schätzt den erwarteten Verlust durch fehlgeschlagene Drucke.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Was ist Arbeits-/Bearbeitungszeit?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Es umfasst Vorbereitung, Reinigung, Nachbearbeitung und Überwachung. Lassen Sie es für Dienste eingeschaltet, bei denen Ihre Zeit wichtig ist.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Was ist Aufschlag?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'Aufschlag ist der Prozentsatz, der zu den Gesamtkosten hinzugefügt wird, um Ihren Verkaufspreis zu erreichen. Er deckt Marge, Gemeinkosten und Gewinn ab.';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'Was ist eine Einrichtungsgebühr?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Eine Einrichtungsgebühr ist ein fester Kostenbetrag pro Auftrag für Kalibrierung, Maschinenvorbereitung und Verwaltung. Sie hilft bei kleinen Drucken, Gemeinkosten zu decken.';
+
+  @override
+  String get helpSupportLinksTitle => 'Links';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Datenschutzrichtlinie';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Nutzungsbedingungen';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'Über';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Der 3D-Druck-Kostenrechner ist für lokale Preisgestaltung konzipiert. Er hilft Machern und kleinen Druckbetrieben, Arbeiten mit weniger Überraschungen zu kalkulieren.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Keine Konten';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Keine Cloud-Synchronisation';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Kein Tracking';
+
+  @override
+  String get helpSupportTrustLocalData => 'Lokale Daten';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Der Rechner kombiniert Filamentkosten, Elektrizität, Ausfallrisiko, Arbeit und optionale Preisgestaltungstools wie Aufschlag und Einrichtungsgebühren.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Das hält Angebote an echte Kosten gebunden, nicht nur an Materialausgaben.';
+
+  @override
   String get supportEmailPrefix => 'Bei Problemen schreiben Sie mir bitte an ';
 
   @override

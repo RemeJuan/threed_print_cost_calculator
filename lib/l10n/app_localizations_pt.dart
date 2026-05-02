@@ -204,6 +204,136 @@ class AppLocalizationsPt extends AppLocalizations {
   String get needHelpTitle => 'Precisa de ajuda?';
 
   @override
+  String get helpSupportSupportTitle => 'Suporte';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Use esses detalhes ao entrar em contato com o suporte.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Site';
+
+  @override
+  String get helpSupportEmailLabel => 'E-mail';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID de suporte';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Copiar ID de suporte';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Versão do app $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Contatar suporte';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Suporte Calculadora de Custo de Impressão 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID de suporte: $supportId\nVersão do app: $version\n\nDescreva o problema aqui.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID de suporte: (não disponível)\nVersão do app: $version\n\nDescreva o problema aqui.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'Perguntas frequentes';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'Que peso devo inserir?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Insira o peso total do carretel, não o filamento restante. O app usa o peso do rolo completo para calcular o custo por grama.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Por que a eletricidade é importante?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Impressões longas e impressoras de alta potência podem adicionar custo real. Pular a eletricidade geralmente subestima o preço do trabalho.';
+
+  @override
+  String get helpSupportFaqRiskQuestion => 'Como o risco de falha é calculado?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'O risco é aplicado apenas aos custos básicos de impressão como filamento e eletricidade. Ele estima a perda esperada de impressões falhadas.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'O que é tempo de mão de obra / processamento?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Cobre preparação, limpeza, pós-processamento e monitoramento. Mantenha ligado para serviços onde seu tempo importa.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'O que é margem de lucro?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'A margem de lucro é a porcentagem adicionada em cima do custo total para atingir seu preço de venda. Ela cobre margem, despesas gerais e lucro.';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'O que é uma taxa de configuração?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Uma taxa de configuração é um custo fixo por trabalho para calibração, preparação da máquina e administração. Ajuda impressões pequenas a cobrir despesas gerais.';
+
+  @override
+  String get helpSupportLinksTitle => 'Links';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Política de privacidade';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Termos de uso';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'Sobre';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'A Calculadora de Custo de Impressão 3D é construída para preços local-first. Ajuda criadores e pequenos negócios de impressão a cotar trabalhos com menos surpresas.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Sem contas';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Sem sincronização na nuvem';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Sem rastreamento';
+
+  @override
+  String get helpSupportTrustLocalData => 'Dados locais';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'A calculadora combina custo de filamento, eletricidade, risco de falha, mão de obra e ferramentas de preços opcionais como margem de lucro e taxas de configuração.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Isso mantém orçamentos vinculados ao custo real, não apenas ao gasto com material.';
+
+  @override
   String get supportEmailPrefix =>
       'Em caso de problemas, envie um e-mail para ';
 

@@ -202,6 +202,131 @@ class AppLocalizationsJa extends AppLocalizations {
   String get needHelpTitle => 'ヘルプが必要ですか？';
 
   @override
+  String get helpSupportSupportTitle => 'サポート';
+
+  @override
+  String get helpSupportSupportIntro => 'サポートに連絡するときはこれらの詳細を使用してください。';
+
+  @override
+  String get helpSupportWebsiteLabel => 'ウェブサイト';
+
+  @override
+  String get helpSupportEmailLabel => 'メール';
+
+  @override
+  String get helpSupportSupportIdLabel => 'サポートID';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'サポートIDをコピー';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'アプリバージョン $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'サポートに連絡';
+
+  @override
+  String get helpSupportContactEmailSubject => '3Dプリント費用計算機サポート';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'サポートID: $supportId\nアプリバージョン: $version\n\nここで問題を説明してください。';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'サポートID: (利用できません)\nアプリバージョン: $version\n\nここで問題を説明してください。';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'よくある質問';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'どの重量を入力すればよいですか？';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      '残りのフィラメントではなく、スプールの総重量を入力してください。アプリは完全なロールの重量を使用してグラムあたりのコストを計算します。';
+
+  @override
+  String get helpSupportFaqElectricityQuestion => 'なぜ電気が重要ですか？';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      '長時間の印刷と高ワット数のプリンターは実際のコストを追加できます。電気をスキップすると通常、仕事の価格が低くなります。';
+
+  @override
+  String get helpSupportFaqRiskQuestion => '失敗リスクはどのように計算されますか？';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'リスクはフィラメントや電気などの基本印刷コストにのみ適用されます。失敗した印刷からの予想損失を推定します。';
+
+  @override
+  String get helpSupportFaqLabourQuestion => '労働/処理時間とは何ですか？';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      '準備、清掃、後処理、監視をカバーします。あなたの時間が重要なサービスではオンにしておいてください。';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'マークアップとは何ですか？';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'マークアップは、販売価格に到達するために総コストの上に追加されるパーセンテージです。利益率、諸経費、利益をカバーします。';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'セットアップ料金とは何ですか？';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'セットアップ料金は、キャリブレーション、マシン準備、管理のためのジョブごとの固定コストです。小さな印刷が諸経費をカバーするのに役立ちます。';
+
+  @override
+  String get helpSupportLinksTitle => 'リンク';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'プライバシーポリシー';
+
+  @override
+  String get helpSupportTermsOfUseLabel => '利用規約';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'について';
+
+  @override
+  String get helpSupportAboutIntro =>
+      '3Dプリント費用計算機はローカルファースト価格設定のために構築されています。メーカーや小規模印刷ビジネスが、より少ない驚きで仕事を見積もるのに役立ちます。';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'アカウント不要';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'クラウド同期なし';
+
+  @override
+  String get helpSupportTrustNoTracking => '追跡なし';
+
+  @override
+  String get helpSupportTrustLocalData => 'ローカルデータ';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      '計算機は、フィラメントコスト、電気、失敗リスク、労働、およびマークアップやセットアップ料金などのオプションの価格設定ツールを組み合わせます。';
+
+  @override
+  String get helpSupportAboutOutcome => 'それは見積もりを真のコストに結び付け、材料費だけではありません。';
+
+  @override
   String get supportEmailPrefix => '問題がある場合は、次のアドレスまでメールしてください: ';
 
   @override

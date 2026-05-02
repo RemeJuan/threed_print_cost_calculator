@@ -207,6 +207,138 @@ class AppLocalizationsIt extends AppLocalizations {
   String get needHelpTitle => 'Hai bisogno di aiuto?';
 
   @override
+  String get helpSupportSupportTitle => 'Supporto';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Usa questi dettagli quando contatti il supporto.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Sito web';
+
+  @override
+  String get helpSupportEmailLabel => 'E-mail';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID supporto';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Copia ID supporto';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Versione app $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Contatta supporto';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Supporto Calcolatore Costi Stampa 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID supporto: $supportId\nVersione app: $version\n\nDescrivi il problema qui.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID supporto: (non disponibile)\nVersione app: $version\n\nDescrivi il problema qui.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQ';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'Che peso devo inserire?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Inserisci il peso totale della bobina, non il filamento rimasto. L\'app usa il peso del rotolo completo per calcolare il costo per grammo.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Perché l\'elettricità è importante?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Stampe lunghe e stampanti ad alto wattaggio possono aggiungere costi reali. Saltare l\'elettricità di solito sottostima il prezzo del lavoro.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Come viene calcolato il rischio di guasto?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Il rischio è applicato solo ai costi di stampa base come filamento ed elettricità. Stima la perdita prevista da stampe fallite.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Cos\'è il tempo di lavoro / elaborazione?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Copre preparazione, pulizia, post-elaborazione e monitoraggio. Tienilo attivo per servizi dove il tuo tempo conta.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Cos\'è il ricarico?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'Il ricarico è la percentuale aggiunta sopra il costo totale per raggiungere il tuo prezzo di vendita. Copre margine, spese generali e profitto.';
+
+  @override
+  String get helpSupportFaqSetupQuestion =>
+      'Cos\'è una tariffa di configurazione?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Una tariffa di configurazione è un costo fisso per lavoro per calibrazione, preparazione macchina e amministrazione. Aiuta le stampe piccole a coprire le spese generali.';
+
+  @override
+  String get helpSupportLinksTitle => 'Link';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Informativa sulla privacy';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Termini di utilizzo';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'Informazioni';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Il Calcolatore Costi Stampa 3D è costruito per prezzi local-first. Aiuta i creatori e le piccole imprese di stampa a quotare lavori con meno sorprese.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Nessun account';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Nessuna sincronizzazione cloud';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Nessun tracciamento';
+
+  @override
+  String get helpSupportTrustLocalData => 'Dati locali';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Il calcolatore combina costo filamento, elettricità, rischio guasto, lavoro e strumenti di prezzi opzionali come ricarico e tariffe di configurazione.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Questo mantiene le quotazioni legate al costo reale, non solo alla spesa materiale.';
+
+  @override
   String get supportEmailPrefix => 'Per qualsiasi problema, scrivimi a ';
 
   @override

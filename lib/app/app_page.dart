@@ -1,10 +1,9 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
-import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
@@ -202,13 +201,9 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             : const [HeaderActions()],
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
-          onPressed: () {
-            BotToast.showCustomNotification(
-              duration: const Duration(minutes: 5),
-              onlyOne: true,
-              toastBuilder: (_) => const SupportDialog(),
-            );
-          },
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const HelpSupportPage()),
+          ),
         ),
       ),
       body: PageView(

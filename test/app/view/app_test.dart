@@ -13,10 +13,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:threed_print_cost_calculator/app/app_page.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
-import 'package:threed_print_cost_calculator/app/support_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
@@ -82,7 +82,7 @@ void main() {
       expect(find.byType(CalculatorPage), findsOneWidget);
     });
 
-    testWidgets('help button opens the support dialog', (tester) async {
+    testWidgets('help button opens the help support page', (tester) async {
       await pumpAppShell(tester, const AppPage());
 
       await tester.pumpAndSettle();
@@ -96,20 +96,7 @@ void main() {
       helpButton.onPressed?.call();
       await tester.pumpAndSettle();
 
-      expect(find.byType(SupportDialog), findsOneWidget);
-    });
-
-    testWidgets('support dialog renders directly', (tester) async {
-      final db = await tester.pumpApp(const SupportDialog());
-      addTearDown(() => db.close());
-
-      await tester.pumpAndSettle();
-
-      expect(find.byType(SupportDialog), findsOneWidget);
-      expect(
-        find.text(lookupAppLocalizations(const Locale('en')).needHelpTitle),
-        findsOneWidget,
-      );
+      expect(find.byType(HelpSupportPage), findsOneWidget);
     });
   });
 }

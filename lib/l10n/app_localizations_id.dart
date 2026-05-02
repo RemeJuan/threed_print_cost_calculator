@@ -203,6 +203,137 @@ class AppLocalizationsId extends AppLocalizations {
   String get needHelpTitle => 'Butuh bantuan?';
 
   @override
+  String get helpSupportSupportTitle => 'Dukungan';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Gunakan detail ini saat menghubungi dukungan.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Situs web';
+
+  @override
+  String get helpSupportEmailLabel => 'Email';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID Dukungan';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Salin ID dukungan';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Versi aplikasi $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Hubungi dukungan';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Dukungan Kalkulator Biaya Cetak 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID Dukungan: $supportId\nVersi aplikasi: $version\n\nJelaskan masalahnya di sini.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID Dukungan: (tidak tersedia)\nVersi aplikasi: $version\n\nJelaskan masalahnya di sini.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQ';
+
+  @override
+  String get helpSupportFaqWeightQuestion =>
+      'Berat apa yang harus saya masukkan?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Masukkan berat total spul, bukan filamen sisa. Aplikasi menggunakan berat gulungan penuh untuk menghitung biaya per gram.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion => 'Mengapa listrik penting?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Pencetakan lama dan printer berdaya tinggi dapat menambah biaya nyata. Melewatkan listrik biasanya membuat harga terlalu rendah.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Bagaimana risiko kegagalan dihitung?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Risiko diterapkan hanya pada biaya cetak dasar seperti filamen dan listrik. Ini memperkirakan kerugian yang diharapkan dari pencetakan yang gagal.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Apa itu waktu tenaga kerja / pengolahan?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Ini mencakup persiapan, pembersihan, pasca-pemrosesan, dan pemantauan. Tetap aktifkan untuk layanan di mana waktu Anda penting.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Apa itu markup?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'Markup adalah persentase yang ditambahkan di atas biaya total untuk mencapai harga jual Anda. Ini mencakup margin, overhead, dan keuntungan.';
+
+  @override
+  String get helpSupportFaqSetupQuestion => 'Apa itu biaya setup?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Biaya setup adalah biaya tetap per pekerjaan untuk kalibrasi, persiapan mesin, dan administrasi. Ini membantu cetakan kecil menutupi overhead.';
+
+  @override
+  String get helpSupportLinksTitle => 'Tautan';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Kebijakan privasi';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Ketentuan penggunaan';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'Tentang';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Kalkulator Biaya Cetak 3D dibuat untuk penetapan harga lokal terlebih dahulu. Ini membantu pembuat dan bisnis cetak kecil mengutip pekerjaan dengan lebih sedikit kejutan.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Tanpa akun';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Tanpa sinkronisasi cloud';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Tanpa pelacakan';
+
+  @override
+  String get helpSupportTrustLocalData => 'Data lokal';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Kalkulator menggabungkan biaya filamen, listrik, risiko kegagalan, tenaga kerja, dan alat penetapan harga opsional seperti markup dan biaya setup.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Itu membuat kutipan tetap terikat pada biaya sebenarnya, bukan hanya pengeluaran material.';
+
+  @override
   String get supportEmailPrefix => 'Jika ada masalah, silakan email saya di ';
 
   @override

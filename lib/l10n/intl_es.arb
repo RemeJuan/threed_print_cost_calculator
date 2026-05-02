@@ -126,7 +126,59 @@
   "wattsSuffix": "w",
   "@wattsSuffix": {},
   "needHelpTitle": "¿Necesitas ayuda?",
-  "@needHelpTitle": {},
+  "helpSupportSupportTitle": "Soporte",
+  "helpSupportSupportIntro": "Usa estos detalles al contactar con soporte.",
+  "helpSupportWebsiteLabel": "Sitio web",
+  "helpSupportEmailLabel": "Correo electrónico",
+  "helpSupportSupportIdLabel": "ID de soporte",
+  "helpSupportCopySupportIdTooltip": "Copiar ID de soporte",
+  "helpSupportAppVersionRow": "Versión de la app {version}",
+  "@helpSupportAppVersionRow": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportContactSupportButton": "Contactar soporte",
+  "helpSupportContactEmailSubject": "Soporte Calculadora de Costes de Impresión 3D",
+  "helpSupportContactEmailBody": "ID de soporte: {supportId}\nVersión de la app: {version}\n\nDescribe el problema aquí.",
+  "@helpSupportContactEmailBody": {
+    "placeholders": {
+      "supportId": {},
+      "version": {}
+    }
+  },
+  "helpSupportContactEmailBodyNoSupportId": "ID de soporte: (no disponible)\nVersión de la app: {version}\n\nDescribe el problema aquí.",
+  "@helpSupportContactEmailBodyNoSupportId": {
+    "placeholders": {
+      "version": {}
+    }
+  },
+  "helpSupportFaqTitle": "Preguntas frecuentes",
+  "helpSupportFaqWeightQuestion": "¿Qué peso debo ingresar?",
+  "helpSupportFaqWeightAnswer": "Ingresa el peso total del carrete, no el filamento sobrante. La app usa el peso del rollo completo para calcular el coste por gramo.",
+  "helpSupportFaqElectricityQuestion": "¿Por qué importa la electricidad?",
+  "helpSupportFaqElectricityAnswer": "Las impresiones largas y las impresoras de alto vataje pueden añadir coste real. Omitir la electricidad normalmente subestima el precio del trabajo.",
+  "helpSupportFaqRiskQuestion": "¿Cómo se calcula el riesgo de fallo?",
+  "helpSupportFaqRiskAnswer": "El riesgo se aplica solo a los costes de impresión base como filamento y electricidad. Estima la pérdida esperada por impresiones fallidas.",
+  "helpSupportFaqLabourQuestion": "¿Qué es el tiempo de mano de obra / procesamiento?",
+  "helpSupportFaqLabourAnswer": "Cubre preparación, limpieza, postprocesamiento y monitoreo. Mantenlo activo para servicios donde tu tiempo importa.",
+  "helpSupportFaqMarkupQuestion": "¿Qué es el margen?",
+  "helpSupportFaqMarkupAnswer": "El margen es el porcentaje añadido sobre el coste total para alcanzar tu precio de venta. Cubre margen, gastos generales y beneficio.",
+  "helpSupportFaqSetupQuestion": "¿Qué es una tarifa de configuración?",
+  "helpSupportFaqSetupAnswer": "Una tarifa de configuración es un coste fijo por trabajo para calibración, preparación de máquina y administración. Ayuda a que impresiones pequeñas cubran gastos generales.",
+  "helpSupportLinksTitle": "Enlaces",
+  "helpSupportPrivacyPolicyLabel": "Política de privacidad",
+  "helpSupportTermsOfUseLabel": "Términos de uso",
+  "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportThreadsLabel": "Threads",
+  "helpSupportAboutTitle": "Acerca de",
+  "helpSupportAboutIntro": "La Calculadora de Costes de Impresión 3D está hecha para precios locales primero. Ayuda a creadores y pequeños negocios de impresión a cotizar trabajo con menos sorpresas.",
+  "helpSupportTrustNoAccounts": "Sin cuentas",
+  "helpSupportTrustNoCloudSync": "Sin sincronización en la nube",
+  "helpSupportTrustNoTracking": "Sin seguimiento",
+  "helpSupportTrustLocalData": "Datos locales",
+  "helpSupportAboutCalculator": "La calculadora combina coste de filamento, electricidad, riesgo de fallo, mano de obra y herramientas de precios opcionales como margen y tarifas de configuración.",
+  "helpSupportAboutOutcome": "Eso mantiene las cotizaciones vinculadas al coste real, no solo al gasto de material.",
   "supportEmailPrefix": "Si tienes algún problema, escríbeme a ",
   "@supportEmailPrefix": {},
   "supportEmail": "3d@printcostcalc.app",

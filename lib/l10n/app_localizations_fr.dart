@@ -206,6 +206,138 @@ class AppLocalizationsFr extends AppLocalizations {
   String get needHelpTitle => 'Besoin d\'aide ?';
 
   @override
+  String get helpSupportSupportTitle => 'Support';
+
+  @override
+  String get helpSupportSupportIntro =>
+      'Utilisez ces détails lorsque vous contactez le support.';
+
+  @override
+  String get helpSupportWebsiteLabel => 'Site web';
+
+  @override
+  String get helpSupportEmailLabel => 'E-mail';
+
+  @override
+  String get helpSupportSupportIdLabel => 'ID de support';
+
+  @override
+  String get helpSupportCopySupportIdTooltip => 'Copier l\'ID de support';
+
+  @override
+  String helpSupportAppVersionRow(Object version) {
+    return 'Version de l\'app $version';
+  }
+
+  @override
+  String get helpSupportContactSupportButton => 'Contacter le support';
+
+  @override
+  String get helpSupportContactEmailSubject =>
+      'Support Calculateur de Coût d\'Impression 3D';
+
+  @override
+  String helpSupportContactEmailBody(Object supportId, Object version) {
+    return 'ID de support : $supportId\nVersion de l\'app : $version\n\nDécrivez le problème ici.';
+  }
+
+  @override
+  String helpSupportContactEmailBodyNoSupportId(Object version) {
+    return 'ID de support : (non disponible)\nVersion de l\'app : $version\n\nDécrivez le problème ici.';
+  }
+
+  @override
+  String get helpSupportFaqTitle => 'FAQ';
+
+  @override
+  String get helpSupportFaqWeightQuestion => 'Quel poids dois-je entrer ?';
+
+  @override
+  String get helpSupportFaqWeightAnswer =>
+      'Entrez le poids total de la bobine, pas le filament restant. L\'application utilise le poids du rouleau complet pour calculer le coût par gramme.';
+
+  @override
+  String get helpSupportFaqElectricityQuestion =>
+      'Pourquoi l\'électricité est-elle importante ?';
+
+  @override
+  String get helpSupportFaqElectricityAnswer =>
+      'Les longues impressions et les imprimantes à forte puissance peuvent ajouter un coût réel. Ignorer l\'électricité sous-estime généralement le prix du travail.';
+
+  @override
+  String get helpSupportFaqRiskQuestion =>
+      'Comment le risque d\'échec est-il calculé ?';
+
+  @override
+  String get helpSupportFaqRiskAnswer =>
+      'Le risque est appliqué uniquement aux coûts d\'impression de base comme le filament et l\'électricité. Il estime la perte attendue des impressions échouées.';
+
+  @override
+  String get helpSupportFaqLabourQuestion =>
+      'Qu\'est-ce que le temps de main-d\'œuvre / traitement ?';
+
+  @override
+  String get helpSupportFaqLabourAnswer =>
+      'Il couvre la préparation, le nettoyage, le post-traitement et la surveillance. Gardez-le activé pour les services où votre temps compte.';
+
+  @override
+  String get helpSupportFaqMarkupQuestion => 'Qu\'est-ce que la majoration ?';
+
+  @override
+  String get helpSupportFaqMarkupAnswer =>
+      'La majoration est le pourcentage ajouté au coût total pour atteindre votre prix de vente. Elle couvre la marge, les frais généraux et le profit.';
+
+  @override
+  String get helpSupportFaqSetupQuestion =>
+      'Qu\'est-ce qu\'un frais de configuration ?';
+
+  @override
+  String get helpSupportFaqSetupAnswer =>
+      'Un frais de configuration est un coût fixe par travail pour l\'étalonnage, la préparation de la machine et l\'administration. Il aide les petites impressions à couvrir les frais généraux.';
+
+  @override
+  String get helpSupportLinksTitle => 'Liens';
+
+  @override
+  String get helpSupportPrivacyPolicyLabel => 'Politique de confidentialité';
+
+  @override
+  String get helpSupportTermsOfUseLabel => 'Conditions d\'utilisation';
+
+  @override
+  String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportThreadsLabel => 'Threads';
+
+  @override
+  String get helpSupportAboutTitle => 'À propos';
+
+  @override
+  String get helpSupportAboutIntro =>
+      'Le Calculateur de Coût d\'Impression 3D est conçu pour une tarification locale d\'abord. Il aide les créateurs et les petites entreprises d\'impression à établir des devis avec moins de surprises.';
+
+  @override
+  String get helpSupportTrustNoAccounts => 'Pas de comptes';
+
+  @override
+  String get helpSupportTrustNoCloudSync => 'Pas de synchronisation cloud';
+
+  @override
+  String get helpSupportTrustNoTracking => 'Pas de suivi';
+
+  @override
+  String get helpSupportTrustLocalData => 'Données locales';
+
+  @override
+  String get helpSupportAboutCalculator =>
+      'Le calculateur combine le coût du filament, l\'électricité, le risque d\'échec, la main-d\'œuvre et des outils de tarification optionnels comme la majoration et les frais de configuration.';
+
+  @override
+  String get helpSupportAboutOutcome =>
+      'Cela maintient les devis liés au coût réel, pas seulement aux dépenses matérielles.';
+
+  @override
   String get supportEmailPrefix =>
       'En cas de problème, envoyez-moi un e-mail à ';
 
