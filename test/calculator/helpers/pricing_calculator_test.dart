@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dar
 
 void main() {
   group('PricingCalculator', () {
-    test('returns zeroes when base cost is not positive', () {
+    test('zero base cost still includes setup fee', () {
       final result = PricingCalculator.calculate(
         baseCost: 0,
         markupPercent: 25,
@@ -12,9 +12,9 @@ void main() {
         roundingMode: PricingRoundingMode.pointNinetyNine,
       );
 
-      expect(result.finalPrice, 0);
+      expect(result.finalPrice, 4.99);
       expect(result.markupAmount, 0);
-      expect(result.subtotalBeforeRounding, 0);
+      expect(result.subtotalBeforeRounding, 4);
     });
 
     test('none keeps exact subtotal with currency rounding', () {

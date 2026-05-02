@@ -18,7 +18,7 @@ class PricingCalculator {
     final markupPercentHundredths = _toHundredths(normalizedMarkupPercent);
     final setupFeeCents = _toCents(normalizedSetupFee);
 
-    if (baseCostCents <= 0) {
+    if (baseCostCents < 0) {
       return PricingResult(
         baseCost: normalizedBaseCost,
         markupPercent: normalizedMarkupPercent,
@@ -68,7 +68,7 @@ class PricingCalculator {
       case PricingRoundingMode.pointNinetyNine:
         final wholeDollars = subtotalCents ~/ 100;
         final candidate = wholeDollars * 100 + 99;
-        if (subtotalCents < candidate) {
+        if (subtotalCents <= candidate) {
           return candidate;
         }
         return (wholeDollars + 1) * 100 + 99;
