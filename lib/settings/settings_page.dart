@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/components/accordion_menu/accordion_menu.dart';
-import 'package:threed_print_cost_calculator/shared/components/accordion_menu/model/accordion_item_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
+import 'package:threed_print_cost_calculator/settings/settings_section.dart';
 import 'package:threed_print_cost_calculator/settings/work_costs_form.dart';
 
 class SettingsPage extends ConsumerWidget {
@@ -24,47 +22,34 @@ class SettingsPage extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        AccordionMenu(
-          items: [
-            AccordionItem(
-              headerKey: const ValueKey<String>('settings.general.section'),
-              bodyKey: const ValueKey<String>('settings.general.body'),
-              header: Text(l10n.generalHeader, style: style),
-              body: const GeneralSettings(),
-              initiallyExpanded: true,
-              isLocked: !isPremium,
-              onLockedTap: () {
-                AppAnalytics.safeLog(
-                  () => AppAnalytics.premiumFeatureTapped(
-                    'settings',
-                    isPro: isPremium,
-                    source: 'settings',
-                  ),
-                );
-              },
-            ),
-            if (isPremium) ...[
-              AccordionItem(
-                headerKey: const ValueKey<String>('settings.printers.section'),
-                bodyKey: const ValueKey<String>('settings.printers.body'),
-                header: Text(l10n.printersHeader, style: style),
-                body: const Printers(),
-                action: _action(
-                  context,
-                  const AddPrinter(),
-                  const Icon(Icons.add),
-                  const ValueKey<String>('settings.printers.add.button'),
-                ),
-              ),
-              AccordionItem(
-                headerKey: const ValueKey<String>('settings.workCost.section'),
-                bodyKey: const ValueKey<String>('settings.workCost.body'),
-                header: Text(l10n.workCostsLabel, style: style),
-                body: const WorkCostsSettings(),
-              ),
-            ],
-          ],
+        SettingsSection(
+          headerKey: const ValueKey<String>('settings.general.section'),
+          bodyKey: const ValueKey<String>('settings.general.body'),
+          title: Text(l10n.generalHeader, style: style),
+          child: const GeneralSettings(),
         ),
+        if (isPremium) ...[
+          const SizedBox(height: 16),
+          SettingsSection(
+            headerKey: const ValueKey<String>('settings.workCost.section'),
+            bodyKey: const ValueKey<String>('settings.workCost.body'),
+            title: Text(l10n.workCostsLabel, style: style),
+            child: const WorkCostsSettings(),
+          ),
+          const SizedBox(height: 16),
+          SettingsSection(
+            headerKey: const ValueKey<String>('settings.printers.section'),
+            bodyKey: const ValueKey<String>('settings.printers.body'),
+            title: Text(l10n.printersHeader, style: style),
+            action: _action(
+              context,
+              const AddPrinter(),
+              const Icon(Icons.add),
+              const ValueKey<String>('settings.printers.add.button'),
+            ),
+            child: const Printers(),
+          ),
+        ],
       ],
     );
   }
