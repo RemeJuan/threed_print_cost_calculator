@@ -84,6 +84,9 @@ class CalculatorSettingsSync {
     );
 
     if (!seedInitialMaterialUsage) return nextState;
+    if (spoolWeightVal.trim().isNotEmpty || spoolCostVal.trim().isNotEmpty) {
+      return nextState;
+    }
 
     return ensureInitialMaterialUsage(nextState, settings.selectedMaterial);
   }

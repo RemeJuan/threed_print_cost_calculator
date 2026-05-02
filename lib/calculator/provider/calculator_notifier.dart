@@ -47,7 +47,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     if (state.hasHydratedDefaults) return;
 
     final settings = await ref.read(settingsServiceProvider).get();
-    state = await ref.read(calculatorSettingsSyncProvider).load(settings);
+    state = await ref
+        .read(calculatorSettingsSyncProvider)
+        .load(settings, seedInitialMaterialUsage: true);
   }
 
   Future<void> resetToDefaults() async {
