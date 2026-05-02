@@ -46,7 +46,7 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
             width: double.infinity,
             child: FilledButton.icon(
               key: const ValueKey<String>('helpSupport.contact.button'),
-              onPressed: () => _contactSupport(l10n, visibleSupportId),
+              onPressed: () => _contactSupport(l10n, supportId),
               icon: const Icon(Icons.email_outlined),
               label: Text(l10n.helpSupportContactSupportButton),
             ),
@@ -404,10 +404,18 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
 
   Future<void> _contactSupport(AppLocalizations l10n, String supportId) async {
     final packageInfo = await _packageInfoFuture;
+    final String emailBody;
+
+    if (supportId.isEmpty || supportId.trim().isEmpty) {
+      emailBody = 'Support ID: (not available)\nApp version: ${packageInfo.version}\n\nDescribe the issue here.';
+    } else {
+      emailBody = l10n.helpSupportContactEmailBody(supportId, packageInfo.version);
+    }
+
     await _sendEmail(
       recipient: l10n.supportEmail,
       subject: l10n.helpSupportContactEmailSubject,
-      body: l10n.helpSupportContactEmailBody(supportId, packageInfo.version),
+      body: emailBody,
     );
   }
 }

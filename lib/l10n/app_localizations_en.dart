@@ -252,7 +252,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpSupportFaqElectricityAnswer =>
-      'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.';
+      'Long prints and high-wattage printers can add real cost. Skipping electricity usually underprices the job.';
 
   @override
   String get helpSupportFaqRiskQuestion => 'How is failure risk calculated?';
