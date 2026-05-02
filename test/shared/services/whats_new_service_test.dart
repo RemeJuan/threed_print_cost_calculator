@@ -193,7 +193,7 @@ void main() {
       expect(prefs.getString('dismissed_announcement_id'), currentAnnouncement.id);
     });
 
-    test('migrates legacy launch markers to the current announcement', () async {
+    test('legacy launch markers do not suppress a new announcement', () async {
       SharedPreferences.setMockInitialValues({
         'has_launched_before': true,
         'last_seen_version': '1.2.3',
@@ -205,11 +205,8 @@ void main() {
         currentAnnouncement,
       );
 
-      expect(shouldShow, false);
-      expect(
-        prefs.getString('dismissed_announcement_id'),
-        currentAnnouncement.id,
-      );
+      expect(shouldShow, true);
+      expect(prefs.getString('dismissed_announcement_id'), isNull);
     });
 
     test('loadAnnouncement returns null when JSON file missing', () async {
