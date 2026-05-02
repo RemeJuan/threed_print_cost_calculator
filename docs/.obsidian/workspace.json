@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "gcode/parsers/orcaslicer.md",
+                "file": "product/gcode-import.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "orcaslicer"
+              "title": "gcode-import"
             }
           }
         ]
@@ -41,7 +41,7 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": true
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -183,11 +183,24 @@
   },
   "active": "0365f79942b26501",
   "lastOpenFiles": [
+    "product/help_support_faq.md",
+    "navigation.md",
+    "feature-map.md",
+    "architecture.md",
+    "decisions/2026-05-calculator-form-state-ownership.md",
+    "product/gcode-import.md",
+    "gcode/parsers/orcaslicer.md",
+    "product/Help Support FAQ.md",
+    "product/whats-new-announcement.md",
+    "product/pricing_model.md",
+    "product/preset_import.md",
+    "product/gcode_auto_calc.md",
+    "product/client_view_and_shareable_quote.md",
+    "product/batch_costing.md",
+    "product/backup_and_restore.md",
+    "analytics.md",
     "Untitled.base",
     "Untitled.canvas",
-    "product/preset_import.md",
-    "product/pricing_model.md",
-    "analytics.md",
     "README.md"
   ]
 }
