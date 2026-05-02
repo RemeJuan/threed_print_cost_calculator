@@ -18,17 +18,15 @@ class MaterialForm extends HookConsumerWidget {
   const MaterialForm({this.dbRef, super.key});
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(materialsProvider.notifier);
-    final state = ref.watch(materialsProvider);
     final l10n = AppLocalizations.of(context)!;
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final hasSubmitted = useState(false);
 
-    useEffect(() {
-      notifier.init(dbRef);
-      return null;
-    }, [dbRef]);
+    final loadFuture = useMemoized(() => notifier.init(dbRef), [dbRef]);
+    final loadSnapshot = useFuture(loadFuture);
+    final state = ref.watch(materialsProvider);
 
     // Create controllers and focus nodes at the top-level of the build to keep
     // hook calls linear and avoid wrapping fields in Builders.
@@ -56,6 +54,10 @@ class MaterialForm extends HookConsumerWidget {
       text: state.colorHex.value,
     );
     final colorHexFocus = useFocusNode();
+
+    if (loadSnapshot.connectionState != ConnectionState.done) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     String? requiredTextValidator(String? value) {
       return localizedValidationMessage(l10n, validateRequiredText(value));

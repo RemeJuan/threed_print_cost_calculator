@@ -15,6 +15,8 @@ final materialsProvider = NotifierProvider<MaterialsProvider, MaterialState>(
 );
 
 class MaterialsProvider extends Notifier<MaterialState> {
+  var _materialsLoadToken = 0;
+
   @override
   MaterialState build() {
     return MaterialState();
@@ -23,9 +25,12 @@ class MaterialsProvider extends Notifier<MaterialState> {
   MaterialsRepository get _materialsRepository =>
       ref.read(materialsRepositoryProvider);
 
-  void init(final String? key) async {
+  Future<void> init(final String? key) async {
+    final loadToken = ++_materialsLoadToken;
+
     if (key != null) {
       final material = await _materialsRepository.getMaterialById(key);
+      if (loadToken != _materialsLoadToken) return;
       if (material == null) return;
 
       state = state.copyWith(

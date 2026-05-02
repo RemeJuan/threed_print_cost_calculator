@@ -15,17 +15,15 @@ class AddPrinter extends HookConsumerWidget {
   final String? dbRef;
 
   @override
-  Widget build(context, ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(printersProvider.notifier);
-    final state = ref.watch(printersProvider);
     final l10n = AppLocalizations.of(context)!;
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final hasSubmitted = useState(false);
 
-    useEffect(() {
-      notifier.init(dbRef);
-      return null;
-    }, [dbRef]);
+    final loadFuture = useMemoized(() => notifier.init(dbRef), [dbRef]);
+    final loadSnapshot = useFuture(loadFuture);
+    final state = ref.watch(printersProvider);
 
     // Hook-managed controllers and focus nodes to avoid clobbering while typing
     final nameController = useTextEditingController(text: state.name.value);
@@ -36,6 +34,10 @@ class AddPrinter extends HookConsumerWidget {
 
     final wattController = useTextEditingController(text: state.wattage.value);
     final wattFocus = useFocusNode();
+
+    if (loadSnapshot.connectionState != ConnectionState.done) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     String? requiredTextValidator(String? value) {
       return localizedValidationMessage(l10n, validateRequiredText(value));
