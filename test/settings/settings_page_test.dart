@@ -165,47 +165,61 @@ void main() {
     expect(prefs.getBool('hideProPromotions'), isTrue);
   });
 
-  testWidgets('premium users see printers and work cost sections but not materials', (
-    tester,
-  ) async {
-    final settingsRepo = _FakeSettingsRepository();
-    final db = await tester.pumpApp(const SettingsPage(), [
-      isPremiumProvider.overrideWithValue(true),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ]);
-    addTearDown(db.close);
-    addTearDown(settingsRepo.dispose);
+  testWidgets(
+    'premium users see printers and work cost sections but not materials',
+    (tester) async {
+      final settingsRepo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const SettingsPage(), [
+        isPremiumProvider.overrideWithValue(true),
+        settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(settingsRepo.dispose);
 
-    settingsRepo.emit(GeneralSettingsModel.initial());
+      settingsRepo.emit(GeneralSettingsModel.initial());
 
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    expect(
-      find.byKey(const ValueKey<String>('settings.printers.section')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.materials.section')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.workCost.section')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.printers.add.button')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.materials.add.button')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
-      findsNothing,
-    );
-  });
+      expect(
+        find.byKey(const ValueKey<String>('settings.printers.section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.materials.section')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.workCost.section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.printers.add.button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.materials.add.button')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
+        findsNothing,
+      );
+
+      final generalTopLeft = tester.getTopLeft(
+        find.byKey(const ValueKey<String>('settings.general.section')),
+      );
+      final workCostsTopLeft = tester.getTopLeft(
+        find.byKey(const ValueKey<String>('settings.workCost.section')),
+      );
+      final printersTopLeft = tester.getTopLeft(
+        find.byKey(const ValueKey<String>('settings.printers.section')),
+      );
+
+      expect(generalTopLeft.dy, lessThan(workCostsTopLeft.dy));
+      expect(workCostsTopLeft.dy, lessThan(printersTopLeft.dy));
+    },
+  );
 
   testWidgets('printer add action opens AddPrinter dialog', (tester) async {
     final settingsRepo = _FakeSettingsRepository();
