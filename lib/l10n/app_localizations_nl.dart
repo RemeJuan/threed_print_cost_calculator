@@ -201,39 +201,39 @@ class AppLocalizationsNl extends AppLocalizations {
   String get needHelpTitle => 'Hulp nodig?';
 
   @override
-  String get helpSupportSupportTitle => 'Support';
+  String get helpSupportSupportTitle => 'Ondersteuning';
 
   @override
   String get helpSupportSupportIntro =>
-      'Use these details when contacting support.';
+      'Gebruik deze gegevens wanneer je contact opneemt met de ondersteuning.';
 
   @override
   String get helpSupportWebsiteLabel => 'Website';
 
   @override
-  String get helpSupportEmailLabel => 'Email';
+  String get helpSupportEmailLabel => 'E-mail';
 
   @override
-  String get helpSupportSupportIdLabel => 'Support ID';
+  String get helpSupportSupportIdLabel => 'Ondersteunings-ID';
 
   @override
-  String get helpSupportCopySupportIdTooltip => 'Copy support ID';
+  String get helpSupportCopySupportIdTooltip => 'Ondersteunings-ID kopiëren';
 
   @override
   String helpSupportAppVersionRow(Object version) {
-    return 'App version $version';
+    return 'App-versie $version';
   }
 
   @override
-  String get helpSupportContactSupportButton => 'Contact support';
+  String get helpSupportContactSupportButton => 'Contact ondersteuning';
 
   @override
   String get helpSupportContactEmailSubject =>
-      '3D Print Cost Calculator Support';
+      '3D-printkostenrekenmachine Ondersteuning';
 
   @override
   String helpSupportContactEmailBody(Object supportId, Object version) {
-    return 'Support ID: $supportId\nApp version: $version\n\nDescribe the issue here.';
+    return 'Ondersteunings-ID: $supportId\nApp-versie: $version\n\nBeschrijf het probleem hier.';
   }
 
   @override
@@ -242,60 +242,60 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get helpSupportFaqTitle => 'FAQs';
+  String get helpSupportFaqTitle => 'Veelgestelde vragen';
 
   @override
-  String get helpSupportFaqWeightQuestion => 'What weight should I enter?';
+  String get helpSupportFaqWeightQuestion => 'Welk gewicht moet ik invoeren?';
 
   @override
   String get helpSupportFaqWeightAnswer =>
-      'Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.';
+      'Voer het totale spoelgewicht in, niet het overgebleven filament. De app gebruikt het volledige rolgewicht om de kosten per gram te berekenen.';
 
   @override
   String get helpSupportFaqElectricityQuestion =>
-      'Why does electricity matter?';
+      'Waarom is elektriciteit belangrijk?';
 
   @override
   String get helpSupportFaqElectricityAnswer =>
-      'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.';
+      'Lange prints en printers met hoog vermogen kunnen echte kosten toevoegen. Elektriciteit overslaan leidt meestal tot te lage prijzen.';
 
   @override
-  String get helpSupportFaqRiskQuestion => 'How is failure risk calculated?';
+  String get helpSupportFaqRiskQuestion =>
+      'Hoe wordt het risico op mislukking berekend?';
 
   @override
   String get helpSupportFaqRiskAnswer =>
-      'Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.';
+      'Risico wordt alleen toegepast op basisprintkosten zoals filament en elektriciteit. Het schat het verwachte verlies van mislukte prints in.';
 
   @override
-  String get helpSupportFaqLabourQuestion =>
-      'What is labour / processing time?';
+  String get helpSupportFaqLabourQuestion => 'Wat is arbeid / verwerkingstijd?';
 
   @override
   String get helpSupportFaqLabourAnswer =>
-      'It covers preparation, cleanup, post-processing, and monitoring. Keep it on for services where your time matters.';
+      'Het dekt voorbereiding, opruimen, nabewerking en monitoring. Laat het aan voor diensten waar je tijd belangrijk is.';
 
   @override
-  String get helpSupportFaqMarkupQuestion => 'What is markup?';
+  String get helpSupportFaqMarkupQuestion => 'Wat is opslag?';
 
   @override
   String get helpSupportFaqMarkupAnswer =>
-      'Markup is the percentage added on top of total cost to reach your selling price. It covers margin, overhead, and profit.';
+      'Opslag is het percentage dat bovenop de totale kosten wordt toegevoegd om je verkoopprijs te bereiken. Het dekt marge, overhead en winst.';
 
   @override
-  String get helpSupportFaqSetupQuestion => 'What is a setup fee?';
+  String get helpSupportFaqSetupQuestion => 'Wat is een opstartkosten?';
 
   @override
   String get helpSupportFaqSetupAnswer =>
-      'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.';
+      'Opstartkosten zijn vaste kosten per opdracht voor kalibratie, machine voorbereiding en administratie. Het helpt kleine prints overhead te dekken.';
 
   @override
   String get helpSupportLinksTitle => 'Links';
 
   @override
-  String get helpSupportPrivacyPolicyLabel => 'Privacy policy';
+  String get helpSupportPrivacyPolicyLabel => 'Privacybeleid';
 
   @override
-  String get helpSupportTermsOfUseLabel => 'Terms of use';
+  String get helpSupportTermsOfUseLabel => 'Gebruiksvoorwaarden';
 
   @override
   String get helpSupportXTwitterLabel => 'X / Twitter';
@@ -304,31 +304,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get helpSupportThreadsLabel => 'Threads';
 
   @override
-  String get helpSupportAboutTitle => 'About';
+  String get helpSupportAboutTitle => 'Over';
 
   @override
   String get helpSupportAboutIntro =>
-      '3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.';
+      '3D-printkostenrekenmachine is gebouwd voor local-first prijzen. Het helpt makers en kleine printbedrijven om werk te offeren met minder verrassingen.';
 
   @override
-  String get helpSupportTrustNoAccounts => 'No accounts';
+  String get helpSupportTrustNoAccounts => 'Geen accounts';
 
   @override
-  String get helpSupportTrustNoCloudSync => 'No cloud sync';
+  String get helpSupportTrustNoCloudSync => 'Geen cloud-synchronisatie';
 
   @override
-  String get helpSupportTrustNoTracking => 'No tracking';
+  String get helpSupportTrustNoTracking => 'Geen tracking';
 
   @override
-  String get helpSupportTrustLocalData => 'Local data';
+  String get helpSupportTrustLocalData => 'Lokale gegevens';
 
   @override
   String get helpSupportAboutCalculator =>
-      'The calculator combines filament cost, electricity, failure risk, labour, and optional pricing tools like markup and setup fees.';
+      'De rekenmachine combineert filamentkosten, elektriciteit, risico op mislukking, arbeid en optionele prijstools zoals opslag en opstartkosten.';
 
   @override
   String get helpSupportAboutOutcome =>
-      'That keeps quotes tied to true cost, not just material spend.';
+      'Dat houdt offertes gebonden aan echte kosten, niet alleen materiaaluitgaven.';
 
   @override
   String get supportEmailPrefix => 'Bij problemen kun je mij mailen op ';

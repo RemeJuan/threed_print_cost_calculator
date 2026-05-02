@@ -199,39 +199,37 @@ class AppLocalizationsJa extends AppLocalizations {
   String get needHelpTitle => 'ヘルプが必要ですか？';
 
   @override
-  String get helpSupportSupportTitle => 'Support';
+  String get helpSupportSupportTitle => 'サポート';
 
   @override
-  String get helpSupportSupportIntro =>
-      'Use these details when contacting support.';
+  String get helpSupportSupportIntro => 'サポートに連絡するときはこれらの詳細を使用してください。';
 
   @override
-  String get helpSupportWebsiteLabel => 'Website';
+  String get helpSupportWebsiteLabel => 'ウェブサイト';
 
   @override
-  String get helpSupportEmailLabel => 'Email';
+  String get helpSupportEmailLabel => 'メール';
 
   @override
-  String get helpSupportSupportIdLabel => 'Support ID';
+  String get helpSupportSupportIdLabel => 'サポートID';
 
   @override
-  String get helpSupportCopySupportIdTooltip => 'Copy support ID';
+  String get helpSupportCopySupportIdTooltip => 'サポートIDをコピー';
 
   @override
   String helpSupportAppVersionRow(Object version) {
-    return 'App version $version';
+    return 'アプリバージョン $version';
   }
 
   @override
-  String get helpSupportContactSupportButton => 'Contact support';
+  String get helpSupportContactSupportButton => 'サポートに連絡';
 
   @override
-  String get helpSupportContactEmailSubject =>
-      '3D Print Cost Calculator Support';
+  String get helpSupportContactEmailSubject => '3Dプリント費用計算機サポート';
 
   @override
   String helpSupportContactEmailBody(Object supportId, Object version) {
-    return 'Support ID: $supportId\nApp version: $version\n\nDescribe the issue here.';
+    return 'サポートID: $supportId\nアプリバージョン: $version\n\nここで問題を説明してください。';
   }
 
   @override
@@ -240,60 +238,58 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get helpSupportFaqTitle => 'FAQs';
+  String get helpSupportFaqTitle => 'よくある質問';
 
   @override
-  String get helpSupportFaqWeightQuestion => 'What weight should I enter?';
+  String get helpSupportFaqWeightQuestion => 'どの重量を入力すればよいですか？';
 
   @override
   String get helpSupportFaqWeightAnswer =>
-      'Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.';
+      '残りのフィラメントではなく、スプールの総重量を入力してください。アプリは完全なロールの重量を使用してグラムあたりのコストを計算します。';
 
   @override
-  String get helpSupportFaqElectricityQuestion =>
-      'Why does electricity matter?';
+  String get helpSupportFaqElectricityQuestion => 'なぜ電気が重要ですか？';
 
   @override
   String get helpSupportFaqElectricityAnswer =>
-      'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.';
+      '長時間の印刷と高ワット数のプリンターは実際のコストを追加できます。電気をスキップすると通常、仕事の価格が低くなります。';
 
   @override
-  String get helpSupportFaqRiskQuestion => 'How is failure risk calculated?';
+  String get helpSupportFaqRiskQuestion => '失敗リスクはどのように計算されますか？';
 
   @override
   String get helpSupportFaqRiskAnswer =>
-      'Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.';
+      'リスクはフィラメントや電気などの基本印刷コストにのみ適用されます。失敗した印刷からの予想損失を推定します。';
 
   @override
-  String get helpSupportFaqLabourQuestion =>
-      'What is labour / processing time?';
+  String get helpSupportFaqLabourQuestion => '労働/処理時間とは何ですか？';
 
   @override
   String get helpSupportFaqLabourAnswer =>
-      'It covers preparation, cleanup, post-processing, and monitoring. Keep it on for services where your time matters.';
+      '準備、清掃、後処理、監視をカバーします。あなたの時間が重要なサービスではオンにしておいてください。';
 
   @override
-  String get helpSupportFaqMarkupQuestion => 'What is markup?';
+  String get helpSupportFaqMarkupQuestion => 'マークアップとは何ですか？';
 
   @override
   String get helpSupportFaqMarkupAnswer =>
-      'Markup is the percentage added on top of total cost to reach your selling price. It covers margin, overhead, and profit.';
+      'マークアップは、販売価格に到達するために総コストの上に追加されるパーセンテージです。利益率、諸経費、利益をカバーします。';
 
   @override
-  String get helpSupportFaqSetupQuestion => 'What is a setup fee?';
+  String get helpSupportFaqSetupQuestion => 'セットアップ料金とは何ですか？';
 
   @override
   String get helpSupportFaqSetupAnswer =>
-      'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.';
+      'セットアップ料金は、キャリブレーション、マシン準備、管理のためのジョブごとの固定コストです。小さな印刷が諸経費をカバーするのに役立ちます。';
 
   @override
-  String get helpSupportLinksTitle => 'Links';
+  String get helpSupportLinksTitle => 'リンク';
 
   @override
-  String get helpSupportPrivacyPolicyLabel => 'Privacy policy';
+  String get helpSupportPrivacyPolicyLabel => 'プライバシーポリシー';
 
   @override
-  String get helpSupportTermsOfUseLabel => 'Terms of use';
+  String get helpSupportTermsOfUseLabel => '利用規約';
 
   @override
   String get helpSupportXTwitterLabel => 'X / Twitter';
@@ -302,31 +298,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get helpSupportThreadsLabel => 'Threads';
 
   @override
-  String get helpSupportAboutTitle => 'About';
+  String get helpSupportAboutTitle => 'について';
 
   @override
   String get helpSupportAboutIntro =>
-      '3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.';
+      '3Dプリント費用計算機はローカルファースト価格設定のために構築されています。メーカーや小規模印刷ビジネスが、より少ない驚きで仕事を見積もるのに役立ちます。';
 
   @override
-  String get helpSupportTrustNoAccounts => 'No accounts';
+  String get helpSupportTrustNoAccounts => 'アカウント不要';
 
   @override
-  String get helpSupportTrustNoCloudSync => 'No cloud sync';
+  String get helpSupportTrustNoCloudSync => 'クラウド同期なし';
 
   @override
-  String get helpSupportTrustNoTracking => 'No tracking';
+  String get helpSupportTrustNoTracking => '追跡なし';
 
   @override
-  String get helpSupportTrustLocalData => 'Local data';
+  String get helpSupportTrustLocalData => 'ローカルデータ';
 
   @override
   String get helpSupportAboutCalculator =>
-      'The calculator combines filament cost, electricity, failure risk, labour, and optional pricing tools like markup and setup fees.';
+      '計算機は、フィラメントコスト、電気、失敗リスク、労働、およびマークアップやセットアップ料金などのオプションの価格設定ツールを組み合わせます。';
 
   @override
-  String get helpSupportAboutOutcome =>
-      'That keeps quotes tied to true cost, not just material spend.';
+  String get helpSupportAboutOutcome => 'それは見積もりを真のコストに結び付け、材料費だけではありません。';
 
   @override
   String get supportEmailPrefix => '問題がある場合は、次のアドレスまでメールしてください: ';

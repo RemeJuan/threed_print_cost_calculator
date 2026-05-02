@@ -200,39 +200,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get needHelpTitle => 'Butuh bantuan?';
 
   @override
-  String get helpSupportSupportTitle => 'Support';
+  String get helpSupportSupportTitle => 'Dukungan';
 
   @override
   String get helpSupportSupportIntro =>
-      'Use these details when contacting support.';
+      'Gunakan detail ini saat menghubungi dukungan.';
 
   @override
-  String get helpSupportWebsiteLabel => 'Website';
+  String get helpSupportWebsiteLabel => 'Situs web';
 
   @override
   String get helpSupportEmailLabel => 'Email';
 
   @override
-  String get helpSupportSupportIdLabel => 'Support ID';
+  String get helpSupportSupportIdLabel => 'ID Dukungan';
 
   @override
-  String get helpSupportCopySupportIdTooltip => 'Copy support ID';
+  String get helpSupportCopySupportIdTooltip => 'Salin ID dukungan';
 
   @override
   String helpSupportAppVersionRow(Object version) {
-    return 'App version $version';
+    return 'Versi aplikasi $version';
   }
 
   @override
-  String get helpSupportContactSupportButton => 'Contact support';
+  String get helpSupportContactSupportButton => 'Hubungi dukungan';
 
   @override
   String get helpSupportContactEmailSubject =>
-      '3D Print Cost Calculator Support';
+      'Dukungan Kalkulator Biaya Cetak 3D';
 
   @override
   String helpSupportContactEmailBody(Object supportId, Object version) {
-    return 'Support ID: $supportId\nApp version: $version\n\nDescribe the issue here.';
+    return 'ID Dukungan: $supportId\nVersi aplikasi: $version\n\nJelaskan masalahnya di sini.';
   }
 
   @override
@@ -241,60 +241,61 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get helpSupportFaqTitle => 'FAQs';
+  String get helpSupportFaqTitle => 'FAQ';
 
   @override
-  String get helpSupportFaqWeightQuestion => 'What weight should I enter?';
+  String get helpSupportFaqWeightQuestion =>
+      'Berat apa yang harus saya masukkan?';
 
   @override
   String get helpSupportFaqWeightAnswer =>
-      'Enter the total spool weight, not the leftover filament. The app uses the full roll weight to calculate per-gram cost.';
+      'Masukkan berat total spul, bukan filamen sisa. Aplikasi menggunakan berat gulungan penuh untuk menghitung biaya per gram.';
 
   @override
-  String get helpSupportFaqElectricityQuestion =>
-      'Why does electricity matter?';
+  String get helpSupportFaqElectricityQuestion => 'Mengapa listrik penting?';
 
   @override
   String get helpSupportFaqElectricityAnswer =>
-      'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.';
+      'Pencetakan lama dan printer berdaya tinggi dapat menambah biaya nyata. Melewatkan listrik biasanya membuat harga terlalu rendah.';
 
   @override
-  String get helpSupportFaqRiskQuestion => 'How is failure risk calculated?';
+  String get helpSupportFaqRiskQuestion =>
+      'Bagaimana risiko kegagalan dihitung?';
 
   @override
   String get helpSupportFaqRiskAnswer =>
-      'Risk is applied only to base print costs like filament and electricity. It estimates expected loss from failed prints.';
+      'Risiko diterapkan hanya pada biaya cetak dasar seperti filamen dan listrik. Ini memperkirakan kerugian yang diharapkan dari pencetakan yang gagal.';
 
   @override
   String get helpSupportFaqLabourQuestion =>
-      'What is labour / processing time?';
+      'Apa itu waktu tenaga kerja / pengolahan?';
 
   @override
   String get helpSupportFaqLabourAnswer =>
-      'It covers preparation, cleanup, post-processing, and monitoring. Keep it on for services where your time matters.';
+      'Ini mencakup persiapan, pembersihan, pasca-pemrosesan, dan pemantauan. Tetap aktifkan untuk layanan di mana waktu Anda penting.';
 
   @override
-  String get helpSupportFaqMarkupQuestion => 'What is markup?';
+  String get helpSupportFaqMarkupQuestion => 'Apa itu markup?';
 
   @override
   String get helpSupportFaqMarkupAnswer =>
-      'Markup is the percentage added on top of total cost to reach your selling price. It covers margin, overhead, and profit.';
+      'Markup adalah persentase yang ditambahkan di atas biaya total untuk mencapai harga jual Anda. Ini mencakup margin, overhead, dan keuntungan.';
 
   @override
-  String get helpSupportFaqSetupQuestion => 'What is a setup fee?';
+  String get helpSupportFaqSetupQuestion => 'Apa itu biaya setup?';
 
   @override
   String get helpSupportFaqSetupAnswer =>
-      'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.';
+      'Biaya setup adalah biaya tetap per pekerjaan untuk kalibrasi, persiapan mesin, dan administrasi. Ini membantu cetakan kecil menutupi overhead.';
 
   @override
-  String get helpSupportLinksTitle => 'Links';
+  String get helpSupportLinksTitle => 'Tautan';
 
   @override
-  String get helpSupportPrivacyPolicyLabel => 'Privacy policy';
+  String get helpSupportPrivacyPolicyLabel => 'Kebijakan privasi';
 
   @override
-  String get helpSupportTermsOfUseLabel => 'Terms of use';
+  String get helpSupportTermsOfUseLabel => 'Ketentuan penggunaan';
 
   @override
   String get helpSupportXTwitterLabel => 'X / Twitter';
@@ -303,31 +304,31 @@ class AppLocalizationsId extends AppLocalizations {
   String get helpSupportThreadsLabel => 'Threads';
 
   @override
-  String get helpSupportAboutTitle => 'About';
+  String get helpSupportAboutTitle => 'Tentang';
 
   @override
   String get helpSupportAboutIntro =>
-      '3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.';
+      'Kalkulator Biaya Cetak 3D dibuat untuk penetapan harga lokal terlebih dahulu. Ini membantu pembuat dan bisnis cetak kecil mengutip pekerjaan dengan lebih sedikit kejutan.';
 
   @override
-  String get helpSupportTrustNoAccounts => 'No accounts';
+  String get helpSupportTrustNoAccounts => 'Tanpa akun';
 
   @override
-  String get helpSupportTrustNoCloudSync => 'No cloud sync';
+  String get helpSupportTrustNoCloudSync => 'Tanpa sinkronisasi cloud';
 
   @override
-  String get helpSupportTrustNoTracking => 'No tracking';
+  String get helpSupportTrustNoTracking => 'Tanpa pelacakan';
 
   @override
-  String get helpSupportTrustLocalData => 'Local data';
+  String get helpSupportTrustLocalData => 'Data lokal';
 
   @override
   String get helpSupportAboutCalculator =>
-      'The calculator combines filament cost, electricity, failure risk, labour, and optional pricing tools like markup and setup fees.';
+      'Kalkulator menggabungkan biaya filamen, listrik, risiko kegagalan, tenaga kerja, dan alat penetapan harga opsional seperti markup dan biaya setup.';
 
   @override
   String get helpSupportAboutOutcome =>
-      'That keeps quotes tied to true cost, not just material spend.';
+      'Itu membuat kutipan tetap terikat pada biaya sebenarnya, bukan hanya pengeluaran material.';
 
   @override
   String get supportEmailPrefix => 'Jika ada masalah, silakan email saya di ';

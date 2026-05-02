@@ -579,7 +579,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpSupportFaqElectricityAnswer.
   ///
   /// In en, this message translates to:
-  /// **'Long prints and high wattage printers can add real cost. Skipping electricity usually underprices the job.'**
+  /// **'Long prints and high-wattage printers can add real cost. Skipping electricity usually underprices the job.'**
   String get helpSupportFaqElectricityAnswer;
 
   /// No description provided for @helpSupportFaqRiskQuestion.
