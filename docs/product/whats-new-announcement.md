@@ -38,6 +38,7 @@
 
 - Store dismissed ID using `dismissed_announcement_id`.
 - Show once per `wn_id`.
+- If legacy version-based state exists, seed the current `wn_id` once so existing users do not see the same announcement again.
 - User dismisses → save `wn_id` to prefs → don't show again.
 
 ## Display Rules
