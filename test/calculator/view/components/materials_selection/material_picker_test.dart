@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/material_picker.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
 import '../../../../helpers/helpers.dart';
 
@@ -11,6 +14,7 @@ void main() {
     testWidgets('shows materials and filters by query, calls onSelected', (
       WidgetTester tester,
     ) async {
+      final l10n = lookupAppLocalizations(const Locale('en'));
       final materials = [
         MaterialModel(
           id: 'm1',
@@ -36,6 +40,7 @@ void main() {
 
       await tester.pumpApp(MaterialPicker(onSelected: (m) => selected = m), [
         materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+        settingsStreamProvider.overrideWith((ref) => Stream.value(GeneralSettingsModel.initial())),
       ]);
 
       // Allow FutureBuilder to complete
@@ -44,6 +49,10 @@ void main() {
       // Both materials shown
       expect(find.text('PLA White'), findsOneWidget);
       expect(find.text('ABS Black'), findsOneWidget);
+      expect(
+        find.text('#FFFFFF • ${l10n.materialCostPerKilogramLabel('20.00')}'),
+        findsOneWidget,
+      );
 
       // Enter search query to filter to PLA
       final searchField = find.byType(TextField);

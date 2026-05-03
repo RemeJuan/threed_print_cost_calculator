@@ -44,6 +44,7 @@ class _FakeSettingsRepository implements SettingsRepository {
   Future<void> saveSettings(GeneralSettingsModel settings) async {
     _settings = settings;
     savedSettings.add(settings);
+    _controller.add(settings);
   }
 
   Future<void> dispose() => _controller.close();
@@ -53,6 +54,13 @@ Finder _field(String key) {
   return find.descendant(
     of: find.byKey(ValueKey<String>(key)),
     matching: find.byType(TextFormField),
+  );
+}
+
+Finder _decorator(String key) {
+  return find.descendant(
+    of: find.byKey(ValueKey<String>(key)),
+    matching: find.byType(InputDecorator),
   );
 }
 
@@ -67,6 +75,9 @@ GeneralSettingsModel _settings({
   String pricingMarkupPercent = '',
   String pricingSetupFee = '',
   String pricingRoundingMode = 'none',
+  String currencySymbol = '',
+  String currencyPosition = 'before',
+  bool currencySpacing = false,
 }) {
   return GeneralSettingsModel(
     electricityCost: electricityCost,
@@ -79,6 +90,9 @@ GeneralSettingsModel _settings({
     pricingMarkupPercent: pricingMarkupPercent,
     pricingSetupFee: pricingSetupFee,
     pricingRoundingMode: pricingRoundingMode,
+    currencySymbol: currencySymbol,
+    currencyPosition: currencyPosition,
+    currencySpacing: currencySpacing,
   );
 }
 
@@ -106,11 +120,98 @@ void main() {
       repo.emit(GeneralSettingsModel.initial());
       await tester.pump();
 
-      expect(find.byType(TextFormField), findsNWidgets(5));
+      expect(find.byType(TextFormField), findsNWidgets(6));
       expect(
         find.byType(DropdownButtonFormField<PricingRoundingMode>),
         findsOneWidget,
       );
+    });
+
+    testWidgets('renders after-position currency with leading suffix space', (
+      tester,
+    ) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(
+        _settings(
+          currencySymbol: 'R',
+          currencyPosition: 'after',
+          currencySpacing: true,
+        ),
+      );
+      await tester.pump();
+
+      expect(tester.widget<InputDecorator>(_decorator('settings.workCost.wearAndTear.input')).decoration.suffixText, ' R');
+      expect(tester.widget<InputDecorator>(_decorator('settings.workCost.labourRate.input')).decoration.suffixText, ' R');
+      expect(tester.widget<InputDecorator>(_decorator('settings.workCost.pricingSetupFee.input')).decoration.suffixText, ' R');
+    });
+
+    testWidgets('shows live currency controls and preview', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      expect(
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencySymbol.input'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencyPosition.input'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencySpacing.toggle'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.workCost.currencyPreview')),
+        findsOneWidget,
+      );
+      expect(find.text('95.30'), findsOneWidget);
+
+      await tester.enterText(
+        _field('settings.workCost.currencySymbol.input'),
+        'R',
+      );
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      expect(find.text('R95.30'), findsOneWidget);
+
+      await tester.tap(
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencySpacing.toggle'),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      expect(find.text('R 95.30'), findsOneWidget);
+      expect(repo.savedSettings, isNotEmpty);
+      final saved = repo.savedSettings.last;
+      expect(saved.currencySymbol, 'R');
+      expect(saved.currencyPosition, 'before');
+      expect(saved.currencySpacing, true);
     });
 
     testWidgets('persists wear and tear after debounce', (tester) async {

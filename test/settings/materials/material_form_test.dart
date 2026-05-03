@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import '../settings_test_fakes.dart';
 
 import '../../helpers/helpers.dart';
@@ -11,6 +13,13 @@ Finder _field(String key) {
   return find.descendant(
     of: find.byKey(ValueKey<String>(key)),
     matching: find.byType(TextFormField),
+  );
+}
+
+Finder _decorator(String key) {
+  return find.descendant(
+    of: find.byKey(ValueKey<String>(key)),
+    matching: find.byType(InputDecorator),
   );
 }
 
@@ -102,6 +111,56 @@ void main() {
     expect(repo.getMaterialByIdCalls, ['material-1']);
     expect(savedResult.single, isA<MaterialModel>());
     expect((savedResult.single as MaterialModel).id, 'material-1');
+  });
+
+  testWidgets('cost input shows currency prefix when configured', (tester) async {
+    final repo = FakeMaterialsRepository(useExplicitSaveResult: true, saveResult: 'material-1');
+    final db = await tester.pumpApp(
+      _MaterialDialogHost(onResult: (_) {}, builder: (_) => const MaterialForm()),
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        settingsStreamProvider.overrideWith((ref) => Stream.value(const GeneralSettingsModel(
+          electricityCost: '', wattage: '', activePrinter: '', selectedMaterial: '', wearAndTear: '', failureRisk: '', labourRate: '', pricingMarkupPercent: '', pricingSetupFee: '', pricingRoundingMode: 'none', currencySymbol: 'R', currencyPosition: 'before', currencySpacing: false,
+        ))),
+      ],
+    );
+    addTearDown(db.close);
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(find.text('R'), findsWidgets);
+  });
+
+  testWidgets('cost input shows spaced after-position suffix', (tester) async {
+    final repo = FakeMaterialsRepository(useExplicitSaveResult: true, saveResult: 'material-1');
+    final db = await tester.pumpApp(
+      _MaterialDialogHost(onResult: (_) {}, builder: (_) => const MaterialForm()),
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        settingsStreamProvider.overrideWith(
+          (ref) => Stream.value(
+            const GeneralSettingsModel(
+              electricityCost: '',
+              wattage: '',
+              activePrinter: '',
+              selectedMaterial: '',
+              wearAndTear: '',
+              failureRisk: '',
+              labourRate: '',
+              pricingMarkupPercent: '',
+              pricingSetupFee: '',
+              pricingRoundingMode: 'none',
+              currencySymbol: 'R',
+              currencyPosition: 'after',
+              currencySpacing: true,
+            ),
+          ),
+        ),
+      ],
+    );
+    addTearDown(db.close);
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(tester.widget<InputDecorator>(_decorator('settings.materials.cost.input')).decoration.suffixText, ' R');
   });
 
   testWidgets('invalid values block save and show validation errors', (

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -35,23 +37,47 @@ void main() {
     );
 
     testWidgets('renders name and cost-per-kg', (tester) async {
-      await tester.pumpWidget(
-        _wrap(MaterialCard(material: base, onEdit: () {}, onDelete: () {})),
+      final l10n = lookupAppLocalizations(const Locale('en'));
+      final db = await tester.pumpApp(
+        MaterialCard(material: base, onEdit: () {}, onDelete: () {}),
+        [
+          settingsStreamProvider.overrideWith(
+            (ref) => Stream.value(
+              const GeneralSettingsModel(
+                electricityCost: '',
+                wattage: '',
+                activePrinter: '',
+                selectedMaterial: '',
+                wearAndTear: '',
+                failureRisk: '',
+                labourRate: '',
+                pricingMarkupPercent: '',
+                pricingSetupFee: '',
+                pricingRoundingMode: 'none',
+                currencySymbol: 'R',
+                currencyPosition: 'before',
+                currencySpacing: false,
+              ),
+            ),
+          ),
+        ],
       );
+      addTearDown(db.close);
       await tester.pumpAndSettle();
 
       expect(find.text('PLA Pro'), findsOneWidget);
-      expect(find.text('24.99/kg'), findsOneWidget);
+      expect(find.text(l10n.materialCostPerKilogramLabel('R24.99')), findsOneWidget);
     });
 
     testWidgets('merges brand, type and cost into single line', (tester) async {
+      final l10n = lookupAppLocalizations(const Locale('en'));
       final m = base.copyWith(brand: 'Sunlu', materialType: 'PLA');
       await tester.pumpWidget(
         _wrap(MaterialCard(material: m, onEdit: () {}, onDelete: () {})),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('PLA · Sunlu · 24.99/kg'), findsOneWidget);
+      expect(find.textContaining(l10n.materialCostPerKilogramLabel('24.99')), findsOneWidget);
     });
 
     testWidgets('shows remaining weight when tracking enabled', (tester) async {

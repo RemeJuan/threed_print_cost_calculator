@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
 import '../../helpers/helpers.dart';
+
+class _FakeSettingsRepository implements SettingsRepository {
+  _FakeSettingsRepository(this._settings);
+  final GeneralSettingsModel _settings;
+  @override
+  Ref get ref => throw UnimplementedError();
+  @override
+  Future<GeneralSettingsModel> getSettings() async => _settings;
+  @override
+  Stream<GeneralSettingsModel> watchSettings() async* {
+    yield _settings;
+  }
+  @override
+  Future<void> saveSettings(GeneralSettingsModel settings) async {}
+}
 
 void main() {
   const results = CalculationResult(
@@ -225,6 +243,39 @@ void main() {
         find.byKey(const ValueKey('calculator.result.finalPrice')),
         findsOneWidget,
       );
+    });
+
+    testWidgets('formats final price with currency settings', (tester) async {
+      final db = await tester.pumpApp(
+        CalculatorResults(results: results, pricing: pricing),
+        [
+          isPremiumProvider.overrideWithValue(true),
+          shouldShowProPromotionProvider.overrideWithValue(false),
+          settingsRepositoryProvider.overrideWithValue(
+            _FakeSettingsRepository(
+              const GeneralSettingsModel(
+                electricityCost: '',
+                wattage: '',
+                activePrinter: '',
+                selectedMaterial: '',
+                wearAndTear: '',
+                failureRisk: '',
+                labourRate: '',
+                pricingMarkupPercent: '',
+                pricingSetupFee: '',
+                pricingRoundingMode: 'none',
+                currencySymbol: 'R',
+                currencyPosition: 'before',
+                currencySpacing: false,
+              ),
+            ),
+          ),
+        ],
+      );
+      addTearDown(() => db.close());
+      await tester.pumpAndSettle();
+
+      expect(find.text('R14.00'), findsOneWidget);
     });
 
     testWidgets('free user does not see pricing output rows', (tester) async {

@@ -22,6 +22,12 @@ GeneralSettingsModel _settings({
   String wearAndTear = '',
   String failureRisk = '',
   String labourRate = '',
+  String pricingMarkupPercent = '',
+  String pricingSetupFee = '',
+  String pricingRoundingMode = 'none',
+  String currencySymbol = '',
+  String currencyPosition = 'before',
+  bool currencySpacing = false,
 }) {
   return GeneralSettingsModel(
     electricityCost: electricityCost,
@@ -31,6 +37,12 @@ GeneralSettingsModel _settings({
     wearAndTear: wearAndTear,
     failureRisk: failureRisk,
     labourRate: labourRate,
+    pricingMarkupPercent: pricingMarkupPercent,
+    pricingSetupFee: pricingSetupFee,
+    pricingRoundingMode: pricingRoundingMode,
+    currencySymbol: currencySymbol,
+    currencyPosition: currencyPosition,
+    currencySpacing: currencySpacing,
   );
 }
 
@@ -64,6 +76,25 @@ void main() {
         .getSettings();
 
     expect(settings, GeneralSettingsModel.initial());
+  });
+
+  test('getSettings preserves currency settings roundtrip', () async {
+    await StoreRef<String, Object?>.main().record(DBName.settings.name).put(
+      db,
+      {
+        ..._settings(
+          currencySymbol: 'R',
+          currencyPosition: 'after',
+          currencySpacing: true,
+        ).toMap(),
+      },
+    );
+
+    final settings = await container.read(settingsRepositoryProvider).getSettings();
+
+    expect(settings.currencySymbol, 'R');
+    expect(settings.currencyPosition, 'after');
+    expect(settings.currencySpacing, true);
   });
 
   test('getSettings preserves activePrinter when it still exists', () async {
