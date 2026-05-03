@@ -15,6 +15,9 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
     @Default('') String pricingMarkupPercent,
     @Default('') String pricingSetupFee,
     @Default('none') String pricingRoundingMode,
+    @Default('') String currencySymbol,
+    @Default('before') String currencyPosition,
+    @Default(false) bool currencySpacing,
   }) = _GeneralSettingsModel;
 
   factory GeneralSettingsModel.fromMap(Map<String, dynamic> map) {
@@ -29,6 +32,10 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
       pricingMarkupPercent: (map['pricingMarkupPercent'] ?? '').toString(),
       pricingSetupFee: (map['pricingSetupFee'] ?? '').toString(),
       pricingRoundingMode: (map['pricingRoundingMode'] ?? 'none').toString(),
+      currencySymbol: (map['currencySymbol'] ?? '').toString(),
+      currencyPosition: (map['currencyPosition'] ?? 'before').toString(),
+      currencySpacing: map['currencySpacing'] == true ||
+          map['currencySpacing']?.toString() == 'true',
     );
   }
 
@@ -44,6 +51,9 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
       pricingMarkupPercent: '',
       pricingSetupFee: '',
       pricingRoundingMode: 'none',
+      currencySymbol: '',
+      currencyPosition: 'before',
+      currencySpacing: false,
     );
   }
 }
@@ -61,6 +71,9 @@ extension GeneralSettingsModelX on GeneralSettingsModel {
       'pricingMarkupPercent': pricingMarkupPercent,
       'pricingSetupFee': pricingSetupFee,
       'pricingRoundingMode': pricingRoundingMode,
+      'currencySymbol': currencySymbol,
+      'currencyPosition': currencyPosition,
+      'currencySpacing': currencySpacing,
     };
   }
 }
