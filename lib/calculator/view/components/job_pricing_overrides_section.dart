@@ -4,7 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -19,6 +21,10 @@ class JobPricingOverridesSection extends HookConsumerWidget {
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
 
     final wearController = useTextEditingController(
       text: (state.wearAndTear.value ?? 0).toString(),
@@ -64,6 +70,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                   ),
                 );
               },
+              currencySettings: currencySettings,
             ),
             right: _numberField(
               controller: failureController,
@@ -84,6 +91,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                   ),
                 );
               },
+              currencySettings: null,
             ),
           ),
           const SizedBox(height: 12),
@@ -107,6 +115,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                   ),
                 );
               },
+              currencySettings: currencySettings,
             ),
             right: _numberField(
               controller: markupController,
@@ -127,6 +136,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                   ),
                 );
               },
+              currencySettings: null,
             ),
           ),
           const SizedBox(height: 12),
@@ -154,6 +164,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                       ),
                     );
                   },
+                  currencySettings: currencySettings,
                 ),
               ),
               const SizedBox(width: 4),
@@ -203,6 +214,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
     required String label,
     required ValueKey<String> fieldKey,
     required ValueChanged<String> onChanged,
+    required GeneralSettingsModel? currencySettings,
   }) {
     return FocusSafeTextField(
       key: fieldKey,
@@ -212,7 +224,22 @@ class JobPricingOverridesSection extends HookConsumerWidget {
       inputFormatters: localizedDecimalInputFormatters,
       inputNormalizer: normalizeLeadingZeroNumericInput,
       onChanged: onChanged,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        prefixText: currencySettings != null &&
+                currencySettings.currencySymbol.isNotEmpty &&
+                currencySettings.currencyPosition == 'before'
+            ? currencySettings.currencySymbol +
+                (currencySettings.currencySpacing ? ' ' : '')
+            : null,
+        suffixText: currencySettings != null &&
+                currencySettings.currencyPosition == 'after' &&
+                currencySettings.currencySymbol.isNotEmpty
+            ? (currencySettings.currencySpacing
+                ? ' ${currencySettings.currencySymbol}'
+                : currencySettings.currencySymbol)
+            : null,
+      ),
     );
   }
 }
