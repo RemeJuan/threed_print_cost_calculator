@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item_actions.dart';
@@ -30,6 +32,10 @@ class HistoryItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
     final materialsById = ref.watch(materialsByIdProvider);
     final itemKeyPrefix = 'history.item.${data.name}';
     final actionsController = HistoryItemActionsController(
@@ -103,18 +109,21 @@ class HistoryItem extends HookConsumerWidget {
                   context,
                   l10n.electricityCostLabel,
                   data.electricityCost,
+                  currencySettings: currencySettings,
                   key: ValueKey<String>('$itemKeyPrefix.electricityCost'),
                 ),
                 _row(
                   context,
                   l10n.filamentCostLabel,
                   data.filamentCost,
+                  currencySettings: currencySettings,
                   key: ValueKey<String>('$itemKeyPrefix.filamentCost'),
                 ),
                 _row(
                   context,
                   l10n.labourCostLabel,
                   data.labourCost,
+                  currencySettings: currencySettings,
                   key: ValueKey<String>('$itemKeyPrefix.labourCost'),
                 ),
                 if (data.additionalCostAmount > 0)
@@ -122,12 +131,14 @@ class HistoryItem extends HookConsumerWidget {
                     context,
                     l10n.additionalCostLabel,
                     data.additionalCostAmount,
+                    currencySettings: currencySettings,
                     key: ValueKey<String>('$itemKeyPrefix.additionalCost'),
                   ),
                 _row(
                   context,
                   l10n.riskCostLabel,
                   data.riskCost,
+                  currencySettings: currencySettings,
                   key: ValueKey<String>('$itemKeyPrefix.riskCost'),
                 ),
                 const SizedBox(height: 4),
@@ -149,7 +160,7 @@ class HistoryItem extends HookConsumerWidget {
                     const Spacer(),
                     Text(
                       key: ValueKey<String>('$itemKeyPrefix.totalCost'),
-                      data.totalCost.toStringAsFixed(2),
+                      formatCurrencyValue(data.totalCost, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing),
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Colors.white,
                         fontWeight: data.finalPrice == null
@@ -168,6 +179,7 @@ class HistoryItem extends HookConsumerWidget {
                       context,
                       '${l10n.markupLabel} (${formatPercent(data.pricingMarkupPercent)}%)',
                       data.pricingMarkupAmount!,
+                      currencySettings: currencySettings,
                       key: ValueKey<String>('$itemKeyPrefix.markupAmount'),
                     ),
                   if ((data.pricingSetupFee ?? 0) > 0)
@@ -175,6 +187,7 @@ class HistoryItem extends HookConsumerWidget {
                       context,
                       l10n.setupFeeLabel,
                       data.pricingSetupFee!,
+                      currencySettings: currencySettings,
                       key: ValueKey<String>('$itemKeyPrefix.setupFee'),
                     ),
                   if ((data.pricingRoundingAdjustment ?? 0) != 0)
@@ -182,6 +195,7 @@ class HistoryItem extends HookConsumerWidget {
                       context,
                       l10n.roundingAdjustmentLabel,
                       data.pricingRoundingAdjustment ?? 0,
+                      currencySettings: currencySettings,
                       key: ValueKey<String>(
                         '$itemKeyPrefix.roundingAdjustment',
                       ),
@@ -198,7 +212,7 @@ class HistoryItem extends HookConsumerWidget {
                       const Spacer(),
                       Text(
                         key: ValueKey<String>('$itemKeyPrefix.finalPrice'),
-                        data.finalPrice!.toStringAsFixed(2),
+                        formatCurrencyValue(data.finalPrice!, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing),
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w800,
@@ -219,13 +233,22 @@ class HistoryItem extends HookConsumerWidget {
                       final h = int.tryParse(parts[0]) ?? 0;
                       final m =
                           int.tryParse(parts.length > 1 ? parts[1] : '0') ?? 0;
-                      timeLabel = '${h}h ${m}m';
+                      timeLabel = l10n.historyTimeCompactLabel(
+                        h.toString(),
+                        m.toString(),
+                      );
                     } catch (_) {
                       timeLabel = data.timeHours;
                     }
 
-                    final summary =
-                        '${weightKg.toStringAsFixed(2)} kg • $timeLabel • ${data.printer} • ${data.material}';
+                    final summary = l10n.historySummaryLabel(
+                      l10n.historyWeightCompactLabel(
+                        weightKg.toStringAsFixed(2),
+                      ),
+                      timeLabel,
+                      data.printer,
+                      data.material,
+                    );
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,7 +340,9 @@ class HistoryItem extends HookConsumerWidget {
                                                   ),
                                                   const SizedBox(width: 8),
                                                   Text(
-                                                    '${weight}g',
+                                                    l10n.historyMaterialUsageWeightLabel(
+                                                      weight.toString(),
+                                                    ),
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .bodySmall
@@ -398,7 +423,13 @@ class HistoryItem extends HookConsumerWidget {
   }
 }
 
-Widget _row(BuildContext context, String label, num value, {Key? key}) {
+Widget _row(
+  BuildContext context,
+  String label,
+  num value, {
+  Key? key,
+  required GeneralSettingsModel currencySettings,
+}) {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 6),
     child: Row(
@@ -412,7 +443,12 @@ Widget _row(BuildContext context, String label, num value, {Key? key}) {
         ),
         Text(
           key: key,
-          value.toStringAsFixed(2),
+          formatCurrencyValue(
+            value,
+            currencySymbol: currencySettings.currencySymbol,
+            currencyPosition: currencySettings.currencyPosition,
+            currencySpacing: currencySettings.currencySpacing,
+          ),
           style: Theme.of(
             context,
           ).textTheme.bodyMedium?.copyWith(color: Colors.white),
@@ -421,5 +457,3 @@ Widget _row(BuildContext context, String label, num value, {Key? key}) {
     ),
   );
 }
-
-
