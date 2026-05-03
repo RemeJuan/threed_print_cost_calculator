@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -27,6 +28,10 @@ class WorkCostsSettings extends HookConsumerWidget {
     final settingsRepository = ref.read(settingsRepositoryProvider);
     final settingsService = ref.read(settingsServiceProvider);
     final logger = ref.read(appLoggerProvider);
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
 
     // Hooks for other fields/debounces: keep at top-level to preserve hook order
     final failureController = useTextEditingController();
@@ -37,12 +42,15 @@ class WorkCostsSettings extends HookConsumerWidget {
     final markupFocus = useFocusNode();
     final setupFeeController = useTextEditingController();
     final setupFeeFocus = useFocusNode();
+    final currencySymbolController = useTextEditingController();
+    final currencySymbolFocus = useFocusNode();
 
     final failureDebounce = useRef<Timer?>(null);
     final labourDebounce = useRef<Timer?>(null);
     final wearDebounce = useRef<Timer?>(null);
     final markupDebounce = useRef<Timer?>(null);
     final setupFeeDebounce = useRef<Timer?>(null);
+    final currencySymbolDebounce = useRef<Timer?>(null);
 
     // Cancel any pending timers when widget unmounts
     useEffect(() {
@@ -52,6 +60,7 @@ class WorkCostsSettings extends HookConsumerWidget {
         wearDebounce.value?.cancel();
         markupDebounce.value?.cancel();
         setupFeeDebounce.value?.cancel();
+        currencySymbolDebounce.value?.cancel();
       };
     }, []);
 
@@ -197,6 +206,28 @@ class WorkCostsSettings extends HookConsumerWidget {
       );
     }
 
+    void persistCurrencySymbol(String value) {
+      currencySymbolDebounce.value?.cancel();
+      currencySymbolDebounce.value = Timer(
+        const Duration(milliseconds: 400),
+        () async {
+          try {
+            await settingsService.update(
+              (settings) => settings.copyWith(currencySymbol: value),
+            );
+          } catch (e, st) {
+            logger.error(
+              AppLogCategory.ui,
+              'Failed to persist currency symbol',
+              context: {'setting': 'currencySymbol'},
+              error: e,
+              stackTrace: st,
+            );
+          }
+        },
+      );
+    }
+
     return StreamBuilder(
       stream: settingsRepository.watchSettings(),
       builder: (context, snapshot) {
@@ -229,6 +260,9 @@ class WorkCostsSettings extends HookConsumerWidget {
           }
           if (!setupFeeFocus.hasFocus) {
             setupFeeController.text = data.pricingSetupFee.toString();
+          }
+          if (!currencySymbolFocus.hasFocus) {
+            currencySymbolController.text = data.currencySymbol.toString();
           }
 
           final currentRoundingMode = pricingRoundingModeFromStorage(
@@ -268,6 +302,17 @@ class WorkCostsSettings extends HookConsumerWidget {
                         },
                         decoration: InputDecoration(
                           labelText: l10n.wearAndTearLabel,
+                          prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                                  currencySettings.currencyPosition == 'before'
+                              ? currencySettings.currencySymbol +
+                                  (currencySettings.currencySpacing ? ' ' : '')
+                              : null,
+                          suffixText: currencySettings.currencyPosition == 'after' &&
+                                  currencySettings.currencySymbol.isNotEmpty
+                              ? (currencySettings.currencySpacing
+                                  ? ' ${currencySettings.currencySymbol}'
+                                  : currencySettings.currencySymbol)
+                              : null,
                         ),
                       ),
                     ),
@@ -335,6 +380,17 @@ class WorkCostsSettings extends HookConsumerWidget {
                         },
                         decoration: InputDecoration(
                           labelText: l10n.labourRateLabel,
+                          prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                                  currencySettings.currencyPosition == 'before'
+                              ? currencySettings.currencySymbol +
+                                  (currencySettings.currencySpacing ? ' ' : '')
+                              : null,
+                          suffixText: currencySettings.currencyPosition == 'after' &&
+                                  currencySettings.currencySymbol.isNotEmpty
+                              ? (currencySettings.currencySpacing
+                                  ? ' ${currencySettings.currencySymbol}'
+                                  : currencySettings.currencySymbol)
+                              : null,
                         ),
                       ),
                     ),
@@ -398,6 +454,17 @@ class WorkCostsSettings extends HookConsumerWidget {
                         onChanged: persistSetupFee,
                         decoration: InputDecoration(
                           labelText: l10n.pricingSetupFeeLabel,
+                          prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                                  currencySettings.currencyPosition == 'before'
+                              ? currencySettings.currencySymbol +
+                                  (currencySettings.currencySpacing ? ' ' : '')
+                              : null,
+                          suffixText: currencySettings.currencyPosition == 'after' &&
+                                  currencySettings.currencySymbol.isNotEmpty
+                              ? (currencySettings.currencySpacing
+                                  ? ' ${currencySettings.currencySymbol}'
+                                  : currencySettings.currencySymbol)
+                              : null,
                         ),
                       ),
                     ),
@@ -456,6 +523,102 @@ class WorkCostsSettings extends HookConsumerWidget {
                             );
                           }
                         },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencySymbol.input',
+                        ),
+                        controller: currencySymbolController,
+                        externalText: data.currencySymbol.toString(),
+                        focusNode: currencySymbolFocus,
+                        decoration: InputDecoration(
+                          labelText: l10n.currencySymbolLabel,
+                        ),
+                        onChanged: persistCurrencySymbol,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencyPosition.input',
+                        ),
+                        initialValue: data.currencyPosition,
+                        decoration: InputDecoration(
+                          labelText: l10n.currencyPositionLabel,
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'before',
+                            child: Text(l10n.currencyPositionBeforeLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: 'after',
+                            child: Text(l10n.currencyPositionAfterLabel),
+                          ),
+                        ],
+                        onChanged: (value) async {
+                          if (value == null) return;
+                          await settingsService.update(
+                            (settings) =>
+                                settings.copyWith(currencyPosition: value),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SwitchListTile.adaptive(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencySpacing.toggle',
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l10n.currencySpacingLabel),
+                        value: data.currencySpacing,
+                        onChanged: (value) async {
+                          await settingsService.update(
+                            (settings) =>
+                                settings.copyWith(currencySpacing: value),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Container(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencyPreview',
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(l10n.currencyPreviewLabel),
+                            const SizedBox(height: 4),
+                            Text(
+                              formatCurrencyValue(
+                                95.3,
+                                currencySymbol: data.currencySymbol,
+                                currencyPosition: data.currencyPosition,
+                                currencySpacing: data.currencySpacing,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
