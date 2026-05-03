@@ -21,6 +21,10 @@ class GeneralSettings extends HookConsumerWidget {
     final shouldShowHideProPromotionsToggle = ref.watch(
       shouldShowHideProPromotionsToggleProvider,
     );
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
     final hideProPromotions = ref.watch(hideProPromotionsProvider);
     final hideProPromotionsNotifier = ref.read(
       hideProPromotionsProvider.notifier,
@@ -146,7 +150,15 @@ class GeneralSettings extends HookConsumerWidget {
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   decoration: InputDecoration(
                     labelText: l10n.electricityCostSettingsLabel,
-                    suffixText: l10n.kwh,
+                    prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                            currencySettings.currencyPosition == 'before'
+                        ? currencySettings.currencySymbol +
+                            (currencySettings.currencySpacing ? ' ' : '')
+                        : null,
+                    suffixText: currencySettings.currencyPosition == 'after' &&
+                            currencySettings.currencySymbol.isNotEmpty
+                        ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
+                        : l10n.kwh,
                   ),
                   onChanged: (value) async {
                     await persistElectricity(value);
