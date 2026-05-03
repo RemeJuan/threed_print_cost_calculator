@@ -660,6 +660,12 @@ abstract class AppLocalizations {
   /// **'X / Twitter'**
   String get helpSupportXTwitterLabel;
 
+  /// No description provided for @helpSupportInstagramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get helpSupportInstagramLabel;
+
   /// No description provided for @helpSupportThreadsLabel.
   ///
   /// In en, this message translates to:
