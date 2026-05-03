@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 
 class MaterialCard extends ConsumerWidget {
   final MaterialModel material;
@@ -23,6 +25,10 @@ class MaterialCard extends ConsumerWidget {
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
     final status = calculateStockStatus(material);
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
 
     String formatWeight(double value) {
       return value % 1 == 0
@@ -71,7 +77,10 @@ class MaterialCard extends ConsumerWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
-                    _MergedInfoLine(material: material),
+                    _MergedInfoLine(
+                      material: material,
+                      currencySettings: currencySettings,
+                    ),
                     const SizedBox(height: 4),
                     if (material.autoDeductEnabled)
                       Text(
@@ -96,11 +105,13 @@ class MaterialCard extends ConsumerWidget {
 
 class _MergedInfoLine extends StatelessWidget {
   final MaterialModel material;
+  final GeneralSettingsModel currencySettings;
 
-  const _MergedInfoLine({required this.material});
+  const _MergedInfoLine({required this.material, required this.currencySettings});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final parts = <String>[];
     if (material.materialType.isNotEmpty) {
       parts.add(material.materialType);
@@ -112,7 +123,16 @@ class _MergedInfoLine extends StatelessWidget {
     final weight = double.tryParse(material.weight);
     if (cost != null && weight != null && weight > 0 && cost > 0) {
       final perKg = cost / weight * 1000;
-      parts.add('$perKg/kg');
+      parts.add(
+        l10n.materialCostPerKilogramLabel(
+          formatCurrencyValue(
+            perKg,
+            currencySymbol: currencySettings.currencySymbol,
+            currencyPosition: currencySettings.currencyPosition,
+            currencySpacing: currencySettings.currencySpacing,
+          ),
+        ),
+      );
     }
 
     if (parts.isEmpty) return const SizedBox.shrink();

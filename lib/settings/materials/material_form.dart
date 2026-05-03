@@ -7,6 +7,8 @@ import 'package:threed_print_cost_calculator/settings/materials/brand_typeahead.
 import 'package:threed_print_cost_calculator/settings/materials/material_type_typeahead.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -21,6 +23,10 @@ class MaterialForm extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(materialsProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final hasSubmitted = useState(false);
 
@@ -183,7 +189,20 @@ class MaterialForm extends HookConsumerWidget {
                   autovalidateMode: hasSubmitted.value
                       ? AutovalidateMode.onUserInteraction
                       : AutovalidateMode.disabled,
-                  decoration: InputDecoration(labelText: l10n.costLabel),
+                  decoration: InputDecoration(
+                    labelText: l10n.costLabel,
+                    prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                            currencySettings.currencyPosition == 'before'
+                        ? currencySettings.currencySymbol +
+                            (currencySettings.currencySpacing ? ' ' : '')
+                        : null,
+                    suffixText: currencySettings.currencyPosition == 'after' &&
+                            currencySettings.currencySymbol.isNotEmpty
+                        ? (currencySettings.currencySpacing
+                            ? ' ${currencySettings.currencySymbol}'
+                            : currencySettings.currencySymbol)
+                        : null,
+                  ),
                   onChanged: (v) => notifier.updateCost(v),
                 ),
 
