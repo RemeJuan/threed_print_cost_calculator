@@ -57,7 +57,7 @@ Check:
 - Privacy policy: https://printcostcalc.app/privacy.html
 - Terms: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 - X / Twitter: https://x.com/PrintCostCalc
-- Threads: https://www.threads.com/@printcostcalc
+- Instagram: https://www.instagram.com/3dprintcostcalculator
 
 ---
 
