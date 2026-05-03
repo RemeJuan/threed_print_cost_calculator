@@ -302,7 +302,7 @@ Recommended additions to calculator state:
 - `additionalCostAmount`
 - `additionalCostNote`
 - `pricingMarkupPercent` input
-- `pricingSetupFee` input
+- `pricingSetupFee` resolved value from global settings
 - `pricingRoundingMode`
 - job-level pricing override state for markup where exposed
 - `pricingBaseCost`
@@ -401,18 +401,18 @@ This preserves current mental model:
 
 When both values are present, Final Price should be visually primary and Cost Total should remain visible as supporting detail. Price must not replace or overwrite cost.
 
+Final Price should be the value used by future client-facing surfaces such as quotes and share cards.
+
 ### Job-Level Overrides
 
-Add a pricing override accordion below **Printing Time**, matching the interaction pattern used by Materials.
+Add a job-level settings section below **Printing Time**.
 
-Accordion contains:
+Section contains:
 
 - Wear & tear
 - Failure risk
 - Hourly rate
 - Markup
-
-Accordion subheading should show a compact summary, matching the summary pattern used by History cards.
 
 This section is job-level UI. It can adjust current job inputs without mutating global defaults or redefining cost vs price boundaries.
 
