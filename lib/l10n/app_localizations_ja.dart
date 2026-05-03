@@ -529,6 +529,54 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pricingRoundingPointNinetyNineLabel => '.99で終わる';
 
   @override
+  String get currencySymbolLabel => '通貨記号';
+
+  @override
+  String get currencyPositionLabel => '通貨記号の位置';
+
+  @override
+  String get currencyPositionBeforeLabel => '前';
+
+  @override
+  String get currencyPositionAfterLabel => '後';
+
+  @override
+  String get currencySpacingLabel => '記号との間に空白';
+
+  @override
+  String get currencyPreviewLabel => 'プレビュー';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours時間 $minutes分';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
+
+  @override
   String get workCostsLabel => '作業コスト';
 
   @override

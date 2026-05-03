@@ -253,6 +253,46 @@
   "pricingRoundingNoneLabel": "Nessuno",
   "pricingRoundingWholeDollarLabel": "Importo intero",
   "pricingRoundingPointNinetyNineLabel": "Termina con .99",
+  "currencySymbolLabel": "Simbolo valuta",
+  "currencyPositionLabel": "Posizione del simbolo",
+  "currencyPositionBeforeLabel": "Prima",
+  "currencyPositionAfterLabel": "Dopo",
+  "currencySpacingLabel": "Spazio con simbolo",
+  "currencyPreviewLabel": "Anteprima",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} h {minutes} min",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
   "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale,% ricarico,Importo ricarico,Costo di configurazione,Modalità di arrotondamento,Subtotale prima dell'arrotondamento,Aggiustamento arrotondamento,Prezzo finale",
   "historyExportShareText": "Esportazione della cronologia dei costi di stampa 3D",
   "@supportIdCopied": {},

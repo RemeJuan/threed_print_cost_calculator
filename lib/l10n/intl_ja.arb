@@ -261,6 +261,46 @@
   "pricingRoundingNoneLabel": "なし",
   "pricingRoundingWholeDollarLabel": "整数に丸める",
   "pricingRoundingPointNinetyNineLabel": ".99で終わる",
+  "currencySymbolLabel": "通貨記号",
+  "currencyPositionLabel": "通貨記号の位置",
+  "currencyPositionBeforeLabel": "前",
+  "currencyPositionAfterLabel": "後",
+  "currencySpacingLabel": "記号との間に空白",
+  "currencyPreviewLabel": "プレビュー",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours}時間 {minutes}分",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
   "historyCsvHeader": "日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計,上乗せ率 %,上乗せ額,設定料,端数処理,端数処理前小計,端数調整,最終価格",
   "historyExportShareText": "3Dプリント費用履歴の書き出し",
   "@supportIdCopied": {},

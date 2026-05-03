@@ -539,6 +539,54 @@ class AppLocalizationsTh extends AppLocalizations {
   String get pricingRoundingPointNinetyNineLabel => 'ลงท้าย .99';
 
   @override
+  String get currencySymbolLabel => 'สัญลักษณ์สกุลเงิน';
+
+  @override
+  String get currencyPositionLabel => 'ตำแหน่งสัญลักษณ์สกุลเงิน';
+
+  @override
+  String get currencyPositionBeforeLabel => 'ก่อน';
+
+  @override
+  String get currencyPositionAfterLabel => 'หลัง';
+
+  @override
+  String get currencySpacingLabel => 'เว้นวรรคกับสัญลักษณ์';
+
+  @override
+  String get currencyPreviewLabel => 'ตัวอย่าง';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours ชม. $minutes นาที';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
+
+  @override
   String get workCostsLabel => 'ค่าใช้จ่ายงาน';
 
   @override

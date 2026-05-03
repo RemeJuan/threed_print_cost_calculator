@@ -1098,6 +1098,77 @@ abstract class AppLocalizations {
   /// **'Ends in .99'**
   String get pricingRoundingPointNinetyNineLabel;
 
+  /// No description provided for @currencySymbolLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency symbol'**
+  String get currencySymbolLabel;
+
+  /// No description provided for @currencyPositionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency position'**
+  String get currencyPositionLabel;
+
+  /// No description provided for @currencyPositionBeforeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Before'**
+  String get currencyPositionBeforeLabel;
+
+  /// No description provided for @currencyPositionAfterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'After'**
+  String get currencyPositionAfterLabel;
+
+  /// No description provided for @currencySpacingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Space symbol'**
+  String get currencySpacingLabel;
+
+  /// No description provided for @currencyPreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get currencyPreviewLabel;
+
+  /// No description provided for @materialCostPerKilogramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{cost}/kg'**
+  String materialCostPerKilogramLabel(Object cost);
+
+  /// No description provided for @historyTimeCompactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String historyTimeCompactLabel(Object hours, Object minutes);
+
+  /// No description provided for @historyWeightCompactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} kg'**
+  String historyWeightCompactLabel(Object weight);
+
+  /// No description provided for @historySummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} • {time} • {printer} • {material}'**
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  );
+
+  /// No description provided for @historyMaterialUsageWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight}g'**
+  String historyMaterialUsageWeightLabel(Object weight);
+
   /// No description provided for @workCostsLabel.
   ///
   /// In en, this message translates to:

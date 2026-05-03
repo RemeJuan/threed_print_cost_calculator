@@ -216,6 +216,46 @@
   "pricingRoundingNoneLabel": "None",
   "pricingRoundingWholeDollarLabel": "Whole dollar",
   "pricingRoundingPointNinetyNineLabel": "Ends in .99",
+  "currencySymbolLabel": "Currency symbol",
+  "currencyPositionLabel": "Currency position",
+  "currencyPositionBeforeLabel": "Before",
+  "currencyPositionAfterLabel": "After",
+  "currencySpacingLabel": "Space symbol",
+  "currencyPreviewLabel": "Preview",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours}h {minutes}m",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
   "workCostsLabel": "Pricing & Work Costs",
   "enterNumber": "Please enter a number",
   "invalidNumber": "Invalid number",

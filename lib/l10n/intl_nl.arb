@@ -261,6 +261,46 @@
   "pricingRoundingNoneLabel": "Geen",
   "pricingRoundingWholeDollarLabel": "Heel bedrag",
   "pricingRoundingPointNinetyNineLabel": "Eindigt op .99",
+  "currencySymbolLabel": "Valutasymbool",
+  "currencyPositionLabel": "Positie van het symbool",
+  "currencyPositionBeforeLabel": "Voor",
+  "currencyPositionAfterLabel": "Na",
+  "currencySpacingLabel": "Spatie met symbool",
+  "currencyPreviewLabel": "Voorbeeld",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} u {minutes} min",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
   "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal,Opslag %,Opslagbedrag,Instelkosten,Afrondingsmodus,Tussenbedrag voor afronding,Afrondingscorrectie,Eindprijs",
   "historyExportShareText": "Export van 3D-printkostenoverzicht",
   "@supportIdCopied": {},
