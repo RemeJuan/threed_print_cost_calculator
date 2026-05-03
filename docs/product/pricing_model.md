@@ -21,7 +21,45 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 - Same inputs always produce same price
 - Pricing must be explainable in one sentence: `base cost + markup + setup fee, then rounding`
 - Saved jobs and future quotes must snapshot pricing inputs and computed output so later settings changes do not rewrite past prices
-- **Currency-agnostic**: The entire project treats values as raw numbers. No currency symbol (`$`, `€`, `£`, `¥`, etc.) appears anywhere in the UI. All values display as plain numeric strings.
+
+## Currency Formatting
+
+Pricing introduces basic currency display formatting for client-facing values.
+
+Scope is formatting only. No exchange rates, conversions, or locale-aware formatting are included.
+
+### Supported Configuration
+
+* currencySymbol (string)
+* currencyPosition (before | after)
+* currencySpacing (boolean)
+
+### Behavior
+
+* Values remain numeric internally
+* Formatting is applied only at display time
+
+Examples:
+
+* R95.30
+* 95.30 €
+* 95.30€
+
+### Rules
+
+* Symbol is optional (empty = no symbol shown)
+* Position determines placement
+* Spacing controls gap between symbol and value
+* Must be consistent across:
+    * calculator
+    * history
+    * export
+
+### Non-Goals
+
+* Currency codes (USD, EUR)
+* Locale formatting (1,000 vs 1.000)
+* Conversion or exchange rates
 
 ## Monetisation
 
@@ -241,12 +279,17 @@ Recommended fields:
 - `pricingMarkupPercent: String`
 - `pricingSetupFee: String`
 - `pricingRoundingMode: String` or enum-backed serialized value where `none` means rounding is disabled
+- `currencySymbol: String`
+- `currencyPosition: String` (before | after)
+- `currencySpacing: bool`
 
 Reason:
 
 - pricing defaults behave like existing calculator defaults
 - offline persistence already exists here
 - no new storage mechanism needed
+
+Currency settings are stored alongside pricing defaults because they directly affect how final price is presented to users.
 
 No separate rounding-enabled boolean is required. The rounding control can be represented by `pricingRoundingMode`, with `none` acting as the disabled state and `.00` / `.99` acting as enabled states.
 
@@ -323,14 +366,18 @@ Fields:
 
 - Markup %
 - Setup fee
-- Rounding toggle
-- Rounding mode
+- Rounding mode (none | .00 | .99)
+- Currency symbol
+- Symbol position
+- Spacing toggle
 
 Notes:
 
 - Rounding is optional
 - If enabled, rounding always rounds up
 - Pricing controls remain editable only for Pro users
+
+Currency formatting applies only to display values. Internal calculations remain numeric and unaffected.
 
 ### Calculator
 
@@ -452,11 +499,14 @@ History UI behavior:
 - show final price when present as the primary client-facing value
 - keep cost visible as supporting internal detail
 - do not replace, overwrite, or recompute cost from price
+- apply currency formatting consistently to all displayed price values
 
 Export behavior:
 
 - include pricing fields alongside cost fields
 - include final price when present
+- export raw numeric pricing values for reliable CSV parsing
+- optionally include formatted display values later if a separate client-facing export is introduced
 
 Saved records must remain snapshot-based so future settings changes do not rewrite old prices.
 
@@ -567,6 +617,7 @@ Recommended trigger points:
 - Save effective pricing snapshot with history entries needed for future shareable quotes
 - Prefer simple numeric storage and deterministic pure helper functions for rounding
 - Ensure cost and price labels stay distinct in model names, persistence, analytics, and UI copy
+- Keep currency formatting as a thin display layer separate from pricing calculation logic
 
 ## Acceptance Criteria
 
