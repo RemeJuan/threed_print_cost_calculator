@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpSupportFooter extends StatelessWidget {
-  const HelpSupportFooter({required this.onOpenUrl, super.key});
-
-  final Future<void> Function(String value) onOpenUrl;
+  const HelpSupportFooter({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class HelpSupportFooter extends StatelessWidget {
               key: const ValueKey<String>('helpSupport.footer.website'),
               tooltip: l10n.helpSupportWebsiteLabel,
               icon: const Icon(Icons.public_outlined, size: 18),
-              onPressed: () => onOpenUrl('https://printcostcalc.app'),
+              onPressed: () => openUrl('https://printcostcalc.app'),
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
@@ -34,7 +33,7 @@ class HelpSupportFooter extends StatelessWidget {
                 icon: HugeIcons.strokeRoundedNewTwitter,
                 size: 18,
               ),
-              onPressed: () => onOpenUrl('https://x.com/PrintCostCalc'),
+              onPressed: () => openUrl('https://x.com/PrintCostCalc'),
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
@@ -45,7 +44,7 @@ class HelpSupportFooter extends StatelessWidget {
                 size: 18,
               ),
               onPressed: () =>
-                  onOpenUrl('https://www.instagram.com/3dprintcostcalculator'),
+                  openUrl('https://www.instagram.com/3dprintcostcalculator'),
             ),
           ],
         ),
@@ -56,7 +55,7 @@ class HelpSupportFooter extends StatelessWidget {
             TextButton(
               key: const ValueKey<String>('helpSupport.footer.privacy'),
               onPressed: () =>
-                  onOpenUrl('https://printcostcalc.app/privacy.html'),
+                  openUrl('https://printcostcalc.app/privacy.html'),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(48, 48),
@@ -66,7 +65,7 @@ class HelpSupportFooter extends StatelessWidget {
             Text(l10n.separator, style: muted),
             TextButton(
               key: const ValueKey<String>('helpSupport.footer.terms'),
-              onPressed: () => onOpenUrl(
+              onPressed: () => openUrl(
                 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
               ),
               style: TextButton.styleFrom(
@@ -80,4 +79,10 @@ class HelpSupportFooter extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<void> openUrl(String value) async {
+  final uri = Uri.tryParse(value);
+  if (uri == null) return;
+  await launchUrl(uri, mode: LaunchMode.externalApplication);
 }

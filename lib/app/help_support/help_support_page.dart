@@ -12,7 +12,6 @@ import 'package:threed_print_cost_calculator/app/help_support/widgets/help_suppo
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_support_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HelpSupportPage extends ConsumerStatefulWidget {
   const HelpSupportPage({super.key});
@@ -71,7 +70,8 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
           const SizedBox(height: 12),
           const HelpSupportAboutSection(),
           const SizedBox(height: 12),
-          HelpSupportFooter(onOpenUrl: _openUrl),
+          HelpSupportFooter(),
+          const SizedBox(height: 40),
         ],
       ),
     );
@@ -104,12 +104,6 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
         answer: l10n.helpSupportFaqSetupAnswer,
       ),
     ];
-  }
-
-  Future<void> _openUrl(String value) async {
-    final uri = Uri.tryParse(value);
-    if (uri == null) return;
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   Future<void> _sendEmail({
