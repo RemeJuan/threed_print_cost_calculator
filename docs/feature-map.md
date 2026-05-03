@@ -183,35 +183,36 @@
 
 - Main screens/widgets:
   - `lib/settings/settings_page.dart`
+  - `lib/settings/settings_section.dart` — card wrapper with title + content; always expanded
   - `lib/settings/general_settings_form.dart`
   - `lib/settings/work_costs_form.dart`
   - `lib/settings/printers/printers.dart`
+  - `lib/settings/printers/printer_list_item.dart`
   - `lib/settings/printers/add_printer.dart`
-  - `lib/settings/materials/materials.dart`
-  - `lib/settings/materials/material_form.dart`
+- Layout behavior:
+  - Sections always visible (no accordion/collapse/chevrons)
+  - Order: General → Pricing & Work Costs → Printers (matches usage frequency)
+  - Premium-gated sections/actions are controlled by `isPremium`; General settings remain available
+  - Printer list is content-sized `Column` (no fixed-height `ListView`)
 - Providers/state:
   - `lib/settings/providers/printers_notifier.dart` (`printersProvider`)
-  - `lib/settings/providers/materials_notifier.dart` (`materialsProvider`)
-  - `lib/settings/state/printer_state.dart`
-  - `lib/settings/state/material_state.dart`
 - Repositories/services:
   - `lib/settings/services/settings_service.dart`
   - `lib/database/repositories/settings_repository.dart`
   - `lib/database/repositories/printers_repository.dart`
-  - `lib/database/repositories/materials_repository.dart`
 - Models:
   - `lib/settings/model/general_settings_model.dart`
   - `lib/settings/model/printer_model.dart`
-  - `lib/settings/model/material_model.dart`
 - Tests:
   - `test/settings/`
   - `integration_test/premium_settings_journey_test.dart`
 - Common search terms:
   - `SettingsPage`
+  - `SettingsSection`
   - `settingsServiceProvider`
   - `GeneralSettingsModel`
   - `PrintersNotifier`
-  - `MaterialsProvider`
+  - `PrinterListItem`
   - `work_costs_form`
 
 ## Localization
