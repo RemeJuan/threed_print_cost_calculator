@@ -61,6 +61,36 @@ Examples:
 * Locale formatting (1,000 vs 1.000)
 * Conversion or exchange rates
 
+### Currency Application Scope
+
+Currency formatting must be applied consistently to all monetary values displayed in the app.
+
+**Applies to:**
+
+* Electricity cost
+* Filament cost
+* Risk cost
+* Labour/material cost
+* Additional cost
+* Cost total
+* Markup amount
+* Setup fee
+* Rounding adjustment
+* Final price
+* Material price per unit (e.g. per kg)
+
+**Does not apply to:**
+
+* Percent values
+* Time values
+* Weight values
+* Wattage or power
+* Dimensions or volume
+* Any internal or stored numeric values
+* CSV exported numeric fields
+
+**Rule:** Currency formatting is a display concern only and must not affect calculations, stored values, or exported raw data.
+
 ## Monetisation
 
 - Pricing model is a Pro-only feature
