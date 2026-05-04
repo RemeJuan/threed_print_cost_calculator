@@ -2,12 +2,16 @@
 - Website: https://printcostcalc.app
 - Support email: 3d@printcostcalc.app
 - Support ID: Provided in-app (from `premiumStateProvider`)
+- Roadmap: Opens `https://printcostcalc.app/roadmap` in browser
 - App version: Exposed via `SettingsVersionTapTarget`
 
 When contacting support, include:
 - Support ID
 - App version
 - Short description of the issue
+
+Support card quick link:
+- Roadmap (`View what’s coming`)
 
 ---
 
