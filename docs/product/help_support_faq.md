@@ -58,6 +58,7 @@ Check:
 - Terms: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 - X / Twitter: https://x.com/PrintCostCalc
 - Instagram: https://www.instagram.com/3dprintcostcalculator
+- Mastodon: https://mastodon.social/@printcostcalc
 
 ---
 

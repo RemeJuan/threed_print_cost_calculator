@@ -46,6 +46,17 @@ class HelpSupportFooter extends StatelessWidget {
               onPressed: () =>
                   openUrl('https://www.instagram.com/3dprintcostcalculator'),
             ),
+            const SizedBox(width: 8),
+            IconButton.filledTonal(
+              key: const ValueKey<String>('helpSupport.footer.mastodon'),
+              tooltip: l10n.helpSupportMastodonLabel,
+              icon: const HugeIcon(
+                icon: HugeIcons.strokeRoundedMastodon,
+                size: 18,
+              ),
+              onPressed: () =>
+                  openUrl('https://mastodon.social/@printcostcalc'),
+            ),
           ],
         ),
         const SizedBox(height: 10),

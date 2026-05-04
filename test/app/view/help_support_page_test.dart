@@ -94,6 +94,11 @@ void main() {
     expect(find.text(l10n.helpSupportLinksTitle), findsNothing);
     expect(find.text('https://printcostcalc.app'), findsNothing);
     expect(find.text('https://x.com/PrintCostCalc'), findsNothing);
+    expect(
+      find.text('https://www.instagram.com/3dprintcostcalculator'),
+      findsNothing,
+    );
+    expect(find.text('https://mastodon.social/@printcostcalc'), findsNothing);
     expect(find.text('https://www.threads.com/@printcostcalc'), findsNothing);
     expect(
       find.text(
@@ -122,8 +127,16 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const ValueKey<String>('helpSupport.footer.threads')),
+      find.byKey(const ValueKey<String>('helpSupport.footer.instagram')),
       findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.footer.mastodon')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.footer.threads')),
+      findsNothing,
     );
     expect(
       find.byKey(const ValueKey<String>('helpSupport.footer.privacy')),

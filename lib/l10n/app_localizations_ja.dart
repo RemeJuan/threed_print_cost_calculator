@@ -301,6 +301,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get helpSupportInstagramLabel => 'Instagram';
 
   @override
+  String get helpSupportMastodonLabel => 'マストドン';
+
+  @override
   String get helpSupportThreadsLabel => 'Threads';
 
   @override

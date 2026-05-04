@@ -666,6 +666,12 @@ abstract class AppLocalizations {
   /// **'Instagram'**
   String get helpSupportInstagramLabel;
 
+  /// No description provided for @helpSupportMastodonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastodon'**
+  String get helpSupportMastodonLabel;
+
   /// No description provided for @helpSupportThreadsLabel.
   ///
   /// In en, this message translates to:
