@@ -25,8 +25,14 @@ class MaterialsProvider extends Notifier<MaterialState> {
   MaterialsRepository get _materialsRepository =>
       ref.read(materialsRepositoryProvider);
 
+  void reset() {
+    state = MaterialState();
+  }
+
   Future<void> init(final String? key) async {
     final loadToken = ++_materialsLoadToken;
+    await Future<void>.value();
+    reset();
 
     if (key != null) {
       final material = await _materialsRepository.getMaterialById(key);
