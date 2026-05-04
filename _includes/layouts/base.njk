@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="icon" href="{{ relativePrefix }}{{ site.logoWebp }}" type="image/webp">
+  <link rel="stylesheet" href="{{ relativePrefix }}assets/styles/site.css">
+</head>
+
+<body>
+  {% include "partials/header.njk" %}
+  <main{% if mainId %} id="{{ mainId }}"{% endif %}{% if mainClass %} class="{{ mainClass }}"{% endif %}>
+    {{ content | safe }}
+    {% include "partials/footer.njk" %}
+  </main>
+  {% include "partials/nav-script.njk" %}
+</body>
+
+</html>

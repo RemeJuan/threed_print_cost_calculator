@@ -1,0 +1,33 @@
+<script>
+  const navToggle = document.getElementById("nav-toggle");
+  const mobileDrawer = document.getElementById("mobile-drawer");
+
+  if (navToggle && mobileDrawer) {
+    const closeDrawer = () => {
+      navToggle.setAttribute("aria-expanded", "false");
+      mobileDrawer.classList.remove("is-open");
+    };
+
+    navToggle.addEventListener("click", () => {
+      const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!isExpanded));
+      mobileDrawer.classList.toggle("is-open", !isExpanded);
+    });
+
+    mobileDrawer.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeDrawer);
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeDrawer();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 680) {
+        closeDrawer();
+      }
+    });
+  }
+</script>

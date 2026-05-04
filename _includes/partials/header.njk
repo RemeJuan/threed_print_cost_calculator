@@ -1,0 +1,38 @@
+{% set homeHref = relativePrefix ~ "index.html" %}
+{% set brandHref = "#top" if pageId == "home" else homeHref %}
+{% set featuresHref = "#features" if pageId == "home" else homeHref ~ "#features" %}
+{% set downloadHref = "#download" if pageId == "home" else homeHref ~ "#download" %}
+{% set roadmapHref = relativePrefix ~ "roadmap/" %}
+{% set changelogHref = relativePrefix ~ "changelog.html" %}
+{% set privacyHref = relativePrefix ~ "privacy.html" %}
+{% set termsHref = relativePrefix ~ "terms.html" %}
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="{{ brandHref }}">
+      <img src="{{ relativePrefix }}{{ site.logoWebp }}" alt="{{ site.name }} logo">
+      <span>{{ site.name }}</span>
+    </a>
+    <div class="nav-links">
+      <a href="{{ featuresHref }}">Features</a>
+      <a href="{{ roadmapHref }}"{% if pageId == "roadmap" %} aria-current="page"{% endif %}>Roadmap</a>
+      <a href="{{ changelogHref }}"{% if pageId == "changelog" %} aria-current="page"{% endif %}>Changelog</a>
+      <a href="{{ privacyHref }}"{% if pageId == "privacy" %} aria-current="page"{% endif %}>Privacy</a>
+      <a href="{{ termsHref }}"{% if pageId == "terms" %} aria-current="page"{% endif %}>Terms</a>
+      <a href="{{ downloadHref }}">Download</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-drawer">
+      <span class="visually-hidden">Toggle menu</span>
+      <span class="nav-toggle-line" aria-hidden="true"></span>
+      <span class="nav-toggle-line" aria-hidden="true"></span>
+      <span class="nav-toggle-line" aria-hidden="true"></span>
+    </button>
+    <div class="mobile-drawer" id="mobile-drawer">
+      <a href="{{ featuresHref }}">Features</a>
+      <a href="{{ roadmapHref }}"{% if pageId == "roadmap" %} aria-current="page"{% endif %}>Roadmap</a>
+      <a href="{{ changelogHref }}"{% if pageId == "changelog" %} aria-current="page"{% endif %}>Changelog</a>
+      <a href="{{ privacyHref }}"{% if pageId == "privacy" %} aria-current="page"{% endif %}>Privacy</a>
+      <a href="{{ termsHref }}"{% if pageId == "terms" %} aria-current="page"{% endif %}>Terms</a>
+      <a href="{{ downloadHref }}">Download</a>
+    </div>
+  </nav>
+</header>

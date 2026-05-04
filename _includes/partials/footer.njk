@@ -1,0 +1,16 @@
+<footer class="footer{% if mainClass == 'legal' %} legal{% endif %}">
+  <p>Support: <a href="mailto:{{ site.supportEmail }}">{{ site.supportEmail }}</a></p>
+  <div class="footer-links">
+    <a href="{{ relativePrefix }}index.html">Home</a>
+    <a href="{{ relativePrefix }}roadmap/">Roadmap</a>
+    <a href="{{ relativePrefix }}privacy.html">Privacy Policy</a>
+    <a href="{{ relativePrefix }}terms.html">Terms of Service</a>
+    <a href="{{ relativePrefix }}changelog.html">Changelog</a>
+  </div>
+  <div class="footer-links">
+    {% for link in site.socialLinks %}
+      <a href="{{ link.href }}" target="_blank" rel="{{ link.rel }}">{{ link.label }}</a>
+    {% endfor %}
+  </div>
+  <p>{{ site.copyright }}</p>
+</footer>
