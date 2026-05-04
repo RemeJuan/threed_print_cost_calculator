@@ -1,0 +1,11 @@
+{
+  "name": "threed-print-cost-calculator-pages",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf _site && npx @11ty/eleventy",
+    "dev": "npx @11ty/eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.2"
+  }
+}
