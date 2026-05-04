@@ -1,0 +1,93 @@
+---
+layout: layouts/base.njk
+permalink: roadmap/index.html
+title: Public Roadmap | 3D Print Cost Calculator
+description: See what has shipped, what is in progress, and what we are exploring for 3D Print Cost Calculator.
+relativePrefix: "../"
+pageId: roadmap
+---
+<section class="page-hero roadmap-hero" aria-labelledby="roadmap-title">
+  <div>
+    <p class="kicker">Public roadmap</p>
+    <h1 id="roadmap-title">What we’ve shipped, what’s next, what we’re exploring</h1>
+    <p>
+      A simple look at product updates and near-term priorities. Roadmap is subject to change.
+    </p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="roadmap-sections-title">
+  <div class="section-heading">
+    <div>
+      <h2 id="roadmap-sections-title">Current roadmap</h2>
+      <p class="section-meta">Last updated: May 4, 2026</p>
+    </div>
+    <p>Priorities may change as the app evolves.</p>
+  </div>
+  <div class="roadmap-grid">
+    <article class="card roadmap-card">
+      <div class="roadmap-card-header">
+        <h2>Shipped recently</h2>
+        <span class="status-badge status-shipped">Shipped</span>
+      </div>
+      <ul class="roadmap-list">
+        <li>Better material selection, filtering, and overall setup flow</li>
+        <li>Refined settings layout that makes key options easier to find</li>
+        <li>Risk calculation fixes for more accurate cost estimates</li>
+      </ul>
+    </article>
+
+    <article class="card roadmap-card">
+      <div class="roadmap-card-header">
+        <h2>In Progress</h2>
+        <span class="status-badge status-in-progress">In Progress</span>
+      </div>
+      <ul class="roadmap-list">
+        <li>Markup percentages for more flexible pricing</li>
+        <li>Setup fees for fixed job costs</li>
+        <li>Rounding options for cleaner quote totals</li>
+        <li>Defaults with per-job overrides when you need them</li>
+        <li>Consistent currency handling across all cost inputs</li>
+      </ul>
+    </article>
+
+    <article class="card roadmap-card">
+      <div class="roadmap-card-header">
+        <h2>Planned</h2>
+        <span class="status-badge status-planned">Planned</span>
+      </div>
+      <ul class="roadmap-list">
+        <li>Client view with a shareable quote</li>
+        <li>Backup and restore with JSON files</li>
+        <li>Auto-calculation from supported G-code data</li>
+        <li>Batch costing for multiple parts</li>
+        <li>Preset import for faster setup</li>
+      </ul>
+    </article>
+
+    <article class="card roadmap-card">
+      <div class="roadmap-card-header">
+        <h2>Exploring</h2>
+        <span class="status-badge status-exploring">Exploring</span>
+      </div>
+      <ul class="roadmap-list">
+        <li>CSV import and export for material lists</li>
+        <li>Improved quote sharing options</li>
+        <li>Expanded help and FAQ content</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<section class="cta" aria-labelledby="roadmap-download-title">
+  <h2 id="roadmap-download-title">Get the app and follow along</h2>
+  <div class="store-buttons">
+    <a href="{{ site.appStoreUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Download on the Apple App Store">
+      <img src="../assets/store-badges/app-store-badge.svg" alt="Download on the App Store">
+    </a>
+    <a href="{{ site.playStoreUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+      <img src="../assets/store-badges/google-play-badge.svg" alt="Get it on Google Play">
+    </a>
+  </div>
+  <p class="cta-note">Have feedback? Email <a href="mailto:{{ site.supportEmail }}">{{ site.supportEmail }}</a>.</p>
+</section>
