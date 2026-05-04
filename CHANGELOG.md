@@ -1,3 +1,14 @@
+## [2.9.1] - 2026-05-04
+### Added
+- Added a roadmap link in Help & Support so users can quickly view what’s coming next.
+- Added Instagram and Mastodon links to the Help & Support footer.
+
+### Changed
+- Refreshed the Settings screen with clearer card-based sections for easier scanning.
+
+### Fixed
+- Fixed the new material form so it no longer reuses values from the last material you edited.
+
 ## [2.9.0] - 2026-05-02
 ### Added
 - New Help page with FAQs, support links, and app information.

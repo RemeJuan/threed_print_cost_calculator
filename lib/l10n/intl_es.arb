@@ -142,6 +142,8 @@
   "helpSupportEmailLabel": "Correo electrónico",
   "helpSupportSupportIdLabel": "ID de soporte",
   "helpSupportCopySupportIdTooltip": "Copiar ID de soporte",
+  "helpSupportRoadmapLabel": "Hoja de ruta",
+  "helpSupportRoadmapValue": "Ver lo que viene",
   "helpSupportAppVersionRow": "Versión de la app {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {
@@ -180,6 +182,8 @@
   "helpSupportPrivacyPolicyLabel": "Política de privacidad",
   "helpSupportTermsOfUseLabel": "Términos de uso",
   "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportInstagramLabel": "Instagram",
+  "helpSupportMastodonLabel": "Mastodon",
   "helpSupportThreadsLabel": "Threads",
   "helpSupportAboutTitle": "Acerca de",
   "helpSupportAboutIntro": "La Calculadora de Costes de Impresión 3D está hecha para precios locales primero. Ayuda a creadores y pequeños negocios de impresión a cotizar trabajo con menos sorpresas.",

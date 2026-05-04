@@ -56,6 +56,34 @@ void main() {
       expect(state.weightText, '');
     });
 
+    test('init for create clears previous form state', () async {
+      notifier
+        ..updateName('PLA')
+        ..updateColor('Blue')
+        ..updateWeight('1000')
+        ..updateCost('24.5')
+        ..updateAutoDeductEnabled(true)
+        ..updateRemainingWeight('850')
+        ..updateBrand('Sunlu')
+        ..updateMaterialType('PLA+')
+        ..updateColorHex('#112233')
+        ..updateNotes('Saved draft');
+
+      await notifier.init(null);
+
+      final state = container.read(materialsProvider);
+      expect(state.name.value, isEmpty);
+      expect(state.color.value, isEmpty);
+      expect(state.weightText, isEmpty);
+      expect(state.costText, isEmpty);
+      expect(state.autoDeductEnabled, isFalse);
+      expect(state.remainingWeightText, isEmpty);
+      expect(state.brand.value, isEmpty);
+      expect(state.materialType.value, isEmpty);
+      expect(state.colorHex.value, isEmpty);
+      expect(state.notes.value, isEmpty);
+    });
+
     test('rejects invalid payloads before persistence', () async {
       final materialsRepository = FakeMaterialsRepository();
       final guardedContainer = ProviderContainer(
@@ -103,8 +131,7 @@ void main() {
         );
 
         final seededNotifier = seededContainer.read(materialsProvider.notifier);
-        seededNotifier.init('mat-1');
-        await Future<void>.delayed(Duration.zero);
+        await seededNotifier.init('mat-1');
         seededNotifier.updateWeight('750');
         await seededNotifier.submit('mat-1');
 
@@ -112,8 +139,7 @@ void main() {
         expect(disabledSaved.autoDeductEnabled, isFalse);
         expect(disabledSaved.remainingWeight, 750);
 
-        seededNotifier.init('mat-1');
-        await Future<void>.delayed(Duration.zero);
+        await seededNotifier.init('mat-1');
         seededNotifier.updateAutoDeductEnabled(true);
         await seededNotifier.submit('mat-1');
 
@@ -150,8 +176,7 @@ void main() {
         );
 
         final seededNotifier = seededContainer.read(materialsProvider.notifier);
-        seededNotifier.init('mat-2');
-        await Future<void>.delayed(Duration.zero);
+        await seededNotifier.init('mat-2');
         seededNotifier.updateWeight('750');
         seededNotifier.updateAutoDeductEnabled(true);
         await seededNotifier.submit('mat-2');
@@ -166,7 +191,10 @@ void main() {
     test(
       'submit logs create and edit analytics with material metadata',
       () async {
-        final materialsRepository = FakeMaterialsRepository();
+        final materialsRepository = FakeMaterialsRepository(
+          useExplicitSaveResult: true,
+          saveResult: 'material-1',
+        );
         final analyticsContainer = ProviderContainer(
           overrides: [
             materialsRepositoryProvider.overrideWithValue(materialsRepository),
@@ -197,8 +225,7 @@ void main() {
         });
 
         final savedId = createdKey.toString();
-        analyticsNotifier.init(savedId);
-        await Future<void>.delayed(Duration.zero);
+        await analyticsNotifier.init(savedId);
         analyticsNotifier
           ..updateBrand('Overture')
           ..updateAutoDeductEnabled(false);

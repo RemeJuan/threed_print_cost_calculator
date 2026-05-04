@@ -2,12 +2,16 @@
 - Website: https://printcostcalc.app
 - Support email: 3d@printcostcalc.app
 - Support ID: Provided in-app (from `premiumStateProvider`)
+- Roadmap: Opens `https://printcostcalc.app/roadmap` in browser
 - App version: Exposed via `SettingsVersionTapTarget`
 
 When contacting support, include:
 - Support ID
 - App version
 - Short description of the issue
+
+Support card quick link:
+- Roadmap (`View what’s coming`)
 
 ---
 
@@ -57,7 +61,8 @@ Check:
 - Privacy policy: https://printcostcalc.app/privacy.html
 - Terms: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
 - X / Twitter: https://x.com/PrintCostCalc
-- Threads: https://www.threads.com/@printcostcalc
+- Instagram: https://www.instagram.com/3dprintcostcalculator
+- Mastodon: https://mastodon.social/@printcostcalc
 
 ---
 

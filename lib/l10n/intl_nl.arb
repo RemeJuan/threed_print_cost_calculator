@@ -151,6 +151,8 @@
   "helpSupportEmailLabel": "E-mail",
   "helpSupportSupportIdLabel": "Ondersteunings-ID",
   "helpSupportCopySupportIdTooltip": "Ondersteunings-ID kopiëren",
+  "helpSupportRoadmapLabel": "Roadmap",
+  "helpSupportRoadmapValue": "Bekijk wat eraan komt",
   "helpSupportAppVersionRow": "App-versie {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {
@@ -189,6 +191,8 @@
   "helpSupportPrivacyPolicyLabel": "Privacybeleid",
   "helpSupportTermsOfUseLabel": "Gebruiksvoorwaarden",
   "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportInstagramLabel": "Instagram",
+  "helpSupportMastodonLabel": "Mastodon",
   "helpSupportThreadsLabel": "Threads",
   "helpSupportAboutTitle": "Over",
   "helpSupportAboutIntro": "3D-printkostenrekenmachine is gebouwd voor local-first prijzen. Het helpt makers en kleine printbedrijven om werk te offeren met minder verrassingen.",

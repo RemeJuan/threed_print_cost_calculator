@@ -570,6 +570,18 @@ abstract class AppLocalizations {
   /// **'Copy support ID'**
   String get helpSupportCopySupportIdTooltip;
 
+  /// No description provided for @helpSupportRoadmapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Roadmap'**
+  String get helpSupportRoadmapLabel;
+
+  /// No description provided for @helpSupportRoadmapValue.
+  ///
+  /// In en, this message translates to:
+  /// **'View what’s coming'**
+  String get helpSupportRoadmapValue;
+
   /// No description provided for @helpSupportAppVersionRow.
   ///
   /// In en, this message translates to:
@@ -701,6 +713,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'X / Twitter'**
   String get helpSupportXTwitterLabel;
+
+  /// No description provided for @helpSupportInstagramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get helpSupportInstagramLabel;
+
+  /// No description provided for @helpSupportMastodonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastodon'**
+  String get helpSupportMastodonLabel;
 
   /// No description provided for @helpSupportThreadsLabel.
   ///

@@ -93,6 +93,8 @@
   "helpSupportEmailLabel": "Email",
   "helpSupportSupportIdLabel": "Support ID",
   "helpSupportCopySupportIdTooltip": "Copy support ID",
+  "helpSupportRoadmapLabel": "Roadmap",
+  "helpSupportRoadmapValue": "View what’s coming",
   "helpSupportAppVersionRow": "App version {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {
@@ -131,6 +133,8 @@
   "helpSupportPrivacyPolicyLabel": "Privacy policy",
   "helpSupportTermsOfUseLabel": "Terms of use",
   "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportInstagramLabel": "Instagram",
+  "helpSupportMastodonLabel": "Mastodon",
   "helpSupportThreadsLabel": "Threads",
   "helpSupportAboutTitle": "About",
   "helpSupportAboutIntro": "3D Print Cost Calculator is built for local-first pricing. It helps makers and small print businesses quote work with fewer surprises.",

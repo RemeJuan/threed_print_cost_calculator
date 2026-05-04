@@ -143,6 +143,8 @@
   "helpSupportEmailLabel": "E-mail",
   "helpSupportSupportIdLabel": "ID supporto",
   "helpSupportCopySupportIdTooltip": "Copia ID supporto",
+  "helpSupportRoadmapLabel": "Roadmap",
+  "helpSupportRoadmapValue": "Scopri cosa sta arrivando",
   "helpSupportAppVersionRow": "Versione app {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {
@@ -181,6 +183,8 @@
   "helpSupportPrivacyPolicyLabel": "Informativa sulla privacy",
   "helpSupportTermsOfUseLabel": "Termini di utilizzo",
   "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportInstagramLabel": "Instagram",
+  "helpSupportMastodonLabel": "Mastodon",
   "helpSupportThreadsLabel": "Threads",
   "helpSupportAboutTitle": "Informazioni",
   "helpSupportAboutIntro": "Il Calcolatore Costi Stampa 3D è costruito per prezzi local-first. Aiuta i creatori e le piccole imprese di stampa a quotare lavori con meno sorprese.",

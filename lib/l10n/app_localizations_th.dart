@@ -244,6 +244,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get helpSupportCopySupportIdTooltip => 'คัดลอกรหัสสนับสนุน';
 
   @override
+  String get helpSupportRoadmapLabel => 'โรดแมป';
+
+  @override
+  String get helpSupportRoadmapValue => 'ดูสิ่งที่จะมา';
+
+  @override
   String helpSupportAppVersionRow(Object version) {
     return 'เวอร์ชันแอป $version';
   }
@@ -322,6 +328,12 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get helpSupportXTwitterLabel => 'X / Twitter';
+
+  @override
+  String get helpSupportInstagramLabel => 'Instagram';
+
+  @override
+  String get helpSupportMastodonLabel => 'Mastodon';
 
   @override
   String get helpSupportThreadsLabel => 'Threads';

@@ -143,6 +143,8 @@
   "helpSupportEmailLabel": "Email",
   "helpSupportSupportIdLabel": "ID Dukungan",
   "helpSupportCopySupportIdTooltip": "Salin ID dukungan",
+  "helpSupportRoadmapLabel": "Peta jalan",
+  "helpSupportRoadmapValue": "Lihat yang akan datang",
   "helpSupportAppVersionRow": "Versi aplikasi {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {
@@ -181,6 +183,8 @@
   "helpSupportPrivacyPolicyLabel": "Kebijakan privasi",
   "helpSupportTermsOfUseLabel": "Ketentuan penggunaan",
   "helpSupportXTwitterLabel": "X / Twitter",
+  "helpSupportInstagramLabel": "Instagram",
+  "helpSupportMastodonLabel": "Mastodon",
   "helpSupportThreadsLabel": "Threads",
   "helpSupportAboutTitle": "Tentang",
   "helpSupportAboutIntro": "Kalkulator Biaya Cetak 3D dibuat untuk penetapan harga lokal terlebih dahulu. Ini membantu pembuat dan bisnis cetak kecil mengutip pekerjaan dengan lebih sedikit kejutan.",

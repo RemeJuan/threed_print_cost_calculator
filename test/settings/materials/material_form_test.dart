@@ -48,6 +48,38 @@ class _MaterialDialogHost extends StatelessWidget {
   }
 }
 
+class _MaterialFlowHost extends StatelessWidget {
+  const _MaterialFlowHost();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                builder: (_) => const MaterialForm(dbRef: 'material-1'),
+              );
+            },
+            child: const Text('Open edit'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              showDialog<void>(
+                context: context,
+                builder: (_) => const MaterialForm(),
+              );
+            },
+            child: const Text('Open create'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -400,6 +432,106 @@ void main() {
           .controller!
           .text,
       'PLA Edited',
+    );
+  });
+
+  testWidgets('create form resets after closing edited material dialog', (
+    tester,
+  ) async {
+    final material = const MaterialModel(
+      id: 'material-1',
+      name: 'PLA',
+      cost: '24.5',
+      color: 'Red',
+      weight: '1000',
+      archived: false,
+      autoDeductEnabled: true,
+      originalWeight: 1000,
+      remainingWeight: 725,
+      brand: 'Sunlu',
+      materialType: 'PLA+',
+      colorHex: '#112233',
+      notes: 'Edited material',
+    );
+    final repo = FakeMaterialsRepository();
+    repo.materialsById[material.id] = material;
+
+    final db = await tester.pumpApp(const _MaterialFlowHost(), [
+      materialsRepositoryProvider.overrideWithValue(repo),
+    ]);
+    addTearDown(db.close);
+
+    await tester.tap(find.text('Open edit'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<TextFormField>(_field('settings.materials.name.input'))
+          .controller!
+          .text,
+      'PLA',
+    );
+
+    await tester.ensureVisible(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open create'));
+    await tester.pumpAndSettle();
+
+    expect(
+      tester
+          .widget<TextFormField>(_field('settings.materials.name.input'))
+          .controller!
+          .text,
+      isEmpty,
+    );
+    expect(
+      tester
+          .widget<TextFormField>(_field('settings.materials.color.input'))
+          .controller!
+          .text,
+      isEmpty,
+    );
+    expect(
+      tester
+          .widget<TextFormField>(_field('settings.materials.weight.input'))
+          .controller!
+          .text,
+      isEmpty,
+    );
+    expect(
+      tester
+          .widget<TextFormField>(_field('settings.materials.cost.input'))
+          .controller!
+          .text,
+      isEmpty,
+    );
+    expect(
+      tester
+          .widget<TextFormField>(_field('settings.materials.notes.input'))
+          .controller!
+          .text,
+      isEmpty,
+    );
+    expect(
+      tester
+          .widget<SwitchListTile>(
+            find.byKey(
+              const ValueKey<String>(
+                'settings.materials.track_remaining.toggle',
+              ),
+            ),
+          )
+          .value,
+      isFalse,
+    );
+    expect(
+      find.byKey(
+        const ValueKey<String>('settings.materials.remaining_weight.input'),
+      ),
+      findsNothing,
     );
   });
 }

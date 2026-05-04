@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
@@ -75,6 +76,10 @@ void main() {
       findsOneWidget,
     );
     expect(
+      find.byKey(const ValueKey<String>('helpSupport.support.roadmap')),
+      findsOneWidget,
+    );
+    expect(
       find.descendant(
         of: find.byKey(const ValueKey<String>('helpSupport.support.id')),
         matching: find.byWidgetPredicate(
@@ -85,15 +90,23 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.text(l10n.helpSupportRoadmapLabel), findsOneWidget);
+    expect(find.text(l10n.helpSupportRoadmapValue), findsOneWidget);
     expect(find.text(l10n.helpSupportAppVersionRow('1.2.3')), findsOneWidget);
     expect(find.text(l10n.helpSupportContactSupportButton), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('support.version.tapTarget')),
       findsOneWidget,
     );
+    expect(find.text(helpSupportRoadmapUrl), findsNothing);
     expect(find.text(l10n.helpSupportLinksTitle), findsNothing);
     expect(find.text('https://printcostcalc.app'), findsNothing);
     expect(find.text('https://x.com/PrintCostCalc'), findsNothing);
+    expect(
+      find.text('https://www.instagram.com/3dprintcostcalculator'),
+      findsNothing,
+    );
+    expect(find.text('https://mastodon.social/@printcostcalc'), findsNothing);
     expect(find.text('https://www.threads.com/@printcostcalc'), findsNothing);
     expect(
       find.text(
@@ -120,6 +133,18 @@ void main() {
     expect(
       find.byKey(const ValueKey<String>('helpSupport.footer.x')),
       findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.footer.instagram')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.footer.mastodon')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.footer.threads')),
+      findsNothing,
     );
     expect(
       find.byKey(const ValueKey<String>('helpSupport.footer.privacy')),
