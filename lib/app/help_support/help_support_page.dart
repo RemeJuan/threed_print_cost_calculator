@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/app/help_support/models/help_support_faq_entry.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_about_section.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_faq_tile.dart';
@@ -48,6 +49,7 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
             packageInfoFuture: _packageInfoFuture,
             onEmailTap: () => _sendEmail(recipient: l10n.supportEmail),
             onCopySupportId: () => _copySupportId(l10n, visibleSupportId),
+            onRoadmapTap: () => openUrl(helpSupportRoadmapUrl),
           ),
           const SizedBox(height: 12),
           SizedBox(

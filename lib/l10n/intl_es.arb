@@ -132,6 +132,8 @@
   "helpSupportEmailLabel": "Correo electrónico",
   "helpSupportSupportIdLabel": "ID de soporte",
   "helpSupportCopySupportIdTooltip": "Copiar ID de soporte",
+  "helpSupportRoadmapLabel": "Hoja de ruta",
+  "helpSupportRoadmapValue": "Ver lo que viene",
   "helpSupportAppVersionRow": "Versión de la app {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {

@@ -528,6 +528,18 @@ abstract class AppLocalizations {
   /// **'Copy support ID'**
   String get helpSupportCopySupportIdTooltip;
 
+  /// No description provided for @helpSupportRoadmapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Roadmap'**
+  String get helpSupportRoadmapLabel;
+
+  /// No description provided for @helpSupportRoadmapValue.
+  ///
+  /// In en, this message translates to:
+  /// **'View what’s coming'**
+  String get helpSupportRoadmapValue;
+
   /// No description provided for @helpSupportAppVersionRow.
   ///
   /// In en, this message translates to:

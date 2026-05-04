@@ -220,6 +220,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get helpSupportCopySupportIdTooltip => 'サポートIDをコピー';
 
   @override
+  String get helpSupportRoadmapLabel => 'ロードマップ';
+
+  @override
+  String get helpSupportRoadmapValue => '今後の予定を見る';
+
+  @override
   String helpSupportAppVersionRow(Object version) {
     return 'アプリバージョン $version';
   }

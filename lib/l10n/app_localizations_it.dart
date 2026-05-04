@@ -226,6 +226,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get helpSupportCopySupportIdTooltip => 'Copia ID supporto';
 
   @override
+  String get helpSupportRoadmapLabel => 'Roadmap';
+
+  @override
+  String get helpSupportRoadmapValue => 'Scopri cosa sta arrivando';
+
+  @override
   String helpSupportAppVersionRow(Object version) {
     return 'Versione app $version';
   }

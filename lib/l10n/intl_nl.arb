@@ -134,6 +134,8 @@
   "helpSupportEmailLabel": "E-mail",
   "helpSupportSupportIdLabel": "Ondersteunings-ID",
   "helpSupportCopySupportIdTooltip": "Ondersteunings-ID kopiëren",
+  "helpSupportRoadmapLabel": "Roadmap",
+  "helpSupportRoadmapValue": "Bekijk wat eraan komt",
   "helpSupportAppVersionRow": "App-versie {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {

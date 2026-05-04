@@ -134,6 +134,8 @@
   "helpSupportEmailLabel": "メール",
   "helpSupportSupportIdLabel": "サポートID",
   "helpSupportCopySupportIdTooltip": "サポートIDをコピー",
+  "helpSupportRoadmapLabel": "ロードマップ",
+  "helpSupportRoadmapValue": "今後の予定を見る",
   "helpSupportAppVersionRow": "アプリバージョン {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {

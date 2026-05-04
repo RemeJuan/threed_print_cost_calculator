@@ -222,6 +222,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get helpSupportCopySupportIdTooltip => 'Salin ID dukungan';
 
   @override
+  String get helpSupportRoadmapLabel => 'Peta jalan';
+
+  @override
+  String get helpSupportRoadmapValue => 'Lihat yang akan datang';
+
+  @override
   String helpSupportAppVersionRow(Object version) {
     return 'Versi aplikasi $version';
   }

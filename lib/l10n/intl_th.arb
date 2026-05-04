@@ -134,6 +134,8 @@
   "helpSupportEmailLabel": "อีเมล",
   "helpSupportSupportIdLabel": "รหัสสนับสนุน",
   "helpSupportCopySupportIdTooltip": "คัดลอกรหัสสนับสนุน",
+  "helpSupportRoadmapLabel": "โรดแมป",
+  "helpSupportRoadmapValue": "ดูสิ่งที่จะมา",
   "helpSupportAppVersionRow": "เวอร์ชันแอป {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {

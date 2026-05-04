@@ -83,6 +83,8 @@
   "helpSupportEmailLabel": "Email",
   "helpSupportSupportIdLabel": "Support ID",
   "helpSupportCopySupportIdTooltip": "Copy support ID",
+  "helpSupportRoadmapLabel": "Roadmap",
+  "helpSupportRoadmapValue": "View what’s coming",
   "helpSupportAppVersionRow": "App version {version}",
   "@helpSupportAppVersionRow": {
     "placeholders": {

@@ -9,6 +9,7 @@ class HelpSupportSupportCard extends StatelessWidget {
     required this.packageInfoFuture,
     required this.onEmailTap,
     required this.onCopySupportId,
+    required this.onRoadmapTap,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class HelpSupportSupportCard extends StatelessWidget {
   final Future<PackageInfo> packageInfoFuture;
   final VoidCallback onEmailTap;
   final VoidCallback onCopySupportId;
+  final VoidCallback onRoadmapTap;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,19 @@ class HelpSupportSupportCard extends StatelessWidget {
               tooltip: l10n.helpSupportCopySupportIdTooltip,
               onPressed: canCopy ? onCopySupportId : null,
             ),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            key: const ValueKey<String>('helpSupport.support.roadmap'),
+            dense: true,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 2,
+            ),
+            title: Text(l10n.helpSupportRoadmapLabel),
+            subtitle: Text(l10n.helpSupportRoadmapValue),
+            trailing: const Icon(Icons.open_in_new_outlined, size: 18),
+            onTap: onRoadmapTap,
           ),
           const Divider(height: 1),
           FutureBuilder<PackageInfo>(
