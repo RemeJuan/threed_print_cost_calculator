@@ -1,14 +1,16 @@
 # 3D Print Cost Calculator Website (GitHub Pages)
 
-Static marketing site for the app, intended for the `gh-pages` branch.
+Static marketing site for the app, built with Eleventy and intended for GitHub Pages.
 
 ## Structure
 
-- `index.html` - landing page
-- `privacy.html` - privacy policy page
-- `terms.html` - terms page
-- `changelog.html` - changelog page (renders `main` branch `changelog.md`)
-- `roadmap/index.html` - public roadmap page
+- `index.njk` - landing page source
+- `privacy.njk` - privacy policy page source
+- `terms.njk` - terms page source
+- `changelog.njk` - changelog page source (renders `main` branch `CHANGELOG.md`)
+- `roadmap/index.njk` - public roadmap page source
+- `_includes` - shared layouts and partials
+- `_data` - shared site data
 - `assets/logo` - logo/favicons
 - `assets/screenshots` - app screenshots
 - `assets/store-badges` - app store badges
@@ -16,24 +18,34 @@ Static marketing site for the app, intended for the `gh-pages` branch.
 
 ## Local Preview
 
-From this branch root:
+Install deps, then build or run local dev server:
 
 ```bash
-python3 -m http.server 8080
+npm install
+npm run build
+python3 -m http.server 8080 -d _site
+```
+
+Or use:
+
+```bash
+npm run dev
 ```
 
 Then open `http://localhost:8080`.
 
 ## Deploy via GitHub Pages
 
-1. Push this branch to `origin/gh-pages`.
-2. In GitHub repo settings, set Pages source to `Deploy from a branch`.
-3. Select branch `gh-pages` and folder `/ (root)`.
-4. Save. GitHub will publish the static site.
+Use the included GitHub Actions workflow.
+
+1. In GitHub repo settings, set Pages source to `GitHub Actions`.
+2. Push changes.
+3. GitHub Actions will build Eleventy output and deploy it to Pages.
 
 ## Notes
 
 - Site is static (no backend).
-- No framework dependencies.
+- Eleventy is build-time only; published output remains plain static files.
 - Store badges and screenshots are local assets.
 - App pricing is intentionally omitted because it varies by region.
+- `CNAME` and `.nojekyll` are copied through to the final Pages artifact.
