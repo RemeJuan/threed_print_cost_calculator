@@ -145,6 +145,21 @@ main {
   padding: 3.5rem 0 2rem;
 }
 
+.page-hero {
+  padding: 3.5rem 0 1rem;
+}
+
+.page-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin: 0;
+}
+
+.page-hero p {
+  color: var(--color-text-muted);
+  margin-top: 1rem;
+  max-width: 60ch;
+}
+
 .hero h1 {
   font-size: clamp(2rem, 4vw, 3.2rem);
   margin: 0;
@@ -209,6 +224,24 @@ main {
   font-size: clamp(1.4rem, 2vw, 2rem);
 }
 
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.section-heading p {
+  margin: 0;
+}
+
+.section-meta {
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+}
+
 .section p,
 .section li {
   color: var(--color-text-muted);
@@ -236,6 +269,73 @@ main {
   margin-bottom: 0;
   font-size: 0.9rem;
   color: var(--color-text-muted);
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem;
+  margin-top: 1.25rem;
+}
+
+.roadmap-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.roadmap-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.roadmap-card-header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.status-shipped {
+  background: rgba(50, 205, 125, 0.12);
+  color: #87f0b3;
+}
+
+.status-in-progress {
+  background: rgba(84, 153, 254, 0.12);
+  color: #9ec2ff;
+}
+
+.status-planned {
+  background: rgba(255, 196, 87, 0.12);
+  color: #ffd989;
+}
+
+.status-exploring {
+  background: rgba(186, 137, 255, 0.12);
+  color: #d2b4ff;
+}
+
+.roadmap-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.roadmap-list li + li {
+  margin-top: 0.65rem;
 }
 
 .screenshots {
@@ -285,6 +385,11 @@ main {
   background: linear-gradient(130deg, rgba(84, 153, 254, 0.25), rgba(7, 9, 26, 0.95));
 }
 
+.cta-note {
+  margin: 1rem 0 0;
+  color: var(--color-text-muted);
+}
+
 .footer {
   margin-top: 3rem;
   border-top: 1px solid var(--color-border);
@@ -321,7 +426,8 @@ main {
   }
 
   .section-grid,
-  .screenshots {
+  .screenshots,
+  .roadmap-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -362,8 +468,13 @@ main {
   }
 
   .section-grid,
-  .screenshots {
+  .screenshots,
+  .roadmap-grid {
     grid-template-columns: 1fr;
+  }
+
+  .roadmap-card-header {
+    align-items: start;
   }
 
   .store-buttons img {

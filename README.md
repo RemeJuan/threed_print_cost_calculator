@@ -8,6 +8,7 @@ Static marketing site for the app, intended for the `gh-pages` branch.
 - `privacy.html` - privacy policy page
 - `terms.html` - terms page
 - `changelog.html` - changelog page (renders `main` branch `changelog.md`)
+- `roadmap/index.html` - public roadmap page
 - `assets/logo` - logo/favicons
 - `assets/screenshots` - app screenshots
 - `assets/store-badges` - app store badges
