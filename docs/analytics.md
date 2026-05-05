@@ -80,7 +80,13 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: used for unsupported extension, unsupported file contents, and read failure; `parse_status=failed`
+  - notes: used for unsupported extension, unsupported file contents, size rejection, and read failure; `parse_status=failed`
+
+- `gcode_import_breadcrumb`
+  - params: [`stage`, `file_name`?, `original_file_name`?, `mime_type`?, `file_size_bytes`?, `reason`?]
+  - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`, `lib/gcode_import/gcode_import_diagnostics.dart`]
+  - feature: G-code import
+  - notes: best-effort import diagnostics mirrored to Crashlytics logs; stages currently include `import_started`, `file_metadata_resolved`, `file_rejected_size`, `file_rejected_type`, `parse_failed`, `import_succeeded`
 
 - `gcode_preview_viewed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
@@ -234,6 +240,7 @@
 - entry point: yes — `gcode_import_opened` plus attributable `gcode_import_started`
 - file select: yes — `gcode_file_selected`
 - parse success/fail: yes — `gcode_parse_success`, `gcode_parse_partial`, `gcode_parse_failed`
+- import diagnostics: yes — `gcode_import_breadcrumb` plus mirrored Crashlytics breadcrumb logs
 - estimate applied: no — helper exists but current import flow does not emit `gcode_apply_to_calculator`
 - calculator success: yes — `gcode_import_success`
 - flow completed: yes — `gcode_flow_completed`
