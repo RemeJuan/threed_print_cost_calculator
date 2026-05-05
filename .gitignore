@@ -133,3 +133,4 @@ app.*.map.json
 patrol_test/test_bundle.dart
 
 untranslated-messages.json
+service-account-key.json
