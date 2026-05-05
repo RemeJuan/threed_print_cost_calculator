@@ -57,20 +57,33 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: "true"
+
+        ndk {
+            // Explicitly filter for ABIs supported by Flutter.
+            // Without this, the Play Store may deliver APKs that lack
+            // libflutter.so, causing an immediate crash at startup.
+            // See: https://github.com/flutter/flutter/issues/151638
+            abiFilters 'arm64-v8a', 'armeabi-v7a'
+        }
     }
 
     testOptions {
         execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
-    splits {
-        abi {
-            enable true //enables the ABIs split mechanism
-            reset()
-//            include 'arm64-v8a', 'armeabi-v7a', 'x86'
-            universalApk true
-        }
-    }
+    // Splits disabled: abiFilters in defaultConfig handles ABI filtering
+    // correctly for both APK and App Bundle. The splits block conflicts
+    // with the App Bundle pipeline and can cause libflutter.so to be
+    // missing in Play Store–delivered APKs.
+    // See: https://github.com/flutter/flutter/issues/151638
+    // splits {
+    //     abi {
+    //         enable true
+    //         reset()
+    //         include 'arm64-v8a', 'armeabi-v7a', 'x86'
+    //         universalApk true
+    //     }
+    // }
 
     // TODO: Remove when below fix is available in stable channel.
     // https://github.com/flutter/flutter/pull/82309
