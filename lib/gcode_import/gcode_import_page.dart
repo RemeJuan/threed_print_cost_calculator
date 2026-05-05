@@ -155,7 +155,7 @@ class GCodeImportPage extends HookConsumerWidget {
                       ),
                       _summaryRow(
                         context,
-                        l10n.importGcodePreviewLabel,
+                        _previewLabel(l10n, state.result!),
                         _previewValueWidget(
                           context,
                           l10n,
@@ -284,11 +284,55 @@ class GCodeImportPage extends HookConsumerWidget {
     required String parseStatus,
   }) {
     final previewBytes = result.previewImageBytes;
-    if (previewBytes == null || !result.hasSafePreview) {
+    if (previewBytes == null) {
+      return _previewPlaceholder(context, l10n);
+    }
+
+    if (!result.hasSafePreview) {
       return Text(
         l10n.importGcodePreviewUnavailable,
         textAlign: TextAlign.end,
         style: Theme.of(context).textTheme.bodyMedium,
+      );
+    }
+
+    final isLowRes =
+        (result.previewWidth ?? 0) < 128 || (result.previewHeight ?? 0) < 128;
+
+    if (isLowRes) {
+      return Align(
+        alignment: Alignment.centerRight,
+        child: SizedBox(
+          width: 96,
+          height: 96,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                AppAnalytics.safeLog(
+                  () => AppAnalytics.gcodePreviewViewed(
+                    slicer: result.slicer.name,
+                    hasPreview: result.hasPreviewMetadata,
+                    fileSizeBytes: fileSizeBytes,
+                    parseStatus: parseStatus,
+                  ),
+                );
+                _showPreviewDialog(context, l10n, previewBytes);
+              },
+              child: Container(
+                color: Colors.black87,
+                alignment: Alignment.center,
+                child: Image.memory(
+                  previewBytes,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.none,
+                  gaplessPlayback: true,
+                  isAntiAlias: false,
+                ),
+              ),
+            ),
+          ),
+        ),
       );
     }
 
@@ -314,6 +358,48 @@ class GCodeImportPage extends HookConsumerWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity.compact,
           alignment: Alignment.centerRight,
+        ),
+      ),
+    );
+  }
+
+  String _previewLabel(AppLocalizations l10n, GCodeImportResult result) {
+    final width = result.previewWidth;
+    final height = result.previewHeight;
+    if (width != null && height != null && (width < 128 || height < 128)) {
+      return '${l10n.importGcodePreviewLabel} · $width×$height';
+    }
+    return l10n.importGcodePreviewLabel;
+  }
+
+  Widget _previewPlaceholder(BuildContext context, AppLocalizations l10n) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        width: 96,
+        height: 96,
+        decoration: BoxDecoration(
+          color: Colors.black87,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.image_not_supported_outlined,
+              color: Colors.white70,
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.importGcodePreviewUnavailable,
+              textAlign: TextAlign.center,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+            ),
+          ],
         ),
       ),
     );

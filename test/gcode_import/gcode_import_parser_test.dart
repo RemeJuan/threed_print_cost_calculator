@@ -25,6 +25,9 @@ void main() {
       expect(result.previewMetadata?.format, 'QOI');
       expect(result.previewMetadata?.width, 32);
       expect(result.previewMetadata?.height, 32);
+      expect(result.hasPreview, isTrue);
+      expect(result.previewWidth, 32);
+      expect(result.previewHeight, 32);
       expect(result.previewImageBytes, isNotNull);
       expect(result.warnings, isEmpty);
     });

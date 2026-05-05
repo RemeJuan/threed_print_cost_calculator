@@ -29,6 +29,12 @@ class GCodeImportResult {
 
   bool get hasPreviewMetadata => previewMetadata?.present ?? false;
 
+  bool get hasPreview => hasPreviewMetadata;
+
+  int? get previewWidth => previewMetadata?.width;
+
+  int? get previewHeight => previewMetadata?.height;
+
   bool get hasPartialMetadata => warnings.any(
     (warning) => warning.code == GCodeParseWarningCode.partialMetadata,
   );

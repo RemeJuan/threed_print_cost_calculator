@@ -37,7 +37,7 @@ void main() {
     );
   });
 
-  testWidgets('shows preview image when available', (tester) async {
+  testWidgets('shows low-res preview label and rendering', (tester) async {
     await tester.pumpApp(const GCodeImportPage(), [
       isPremiumProvider.overrideWithValue(true),
       gcodeImportControllerProvider.overrideWith(
@@ -47,8 +47,8 @@ void main() {
             previewMetadata: const GCodePreviewMetadata(
               present: true,
               format: 'PNG',
-              width: 1,
-              height: 1,
+              width: 32,
+              height: 32,
             ),
             previewImageBytes: _validPngBytes(),
             hasSafePreview: true,
@@ -57,26 +57,16 @@ void main() {
       ),
     ]);
 
-    expect(find.widgetWithText(TextButton, 'View'), findsOneWidget);
-    expect(
-      find.text('Preview metadata found, but image could not be displayed.'),
-      findsNothing,
-    );
-
-    await tester.ensureVisible(find.widgetWithText(TextButton, 'View'));
-    await tester.tap(find.widgetWithText(TextButton, 'View'));
-    await tester.pumpAndSettle();
+    expect(find.text('Preview · 32×32'), findsOneWidget);
+    final image = tester.widget<Image>(find.byType(Image));
+    expect(image.filterQuality, FilterQuality.none);
 
     expect(find.byType(Image), findsOneWidget);
 
-    await tester.ensureVisible(find.byTooltip('Close'));
-    await tester.tap(find.byTooltip('Close'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(Image), findsNothing);
+    expect(find.byTooltip('Close'), findsNothing);
   });
 
-  testWidgets('hides unsafe preview image', (tester) async {
+  testWidgets('shows normal preview label for larger previews', (tester) async {
     await tester.pumpApp(const GCodeImportPage(), [
       isPremiumProvider.overrideWithValue(true),
       gcodeImportControllerProvider.overrideWith(
@@ -86,19 +76,19 @@ void main() {
             previewMetadata: const GCodePreviewMetadata(
               present: true,
               format: 'PNG',
-              width: 1,
-              height: 1,
-              isSafe: false,
+              width: 256,
+              height: 256,
             ),
             previewImageBytes: _validPngBytes(),
-            hasSafePreview: false,
+            hasSafePreview: true,
           ),
         ),
       ),
     ]);
 
-    expect(find.widgetWithText(TextButton, 'View'), findsNothing);
-    expect(find.text('Not available'), findsOneWidget);
+    expect(find.text('Preview'), findsWidgets);
+    expect(find.textContaining('×'), findsNothing);
+    expect(find.byType(TextButton), findsOneWidget);
   });
 
   testWidgets('shows fallback text when preview decode fails', (tester) async {
@@ -111,8 +101,8 @@ void main() {
             previewMetadata: const GCodePreviewMetadata(
               present: true,
               format: 'PNG',
-              width: 1,
-              height: 1,
+              width: 256,
+              height: 256,
             ),
             previewImageBytes: Uint8List.fromList([0, 1, 2, 3]),
             hasSafePreview: true,
@@ -121,7 +111,6 @@ void main() {
       ),
     ]);
 
-    await tester.ensureVisible(find.widgetWithText(TextButton, 'View'));
     await tester.tap(find.widgetWithText(TextButton, 'View'));
     await tester.pumpAndSettle();
 
@@ -151,7 +140,7 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(find.text('Not available'), findsOneWidget);
+    expect(find.text('No preview'), findsOneWidget);
   });
 
   testWidgets('keeps no-preview summary unchanged', (tester) async {
@@ -168,7 +157,7 @@ void main() {
       ),
     ]);
 
-    expect(find.text('Not available'), findsOneWidget);
+    expect(find.text('No preview'), findsOneWidget);
     expect(find.textContaining('Cura previews may require'), findsNothing);
   });
 
