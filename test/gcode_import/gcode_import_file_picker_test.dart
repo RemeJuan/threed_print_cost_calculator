@@ -12,12 +12,12 @@ void main() {
     expect(groups.single.extensions, isNull);
   });
 
-  test('desktop picker filters by gcode extension', () {
+  test('desktop picker filters by gcode extensions', () {
     final groups = gCodeAcceptedTypeGroups(TargetPlatform.macOS);
 
     expect(groups, hasLength(1));
     expect(groups.single.label, 'G-code');
-    expect(groups.single.extensions, ['gcode']);
+    expect(groups.single.extensions, ['gcode', 'gco', 'nc', 'bin']);
     expect(groups.single.uniformTypeIdentifiers, isNull);
   });
 }

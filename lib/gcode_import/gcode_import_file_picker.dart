@@ -24,9 +24,13 @@ class PlatformGCodeImportFilePicker extends GCodeImportFilePicker {
 
     if (file == null) return null;
 
+    final size = await file.length();
+
     return GCodePickedFile(
       name: file.name,
       path: file.path,
+      mimeType: file.mimeType,
+      size: size,
       readAsBytes: file.readAsBytes,
     );
   }
@@ -41,7 +45,7 @@ List<XTypeGroup> gCodeAcceptedTypeGroups(TargetPlatform platform) {
       ];
     default:
       return const [
-        XTypeGroup(label: 'G-code', extensions: ['gcode']),
+        XTypeGroup(label: 'G-code', extensions: ['gcode', 'gco', 'nc', 'bin']),
       ];
   }
 }
@@ -51,11 +55,24 @@ class GCodePickedFile {
     required this.name,
     required this.readAsBytes,
     this.path,
+    this.mimeType,
+    this.size,
   });
 
   final String name;
   final String? path;
+  final String? mimeType;
+  final int? size;
   final Future<Uint8List> Function() readAsBytes;
 
-  bool get hasSupportedExtension => p.extension(name).toLowerCase() == '.gcode';
+  bool get hasSupportedExtension {
+    switch (p.extension(name).toLowerCase()) {
+      case '.gcode':
+      case '.gco':
+      case '.nc':
+        return true;
+      default:
+        return false;
+    }
+  }
 }
