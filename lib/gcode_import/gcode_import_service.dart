@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'gcode_import_file_picker.dart';
+import 'gcode_import_file_reader.dart';
 import 'gcode_import_parser.dart';
 import 'gcode_import_result.dart';
 
@@ -18,7 +19,12 @@ class GCodeImportService {
   const GCodeImportService();
 
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
-    final bytes = await file.readAsBytes();
+    if (file.path != null) {
+      final wire = await compute(_parsePathInBackground, file.path!);
+      return GCodeImportResult.fromWireMap(wire);
+    }
+
+    final bytes = await file.readAsBytesOrThrow();
     return importPickedBytes(bytes);
   }
 
@@ -32,4 +38,10 @@ class GCodeImportService {
 Map<String, dynamic> _parseInBackground(String text) {
   const parser = GCodeImportParser();
   return parser.parse(text).toWireMap();
+}
+
+Future<Map<String, dynamic>> _parsePathInBackground(String path) async {
+  const parser = GCodeImportParser();
+  final result = await parser.parseLineStream(openGCodeLines(path));
+  return result.toWireMap();
 }
