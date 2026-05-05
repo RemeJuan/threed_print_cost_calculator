@@ -1,3 +1,12 @@
+## [2.9.3] - 2026-05-05
+### Changed
+- Improved Android G-code import to read selected files more reliably, including picks exposed as generic file types.
+- Added a localized error message when an import file exceeds the supported size limit.
+
+### Fixed
+- Fixed Android G-code imports from failing or crashing when large files were selected.
+- Fixed valid G-code files selected as `.bin` or generic downloads on Android from being rejected when the file contents are valid.
+
 ## [2.9.2] - 2026-05-05
 ### Added
 - Added support for `.gco` and `.nc` file extensions in G-code import.
@@ -162,6 +171,7 @@
 ### Added
 - Added in-app update checker
 
+[2.9.3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.2...2.9.3
 [2.9.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.1...2.9.2
 [2.9.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.0...2.9.1
 [2.9.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.8.2...2.9.0
