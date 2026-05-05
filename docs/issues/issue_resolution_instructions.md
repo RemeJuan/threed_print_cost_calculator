@@ -10,6 +10,27 @@ Do not assume context outside the issue doc.
 
 ## Steps
 
+### 0. Validate Issue Status
+
+- Open the issue doc and check current Status.
+- If Status is:
+  - `fixed` or `release`:
+    - Stop. Do not proceed unless explicitly re-opened.
+  - `watching`:
+    - Only proceed if new regression or spike is detected.
+  - `ignored`:
+    - Stop unless priority has been reclassified.
+- Check if a fix branch already exists:
+  - If yes, review existing work before continuing.
+  - Avoid creating duplicate branches or fixes.
+- Check for duplicate or related issues:
+  - Look for similar stack traces or symptoms in other issue docs.
+  - If duplicate:
+    - Link issues together in the doc.
+    - Prefer updating the existing canonical issue.
+- Update Status → `investigating` when actively working the issue.
+- Add a short “Investigation started” note with timestamp if not present.
+
 ### 1. Load Context
 - Open the issue doc.
 - Extract:
