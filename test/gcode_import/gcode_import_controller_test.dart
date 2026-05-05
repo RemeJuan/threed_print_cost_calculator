@@ -55,6 +55,7 @@ void main() {
       file: _file(
         'cache.bin',
         _gcodeBytes(),
+        originalName: 'benchy.gcode',
         mimeType: 'application/octet-stream',
       ),
       serviceResult: _result,
@@ -96,8 +97,14 @@ void main() {
 
   test('rejects oversized files before reading bytes', () async {
     const oversized = 50 * 1024 * 1024 + 1;
+    var readCount = 0;
     final container = _container(
-      file: _file('oversized.gcode', _gcodeBytes(), size: oversized),
+      file: _file(
+        'oversized.gcode',
+        _gcodeBytes(),
+        size: oversized,
+        onRead: () => readCount++,
+      ),
       serviceResult: _result,
     );
 
@@ -105,8 +112,9 @@ void main() {
 
     final state = container.read(gcodeImportControllerProvider);
     expect(state.status, GCodeImportStatus.failure);
-    expect(state.error, GCodeImportError.unsupportedType);
+    expect(state.error, GCodeImportError.tooLarge);
     expect(state.selectedFileSizeBytes, oversized);
+    expect(readCount, 0);
   });
 
   test('rejects binary gcode files', () async {
@@ -126,21 +134,35 @@ void main() {
 ProviderContainer _container({
   required GCodePickedFile file,
   required GCodeImportResult serviceResult,
+  int Function()? onImport,
 }) {
   return ProviderContainer(
     overrides: [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(file)),
-      gcodeImportServiceProvider.overrideWithValue(_FakeService(serviceResult)),
+      gcodeImportServiceProvider.overrideWithValue(
+        _FakeService(serviceResult, onImport: onImport),
+      ),
     ],
   );
 }
 
-GCodePickedFile _file(String name, Uint8List bytes, {String? mimeType, int? size}) {
+GCodePickedFile _file(
+  String name,
+  Uint8List bytes, {
+  String? originalName,
+  String? mimeType,
+  int? size,
+  void Function()? onRead,
+}) {
   return GCodePickedFile(
     name: name,
+    originalName: originalName,
     mimeType: mimeType,
     size: size,
-    readAsBytes: () async => bytes,
+    readAsBytes: () async {
+      onRead?.call();
+      return bytes;
+    },
   );
 }
 
@@ -169,10 +191,14 @@ class _FakePicker extends GCodeImportFilePicker {
 }
 
 class _FakeService extends GCodeImportService {
-  _FakeService(this.result);
+  _FakeService(this.result, {this.onImport});
 
   final GCodeImportResult result;
+  final int Function()? onImport;
 
   @override
-  Future<GCodeImportResult> importPickedBytes(Uint8List bytes) async => result;
+  Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
+    onImport?.call();
+    return result;
+  }
 }
