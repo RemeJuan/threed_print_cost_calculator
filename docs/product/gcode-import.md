@@ -22,6 +22,12 @@ Decision doc: [2026-04-gcode-import](../decisions/2026-04-gcode-import.md)
 - TODO: verify in code whether this library is still the active choice.
 - Current app shell routes the import page from the header for premium users.
 - The reusable import button defaults to `calculator`, but is not wired into the current app shell.
+- File validation now accepts `.gcode`, `.gco`, and `.nc` when the payload looks text-like.
+- Android/file_picker cached `.bin` results and other unknown/octet-stream picks are sniffed from the first 64 KiB for common G-code markers before rejection.
+- Imports reject clearly binary payloads before parsing and reject files above the 50 MiB in-memory cap after load, before parse work continues.
+- Validation/error copy now uses the selected display filename rather than cached path aliases.
+- Preview summary stays non-blocking for low-resolution thumbnails; thumbnails under 128 px render inline with nearest-neighbour scaling and show `Preview · {W}×{H}`.
+- Missing previews now use `No preview` copy in the summary.
 
 ## Analytics
 - Funnel now tracked as `gcode_import_opened` -> `gcode_import_started` -> `gcode_file_selected` -> `gcode_parse_*` -> `gcode_preview_viewed` -> `gcode_import_success` -> `gcode_flow_completed` / `gcode_import_abandoned`.
@@ -32,9 +38,9 @@ Decision doc: [2026-04-gcode-import](../decisions/2026-04-gcode-import.md)
 
 ## Known Issues
 - Feature is still partial for parser coverage and preview handling across slicers.
-- TODO: verify current parser/preview limitations by format and size.
+- Android picker support depends on content sniffing heuristics for cached `.bin` files, so unusual G-code exports without common markers may still be rejected.
+- TODO: verify current parser/preview limitations by slicer, preview encoding, and large-file edge cases.
 
 ## TODOs
-- Validate file formats.
 - Expand parser edge-case coverage.
 - Run beta testing.

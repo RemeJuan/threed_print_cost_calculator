@@ -136,6 +136,13 @@
   - `lib/gcode_import/gcode_import_page.dart`
   - `lib/gcode_import/gcode_import_button.dart`
   - `lib/gcode_import/feedback/gcode_import_feedback_page.dart`
+- Current behavior:
+  - Accepts `.gcode`, `.gco`, and `.nc` files directly when payload looks text-like.
+  - Treats Android/file picker `.bin` and other unknown/octet-stream picks as sniffable input; reads up to 64 KiB for common G-code markers before rejecting.
+  - Rejects clearly binary payloads before parsing and rejects files above the in-memory 50 MiB import cap after load, before parse work continues.
+  - Uses picked filename for validation/error UX instead of cached path aliases.
+  - Preview summary now shows `Preview · {W}×{H}` for thumbnails smaller than 128 px on either axis, `Preview` for larger previews, and `No preview` when absent.
+  - Low-resolution previews stay importable; inline thumbnail uses nearest-neighbour rendering on a dark background instead of blocking import.
 - Providers/state:
   - `lib/gcode_import/gcode_import_controller.dart`
   - `lib/gcode_import/gcode_import_result.dart`
