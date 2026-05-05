@@ -261,6 +261,9 @@ class GCodeImportPage extends HookConsumerWidget {
     return switch (error) {
       GCodeImportError.unsupportedType => l10n.importGcodeUnsupportedTypeError,
       GCodeImportError.unsupportedFile => l10n.importGcodeUnsupportedFileError,
+      GCodeImportError.tooLarge => l10n.importGcodeTooLargeError(
+        gCodeImportMaxSizeMb.toString(),
+      ),
       GCodeImportError.readFailed => l10n.importGcodeReadError,
     };
   }

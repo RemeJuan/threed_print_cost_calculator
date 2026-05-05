@@ -1500,6 +1500,12 @@ abstract class AppLocalizations {
   /// **'This file does not look like a supported G-code file.'**
   String get importGcodeUnsupportedFileError;
 
+  /// No description provided for @importGcodeTooLargeError.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is too large to import. Choose a file smaller than {maxSizeMb} MB.'**
+  String importGcodeTooLargeError(Object maxSizeMb);
+
   /// No description provided for @importGcodeReadError.
   ///
   /// In en, this message translates to:

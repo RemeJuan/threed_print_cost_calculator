@@ -300,6 +300,12 @@
   "importGcodeWarningsTitle": "Warnings",
   "importGcodeUnsupportedTypeError": "This file does not look like a supported G-code file.",
   "importGcodeUnsupportedFileError": "This file does not look like a supported G-code file.",
+  "importGcodeTooLargeError": "This file is too large to import. Choose a file smaller than {maxSizeMb} MB.",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "The selected file could not be read.",
   "importGcodeUnknownSlicerValue": "Unknown",
   "importGcodeMissingValue": "Not found",

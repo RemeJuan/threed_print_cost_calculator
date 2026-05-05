@@ -371,6 +371,12 @@
   "importGcodeWarningsTitle": "Avisos",
   "importGcodeUnsupportedTypeError": "Este arquivo não parece ser um arquivo G-code suportado.",
   "importGcodeUnsupportedFileError": "Este arquivo não parece ser um arquivo G-code suportado.",
+  "importGcodeTooLargeError": "Este arquivo é grande demais para importar. Escolha um arquivo menor que {maxSizeMb} MB.",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "O arquivo selecionado não pôde ser lido.",
   "importGcodeUnknownSlicerValue": "Desconhecido",
   "importGcodeMissingValue": "Não encontrado",

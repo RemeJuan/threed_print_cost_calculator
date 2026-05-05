@@ -371,6 +371,12 @@
   "importGcodeWarningsTitle": "警告",
   "importGcodeUnsupportedTypeError": "このファイルはサポートされているG-codeファイルではありません。",
   "importGcodeUnsupportedFileError": "このファイルはサポートされているG-codeファイルではありません。",
+  "importGcodeTooLargeError": "このファイルは大きすぎてインポートできません。{maxSizeMb} MB未満のファイルを選択してください。",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "選択したファイルを読み込めませんでした。",
   "importGcodeUnknownSlicerValue": "不明",
   "importGcodeMissingValue": "見つからず",

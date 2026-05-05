@@ -758,6 +758,11 @@ class AppLocalizationsId extends AppLocalizations {
       'File ini tidak terlihat seperti file G-code yang didukung.';
 
   @override
+  String importGcodeTooLargeError(Object maxSizeMb) {
+    return 'File ini terlalu besar untuk diimpor. Pilih file yang lebih kecil dari $maxSizeMb MB.';
+  }
+
+  @override
   String get importGcodeReadError => 'File yang dipilih tidak dapat dibaca.';
 
   @override

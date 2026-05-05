@@ -768,6 +768,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'Este arquivo não parece ser um arquivo G-code suportado.';
 
   @override
+  String importGcodeTooLargeError(Object maxSizeMb) {
+    return 'Este arquivo é grande demais para importar. Escolha um arquivo menor que $maxSizeMb MB.';
+  }
+
+  @override
   String get importGcodeReadError => 'O arquivo selecionado não pôde ser lido.';
 
   @override
