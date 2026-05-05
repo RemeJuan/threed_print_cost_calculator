@@ -24,12 +24,35 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     if (pickedFile == null) return;
 
     final fileType = _fileTypeFromName(pickedFile.name);
+    logGCodeImportBreadcrumb(
+      'import_started',
+      fileName: pickedFile.name,
+      originalFileName: pickedFile.originalName,
+      mimeType: pickedFile.mimeType,
+      fileSizeBytes: pickedFile.size,
+    );
     AppAnalytics.safeLog(
       () => AppAnalytics.gcodeFileSelected(fileType: fileType),
     );
 
-    final fileSize = pickedFile.size;
+    final fileSize = await resolvePickedGCodeFileSize(pickedFile);
+    logGCodeImportBreadcrumb(
+      'file_metadata_resolved',
+      fileName: pickedFile.name,
+      originalFileName: pickedFile.originalName,
+      mimeType: pickedFile.mimeType,
+      fileSizeBytes: fileSize,
+    );
+
     if (fileSize != null && fileSize > _maxGCodeImportBytes) {
+      logGCodeImportBreadcrumb(
+        'file_rejected_size',
+        fileName: pickedFile.name,
+        originalFileName: pickedFile.originalName,
+        mimeType: pickedFile.mimeType,
+        fileSizeBytes: fileSize,
+        reason: 'too_large',
+      );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
           slicer: 'unknown',
@@ -41,16 +64,28 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         selectedFileName: pickedFile.name,
         selectedFilePath: pickedFile.path,
         selectedFileSizeBytes: fileSize,
-        error: GCodeImportError.unsupportedType,
+        error: GCodeImportError.tooLarge,
       );
       return;
     }
 
-    final bytes = await pickedFile.readAsBytes();
-    final fileSizeBytes = bytes.length;
-
-    final validation = _validateFile(pickedFile, bytes);
-    if (!validation.isSupported) {
+    final fileSizeBytes = fileSize ?? 0;
+    final validation = await _validateFile(pickedFile);
+    if (validation.error != null) {
+      final error = validation.error!;
+      final reason = error == GCodeImportError.tooLarge
+          ? 'too_large'
+          : 'unsupported_type';
+      logGCodeImportBreadcrumb(
+        error == GCodeImportError.tooLarge
+            ? 'file_rejected_size'
+            : 'file_rejected_type',
+        fileName: pickedFile.name,
+        originalFileName: pickedFile.originalName,
+        mimeType: pickedFile.mimeType,
+        fileSizeBytes: fileSizeBytes,
+        reason: reason,
+      );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
           slicer: 'unknown',
@@ -62,7 +97,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         selectedFileName: pickedFile.name,
         selectedFilePath: pickedFile.path,
         selectedFileSizeBytes: fileSizeBytes,
-        error: GCodeImportError.unsupportedType,
+        error: error,
       );
       return;
     }
@@ -76,8 +111,16 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     try {
       final result = await ref
           .read(gcodeImportServiceProvider)
-          .importPickedBytes(bytes);
+          .importPickedFile(pickedFile);
       if (!result.hasAnyExtractedMetadata) {
+        logGCodeImportBreadcrumb(
+          'parse_failed',
+          fileName: pickedFile.name,
+          originalFileName: pickedFile.originalName,
+          mimeType: pickedFile.mimeType,
+          fileSizeBytes: fileSizeBytes,
+          reason: 'no_metadata',
+        );
         AppAnalytics.safeLog(
           () => AppAnalytics.gcodeParseFailed(
             slicer: result.slicer.name,
@@ -108,6 +151,13 @@ class GCodeImportController extends Notifier<GCodeImportState> {
                 fileSizeBytes: fileSizeBytes,
               ),
       );
+      logGCodeImportBreadcrumb(
+        'import_succeeded',
+        fileName: pickedFile.name,
+        originalFileName: pickedFile.originalName,
+        mimeType: pickedFile.mimeType,
+        fileSizeBytes: fileSizeBytes,
+      );
 
       state = GCodeImportState.success(
         selectedFileName: pickedFile.name,
@@ -116,6 +166,14 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         result: result,
       );
     } catch (_) {
+      logGCodeImportBreadcrumb(
+        'parse_failed',
+        fileName: pickedFile.name,
+        originalFileName: pickedFile.originalName,
+        mimeType: pickedFile.mimeType,
+        fileSizeBytes: fileSizeBytes,
+        reason: 'exception',
+      );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
           slicer: 'unknown',
@@ -140,42 +198,56 @@ class GCodeImportController extends Notifier<GCodeImportState> {
 }
 
 class _GCodeValidationResult {
-  const _GCodeValidationResult(this.isSupported);
+  const _GCodeValidationResult._({this.error});
 
-  final bool isSupported;
+  final GCodeImportError? error;
+
+  static const supported = _GCodeValidationResult._();
+
+  static const unsupportedType = _GCodeValidationResult._(
+    error: GCodeImportError.unsupportedType,
+  );
+
+  static const tooLarge = _GCodeValidationResult._(
+    error: GCodeImportError.tooLarge,
+  );
 }
 
 const _maxGCodeImportBytes = 50 * 1024 * 1024;
+const gCodeImportMaxSizeMb = _maxGCodeImportBytes ~/ (1024 * 1024);
 const _sniffBytesLimit = 64 * 1024;
 
-_GCodeValidationResult _validateFile(GCodePickedFile file, Uint8List bytes) {
-  final ext = _fileExtension(file.name);
-  final mimeType = file.mimeType?.toLowerCase();
-  if (bytes.length > _maxGCodeImportBytes) {
-    return const _GCodeValidationResult(false);
+Future<_GCodeValidationResult> _validateFile(GCodePickedFile file) async {
+  final fileSize = await resolvePickedGCodeFileSize(file);
+  if (fileSize != null && fileSize > _maxGCodeImportBytes) {
+    return _GCodeValidationResult.tooLarge;
   }
 
+  final hasSupportedName = file.candidateNames.any(hasSupportedGCodeExtension);
+  final mimeType = file.mimeType?.toLowerCase();
+  final shouldInspectContent =
+      !hasSupportedName ||
+      mimeType == null ||
+      mimeType == 'application/octet-stream' ||
+      !_looksLikeTextualGCodeMimeType(mimeType);
+
+  if (!shouldInspectContent) {
+    return _GCodeValidationResult.supported;
+  }
+
+  final bytes = await readPickedGCodeSample(file, _sniffBytesLimit);
   final text = _sniffText(bytes);
   if (!_looksTextLike(text)) {
-    return const _GCodeValidationResult(false);
+    return _GCodeValidationResult.unsupportedType;
   }
 
-  final supportedExtension = ext == '.gcode' || ext == '.gco' || ext == '.nc';
-  final shouldInspectContent =
-      !supportedExtension || mimeType == 'application/octet-stream';
-  if (!shouldInspectContent) {
-    return const _GCodeValidationResult(true);
+  if (hasSupportedName) {
+    return _GCodeValidationResult.supported;
   }
 
   return _looksLikeGCode(text)
-      ? const _GCodeValidationResult(true)
-      : const _GCodeValidationResult(false);
-}
-
-String _fileExtension(String name) {
-  final dotIndex = name.lastIndexOf('.');
-  if (dotIndex < 0 || dotIndex == name.length - 1) return '';
-  return name.substring(dotIndex).toLowerCase();
+      ? _GCodeValidationResult.supported
+      : _GCodeValidationResult.unsupportedType;
 }
 
 String _sniffText(Uint8List bytes) {
@@ -203,6 +275,14 @@ bool _looksLikeGCode(String text) {
   return markers.any((pattern) => pattern.hasMatch(text));
 }
 
+bool _looksLikeTextualGCodeMimeType(String mimeType) {
+  return mimeType.startsWith('text/') ||
+      mimeType.contains('gcode') ||
+      mimeType.contains('g-code') ||
+      mimeType == 'application/x-gcode' ||
+      mimeType == 'application/gcode';
+}
+
 bool _looksTextLike(String text) {
   if (text.isEmpty) return false;
   final controlCount = text.runes
@@ -213,7 +293,7 @@ bool _looksTextLike(String text) {
 
 enum GCodeImportStatus { idle, loading, success, failure }
 
-enum GCodeImportError { unsupportedType, unsupportedFile, readFailed }
+enum GCodeImportError { unsupportedType, unsupportedFile, tooLarge, readFailed }
 
 class GCodeImportState {
   const GCodeImportState({
