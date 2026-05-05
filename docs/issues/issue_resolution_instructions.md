@@ -72,6 +72,7 @@ Do not assume context outside the issue doc.
 
 ### 4. Implement Fix
 - Create branch/worktree:
+  - Always create the branch from the latest `main` branch (pull/rebase before branching).
   - `fix/crashlytics-<issue-id>-<short-name>`
 - Link branch name back into the issue doc immediately.
 - Apply minimal, targeted fix.
@@ -110,6 +111,7 @@ Do not assume context outside the issue doc.
 ## Constraints
 - No auto-merge.
 - No changes outside scoped issue.
+- Branches must always be created from the latest `main` to avoid drift or invalid fixes.
 - Prefer stability over optimization unless clearly related.
 - Must enrich issue before coding; do not fix based on partial data.
 - Do not optimize unless directly related to the root cause.
