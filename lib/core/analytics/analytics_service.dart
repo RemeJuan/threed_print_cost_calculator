@@ -4,3 +4,10 @@ abstract class AnalyticsService {
   /// as needed.
   Future<void> logEvent(String name, {Map<String, Object>? params});
 }
+
+class NoopAnalyticsService implements AnalyticsService {
+  const NoopAnalyticsService();
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {}
+}
