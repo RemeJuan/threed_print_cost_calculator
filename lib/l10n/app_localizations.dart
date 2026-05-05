@@ -1467,7 +1467,7 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodePreviewUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Not available'**
+  /// **'No preview'**
   String get importGcodePreviewUnavailable;
 
   /// No description provided for @importGcodePreviewDecodeFailed.
@@ -1491,13 +1491,13 @@ abstract class AppLocalizations {
   /// No description provided for @importGcodeUnsupportedTypeError.
   ///
   /// In en, this message translates to:
-  /// **'Please choose a .gcode file.'**
+  /// **'This file does not look like a supported G-code file.'**
   String get importGcodeUnsupportedTypeError;
 
   /// No description provided for @importGcodeUnsupportedFileError.
   ///
   /// In en, this message translates to:
-  /// **'This file did not contain supported G-code metadata.'**
+  /// **'This file does not look like a supported G-code file.'**
   String get importGcodeUnsupportedFileError;
 
   /// No description provided for @importGcodeReadError.

@@ -731,7 +731,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get importGcodePreviewView => 'ดู';
 
   @override
-  String get importGcodePreviewUnavailable => 'ไม่พร้อมใช้งาน';
+  String get importGcodePreviewUnavailable => 'ไม่มีตัวอย่าง';
 
   @override
   String get importGcodePreviewDecodeFailed =>
@@ -745,11 +745,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get importGcodeWarningsTitle => 'คำเตือน';
 
   @override
-  String get importGcodeUnsupportedTypeError => 'กรุณาเลือกไฟล์ .gcode';
+  String get importGcodeUnsupportedTypeError =>
+      'ไฟล์นี้ดูไม่เหมือนไฟล์ G-code ที่รองรับ';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'ไฟล์นี้ไม่มีข้อมูลเมตาที่รองรับ';
+      'ไฟล์นี้ดูไม่เหมือนไฟล์ G-code ที่รองรับ';
 
   @override
   String get importGcodeReadError => 'ไม่สามารถอ่านไฟล์ที่เลือกได้';

@@ -745,7 +745,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get importGcodePreviewView => 'Ansehen';
 
   @override
-  String get importGcodePreviewUnavailable => 'Nicht verfügbar';
+  String get importGcodePreviewUnavailable => 'Keine Vorschau';
 
   @override
   String get importGcodePreviewDecodeFailed =>
@@ -760,11 +760,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get importGcodeUnsupportedTypeError =>
-      'Bitte wählen Sie eine .gcode-Datei.';
+      'Diese Datei sieht nicht wie eine unterstützte G-code-Datei aus.';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'Diese Datei enthielt keine unterstützten G-code-Metadaten.';
+      'Diese Datei sieht nicht wie eine unterstützte G-code-Datei aus.';
 
   @override
   String get importGcodeReadError =>
