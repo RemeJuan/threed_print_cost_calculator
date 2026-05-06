@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,8 +39,10 @@ void seedAppPagePrefs({int runCount = 0, bool hideProPromotions = false}) {
 Future<Database> pumpAppPage(
   WidgetTester tester,
   FakePurchasesGateway gateway,
-  FakeCalculatorNotifier calculatorNotifier,
-) async {
+  FakeCalculatorNotifier calculatorNotifier, {
+  List<Override> overrides = const [],
+  bool useDefaultAnnouncementOverride = true,
+}) async {
   final db = await tester.pumpApp(const AppPage(), [
     calculatorProvider.overrideWith(() => calculatorNotifier),
     settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
@@ -47,7 +50,9 @@ Future<Database> pumpAppPage(
     materialsStreamProvider.overrideWith(
       (ref) => Stream.value(const <MaterialModel>[]),
     ),
-    currentAnnouncementProvider.overrideWith((ref) async => null),
+    if (useDefaultAnnouncementOverride)
+      currentAnnouncementProvider.overrideWith((ref) async => null),
+    ...overrides,
   ]);
   addTearDown(db.close);
   addTearDown(gateway.dispose);

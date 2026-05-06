@@ -20,7 +20,17 @@ import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.d
 
 enum _AppTab { calculator, materials, history, settings }
 
-class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
+bool _canShowWhatsNewSheet(BuildContext context) {
+  final route = ModalRoute.of(context);
+  final isRouteCurrent = route?.isCurrent ?? true;
+  final lifecycleState = WidgetsBinding.instance.lifecycleState;
+  final isAppResumed =
+      lifecycleState == null || lifecycleState == AppLifecycleState.resumed;
+
+  return isRouteCurrent && isAppResumed;
+}
+
+class AppPage extends HookConsumerWidget {
   const AppPage({super.key});
 
   @override
@@ -47,8 +57,11 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
     useEffect(() {
       announcementAsync.whenData((announcement) {
         if (announcement == null || whatsNewShown.value) return;
-        whatsNewShown.value = true;
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!context.mounted || whatsNewShown.value) return;
+          if (!_canShowWhatsNewSheet(context)) return;
+
+          whatsNewShown.value = true;
           final dismiss = ref.read(dismissAnnouncementProvider);
           final locale = Localizations.localeOf(context).languageCode;
           showWhatsNewSheet(
@@ -274,20 +287,5 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
         }).toList(),
       ),
     );
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
-
-    switch (state) {
-      case AppLifecycleState.resumed:
-        break;
-      case AppLifecycleState.detached:
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.hidden:
-      case AppLifecycleState.paused:
-        break;
-    }
   }
 }
