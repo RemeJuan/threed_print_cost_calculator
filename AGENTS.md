@@ -4,9 +4,9 @@
 - Setup: `fvm flutter pub get`
 - Format: `fvm dart format .`
 - Analyze: `fvm flutter analyze`
-- Fast full test pass: `make flutter_test` (`fvm flutter test test --no-pub --test-randomize-ordering-seed random`)
+- Tests: `make flutter_test`
 - Single test file: `fvm flutter test path/to_test.dart`
-- Coverage: `./scripts/coverage.sh` (`lcov` required; filters generated files plus `lib/bootstrap.dart` and `lib/firebase_options.dart`)
+- Coverage: `./scripts/coverage.sh` (`lcov` required)
 - Codegen: `make flutter_generate`
 - Patrol release-gate E2E: `PATROL_FLUTTER_COMMAND="fvm flutter" patrol test --device emulator-5554 --no-uninstall`
 - Optional legacy integration sweep: `fvm flutter test integration_test`
@@ -18,18 +18,17 @@
 - If app-shell or premium/history flows changed: run relevant `integration_test/` or Patrol journey
 
 ## Architecture
-- Real app entrypoint: `lib/main.dart`. It initializes Firebase, App Check, Crashlytics, RevenueCat, Localizely, SharedPreferences, Sembast DB, then runs startup migrations before bootstrapping Riverpod overrides.
+- App startup: `lib/main.dart` initializes Firebase, App Check, Crashlytics, RevenueCat, Localizely, SharedPreferences, Sembast, migrations, then Riverpod overrides.
 - Root widget: `lib/app/app.dart`. Main shell: `lib/app/app_page.dart`.
-- Main feature boundaries: `lib/calculator/`, `lib/history/`, `lib/settings/`, `lib/database/`, `lib/purchases/`, `lib/shared/`.
+- Feature roots: `lib/calculator/`, `lib/history/`, `lib/settings/`, `lib/database/`, `lib/purchases/`, `lib/shared/`.
 - `HistoryPage` exists only for premium users; `AppPage` dynamically removes that tab for free users.
-- **Currency-agnostic**: The project is currency-agnostic. All values are raw numbers without currency symbols. No UI label, format helper, or display surface should show `$`, `€`, `£`, `¥`, or any currency symbol. Format numbers as plain numeric values only.
+- **Currency-agnostic**: All values are raw numbers. Do not show `$`, `€`, `£`, `¥`, or any currency symbol in labels, helpers, or UI surfaces.
 
 ## Testing quirks
 - Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.
 - Integration tests should use `integration_test/helpers/integration_test_harness.dart`; it seeds in-memory DB/prefs and fake purchases for free vs premium flows.
 - Startup/migration behavior has dedicated coverage in `test/main_migration_test.dart`; keep migration order stable when touching bootstrap/database startup.
-- Hidden in-app test overlays may use BotToast when the app shell already owns the visible overlay stack.
-- Keep dialog UI in the project’s standard `AlertDialog`/Material style even when the hosting layer is BotToast.
+- Hidden in-app test overlays may use BotToast, but visible dialogs should stay in the project’s standard `AlertDialog`/Material style.
 
 ## Localisation
 - Never leave user-facing copy hardcoded when the existing l10n system should be used.
@@ -50,32 +49,21 @@
 - Shared hidden test-tool widgets/services belong under `lib/shared/test_tools/`, not `lib/testing/`.
 
 ## Workflow notes
-- Agents must read `docs/navigation.md` before broad exploration.
+- Before broad exploration, read `docs/navigation.md`.
 - Exploration budget before first plan: max 8 `Read`, 4 `Grep`, 2 `Bash` calls.
 - Prefer targeted `rg`/content search over broad filesystem scans.
 - Produce a short plan before code changes.
+- MCP is optional and not the first step. Use `codebase-memory-mcp_search_graph` only after `docs/navigation.md`, mainly to confirm relationships or cross-feature links. Limit to 2 MCP queries unless clearly justified.
+- Update docs when feature behavior, analytics/events, architecture, persistence, or app flows change.
+- Prefer `docs/feature-map.md` for feature-level changes and `docs/architecture.md` for patterns, persistence, or integrations.
 
-- Documentation updates:
-  - Update docs when feature behavior, analytics/events, or app flows change.
-  - Prefer updating `docs/feature-map.md` for feature-level changes.
-  - Update `docs/architecture.md` when patterns, persistence, or integrations change.
-  - Keep docs aligned in the same task when possible.
-
-- MCP usage (optional, not primary):
-  - Use `codebase-memory-mcp_search_graph` only after reading `docs/navigation.md`.
-  - Use MCP to confirm relationships or locate cross-feature links, not for initial discovery.
-  - Limit to max 2 MCP queries per task unless clearly justified.
-
-- Exploration priority order:
-  1. `docs/navigation.md`
-  2. Known entry points / feature roots
-  3. Targeted `rg` searches
-  4. MCP queries (fallback)
-
-- Anti-patterns:
-  - Do not start tasks with MCP queries.
-  - Do not use MCP for simple file lookups.
-  - Avoid repeated or redundant MCP calls.
+## Product planning and roadmap
+- ClickUp is the lightweight operational roadmap: TLDR feature summaries, status, priority, dependencies, release targeting, and execution notes.
+- Repo docs are the implementation source of truth: specs, architecture, data models, edge cases, technical decisions, and agent instructions.
+- Do not duplicate full implementation specs in ClickUp. Link ClickUp tasks to the relevant repo docs instead.
+- When a repo doc is linked to a ClickUp task, include the ClickUp task ID in the doc metadata/header so agents can update the correct task without searching.
+- Preferred doc metadata format: `ClickUp Task: <task_id>` near the top of the doc, under the title or summary.
+- Keep LLM wiki/docs changes in repo so they remain versioned with code and reviewable in PRs.
 
 ## Changelog rules
 - CHANGELOG.md is user-facing but more detailed than store notes
@@ -92,5 +80,5 @@
 - `docs/dev/patrol-ci.md` - Patrol E2E testing guide
 - `docs/architecture/` - Architecture notes (e.g., performance)
 - `docs/decisions/` - Architecture Decision Records (ADRs)
-- `docs/product/` - Product specs and designs
-- `docs/inbox/` - Work-in-progress notes
+- `docs/product/` - Product specs and designs. Link from ClickUp tasks when a roadmap item has implementation detail.
+- `docs/inbox/` - Work-in-progress notes before promotion into stable docs
