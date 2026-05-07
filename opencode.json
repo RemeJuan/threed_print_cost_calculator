@@ -2,14 +2,43 @@
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "firebase": {
-      "enabled": true,
       "type": "local",
-      "command": ["npx", "-y", "firebase-tools@latest", "mcp", "--only", "core,crashlytics"]
+      "enabled": true,
+      "command": [
+        "npx",
+        "-y",
+        "firebase-tools@latest",
+        "mcp",
+        "--only",
+        "core,crashlytics"
+      ]
+    },
+    "dart-mcp-server": {
+      "type": "local",
+      "enabled": true,
+      "command": [
+        "dart",
+        "mcp-server"
+      ],
+      "environment": {}
     },
     "clickup": {
       "type": "remote",
-      "url": "https://mcp.clickup.com/mcp",
-      "enabled": true
+      "enabled": true,
+      "url": "https://mcp.clickup.com/mcp"
+    },
+    "analytics-mcp": {
+      "type": "local",
+      "enabled": true,
+      "command": [
+        "pipx",
+        "run",
+        "analytics-mcp"
+      ],
+      "environment": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "/Users/remelehane/.config/gcloud/application_default_credentials.json",
+        "GOOGLE_PROJECT_ID": "d-print-cost-calculator-cf650"
+      }
     }
   }
 }
