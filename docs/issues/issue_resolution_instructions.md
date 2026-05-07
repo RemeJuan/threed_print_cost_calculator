@@ -2,7 +2,7 @@
 
 ## Inputs
 - Crashlytics Issue ID
-- Path: `docs/issues/crashlytics/<issue-id>.md`
+- Path: `docs/issues/<issue-id>.md`
 
 ## Objective
 Investigate, fix, and validate a Crashlytics issue using the documented context.  
