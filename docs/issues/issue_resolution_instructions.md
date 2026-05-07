@@ -1,5 +1,11 @@
 # Crashlytics Issue Resolution Instructions
 
+## Scope & Ownership Boundary
+- This document is handed to the resolving agent (for example OpenCode).
+- It covers resolver-side work only: investigate, reproduce, implement, validate, update the issue doc, and record handoff facts.
+- It does **not** control Hermes-side actions such as Kanban state changes, release promotion, or upstream Crashlytics closure.
+- Hermes reads the issue doc produced by this workflow, then performs its own follow-up, board reconciliation, PR/merge checks, and release closure using Hermes-side Crashlytics workflow skills.
+
 ## Inputs
 - Crashlytics Issue ID
 - Path: `docs/issues/<issue-id>.md`
@@ -121,6 +127,7 @@ Do not assume context outside the issue doc.
   - PR link if one exists
   - notes on whether follow-up monitoring is required
   - notes on whether Hermes must perform PR/merge check-in before release closure
+  - clear evidence Hermes can use later (for example: branch exists, PR missing, PR open, merged to `main`, docs-only merge path used)
 
 ## Constraints
 - No auto-merge.
