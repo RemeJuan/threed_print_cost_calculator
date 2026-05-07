@@ -18,18 +18,17 @@
 - If app-shell or premium/history flows changed: run relevant `integration_test/` or Patrol journey
 
 ## Architecture
-- Real app entrypoint: `lib/main.dart`. It initializes Firebase, App Check, Crashlytics, RevenueCat, Localizely, SharedPreferences, Sembast DB, then runs startup migrations before bootstrapping Riverpod overrides.
+- App startup: `lib/main.dart` initializes Firebase, App Check, Crashlytics, RevenueCat, Localizely, SharedPreferences, Sembast, migrations, then Riverpod overrides.
 - Root widget: `lib/app/app.dart`. Main shell: `lib/app/app_page.dart`.
-- Main feature boundaries: `lib/calculator/`, `lib/history/`, `lib/settings/`, `lib/database/`, `lib/purchases/`, `lib/shared/`.
+- Feature roots: `lib/calculator/`, `lib/history/`, `lib/settings/`, `lib/database/`, `lib/purchases/`, `lib/shared/`.
 - `HistoryPage` exists only for premium users; `AppPage` dynamically removes that tab for free users.
-- **Currency-agnostic**: The project is currency-agnostic. All values are raw numbers without currency symbols. No UI label, format helper, or display surface should show `$`, `€`, `£`, `¥`, or any currency symbol. Format numbers as plain numeric values only.
+- **Currency-agnostic**: All values are raw numbers. Do not show `$`, `€`, `£`, `¥`, or any currency symbol in labels, helpers, or UI surfaces.
 
 ## Testing quirks
 - Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.
 - Integration tests should use `integration_test/helpers/integration_test_harness.dart`; it seeds in-memory DB/prefs and fake purchases for free vs premium flows.
 - Startup/migration behavior has dedicated coverage in `test/main_migration_test.dart`; keep migration order stable when touching bootstrap/database startup.
-- Hidden in-app test overlays may use BotToast when the app shell already owns the visible overlay stack.
-- Keep dialog UI in the project’s standard `AlertDialog`/Material style even when the hosting layer is BotToast.
+- Hidden in-app test overlays may use BotToast, but visible dialogs should stay in the project’s standard `AlertDialog`/Material style.
 
 ## Localisation
 - Never leave user-facing copy hardcoded when the existing l10n system should be used.
