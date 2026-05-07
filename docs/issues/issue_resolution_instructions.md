@@ -42,6 +42,7 @@ Do not assume context outside the issue doc.
 
 ### 2. Enrich (Required via MCP or Firebase Console)
 - Hermes may provide only a stub issue doc. Do not assume completeness.
+- Before calling `crashlytics_get_report`, read `firebase://guides/crashlytics/reports` via `firebase_read_resources` when native Firebase MCP tools are available.
 - Use Crashlytics MCP or the Firebase Console link to fetch:
   - full stack trace (including all frames)
   - frequency / trend
