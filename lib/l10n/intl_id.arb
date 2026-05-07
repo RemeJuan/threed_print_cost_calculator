@@ -447,12 +447,18 @@
   "importGcodePreviewLabel": "Pratinjau",
   "importGcodePreviewAvailable": "Tersedia",
   "importGcodePreviewView": "Lihat",
-  "importGcodePreviewUnavailable": "Tidak tersedia",
+  "importGcodePreviewUnavailable": "Tidak ada pratinjau",
   "importGcodePreviewDecodeFailed": "Metadata pratinjau ditemukan tetapi gambar tidak dapat ditampilkan.",
   "importGcodePreviewCuraNote": "Pratinjau Cura mungkin memerlukan skrip pasca-pemrosesan untuk menyematkan thumbnail.",
   "importGcodeWarningsTitle": "Peringatan",
-  "importGcodeUnsupportedTypeError": "Pilih file .gcode.",
-  "importGcodeUnsupportedFileError": "File ini tidak berisi metadata G-code yang didukung.",
+  "importGcodeUnsupportedTypeError": "File ini tidak terlihat seperti file G-code yang didukung.",
+  "importGcodeUnsupportedFileError": "File ini tidak terlihat seperti file G-code yang didukung.",
+  "importGcodeTooLargeError": "File ini terlalu besar untuk diimpor. Pilih file yang lebih kecil dari {maxSizeMb} MB.",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "File yang dipilih tidak dapat dibaca.",
   "importGcodeUnknownSlicerValue": "Tidak diketahui",
   "importGcodeMissingValue": "Tidak ditemukan",

@@ -448,12 +448,18 @@
   "importGcodePreviewLabel": "Voorbeeld",
   "importGcodePreviewAvailable": "Beschikbaar",
   "importGcodePreviewView": "Bekijken",
-  "importGcodePreviewUnavailable": "Niet beschikbaar",
+  "importGcodePreviewUnavailable": "Geen voorbeeld",
   "importGcodePreviewDecodeFailed": "Voorbeeld metadata gevonden maar afbeelding kon niet worden weergegeven.",
   "importGcodePreviewCuraNote": "Cura-voorbeelden hebben mogelijk een post-processing script nodig om thumbnails in te sluiten.",
   "importGcodeWarningsTitle": "Waarschuwingen",
-  "importGcodeUnsupportedTypeError": "Kies een .gcode-bestand.",
-  "importGcodeUnsupportedFileError": "Dit bestand bevatte geen ondersteunde G-code metadata.",
+  "importGcodeUnsupportedTypeError": "Dit bestand lijkt geen ondersteund G-code-bestand te zijn.",
+  "importGcodeUnsupportedFileError": "Dit bestand lijkt geen ondersteund G-code-bestand te zijn.",
+  "importGcodeTooLargeError": "Dit bestand is te groot om te importeren. Kies een bestand kleiner dan {maxSizeMb} MB.",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "Het geselecteerde bestand kon niet worden gelezen.",
   "importGcodeUnknownSlicerValue": "Onbekend",
   "importGcodeMissingValue": "Niet gevonden",

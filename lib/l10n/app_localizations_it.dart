@@ -876,7 +876,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get importGcodePreviewView => 'Visualizza';
 
   @override
-  String get importGcodePreviewUnavailable => 'Non disponibile';
+  String get importGcodePreviewUnavailable => 'Nessuna anteprima';
 
   @override
   String get importGcodePreviewDecodeFailed =>
@@ -890,11 +890,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get importGcodeWarningsTitle => 'Avvisi';
 
   @override
-  String get importGcodeUnsupportedTypeError => 'Scegli un file .gcode.';
+  String get importGcodeUnsupportedTypeError =>
+      'Questo file non sembra un file G-code supportato.';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'Questo file non conteneva metadati G-code supportati.';
+      'Questo file non sembra un file G-code supportato.';
+
+  @override
+  String importGcodeTooLargeError(Object maxSizeMb) {
+    return 'Questo file è troppo grande da importare. Scegli un file più piccolo di $maxSizeMb MB.';
+  }
 
   @override
   String get importGcodeReadError =>

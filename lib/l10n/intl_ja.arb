@@ -448,12 +448,18 @@
   "importGcodePreviewLabel": "プレビュー",
   "importGcodePreviewAvailable": "利用可能",
   "importGcodePreviewView": "表示",
-  "importGcodePreviewUnavailable": "利用不可",
+  "importGcodePreviewUnavailable": "プレビューなし",
   "importGcodePreviewDecodeFailed": "プレビューメタデータは見つかりましたが、画像を表示できませんでした。",
   "importGcodePreviewCuraNote": "Curaプレビューにはサムネイルを埋め込む後処理スクリプトが必要な場合があります。",
   "importGcodeWarningsTitle": "警告",
-  "importGcodeUnsupportedTypeError": ".gcodeファイルを選択してください。",
-  "importGcodeUnsupportedFileError": "このファイルには対応のG-codeメタデータが含まれていませんでした。",
+  "importGcodeUnsupportedTypeError": "このファイルはサポートされているG-codeファイルではありません。",
+  "importGcodeUnsupportedFileError": "このファイルはサポートされているG-codeファイルではありません。",
+  "importGcodeTooLargeError": "このファイルは大きすぎてインポートできません。{maxSizeMb} MB未満のファイルを選択してください。",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "選択したファイルを読み込めませんでした。",
   "importGcodeUnknownSlicerValue": "不明",
   "importGcodeMissingValue": "見つからず",

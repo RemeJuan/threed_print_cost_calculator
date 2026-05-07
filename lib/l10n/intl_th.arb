@@ -448,12 +448,18 @@
   "importGcodePreviewLabel": "ตัวอย่าง",
   "importGcodePreviewAvailable": "พร้อมใช้งาน",
   "importGcodePreviewView": "ดู",
-  "importGcodePreviewUnavailable": "ไม่พร้อมใช้งาน",
+  "importGcodePreviewUnavailable": "ไม่มีตัวอย่าง",
   "importGcodePreviewDecodeFailed": "พบข้อมูลเมตาตัวอย่างแต่ไม่สามารถแสดงภาพได้",
   "importGcodePreviewCuraNote": "ตัวอย่าง Cura อาจต้องใช้สคริปต์หลังการประมวลผลเพื่อฝังภาพขนาดย่อยลงใน G-code",
   "importGcodeWarningsTitle": "คำเตือน",
-  "importGcodeUnsupportedTypeError": "กรุณาเลือกไฟล์ .gcode",
-  "importGcodeUnsupportedFileError": "ไฟล์นี้ไม่มีข้อมูลเมตาที่รองรับ",
+  "importGcodeUnsupportedTypeError": "ไฟล์นี้ดูไม่เหมือนไฟล์ G-code ที่รองรับ",
+  "importGcodeUnsupportedFileError": "ไฟล์นี้ดูไม่เหมือนไฟล์ G-code ที่รองรับ",
+  "importGcodeTooLargeError": "ไฟล์นี้มีขนาดใหญ่เกินกว่าจะนำเข้าได้ เลือกไฟล์ที่เล็กกว่า {maxSizeMb} MB",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "ไม่สามารถอ่านไฟล์ที่เลือกได้",
   "importGcodeUnknownSlicerValue": "ไม่ทราบ",
   "importGcodeMissingValue": "ไม่พบ",

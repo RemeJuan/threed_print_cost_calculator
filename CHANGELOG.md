@@ -1,3 +1,23 @@
+## [2.9.3] - 2026-05-05
+### Changed
+- Improved Android G-code import to read selected files more reliably, including picks exposed as generic file types.
+- Added a localized error message when an import file exceeds the supported size limit.
+
+### Fixed
+- Fixed Android G-code imports from failing or crashing when large files were selected.
+- Fixed valid G-code files selected as `.bin` or generic downloads on Android from being rejected when the file contents are valid.
+
+## [2.9.2] - 2026-05-05
+### Added
+- Added support for `.gco` and `.nc` file extensions in G-code import.
+- Added content validation to reject files that don't contain valid G-code data.
+- Added a 50 MB file size limit for G-code imports with clear error feedback.
+
+### Changed
+- Improved G-code preview display — low-resolution thumbnails now show a tappable preview that opens full-screen.
+- Preview area now shows a placeholder icon when no preview image is available.
+- Refined file picker to accept a broader set of G-code-related file types on mobile platforms.
+
 ## [2.9.1] - 2026-05-04
 ### Added
 - Added a roadmap link in Help & Support so users can quickly view what’s coming next.
@@ -151,11 +171,14 @@
 ### Added
 - Added in-app update checker
 
-[2.6.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.2...2.6.0
-[2.7.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.6.0...2.7.0+6
-[2.8.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.7.0+6...2.8.0
-[2.8.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.8.0+1...2.8.2
+[2.9.3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.2...2.9.3
+[2.9.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.1...2.9.2
+[2.9.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.0...2.9.1
 [2.9.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.8.2...2.9.0
+[2.8.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.8.0+1...2.8.2
+[2.8.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.7.0+6...2.8.0
+[2.7.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.6.0...2.7.0+6
+[2.6.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.2...2.6.0
 [2.5.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.4.0...2.5.0

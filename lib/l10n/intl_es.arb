@@ -446,12 +446,18 @@
   "importGcodePreviewLabel": "Vista previa",
   "importGcodePreviewAvailable": "Disponible",
   "importGcodePreviewView": "Ver",
-  "importGcodePreviewUnavailable": "No disponible",
+  "importGcodePreviewUnavailable": "Sin vista previa",
   "importGcodePreviewDecodeFailed": "Metadatos de vista previa encontrados pero la imagen no pudo mostrarse.",
   "importGcodePreviewCuraNote": "Las vistas previas de Cura pueden requerir un script post-procesamiento para embeber miniaturas.",
   "importGcodeWarningsTitle": "Advertencias",
-  "importGcodeUnsupportedTypeError": "Por favor selecciona un archivo .gcode.",
-  "importGcodeUnsupportedFileError": "Este archivo no contenía metadatos G-code compatibles.",
+  "importGcodeUnsupportedTypeError": "Este archivo no parece un archivo G-code compatible.",
+  "importGcodeUnsupportedFileError": "Este archivo no parece un archivo G-code compatible.",
+  "importGcodeTooLargeError": "Este archivo es demasiado grande para importarlo. Elige un archivo de menos de {maxSizeMb} MB.",
+  "@importGcodeTooLargeError": {
+    "placeholders": {
+      "maxSizeMb": {}
+    }
+  },
   "importGcodeReadError": "El archivo seleccionado no pudo ser leído.",
   "importGcodeUnknownSlicerValue": "Desconocido",
   "importGcodeMissingValue": "No encontrado",

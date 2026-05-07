@@ -862,7 +862,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get importGcodePreviewView => 'Lihat';
 
   @override
-  String get importGcodePreviewUnavailable => 'Tidak tersedia';
+  String get importGcodePreviewUnavailable => 'Tidak ada pratinjau';
 
   @override
   String get importGcodePreviewDecodeFailed =>
@@ -876,11 +876,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get importGcodeWarningsTitle => 'Peringatan';
 
   @override
-  String get importGcodeUnsupportedTypeError => 'Pilih file .gcode.';
+  String get importGcodeUnsupportedTypeError =>
+      'File ini tidak terlihat seperti file G-code yang didukung.';
 
   @override
   String get importGcodeUnsupportedFileError =>
-      'File ini tidak berisi metadata G-code yang didukung.';
+      'File ini tidak terlihat seperti file G-code yang didukung.';
+
+  @override
+  String importGcodeTooLargeError(Object maxSizeMb) {
+    return 'File ini terlalu besar untuk diimpor. Pilih file yang lebih kecil dari $maxSizeMb MB.';
+  }
 
   @override
   String get importGcodeReadError => 'File yang dipilih tidak dapat dibaca.';

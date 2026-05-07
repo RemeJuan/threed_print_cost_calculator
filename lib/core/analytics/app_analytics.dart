@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 
 import 'analytics_service.dart';
@@ -15,7 +16,9 @@ class AppAnalytics {
   // Expose a service that can be replaced in tests. By default use the real
   // Firebase-backed implementation. Tests should override this with a
   // no-op or a mock to prevent touching Firebase.
-  static AnalyticsService service = FirebaseAnalyticsService();
+  static AnalyticsService service = kDebugMode
+      ? const NoopAnalyticsService()
+      : FirebaseAnalyticsService();
 
   static bool _gcodeImportTriggeredThisSession = false;
   static DateTime? _gcodeImportOpenedAt;
