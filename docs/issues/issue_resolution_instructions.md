@@ -97,6 +97,7 @@ Do not assume context outside the issue doc.
   - full test suite
 - Manually validate affected flow.
 - Confirm no new regressions in related flows.
+- Before handoff, verify repo persistence state too: local-only working tree changes do **not** count as complete.
 
 ### 7. Update Issue Doc
 - Root cause
@@ -117,6 +118,11 @@ Do not assume context outside the issue doc.
 - If any file outside `docs/issues/` changed:
   - Create a PR before marking work complete.
   - If you cannot create the PR in the current run, add an explicit follow-up note: `PR required before Hermes release closure`.
+- Do **not** report the issue complete if changes exist only in the local working tree.
+- Before handoff, check `git status` and make sure the required persistence step happened:
+  - docs-only path => committed and pushed on `main`
+  - code-change path => committed and pushed to branch, with PR created if required
+- If the required commit/push/PR step did not happen, leave an explicit follow-up note describing exactly what is still local and what action remains.
 - Include:
   - issue ID
   - root cause
@@ -127,7 +133,7 @@ Do not assume context outside the issue doc.
   - PR link if one exists
   - notes on whether follow-up monitoring is required
   - notes on whether Hermes must perform PR/merge check-in before release closure
-  - clear evidence Hermes can use later (for example: branch exists, PR missing, PR open, merged to `main`, docs-only merge path used)
+  - clear evidence Hermes can use later (for example: branch exists, PR missing, PR open, merged to `main`, docs-only merge path used, or local changes still not committed/pushed)
 
 ## Constraints
 - No auto-merge.
@@ -138,6 +144,7 @@ Do not assume context outside the issue doc.
 - Must enrich issue before coding; do not fix based on partial data.
 - Do not optimize unless directly related to the root cause.
 - Any code change outside `docs/issues/` requires a PR before Hermes can promote the issue to `released`.
+- Local-only file edits are not a completed handoff state.
 
 ## Status Definitions
 - `new`: created by Hermes
