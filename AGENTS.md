@@ -4,9 +4,9 @@
 - Setup: `fvm flutter pub get`
 - Format: `fvm dart format .`
 - Analyze: `fvm flutter analyze`
-- Fast full test pass: `make flutter_test` (`fvm flutter test test --no-pub --test-randomize-ordering-seed random`)
+- Tests: `make flutter_test`
 - Single test file: `fvm flutter test path/to_test.dart`
-- Coverage: `./scripts/coverage.sh` (`lcov` required; filters generated files plus `lib/bootstrap.dart` and `lib/firebase_options.dart`)
+- Coverage: `./scripts/coverage.sh` (`lcov` required)
 - Codegen: `make flutter_generate`
 - Patrol release-gate E2E: `PATROL_FLUTTER_COMMAND="fvm flutter" patrol test --device emulator-5554 --no-uninstall`
 - Optional legacy integration sweep: `fvm flutter test integration_test`
