@@ -49,32 +49,21 @@
 - Shared hidden test-tool widgets/services belong under `lib/shared/test_tools/`, not `lib/testing/`.
 
 ## Workflow notes
-- Agents must read `docs/navigation.md` before broad exploration.
+- Before broad exploration, read `docs/navigation.md`.
 - Exploration budget before first plan: max 8 `Read`, 4 `Grep`, 2 `Bash` calls.
 - Prefer targeted `rg`/content search over broad filesystem scans.
 - Produce a short plan before code changes.
+- MCP is optional and not the first step. Use `codebase-memory-mcp_search_graph` only after `docs/navigation.md`, mainly to confirm relationships or cross-feature links. Limit to 2 MCP queries unless clearly justified.
+- Update docs when feature behavior, analytics/events, architecture, persistence, or app flows change.
+- Prefer `docs/feature-map.md` for feature-level changes and `docs/architecture.md` for patterns, persistence, or integrations.
 
-- Documentation updates:
-  - Update docs when feature behavior, analytics/events, or app flows change.
-  - Prefer updating `docs/feature-map.md` for feature-level changes.
-  - Update `docs/architecture.md` when patterns, persistence, or integrations change.
-  - Keep docs aligned in the same task when possible.
-
-- MCP usage (optional, not primary):
-  - Use `codebase-memory-mcp_search_graph` only after reading `docs/navigation.md`.
-  - Use MCP to confirm relationships or locate cross-feature links, not for initial discovery.
-  - Limit to max 2 MCP queries per task unless clearly justified.
-
-- Exploration priority order:
-  1. `docs/navigation.md`
-  2. Known entry points / feature roots
-  3. Targeted `rg` searches
-  4. MCP queries (fallback)
-
-- Anti-patterns:
-  - Do not start tasks with MCP queries.
-  - Do not use MCP for simple file lookups.
-  - Avoid repeated or redundant MCP calls.
+## Product planning and roadmap
+- ClickUp is the lightweight operational roadmap: TLDR feature summaries, status, priority, dependencies, release targeting, and execution notes.
+- Repo docs are the implementation source of truth: specs, architecture, data models, edge cases, technical decisions, and agent instructions.
+- Do not duplicate full implementation specs in ClickUp. Link ClickUp tasks to the relevant repo docs instead.
+- When a repo doc is linked to a ClickUp task, include the ClickUp task ID in the doc metadata/header so agents can update the correct task without searching.
+- Preferred doc metadata format: `ClickUp Task: <task_id>` near the top of the doc, under the title or summary.
+- Keep LLM wiki/docs changes in repo so they remain versioned with code and reviewable in PRs.
 
 ## Changelog rules
 - CHANGELOG.md is user-facing but more detailed than store notes
@@ -91,5 +80,5 @@
 - `docs/dev/patrol-ci.md` - Patrol E2E testing guide
 - `docs/architecture/` - Architecture notes (e.g., performance)
 - `docs/decisions/` - Architecture Decision Records (ADRs)
-- `docs/product/` - Product specs and designs
-- `docs/inbox/` - Work-in-progress notes
+- `docs/product/` - Product specs and designs. Link from ClickUp tasks when a roadmap item has implementation detail.
+- `docs/inbox/` - Work-in-progress notes before promotion into stable docs
