@@ -168,6 +168,44 @@ void main() {
       ),
     ).called(1);
 
+    await AppAnalytics.gcodeParseFailed(
+      slicer: 'unknown',
+      hasPreview: false,
+      fileSizeBytes: 10 * 1024 * 1024,
+      failureReason: GCodeFailureReason.fileTooLarge,
+    );
+    verify(
+      () => mock.logEvent(
+        'gcode_parse_failed',
+        params: {
+          'slicer': 'unknown',
+          'has_preview': 0,
+          'parse_status': 'failed',
+          'file_size_bucket': '5-20MB',
+          'failure_reason': 'file_too_large',
+        },
+      ),
+    ).called(1);
+
+    await AppAnalytics.gcodeParseFailed(
+      slicer: 'unknown',
+      hasPreview: false,
+      fileSizeBytes: 0,
+      failureReason: GCodeFailureReason.unsupportedContent,
+    );
+    verify(
+      () => mock.logEvent(
+        'gcode_parse_failed',
+        params: {
+          'slicer': 'unknown',
+          'has_preview': 0,
+          'parse_status': 'failed',
+          'file_size_bucket': '<1MB',
+          'failure_reason': 'unsupported_content',
+        },
+      ),
+    ).called(1);
+
     await AppAnalytics.gcodeParsePartial(
       slicer: 'prusaSlicer',
       hasPreview: true,
@@ -232,6 +270,24 @@ void main() {
       ),
     ).captured.single as Map<String, Object?>;
     expect(captured3['entry_point'], 'gcode_import');
+
+    AppAnalytics.resetGcodeImportTrackingForTests();
+    await AppAnalytics.gcodeImportOpened();
+    await AppAnalytics.gcodeImportAbandoned(
+      failureReason: GCodeFailureReason.cancelled,
+    );
+    verify(
+      () => mock.logEvent(
+        'gcode_import_abandoned',
+        params: {
+          'slicer': 'unknown',
+          'has_preview': 0,
+          'parse_status': 'unknown',
+          'file_size_bucket': 'unknown',
+          'failure_reason': 'cancelled',
+        },
+      ),
+    ).called(1);
   });
 
   test('paywall analytics default to manual entry point', () async {
