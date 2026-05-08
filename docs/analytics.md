@@ -98,19 +98,19 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: helper exists in analytics code, but current page flow does not emit this event
+  - notes: helper exists in analytics code, but current page flow does not emit this event; it is stale unless a future intermediate funnel step is wired in
 
 - `gcode_flow_completed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: fired after values applied; clears open-flow timer state
+  - notes: fired only after the calculator apply CTA; clears open-flow timer state immediately, which suppresses later abandon logging for the same session
 
 - `gcode_import_success`
   - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: success milestone when parsed values are applied to calculator
+  - notes: success milestone when parsed values are applied to calculator; does not carry `slicer`, `parse_status`, or `file_size_bucket`, so it cannot stand alone as a funnel context event
 
 ### Calculator usage
 
@@ -271,6 +271,12 @@
 - upgrade entry: partial — G-code open/start attribution exists, but the current UI does not route free users into G-code import; header access is premium-only
 - preview viewed: yes — `gcode_preview_viewed`
 - abandon: yes — `gcode_import_abandoned`
+
+Notes:
+
+- `gcode_import_success` and `gcode_flow_completed` are emitted from the same apply CTA handler, after parse/preview has already succeeded.
+- `gcode_import_abandoned` is dispose-driven and only fires if the flow timer is still open; it should not follow a completed apply path.
+- Android and iOS share the same analytics sequence after file selection; only the picker metadata source differs.
 
 ### Materials
 

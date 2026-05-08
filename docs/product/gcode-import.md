@@ -31,11 +31,16 @@ Decision doc: [2026-04-gcode-import](../decisions/2026-04-gcode-import.md)
 - Missing previews now use `No preview` copy in the summary.
 
 ## Analytics
-- Funnel now tracked as `gcode_import_opened` -> `gcode_import_started` -> `gcode_file_selected` -> `gcode_parse_*` -> `gcode_preview_viewed` -> `gcode_import_success` -> `gcode_flow_completed` / `gcode_import_abandoned`.
+- Funnel now tracked as `gcode_import_opened` -> `gcode_import_started` -> `gcode_file_selected` -> `gcode_parse_*` -> `gcode_preview_viewed` (optional) -> `gcode_import_success` -> `gcode_flow_completed`; `gcode_import_abandoned` only fires on dispose if the flow was not completed.
 - Start attribution currently uses `source` from the live header caller; the reusable button defaults to `calculator`.
 - File select logs only the extension as `file_type`; no filename, path, or G-code content is logged.
 - Success logs low-cardinality flags for print time, filament usage, and preview.
 - `gcode_apply_to_calculator` exists as a helper but is not currently emitted by the page flow.
+
+## Instrumentation Notes
+- `gcode_import_success` does not include `slicer`, `parse_status`, or `file_size_bucket`, so it cannot be used alone to segment funnel context.
+- `gcode_flow_completed` clears the open-flow timer immediately, so abandon logging should never follow a completed apply path.
+- Android and iOS share the same downstream analytics once a file is picked; only the file picker metadata source differs.
 
 ## Known Issues
 - Feature is still partial for parser coverage and preview handling across slicers.
