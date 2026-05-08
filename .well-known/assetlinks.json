@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.threed_print_calculator",
+      "sha256_cert_fingerprints": [
+        "51:52:08:30:47:43:0C:5A:3C:EC:2E:9B:E0:8D:E1:5E:FE:E6:6F:0F:59:6C:52:15:EF:46:E1:E3:C9:45:3D:B7"
+      ]
+    }
+  }
+]
