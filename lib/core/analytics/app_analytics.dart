@@ -478,6 +478,7 @@ class AppAnalytics {
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
+    String failureReason = GCodeFailureReason.unknown,
   }) {
     _setGcodeContext(
       slicer: slicerValue(slicer),
@@ -485,7 +486,10 @@ class AppAnalytics {
       parseStatus: 'failed',
       fileSizeBucket: fileSizeBucket(fileSizeBytes),
     );
-    return log('gcode_parse_failed', params: _gcodeImportParams());
+    return log(
+      'gcode_parse_failed',
+      params: {..._gcodeImportParams(), 'failure_reason': failureReason},
+    );
   }
 
   static Future<void> gcodePreviewViewed({
