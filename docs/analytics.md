@@ -53,10 +53,10 @@
   - notes: entry attribution for calculator/header; emitted on import flow open
 
 - `gcode_import_abandoned`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`?]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: fired on page dispose if import flow opened and not completed
+  - notes: fired on page dispose if import flow opened and not completed; `failure_reason` is `cancelled` when user abandons the flow; only present when a meaningful reason exists
 
 - `gcode_file_selected`
   - params: [`file_type`]
@@ -77,10 +77,10 @@
   - notes: `parse_status=partial`
 
 - `gcode_parse_failed`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: used for unsupported extension, unsupported file contents, size rejection, and read failure; `parse_status=failed`
+  - notes: `parse_status=failed`; `failure_reason` is a `GCodeFailureReason` constant (`file_too_large`, `unsupported_content`, `parse_error`, `read_failed`, or `unknown`); no filenames, raw errors, or stack traces
 
 - `gcode_import_breadcrumb`
   - params: [`stage`, `file_name`?, `original_file_name`?, `mime_type`?, `file_size_bytes`?, `reason`?]
@@ -296,7 +296,7 @@
 - No dedicated purchase-started event.
 - No dedicated purchase-cancelled or purchase-failed event. RevenueCat errors only logged locally.
 - No dedicated restore-purchases analytics.
-- `gcode_parse_failed` exists, but missing failure reason/context param distinguishing unsupported type vs unsupported contents vs read failure.
+- _(fixed)_ `gcode_parse_failed` now includes `failure_reason` to distinguish size rejection, unsupported content, parse errors, and read failures.
 - Paywall routing is centralized in `lib/purchases/paywall_presenter.dart`; `subscriptions.dart` is the sheet implementation, not the only paywall entry.
 - History flow lacks load/delete analytics:
   - no history entry loaded event
