@@ -58,6 +58,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: fileSize,
+          failureReason: GCodeFailureReason.fileTooLarge,
         ),
       );
       state = GCodeImportState.failure(
@@ -76,6 +77,9 @@ class GCodeImportController extends Notifier<GCodeImportState> {
       final reason = error == GCodeImportError.tooLarge
           ? 'too_large'
           : 'unsupported_type';
+      final analyticsReason = error == GCodeImportError.tooLarge
+          ? GCodeFailureReason.fileTooLarge
+          : GCodeFailureReason.unsupportedContent;
       logGCodeImportBreadcrumb(
         error == GCodeImportError.tooLarge
             ? 'file_rejected_size'
@@ -91,6 +95,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: fileSizeBytes,
+          failureReason: analyticsReason,
         ),
       );
       state = GCodeImportState.failure(
@@ -126,6 +131,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
             slicer: result.slicer.name,
             hasPreview: result.hasPreviewMetadata,
             fileSizeBytes: fileSizeBytes,
+            failureReason: GCodeFailureReason.parseError,
           ),
         );
         state = GCodeImportState.failure(
@@ -179,6 +185,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: fileSizeBytes,
+          failureReason: GCodeFailureReason.readFailed,
         ),
       );
       state = GCodeImportState.failure(
