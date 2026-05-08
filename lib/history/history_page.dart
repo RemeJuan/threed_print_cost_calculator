@@ -427,7 +427,7 @@ class HistoryPage extends HookConsumerWidget {
     WidgetRef ref,
   ) async {
     AppAnalytics.safeLog(
-      () => AppAnalytics.premiumFeatureTapped('history', isPro: false),
+      () => AppAnalytics.premiumFeatureTapped('history', isPro: false, source: 'history_upsell'),
     );
     await ref
         .read(paywallPresenterProvider)
