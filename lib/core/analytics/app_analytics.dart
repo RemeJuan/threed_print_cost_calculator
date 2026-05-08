@@ -7,6 +7,17 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'analytics_service.dart';
 import 'firebase_analytics_service.dart';
 
+class GCodeFailureReason {
+  GCodeFailureReason._();
+  static const String fileTooLarge = 'file_too_large';
+  static const String invalidExtension = 'invalid_extension';
+  static const String unsupportedContent = 'unsupported_content';
+  static const String readFailed = 'read_failed';
+  static const String parseError = 'parse_error';
+  static const String cancelled = 'cancelled';
+  static const String unknown = 'unknown';
+}
+
 class AppAnalytics {
   static AppLogger logger = AppLogger(
     sink: const DebugPrintAppLogSink(),
