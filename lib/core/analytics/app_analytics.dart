@@ -554,9 +554,14 @@ class AppAnalytics {
     return log('gcode_flow_completed', params: params);
   }
 
-  static Future<void> gcodeImportAbandoned() {
+  static Future<void> gcodeImportAbandoned({String? failureReason}) {
     if (_gcodeImportOpenedAt == null) return Future.value();
-    final params = _gcodeImportParams();
+    final trimmed = failureReason?.trim();
+    final reason = (trimmed == null || trimmed.isEmpty) ? null : trimmed;
+    final params = <String, Object?>{
+      ..._gcodeImportParams(),
+      ...?(reason == null ? null : {'failure_reason': reason}),
+    };
     _gcodeImportOpenedAt = null;
     return log('gcode_import_abandoned', params: params);
   }
