@@ -937,6 +937,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get csvEmptyNamePlaceholder => '(vazio)';
 
   @override
+  String get editButton => 'Editar';
+
+  @override
+  String get duplicateButton => 'Duplicar';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Material duplicado';
+
+  @override
+  String get duplicateMaterialErrorMessage => 'Erro ao duplicar material';
+
+  @override
+  String get materialsSwipeHint =>
+      'Deslize um material para editar, duplicar ou excluir.';
+
+  @override
   String get stockBadgeOut => 'Sem estoque';
 
   @override

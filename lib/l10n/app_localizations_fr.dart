@@ -948,6 +948,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get csvEmptyNamePlaceholder => '(vide)';
 
   @override
+  String get editButton => 'Modifier';
+
+  @override
+  String get duplicateButton => 'Dupliquer';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Matériau dupliqué';
+
+  @override
+  String get duplicateMaterialErrorMessage =>
+      'Erreur lors de la duplication du matériau';
+
+  @override
+  String get materialsSwipeHint =>
+      'Balayer un matériau pour modifier, dupliquer ou supprimer.';
+
+  @override
   String get stockBadgeOut => 'Rupture';
 
   @override

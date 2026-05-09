@@ -925,6 +925,22 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvEmptyNamePlaceholder => '(kosong)';
 
   @override
+  String get editButton => 'Sunting';
+
+  @override
+  String get duplicateButton => 'Duplikat';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Material digandakan';
+
+  @override
+  String get duplicateMaterialErrorMessage => 'Gagal menggandakan material';
+
+  @override
+  String get materialsSwipeHint =>
+      'Geser material untuk mengedit, menggandakan, atau menghapus.';
+
+  @override
   String get stockBadgeOut => 'Habis';
 
   @override

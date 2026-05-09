@@ -906,6 +906,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvEmptyNamePlaceholder => '(空白)';
 
   @override
+  String get editButton => '編集';
+
+  @override
+  String get duplicateButton => '複製';
+
+  @override
+  String get duplicateMaterialSuccessMessage => '材料を複製しました';
+
+  @override
+  String get duplicateMaterialErrorMessage => '材料の複製中にエラーが発生しました';
+
+  @override
+  String get materialsSwipeHint => '材料をスワイプして編集、複製、削除。';
+
+  @override
   String get stockBadgeOut => '在庫切れ';
 
   @override
