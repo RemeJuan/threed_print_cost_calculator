@@ -55,10 +55,11 @@
 - Produce a short plan before code changes.
 - MCP is optional and not the first step. Use `codebase-memory-mcp_search_graph` only after `docs/navigation.md`, mainly to confirm relationships or cross-feature links. Limit to 2 MCP queries unless clearly justified.
 - Update docs when feature behavior, analytics/events, architecture, persistence, or app flows change.
-- Prefer `docs/feature-map.md` for feature-level changes and `docs/architecture.md` for patterns, persistence, or integrations.
+- Prefer `docs/feature-map.md` for feature-level changes and `docs/architecture.md` for patterns, persistence, premium, localization, testing, and CI notes.
 
 ## Product planning and roadmap
 - ClickUp is the lightweight operational roadmap: TLDR feature summaries, status, priority, dependencies, release targeting, and execution notes.
+- When working from a ClickUp task, set the task start date when implementation begins, move status as work progresses, and record time spent if ClickUp time tracking is available. If time tracking is not available, leave a final comment with approximate time spent and what was completed.
 - Repo docs are the implementation source of truth: specs, architecture, data models, edge cases, technical decisions, and agent instructions.
 - Do not duplicate full implementation specs in ClickUp. Link ClickUp tasks to the relevant repo docs instead.
 - When a repo doc is linked to a ClickUp task, include the ClickUp task ID in the doc metadata/header so agents can update the correct task without searching.
