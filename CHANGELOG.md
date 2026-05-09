@@ -1,3 +1,12 @@
+## [2.9.4] - 2026-05-09
+### Added
+- Added duplicate and delete actions for saved materials, with confirmation and success feedback when removing a material.
+
+### Fixed
+- Fixed an app startup issue that could cause the app to hang while showing the What's New sheet.
+- Fixed some Android release installs failing to start when required Flutter native libraries were missing.
+- Improved G-code import stability when very large files are selected without direct file access.
+
 ## [2.9.3] - 2026-05-05
 ### Changed
 - Improved Android G-code import to read selected files more reliably, including picks exposed as generic file types.
@@ -171,6 +180,7 @@
 ### Added
 - Added in-app update checker
 
+[2.9.4]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.3...2.9.4
 [2.9.3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.2...2.9.3
 [2.9.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.1...2.9.2
 [2.9.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.0...2.9.1
