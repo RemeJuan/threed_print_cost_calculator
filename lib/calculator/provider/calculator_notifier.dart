@@ -448,6 +448,54 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     }
   }
 
+  /// Remove deleted material usages and clear stale selected-material defaults.
+  Future<void> clearUsagesForDeletedMaterial(String materialId) async {
+    final usages = state.materialUsages;
+    final filtered = usages.where((u) => u.materialId != materialId).toList();
+    final removedUsage = filtered.length != usages.length;
+    final settingsService = ref.read(settingsServiceProvider);
+    final settings = await settingsService.get();
+    final deletedWasSelected = settings.selectedMaterial == materialId;
+    if (!removedUsage && !deletedWasSelected) return;
+
+    final totalWeight = filtered.fold<int>(
+      0,
+      (sum, usage) => sum + usage.weightGrams,
+    );
+
+    var nextState = state;
+
+    if (removedUsage) {
+      nextState = nextState.copyWith(
+        materialUsages: filtered,
+        printWeight: NumberInput.dirty(value: totalWeight),
+      );
+    }
+
+    if (deletedWasSelected) {
+      await settingsService.update(
+        (current) => current.selectedMaterial == materialId
+            ? current.copyWith(selectedMaterial: '')
+            : current,
+      );
+
+      final preferencesRepository = ref.read(
+        calculatorPreferencesRepositoryProvider,
+      );
+      await preferencesRepository.saveStringValue('spoolWeight', '');
+      await preferencesRepository.saveStringValue('spoolCost', '');
+
+      nextState = nextState.copyWith(
+        spoolWeight: const NumberInput.pure(),
+        spoolCost: const NumberInput.pure(),
+        spoolCostText: '',
+      );
+    }
+
+    state = nextState;
+    submit();
+  }
+
   /// Schedule a debounced submit to avoid running heavy calculations on every keystroke.
   ///
   /// Cancels any previously scheduled submit and schedules a new one after [delay].
