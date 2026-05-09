@@ -59,6 +59,7 @@
 
 ## Product planning and roadmap
 - ClickUp is the lightweight operational roadmap: TLDR feature summaries, status, priority, dependencies, release targeting, and execution notes.
+- Keep ClickUp task status in sync with implementation progress. Move tasks out of `to do` when work starts, and update them to the `review` status when implementation is complete or deliberately cancelled.
 - When working from a ClickUp task, set the task start date when implementation begins, move status as work progresses, and record time spent if ClickUp time tracking is available. If time tracking is not available, leave a final comment with approximate time spent and what was completed.
 - Repo docs are the implementation source of truth: specs, architecture, data models, edge cases, technical decisions, and agent instructions.
 - Do not duplicate full implementation specs in ClickUp. Link ClickUp tasks to the relevant repo docs instead.

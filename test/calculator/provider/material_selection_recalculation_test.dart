@@ -5,9 +5,12 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/lower_level_test_fakes.dart';
 
 class _FakeAnalytics implements AnalyticsService {
   final events = <String>[];
@@ -56,6 +59,7 @@ void main() {
           calculatorPreferencesRepositoryProvider.overrideWith(
             _FakeCalculatorPreferencesRepository.new,
           ),
+          settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
         ],
       );
       notifier = container.read(calculatorProvider.notifier);
@@ -239,6 +243,76 @@ void main() {
       expect(notifier.state.printWeight.value, 140);
       expect(notifier.state.materialUsages.first.weightGrams, 140);
       expect(notifier.state.materialUsages.last.weightGrams, 0);
+    });
+
+    test('deleting selected material clears stale spool defaults', () async {
+      final settingsRepo = FakeSettingsRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '',
+          wattage: '',
+          activePrinter: '',
+          selectedMaterial: 'mat-a',
+          wearAndTear: '',
+          failureRisk: '',
+          labourRate: '',
+        ),
+      );
+      final scopedContainer = ProviderContainer(
+        overrides: [
+          calculatorPreferencesRepositoryProvider.overrideWith(
+            _FakeCalculatorPreferencesRepository.new,
+          ),
+          settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        ],
+      );
+      addTearDown(scopedContainer.dispose);
+      final scopedNotifier = scopedContainer.read(calculatorProvider.notifier);
+      final prefsRepo = scopedContainer.read(
+            calculatorPreferencesRepositoryProvider,
+          )
+          as _FakeCalculatorPreferencesRepository;
+      final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
+
+      scopedNotifier
+        ..updatePrintWeight('100')
+        ..addMaterialUsage(
+          const MaterialUsageInput(
+            materialId: 'mat-a',
+            materialName: 'Material A',
+            costPerKg: 60,
+            weightGrams: 100,
+          ),
+        )
+        ..selectMaterial(materialA);
+
+      await scopedNotifier.clearUsagesForDeletedMaterial('mat-a');
+
+      expect(scopedNotifier.state.materialUsages, isEmpty);
+      expect(scopedNotifier.state.printWeight.value, 0);
+      expect(scopedNotifier.state.spoolWeight.value, isNull);
+      expect(scopedNotifier.state.spoolCost.value, isNull);
+      expect(scopedNotifier.state.spoolCostText, '');
+      expect(scopedNotifier.state.results.filament, 0.0);
+      expect(settingsRepo.lastSavedSettings?.selectedMaterial, '');
+      expect(await prefsRepo.getStringValue('spoolWeight'), '');
+      expect(await prefsRepo.getStringValue('spoolCost'), '');
+    });
+
+    test('deleting one material usage recomputes total weight', () async {
+      notifier.addMaterialUsage(
+        const MaterialUsageInput(
+          materialId: 'mat-b',
+          materialName: 'Material B',
+          costPerKg: 30,
+          weightGrams: 40,
+        ),
+      );
+
+      await notifier.clearUsagesForDeletedMaterial('mat-b');
+
+      expect(notifier.state.materialUsages, hasLength(1));
+      expect(notifier.state.materialUsages.single.materialId, 'mat-a');
+      expect(notifier.state.printWeight.value, 100);
     });
   });
 }

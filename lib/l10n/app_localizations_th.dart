@@ -918,6 +918,21 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvEmptyNamePlaceholder => '(ว่าง)';
 
   @override
+  String get editButton => 'แก้ไข';
+
+  @override
+  String get duplicateButton => 'ทำซ้ำ';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'ทำซ้ำวัสดุแล้ว';
+
+  @override
+  String get duplicateMaterialErrorMessage => 'เกิดข้อผิดพลาดขณะทำซ้ำวัสดุ';
+
+  @override
+  String get materialsSwipeHint => 'ปัดวัสดุเพื่อแก้ไข ทำซ้ำ หรือลบ';
+
+  @override
   String get stockBadgeOut => 'หมดสต็อก';
 
   @override

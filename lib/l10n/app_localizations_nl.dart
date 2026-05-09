@@ -935,6 +935,23 @@ class AppLocalizationsNl extends AppLocalizations {
   String get csvEmptyNamePlaceholder => '(leeg)';
 
   @override
+  String get editButton => 'Bewerken';
+
+  @override
+  String get duplicateButton => 'Dupliceren';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Materiaal gedupliceerd';
+
+  @override
+  String get duplicateMaterialErrorMessage =>
+      'Fout bij dupliceren van materiaal';
+
+  @override
+  String get materialsSwipeHint =>
+      'Veeg een materiaal om te bewerken, dupliceren of verwijderen.';
+
+  @override
   String get stockBadgeOut => 'Uitverkocht';
 
   @override

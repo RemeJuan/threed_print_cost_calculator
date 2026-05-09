@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
@@ -11,11 +11,13 @@ class MaterialCard extends ConsumerWidget {
   final MaterialModel material;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onDuplicate;
 
   const MaterialCard({
     required this.material,
     required this.onEdit,
     required this.onDelete,
+    required this.onDuplicate,
     super.key,
   });
 
@@ -37,56 +39,160 @@ class MaterialCard extends ConsumerWidget {
       ),
     );
 
-    return Card(
-      color: DARK_BLUE,
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
+    Widget buildActionContent(IconData icon, String label, Color color) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 20, color: color),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      );
+    }
+
+    Future<void> confirmDelete() async {
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(l10n.deleteDialogTitle),
+          content: Text(l10n.deleteDialogContent),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(l10n.cancelButton),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(l10n.deleteButton),
+            ),
+          ],
+        ),
+      );
+
+      if (confirm == true) {
+        onDelete();
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
-        onTap: onEdit,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
+        child: Slidable(
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.65,
             children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: swatchColor,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.white24, width: 1),
+              CustomSlidableAction(
+                flex: 1,
+                onPressed: (_) => onEdit(),
+                backgroundColor: LIGHT_BLUE,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.zero,
+                borderRadius: const BorderRadius.horizontal(
+                  left: Radius.circular(12),
+                ),
+                child: buildActionContent(
+                  Icons.edit,
+                  l10n.editButton,
+                  Colors.white,
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              CustomSlidableAction(
+                flex: 1,
+                onPressed: (_) => onDuplicate(),
+                backgroundColor: Colors.teal,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.zero,
+                borderRadius: BorderRadius.zero,
+                child: buildActionContent(
+                  Icons.content_copy,
+                  l10n.duplicateButton,
+                  Colors.white,
+                ),
+              ),
+              CustomSlidableAction(
+                flex: 1,
+                onPressed: (_) => confirmDelete(),
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.zero,
+                borderRadius: const BorderRadius.horizontal(
+                  right: Radius.circular(12),
+                ),
+                child: buildActionContent(
+                  Icons.delete,
+                  l10n.deleteButton,
+                  Colors.white,
+                ),
+              ),
+            ],
+          ),
+          child: Card(
+            color: DARK_BLUE,
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: onEdit,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
                   children: [
-                    Text(
-                      material.name,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleMedium?.copyWith(color: Colors.white),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    _MergedInfoLine(material: material),
-                    const SizedBox(height: 4),
-                    if (material.autoDeductEnabled)
-                      Text(
-                        '${formatWeight(material.remainingWeight)}${l10n.gramsSuffix}',
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 13,
-                        ),
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: swatchColor,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.white24, width: 1),
                       ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            material.name,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(color: Colors.white),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 2),
+                          _MergedInfoLine(material: material),
+                          const SizedBox(height: 4),
+                          if (material.autoDeductEnabled)
+                            Text(
+                              '${formatWeight(material.remainingWeight)}${l10n.gramsSuffix}',
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 13,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    _StockBadge(status: status, l10n: l10n),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              _StockBadge(status: status, l10n: l10n),
-            ],
+            ),
           ),
         ),
       ),

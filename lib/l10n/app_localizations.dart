@@ -1800,6 +1800,36 @@ abstract class AppLocalizations {
   /// **'(empty)'**
   String get csvEmptyNamePlaceholder;
 
+  /// Label for edit action on material items
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editButton;
+
+  /// Label for duplicate action on material items
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicateButton;
+
+  /// Shown when a material is duplicated successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Material duplicated'**
+  String get duplicateMaterialSuccessMessage;
+
+  /// Shown when duplicating a material fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error duplicating material'**
+  String get duplicateMaterialErrorMessage;
+
+  /// One-time contextual hint shown on the Materials screen introducing swipe actions
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe a material for edit, duplicate, or delete.'**
+  String get materialsSwipeHint;
+
   /// No description provided for @stockBadgeOut.
   ///
   /// In en, this message translates to:
