@@ -46,7 +46,7 @@
   - **Tap**: opens MaterialForm for editing (primary action)
   - **Swipe left**: reveals Edit, Duplicate, Delete actions
     - **Edit**: opens MaterialForm for editing
-    - **Duplicate**: copies all material fields, appends "(Copy)" to name, saves as new material, shows success snackbar
+    - **Duplicate**: copies all material fields, appends localized "Duplicate" suffix to name, saves as new material, shows success snackbar
     - **Delete**: shows confirmation dialog; on confirm, removes material, clears stale calculator state if it was in use, shows success snackbar
   - One-time inline dismissible banner on first visit introduces swipe actions
   - Settings materials list (non-premium) uses `SettingsSlidableItem` with edit/delete swipe actions
