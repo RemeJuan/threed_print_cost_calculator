@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
@@ -85,5 +86,48 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets('duplicate action loads source material from repository', (
+      tester,
+    ) async {
+      final material = MaterialModel(
+        id: '1',
+        name: 'PLA Pro',
+        cost: '24.99',
+        color: 'Black',
+        weight: '1000',
+        archived: false,
+      );
+      final repo = _ThrowingDuplicateMaterialsRepository(material);
+      final db = await tester.pumpApp(const MaterialsPage(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+      ]);
+      addTearDown(db.close);
+
+      await tester.pumpAndSettle();
+      await tester.drag(find.byType(Slidable).first, const Offset(-300, 0));
+      await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.content_copy), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.content_copy));
+      await tester.pump();
+
+      expect(repo.getMaterialByIdCalls, ['1']);
+    });
   });
+}
+
+class _ThrowingDuplicateMaterialsRepository extends FakeMaterialsRepository {
+  _ThrowingDuplicateMaterialsRepository(MaterialModel material)
+    : super(
+        watchResponses: [
+          <MaterialModel>[material],
+        ],
+      ) {
+    materialsById[material.id] = material;
+  }
+
+  @override
+  Future<Object?> saveMaterial(MaterialModel material, {String? id}) {
+    throw StateError('save failed');
+  }
 }
