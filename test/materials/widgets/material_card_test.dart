@@ -124,7 +124,6 @@ void main() {
       await tester.drag(find.byType(Slidable), const Offset(-300, 0));
       await tester.pumpAndSettle();
 
-      final l10n = lookupAppLocalizations(const Locale('en'));
       expect(find.byIcon(Icons.edit), findsOneWidget);
       expect(find.byIcon(Icons.content_copy), findsOneWidget);
       expect(find.byIcon(Icons.delete), findsOneWidget);

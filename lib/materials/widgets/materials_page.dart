@@ -193,7 +193,7 @@ class MaterialsPage extends HookConsumerWidget {
                                 ),
                               ),
                             );
-                          } catch (e) {
+                          } catch (_) {
                             if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
