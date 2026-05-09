@@ -36,12 +36,26 @@
 ## Materials
 
 - Main screens/widgets:
-  - `lib/materials/widgets/materials_page.dart`
-  - `lib/materials/widgets/material_card.dart`
+  - `lib/materials/widgets/materials_page.dart` — premium tab, search/filter, swipe actions, delete/duplicate wiring
+  - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
   - `lib/materials/csv_import/csv_import_page.dart`
-  - `lib/settings/materials/materials.dart`
+  - `lib/settings/materials/materials.dart` — settings page list (separate, uses `SettingsSlidableItem`)
   - `lib/settings/materials/material_form.dart`
+- Material list item behavior:
+  - **Tap**: opens MaterialForm for editing (primary action)
+  - **Swipe left**: reveals Edit, Duplicate, Delete actions
+    - **Edit**: opens MaterialForm for editing
+    - **Duplicate**: copies all material fields, appends "(Copy)" to name, saves as new material, shows success snackbar
+    - **Delete**: shows confirmation dialog; on confirm, removes material, clears stale calculator state if it was in use, shows success snackbar
+  - One-time inline dismissible banner on first visit introduces swipe actions
+  - Settings materials list (non-premium) uses `SettingsSlidableItem` with edit/delete swipe actions
+- Deleting material while in calculator use:
+  - `CalculatorProvider.clearUsagesForDeletedMaterial()` removes usage rows referencing deleted ID and recomputes total weight
+  - Clears persisted `selectedMaterial` in settings if deleted was the dropdown selection
+  - Resets in-memory + persisted `spoolWeight`/`spoolCost` to empty so calculator doesn't price off stale defaults
+  - Recalculates filament cost via `submit()`
+  - History records referencing the material are preserved (cost is snapshot, not live reference)
 - Providers/state:
   - `lib/materials/providers/materials_providers.dart`
   - `lib/settings/providers/materials_notifier.dart` (`materialsProvider`)
@@ -53,7 +67,9 @@
   - `lib/settings/model/material_model.dart`
   - `lib/materials/model/stock_status.dart`
 - Tests:
-  - `test/materials/`
+  - `test/materials/widgets/material_card_test.dart` — swipe reveals actions, edit/duplicate/delete callbacks, confirmation dialog
+  - `test/materials/widgets/materials_page_test.dart` — empty state, list rendering, FAB, duplicate wiring
+  - `test/calculator/provider/material_selection_recalculation_test.dart` — clearUsagesForDeletedMaterial weight recompute and stale-defaults cleanup
   - `test/settings/materials/`
   - `test/settings/providers/materials_notifier_test.dart`
 - Analytics events:
@@ -66,8 +82,10 @@
   - `materialsStreamProvider`
   - `filteredMaterialsProvider`
   - `MaterialsProvider`
+  - `material_card`
   - `material_form`
   - `csv_import`
+  - `clearUsagesForDeletedMaterial`
 
 ## History
 
