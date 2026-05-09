@@ -450,6 +450,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   /// Remove deleted material usages and clear stale selected-material defaults.
   Future<void> clearUsagesForDeletedMaterial(String materialId) async {
+    _submitDebounce?.cancel();
+    _submitDebounce = null;
     final usages = state.materialUsages;
     final filtered = usages.where((u) => u.materialId != materialId).toList();
     final removedUsage = filtered.length != usages.length;

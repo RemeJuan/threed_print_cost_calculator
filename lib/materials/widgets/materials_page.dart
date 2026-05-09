@@ -149,9 +149,6 @@ class MaterialsPage extends HookConsumerWidget {
                         onDelete: () async {
                           try {
                             await materialsRepo.deleteMaterial(material.id);
-                            await ref
-                                .read(calculatorProvider.notifier)
-                                .clearUsagesForDeletedMaterial(material.id);
                             if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -160,13 +157,21 @@ class MaterialsPage extends HookConsumerWidget {
                                 ),
                               ),
                             );
-                          } catch (e) {
+                          } catch (_) {
                             if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(l10n.deleteRecordErrorMessage),
                               ),
                             );
+                            return;
+                          }
+                          try {
+                            await ref
+                                .read(calculatorProvider.notifier)
+                                .clearUsagesForDeletedMaterial(material.id);
+                          } catch (_) {
+                            // Cleanup failure is non-fatal; material is deleted.
                           }
                         },
                         onDuplicate: () async {
