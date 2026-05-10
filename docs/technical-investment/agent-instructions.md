@@ -131,3 +131,26 @@ Reviewers should be able to answer:
 - What was intentionally left out?
 
 If the PR cannot answer those questions clearly, it is too broad.
+
+## CodeRabbit Pre-Review
+
+Before pushing the branch, run the custom CodeRabbit command:
+- `cr --prompt-only --type uncommitted`
+
+This is a long-running process. Do not assume the default 2 minute timeout is sufficient. Wait for the command to complete before continuing.
+
+After it completes:
+- Read the full review output carefully.
+- Identify only actionable, relevant feedback.
+- Apply fixes for valid issues.
+- Ignore low-signal or incorrect suggestions.
+- Summarize issues fixed, suggestions ignored, and any follow-up still needed.
+
+Do not apply CodeRabbit suggestions that:
+- change user-facing behaviour
+- broaden the task scope
+- introduce new packages
+- conflict with the ClickUp task
+- require architectural decisions outside this task
+
+If CodeRabbit raises useful but out-of-scope feedback, mention it as a follow-up in the PR body instead of implementing it.
