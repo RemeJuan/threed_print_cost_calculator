@@ -78,6 +78,7 @@ class _CancelFeedbackSheetState extends State<CancelFeedbackSheet> {
                   .map(
                     (reason) => RadioListTile<CancelFeedbackReason>(
                       value: reason,
+                      groupValue: _selectedReason,
                       selected: _selectedReason == reason,
                       contentPadding: EdgeInsets.zero,
                       onChanged: _isSubmitting
