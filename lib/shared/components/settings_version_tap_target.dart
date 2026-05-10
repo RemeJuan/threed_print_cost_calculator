@@ -69,11 +69,12 @@ class _SettingsVersionTapTargetState
   }
 
   Future<void> _openToolsDialog() async {
+    final ctx = context;
     final container =
         appProviderContainer ??
-        ProviderScope.containerOf(context, listen: false);
-    final l10n = AppLocalizations.of(context)!;
-    final messenger = ScaffoldMessenger.maybeOf(context);
+        ProviderScope.containerOf(ctx, listen: false);
+    final l10n = AppLocalizations.of(ctx)!;
+    final messenger = ScaffoldMessenger.maybeOf(ctx);
 
     final action = await _showToolsDialog();
 
@@ -108,6 +109,7 @@ class _SettingsVersionTapTargetState
           l10n: l10n,
         );
       case TestDataAction.previewCancelFeedback:
+        if (!mounted) return;
         await showCancelFeedbackSheet(
           context,
           onDismiss: () async {},
