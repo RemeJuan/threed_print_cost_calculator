@@ -72,28 +72,25 @@ class _CancelFeedbackSheetState extends State<CancelFeedbackSheet> {
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            RadioGroup<CancelFeedbackReason>(
-              groupValue: _selectedReason,
-              onChanged: _isSubmitting
-                  ? (_) {}
-                  : (value) {
-                      setState(() {
-                        _selectedReason = value;
-                      });
-                    },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: CancelFeedbackReason.values
-                    .map(
-                      (reason) => RadioListTile<CancelFeedbackReason>(
-                        value: reason,
-                        selected: _selectedReason == reason,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(_labelForReason(l10n, reason)),
-                      ),
-                    )
-                    .toList(),
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: CancelFeedbackReason.values
+                  .map(
+                    (reason) => RadioListTile<CancelFeedbackReason>(
+                      value: reason,
+                      selected: _selectedReason == reason,
+                      contentPadding: EdgeInsets.zero,
+                      onChanged: _isSubmitting
+                          ? null
+                          : (value) {
+                              setState(() {
+                                _selectedReason = value;
+                              });
+                            },
+                      title: Text(_labelForReason(l10n, reason)),
+                    ),
+                  )
+                  .toList(),
             ),
             const SizedBox(height: 16),
             Row(
@@ -150,7 +147,7 @@ class _CancelFeedbackSheetState extends State<CancelFeedbackSheet> {
       CancelFeedbackReason.confusingToUse =>
         l10n.cancelFeedbackReasonConfusingToUse,
       CancelFeedbackReason.justTesting => l10n.cancelFeedbackReasonJustTesting,
-      CancelFeedbackReason.other => l10n.slicerOther,
+      CancelFeedbackReason.other => l10n.cancelFeedbackReasonOther,
     };
   }
 }

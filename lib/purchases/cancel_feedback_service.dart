@@ -34,7 +34,9 @@ class CancelFeedbackService {
     final stateKey = state.cancellationStateKey;
     if (stateKey == null) return false;
 
-    final shownState = _prefs.getString(cancelFeedbackPromptShownStatePreferenceKey);
+    final shownState = _prefs.getString(
+      cancelFeedbackPromptShownStatePreferenceKey,
+    );
     final submittedState = _prefs.getString(
       cancelFeedbackPromptSubmittedStatePreferenceKey,
     );
