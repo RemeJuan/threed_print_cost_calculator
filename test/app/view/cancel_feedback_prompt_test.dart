@@ -6,14 +6,18 @@ import '../../../test_support/fake_purchases_gateway.dart';
 import '../../helpers/lower_level_test_fakes.dart';
 import 'app_page_test_support.dart';
 
+class _AnalyticsEvent {
+  final String name;
+  final Map<String, Object>? params;
+  _AnalyticsEvent(this.name, this.params);
+}
+
 class _FakeAnalytics implements AnalyticsService {
-  String? lastName;
-  Map<String, Object>? lastParams;
+  final List<_AnalyticsEvent> events = [];
 
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {
-    lastName = name;
-    lastParams = params;
+    events.add(_AnalyticsEvent(name, params));
   }
 }
 
@@ -31,6 +35,7 @@ void main() {
     AppAnalytics.resetGcodeImportTrackingForTests();
     calculatorNotifier = FakeCalculatorNotifier();
   });
+
 
   testWidgets('shows cancel feedback prompt once and logs dismissal', (
     tester,
@@ -55,12 +60,12 @@ void main() {
     await tester.tap(find.text('Close'));
     await tester.pumpAndSettle();
 
-    expect(analytics.lastName, 'trial_cancel_feedback_dismissed');
-    expect(analytics.lastParams?['platform'], 'play_store');
-    expect(analytics.lastParams?['entitlement_type'], 'trial');
-    expect(analytics.lastParams?['calculation_count_bucket'], '2_4');
-    expect(analytics.lastParams?['has_used_gcode_import'], 1);
-    expect(analytics.lastParams?['has_saved_history'], 0);
+    expect(analytics.events.last.name, 'trial_cancel_feedback_dismissed');
+    expect(analytics.events.last.params?['platform'], 'play_store');
+    expect(analytics.events.last.params?['entitlement_type'], 'trial');
+    expect(analytics.events.last.params?['calculation_count_bucket'], '2_4');
+    expect(analytics.events.last.params?['has_used_gcode_import'], 1);
+    expect(analytics.events.last.params?['has_saved_history'], 0);
 
     await pumpAppPage(
       tester,
@@ -90,10 +95,10 @@ void main() {
     await tester.tap(find.text('Send feedback'));
     await tester.pumpAndSettle();
 
-    expect(analytics.lastName, 'trial_cancel_feedback_submitted');
-    expect(analytics.lastParams?['reason'], 'too_expensive');
-    expect(analytics.lastParams?['calculation_count_bucket'], '1');
-    expect(analytics.lastParams?['has_used_gcode_import'], 0);
+    expect(analytics.events.last.name, 'trial_cancel_feedback_submitted');
+    expect(analytics.events.last.params?['reason'], 'too_expensive');
+    expect(analytics.events.last.params?['calculation_count_bucket'], '1');
+    expect(analytics.events.last.params?['has_used_gcode_import'], 0);
   });
 
   testWidgets('shows generic renewal copy for canceled subscriptions', (
@@ -116,8 +121,8 @@ void main() {
     await tester.tap(find.text('Close'));
     await tester.pumpAndSettle();
 
-    expect(analytics.lastName, 'trial_cancel_feedback_dismissed');
-    expect(analytics.lastParams?['entitlement_type'], 'subscription');
-    expect(analytics.lastParams?['days_into_trial'], 0);
+    expect(analytics.events.last.name, 'trial_cancel_feedback_dismissed');
+    expect(analytics.events.last.params?['entitlement_type'], 'subscription');
+    expect(analytics.events.last.params?['days_into_trial'], 0);
   });
 }

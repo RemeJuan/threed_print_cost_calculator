@@ -103,9 +103,11 @@ PremiumState canceledTrialUser({
     productId: 'premium_trial',
     willRenew: false,
     cancellationDetectedAt: DateTime.utc(2026, 5, 10),
-    originalPurchaseDate: DateTime.now().subtract(
-      Duration(days: daysIntoTrial),
-    ),
+    originalPurchaseDate: DateTime.utc(
+      2026,
+      5,
+      7,
+    ).subtract(Duration(days: daysIntoTrial)),
     expirationDate: DateTime.utc(2026, 5, 17),
   );
 }
