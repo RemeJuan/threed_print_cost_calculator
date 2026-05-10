@@ -22,7 +22,7 @@ import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.d
 
 enum _AppTab { calculator, materials, history, settings }
 
-bool _canShowWhatsNewSheet(BuildContext context) {
+bool _canShowModalSheet(BuildContext context) {
   final route = ModalRoute.of(context);
   final isRouteCurrent = route?.isCurrent ?? true;
   final lifecycleState = WidgetsBinding.instance.lifecycleState;
@@ -62,7 +62,7 @@ class AppPage extends HookConsumerWidget {
         if (announcement == null || whatsNewShown.value) return;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!context.mounted || whatsNewShown.value) return;
-          if (!_canShowWhatsNewSheet(context)) return;
+          if (!_canShowModalSheet(context)) return;
 
           whatsNewShown.value = true;
           final dismiss = ref.read(dismissAnnouncementProvider);
@@ -106,7 +106,7 @@ class AppPage extends HookConsumerWidget {
         return;
       }
 
-      if (!context.mounted || !_canShowWhatsNewSheet(context)) {
+      if (!context.mounted || !_canShowModalSheet(context)) {
         if (cancelFeedbackHandledStateKey.value == cancellationStateKey) {
           cancelFeedbackHandledStateKey.value = null;
         }
