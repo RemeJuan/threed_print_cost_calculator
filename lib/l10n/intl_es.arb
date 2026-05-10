@@ -245,6 +245,7 @@
   "cancelFeedbackReasonNotEnoughValue": "No aporta suficiente valor",
   "cancelFeedbackReasonConfusingToUse": "Es confusa de usar",
   "cancelFeedbackReasonJustTesting": "Solo estaba probando la app",
+  "cancelFeedbackReasonOther": "Otro",
   "@closeButton": {},
   "testDataToolsTitle": "Herramientas de datos de prueba",
   "testDataToolsBody": "Estas acciones son solo para pruebas locales. Cargar datos reemplaza la configuración local actual con datos de demostración. Borrar elimina permanentemente los datos locales de la app en este dispositivo.",

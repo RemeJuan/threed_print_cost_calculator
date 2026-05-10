@@ -247,6 +247,7 @@
   "cancelFeedbackReasonNotEnoughValue": "Pas assez de valeur",
   "cancelFeedbackReasonConfusingToUse": "Difficile à utiliser",
   "cancelFeedbackReasonJustTesting": "Je testais juste l’app",
+  "cancelFeedbackReasonOther": "Autre",
   "@closeButton": {},
   "testDataToolsTitle": "Outils de données de test",
   "testDataToolsBody": "Ces actions sont réservées aux tests locaux. Le remplissage remplace la configuration locale actuelle par des données de démonstration. Le nettoyage supprime définitivement les données locales de l'appareil.",

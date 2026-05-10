@@ -416,6 +416,9 @@ class AppLocalizationsId extends AppLocalizations {
       'Saya hanya mencoba aplikasinya';
 
   @override
+  String get cancelFeedbackReasonOther => 'Lainnya';
+
+  @override
   String get testDataToolsTitle => 'Alat data uji';
 
   @override

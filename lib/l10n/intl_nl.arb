@@ -247,6 +247,7 @@
   "cancelFeedbackReasonNotEnoughValue": "Niet genoeg waarde",
   "cancelFeedbackReasonConfusingToUse": "Verwarrend in gebruik",
   "cancelFeedbackReasonJustTesting": "Ik was de app alleen aan het testen",
+  "cancelFeedbackReasonOther": "Anders",
   "@closeButton": {},
   "testDataToolsTitle": "Testdatatools",
   "testDataToolsBody": "Deze acties zijn alleen voor lokale tests. Seeden vervangt de huidige lokale setup door demogegevens. Wissen verwijdert permanent alle lokale appgegevens op dit apparaat.",

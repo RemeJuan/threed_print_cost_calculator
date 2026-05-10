@@ -168,6 +168,7 @@
   "cancelFeedbackReasonNotEnoughValue": "Not enough value",
   "cancelFeedbackReasonConfusingToUse": "Confusing to use",
   "cancelFeedbackReasonJustTesting": "Just testing the app",
+  "cancelFeedbackReasonOther": "Other",
   "testDataToolsTitle": "Test data tools",
   "testDataToolsBody": "These actions are for local testing only. Seeding replaces the current local setup with demo data. Purging permanently removes local app data on this device.",
   "seedTestDataButton": "Seed test data",

@@ -414,6 +414,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancelFeedbackReasonJustTesting => 'Just testing the app';
 
   @override
+  String get cancelFeedbackReasonOther => 'Other';
+
+  @override
   String get testDataToolsTitle => 'Test data tools';
 
   @override

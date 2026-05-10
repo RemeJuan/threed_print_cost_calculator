@@ -246,6 +246,7 @@
   "cancelFeedbackReasonNotEnoughValue": "Nilainya kurang terasa",
   "cancelFeedbackReasonConfusingToUse": "Membingungkan untuk digunakan",
   "cancelFeedbackReasonJustTesting": "Saya hanya mencoba aplikasinya",
+  "cancelFeedbackReasonOther": "Lainnya",
   "@closeButton": {},
   "testDataToolsTitle": "Alat data uji",
   "testDataToolsBody": "Tindakan ini hanya untuk pengujian lokal. Menanam data akan mengganti pengaturan lokal saat ini dengan data demo. Menghapus akan menghapus permanen data lokal aplikasi di perangkat ini.",

@@ -406,6 +406,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cancelFeedbackReasonJustTesting => 'アプリを試していただけ';
 
   @override
+  String get cancelFeedbackReasonOther => 'その他';
+
+  @override
   String get testDataToolsTitle => 'テストデータツール';
 
   @override

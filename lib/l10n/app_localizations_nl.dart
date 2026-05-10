@@ -416,6 +416,9 @@ class AppLocalizationsNl extends AppLocalizations {
       'Ik was de app alleen aan het testen';
 
   @override
+  String get cancelFeedbackReasonOther => 'Anders';
+
+  @override
   String get testDataToolsTitle => 'Testdatatools';
 
   @override

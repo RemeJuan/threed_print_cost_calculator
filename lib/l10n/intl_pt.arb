@@ -246,6 +246,7 @@
   "cancelFeedbackReasonNotEnoughValue": "Não oferece valor suficiente",
   "cancelFeedbackReasonConfusingToUse": "Confuso de usar",
   "cancelFeedbackReasonJustTesting": "Só estava testando o app",
+  "cancelFeedbackReasonOther": "Outro",
   "@closeButton": {},
   "testDataToolsTitle": "Ferramentas de dados de teste",
   "testDataToolsBody": "Estas ações são apenas para testes locais. A semente substitui a configuração local atual por dados de demonstração. A limpeza remove permanentemente os dados locais do app neste dispositivo.",

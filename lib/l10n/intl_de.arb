@@ -245,6 +245,7 @@
   "cancelFeedbackReasonNotEnoughValue": "Nicht genug Mehrwert",
   "cancelFeedbackReasonConfusingToUse": "Zu kompliziert",
   "cancelFeedbackReasonJustTesting": "Ich habe die App nur getestet",
+  "cancelFeedbackReasonOther": "Sonstiges",
   "@closeButton": {},
   "testDataToolsTitle": "Testdaten-Tools",
   "testDataToolsBody": "Diese Aktionen sind nur für lokale Tests. Das Befüllen ersetzt die aktuelle lokale Einrichtung durch Demo-Daten. Das Löschen entfernt alle lokalen App-Daten dauerhaft von diesem Gerät.",

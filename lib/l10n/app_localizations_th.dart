@@ -412,6 +412,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get cancelFeedbackReasonJustTesting => 'แค่ลองใช้แอป';
 
   @override
+  String get cancelFeedbackReasonOther => 'อื่นๆ';
+
+  @override
   String get testDataToolsTitle => 'เครื่องมือข้อมูลทดสอบ';
 
   @override

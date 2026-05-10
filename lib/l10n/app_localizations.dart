@@ -870,6 +870,12 @@ abstract class AppLocalizations {
   /// **'Just testing the app'**
   String get cancelFeedbackReasonJustTesting;
 
+  /// No description provided for @cancelFeedbackReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get cancelFeedbackReasonOther;
+
   /// No description provided for @testDataToolsTitle.
   ///
   /// In en, this message translates to:

@@ -247,6 +247,7 @@
   "cancelFeedbackReasonNotEnoughValue": "価値が足りない",
   "cancelFeedbackReasonConfusingToUse": "使い方がわかりにくい",
   "cancelFeedbackReasonJustTesting": "アプリを試していただけ",
+  "cancelFeedbackReasonOther": "その他",
   "@closeButton": {},
   "testDataToolsTitle": "テストデータツール",
   "testDataToolsBody": "これらの操作はローカルテスト専用です。投入すると現在のローカル設定がデモデータに置き換わります。消去するとこの端末のローカルアプリデータが完全に削除されます。",

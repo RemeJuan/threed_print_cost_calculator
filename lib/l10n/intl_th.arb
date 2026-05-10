@@ -247,6 +247,7 @@
   "cancelFeedbackReasonNotEnoughValue": "ยังไม่คุ้มพอ",
   "cancelFeedbackReasonConfusingToUse": "ใช้งานสับสน",
   "cancelFeedbackReasonJustTesting": "แค่ลองใช้แอป",
+  "cancelFeedbackReasonOther": "อื่นๆ",
   "@closeButton": {},
   "testDataToolsTitle": "เครื่องมือข้อมูลทดสอบ",
   "testDataToolsBody": "การทำงานเหล่านี้มีไว้สำหรับการทดสอบภายในเครื่องเท่านั้น การใส่ข้อมูลจะเปลี่ยนการตั้งค่าท้องถิ่นปัจจุบันเป็นข้อมูลตัวอย่าง การล้างจะลบข้อมูลแอปท้องถิ่นในอุปกรณ์นี้อย่างถาวร",

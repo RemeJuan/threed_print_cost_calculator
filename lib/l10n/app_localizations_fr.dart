@@ -420,6 +420,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cancelFeedbackReasonJustTesting => 'Je testais juste l’app';
 
   @override
+  String get cancelFeedbackReasonOther => 'Autre';
+
+  @override
   String get testDataToolsTitle => 'Outils de données de test';
 
   @override
