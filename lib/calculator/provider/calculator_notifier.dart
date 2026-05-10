@@ -15,6 +15,7 @@ import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorProvider =
@@ -226,6 +227,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     }
 
     state = nextState.copyWith(importedFromGcode: true);
+    unawaited(ref.read(appUsageServiceProvider).markGcodeImportUsed());
     submit();
   }
 
@@ -432,6 +434,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
 
     updateResults(results);
+    unawaited(ref.read(appUsageServiceProvider).recordCalculation());
 
     AppAnalytics.safeLog(
       () => AppAnalytics.calculationCreated(

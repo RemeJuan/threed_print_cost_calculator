@@ -385,6 +385,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get closeButton => '閉じる';
 
   @override
+  String get cancelFeedbackPromptTitle => '更新をキャンセルしたようです。理由を教えてもらえますか？';
+
+  @override
+  String get feedbackSubmitButton => 'フィードバックを送信';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => '高すぎる';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => '機能が足りない';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => '価値が足りない';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => '使い方がわかりにくい';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'アプリを試していただけ';
+
+  @override
   String get testDataToolsTitle => 'テストデータツール';
 
   @override

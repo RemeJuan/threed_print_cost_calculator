@@ -394,6 +394,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get closeButton => 'Schließen';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'Du hast die Verlängerung wohl deaktiviert. Magst du uns sagen, warum?';
+
+  @override
+  String get feedbackSubmitButton => 'Feedback senden';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Zu teuer';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'Fehlende Funktionen';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Nicht genug Mehrwert';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'Zu kompliziert';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'Ich habe die App nur getestet';
+
+  @override
   String get testDataToolsTitle => 'Testdaten-Tools';
 
   @override

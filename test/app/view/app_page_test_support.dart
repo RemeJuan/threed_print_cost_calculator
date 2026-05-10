@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/helpers.dart';
@@ -29,9 +30,16 @@ Future<void> bootstrapAppPageTests() async {
   );
 }
 
-void seedAppPagePrefs({int runCount = 0, bool hideProPromotions = false}) {
+void seedAppPagePrefs({
+  int runCount = 0,
+  int calculationCount = 0,
+  bool hideProPromotions = false,
+  bool hasUsedGcodeImport = false,
+}) {
   SharedPreferences.setMockInitialValues({
     'run_count': runCount,
+    calculationCountPreferenceKey: calculationCount,
+    hasUsedGcodeImportPreferenceKey: hasUsedGcodeImport,
     if (hideProPromotions) 'hideProPromotions': true,
   });
 }
@@ -79,4 +87,43 @@ PremiumState freeUser({String userId = 'free-1'}) {
 
 PremiumState premiumUser({String userId = 'pro-1'}) {
   return PremiumState(isPremium: true, isLoading: false, userId: userId);
+}
+
+PremiumState canceledTrialUser({
+  String userId = 'pro-cancelled',
+  String platform = 'play_store',
+  int daysIntoTrial = 3,
+}) {
+  return PremiumState(
+    isPremium: true,
+    isLoading: false,
+    userId: userId,
+    platform: platform,
+    entitlementType: 'trial',
+    productId: 'premium_trial',
+    willRenew: false,
+    cancellationDetectedAt: DateTime.utc(2026, 5, 10),
+    originalPurchaseDate: DateTime.now().subtract(
+      Duration(days: daysIntoTrial),
+    ),
+    expirationDate: DateTime.utc(2026, 5, 17),
+  );
+}
+
+PremiumState canceledSubscriptionUser({
+  String userId = 'pro-cancelled-subscription',
+  String platform = 'play_store',
+}) {
+  return PremiumState(
+    isPremium: true,
+    isLoading: false,
+    userId: userId,
+    platform: platform,
+    entitlementType: 'subscription',
+    productId: 'premium_monthly',
+    willRenew: false,
+    cancellationDetectedAt: DateTime.utc(2026, 5, 10),
+    originalPurchaseDate: DateTime.utc(2026, 4, 20),
+    expirationDate: DateTime.utc(2026, 5, 20),
+  );
 }

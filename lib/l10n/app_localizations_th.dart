@@ -390,6 +390,28 @@ class AppLocalizationsTh extends AppLocalizations {
   String get closeButton => 'ปิด';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'ดูเหมือนว่าคุณยกเลิกการต่ออายุแล้ว ช่วยบอกเหตุผลได้ไหม?';
+
+  @override
+  String get feedbackSubmitButton => 'ส่งความคิดเห็น';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'แพงเกินไป';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'ฟีเจอร์ยังไม่พอ';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'ยังไม่คุ้มพอ';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'ใช้งานสับสน';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'แค่ลองใช้แอป';
+
+  @override
   String get testDataToolsTitle => 'เครื่องมือข้อมูลทดสอบ';
 
   @override

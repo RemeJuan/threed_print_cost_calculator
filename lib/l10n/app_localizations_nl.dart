@@ -393,6 +393,29 @@ class AppLocalizationsNl extends AppLocalizations {
   String get closeButton => 'Sluiten';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'Het lijkt erop dat je verlenging hebt uitgezet. Wil je zeggen waarom?';
+
+  @override
+  String get feedbackSubmitButton => 'Feedback versturen';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Te duur';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'Functies ontbreken';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Niet genoeg waarde';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'Verwarrend in gebruik';
+
+  @override
+  String get cancelFeedbackReasonJustTesting =>
+      'Ik was de app alleen aan het testen';
+
+  @override
   String get testDataToolsTitle => 'Testdatatools';
 
   @override
