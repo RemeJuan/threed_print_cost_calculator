@@ -392,6 +392,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeButton => 'Close';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'Looks like you turned off renewal. Mind telling me why?';
+
+  @override
+  String get feedbackSubmitButton => 'Send feedback';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Too expensive';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'Missing features';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Not enough value';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'Confusing to use';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'Just testing the app';
+
+  @override
+  String get cancelFeedbackReasonOther => 'Other';
+
+  @override
   String get testDataToolsTitle => 'Test data tools';
 
   @override

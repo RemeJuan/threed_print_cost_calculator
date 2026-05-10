@@ -10,6 +10,8 @@ import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
+import 'package:threed_print_cost_calculator/purchases/cancel_feedback_service.dart';
+import 'package:threed_print_cost_calculator/purchases/cancel_feedback_sheet.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
@@ -20,7 +22,7 @@ import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.d
 
 enum _AppTab { calculator, materials, history, settings }
 
-bool _canShowWhatsNewSheet(BuildContext context) {
+bool _canShowModalSheet(BuildContext context) {
   final route = ModalRoute.of(context);
   final isRouteCurrent = route?.isCurrent ?? true;
   final lifecycleState = WidgetsBinding.instance.lifecycleState;
@@ -38,6 +40,7 @@ class AppPage extends HookConsumerWidget {
     final selectedTab = useState(_AppTab.calculator);
     final tapNavigationTargetIndex = useState<int?>(null);
     final whatsNewShown = useRef(false);
+    final cancelFeedbackHandledStateKey = useRef<String?>(null);
     final l10n = AppLocalizations.of(context)!;
     final prefs = ref.read(sharedPreferencesProvider);
     final premiumState = ref.watch(premiumStateProvider);
@@ -59,7 +62,7 @@ class AppPage extends HookConsumerWidget {
         if (announcement == null || whatsNewShown.value) return;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!context.mounted || whatsNewShown.value) return;
-          if (!_canShowWhatsNewSheet(context)) return;
+          if (!_canShowModalSheet(context)) return;
 
           whatsNewShown.value = true;
           final dismiss = ref.read(dismissAnnouncementProvider);
@@ -79,12 +82,48 @@ class AppPage extends HookConsumerWidget {
 
     ref.listen<PremiumState>(premiumStateProvider, (previous, next) async {
       if (next.isLoading || next.userId.isEmpty) return;
-      if (previous?.isLoading == false && previous?.userId == next.userId) {
+      final isFirstResolvedStateForUser =
+          previous?.isLoading != false || previous?.userId != next.userId;
+
+      if (isFirstResolvedStateForUser) {
+        final runCount = prefs.getInt('run_count') ?? 0;
+        await prefs.setInt('run_count', runCount + 1);
+      }
+
+      final cancellationStateKey = next.cancellationStateKey;
+      if (cancellationStateKey == null ||
+          cancelFeedbackHandledStateKey.value == cancellationStateKey) {
         return;
       }
 
-      final runCount = prefs.getInt('run_count') ?? 0;
-      await prefs.setInt('run_count', runCount + 1);
+      cancelFeedbackHandledStateKey.value = cancellationStateKey;
+
+      final cancelFeedbackService = ref.read(cancelFeedbackServiceProvider);
+      final shouldShowPrompt = await cancelFeedbackService.shouldShowPrompt(
+        next,
+      );
+      if (!shouldShowPrompt) {
+        return;
+      }
+
+      if (!context.mounted || !_canShowModalSheet(context)) {
+        if (cancelFeedbackHandledStateKey.value == cancellationStateKey) {
+          cancelFeedbackHandledStateKey.value = null;
+        }
+        return;
+      }
+
+      await cancelFeedbackService.markPromptShown(next);
+      if (!context.mounted) return;
+
+      await showCancelFeedbackSheet(
+        context,
+        onDismiss: () => cancelFeedbackService.dismissFeedback(next),
+        onSubmitted: (reason) => cancelFeedbackService.submitFeedback(
+          state: next,
+          reason: reason.analyticsValue,
+        ),
+      );
     });
 
     final pageController = usePageController(initialPage: 0);

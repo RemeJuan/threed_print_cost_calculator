@@ -119,6 +119,38 @@
   - `HistoryPageMode`
   - `history_upsell`
 
+## Purchases / premium
+
+- Main screens/widgets:
+  - `lib/app/app_page.dart` — app-shell listener for RevenueCat premium state, run-count tracking, cancellation feedback prompt trigger
+  - `lib/purchases/cancel_feedback_sheet.dart` — dismissible bottom sheet for anonymous cancellation feedback reasons
+- Providers/state:
+  - `lib/purchases/premium_state.dart`
+  - `lib/purchases/premium_state_notifier.dart`
+  - `lib/purchases/cancel_feedback_service.dart`
+- Repositories/services:
+  - `lib/purchases/purchases_gateway.dart` — RevenueCat SDK mapping into app premium state
+  - `lib/shared/services/app_usage_service.dart` — prefs-backed calculation count / G-code usage analytics helpers
+  - `lib/database/repositories/history_repository.dart` — history count + G-code-import history lookup for analytics payloads
+- Analytics events:
+  - `trial_cancel_feedback_submitted`
+  - `trial_cancel_feedback_dismissed`
+- Cancellation feedback prompt behavior:
+  - **Trigger**: fires when premium state resolves with `hasActiveCanceledEntitlement == true` — entitlement is active but `cancellationDetectedAt != null` (or `willRenew == false`) and no billing issue
+  - **Gate**: only if `cancellationStateKey` (user + entitlementType + productId + cancellation date + original purchase date) has not been previously shown or submitted
+  - **Once-only**: per cancellation state. Both shown and submitted keys persisted via SharedPreferences. In-session duplicate prevention via `cancelFeedbackHandledStateKey` local ref.
+  - **Route guard**: sheet only presents when `AppPage` route is current and lifecycle is resumed (same guard as What's New)
+  - **Dismiss**: logs `trial_cancel_feedback_dismissed` with full payload
+  - **Submit**: logs `trial_cancel_feedback_submitted` with selected reason + full payload
+  - **Hidden test-tools preview**: Settings → tap version 5 times fast → "Preview renewal feedback" button shows sheet without analytics
+- Common search terms:
+  - `cancelFeedbackServiceProvider`
+  - `cancellationStateKey`
+  - `trial_cancel_feedback_submitted`
+  - `hasActiveCanceledEntitlement`
+  - `cancelFeedbackHandledStateKey`
+  - `previewCancelFeedback`
+
 ## Premium / RevenueCat
 
 - Main screens/widgets:

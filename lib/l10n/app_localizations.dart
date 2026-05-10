@@ -828,6 +828,54 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get closeButton;
 
+  /// No description provided for @cancelFeedbackPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like you turned off renewal. Mind telling me why?'**
+  String get cancelFeedbackPromptTitle;
+
+  /// No description provided for @feedbackSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get feedbackSubmitButton;
+
+  /// No description provided for @cancelFeedbackReasonTooExpensive.
+  ///
+  /// In en, this message translates to:
+  /// **'Too expensive'**
+  String get cancelFeedbackReasonTooExpensive;
+
+  /// No description provided for @cancelFeedbackReasonMissingFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing features'**
+  String get cancelFeedbackReasonMissingFeatures;
+
+  /// No description provided for @cancelFeedbackReasonNotEnoughValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough value'**
+  String get cancelFeedbackReasonNotEnoughValue;
+
+  /// No description provided for @cancelFeedbackReasonConfusingToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Confusing to use'**
+  String get cancelFeedbackReasonConfusingToUse;
+
+  /// No description provided for @cancelFeedbackReasonJustTesting.
+  ///
+  /// In en, this message translates to:
+  /// **'Just testing the app'**
+  String get cancelFeedbackReasonJustTesting;
+
+  /// No description provided for @cancelFeedbackReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get cancelFeedbackReasonOther;
+
   /// No description provided for @testDataToolsTitle.
   ///
   /// In en, this message translates to:

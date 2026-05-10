@@ -107,6 +107,52 @@ void main() {
     });
   });
 
+  test('cancel feedback analytics wrappers use expected payloads', () async {
+    await AppAnalytics.trialCancelFeedbackSubmitted(
+      reason: 'too_expensive',
+      platform: 'play_store',
+      appVersion: '1.2.3+42',
+      daysIntoTrial: 3,
+      entitlementType: 'trial',
+      calculationCountBucket: '2_4',
+      hasUsedGcodeImport: true,
+      hasSavedHistory: false,
+    );
+
+    expect(fake.lastName, 'trial_cancel_feedback_submitted');
+    expect(fake.lastParams, {
+      'reason': 'too_expensive',
+      'platform': 'play_store',
+      'app_version': '1.2.3+42',
+      'days_into_trial': 3,
+      'entitlement_type': 'trial',
+      'calculation_count_bucket': '2_4',
+      'has_used_gcode_import': 1,
+      'has_saved_history': 0,
+    });
+
+    await AppAnalytics.trialCancelFeedbackDismissed(
+      platform: 'play_store',
+      appVersion: '1.2.3+42',
+      daysIntoTrial: 3,
+      entitlementType: 'trial',
+      calculationCountBucket: '2_4',
+      hasUsedGcodeImport: false,
+      hasSavedHistory: true,
+    );
+
+    expect(fake.lastName, 'trial_cancel_feedback_dismissed');
+    expect(fake.lastParams, {
+      'platform': 'play_store',
+      'app_version': '1.2.3+42',
+      'days_into_trial': 3,
+      'entitlement_type': 'trial',
+      'calculation_count_bucket': '2_4',
+      'has_used_gcode_import': 0,
+      'has_saved_history': 1,
+    });
+  });
+
   test('gcode import analytics carry funnel context', () async {
     await AppAnalytics.gcodeImportOpened();
     expect(fake.lastName, 'gcode_import_opened');
