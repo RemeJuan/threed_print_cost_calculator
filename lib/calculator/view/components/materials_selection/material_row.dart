@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/app/components/focus_safe_text_fiel
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 /// Single material row used inside the materials list.
 ///
@@ -62,12 +63,6 @@ class _MaterialRowState extends State<MaterialRow> {
     final remainingWeight = widget.material?.remainingWeight ?? 0;
     final id = widget.usage.materialId.trim();
     final rowKey = id.isNotEmpty ? id : '__row_${widget.index}';
-
-    String formatWeight(num value) {
-      return value % 1 == 0
-          ? value.toStringAsFixed(0)
-          : value.toStringAsFixed(1);
-    }
 
     final isMaterialUnassigned =
         widget.usage.materialName.isEmpty ||

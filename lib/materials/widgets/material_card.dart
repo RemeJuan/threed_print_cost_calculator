@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class MaterialCard extends ConsumerWidget {
   final MaterialModel material;
@@ -25,12 +26,6 @@ class MaterialCard extends ConsumerWidget {
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
     final status = calculateStockStatus(material);
-
-    String formatWeight(double value) {
-      return value % 1 == 0
-          ? value.toStringAsFixed(0)
-          : value.toStringAsFixed(1);
-    }
 
     final swatchColor = colorFromMaterial(
       MaterialColorInput(

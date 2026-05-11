@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
@@ -504,7 +505,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   /// Schedule a debounced submit to avoid running heavy calculations on every keystroke.
   ///
   /// Cancels any previously scheduled submit and schedules a new one after [delay].
-  void submitDebounced({Duration delay = const Duration(milliseconds: 250)}) {
+  void submitDebounced({Duration delay = debounce250ms}) {
     _submitDebounce?.cancel();
     _submitDebounce = Timer(delay, submit);
   }
