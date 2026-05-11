@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
@@ -55,7 +56,7 @@ class GeneralSettings extends HookConsumerWidget {
       if (parsed == null) return;
 
       electricityDebounceRef.value = Timer(
-        const Duration(milliseconds: 400),
+        debounce400ms,
         () async {
           try {
             await settingsService.update(
@@ -82,7 +83,7 @@ class GeneralSettings extends HookConsumerWidget {
       if (parsed == null) return;
 
       wattDebounceRef.value = Timer(
-        const Duration(milliseconds: 400),
+        debounce400ms,
         () async {
           try {
             await settingsService.update(

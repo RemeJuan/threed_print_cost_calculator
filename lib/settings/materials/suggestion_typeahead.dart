@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 
 class SuggestionTypeahead extends HookWidget {
   final List<String> suggestions;
@@ -33,7 +34,7 @@ class SuggestionTypeahead extends HookWidget {
       void onBlur() {
         if (focusNode.hasFocus) return;
         blurTimer?.cancel();
-        blurTimer = Timer(const Duration(milliseconds: 200), () {
+        blurTimer = Timer(debounce200ms, () {
           showSuggestions.value = false;
         });
       }

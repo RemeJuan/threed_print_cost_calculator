@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
+import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -49,7 +50,7 @@ class WorkCostsSettings extends HookConsumerWidget {
     void persistFailure(String value) {
       failureDebounce.value?.cancel();
       failureDebounce.value = Timer(
-        const Duration(milliseconds: 400),
+        debounce400ms,
         () async {
           final parsed = tryParseLocalizedNum(value);
           if (parsed == null) return;
@@ -72,7 +73,7 @@ class WorkCostsSettings extends HookConsumerWidget {
 
     void persistLabour(String value) {
       labourDebounce.value?.cancel();
-      labourDebounce.value = Timer(const Duration(milliseconds: 400), () async {
+      labourDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
@@ -93,7 +94,7 @@ class WorkCostsSettings extends HookConsumerWidget {
 
     void persistWear(String value) {
       wearDebounce.value?.cancel();
-      wearDebounce.value = Timer(const Duration(milliseconds: 400), () async {
+      wearDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
         try {
