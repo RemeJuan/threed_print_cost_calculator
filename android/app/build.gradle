@@ -71,11 +71,17 @@ android {
         execution "ANDROIDX_TEST_ORCHESTRATOR"
     }
 
-    // Splits disabled: abiFilters in defaultConfig handles ABI filtering
-    // correctly for both APK and App Bundle. The splits block conflicts
-    // with the App Bundle pipeline and can cause libflutter.so to be
-    // missing in Play Store–delivered APKs.
-    // See: https://github.com/flutter/flutter/issues/151638
+    // Splits block completely removed. The `ndk.abiFilters` in defaultConfig handles
+    // ABI filtering correctly for both APK and App Bundle builds.
+    //
+    // NOTE: The splits { abi { enable true; reset() } } block — even when
+    // commented out — can cause Gradle to interfere with native library packaging
+    // in Play Store App Bundle pipelines, resulting in libflutter.so being
+    // excluded from delivered APKs.
+    //
+    // Learn more: https://github.com/flutter/flutter/issues/151638
+
+    // REMOVED:
     // splits {
     //     abi {
     //         enable true
@@ -84,6 +90,14 @@ android {
     //         universalApk true
     //     }
     // }
+
+    // Force legacy native library packaging to ensure libflutter.so is included
+    // in Play Store App Bundle deliveries. Required in conjunction with
+    // ndk.abiFilters to prevent Play Store APK splitting from stripping native libs.
+    // https://developer.android.com/studio/build/Configure-APK-creating-unbundled-apks
+    jniLibs {
+        useLegacyPackaging true
+    }
 
     // TODO: Remove when below fix is available in stable channel.
     // https://github.com/flutter/flutter/pull/82309
