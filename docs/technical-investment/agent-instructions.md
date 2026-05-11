@@ -84,6 +84,16 @@ Open a PR against `main`.
 
 PR title must match the ClickUp task title and include the task ID.
 
+PR title format must be:
+
+`[<clickup-task-id>:] <ClickUp task title>`
+
+Example:
+
+`[86c9qf1ga] Centralize formatWeight and debounce constants`
+
+The ClickUp task ID must be included because webhook automation parses PR titles.
+
 PR body must include:
 - ClickUp task link
 - summary of changes
