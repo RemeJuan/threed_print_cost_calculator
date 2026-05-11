@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
+import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class MaterialSelect extends HookConsumerWidget {
   const MaterialSelect({super.key});
@@ -15,12 +16,6 @@ class MaterialSelect extends HookConsumerWidget {
     final loading = useState<bool>(true);
     final generalSettings = useState(GeneralSettingsModel.initial());
     final l10n = AppLocalizations.of(context)!;
-
-    String formatWeight(num value) {
-      return value % 1 == 0
-          ? value.toStringAsFixed(0)
-          : value.toStringAsFixed(1);
-    }
 
     Future<void> getSettings() async {
       generalSettings.value = await ref.read(settingsServiceProvider).get();
