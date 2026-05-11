@@ -82,7 +82,7 @@ When wiki updates are needed, include them in the same PR and mention them in th
 
 Open a PR against `main`.
 
-PR title must match the ClickUp task title.
+PR title must match the ClickUp task title and include the task ID.
 
 PR body must include:
 - ClickUp task link
