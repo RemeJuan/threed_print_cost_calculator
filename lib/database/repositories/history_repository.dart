@@ -29,6 +29,18 @@ class HistoryRepository {
 
   Future<int> countHistory() => _store.count(_db);
 
+  Future<bool> hasImportedFromGcodeHistory() async {
+    final records = await _store.find(
+      _db,
+      finder: Finder(
+        filter: Filter.equals('importedFromGcode', true),
+        limit: 1,
+      ),
+    );
+
+    return records.isNotEmpty;
+  }
+
   Future<HistoryEntry?> getHistoryByKey(Object key) async {
     final snapshot = await _store.record(key).getSnapshot(_db);
     return _mapSnapshot(snapshot);

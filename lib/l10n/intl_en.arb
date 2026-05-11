@@ -171,6 +171,14 @@
   "termsOfUseLink": "Terms of Use",
   "separator": " | ",
   "closeButton": "Close",
+  "cancelFeedbackPromptTitle": "Looks like you turned off renewal. Mind telling me why?",
+  "feedbackSubmitButton": "Send feedback",
+  "cancelFeedbackReasonTooExpensive": "Too expensive",
+  "cancelFeedbackReasonMissingFeatures": "Missing features",
+  "cancelFeedbackReasonNotEnoughValue": "Not enough value",
+  "cancelFeedbackReasonConfusingToUse": "Confusing to use",
+  "cancelFeedbackReasonJustTesting": "Just testing the app",
+  "cancelFeedbackReasonOther": "Other",
   "testDataToolsTitle": "Test data tools",
   "testDataToolsBody": "These actions are for local testing only. Seeding replaces the current local setup with demo data. Purging permanently removes local app data on this device.",
   "seedTestDataButton": "Seed test data",
@@ -448,6 +456,26 @@
     }
   },
   "csvEmptyNamePlaceholder": "(empty)",
+  "editButton": "Edit",
+  "@editButton": {
+    "description": "Label for edit action on material items"
+  },
+  "duplicateButton": "Duplicate",
+  "@duplicateButton": {
+    "description": "Label for duplicate action on material items"
+  },
+  "duplicateMaterialSuccessMessage": "Material duplicated",
+  "@duplicateMaterialSuccessMessage": {
+    "description": "Shown when a material is duplicated successfully"
+  },
+  "duplicateMaterialErrorMessage": "Error duplicating material",
+  "@duplicateMaterialErrorMessage": {
+    "description": "Shown when duplicating a material fails"
+  },
+  "materialsSwipeHint": "Swipe a material for edit, duplicate, or delete.",
+  "@materialsSwipeHint": {
+    "description": "One-time contextual hint shown on the Materials screen introducing swipe actions"
+  },
   "stockBadgeOut": "Out of stock",
   "stockBadgeLow": "Low stock",
   "stockBadgeInStock": "In stock",

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/pricing_calculator.dart';
@@ -18,6 +19,7 @@ import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorProvider =
@@ -267,6 +269,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     }
 
     state = nextState.copyWith(importedFromGcode: true);
+    unawaited(ref.read(appUsageServiceProvider).markGcodeImportUsed());
     submit();
   }
 
@@ -475,7 +478,6 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final wt = state.wearAndTear.value ?? 0;
     final lr = state.labourRate.value ?? 0;
     final lt = state.labourTime.value ?? 0;
-    final additionalCostAmount = state.additionalCostAmount.value ?? 0;
     final fr = state.failureRisk.value ?? 0;
     final markupPercent = state.markupPercent.value ?? 0;
     final setupFee = state.setupFee.value ?? 0;
@@ -522,7 +524,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       roundingMode: state.roundingMode,
     );
 
-    state = state.copyWith(results: results, pricing: pricing);
+    updateResults(results);
+    unawaited(ref.read(appUsageServiceProvider).recordCalculation());
+    updatePricing(pricing);
 
     AppAnalytics.safeLog(
       () => AppAnalytics.calculationCreated(
@@ -548,10 +552,60 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     }
   }
 
+  /// Remove deleted material usages and clear stale selected-material defaults.
+  Future<void> clearUsagesForDeletedMaterial(String materialId) async {
+    _submitDebounce?.cancel();
+    _submitDebounce = null;
+    final usages = state.materialUsages;
+    final filtered = usages.where((u) => u.materialId != materialId).toList();
+    final removedUsage = filtered.length != usages.length;
+    final settingsService = ref.read(settingsServiceProvider);
+    final settings = await settingsService.get();
+    final deletedWasSelected = settings.selectedMaterial == materialId;
+    if (!removedUsage && !deletedWasSelected) return;
+
+    final totalWeight = filtered.fold<int>(
+      0,
+      (sum, usage) => sum + usage.weightGrams,
+    );
+
+    var nextState = state;
+
+    if (removedUsage) {
+      nextState = nextState.copyWith(
+        materialUsages: filtered,
+        printWeight: NumberInput.dirty(value: totalWeight),
+      );
+    }
+
+    if (deletedWasSelected) {
+      await settingsService.update(
+        (current) => current.selectedMaterial == materialId
+            ? current.copyWith(selectedMaterial: '')
+            : current,
+      );
+
+      final preferencesRepository = ref.read(
+        calculatorPreferencesRepositoryProvider,
+      );
+      await preferencesRepository.saveStringValue('spoolWeight', '');
+      await preferencesRepository.saveStringValue('spoolCost', '');
+
+      nextState = nextState.copyWith(
+        spoolWeight: const NumberInput.pure(),
+        spoolCost: const NumberInput.pure(),
+        spoolCostText: '',
+      );
+    }
+
+    state = nextState;
+    submit();
+  }
+
   /// Schedule a debounced submit to avoid running heavy calculations on every keystroke.
   ///
   /// Cancels any previously scheduled submit and schedules a new one after [delay].
-  void submitDebounced({Duration delay = const Duration(milliseconds: 250)}) {
+  void submitDebounced({Duration delay = debounce250ms}) {
     _submitDebounce?.cancel();
     _submitDebounce = Timer(delay, submit);
   }

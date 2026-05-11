@@ -21,6 +21,10 @@ class SettingsSlidableItem extends StatelessWidget {
   final Key? editButtonKey;
   final EdgeInsetsGeometry padding;
 
+  static Widget _actionContent(IconData icon, Color color) {
+    return Center(child: Icon(icon, size: 18, color: color));
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -54,24 +58,33 @@ class SettingsSlidableItem extends StatelessWidget {
         key: itemKey,
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
+          extentRatio: 0.35,
           children: [
             const SizedBox(width: 12),
-            SlidableAction(
+            CustomSlidableAction(
+              flex: 1,
               onPressed: (_) async => confirmDelete(),
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
-              icon: Icons.delete,
-              borderRadius: const BorderRadius.all(Radius.circular(40)),
+              padding: EdgeInsets.zero,
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(28),
+              ),
+              child: _actionContent(Icons.delete, Colors.white),
             ),
-            const SizedBox(width: 12),
-            SlidableAction(
+            CustomSlidableAction(
               key: editButtonKey,
+              flex: 1,
               onPressed: (_) => onEdit(),
               backgroundColor: LIGHT_BLUE,
               foregroundColor: Colors.white,
-              icon: Icons.edit,
-              borderRadius: const BorderRadius.all(Radius.circular(40)),
+              padding: EdgeInsets.zero,
+              borderRadius: const BorderRadius.horizontal(
+                right: Radius.circular(28),
+              ),
+              child: _actionContent(Icons.edit, Colors.white),
             ),
+            const SizedBox(width: 12),
           ],
         ),
         child: child,

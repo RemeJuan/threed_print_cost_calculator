@@ -11,6 +11,10 @@ Future<String> readPickedGCodeText(GCodePickedFile file) async {
     return file_io.readGCodeTextFromPath(path);
   }
 
+  final size = file.size ?? 0;
+  if (size > 52428800) {
+    throw StateError('File is too large to be read without a direct path.');
+  }
   final bytes = await file.readAsBytesOrThrow();
   return utf8.decode(bytes, allowMalformed: true);
 }
@@ -26,6 +30,10 @@ Future<Uint8List> readPickedGCodeSample(
     return file_io.readGCodeSampleFromPath(path, safeMax);
   }
 
+  final size = file.size ?? 0;
+  if (size > 52428800) {
+    throw StateError('File is too large to be read without a direct path.');
+  }
   final bytes = await file.readAsBytesOrThrow();
   if (bytes.length <= safeMax) return bytes;
   return Uint8List.sublistView(bytes, 0, safeMax);
@@ -37,7 +45,11 @@ Future<int?> resolvePickedGCodeFileSize(GCodePickedFile file) async {
     return file_io.readGCodeLengthFromPath(path);
   }
   if (file.readAsBytes != null) {
-    final bytes = await file.readAsBytesOrThrow();
+    final size = file.size ?? 0;
+  if (size > 52428800) {
+    throw StateError('File is too large to be read without a direct path.');
+  }
+  final bytes = await file.readAsBytesOrThrow();
     return bytes.length;
   }
   return null;
@@ -48,6 +60,10 @@ Stream<String> openPickedGCodeLines(GCodePickedFile file) {
     return file_io.openGCodeLinesFromPath(path);
   }
 
+  final size = file.size ?? 0;
+  if (size > 52428800) {
+    throw StateError('File is too large to be read without a direct path.');
+  }
   return Stream.fromFuture(file.readAsBytesOrThrow()).asyncExpand((
     bytes,
   ) async* {

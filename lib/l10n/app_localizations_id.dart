@@ -414,6 +414,33 @@ class AppLocalizationsId extends AppLocalizations {
   String get closeButton => 'Tutup';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'Sepertinya Anda membatalkan perpanjangan. Mau beri tahu alasannya?';
+
+  @override
+  String get feedbackSubmitButton => 'Kirim masukan';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Terlalu mahal';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'Fitur kurang';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Nilainya kurang terasa';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse =>
+      'Membingungkan untuk digunakan';
+
+  @override
+  String get cancelFeedbackReasonJustTesting =>
+      'Saya hanya mencoba aplikasinya';
+
+  @override
+  String get cancelFeedbackReasonOther => 'Lainnya';
+
+  @override
   String get testDataToolsTitle => 'Alat data uji';
 
   @override
@@ -1049,6 +1076,22 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(kosong)';
+
+  @override
+  String get editButton => 'Sunting';
+
+  @override
+  String get duplicateButton => 'Duplikat';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Material digandakan';
+
+  @override
+  String get duplicateMaterialErrorMessage => 'Gagal menggandakan material';
+
+  @override
+  String get materialsSwipeHint =>
+      'Geser material untuk mengedit, menggandakan, atau menghapus.';
 
   @override
   String get stockBadgeOut => 'Habis';

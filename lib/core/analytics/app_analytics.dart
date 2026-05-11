@@ -428,6 +428,54 @@ class AppAnalytics {
     );
   }
 
+  static Future<void> trialCancelFeedbackSubmitted({
+    required String reason,
+    required String platform,
+    required String appVersion,
+    required int daysIntoTrial,
+    required String entitlementType,
+    required String calculationCountBucket,
+    required bool hasUsedGcodeImport,
+    required bool hasSavedHistory,
+  }) {
+    return log(
+      'trial_cancel_feedback_submitted',
+      params: {
+        'reason': reason,
+        'platform': platform,
+        'app_version': appVersion,
+        'days_into_trial': daysIntoTrial,
+        'entitlement_type': entitlementType,
+        'calculation_count_bucket': calculationCountBucket,
+        'has_used_gcode_import': hasUsedGcodeImport ? 1 : 0,
+        'has_saved_history': hasSavedHistory ? 1 : 0,
+      },
+    );
+  }
+
+  static Future<void> trialCancelFeedbackDismissed({
+    required String platform,
+    required String appVersion,
+    required int daysIntoTrial,
+    required String entitlementType,
+    required String calculationCountBucket,
+    required bool hasUsedGcodeImport,
+    required bool hasSavedHistory,
+  }) {
+    return log(
+      'trial_cancel_feedback_dismissed',
+      params: {
+        'platform': platform,
+        'app_version': appVersion,
+        'days_into_trial': daysIntoTrial,
+        'entitlement_type': entitlementType,
+        'calculation_count_bucket': calculationCountBucket,
+        'has_used_gcode_import': hasUsedGcodeImport ? 1 : 0,
+        'has_saved_history': hasSavedHistory ? 1 : 0,
+      },
+    );
+  }
+
   /// G-code import funnel
   static Future<void> gcodeImportOpened() {
     _gcodeImportTriggeredThisSession = true;

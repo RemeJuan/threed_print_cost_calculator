@@ -419,6 +419,32 @@ class AppLocalizationsFr extends AppLocalizations {
   String get closeButton => 'Fermer';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'On dirait que vous avez désactivé le renouvellement. Pouvez-vous nous dire pourquoi ?';
+
+  @override
+  String get feedbackSubmitButton => 'Envoyer un retour';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Trop cher';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures =>
+      'Fonctionnalités manquantes';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Pas assez de valeur';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'Difficile à utiliser';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'Je testais juste l’app';
+
+  @override
+  String get cancelFeedbackReasonOther => 'Autre';
+
+  @override
   String get testDataToolsTitle => 'Outils de données de test';
 
   @override
@@ -1072,6 +1098,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(vide)';
+
+  @override
+  String get editButton => 'Modifier';
+
+  @override
+  String get duplicateButton => 'Dupliquer';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Matériau dupliqué';
+
+  @override
+  String get duplicateMaterialErrorMessage =>
+      'Erreur lors de la duplication du matériau';
+
+  @override
+  String get materialsSwipeHint =>
+      'Balayer un matériau pour modifier, dupliquer ou supprimer.';
 
   @override
   String get stockBadgeOut => 'Rupture';

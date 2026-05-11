@@ -7,6 +7,22 @@ import 'package:threed_print_cost_calculator/core/analytics/analytics_service.da
 
 class MockAnalytics extends Mock implements AnalyticsService {}
 
+class _AnalyticsEvent {
+  final String name;
+  final Map<String, Object>? params;
+
+  _AnalyticsEvent(this.name, this.params);
+}
+
+class _FakeAnalytics implements AnalyticsService {
+  final List<_AnalyticsEvent> events = [];
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(_AnalyticsEvent(name, params));
+  }
+}
+
 void main() {
   late MockAnalytics mock;
 
@@ -126,6 +142,55 @@ void main() {
         params: {'wn_id': 'wn_3', 'locale': 'fr', 'source': 'whats_new'},
       ),
     ).called(1);
+  });
+
+  test('cancel feedback analytics wrappers use expected payloads', () async {
+    final fake = _FakeAnalytics();
+    AppAnalytics.service = fake;
+
+    await AppAnalytics.trialCancelFeedbackSubmitted(
+      reason: 'too_expensive',
+      platform: 'play_store',
+      appVersion: '1.2.3+42',
+      daysIntoTrial: 3,
+      entitlementType: 'trial',
+      calculationCountBucket: '2_4',
+      hasUsedGcodeImport: true,
+      hasSavedHistory: false,
+    );
+
+    expect(fake.events.last.name, 'trial_cancel_feedback_submitted');
+    expect(fake.events.last.params, {
+      'reason': 'too_expensive',
+      'platform': 'play_store',
+      'app_version': '1.2.3+42',
+      'days_into_trial': 3,
+      'entitlement_type': 'trial',
+      'calculation_count_bucket': '2_4',
+      'has_used_gcode_import': 1,
+      'has_saved_history': 0,
+    });
+
+    await AppAnalytics.trialCancelFeedbackDismissed(
+      platform: 'play_store',
+      appVersion: '1.2.3+42',
+      daysIntoTrial: 3,
+      entitlementType: 'trial',
+      calculationCountBucket: '2_4',
+      hasUsedGcodeImport: false,
+      hasSavedHistory: true,
+    );
+
+    expect(fake.events.last.name, 'trial_cancel_feedback_dismissed');
+    expect(fake.events.last.params, {
+      'platform': 'play_store',
+      'app_version': '1.2.3+42',
+      'days_into_trial': 3,
+      'entitlement_type': 'trial',
+      'calculation_count_bucket': '2_4',
+      'has_used_gcode_import': 0,
+      'has_saved_history': 1,
+    });
   });
 
   test('gcode import analytics carry funnel context', () async {
