@@ -393,6 +393,32 @@ class AppLocalizationsNl extends AppLocalizations {
   String get closeButton => 'Sluiten';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'Het lijkt erop dat je verlenging hebt uitgezet. Wil je zeggen waarom?';
+
+  @override
+  String get feedbackSubmitButton => 'Feedback versturen';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Te duur';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'Functies ontbreken';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Niet genoeg waarde';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'Verwarrend in gebruik';
+
+  @override
+  String get cancelFeedbackReasonJustTesting =>
+      'Ik was de app alleen aan het testen';
+
+  @override
+  String get cancelFeedbackReasonOther => 'Anders';
+
+  @override
   String get testDataToolsTitle => 'Testdatatools';
 
   @override
@@ -933,6 +959,23 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(leeg)';
+
+  @override
+  String get editButton => 'Bewerken';
+
+  @override
+  String get duplicateButton => 'Dupliceren';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Materiaal gedupliceerd';
+
+  @override
+  String get duplicateMaterialErrorMessage =>
+      'Fout bij dupliceren van materiaal';
+
+  @override
+  String get materialsSwipeHint =>
+      'Veeg een materiaal om te bewerken, dupliceren of verwijderen.';
 
   @override
   String get stockBadgeOut => 'Uitverkocht';

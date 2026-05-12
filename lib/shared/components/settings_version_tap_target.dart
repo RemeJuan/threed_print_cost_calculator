@@ -16,6 +16,7 @@ import 'package:threed_print_cost_calculator/settings/providers/materials_notifi
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
+import 'package:threed_print_cost_calculator/purchases/cancel_feedback_sheet.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/enable_premium_code_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_confirmation_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -68,11 +69,12 @@ class _SettingsVersionTapTargetState
   }
 
   Future<void> _openToolsDialog() async {
+    final ctx = context;
     final container =
         appProviderContainer ??
-        ProviderScope.containerOf(context, listen: false);
-    final l10n = AppLocalizations.of(context)!;
-    final messenger = ScaffoldMessenger.maybeOf(context);
+        ProviderScope.containerOf(ctx, listen: false);
+    final l10n = AppLocalizations.of(ctx)!;
+    final messenger = ScaffoldMessenger.maybeOf(ctx);
 
     final action = await _showToolsDialog();
 
@@ -105,6 +107,13 @@ class _SettingsVersionTapTargetState
           container: container,
           messenger: messenger,
           l10n: l10n,
+        );
+      case TestDataAction.previewCancelFeedback:
+        if (!mounted) return;
+        await showCancelFeedbackSheet(
+          context,
+          onDismiss: () async {},
+          onSubmitted: (_) async {},
         );
     }
   }

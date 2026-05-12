@@ -828,6 +828,54 @@ abstract class AppLocalizations {
   /// **'Close'**
   String get closeButton;
 
+  /// No description provided for @cancelFeedbackPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Looks like you turned off renewal. Mind telling me why?'**
+  String get cancelFeedbackPromptTitle;
+
+  /// No description provided for @feedbackSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get feedbackSubmitButton;
+
+  /// No description provided for @cancelFeedbackReasonTooExpensive.
+  ///
+  /// In en, this message translates to:
+  /// **'Too expensive'**
+  String get cancelFeedbackReasonTooExpensive;
+
+  /// No description provided for @cancelFeedbackReasonMissingFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing features'**
+  String get cancelFeedbackReasonMissingFeatures;
+
+  /// No description provided for @cancelFeedbackReasonNotEnoughValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough value'**
+  String get cancelFeedbackReasonNotEnoughValue;
+
+  /// No description provided for @cancelFeedbackReasonConfusingToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'Confusing to use'**
+  String get cancelFeedbackReasonConfusingToUse;
+
+  /// No description provided for @cancelFeedbackReasonJustTesting.
+  ///
+  /// In en, this message translates to:
+  /// **'Just testing the app'**
+  String get cancelFeedbackReasonJustTesting;
+
+  /// No description provided for @cancelFeedbackReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get cancelFeedbackReasonOther;
+
   /// No description provided for @testDataToolsTitle.
   ///
   /// In en, this message translates to:
@@ -1799,6 +1847,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'(empty)'**
   String get csvEmptyNamePlaceholder;
+
+  /// Label for edit action on material items
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get editButton;
+
+  /// Label for duplicate action on material items
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicateButton;
+
+  /// Shown when a material is duplicated successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Material duplicated'**
+  String get duplicateMaterialSuccessMessage;
+
+  /// Shown when duplicating a material fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error duplicating material'**
+  String get duplicateMaterialErrorMessage;
+
+  /// One-time contextual hint shown on the Materials screen introducing swipe actions
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe a material for edit, duplicate, or delete.'**
+  String get materialsSwipeHint;
 
   /// No description provided for @stockBadgeOut.
   ///

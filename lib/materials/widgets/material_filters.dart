@@ -68,12 +68,10 @@ class _FilterChipData {
 }
 
 class _FilterSection extends StatelessWidget {
-  final String label;
   final List<_FilterChipData> chips;
   final void Function(int index) onSelected;
 
   const _FilterSection({
-    this.label = '',
     required this.chips,
     required this.onSelected,
   });
@@ -86,13 +84,6 @@ class _FilterSection extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            if (label.isNotEmpty) ...[
-              Text(
-                label,
-                style: const TextStyle(color: Colors.white70, fontSize: 13),
-              ),
-              const SizedBox(width: 8),
-            ],
             ...chips.asMap().entries.map(
               (entry) => Padding(
                 padding: const EdgeInsets.only(right: 8),

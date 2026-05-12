@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,7 +8,9 @@ import 'package:threed_print_cost_calculator/core/analytics/analytics_service.da
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
+import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/lower_level_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
@@ -26,6 +30,18 @@ void main() {
   setUpAll(bootstrapAppPageTests);
 
   late _FakeAnalytics analytics;
+
+  const announcement = WhatsNewAnnouncement(
+    id: 'wn_42',
+    locales: {
+      'en': WhatsNewAnnouncementLocale(
+        title: 'Title',
+        body: 'Body',
+        cta: 'Got it',
+        unlockProCta: 'Start free trial',
+      ),
+    },
+  );
 
   setUp(() {
     analytics = _FakeAnalytics();
@@ -59,6 +75,46 @@ void main() {
       find.text(lookupAppLocalizations(const Locale('en')).settingsNavLabel),
       findsOneWidget,
     );
+  });
+
+  testWidgets('does not show whats new when app page route is not current', (
+    tester,
+  ) async {
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(freeUser());
+    final announcementCompleter = Completer<WhatsNewAnnouncement?>();
+
+    await pumpAppPage(
+      tester,
+      gateway,
+      calculatorNotifier,
+      useDefaultAnnouncementOverride: false,
+      overrides: [
+        currentAnnouncementProvider.overrideWith(
+          (ref) => announcementCompleter.future,
+        ),
+      ],
+    );
+    await tester.pump();
+
+    final context = tester.element(find.byType(BottomNavigationBar));
+    unawaited(
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('Overlay route')),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    announcementCompleter.complete(announcement);
+    await tester.pump();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(find.text('Overlay route'), findsOneWidget);
+    expect(find.text('Got it'), findsNothing);
+    expect(analytics.events.where((e) => e == 'whats_new_shown'), isEmpty);
   });
 
   testWidgets('shows teaser history tab for free users when promos enabled', (

@@ -390,6 +390,31 @@ class AppLocalizationsTh extends AppLocalizations {
   String get closeButton => 'ปิด';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'ดูเหมือนว่าคุณยกเลิกการต่ออายุแล้ว ช่วยบอกเหตุผลได้ไหม?';
+
+  @override
+  String get feedbackSubmitButton => 'ส่งความคิดเห็น';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'แพงเกินไป';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'ฟีเจอร์ยังไม่พอ';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'ยังไม่คุ้มพอ';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'ใช้งานสับสน';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'แค่ลองใช้แอป';
+
+  @override
+  String get cancelFeedbackReasonOther => 'อื่นๆ';
+
+  @override
   String get testDataToolsTitle => 'เครื่องมือข้อมูลทดสอบ';
 
   @override
@@ -916,6 +941,21 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(ว่าง)';
+
+  @override
+  String get editButton => 'แก้ไข';
+
+  @override
+  String get duplicateButton => 'ทำซ้ำ';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'ทำซ้ำวัสดุแล้ว';
+
+  @override
+  String get duplicateMaterialErrorMessage => 'เกิดข้อผิดพลาดขณะทำซ้ำวัสดุ';
+
+  @override
+  String get materialsSwipeHint => 'ปัดวัสดุเพื่อแก้ไข ทำซ้ำ หรือลบ';
 
   @override
   String get stockBadgeOut => 'หมดสต็อก';

@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
+import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'provider/history_paged_notifier.dart';
 
 import 'components/history_empty_state.dart';
@@ -67,7 +68,7 @@ class HistoryPage extends HookConsumerWidget {
     // Debounce controller and push updates to the `historyPagedProvider` by calling setQuery.
     final debounceTimer = useRef<Timer?>(null);
     final overflowHintTimer = useRef<Timer?>(null);
-    const debounceDuration = Duration(milliseconds: 300);
+    const debounceDuration = debounce300ms;
 
     Future<void> markOverflowHintSeen() async {
       if (prefs.getBool(_overflowHintPreferenceKey) == true) return;

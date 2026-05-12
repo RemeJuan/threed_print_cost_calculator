@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_filters.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class MaterialsPage extends HookConsumerWidget {
@@ -20,6 +22,17 @@ class MaterialsPage extends HookConsumerWidget {
     useListenable(searchController);
     final searchFocus = useFocusNode();
     final materialsRepo = ref.read(materialsRepositoryProvider);
+
+    final prefs = ref.read(sharedPreferencesProvider);
+    final showSwipeHint = useState(
+      !(prefs.getBool('materials_swipe_hint_shown') ?? false),
+    );
+
+    void dismissSwipeHint() {
+      if (!showSwipeHint.value) return;
+      showSwipeHint.value = false;
+      prefs.setBool('materials_swipe_hint_shown', true);
+    }
 
     return Scaffold(
       body: Column(
@@ -61,6 +74,44 @@ class MaterialsPage extends HookConsumerWidget {
               },
             ),
           ),
+          if (showSwipeHint.value)
+            Dismissible(
+              key: const ValueKey<String>('materials.swipe_hint'),
+              direction: DismissDirection.endToStart,
+              onDismissed: (_) => dismissSwipeHint(),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: LIGHT_BLUE.withAlpha(30),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: LIGHT_BLUE.withAlpha(80)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.swipe, size: 16, color: LIGHT_BLUE),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.materialsSwipeHint,
+                        style: TextStyle(color: LIGHT_BLUE, fontSize: 13),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: dismissSwipeHint,
+                      child: Icon(
+                        Icons.close,
+                        size: 16,
+                        color: LIGHT_BLUE.withAlpha(180),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           const MaterialFilters(),
           const SizedBox(height: 8),
           Expanded(
@@ -96,42 +147,61 @@ class MaterialsPage extends HookConsumerWidget {
                           );
                         },
                         onDelete: () async {
-                          final confirm = await showDialog<bool>(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: Text(l10n.deleteDialogTitle),
-                              content: Text(l10n.deleteDialogContent),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(ctx, false),
-                                  child: Text(l10n.cancelButton),
+                          try {
+                            await materialsRepo.deleteMaterial(material.id);
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.deleteMaterialSuccessMessage,
                                 ),
-                                TextButton(
-                                  onPressed: () => Navigator.pop(ctx, true),
-                                  child: Text(l10n.deleteButton),
+                              ),
+                            );
+                          } catch (_) {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(l10n.deleteRecordErrorMessage),
+                              ),
+                            );
+                            return;
+                          }
+                          try {
+                            await ref
+                                .read(calculatorProvider.notifier)
+                                .clearUsagesForDeletedMaterial(material.id);
+                          } catch (_) {
+                            // Cleanup failure is non-fatal; material is deleted.
+                          }
+                        },
+                        onDuplicate: () async {
+                          try {
+                            final existing = await materialsRepo
+                                .getMaterialById(material.id);
+                            if (existing == null) return;
+                            final copy = existing.copyWith(
+                              id: '',
+                              name:
+                                  '${existing.name} (${l10n.duplicateButton})',
+                            );
+                            await materialsRepo.saveMaterial(copy);
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.duplicateMaterialSuccessMessage,
                                 ),
-                              ],
-                            ),
-                          );
-                          if (confirm == true) {
-                            try {
-                              await materialsRepo.deleteMaterial(material.id);
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    l10n.deleteMaterialSuccessMessage,
-                                  ),
+                              ),
+                            );
+                          } catch (_) {
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.duplicateMaterialErrorMessage,
                                 ),
-                              );
-                            } catch (e) {
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(l10n.deleteRecordErrorMessage),
-                                ),
-                              );
-                            }
+                              ),
+                            );
                           }
                         },
                       );
