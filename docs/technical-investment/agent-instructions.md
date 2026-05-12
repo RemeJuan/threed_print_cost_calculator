@@ -94,6 +94,12 @@ Example:
 
 The ClickUp task ID must be included because webhook automation parses PR titles.
 
+Do not reuse the git commit subject as the PR title unless it already matches this exact format. Commit messages and PR titles may differ.
+
+Before creating the PR, explicitly verify:
+- the title starts with `[<clickup-task-id>]`
+- the rest of the title exactly matches the ClickUp task title
+
 PR body must include:
 - ClickUp task link
 - summary of changes
@@ -144,8 +150,10 @@ If the PR cannot answer those questions clearly, it is too broad.
 
 ## CodeRabbit Pre-Review
 
-Before pushing the branch, run the custom CodeRabbit command:
+After code changes and verification are complete, but before `git commit` and before pushing the branch, run the custom CodeRabbit command:
 - `cr --prompt-only --type uncommitted`
+
+This command expects the relevant changes to still be uncommitted. Do not commit until the review is complete and any valid fixes are applied.
 
 This is a long-running process. Do not assume the default 2 minute timeout is sufficient. Wait for the command to complete before continuing.
 
@@ -155,6 +163,8 @@ After it completes:
 - Apply fixes for valid issues.
 - Ignore low-signal or incorrect suggestions.
 - Summarize issues fixed, suggestions ignored, and any follow-up still needed.
+
+If the branch was already committed by mistake, either rerun CodeRabbit with a mode that supports committed diffs or return the branch to an uncommitted state before using `--type uncommitted`.
 
 Do not apply CodeRabbit suggestions that:
 - change user-facing behaviour
