@@ -116,14 +116,17 @@ class AppPage extends HookConsumerWidget {
       await cancelFeedbackService.markPromptShown(next);
       if (!context.mounted) return;
 
-      await showCancelFeedbackSheet(
-        context,
-        onDismiss: () => cancelFeedbackService.dismissFeedback(next),
-        onSubmitted: (reason) => cancelFeedbackService.submitFeedback(
-          state: next,
-          reason: reason.analyticsValue,
-        ),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!context.mounted) return;
+        await showCancelFeedbackSheet(
+          context,
+          onDismiss: () => cancelFeedbackService.dismissFeedback(next),
+          onSubmitted: (reason) => cancelFeedbackService.submitFeedback(
+            state: next,
+            reason: reason.analyticsValue,
+          ),
+        );
+      });
     });
 
     final pageController = usePageController(initialPage: 0);
