@@ -94,6 +94,12 @@ Example:
 
 The ClickUp task ID must be included because webhook automation parses PR titles.
 
+Do not reuse the git commit subject as the PR title unless it already matches this exact format. Commit messages and PR titles may differ.
+
+Before creating the PR, explicitly verify:
+- the title starts with `[<clickup-task-id>]`
+- the rest of the title exactly matches the ClickUp task title
+
 PR body must include:
 - ClickUp task link
 - summary of changes
