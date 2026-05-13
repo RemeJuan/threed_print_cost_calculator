@@ -255,6 +255,17 @@
   "testDataSeededMessage": "Dados de teste semeados",
   "testDataPurgedMessage": "Dados locais limpos",
   "testDataActionFailedMessage": "Ação de dados de teste falhou",
+  "updatePromptTitle": "Atualização disponível",
+  "updatePromptBody": "A versão {storeVersion} está disponível. Você tem {currentVersion} instalada.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "Há uma versão mais recente disponível.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Abrir loja",
   "mailClientError": "Não foi possível abrir o cliente de e-mail",
   "@mailClientError": {},
   "offeringsError": "Erro: ",

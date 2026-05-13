@@ -918,6 +918,30 @@ abstract class AppLocalizations {
   /// **'Test data action failed'**
   String get testDataActionFailedMessage;
 
+  /// No description provided for @updatePromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updatePromptTitle;
+
+  /// No description provided for @updatePromptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {storeVersion} is available. You have {currentVersion} installed.'**
+  String updatePromptBody(Object storeVersion, Object currentVersion);
+
+  /// No description provided for @updatePromptBodyUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'A newer version is available.'**
+  String get updatePromptBodyUnknown;
+
+  /// No description provided for @updatePromptOpenStoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open store'**
+  String get updatePromptOpenStoreButton;
+
   /// No description provided for @mailClientError.
   ///
   /// In en, this message translates to:

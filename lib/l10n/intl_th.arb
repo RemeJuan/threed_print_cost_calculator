@@ -256,6 +256,17 @@
   "testDataSeededMessage": "ใส่ข้อมูลทดสอบแล้ว",
   "testDataPurgedMessage": "ล้างข้อมูลท้องถิ่นแล้ว",
   "testDataActionFailedMessage": "การดำเนินการข้อมูลทดสอบล้มเหลว",
+  "updatePromptTitle": "มีอัปเดตใหม่",
+  "updatePromptBody": "เวอร์ชัน {storeVersion} พร้อมใช้งานแล้ว คุณติดตั้ง {currentVersion} อยู่",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "มีเวอร์ชันใหม่กว่านี้พร้อมใช้งาน",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "เปิดร้านค้า",
   "mailClientError": "ไม่สามารถเปิดแอปอีเมลได้",
   "@mailClientError": {},
   "offeringsError": "ข้อผิดพลาด: ",

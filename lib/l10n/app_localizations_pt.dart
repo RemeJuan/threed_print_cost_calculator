@@ -442,6 +442,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get testDataActionFailedMessage => 'Ação de dados de teste falhou';
 
   @override
+  String get updatePromptTitle => 'Atualização disponível';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'A versão $storeVersion está disponível. Você tem $currentVersion instalada.';
+  }
+
+  @override
+  String get updatePromptBodyUnknown =>
+      'Há uma versão mais recente disponível.';
+
+  @override
+  String get updatePromptOpenStoreButton => 'Abrir loja';
+
+  @override
   String get mailClientError => 'Não foi possível abrir o cliente de e-mail';
 
   @override

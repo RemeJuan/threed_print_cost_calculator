@@ -255,6 +255,17 @@
   "testDataSeededMessage": "Data uji ditanam",
   "testDataPurgedMessage": "Data lokal dihapus",
   "testDataActionFailedMessage": "Tindakan data uji gagal",
+  "updatePromptTitle": "Pembaruan tersedia",
+  "updatePromptBody": "Versi {storeVersion} tersedia. Anda sudah memasang {currentVersion}.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "Ada versi yang lebih baru tersedia.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Buka toko",
   "mailClientError": "Tidak dapat membuka klien email",
   "@mailClientError": {},
   "offeringsError": "Kesalahan: ",

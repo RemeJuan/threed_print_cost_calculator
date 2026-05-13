@@ -256,6 +256,17 @@
   "testDataSeededMessage": "Testgegevens geseed",
   "testDataPurgedMessage": "Lokale gegevens gewist",
   "testDataActionFailedMessage": "Actie voor testgegevens mislukt",
+  "updatePromptTitle": "Update beschikbaar",
+  "updatePromptBody": "Versie {storeVersion} is beschikbaar. U hebt {currentVersion} geïnstalleerd.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "Er is een nieuwere versie beschikbaar.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Store openen",
   "mailClientError": "Kon e-mailclient niet openen",
   "@mailClientError": {},
   "offeringsError": "Fout: ",

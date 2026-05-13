@@ -256,6 +256,17 @@
   "testDataSeededMessage": "テストデータを投入しました",
   "testDataPurgedMessage": "ローカルデータを消去しました",
   "testDataActionFailedMessage": "テストデータ操作に失敗しました",
+  "updatePromptTitle": "アップデートがあります",
+  "updatePromptBody": "バージョン {storeVersion} が利用できます。現在は {currentVersion} がインストールされています。",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "新しいバージョンがあります。",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "ストアを開く",
   "mailClientError": "メールクライアントを開けませんでした",
   "@mailClientError": {},
   "offeringsError": "エラー: ",

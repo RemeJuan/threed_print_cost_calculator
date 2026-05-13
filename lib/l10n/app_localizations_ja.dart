@@ -431,6 +431,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get testDataActionFailedMessage => 'テストデータ操作に失敗しました';
 
   @override
+  String get updatePromptTitle => 'アップデートがあります';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'バージョン $storeVersion が利用できます。現在は $currentVersion がインストールされています。';
+  }
+
+  @override
+  String get updatePromptBodyUnknown => '新しいバージョンがあります。';
+
+  @override
+  String get updatePromptOpenStoreButton => 'ストアを開く';
+
+  @override
   String get mailClientError => 'メールクライアントを開けませんでした';
 
   @override

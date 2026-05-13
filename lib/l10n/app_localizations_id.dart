@@ -441,6 +441,20 @@ class AppLocalizationsId extends AppLocalizations {
   String get testDataActionFailedMessage => 'Tindakan data uji gagal';
 
   @override
+  String get updatePromptTitle => 'Pembaruan tersedia';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'Versi $storeVersion tersedia. Anda sudah memasang $currentVersion.';
+  }
+
+  @override
+  String get updatePromptBodyUnknown => 'Ada versi yang lebih baru tersedia.';
+
+  @override
+  String get updatePromptOpenStoreButton => 'Buka toko';
+
+  @override
   String get mailClientError => 'Tidak dapat membuka klien email';
 
   @override

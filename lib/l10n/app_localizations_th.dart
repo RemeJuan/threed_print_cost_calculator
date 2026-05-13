@@ -439,6 +439,20 @@ class AppLocalizationsTh extends AppLocalizations {
   String get testDataActionFailedMessage => 'การดำเนินการข้อมูลทดสอบล้มเหลว';
 
   @override
+  String get updatePromptTitle => 'มีอัปเดตใหม่';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'เวอร์ชัน $storeVersion พร้อมใช้งานแล้ว คุณติดตั้ง $currentVersion อยู่';
+  }
+
+  @override
+  String get updatePromptBodyUnknown => 'มีเวอร์ชันใหม่กว่านี้พร้อมใช้งาน';
+
+  @override
+  String get updatePromptOpenStoreButton => 'เปิดร้านค้า';
+
+  @override
   String get mailClientError => 'ไม่สามารถเปิดแอปอีเมลได้';
 
   @override

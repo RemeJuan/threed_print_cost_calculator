@@ -176,6 +176,17 @@
   "testDataSeededMessage": "Test data seeded",
   "testDataPurgedMessage": "Local data purged",
   "testDataActionFailedMessage": "Test data action failed",
+  "updatePromptTitle": "Update available",
+  "updatePromptBody": "Version {storeVersion} is available. You have {currentVersion} installed.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "A newer version is available.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Open store",
   "mailClientError": "Could not open mail client",
   "offeringsError": "Error: ",
   "currentOfferings": "Current Offerings",
