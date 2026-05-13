@@ -431,6 +431,18 @@ class AppLocalizationsTh extends AppLocalizations {
   String get enablePremiumButton => 'เปิดใช้งานพรีเมียม';
 
   @override
+  String get forceUpdateAvailableButton => 'บังคับให้อัปเดตพร้อมใช้งาน';
+
+  @override
+  String get forceNoUpdateButton => 'บังคับว่าไม่มีอัปเดต';
+
+  @override
+  String get clearUpdateCooldownButton => 'ล้างช่วงพักอัปเดต';
+
+  @override
+  String get previewCancelFeedbackButton => 'ดูตัวอย่างความคิดเห็นการยกเลิก';
+
+  @override
   String get enablePremiumTitle => 'เปิดใช้งานพรีเมียม';
 
   @override

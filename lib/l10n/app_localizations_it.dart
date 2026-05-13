@@ -438,6 +438,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get enablePremiumButton => 'Attiva premium';
 
   @override
+  String get forceUpdateAvailableButton => 'Forza aggiornamento disponibile';
+
+  @override
+  String get forceNoUpdateButton => 'Forza nessun aggiornamento';
+
+  @override
+  String get clearUpdateCooldownButton => 'Cancella attesa aggiornamento';
+
+  @override
+  String get previewCancelFeedbackButton => 'Anteprima feedback annullamento';
+
+  @override
   String get enablePremiumTitle => 'Attiva premium';
 
   @override

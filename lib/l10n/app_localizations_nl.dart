@@ -435,6 +435,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get enablePremiumButton => 'Premium inschakelen';
 
   @override
+  String get forceUpdateAvailableButton => 'Update beschikbaar forceren';
+
+  @override
+  String get forceNoUpdateButton => 'Geen update forceren';
+
+  @override
+  String get clearUpdateCooldownButton => 'Update-afkoeling wissen';
+
+  @override
+  String get previewCancelFeedbackButton => 'Voorvertoning annuleringsfeedback';
+
+  @override
   String get enablePremiumTitle => 'Premium inschakelen';
 
   @override

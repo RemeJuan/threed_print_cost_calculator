@@ -435,6 +435,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get enablePremiumButton => 'Aktifkan premium';
 
   @override
+  String get forceUpdateAvailableButton => 'Paksa pembaruan tersedia';
+
+  @override
+  String get forceNoUpdateButton => 'Paksa tidak ada pembaruan';
+
+  @override
+  String get clearUpdateCooldownButton => 'Hapus jeda pembaruan';
+
+  @override
+  String get previewCancelFeedbackButton => 'Pratinjau umpan balik pembatalan';
+
+  @override
   String get enablePremiumTitle => 'Aktifkan premium';
 
   @override

@@ -425,6 +425,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get enablePremiumButton => 'プレミアムを有効化';
 
   @override
+  String get forceUpdateAvailableButton => 'アップデートを強制表示';
+
+  @override
+  String get forceNoUpdateButton => '更新なしを強制';
+
+  @override
+  String get clearUpdateCooldownButton => '更新クールダウンを消去';
+
+  @override
+  String get previewCancelFeedbackButton => '取消フィードバックをプレビュー';
+
+  @override
   String get enablePremiumTitle => 'プレミアムを有効化';
 
   @override

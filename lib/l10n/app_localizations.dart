@@ -906,6 +906,30 @@ abstract class AppLocalizations {
   /// **'Enable premium'**
   String get enablePremiumButton;
 
+  /// No description provided for @forceUpdateAvailableButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Force update available'**
+  String get forceUpdateAvailableButton;
+
+  /// No description provided for @forceNoUpdateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Force no update'**
+  String get forceNoUpdateButton;
+
+  /// No description provided for @clearUpdateCooldownButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear update cooldown'**
+  String get clearUpdateCooldownButton;
+
+  /// No description provided for @previewCancelFeedbackButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview renewal feedback'**
+  String get previewCancelFeedbackButton;
+
   /// No description provided for @enablePremiumTitle.
   ///
   /// In en, this message translates to:
