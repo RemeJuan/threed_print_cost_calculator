@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/history/provider/history_paged_noti
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
@@ -89,6 +90,7 @@ class _SettingsVersionTapTargetState
           successMessage: l10n.testDataSeededMessage,
           failureMessage: l10n.testDataActionFailedMessage,
         );
+        break;
       case TestDataAction.purge:
         await _confirmAndRun(
           container: container,
@@ -100,12 +102,26 @@ class _SettingsVersionTapTargetState
           successMessage: l10n.testDataPurgedMessage,
           failureMessage: l10n.testDataActionFailedMessage,
         );
+        break;
       case TestDataAction.enablePremium:
         await _enablePremiumFlow(
           container: container,
           messenger: messenger,
           l10n: l10n,
         );
+        break;
+      case TestDataAction.forceUpdateAvailable:
+        ref.read(updateCheckerProvider.notifier).forceAvailable();
+        await ref.read(updateCheckerProvider.notifier).clearCooldown();
+        await ref.read(updateCheckerProvider.notifier).refresh();
+        break;
+      case TestDataAction.forceNoUpdate:
+        ref.read(updateCheckerProvider.notifier).forceUnavailable();
+        await ref.read(updateCheckerProvider.notifier).refresh();
+        break;
+      case TestDataAction.clearUpdateCooldown:
+        await ref.read(updateCheckerProvider.notifier).clearCooldown();
+        break;
     }
   }
 

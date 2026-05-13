@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
-enum TestDataAction { seed, purge, enablePremium }
+enum TestDataAction {
+  seed,
+  purge,
+  enablePremium,
+  forceUpdateAvailable,
+  forceNoUpdate,
+  clearUpdateCooldown,
+}
 
 class TestDataToolsDialog extends StatelessWidget {
   const TestDataToolsDialog({required this.onAction, super.key});
@@ -30,6 +37,23 @@ class TestDataToolsDialog extends StatelessWidget {
           key: const ValueKey<String>('settings.testData.enablePremium.button'),
           onPressed: () => onAction(TestDataAction.enablePremium),
           child: Text(l10n.enablePremiumButton),
+        ),
+        TextButton(
+          key: const ValueKey<String>('settings.testData.forceUpdate.button'),
+          onPressed: () => onAction(TestDataAction.forceUpdateAvailable),
+          child: const Text('Force update available'),
+        ),
+        TextButton(
+          key: const ValueKey<String>('settings.testData.forceNoUpdate.button'),
+          onPressed: () => onAction(TestDataAction.forceNoUpdate),
+          child: const Text('Force no update'),
+        ),
+        TextButton(
+          key: const ValueKey<String>(
+            'settings.testData.clearUpdateCooldown.button',
+          ),
+          onPressed: () => onAction(TestDataAction.clearUpdateCooldown),
+          child: const Text('Clear update cooldown'),
         ),
         TextButton(
           key: const ValueKey<String>('settings.testData.cancel.button'),
