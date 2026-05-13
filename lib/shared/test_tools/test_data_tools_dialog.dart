@@ -42,26 +42,26 @@ class TestDataToolsDialog extends StatelessWidget {
         TextButton(
           key: const ValueKey<String>('settings.testData.forceUpdate.button'),
           onPressed: () => onAction(TestDataAction.forceUpdateAvailable),
-          child: const Text('Force update available'),
+          child: Text(l10n.forceUpdateAvailableButton),
         ),
         TextButton(
           key: const ValueKey<String>('settings.testData.forceNoUpdate.button'),
           onPressed: () => onAction(TestDataAction.forceNoUpdate),
-          child: const Text('Force no update'),
+          child: Text(l10n.forceNoUpdateButton),
         ),
         TextButton(
           key: const ValueKey<String>(
             'settings.testData.clearUpdateCooldown.button',
           ),
           onPressed: () => onAction(TestDataAction.clearUpdateCooldown),
-          child: const Text('Clear update cooldown'),
+          child: Text(l10n.clearUpdateCooldownButton),
         ),
         TextButton(
           key: const ValueKey<String>(
             'settings.testData.previewCancelFeedback.button',
           ),
           onPressed: () => onAction(TestDataAction.previewCancelFeedback),
-          child: const Text('Preview renewal feedback'),
+          child: Text(l10n.previewCancelFeedbackButton),
         ),
         TextButton(
           key: const ValueKey<String>('settings.testData.cancel.button'),
