@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
+import 'package:threed_print_cost_calculator/app/widgets/update_prompt_banner.dart';
 import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -34,7 +35,6 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
     final isPremium = premiumState.isPremium;
     final showHistoryTab = ref.watch(shouldShowHistoryTabProvider);
     final showHistoryTeaser = ref.watch(shouldShowHistoryTeaserProvider);
-
     useEffect(() {
       registerAppProviderContainer(
         ProviderScope.containerOf(context, listen: false),
@@ -204,20 +204,27 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           ),
         ),
       ),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (index) {
-          final tapTargetIndex = tapNavigationTargetIndex.value;
-          if (tapTargetIndex != null) {
-            if (index == tapTargetIndex) {
-              tapNavigationTargetIndex.value = null;
-            }
-            return;
-          }
+      body: Column(
+        children: [
+          const UpdatePromptBanner(),
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (index) {
+                final tapTargetIndex = tapNavigationTargetIndex.value;
+                if (tapTargetIndex != null) {
+                  if (index == tapTargetIndex) {
+                    tapNavigationTargetIndex.value = null;
+                  }
+                  return;
+                }
 
-          selectedTab.value = tabFromIndex(index);
-        },
-        children: pages,
+                selectedTab.value = tabFromIndex(index);
+              },
+              children: pages,
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
