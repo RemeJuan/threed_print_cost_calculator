@@ -218,6 +218,26 @@
   - feature: Settings
   - notes: fired after successful save; same event used for create and edit submits
 
+### Update checker
+
+- `update_prompt_shown`
+  - params: [`current_version`, `store_version`, `platform`, `source`]
+  - triggered_from: [`lib/app/app_page.dart`]
+  - feature: Update checker
+  - notes: non-blocking app-shell banner/card shown when update is available and cooldown permits; `store_version` falls back to `unknown`
+
+- `update_prompt_tapped`
+  - params: [`current_version`, `store_version`, `platform`, `source`]
+  - triggered_from: [`lib/app/app_page.dart`]
+  - feature: Update checker
+  - notes: fired when user opens store from app-owned prompt
+
+- `update_prompt_dismissed`
+  - params: [`current_version`, `store_version`, `platform`, `source`]
+  - triggered_from: [`lib/app/app_page.dart`]
+  - feature: Update checker
+  - notes: fires when user dismisses prompt and cooldown is persisted locally
+
 ### Onboarding / first run
 
 - No dedicated analytics events found

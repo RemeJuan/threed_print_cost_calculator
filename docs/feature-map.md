@@ -191,6 +191,27 @@
   - `paywall_viewed`
   - `gcode_import_`
 
+## Update checker
+
+- Main screens/widgets:
+  - `lib/app/app_page.dart` — renders the non-blocking update banner/card in the app shell
+  - `lib/app/widgets/update_prompt_banner.dart` — app-owned prompt UI
+- Providers/state:
+  - `lib/shared/providers/update_checker_provider.dart`
+- Repositories/services:
+  - `update_available` package for availability checks
+- Analytics events:
+  - `update_prompt_shown`
+  - `update_prompt_tapped`
+  - `update_prompt_dismissed`
+- Hidden debug controls:
+  - `lib/shared/components/settings_version_tap_target.dart`
+  - `lib/shared/test_tools/test_data_tools_dialog.dart`
+- Common search terms:
+  - `updateCheckerProvider`
+  - `update_prompt`
+  - `forceUpdateAvailable`
+
 ## Settings
 
 - Main screens/widgets:
