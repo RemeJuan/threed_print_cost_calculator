@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/app/app_page_announcement_effect.da
 import 'package:threed_print_cost_calculator/app/app_page_cancel_feedback_effect.dart';
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
+import 'package:threed_print_cost_calculator/app/widgets/update_prompt_banner.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -138,20 +139,27 @@ class AppPage extends HookConsumerWidget {
           ),
         ),
       ),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (index) {
-          final tapTargetIndex = tapNavigationTargetIndex.value;
-          if (tapTargetIndex != null) {
-            if (index == tapTargetIndex) {
-              tapNavigationTargetIndex.value = null;
-            }
-            return;
-          }
+      body: Column(
+        children: [
+          const UpdatePromptBanner(),
+          Expanded(
+            child: PageView(
+              controller: pageController,
+              onPageChanged: (index) {
+                final tapTargetIndex = tapNavigationTargetIndex.value;
+                if (tapTargetIndex != null) {
+                  if (index == tapTargetIndex) {
+                    tapNavigationTargetIndex.value = null;
+                  }
+                  return;
+                }
 
-          selectedTab.value = tabFromIndex(index);
-        },
-        children: shellTabs.map((tab) => tab.page).toList(),
+                selectedTab.value = tabFromIndex(index);
+              },
+              children: shellTabs.map((tab) => tab.page).toList(),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,

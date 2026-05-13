@@ -254,6 +254,10 @@
   "seedTestDataButton": "Testgegevens seeden",
   "purgeLocalDataButton": "Lokale gegevens wissen",
   "enablePremiumButton": "Premium inschakelen",
+  "forceUpdateAvailableButton": "Update beschikbaar forceren",
+  "forceNoUpdateButton": "Geen update forceren",
+  "clearUpdateCooldownButton": "Update-afkoeling wissen",
+  "previewCancelFeedbackButton": "Voorvertoning annuleringsfeedback",
   "enablePremiumTitle": "Premium inschakelen",
   "enablePremiumBody": "Voer de bevestigingscode in om lokale premiumtests in te schakelen",
   "invalidConfirmationCodeMessage": "Ongeldige bevestigingscode",
@@ -264,6 +268,17 @@
   "testDataSeededMessage": "Testgegevens geseed",
   "testDataPurgedMessage": "Lokale gegevens gewist",
   "testDataActionFailedMessage": "Actie voor testgegevens mislukt",
+  "updatePromptTitle": "Update beschikbaar",
+  "updatePromptBody": "Versie {storeVersion} is beschikbaar. U hebt {currentVersion} geïnstalleerd.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "Er is een nieuwere versie beschikbaar.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Store openen",
   "mailClientError": "Kon e-mailclient niet openen",
   "@mailClientError": {},
   "offeringsError": "Fout: ",

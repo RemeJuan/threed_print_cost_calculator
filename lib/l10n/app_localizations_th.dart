@@ -431,6 +431,18 @@ class AppLocalizationsTh extends AppLocalizations {
   String get enablePremiumButton => 'เปิดใช้งานพรีเมียม';
 
   @override
+  String get forceUpdateAvailableButton => 'บังคับให้อัปเดตพร้อมใช้งาน';
+
+  @override
+  String get forceNoUpdateButton => 'บังคับว่าไม่มีอัปเดต';
+
+  @override
+  String get clearUpdateCooldownButton => 'ล้างช่วงพักอัปเดต';
+
+  @override
+  String get previewCancelFeedbackButton => 'ดูตัวอย่างความคิดเห็นการยกเลิก';
+
+  @override
   String get enablePremiumTitle => 'เปิดใช้งานพรีเมียม';
 
   @override
@@ -462,6 +474,20 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get testDataActionFailedMessage => 'การดำเนินการข้อมูลทดสอบล้มเหลว';
+
+  @override
+  String get updatePromptTitle => 'มีอัปเดตใหม่';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'เวอร์ชัน $storeVersion พร้อมใช้งานแล้ว คุณติดตั้ง $currentVersion อยู่';
+  }
+
+  @override
+  String get updatePromptBodyUnknown => 'มีเวอร์ชันใหม่กว่านี้พร้อมใช้งาน';
+
+  @override
+  String get updatePromptOpenStoreButton => 'เปิดร้านค้า';
 
   @override
   String get mailClientError => 'ไม่สามารถเปิดแอปอีเมลได้';
