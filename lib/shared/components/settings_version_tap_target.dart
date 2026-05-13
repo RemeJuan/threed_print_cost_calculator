@@ -112,16 +112,16 @@ class _SettingsVersionTapTargetState
         );
         break;
       case TestDataAction.forceUpdateAvailable:
-        ref.read(updateCheckerProvider.notifier).forceAvailable();
-        await ref.read(updateCheckerProvider.notifier).clearCooldown();
-        await ref.read(updateCheckerProvider.notifier).refresh();
+        container.read(updateCheckerProvider.notifier).forceAvailable();
+        await container.read(updateCheckerProvider.notifier).clearCooldown();
+        await container.read(updateCheckerProvider.notifier).refresh();
         break;
       case TestDataAction.forceNoUpdate:
-        ref.read(updateCheckerProvider.notifier).forceUnavailable();
-        await ref.read(updateCheckerProvider.notifier).refresh();
+        container.read(updateCheckerProvider.notifier).forceUnavailable();
+        await container.read(updateCheckerProvider.notifier).refresh();
         break;
       case TestDataAction.clearUpdateCooldown:
-        await ref.read(updateCheckerProvider.notifier).clearCooldown();
+        await container.read(updateCheckerProvider.notifier).clearCooldown();
         break;
       case TestDataAction.previewCancelFeedback:
         if (!mounted) return;
