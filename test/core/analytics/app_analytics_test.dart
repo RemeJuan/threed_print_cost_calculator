@@ -196,6 +196,49 @@ void main() {
     });
   });
 
+  test('update prompt analytics wrappers use expected payloads', () async {
+    await AppAnalytics.updatePromptShown(
+      currentVersion: '1.0.0',
+      storeVersion: '1.1.0',
+      platform: 'android',
+      source: 'startup',
+    );
+
+    expect(fake.lastName, 'update_prompt_shown');
+    expect(fake.lastParams, {
+      'current_version': '1.0.0',
+      'store_version': '1.1.0',
+      'platform': 'android',
+      'source': 'startup',
+    });
+
+    await AppAnalytics.updatePromptTapped(
+      currentVersion: '1.0.0',
+      platform: 'android',
+      source: 'startup',
+    );
+
+    expect(fake.lastName, 'update_prompt_tapped');
+    expect(fake.lastParams, {
+      'current_version': '1.0.0',
+      'platform': 'android',
+      'source': 'startup',
+    });
+
+    await AppAnalytics.updatePromptDismissed(
+      currentVersion: '1.0.0',
+      platform: 'android',
+      source: 'manual',
+    );
+
+    expect(fake.lastName, 'update_prompt_dismissed');
+    expect(fake.lastParams, {
+      'current_version': '1.0.0',
+      'platform': 'android',
+      'source': 'manual',
+    });
+  });
+
   test(
     'materials analytics wrappers keep payloads small and consistent',
     () async {
