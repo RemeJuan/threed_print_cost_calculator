@@ -19,6 +19,27 @@ Before making changes:
 - Work only on the linked ClickUp task.
 - Do not combine this task with any other investment task.
 
+## Required Execution Order
+
+Follow this sequence for every technical-investment task:
+
+1. Read the ClickUp task and these instructions.
+2. Checkout `main`.
+3. Pull latest changes.
+4. Create the branch from `main`.
+5. Move the ClickUp task to `in progress`.
+6. Implement the task.
+7. Run required verification.
+8. Run CodeRabbit on the uncommitted diff.
+9. Apply valid fixes and rerun verification as needed.
+10. Commit the changes.
+11. Push the branch.
+12. Open the PR against `main`.
+13. Move the ClickUp task to `in review`.
+14. Report back with the PR link and outcome.
+
+Do not skip ahead in the sequence. If a later step is blocked, stop and report the blocker instead of performing steps out of order.
+
 ## Scope Rules
 
 - Preserve existing behaviour.
@@ -111,6 +132,8 @@ PR body must include:
 
 Move the ClickUp task to `in review` once the PR is created.
 
+Do not move the ClickUp task to `in review` before the PR exists.
+
 PRs must stay focused. If a second investment opportunity is discovered, recommend a separate task instead of including it.
 
 ## Stop Conditions
@@ -174,3 +197,17 @@ Do not apply CodeRabbit suggestions that:
 - require architectural decisions outside this task
 
 If CodeRabbit raises useful but out-of-scope feedback, mention it as a follow-up in the PR body instead of implementing it.
+
+## Final Pre-Commit / Pre-PR Gate
+
+Before the final response, explicitly verify all of the following:
+
+- ClickUp task is still `in progress` until after PR creation.
+- CodeRabbit was run on the final uncommitted diff.
+- Any valid CodeRabbit fixes were applied.
+- Required verification has been rerun after those fixes.
+- No commit was created before CodeRabbit completed.
+- PR title starts with `[<clickup-task-id>]` and exactly matches the ClickUp task title.
+- ClickUp task was moved to `in review` only after the PR was created.
+
+If any item above is false, do not report the task as finished.
