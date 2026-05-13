@@ -43,7 +43,7 @@ class UpdateCheckerState {
   bool get canShowPrompt => info?.shouldShow ?? false;
 }
 
-Future<void> openAppStoreForPlatform() async {
+Future<bool> openAppStoreForPlatform() async {
   final url = switch (defaultTargetPlatform) {
     TargetPlatform.iOS => Uri.parse('https://apps.apple.com/app/id6444106268'),
     TargetPlatform.android => Uri.parse(
@@ -51,7 +51,14 @@ Future<void> openAppStoreForPlatform() async {
     ),
     _ => Uri.parse('https://printcostcalc.app'),
   };
-  await launchUrl(url, mode: LaunchMode.externalApplication);
+  if (await launchUrl(url, mode: LaunchMode.externalApplication)) {
+    return true;
+  }
+  if (await launchUrl(url, mode: LaunchMode.platformDefault)) {
+    return true;
+  }
+  debugPrint('Unable to open app store for ${defaultTargetPlatform.name}.');
+  return false;
 }
 
 final updateCheckerProvider =
