@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -44,8 +42,11 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
       });
     }
 
-    final body = info.showStoreVersion
-        ? l10n.updatePromptBody(info.storeVersion!, info.currentVersion)
+    final storeVersion = info.storeVersion;
+    final body = info.showStoreVersion &&
+            storeVersion != null &&
+            storeVersion.isNotEmpty
+        ? l10n.updatePromptBody(storeVersion, info.currentVersion)
         : l10n.updatePromptBodyUnknown;
 
     return Card(
@@ -67,7 +68,7 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
               runSpacing: 8,
               children: [
                 FilledButton(
-                  onPressed: () {
+                  onPressed: () async {
                     AppAnalytics.safeLog(
                       () => AppAnalytics.updatePromptTapped(
                         currentVersion: info.currentVersion,
@@ -76,7 +77,7 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
                         source: info.source,
                       ),
                     );
-                    unawaited(openAppStoreForPlatform());
+                    await openAppStoreForPlatform();
                   },
                   child: Text(l10n.updatePromptOpenStoreButton),
                 ),
