@@ -1,0 +1,110 @@
+import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/app/header_actions.dart';
+import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
+import 'package:threed_print_cost_calculator/history/history_page.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
+import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
+import 'package:threed_print_cost_calculator/settings/settings_page.dart';
+import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
+
+enum AppPageTab { calculator, materials, history, settings }
+
+class AppPageShellTab {
+  const AppPageShellTab({
+    required this.tab,
+    required this.page,
+    required this.title,
+    required this.actions,
+    required this.navigationItem,
+  });
+
+  final AppPageTab tab;
+  final Widget page;
+  final String title;
+  final List<Widget> actions;
+  final BottomNavigationBarItem navigationItem;
+}
+
+List<AppPageShellTab> buildAppPageShellTabs({
+  required BuildContext context,
+  required AppLocalizations l10n,
+  required bool isPremium,
+  required bool showHistoryTab,
+  required bool showHistoryTeaser,
+  required Future<void> Function() onHistoryLoaded,
+}) {
+  return [
+    AppPageShellTab(
+      tab: AppPageTab.calculator,
+      page: const CalculatorPage(),
+      title: l10n.calculatorAppBarTitle,
+      actions: const [HeaderActions()],
+      navigationItem: BottomNavigationBarItem(
+        icon: const Icon(
+          Icons.calculate,
+          key: ValueKey<String>('nav.calculator.button'),
+        ),
+        label: l10n.calculatorNavLabel,
+      ),
+    ),
+    if (isPremium)
+      AppPageShellTab(
+        tab: AppPageTab.materials,
+        page: const MaterialsPage(),
+        title: l10n.materialsAppBarTitle,
+        actions: [
+          IconButton(
+            tooltip: l10n.csvImportTitle,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const CsvImportPage()),
+              );
+            },
+            icon: const Icon(Icons.file_upload_outlined, color: Colors.white54),
+          ),
+        ],
+        navigationItem: BottomNavigationBarItem(
+          icon: const Icon(
+            Icons.inventory_2_outlined,
+            key: ValueKey<String>('nav.materials.button'),
+          ),
+          label: l10n.materialsNavLabel,
+        ),
+      ),
+    if (showHistoryTab)
+      AppPageShellTab(
+        tab: AppPageTab.history,
+        page: HistoryPage(
+          mode: showHistoryTeaser
+              ? HistoryPageMode.teaser
+              : HistoryPageMode.full,
+          onHistoryLoaded: onHistoryLoaded,
+        ),
+        title: l10n.historyAppBarTitle,
+        actions: const [],
+        navigationItem: BottomNavigationBarItem(
+          icon: isPremium
+              ? const Icon(
+                  Icons.history,
+                  key: ValueKey<String>('nav.history.button'),
+                )
+              : const PromoHistoryTabIcon(),
+          label: l10n.historyNavLabel,
+        ),
+      ),
+    AppPageShellTab(
+      tab: AppPageTab.settings,
+      page: const SettingsPage(),
+      title: l10n.settingsAppBarTitle,
+      actions: const [],
+      navigationItem: BottomNavigationBarItem(
+        icon: const Icon(
+          Icons.settings,
+          key: ValueKey<String>('nav.settings.button'),
+        ),
+        label: l10n.settingsNavLabel,
+      ),
+    ),
+  ];
+}

@@ -7,10 +7,26 @@ class RevenueCatCustomerInfo {
   const RevenueCatCustomerInfo({
     required this.hasActiveEntitlements,
     required this.originalAppUserId,
+    this.platform = 'unknown',
+    this.entitlementType = 'none',
+    this.productId = '',
+    this.willRenew = true,
+    this.cancellationDetectedAt,
+    this.billingIssueDetectedAt,
+    this.originalPurchaseDate,
+    this.expirationDate,
   });
 
   final bool hasActiveEntitlements;
   final String originalAppUserId;
+  final String platform;
+  final String entitlementType;
+  final String productId;
+  final bool willRenew;
+  final DateTime? cancellationDetectedAt;
+  final DateTime? billingIssueDetectedAt;
+  final DateTime? originalPurchaseDate;
+  final DateTime? expirationDate;
 }
 
 abstract class PurchasesSdkAdapter {
@@ -39,10 +55,7 @@ class RevenueCatPurchasesSdkAdapter implements PurchasesSdkAdapter {
   @override
   Future<RevenueCatCustomerInfo> getCustomerInfo() async {
     final info = await Purchases.getCustomerInfo();
-    return RevenueCatCustomerInfo(
-      hasActiveEntitlements: info.entitlements.active.isNotEmpty,
-      originalAppUserId: info.originalAppUserId,
-    );
+    return _mapCustomerInfo(info);
   }
 
   @override
@@ -50,12 +63,7 @@ class RevenueCatPurchasesSdkAdapter implements PurchasesSdkAdapter {
     void Function(RevenueCatCustomerInfo info) listener,
   ) {
     void sdkListener(CustomerInfo info) {
-      listener(
-        RevenueCatCustomerInfo(
-          hasActiveEntitlements: info.entitlements.active.isNotEmpty,
-          originalAppUserId: info.originalAppUserId,
-        ),
-      );
+      listener(_mapCustomerInfo(info));
     }
 
     _listeners[listener] = sdkListener;
@@ -70,6 +78,53 @@ class RevenueCatPurchasesSdkAdapter implements PurchasesSdkAdapter {
     if (sdkListener != null) {
       Purchases.removeCustomerInfoUpdateListener(sdkListener);
     }
+  }
+
+  RevenueCatCustomerInfo _mapCustomerInfo(CustomerInfo info) {
+    final entitlement = _activeEntitlement(info);
+
+    return RevenueCatCustomerInfo(
+      hasActiveEntitlements: entitlement?.isActive ?? false,
+      originalAppUserId: info.originalAppUserId,
+      platform: _mapStore(entitlement?.store),
+      entitlementType: _mapEntitlementType(entitlement?.periodType),
+      productId: entitlement?.productIdentifier ?? '',
+      willRenew: entitlement?.willRenew ?? true,
+      cancellationDetectedAt: _parseDate(entitlement?.unsubscribeDetectedAt),
+      billingIssueDetectedAt: _parseDate(entitlement?.billingIssueDetectedAt),
+      originalPurchaseDate: _parseDate(entitlement?.originalPurchaseDate),
+      expirationDate: _parseDate(entitlement?.expirationDate),
+    );
+  }
+
+  EntitlementInfo? _activeEntitlement(CustomerInfo info) {
+    final entitlements = info.entitlements.active.values;
+    if (entitlements.isEmpty) return null;
+    return entitlements.first;
+  }
+
+  static DateTime? _parseDate(String? value) {
+    if (value == null || value.isEmpty) return null;
+    return DateTime.tryParse(value);
+  }
+
+  static String _mapEntitlementType(PeriodType? periodType) {
+    if (periodType == null) return 'none';
+    return periodType.name == 'trial' ? 'trial' : 'subscription';
+  }
+
+  static String _mapStore(Store? store) {
+    return switch (store?.name) {
+      'appStore' => 'app_store',
+      'macAppStore' => 'mac_app_store',
+      'playStore' => 'play_store',
+      'amazon' => 'amazon',
+      'stripe' => 'stripe',
+      'promotional' => 'promotional',
+      'rcBilling' => 'rc_billing',
+      final name? => name,
+      null => 'unknown',
+    };
   }
 }
 
@@ -124,6 +179,14 @@ class RevenueCatPurchasesGateway implements PurchasesGateway {
       isPremium: info.hasActiveEntitlements,
       isLoading: false,
       userId: info.originalAppUserId,
+      platform: info.platform,
+      entitlementType: info.entitlementType,
+      productId: info.productId,
+      willRenew: info.willRenew,
+      cancellationDetectedAt: info.cancellationDetectedAt,
+      billingIssueDetectedAt: info.billingIssueDetectedAt,
+      originalPurchaseDate: info.originalPurchaseDate,
+      expirationDate: info.expirationDate,
     );
   }
 }

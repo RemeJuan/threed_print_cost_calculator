@@ -5,9 +5,16 @@ import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 void main() {
   test('maps sdk customer info into premium state', () async {
     final adapter = FakePurchasesSdkAdapter(
-      const RevenueCatCustomerInfo(
+      RevenueCatCustomerInfo(
         hasActiveEntitlements: true,
         originalAppUserId: 'pro-1',
+        platform: 'play_store',
+        entitlementType: 'trial',
+        productId: 'premium_trial',
+        willRenew: false,
+        cancellationDetectedAt: DateTime.utc(2026, 5, 10),
+        originalPurchaseDate: DateTime.utc(2026, 5, 7),
+        expirationDate: DateTime.utc(2026, 5, 17),
       ),
     );
     final gateway = RevenueCatPurchasesGateway(sdkAdapter: adapter);
@@ -18,6 +25,12 @@ void main() {
     expect(state.isPremium, isTrue);
     expect(state.isLoading, isFalse);
     expect(state.userId, 'pro-1');
+    expect(state.platform, 'play_store');
+    expect(state.entitlementType, 'trial');
+    expect(state.productId, 'premium_trial');
+    expect(state.willRenew, isFalse);
+    expect(state.hasActiveCanceledEntitlement, isTrue);
+    expect(state.cancellationStateKey, isNotNull);
   });
 
   test('registers and removes a single sdk listener', () async {

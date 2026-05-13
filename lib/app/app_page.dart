@@ -1,40 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/app/header_actions.dart';
+import 'package:threed_print_cost_calculator/app/app_page_announcement_effect.dart';
+import 'package:threed_print_cost_calculator/app/app_page_cancel_feedback_effect.dart';
+import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/app/widgets/update_prompt_banner.dart';
-import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
-import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
-import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
-import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 
-enum _AppTab { calculator, materials, history, settings }
-
-class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
+class AppPage extends HookConsumerWidget {
   const AppPage({super.key});
 
   @override
   Widget build(context, ref) {
-    final selectedTab = useState(_AppTab.calculator);
+    final selectedTab = useState(AppPageTab.calculator);
     final tapNavigationTargetIndex = useState<int?>(null);
-    final whatsNewShown = useRef(false);
     final l10n = AppLocalizations.of(context)!;
     final prefs = ref.read(sharedPreferencesProvider);
     final premiumState = ref.watch(premiumStateProvider);
     final isPremium = premiumState.isPremium;
     final showHistoryTab = ref.watch(shouldShowHistoryTabProvider);
     final showHistoryTeaser = ref.watch(shouldShowHistoryTeaserProvider);
+
     useEffect(() {
       registerAppProviderContainer(
         ProviderScope.containerOf(context, listen: false),
@@ -44,58 +36,49 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
 
     final announcementAsync = ref.watch(currentAnnouncementProvider);
 
-    useEffect(() {
-      announcementAsync.whenData((announcement) {
-        if (announcement == null || whatsNewShown.value) return;
-        whatsNewShown.value = true;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          final dismiss = ref.read(dismissAnnouncementProvider);
-          final locale = Localizations.localeOf(context).languageCode;
-          showWhatsNewSheet(
-            context,
-            announcement: announcement,
-            onDismiss: dismiss,
-            wnId: announcement.id,
-            locale: locale,
-            isPremium: isPremium,
-          );
-        });
-      });
-      return null;
-    }, [announcementAsync]);
-
-    ref.listen<PremiumState>(premiumStateProvider, (previous, next) async {
-      if (next.isLoading || next.userId.isEmpty) return;
-      if (previous?.isLoading == false && previous?.userId == next.userId) {
-        return;
-      }
-
-      final runCount = prefs.getInt('run_count') ?? 0;
-      await prefs.setInt('run_count', runCount + 1);
-    });
+    useAppPageAnnouncementEffect(
+      context: context,
+      ref: ref,
+      announcementAsync: announcementAsync,
+      isPremium: isPremium,
+    );
+    useAppPageCancelFeedbackEffect(context: context, ref: ref, prefs: prefs);
 
     final pageController = usePageController(initialPage: 0);
 
     useEffect(() {
-      if (showHistoryTab || selectedTab.value != _AppTab.history) {
+      if (showHistoryTab || selectedTab.value != AppPageTab.history) {
         return null;
       }
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (selectedTab.value == _AppTab.history) {
-          selectedTab.value = _AppTab.calculator;
+        if (selectedTab.value == AppPageTab.history) {
+          selectedTab.value = AppPageTab.calculator;
         }
       });
 
       return null;
     }, [showHistoryTab, selectedTab.value]);
 
-    final tabs = <_AppTab>[
-      _AppTab.calculator,
-      if (isPremium) _AppTab.materials,
-      if (showHistoryTab) _AppTab.history,
-      _AppTab.settings,
-    ];
+    final shellTabs = buildAppPageShellTabs(
+      context: context,
+      l10n: l10n,
+      isPremium: isPremium,
+      showHistoryTab: showHistoryTab,
+      showHistoryTeaser: showHistoryTeaser,
+      onHistoryLoaded: () async {
+        tapNavigationTargetIndex.value = 0;
+        selectedTab.value = AppPageTab.calculator;
+        pageController.jumpToPage(0);
+
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(content: Text(l10n.historyLoadSuccessMessage)),
+          );
+      },
+    );
+    final tabs = shellTabs.map((tab) => tab.tab).toList();
 
     useEffect(() {
       if (tabs.contains(selectedTab.value)) {
@@ -104,53 +87,24 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!tabs.contains(selectedTab.value)) {
-          selectedTab.value = _AppTab.calculator;
+          selectedTab.value = AppPageTab.calculator;
         }
       });
 
       return null;
     }, [isPremium, showHistoryTab, selectedTab.value]);
 
-    int tabToIndex(_AppTab tab) => tabs.indexOf(tab);
-    _AppTab tabFromIndex(int index) => tabs[index];
-
-    final pages = [
-      const CalculatorPage(),
-      if (isPremium) const MaterialsPage(),
-      if (showHistoryTab)
-        HistoryPage(
-          mode: showHistoryTeaser
-              ? HistoryPageMode.teaser
-              : HistoryPageMode.full,
-          onHistoryLoaded: () async {
-            tapNavigationTargetIndex.value = 0;
-            selectedTab.value = _AppTab.calculator;
-            pageController.jumpToPage(0);
-
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(content: Text(l10n.historyLoadSuccessMessage)),
-              );
-          },
-        ),
-      const SettingsPage(),
-    ];
-
-    String titleForTab(_AppTab tab) => switch (tab) {
-      _AppTab.calculator => l10n.calculatorAppBarTitle,
-      _AppTab.materials => l10n.materialsAppBarTitle,
-      _AppTab.history => l10n.historyAppBarTitle,
-      _AppTab.settings => l10n.settingsAppBarTitle,
-    };
+    int tabToIndex(AppPageTab tab) => tabs.indexOf(tab);
+    AppPageTab tabFromIndex(int index) => tabs[index];
 
     final renderedTab = tabs.contains(selectedTab.value)
         ? selectedTab.value
-        : _AppTab.calculator;
+        : AppPageTab.calculator;
     final selectedIndex = tabToIndex(renderedTab);
+    final renderedShellTab = shellTabs[selectedIndex];
 
     useEffect(() {
-      if (renderedTab != _AppTab.materials) {
+      if (renderedTab != AppPageTab.materials) {
         return null;
       }
 
@@ -168,6 +122,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
           pageController.jumpToPage(selectedIndex);
         }
       });
+
       return null;
     }, [selectedIndex]);
 
@@ -175,28 +130,8 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(titleForTab(renderedTab)),
-        actions: switch (renderedTab) {
-          _AppTab.calculator => const [HeaderActions()],
-          _AppTab.materials => [
-            IconButton(
-              tooltip: l10n.csvImportTitle,
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const CsvImportPage(),
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.file_upload_outlined,
-                color: Colors.white54,
-              ),
-            ),
-          ],
-          _AppTab.history => const [],
-          _AppTab.settings => const [],
-        },
+        title: Text(renderedShellTab.title),
+        actions: renderedShellTab.actions,
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
           onPressed: () => Navigator.of(context).push(
@@ -221,7 +156,7 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
 
                 selectedTab.value = tabFromIndex(index);
               },
-              children: pages,
+              children: shellTabs.map((tab) => tab.page).toList(),
             ),
           ),
         ],
@@ -244,57 +179,8 @@ class AppPage extends HookConsumerWidget with WidgetsBindingObserver {
             curve: Curves.ease,
           );
         },
-        items: tabs.map((tab) {
-          final (Widget icon, String label) = switch (tab) {
-            _AppTab.calculator => (
-              const Icon(
-                Icons.calculate,
-                key: ValueKey<String>('nav.calculator.button'),
-              ),
-              l10n.calculatorNavLabel,
-            ),
-            _AppTab.materials => (
-              const Icon(
-                Icons.inventory_2_outlined,
-                key: ValueKey<String>('nav.materials.button'),
-              ),
-              l10n.materialsNavLabel,
-            ),
-            _AppTab.history => (
-              isPremium
-                  ? const Icon(
-                      Icons.history,
-                      key: ValueKey<String>('nav.history.button'),
-                    )
-                  : const PromoHistoryTabIcon(),
-              l10n.historyNavLabel,
-            ),
-            _AppTab.settings => (
-              const Icon(
-                Icons.settings,
-                key: ValueKey<String>('nav.settings.button'),
-              ),
-              l10n.settingsNavLabel,
-            ),
-          };
-          return BottomNavigationBarItem(icon: icon, label: label);
-        }).toList(),
+        items: shellTabs.map((tab) => tab.navigationItem).toList(),
       ),
     );
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
-
-    switch (state) {
-      case AppLifecycleState.resumed:
-        break;
-      case AppLifecycleState.detached:
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.hidden:
-      case AppLifecycleState.paused:
-        break;
-    }
   }
 }

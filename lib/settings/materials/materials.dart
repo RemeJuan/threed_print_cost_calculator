@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
+import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class Materials extends HookConsumerWidget {
   const Materials({super.key});
@@ -12,12 +13,6 @@ class Materials extends HookConsumerWidget {
   Widget build(context, ref) {
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final l10n = AppLocalizations.of(context)!;
-
-    String formatWeight(num value) {
-      return value % 1 == 0
-          ? value.toStringAsFixed(0)
-          : value.toStringAsFixed(1);
-    }
 
     return ref
         .watch(materialsStreamProvider)

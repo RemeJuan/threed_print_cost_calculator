@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/app/components/focus_safe_text_fiel
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 /// Single material row used inside the materials list.
 ///
@@ -62,12 +63,6 @@ class _MaterialRowState extends State<MaterialRow> {
     final remainingWeight = widget.material?.remainingWeight ?? 0;
     final id = widget.usage.materialId.trim();
     final rowKey = id.isNotEmpty ? id : '__row_${widget.index}';
-
-    String formatWeight(num value) {
-      return value % 1 == 0
-          ? value.toStringAsFixed(0)
-          : value.toStringAsFixed(1);
-    }
 
     final isMaterialUnassigned =
         widget.usage.materialName.isEmpty ||
@@ -156,48 +151,70 @@ class _MaterialRowState extends State<MaterialRow> {
     // special-case a literal 'none'.
     final isDeletable = idTrim.isNotEmpty;
 
+    Widget rowWithSwipe(Widget child) {
+      return Slidable(
+        key: ValueKey('material_slidable_${widget.index}'),
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          extentRatio: 0.3,
+          children: [
+            const SizedBox(width: 12),
+            CustomSlidableAction(
+              flex: 1,
+              onPressed: (ctx) async {
+                final confirm = await showDialog<bool>(
+                  context: context,
+                  builder: (dialogContext) => AlertDialog(
+                    title: Text(l10n.deleteDialogTitle),
+                    content: Text(l10n.deleteDialogContent),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext, false),
+                        child: Text(l10n.cancelButton),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogContext, true),
+                        child: Text(l10n.deleteButton),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirm != true) return;
+                widget.onRemove();
+              },
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.delete, size: 20, color: Colors.white),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.deleteButton,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        child: child,
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: isDeletable
-          ? Slidable(
-              key: ValueKey('material_slidable_${widget.index}'),
-              endActionPane: ActionPane(
-                motion: const ScrollMotion(),
-                children: [
-                  SlidableAction(
-                    onPressed: (ctx) async {
-                      final confirm = await showDialog<bool>(
-                        context: context,
-                        builder: (dialogContext) => AlertDialog(
-                          title: Text(l10n.deleteDialogTitle),
-                          content: Text(l10n.deleteDialogContent),
-                          actions: [
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(dialogContext, false),
-                              child: Text(l10n.cancelButton),
-                            ),
-                            TextButton(
-                              onPressed: () =>
-                                  Navigator.pop(dialogContext, true),
-                              child: Text(l10n.deleteButton),
-                            ),
-                          ],
-                        ),
-                      );
-                      if (confirm != true) return;
-                      widget.onRemove();
-                    },
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: l10n.deleteButton,
-                  ),
-                ],
-              ),
-              child: keyedRow,
-            )
-          : keyedRow,
+      child: isDeletable ? rowWithSwipe(keyedRow) : keyedRow,
     );
   }
 }

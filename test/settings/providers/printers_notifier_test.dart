@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 
 import '../settings_test_fakes.dart';
@@ -44,5 +45,32 @@ void main() {
 
     expect(didSave, isTrue);
     expect(printersRepository.savedPrinters.single.bedSize, '250x210x220');
+  });
+
+  test('hydrates existing printer into state on init', () async {
+    final printersRepository = FakePrintersRepository();
+    printersRepository.printersById['printer-1'] = const PrinterModel(
+      id: 'printer-1',
+      name: 'Prusa MK4',
+      bedSize: '250x210x220',
+      wattage: '350',
+      archived: false,
+    );
+
+    final container = ProviderContainer(
+      overrides: [
+        printersRepositoryProvider.overrideWithValue(printersRepository),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    final notifier = container.read(printersProvider.notifier);
+    await notifier.init('printer-1');
+
+    final state = container.read(printersProvider);
+    expect(state.name.value, 'Prusa MK4');
+    expect(state.bedSize.value, '250x210x220');
+    expect(state.wattage.value, '350');
+    expect(printersRepository.getPrinterByIdCalls, ['printer-1']);
   });
 }

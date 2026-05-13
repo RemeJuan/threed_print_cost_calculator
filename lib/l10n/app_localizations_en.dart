@@ -392,6 +392,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get closeButton => 'Close';
 
   @override
+  String get cancelFeedbackPromptTitle =>
+      'Looks like you turned off renewal. Mind telling me why?';
+
+  @override
+  String get feedbackSubmitButton => 'Send feedback';
+
+  @override
+  String get cancelFeedbackReasonTooExpensive => 'Too expensive';
+
+  @override
+  String get cancelFeedbackReasonMissingFeatures => 'Missing features';
+
+  @override
+  String get cancelFeedbackReasonNotEnoughValue => 'Not enough value';
+
+  @override
+  String get cancelFeedbackReasonConfusingToUse => 'Confusing to use';
+
+  @override
+  String get cancelFeedbackReasonJustTesting => 'Just testing the app';
+
+  @override
+  String get cancelFeedbackReasonOther => 'Other';
+
+  @override
   String get testDataToolsTitle => 'Test data tools';
 
   @override
@@ -940,6 +965,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(empty)';
+
+  @override
+  String get editButton => 'Edit';
+
+  @override
+  String get duplicateButton => 'Duplicate';
+
+  @override
+  String get duplicateMaterialSuccessMessage => 'Material duplicated';
+
+  @override
+  String get duplicateMaterialErrorMessage => 'Error duplicating material';
+
+  @override
+  String get materialsSwipeHint =>
+      'Swipe a material for edit, duplicate, or delete.';
 
   @override
   String get stockBadgeOut => 'Out of stock';

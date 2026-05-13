@@ -34,6 +34,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
 
   Future<void> _downloadTemplate() async {
     File? tempFile;
+    final messenger = ScaffoldMessenger.of(context);
     try {
       tempFile = File(
         '${(await getTemporaryDirectory()).path}/material_template.csv',
@@ -47,10 +48,8 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
         ),
       );
     } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(_l10n!.csvTemplateError)));
+      if (!mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text(_l10n!.csvTemplateError)));
     } finally {
       if (tempFile != null && await tempFile.exists()) {
         await tempFile.delete();
@@ -59,14 +58,12 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
   }
 
   Future<void> _pickFile() async {
+    final messenger = ScaffoldMessenger.of(context);
     final result = await openFile();
 
     if (result == null) return;
     if (!result.name.toLowerCase().endsWith('.csv')) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(_l10n!.csvFileTypeError)));
+      messenger.showSnackBar(SnackBar(content: Text(_l10n!.csvFileTypeError)));
       return;
     }
 
@@ -75,10 +72,8 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       AppAnalytics.safeLog(AppAnalytics.csvImportStarted);
       _parseCsv(content);
     } catch (e) {
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(_l10n!.csvReadError)));
+      if (!mounted) return;
+      messenger.showSnackBar(SnackBar(content: Text(_l10n!.csvReadError)));
     }
   }
 
@@ -200,6 +195,8 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       return;
     }
 
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
     final repo = ref.read(materialsRepositoryProvider);
     var imported = 0;
     final failedRows = <_ImportRow>[];
@@ -241,11 +238,11 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       ),
     );
 
-    if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
+    if (!mounted) return;
+    messenger.showSnackBar(
       SnackBar(content: Text(_l10n!.csvImportSuccessMessage(imported))),
     );
-    Navigator.of(context).pop();
+    navigator.pop();
   }
 
   @override
