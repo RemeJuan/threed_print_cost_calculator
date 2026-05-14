@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'dart:async';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -20,33 +21,47 @@ class WorkCostsSettings extends HookConsumerWidget {
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
 
-    // Controller for wearAndTear so the field reflects external updates
     final wearController = useTextEditingController();
+    final failureController = useTextEditingController();
+    final failureFocus = useFocusNode();
+    final labourController = useTextEditingController();
+    final labourFocus = useFocusNode();
+    final markupController = useTextEditingController();
+    final setupFeeController = useTextEditingController();
+    final currencySymbolController = useTextEditingController();
 
     final settingsRepository = ref.read(settingsRepositoryProvider);
     final settingsService = ref.read(settingsServiceProvider);
     final logger = ref.read(appLoggerProvider);
 
-    // Hooks for other fields/debounces: keep at top-level to preserve hook order
-    final failureController = useTextEditingController();
-    final failureFocus = useFocusNode();
-    final labourController = useTextEditingController();
-    final labourFocus = useFocusNode();
-
     final failureDebounce = useRef<Timer?>(null);
     final labourDebounce = useRef<Timer?>(null);
     final wearDebounce = useRef<Timer?>(null);
+    final markupDebounce = useRef<Timer?>(null);
+    final setupFeeDebounce = useRef<Timer?>(null);
+    final currencySymbolDebounce = useRef<Timer?>(null);
 
-    // Cancel any pending timers when widget unmounts
     useEffect(() {
       return () {
         failureDebounce.value?.cancel();
         labourDebounce.value?.cancel();
         wearDebounce.value?.cancel();
+        markupDebounce.value?.cancel();
+        setupFeeDebounce.value?.cancel();
+        currencySymbolDebounce.value?.cancel();
       };
     }, []);
 
-    // persist functions: fire-and-forget debounced schedulers
+    void firePricingSettingsChanged(GeneralSettingsModel s) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.pricingSettingsChanged(
+          markupPercent: tryParseLocalizedNum(s.pricingMarkupPercent) ?? 0,
+          setupFee: tryParseLocalizedNum(s.pricingSetupFee) ?? 0,
+          roundingMode: s.pricingRoundingMode,
+        ),
+      );
+    }
+
     void persistFailure(String value) {
       failureDebounce.value?.cancel();
       failureDebounce.value = Timer(
@@ -106,6 +121,69 @@ class WorkCostsSettings extends HookConsumerWidget {
             AppLogCategory.ui,
             'Failed to persist wear and tear',
             context: {'setting': 'wearAndTear'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
+    }
+
+    void persistMarkup(String value) {
+      markupDebounce.value?.cancel();
+      markupDebounce.value = Timer(debounce400ms, () async {
+        final parsed = tryParseLocalizedNum(value);
+        if (parsed == null) return;
+        try {
+          await settingsService.update(
+            (settings) =>
+                settings.copyWith(pricingMarkupPercent: parsed.toString()),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist markup percent',
+            context: {'setting': 'pricingMarkupPercent'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
+    }
+
+    void persistSetupFee(String value) {
+      setupFeeDebounce.value?.cancel();
+      setupFeeDebounce.value = Timer(debounce400ms, () async {
+        final parsed = tryParseLocalizedNum(value);
+        if (parsed == null) return;
+        try {
+          await settingsService.update(
+            (settings) =>
+                settings.copyWith(pricingSetupFee: parsed.toString()),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist setup fee',
+            context: {'setting': 'pricingSetupFee'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
+    }
+
+    void persistCurrencySymbol(String value) {
+      currencySymbolDebounce.value?.cancel();
+      currencySymbolDebounce.value = Timer(debounce400ms, () async {
+        try {
+          await settingsService.update(
+            (settings) => settings.copyWith(currencySymbol: value),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist currency symbol',
+            context: {'setting': 'currencySymbol'},
             error: e,
             stackTrace: st,
           );
