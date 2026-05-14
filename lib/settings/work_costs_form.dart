@@ -64,26 +64,23 @@ class WorkCostsSettings extends HookConsumerWidget {
 
     void persistFailure(String value) {
       failureDebounce.value?.cancel();
-      failureDebounce.value = Timer(
-        debounce400ms,
-        () async {
-          final parsed = tryParseLocalizedNum(value);
-          if (parsed == null) return;
-          try {
-            await settingsService.update(
-              (settings) => settings.copyWith(failureRisk: parsed.toString()),
-            );
-          } catch (e, st) {
-            logger.error(
-              AppLogCategory.ui,
-              'Failed to persist failure risk',
-              context: {'setting': 'failureRisk'},
-              error: e,
-              stackTrace: st,
-            );
-          }
-        },
-      );
+      failureDebounce.value = Timer(debounce400ms, () async {
+        final parsed = tryParseLocalizedNum(value);
+        if (parsed == null) return;
+        try {
+          await settingsService.update(
+            (settings) => settings.copyWith(failureRisk: parsed.toString()),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist failure risk',
+            context: {'setting': 'failureRisk'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
     }
 
     void persistLabour(String value) {
@@ -157,8 +154,7 @@ class WorkCostsSettings extends HookConsumerWidget {
         if (parsed == null) return;
         try {
           await settingsService.update(
-            (settings) =>
-                settings.copyWith(pricingSetupFee: parsed.toString()),
+            (settings) => settings.copyWith(pricingSetupFee: parsed.toString()),
           );
         } catch (e, st) {
           logger.error(
