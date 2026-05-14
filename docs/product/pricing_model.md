@@ -619,16 +619,47 @@ Track:
 
 - pricing enabled in settings
 - override usage per job
-- markup value distribution
+- markup usage distribution
+- setup fee usage distribution
 - rounding usage
 - save with pricing vs without pricing
+- pricing accordion/section engagement if hidden behind expandable UI
+
+Recommended events:
+
+- pricing_settings_changed
+- pricing_override_used
+- pricing_rounding_used
+- pricing_saved
+- calculation_created(has_pricing)
+- optional: pricing_section_expanded if pricing UI becomes collapsible
 
 Recommended trigger points:
 
 - when pricing settings change
 - when job-level override state changes
-- when a job is saved
+- when pricing rounding is applied
+- when a priced job is saved
+- when pricing UI is expanded/opened
 - when future quote/client-view entry points use pricing output
+
+Analytics guidance:
+
+- prefer low-cardinality analytics values
+- bucket pricing values instead of sending raw granular values where possible
+- avoid high-cardinality free-form numeric analytics
+- pricing analytics should focus on feature adoption and workflow behavior, not exact financial data
+
+Suggested buckets:
+
+- markup_bucket: 0, 1_10, 11_25, 26_50, 50_plus
+- setup_fee_bucket: 0, low, medium, high
+
+Notes:
+
+- calculation_created(has_pricing) already acts as a lightweight pricing usage signal
+- avoid over-instrumenting before quote/share flows exist
+- future quote/share features will likely become the primary pricing analytics funnel
 
 ## Offline Requirement
 

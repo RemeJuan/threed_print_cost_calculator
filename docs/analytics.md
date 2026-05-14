@@ -118,13 +118,13 @@
   - params: [`material_count`, `has_failure_risk`, `has_labour`, `has_pricing`]
   - triggered_from: [`lib/calculator/provider/calculator_notifier.dart`]
   - feature: Calculator usage
-  - notes: fired after results recomputed
+  - notes: fired after results recomputed; `has_pricing` acts as a lightweight pricing usage signal without its own dedicated event
 
 - `pricing_settings_changed`
-  - params: [`pricing_enabled`, `markup_percent`, `setup_fee`, `rounding_mode`]
+  - params: [`pricing_enabled`, `markup_bucket`, `setup_fee_bucket`, `rounding_mode`]
   - triggered_from: [`lib/settings/work_costs_form.dart`]
   - feature: Pricing / Settings
-  - notes: fired when a pricing default changes in settings
+  - notes: fired when a pricing default changes in settings; uses bucketed values (`markup_bucket`: 0/1_10/11_25/26_50/50_plus, `setup_fee_bucket`: 0/low/medium/high) for low-cardinality analytics
 
 - `pricing_override_used`
   - params: [`field`, `has_overrides`]
