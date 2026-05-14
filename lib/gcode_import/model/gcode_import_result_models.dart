@@ -54,13 +54,20 @@ class GCodePreviewMetadata {
   final int? height;
   final bool isSafe;
 
-  String get safeSummary => format == null || width == null || height == null
-      ? 'preview'
-      : '$format ${width}x$height';
+  String safeSummary([AppLocalizations? localizations]) {
+    final previewLabel = localizations?.importGcodePreviewLabel ?? 'preview';
+    return format == null || width == null || height == null
+        ? previewLabel
+        : '$previewLabel $format ${width}x$height';
+  }
 
-  String get summary => format == null || width == null || height == null
-      ? 'Available'
-      : 'Available · $format · ${width}x$height';
+  String summary([AppLocalizations? localizations]) {
+    final availableLabel =
+        localizations?.importGcodePreviewAvailable ?? 'Available';
+    return format == null || width == null || height == null
+        ? availableLabel
+        : '$availableLabel · $format · ${width}x$height';
+  }
 
   Map<String, dynamic> toWireMap() {
     return {

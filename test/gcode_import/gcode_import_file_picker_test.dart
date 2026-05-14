@@ -21,10 +21,10 @@ void main() {
     expect(groups.single.uniformTypeIdentifiers, isNull);
   });
 
-  test('supported extension helper ignores bin files', () {
+  test('supported extension helper accepts bin files', () {
     expect(hasSupportedGCodeExtension('benchy.gcode'), isTrue);
     expect(hasSupportedGCodeExtension('benchy.gco'), isTrue);
     expect(hasSupportedGCodeExtension('benchy.nc'), isTrue);
-    expect(hasSupportedGCodeExtension('cache.bin'), isFalse);
+    expect(hasSupportedGCodeExtension('cache.bin'), isTrue);
   });
 }

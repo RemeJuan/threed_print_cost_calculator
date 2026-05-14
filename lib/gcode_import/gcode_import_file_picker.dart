@@ -55,8 +55,11 @@ List<XTypeGroup> gCodeAcceptedTypeGroups(TargetPlatform platform) {
         XTypeGroup(label: 'G-code', uniformTypeIdentifiers: ['public.data']),
       ];
     default:
-      return const [
-        XTypeGroup(label: 'G-code', extensions: ['gcode', 'gco', 'nc', 'bin']),
+      return [
+        const XTypeGroup(
+          label: 'G-code',
+          extensions: gCodeSupportedExtensionsWithoutDot,
+        ),
       ];
   }
 }
