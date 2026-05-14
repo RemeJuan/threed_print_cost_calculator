@@ -217,8 +217,8 @@ class AppAnalytics {
             (markupPercent > 0 || setupFee > 0 || roundingMode != 'none')
             ? 1
             : 0,
-        'markup_percent': markupPercent,
-        'setup_fee': setupFee,
+        'markup_bucket': markupBucket(markupPercent),
+        'setup_fee_bucket': setupFeeBucket(setupFee),
         'rounding_mode': roundingMode,
       },
     );
