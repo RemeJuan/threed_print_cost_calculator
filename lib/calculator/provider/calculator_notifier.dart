@@ -4,7 +4,9 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/helpers/pricing_calculator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_history_loader.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_materials_service.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_settings_sync.dart';
@@ -12,6 +14,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculator_state.d
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
@@ -43,10 +46,22 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   Future<void> init() async {
+    if (state.hasHydratedDefaults) return;
+
     final settings = await ref.read(settingsServiceProvider).get();
     state = await ref
         .read(calculatorSettingsSyncProvider)
-        .load(state, settings);
+        .load(settings, seedInitialMaterialUsage: true);
+  }
+
+  Future<void> resetToDefaults() async {
+    _submitDebounce?.cancel();
+
+    final settings = await ref.read(settingsServiceProvider).get();
+    state = await ref
+        .read(calculatorSettingsSyncProvider)
+        .load(settings, seedInitialMaterialUsage: false);
+    submit();
   }
 
   Future<bool> loadFromHistory(HistoryEntry entry) async {
@@ -112,6 +127,24 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     );
   }
 
+  Future<void> selectPrinter(String printerId) async {
+    await ref
+        .read(settingsServiceProvider)
+        .update((settings) => settings.copyWith(activePrinter: printerId));
+
+    final printer = await ref
+        .read(printersRepositoryProvider)
+        .getPrinterById(printerId);
+
+    state = state.copyWith(
+      activePrinterId: printerId,
+      watt: NumberInput.dirty(
+        value: tryParseLocalizedNum(printer?.wattage) ?? state.watt.value,
+      ),
+    );
+    submit();
+  }
+
   void updateKwCost(String value) {
     state = state.copyWith(
       kwCost: NumberInput.dirty(value: parseLocalizedNum(value)),
@@ -135,7 +168,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final usages = ref
         .read(calculatorMaterialsServiceProvider)
         .addUsage(state.materialUsages, usage);
-    state = state.copyWith(materialUsages: usages);
+    state = state.copyWith(
+      materialUsages: usages,
+      selectedMaterialId: _selectedMaterialIdFor(usages),
+    );
   }
 
   void removeMaterialUsageAt(int index) {
@@ -146,6 +182,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(
       materialUsages: result.usages,
       printWeight: NumberInput.dirty(value: result.totalWeight),
+      selectedMaterialId: _selectedMaterialIdFor(result.usages),
     );
   }
 
@@ -157,6 +194,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(
       materialUsages: result.usages,
       printWeight: NumberInput.dirty(value: result.totalWeight),
+      selectedMaterialId: _selectedMaterialIdFor(result.usages),
     );
   }
 
@@ -168,6 +206,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(
       materialUsages: result.usages,
       printWeight: NumberInput.dirty(value: result.totalWeight),
+      selectedMaterialId: _selectedMaterialIdFor(result.usages),
     );
   }
 
@@ -185,6 +224,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(
       materialUsages: normalizedUsages,
       printWeight: NumberInput.dirty(value: total),
+      selectedMaterialId: _selectedMaterialIdFor(normalizedUsages),
     );
   }
 
@@ -224,6 +264,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       nextState = nextState.copyWith(
         printWeight: NumberInput.dirty(value: totalWeight),
         materialUsages: normalizedUsages,
+        selectedMaterialId: _selectedMaterialIdFor(normalizedUsages),
       );
     }
 
@@ -249,19 +290,25 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     ref
         .read(calculatorPreferencesRepositoryProvider)
         .saveStringValue('spoolCost', value);
+    final syncedUsages = ref
+        .read(calculatorMaterialsServiceProvider)
+        .syncedSingleMaterialUsage(state: state, spoolCost: parsedCost);
+
     state = state.copyWith(
       spoolCost: NumberInput.dirty(value: parsedCost),
       spoolCostText: value,
-      materialUsages: ref
-          .read(calculatorMaterialsServiceProvider)
-          .syncedSingleMaterialUsage(state: state, spoolCost: parsedCost),
+      materialUsages: syncedUsages,
+      selectedMaterialId: _selectedMaterialIdFor(syncedUsages),
     );
   }
 
-  void selectMaterial(MaterialModel material) {
+  Future<void> selectMaterial(MaterialModel material) async {
     final spoolWeight = parseLocalizedNumOrFallback(material.weight);
     final spoolCost = parseLocalizedNumOrFallback(material.cost);
 
+    await ref
+        .read(settingsServiceProvider)
+        .update((settings) => settings.copyWith(selectedMaterial: material.id));
     AppAnalytics.safeLog(
       () => AppAnalytics.materialSelectedInCalculator(
         hasTracking: material.autoDeductEnabled,
@@ -277,19 +324,22 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         .read(calculatorPreferencesRepositoryProvider)
         .saveStringValue('spoolCost', material.cost);
 
+    final syncedUsages = ref
+        .read(calculatorMaterialsServiceProvider)
+        .syncedSingleMaterialUsage(
+          state: state,
+          materialId: material.id,
+          materialName: material.name,
+          spoolWeight: spoolWeight,
+          spoolCost: spoolCost,
+        );
+
     state = state.copyWith(
+      selectedMaterialId: material.id,
       spoolWeight: NumberInput.dirty(value: spoolWeight),
       spoolCost: NumberInput.dirty(value: spoolCost),
       spoolCostText: material.cost,
-      materialUsages: ref
-          .read(calculatorMaterialsServiceProvider)
-          .syncedSingleMaterialUsage(
-            state: state,
-            materialId: material.id,
-            materialName: material.name,
-            spoolWeight: spoolWeight,
-            spoolCost: spoolCost,
-          ),
+      materialUsages: syncedUsages,
     );
 
     submit();
@@ -369,6 +419,33 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(labourRate: NumberInput.dirty(value: value));
   }
 
+  void setAdditionalCostAmount(num value) {
+    state = state.copyWith(
+      additionalCostAmount: NumberInput.dirty(value: value),
+    );
+  }
+
+  void setAdditionalCostNote(String? value) {
+    final normalized = value?.trim();
+    state = state.copyWith(
+      additionalCostNote: normalized == null || normalized.isEmpty
+          ? null
+          : normalized,
+    );
+  }
+
+  void setMarkupPercent(num value) {
+    state = state.copyWith(markupPercent: NumberInput.dirty(value: value));
+  }
+
+  void setSetupFee(num value) {
+    state = state.copyWith(setupFee: NumberInput.dirty(value: value));
+  }
+
+  void setRoundingMode(PricingRoundingMode value) {
+    state = state.copyWith(roundingMode: value);
+  }
+
   void updateLabourTime(num value) {
     ref
         .read(calculatorPreferencesRepositoryProvider)
@@ -378,6 +455,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   void updateResults(CalculationResult results) {
     state = state.copyWith(results: results);
+  }
+
+  void updatePricing(PricingResult pricing) {
+    state = state.copyWith(pricing: pricing);
   }
 
   void submit() {
@@ -398,6 +479,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final lr = state.labourRate.value ?? 0;
     final lt = state.labourTime.value ?? 0;
     final fr = state.failureRisk.value ?? 0;
+    final markupPercent = state.markupPercent.value ?? 0;
+    final setupFee = state.setupFee.value ?? 0;
 
     if (w > -1 && (h > -1 || m > -1) && kw > -1) {
       electricityCost = ref
@@ -434,16 +517,33 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
 
+    final pricing = PricingCalculator.calculate(
+      baseCost: results.total,
+      markupPercent: markupPercent,
+      setupFee: setupFee,
+      roundingMode: state.roundingMode,
+    );
+
     updateResults(results);
     unawaited(ref.read(appUsageServiceProvider).recordCalculation());
+    updatePricing(pricing);
 
     AppAnalytics.safeLog(
       () => AppAnalytics.calculationCreated(
         materialCount: state.materialUsages.length,
         hasFailureRisk: fr > 0,
         hasLabour: labourCost > 0,
+        hasPricing: pricing.isEnabled,
       ),
     );
+
+    if (pricing.roundingMode != PricingRoundingMode.none) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.pricingRoundingUsed(
+          roundingMode: pricing.roundingMode.storageValue,
+        ),
+      );
+    }
 
     if (state.materialUsages.length > 1) {
       AppAnalytics.safeLog(
@@ -508,5 +608,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   void submitDebounced({Duration delay = debounce250ms}) {
     _submitDebounce?.cancel();
     _submitDebounce = Timer(delay, submit);
+  }
+
+  String _selectedMaterialIdFor(List<MaterialUsageInput> usages) {
+    for (final usage in usages) {
+      final materialId = usage.materialId.trim();
+      if (materialId.isNotEmpty) return materialId;
+    }
+    return '';
   }
 }

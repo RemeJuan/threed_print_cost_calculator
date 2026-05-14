@@ -42,6 +42,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hoursLabel => '印刷時間（時間）';
 
   @override
+  String get durationHoursLabel => '時間';
+
+  @override
   String get wearAndTearLabel => '材質/摩耗';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get minutesLabel => '分';
+
+  @override
+  String get durationMinutesLabel => '分';
+
+  @override
+  String get printingTimeDialogTitle => '印刷時間';
+
+  @override
+  String get workTimeDialogTitle => '作業時間';
 
   @override
   String get spoolWeightLabel => 'スプール/樹脂重量';
@@ -136,6 +148,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cancelButton => 'キャンセル';
+
+  @override
+  String get resetButtonLabel => 'リセット';
+
+  @override
+  String get resetCalculationTitle => '計算をリセットしますか？';
+
+  @override
+  String get resetCalculationBody => '現在の計算機の値を破棄し、現在のデフォルト値を再読み込みします。';
 
   @override
   String get deleteButton => '削除';
@@ -508,10 +529,114 @@ class AppLocalizationsJa extends AppLocalizations {
   String get labourCostLabel => '人件費';
 
   @override
+  String get additionalCostLabel => '追加費用';
+
+  @override
+  String get additionalCostNoteLabel => '追加費用メモ';
+
+  @override
+  String get additionalCostNoteDialogTitle => '追加費用メモ';
+
+  @override
   String get riskCostLabel => 'リスク';
 
   @override
   String get totalCostLabel => '総費用';
+
+  @override
+  String get costTotalLabel => '合計コスト';
+
+  @override
+  String get markupLabel => '上乗せ';
+
+  @override
+  String get setupFeeLabel => '設定料';
+
+  @override
+  String get roundingAdjustmentLabel => '端数調整';
+
+  @override
+  String get finalPriceLabel => '最終価格';
+
+  @override
+  String get jobPricingOverridesLabel => 'ジョブ設定';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# 件の上書き適用',
+      one: '# 件の上書き適用',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '上乗せ率 %';
+
+  @override
+  String get pricingSetupFeeLabel => '設定料';
+
+  @override
+  String get pricingRoundingLabel => '端数処理';
+
+  @override
+  String get pricingRoundingNoneLabel => 'なし';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => '整数単位';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => '.99で終わる';
+
+  @override
+  String get currencySymbolLabel => '通貨記号';
+
+  @override
+  String get currencyPositionLabel => '通貨記号の位置';
+
+  @override
+  String get currencyPositionBeforeLabel => '前';
+
+  @override
+  String get currencyPositionAfterLabel => '後';
+
+  @override
+  String get currencySpacingLabel => '記号との間に空白';
+
+  @override
+  String get currencyPreviewLabel => 'プレビュー';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours時間 $minutes分';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
 
   @override
   String get workCostsLabel => '作業コスト';
@@ -583,7 +708,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      '日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計';
+      '日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計,上乗せ率 %,上乗せ額,設定料,端数処理,端数処理前小計,端数調整,最終価格';
 
   @override
   String get historyExportShareText => '3Dプリント費用履歴の書き出し';
@@ -641,14 +766,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String versionLabel(Object version) {
-    return 'Version $version';
+    return 'バージョン $version';
   }
 
   @override
   String get materialFallback => '素材';
 
   @override
-  String get durationPickerLabel => 'Printing time (hh:mm)';
+  String get durationPickerLabel => '印刷時間（hh:mm）';
 
   @override
   String get importGcodeButton => 'G-codeをインポート（自動入力）';

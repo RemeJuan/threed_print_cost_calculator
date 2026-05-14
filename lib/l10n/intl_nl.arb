@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Geschiedenis",
   "@historyAppBarTitle": {},
   "hoursLabel": "Afdruktijd (uren)",
+  "durationHoursLabel": "Uren",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Verwerkingstijd",
   "@labourTimeLabel": {},
   "minutesLabel": "Minuten",
+  "durationMinutesLabel": "Minuten",
+  "printingTimeDialogTitle": "Afdruktijd",
+  "workTimeDialogTitle": "Werktijd",
   "@minutesLabel": {},
   "premiumHeader": "Alleen voor Premium-gebruikers:",
   "@premiumHeader": {},
@@ -44,6 +48,13 @@
   "@electricityCostSettingsLabel": {},
   "submitButton": "Berekenen",
   "@submitButton": {},
+  "versionLabel": "Versie {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "watt": "Watt",
   "@watt": {},
   "wattLabel": "Watt (3D-printer)",
@@ -85,6 +96,12 @@
   "@deleteDialogContent": {},
   "cancelButton": "Annuleren",
   "@cancelButton": {},
+  "resetButtonLabel": "Resetten",
+  "@resetButtonLabel": {},
+  "resetCalculationTitle": "Berekening resetten?",
+  "@resetCalculationTitle": {},
+  "resetCalculationBody": "Hiermee worden de huidige calculatorwaarden verwijderd en de huidige standaardwaarden opnieuw geladen.",
+  "@resetCalculationBody": {},
   "deleteButton": "Verwijderen",
   "@deleteButton": {},
   "selectMaterialHint": "Aangepast (niet opgeslagen)",
@@ -228,7 +245,67 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal",
+  "costTotalLabel": "Totale kosten",
+  "markupLabel": "Opslag",
+  "setupFeeLabel": "Instelkosten",
+  "roundingAdjustmentLabel": "Afrondingscorrectie",
+  "finalPriceLabel": "Eindprijs",
+  "jobPricingOverridesLabel": "Taakinstellingen",
+  "pricingOverridesSummary": "{count, plural, one{# overschrijving toegepast} other{# overschrijvingen toegepast}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "Opslag %",
+  "pricingSetupFeeLabel": "Instelkosten",
+  "pricingRoundingLabel": "Afronding",
+  "pricingRoundingNoneLabel": "Geen",
+  "pricingRoundingWholeDollarLabel": "Hele eenheid",
+  "pricingRoundingPointNinetyNineLabel": "Eindigt op .99",
+  "currencySymbolLabel": "Valutasymbool",
+  "currencyPositionLabel": "Positie van het symbool",
+  "currencyPositionBeforeLabel": "Voor",
+  "currencyPositionAfterLabel": "Na",
+  "currencySpacingLabel": "Spatie met symbool",
+  "currencyPreviewLabel": "Voorbeeld",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} u {minutes} min",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal,Opslag %,Opslagbedrag,Instelkosten,Afrondingsmodus,Tussenbedrag voor afronding,Afrondingscorrectie,Eindprijs",
   "historyExportShareText": "Export van 3D-printkostenoverzicht",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",
@@ -297,6 +374,12 @@
   "@filamentCostLabel": {},
   "labourCostLabel": "Arbeidskosten",
   "@labourCostLabel": {},
+  "additionalCostLabel": "Extra kosten",
+  "@additionalCostLabel": {},
+  "additionalCostNoteLabel": "Opmerking extra kosten",
+  "@additionalCostNoteLabel": {},
+  "additionalCostNoteDialogTitle": "Opmerking extra kosten",
+  "@additionalCostNoteDialogTitle": {},
   "riskCostLabel": "Risico",
   "@riskCostLabel": {},
   "totalCostLabel": "Totaal",
@@ -348,7 +431,7 @@
   "lockedValuePlaceholder": "Vergrendeld",
   "hideProPromotionsTitle": "Pro-promoties verbergen",
   "hideProPromotionsSubtitle": "Upgrade-banners en prompts verbergen",
-  "durationPickerLabel": "Printing time (hh:mm)",
+  "durationPickerLabel": "Afdruktijd (uu:mm)",
   "importGcodeButton": "G-code importeren (Auto-invullen)",
   "importGcodePageTitle": "G-code importeren (Beta)",
   "importGcodeIntro": "Kies een lokaal .gcode-bestand. Ondersteunde slicers: PrusaSlicer, OrcaSlicer, Bambu Studio en Cura.",

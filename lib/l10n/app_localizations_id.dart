@@ -42,6 +42,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get hoursLabel => 'Waktu pencetakan (jam)';
 
   @override
+  String get durationHoursLabel => 'Jam';
+
+  @override
   String get wearAndTearLabel => 'Bahan/Keausan + sobek';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get minutesLabel => 'Menit';
+
+  @override
+  String get durationMinutesLabel => 'Menit';
+
+  @override
+  String get printingTimeDialogTitle => 'Waktu pencetakan';
+
+  @override
+  String get workTimeDialogTitle => 'Waktu kerja';
 
   @override
   String get spoolWeightLabel => 'Berat kumparan/Resin';
@@ -136,6 +148,16 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cancelButton => 'Batal';
+
+  @override
+  String get resetButtonLabel => 'Reset';
+
+  @override
+  String get resetCalculationTitle => 'Reset perhitungan?';
+
+  @override
+  String get resetCalculationBody =>
+      'Ini akan membuang nilai kalkulator saat ini dan memuat ulang nilai default saat ini.';
 
   @override
   String get deleteButton => 'Hapus';
@@ -522,10 +544,114 @@ class AppLocalizationsId extends AppLocalizations {
   String get labourCostLabel => 'Tenaga kerja';
 
   @override
+  String get additionalCostLabel => 'Biaya tambahan';
+
+  @override
+  String get additionalCostNoteLabel => 'Catatan biaya tambahan';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'Catatan biaya tambahan';
+
+  @override
   String get riskCostLabel => 'Risiko';
 
   @override
   String get totalCostLabel => 'Total biaya';
+
+  @override
+  String get costTotalLabel => 'Total biaya';
+
+  @override
+  String get markupLabel => 'Markup';
+
+  @override
+  String get setupFeeLabel => 'Biaya penyiapan';
+
+  @override
+  String get roundingAdjustmentLabel => 'Penyesuaian pembulatan';
+
+  @override
+  String get finalPriceLabel => 'Harga akhir';
+
+  @override
+  String get jobPricingOverridesLabel => 'Pengaturan tugas';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# override diterapkan',
+      one: '# override diterapkan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '% markup';
+
+  @override
+  String get pricingSetupFeeLabel => 'Biaya penyiapan';
+
+  @override
+  String get pricingRoundingLabel => 'Pembulatan';
+
+  @override
+  String get pricingRoundingNoneLabel => 'Tidak ada';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Unit utuh';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Berakhir .99';
+
+  @override
+  String get currencySymbolLabel => 'Simbol mata uang';
+
+  @override
+  String get currencyPositionLabel => 'Posisi simbol mata uang';
+
+  @override
+  String get currencyPositionBeforeLabel => 'Sebelum';
+
+  @override
+  String get currencyPositionAfterLabel => 'Sesudah';
+
+  @override
+  String get currencySpacingLabel => 'Spasi dengan simbol';
+
+  @override
+  String get currencyPreviewLabel => 'Pratinjau';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours j $minutes mnt';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
 
   @override
   String get workCostsLabel => 'Biaya kerja';
@@ -599,7 +725,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total';
+      'Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total,% markup,Jumlah markup,Biaya penyiapan,Mode pembulatan,Subtotal sebelum pembulatan,Penyesuaian pembulatan,Harga akhir';
 
   @override
   String get historyExportShareText => 'Ekspor riwayat biaya cetak 3D';

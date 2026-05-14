@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -41,6 +42,17 @@ class PrinterIndexHelpers {
 
   String _normalize(String s) => s.trim().toLowerCase();
 
+  Map<String, dynamic>? _recordValueMap(Object? value, Object? key) {
+    if (value is! Map) {
+      debugPrint(
+        'Skipping printer index record ${key ?? '<unknown>'}: expected Map, got ${value.runtimeType}',
+      );
+      return null;
+    }
+
+    return Map<String, dynamic>.from(value);
+  }
+
   /// Rebuild the entire index from the history store. This is idempotent.
   Future<void> rebuildIndex() async {
     final Map<String, List<String>> map = {};
@@ -48,7 +60,8 @@ class PrinterIndexHelpers {
     final records = await _historyStore.find(_db);
 
     for (final r in records) {
-      final value = r.value as Map<String, dynamic>;
+      final value = _recordValueMap(r.value, r.key);
+      if (value == null) continue;
       final printer = (value['printer']?.toString() ?? '').trim();
       final key = r.key;
       final norm = _normalize(printer);

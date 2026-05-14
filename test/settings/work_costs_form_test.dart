@@ -99,7 +99,7 @@ void main() {
       repo.emit(GeneralSettingsModel.initial());
       await tester.pump();
 
-      expect(find.byType(TextFormField), findsNWidgets(3));
+      expect(find.byType(TextFormField), findsNWidgets(6));
     });
 
     testWidgets('persists wear and tear after debounce', (tester) async {

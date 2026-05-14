@@ -27,7 +27,11 @@ class GCodeImportPage extends HookConsumerWidget {
         () => AppAnalytics.gcodeImportStarted(source: source),
       );
       return () {
-        AppAnalytics.safeLog(AppAnalytics.gcodeImportAbandoned);
+        AppAnalytics.safeLog(
+          () => AppAnalytics.gcodeImportAbandoned(
+            failureReason: GCodeFailureReason.cancelled,
+          ),
+        );
       };
     }, [source]);
 

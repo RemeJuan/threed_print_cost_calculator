@@ -6,6 +6,9 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
 /// Reusable material picker widget. Uses the shared materials provider so it
 /// updates live without creating duplicate listeners.
@@ -20,6 +23,10 @@ class MaterialPicker extends HookConsumerWidget {
     final query = useState('');
     final l10n = AppLocalizations.of(context)!;
     final materialsAsync = ref.watch(materialsStreamProvider);
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
 
     return materialsAsync.when(
       data: (items) {
@@ -121,7 +128,7 @@ class MaterialPicker extends HookConsumerWidget {
                     ),
                     title: Text(material.name),
                     subtitle: Text(
-                      '${material.color} • ${costPerKg.toStringAsFixed(2)}/kg',
+                      '${material.color} • ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
                     ),
                     onTap: () => onSelected(material),
                   );

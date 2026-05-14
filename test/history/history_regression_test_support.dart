@@ -31,7 +31,7 @@ import '../helpers/helpers.dart';
 import '../helpers/lower_level_test_fakes.dart';
 
 const historyCsvHeader =
-    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+    'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Pricing Markup %,Pricing Markup,Pricing Setup Fee,Pricing Rounding,Pricing Subtotal,Pricing Rounding Adjustment,Final Price';
 
 final historyStore = StoreRef<Object?, Map<String, dynamic>>('history');
 
@@ -167,12 +167,16 @@ class HistoryRegressionFixtures {
   );
 
   static final fallbackState = CalculatorState(
+    activePrinterId: fallbackPrinter.id,
+    selectedMaterialId: fallbackMaterial.id,
     printWeight: NumberInput.dirty(value: 14),
     hours: NumberInput.dirty(value: 1),
     minutes: NumberInput.dirty(value: 0),
   );
 
   static final initializedState = CalculatorState(
+    activePrinterId: initializedPrinter.id,
+    selectedMaterialId: initializedMaterial.id,
     materialUsages: [
       MaterialUsageInput(
         materialId: 'mat-standard',
@@ -544,6 +548,9 @@ Future<Map<String, String>> pumpCalculatorResultsView(
   final db = await tester.pumpApp(CalculatorResults(results: results), [
     isPremiumProvider.overrideWithValue(true),
     shouldShowProPromotionProvider.overrideWithValue(false),
+    settingsRepositoryProvider.overrideWithValue(
+      FakeSettingsRepository(),
+    ),
   ]);
 
   try {
@@ -621,7 +628,14 @@ String expectedHistoryCsvRow(HistoryModel item) {
       '"${item.filamentCost}",'
       '"${item.labourCost}",'
       '"${item.riskCost}",'
-      '"${item.totalCost}"';
+      '"${item.totalCost}",'
+      '"${item.pricingMarkupPercent ?? ''}",'
+      '"${item.pricingMarkupAmount ?? ''}",'
+      '"${item.pricingSetupFee ?? ''}",'
+      '"${item.pricingRoundingMode ?? ''}",'
+      '"${item.pricingSubtotalBeforeRounding ?? ''}",'
+      '"${item.pricingRoundingAdjustment ?? ''}",'
+      '"${item.finalPrice ?? ''}"';
 }
 
 String _textByKey(WidgetTester tester, Key key) {

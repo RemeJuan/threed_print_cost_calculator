@@ -15,10 +15,10 @@ class WhatsNewAnnouncementLocale {
     final map = json as Map<String, dynamic>?;
     if (map == null) return null;
 
-    final title = map['title'] as String?;
-    final body = map['body'] as String?;
-    final cta = map['cta'] as String?;
-    final unlockProCta = map['unlock_pro_cta'] as String?;
+    final title = map['title']?.toString();
+    final body = map['body']?.toString();
+    final cta = map['cta']?.toString();
+    final unlockProCta = map['unlock_pro_cta']?.toString();
 
     if (title == null || title.isEmpty) return null;
     if (body == null || body.isEmpty) return null;
@@ -41,7 +41,7 @@ class WhatsNewAnnouncement {
   const WhatsNewAnnouncement({required this.id, required this.locales});
 
   static WhatsNewAnnouncement? fromJson(Map<String, dynamic> json) {
-    final id = json['wn_id'] as String?;
+    final id = json['wn_id']?.toString();
     if (id == null || id.isEmpty) return null;
 
     final locales = <String, WhatsNewAnnouncementLocale>{};

@@ -42,6 +42,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get hoursLabel => 'เวลาในการพิมพ์ (ชั่วโมง)';
 
   @override
+  String get durationHoursLabel => 'ชั่วโมง';
+
+  @override
   String get wearAndTearLabel => 'วัสดุ/การสึกหรอ + ฉีกขาด';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get minutesLabel => 'นาที';
+
+  @override
+  String get durationMinutesLabel => 'นาที';
+
+  @override
+  String get printingTimeDialogTitle => 'เวลาในการพิมพ์';
+
+  @override
+  String get workTimeDialogTitle => 'เวลาทำงาน';
 
   @override
   String get spoolWeightLabel => 'น้ำหนักเส้น/เรซิน';
@@ -136,6 +148,16 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get cancelButton => 'ยกเลิก';
+
+  @override
+  String get resetButtonLabel => 'รีเซ็ต';
+
+  @override
+  String get resetCalculationTitle => 'รีเซ็ตการคำนวณหรือไม่?';
+
+  @override
+  String get resetCalculationBody =>
+      'การดำเนินการนี้จะลบค่าปัจจุบันในเครื่องคำนวณ และโหลดค่าเริ่มต้นปัจจุบันใหม่';
 
   @override
   String get deleteButton => 'ลบ';
@@ -518,10 +540,114 @@ class AppLocalizationsTh extends AppLocalizations {
   String get labourCostLabel => 'ค่าแรง';
 
   @override
+  String get additionalCostLabel => 'ค่าใช้จ่ายเพิ่มเติม';
+
+  @override
+  String get additionalCostNoteLabel => 'หมายเหตุค่าใช้จ่ายเพิ่มเติม';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'หมายเหตุค่าใช้จ่ายเพิ่มเติม';
+
+  @override
   String get riskCostLabel => 'ความเสี่ยง';
 
   @override
   String get totalCostLabel => 'ทั้งหมด';
+
+  @override
+  String get costTotalLabel => 'ต้นทุนรวม';
+
+  @override
+  String get markupLabel => 'ส่วนเพิ่ม';
+
+  @override
+  String get setupFeeLabel => 'ค่าตั้งค่า';
+
+  @override
+  String get roundingAdjustmentLabel => 'ปรับปัดเศษ';
+
+  @override
+  String get finalPriceLabel => 'ราคาสุดท้าย';
+
+  @override
+  String get jobPricingOverridesLabel => 'การตั้งค่างาน';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# รายการปรับใช้',
+      one: '# รายการปรับใช้',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '% ส่วนเพิ่ม';
+
+  @override
+  String get pricingSetupFeeLabel => 'ค่าตั้งค่า';
+
+  @override
+  String get pricingRoundingLabel => 'การปัดเศษ';
+
+  @override
+  String get pricingRoundingNoneLabel => 'ไม่มี';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'จำนวนเต็มหน่วย';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'ลงท้าย .99';
+
+  @override
+  String get currencySymbolLabel => 'สัญลักษณ์สกุลเงิน';
+
+  @override
+  String get currencyPositionLabel => 'ตำแหน่งสัญลักษณ์สกุลเงิน';
+
+  @override
+  String get currencyPositionBeforeLabel => 'ก่อน';
+
+  @override
+  String get currencyPositionAfterLabel => 'หลัง';
+
+  @override
+  String get currencySpacingLabel => 'เว้นวรรคกับสัญลักษณ์';
+
+  @override
+  String get currencyPreviewLabel => 'ตัวอย่าง';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours ชม. $minutes นาที';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
 
   @override
   String get workCostsLabel => 'ค่าใช้จ่ายงาน';
@@ -594,7 +720,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'วันที่,เครื่องพิมพ์,วัสดุ,วัสดุ,น้ำหนัก (ก.),เวลา,ไฟฟ้า,เส้นใย,ค่าแรง,ความเสี่ยง,รวม';
+      'วันที่,เครื่องพิมพ์,วัสดุ,วัสดุ,น้ำหนัก (ก.),เวลา,ไฟฟ้า,เส้นใย,ค่าแรง,ความเสี่ยง,รวม,% ส่วนเพิ่ม,จำนวนส่วนเพิ่ม,ค่าตั้งค่า,โหมดปัดเศษ,ยอดย่อยก่อนปัดเศษ,การปรับปัดเศษ,ราคาสุดท้าย';
 
   @override
   String get historyExportShareText => 'การส่งออกประวัติต้นทุนการพิมพ์ 3D';

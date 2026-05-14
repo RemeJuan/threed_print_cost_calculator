@@ -95,8 +95,10 @@ android {
     // in Play Store App Bundle deliveries. Required in conjunction with
     // ndk.abiFilters to prevent Play Store APK splitting from stripping native libs.
     // https://developer.android.com/studio/build/Configure-APK-creating-unbundled-apks
-    jniLibs {
-        useLegacyPackaging true
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
     }
 
     // TODO: Remove when below fix is available in stable channel.

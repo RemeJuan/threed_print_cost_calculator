@@ -48,6 +48,14 @@ String generateCsv(List<HistoryModel> items, String csvHeader) {
     final labour = (item.labourCost).toString();
     final risk = (item.riskCost).toString();
     final total = (item.totalCost).toString();
+    final markupPercent = item.pricingMarkupPercent?.toString() ?? '';
+    final markupAmount = item.pricingMarkupAmount?.toString() ?? '';
+    final setupFee = item.pricingSetupFee?.toString() ?? '';
+    final roundingMode = _sanitizeForCsv(item.pricingRoundingMode ?? '');
+    final pricingSubtotal =
+        item.pricingSubtotalBeforeRounding?.toString() ?? '';
+    final roundingAdjustment = item.pricingRoundingAdjustment?.toString() ?? '';
+    final finalPrice = item.finalPrice?.toString() ?? '';
 
     final materialsFlattened = item.materialUsages
         .map((usage) {
@@ -74,7 +82,14 @@ String generateCsv(List<HistoryModel> items, String csvHeader) {
       '${_quote(filament)},'
       '${_quote(labour)},'
       '${_quote(risk)},'
-      '${_quote(total)}',
+      '${_quote(total)},'
+      '${_quote(markupPercent)},'
+      '${_quote(markupAmount)},'
+      '${_quote(setupFee)},'
+      '${_quote(roundingMode)},'
+      '${_quote(pricingSubtotal)},'
+      '${_quote(roundingAdjustment)},'
+      '${_quote(finalPrice)}',
     );
   }
 
@@ -98,6 +113,14 @@ List<HistoryModel> buildSampleHistoryItems() {
         {'materialName': 'PLA Matte White', 'weightGrams': 87},
       ],
       timeHours: '03:40',
+      pricingMarkupPercent: 25,
+      pricingMarkupAmount: 4.73,
+      pricingSetupFee: 3,
+      pricingRoundingMode: '.99',
+      pricingSubtotalBeforeRounding: 26.63,
+      pricingRoundingAdjustment: 0.36,
+      finalPrice: 26.99,
+      pricingUsedOverrides: false,
     ),
     HistoryModel(
       name: 'Sample Bracket',

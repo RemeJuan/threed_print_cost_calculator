@@ -39,6 +39,35 @@
 - CSV import columns: `name,brand,material_type,color,color_hex,spool_weight,remaining_weight,spool_cost,notes`.
 - CSV validation currently requires `name`, `color`, positive `spool_weight`, and positive `spool_cost`.
 
+## Materials UX uplift
+
+### Summary
+- Promote materials from settings into dedicated first-class page.
+
+### Changes
+- Materials no longer buried in settings.
+- Dedicated Materials screen/page.
+- Improved visibility and management.
+
+### Data enhancements
+- Keep existing `cost per unit`.
+- Keep existing `remaining stock`.
+- Optional non-breaking additions: better name/label handling, notes field, optional supplier field.
+
+### UX
+- List materials with key info visible.
+- Simplify edit/create flows.
+- Keep current stock deduction behavior aligned with history save action.
+
+### Scope
+- UX improvement only.
+- No inventory system.
+- No stock history.
+- No alerts or automation.
+
+### Release note
+- Patch-level UX improvement, not new feature.
+
 ## Known Issues
 - Save-coupled deduction can be sensitive to duplicate save attempts.
 - TODO: verify in code whether failed save/retry can lead to unintended repeated deductions.
@@ -46,6 +75,7 @@
 - CSV import currently depends on user-supplied files matching the expected schema exactly.
 
 ## TODOs
+- Validate dedicated Materials page flow against current stock deduction behavior.
 - Add manual stock adjustments.
 - Add low-stock alerts.
 - Add broader CSV parsing coverage and edge-case UX for malformed files.

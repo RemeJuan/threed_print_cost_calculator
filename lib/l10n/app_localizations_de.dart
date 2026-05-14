@@ -42,6 +42,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hoursLabel => 'Druckzeit (Stunden)';
 
   @override
+  String get durationHoursLabel => 'Stunden';
+
+  @override
   String get wearAndTearLabel => 'Materialien/Verschleiß';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get minutesLabel => 'Protokoll';
+
+  @override
+  String get durationMinutesLabel => 'Minuten';
+
+  @override
+  String get printingTimeDialogTitle => 'Druckzeit';
+
+  @override
+  String get workTimeDialogTitle => 'Arbeitszeit';
 
   @override
   String get spoolWeightLabel => 'Spule/Harzgewicht';
@@ -137,6 +149,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get cancelButton => 'Abbrechen';
+
+  @override
+  String get resetButtonLabel => 'Zurücksetzen';
+
+  @override
+  String get resetCalculationTitle => 'Berechnung zurücksetzen?';
+
+  @override
+  String get resetCalculationBody =>
+      'Dadurch werden die aktuellen Rechnerwerte verworfen und die aktuellen Standardwerte neu geladen.';
 
   @override
   String get deleteButton => 'Löschen';
@@ -522,10 +544,114 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labourCostLabel => 'Arbeitskosten';
 
   @override
+  String get additionalCostLabel => 'Zusatzkosten';
+
+  @override
+  String get additionalCostNoteLabel => 'Notiz zu Zusatzkosten';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'Notiz zu Zusatzkosten';
+
+  @override
   String get riskCostLabel => 'Risikokosten';
 
   @override
   String get totalCostLabel => 'Gesamtkosten';
+
+  @override
+  String get costTotalLabel => 'Kosten gesamt';
+
+  @override
+  String get markupLabel => 'Aufschlag';
+
+  @override
+  String get setupFeeLabel => 'Einrichtungsgebühr';
+
+  @override
+  String get roundingAdjustmentLabel => 'Rundungsanpassung';
+
+  @override
+  String get finalPriceLabel => 'Endpreis';
+
+  @override
+  String get jobPricingOverridesLabel => 'Auftragseinstellungen';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# Überschreibungen aktiv',
+      one: '# Überschreibung aktiv',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => 'Aufschlag %';
+
+  @override
+  String get pricingSetupFeeLabel => 'Einrichtungsgebühr';
+
+  @override
+  String get pricingRoundingLabel => 'Rundung';
+
+  @override
+  String get pricingRoundingNoneLabel => 'Keine';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Ganze Einheit';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Endet auf .99';
+
+  @override
+  String get currencySymbolLabel => 'Währungssymbol';
+
+  @override
+  String get currencyPositionLabel => 'Position des Währungssymbols';
+
+  @override
+  String get currencyPositionBeforeLabel => 'Davor';
+
+  @override
+  String get currencyPositionAfterLabel => 'Danach';
+
+  @override
+  String get currencySpacingLabel => 'Leerzeichen beim Symbol';
+
+  @override
+  String get currencyPreviewLabel => 'Vorschau';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours Std. $minutes Min.';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
 
   @override
   String get workCostsLabel => 'Arbeitskosten';
@@ -600,7 +726,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Datum,Drucker,Material,Materialien,Gewicht (g),Zeit,Strom,Filament,Arbeit,Risiko,Gesamt';
+      'Datum,Drucker,Material,Materialien,Gewicht (g),Zeit,Strom,Filament,Arbeit,Risiko,Gesamt,Aufschlag %,Aufschlagbetrag,Einrichtungsgebühr,Rundungsmodus,Zwischensumme vor Rundung,Rundungsanpassung,Endpreis';
 
   @override
   String get historyExportShareText => 'Export des 3D-Druck-Kostenverlaufs';

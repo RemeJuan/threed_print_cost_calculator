@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dar
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -91,6 +92,33 @@ void main() {
       findsOneWidget,
     );
     expect(paywallPresenter.calls, 0);
+  });
+
+  testWidgets('reset action confirms before calling notifier reset', (
+    tester,
+  ) async {
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
+    );
+    final paywallPresenter = FakePaywallPresenter();
+
+    await pumpPage(tester, gateway, calculatorNotifier, paywallPresenter);
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('calculator.reset.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(calculatorNotifier.resetCalls, 0);
+
+    final dialogContext = tester.element(find.byType(AlertDialog));
+    final l10n = AppLocalizations.of(dialogContext)!;
+    await tester.tap(find.widgetWithText(FilledButton, l10n.resetButtonLabel));
+    await tester.pumpAndSettle();
+
+    expect(calculatorNotifier.resetCalls, 1);
   });
 
   testWidgets('loading users do not trigger paywall unexpectedly', (

@@ -47,6 +47,16 @@ class HelpSupportFooter extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
+              key: const ValueKey<String>('helpSupport.footer.threads'),
+              tooltip: l10n.helpSupportThreadsLabel,
+              icon: const HugeIcon(
+                icon: HugeIcons.strokeRoundedThreads,
+                size: 18,
+              ),
+              onPressed: () => openUrl(helpSupportThreadsUrl),
+            ),
+            const SizedBox(width: 8),
+            IconButton.filledTonal(
               key: const ValueKey<String>('helpSupport.footer.mastodon'),
               tooltip: l10n.helpSupportMastodonLabel,
               icon: const HugeIcon(

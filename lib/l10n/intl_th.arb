@@ -9,6 +9,7 @@
   "historyAppBarTitle": "ประวัติ",
   "@historyAppBarTitle": {},
   "hoursLabel": "เวลาในการพิมพ์ (ชั่วโมง)",
+  "durationHoursLabel": "ชั่วโมง",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "ระยะเวลาดำเนินการ",
   "@labourTimeLabel": {},
   "minutesLabel": "นาที",
+  "durationMinutesLabel": "นาที",
+  "printingTimeDialogTitle": "เวลาในการพิมพ์",
+  "workTimeDialogTitle": "เวลาทำงาน",
   "@minutesLabel": {},
   "premiumHeader": "ผู้ใช้ระดับพรีเมียมเท่านั้น:",
   "@premiumHeader": {},
@@ -85,6 +89,12 @@
   "@deleteDialogContent": {},
   "cancelButton": "ยกเลิก",
   "@cancelButton": {},
+  "resetButtonLabel": "รีเซ็ต",
+  "@resetButtonLabel": {},
+  "resetCalculationTitle": "รีเซ็ตการคำนวณหรือไม่?",
+  "@resetCalculationTitle": {},
+  "resetCalculationBody": "การดำเนินการนี้จะลบค่าปัจจุบันในเครื่องคำนวณ และโหลดค่าเริ่มต้นปัจจุบันใหม่",
+  "@resetCalculationBody": {},
   "deleteButton": "ลบ",
   "@deleteButton": {},
   "selectMaterialHint": "กำหนดเอง (ยังไม่ได้บันทึก)",
@@ -228,7 +238,67 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "วันที่,เครื่องพิมพ์,วัสดุ,วัสดุ,น้ำหนัก (ก.),เวลา,ไฟฟ้า,เส้นใย,ค่าแรง,ความเสี่ยง,รวม",
+  "costTotalLabel": "ต้นทุนรวม",
+  "markupLabel": "ส่วนเพิ่ม",
+  "setupFeeLabel": "ค่าตั้งค่า",
+  "roundingAdjustmentLabel": "ปรับปัดเศษ",
+  "finalPriceLabel": "ราคาสุดท้าย",
+  "jobPricingOverridesLabel": "การตั้งค่างาน",
+  "pricingOverridesSummary": "{count, plural, one{# รายการปรับใช้} other{# รายการปรับใช้}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% ส่วนเพิ่ม",
+  "pricingSetupFeeLabel": "ค่าตั้งค่า",
+  "pricingRoundingLabel": "การปัดเศษ",
+  "pricingRoundingNoneLabel": "ไม่มี",
+  "pricingRoundingWholeDollarLabel": "จำนวนเต็มหน่วย",
+  "pricingRoundingPointNinetyNineLabel": "ลงท้าย .99",
+  "currencySymbolLabel": "สัญลักษณ์สกุลเงิน",
+  "currencyPositionLabel": "ตำแหน่งสัญลักษณ์สกุลเงิน",
+  "currencyPositionBeforeLabel": "ก่อน",
+  "currencyPositionAfterLabel": "หลัง",
+  "currencySpacingLabel": "เว้นวรรคกับสัญลักษณ์",
+  "currencyPreviewLabel": "ตัวอย่าง",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} ชม. {minutes} นาที",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historyCsvHeader": "วันที่,เครื่องพิมพ์,วัสดุ,วัสดุ,น้ำหนัก (ก.),เวลา,ไฟฟ้า,เส้นใย,ค่าแรง,ความเสี่ยง,รวม,% ส่วนเพิ่ม,จำนวนส่วนเพิ่ม,ค่าตั้งค่า,โหมดปัดเศษ,ยอดย่อยก่อนปัดเศษ,การปรับปัดเศษ,ราคาสุดท้าย",
   "historyExportShareText": "การส่งออกประวัติต้นทุนการพิมพ์ 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "นโยบายความเป็นส่วนตัว",
@@ -297,6 +367,12 @@
   "@filamentCostLabel": {},
   "labourCostLabel": "ค่าแรง",
   "@labourCostLabel": {},
+  "additionalCostLabel": "ค่าใช้จ่ายเพิ่มเติม",
+  "@additionalCostLabel": {},
+  "additionalCostNoteLabel": "หมายเหตุค่าใช้จ่ายเพิ่มเติม",
+  "@additionalCostNoteLabel": {},
+  "additionalCostNoteDialogTitle": "หมายเหตุค่าใช้จ่ายเพิ่มเติม",
+  "@additionalCostNoteDialogTitle": {},
   "riskCostLabel": "ความเสี่ยง",
   "@riskCostLabel": {},
   "totalCostLabel": "ทั้งหมด",

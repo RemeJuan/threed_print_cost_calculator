@@ -53,10 +53,10 @@
   - notes: entry attribution for calculator/header; emitted on import flow open
 
 - `gcode_import_abandoned`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`?]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: fired on page dispose if import flow opened and not completed
+  - notes: fired on page dispose if import flow opened and not completed; `failure_reason` is `cancelled` when user abandons the flow; only present when a meaningful reason exists
 
 - `gcode_file_selected`
   - params: [`file_type`]
@@ -77,10 +77,10 @@
   - notes: `parse_status=partial`
 
 - `gcode_parse_failed`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: used for unsupported extension, unsupported file contents, size rejection, and read failure; `parse_status=failed`
+  - notes: `parse_status=failed`; `failure_reason` is a `GCodeFailureReason` constant (`file_too_large`, `unsupported_content`, `parse_error`, `read_failed`, or `unknown`); no filenames, raw errors, or stack traces
 
 - `gcode_import_breadcrumb`
   - params: [`stage`, `file_name`?, `original_file_name`?, `mime_type`?, `file_size_bytes`?, `reason`?]
@@ -98,27 +98,51 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: helper exists in analytics code, but current page flow does not emit this event
+  - notes: helper exists in analytics code, but current page flow does not emit this event; it is stale unless a future intermediate funnel step is wired in
 
 - `gcode_flow_completed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: fired after values applied; clears open-flow timer state
+  - notes: fired only after the calculator apply CTA; clears open-flow timer state immediately, which suppresses later abandon logging for the same session
 
 - `gcode_import_success`
   - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: success milestone when parsed values are applied to calculator
+  - notes: success milestone when parsed values are applied to calculator; does not carry `slicer`, `parse_status`, or `file_size_bucket`, so it cannot stand alone as a funnel context event
 
 ### Calculator usage
 
 - `calculation_created`
-  - params: [`material_count`, `has_failure_risk`, `has_labour_cost`]
+  - params: [`material_count`, `has_failure_risk`, `has_labour`, `has_pricing`]
   - triggered_from: [`lib/calculator/provider/calculator_notifier.dart`]
   - feature: Calculator usage
-  - notes: fired after results recomputed
+  - notes: fired after results recomputed; `has_pricing` acts as a lightweight pricing usage signal without its own dedicated event
+
+- `pricing_settings_changed`
+  - params: [`pricing_enabled`, `markup_bucket`, `setup_fee_bucket`, `rounding_mode`]
+  - triggered_from: [`lib/settings/work_costs_form.dart`]
+  - feature: Pricing / Settings
+  - notes: fired when a pricing default changes in settings; uses bucketed values (`markup_bucket`: 0/1_10/11_25/26_50/50_plus, `setup_fee_bucket`: 0/low/medium/high) for low-cardinality analytics
+
+- `pricing_override_used`
+  - params: [`field`, `has_overrides`]
+  - triggered_from: [`lib/calculator/view/components/job_pricing_overrides_section.dart`]
+  - feature: Pricing / Calculator
+  - notes: fired when a job-level override field is changed
+
+- `pricing_rounding_used`
+  - params: [`rounding_mode`]
+  - triggered_from: [`lib/calculator/provider/calculator_notifier.dart`]
+  - feature: Pricing / Calculator
+  - notes: fired when rounding is active during calculation
+
+- `pricing_saved`
+  - params: [`has_pricing`, `used_overrides`, `rounding_mode`]
+  - triggered_from: [`lib/calculator/view/save_form.dart`]
+  - feature: Pricing / History
+  - notes: fired when a job is saved with pricing snapshot data
 
 - `multi_material_used`
   - params: [`material_count`]
@@ -150,21 +174,21 @@
 
 - `premium_feature_tapped`
   - params: [`feature`, `is_pro`, `source`]
-  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`, `lib/app/header_actions.dart`, `lib/settings/settings_page.dart`, `lib/shared/components/whats_new_sheet.dart`]
+  - triggered_from: [`lib/calculator/view/calculator_page.dart`, `lib/history/history_page.dart`, `lib/app/header_actions.dart`, `lib/shared/components/whats_new_sheet.dart`]
   - feature: Premium / RevenueCat
-  - notes: current values: `multi_printer`, `history`, `pro`, `settings`, `whats_new`; `is_pro` reflects user state at tap time; `source` is only present on some call sites
+  - notes: current values: `multi_printer`, `history`, `pro`, `whats_new`; `is_pro` reflects user state at tap time
 
 - `paywall_viewed`
   - params: [`feature`, `entry_point`, `source`, `launch_count`]
   - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
   - feature: Premium / RevenueCat
-  - notes: `AppAnalytics.paywallShown(...)` aliases to this same event name; `source` explains trigger path (`whats_new`, `premium_feature`, `header`, `history_teaser_primary`, `history_teaser_secondary`, `unknown`); `launch_count` comes from local run counter when available
+  - notes: `AppAnalytics.paywallShown(...)` is a pure alias to this same event name; the presenter logs this before RevenueCat UI opens and the direct subscriptions sheet logs it in its own build path; `source` carries trigger path when supplied (`whats_new`, `premium_feature`, `header`, `history_teaser_primary`, `history_teaser_secondary`, `unknown`); `launch_count` comes from local run counter when available
 
 - `purchase_completed`
   - params: [`source`, `entry_point`]
   - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
   - feature: Premium / RevenueCat
-  - notes: only local success tracked; sources currently `calculator`, `header`, `history`, `history_teaser_primary`, `history_teaser_secondary`, `whats_new`
+  - notes: only local success tracked; emitted after RevenueCat entitlements show active in the presenter flow or after a successful direct purchase in the subscriptions sheet; sources currently `calculator`, `header`, `history`, `history_teaser_primary`, `history_teaser_secondary`, `whats_new`
 
 - `paywall_present_error`
   - params: [`error`, `stack`]
@@ -268,6 +292,12 @@
 - preview viewed: yes — `gcode_preview_viewed`
 - abandon: yes — `gcode_import_abandoned`
 
+Notes:
+
+- `gcode_import_success` and `gcode_flow_completed` are emitted from the same apply CTA handler, after parse/preview has already succeeded.
+- `gcode_import_abandoned` is dispose-driven and only fires if the flow timer is still open; it should not follow a completed apply path.
+- Android and iOS share the same analytics sequence after file selection; only the picker metadata source differs.
+
 ### Materials
 
 - tab opened: yes — `materials_view_opened`
@@ -285,6 +315,7 @@
 - purchase success: yes — `purchase_completed`
 - purchase failure/cancel: no dedicated event found
 - restore started/success/failure: no dedicated event found
+- paywall entry attribution: yes — all paths pass `source`
 
 ## Known gaps
 
@@ -292,8 +323,11 @@
 - No dedicated purchase-started event.
 - No dedicated purchase-cancelled or purchase-failed event. RevenueCat errors only logged locally.
 - No dedicated restore-purchases analytics.
-- `gcode_parse_failed` exists, but missing failure reason/context param distinguishing unsupported type vs unsupported contents vs read failure.
+- _(fixed)_ `gcode_parse_failed` now includes `failure_reason` to distinguish size rejection, unsupported content, parse errors, and read failures.
+- _(fixed)_ History upsell `premium_feature_tapped` now includes `source: history_upsell`.
 - Paywall routing is centralized in `lib/purchases/paywall_presenter.dart`; `subscriptions.dart` is the sheet implementation, not the only paywall entry.
+- `paywall_shown` is not a distinct event from `paywall_viewed`; it is an alias in `AppAnalytics`.
+- `showSubscriptionsSheet` also logs `paywall_viewed`, so it can double-log if wrapped by presenter-driven flow.
 - History flow lacks load/delete analytics:
   - no history entry loaded event
   - no history delete success/failure event

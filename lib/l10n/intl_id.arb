@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Riwayat",
   "@historyAppBarTitle": {},
   "hoursLabel": "Waktu pencetakan (jam)",
+  "durationHoursLabel": "Jam",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Waktu pengerjaan",
   "@labourTimeLabel": {},
   "minutesLabel": "Menit",
+  "durationMinutesLabel": "Menit",
+  "printingTimeDialogTitle": "Waktu pencetakan",
+  "workTimeDialogTitle": "Waktu kerja",
   "@minutesLabel": {},
   "premiumHeader": "Khusus pengguna premium:",
   "@premiumHeader": {},
@@ -84,6 +88,12 @@
   "@deleteDialogContent": {},
   "cancelButton": "Batal",
   "@cancelButton": {},
+  "resetButtonLabel": "Reset",
+  "@resetButtonLabel": {},
+  "resetCalculationTitle": "Reset perhitungan?",
+  "@resetCalculationTitle": {},
+  "resetCalculationBody": "Ini akan membuang nilai kalkulator saat ini dan memuat ulang nilai default saat ini.",
+  "@resetCalculationBody": {},
   "deleteButton": "Hapus",
   "@deleteButton": {},
   "selectMaterialHint": "Kustom (belum disimpan)",
@@ -227,7 +237,67 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total",
+  "costTotalLabel": "Total biaya",
+  "markupLabel": "Markup",
+  "setupFeeLabel": "Biaya penyiapan",
+  "roundingAdjustmentLabel": "Penyesuaian pembulatan",
+  "finalPriceLabel": "Harga akhir",
+  "jobPricingOverridesLabel": "Pengaturan tugas",
+  "pricingOverridesSummary": "{count, plural, one{# override diterapkan} other{# override diterapkan}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% markup",
+  "pricingSetupFeeLabel": "Biaya penyiapan",
+  "pricingRoundingLabel": "Pembulatan",
+  "pricingRoundingNoneLabel": "Tidak ada",
+  "pricingRoundingWholeDollarLabel": "Unit utuh",
+  "pricingRoundingPointNinetyNineLabel": "Berakhir .99",
+  "currencySymbolLabel": "Simbol mata uang",
+  "currencyPositionLabel": "Posisi simbol mata uang",
+  "currencyPositionBeforeLabel": "Sebelum",
+  "currencyPositionAfterLabel": "Sesudah",
+  "currencySpacingLabel": "Spasi dengan simbol",
+  "currencyPreviewLabel": "Pratinjau",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} j {minutes} mnt",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historyCsvHeader": "Tanggal,Printer,Bahan,Bahan,Berat (g),Waktu,Listrik,Filamen,Tenaga kerja,Risiko,Total,% markup,Jumlah markup,Biaya penyiapan,Mode pembulatan,Subtotal sebelum pembulatan,Penyesuaian pembulatan,Harga akhir",
   "historyExportShareText": "Ekspor riwayat biaya cetak 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Kebijakan Privasi",
@@ -296,6 +366,12 @@
   "@filamentCostLabel": {},
   "labourCostLabel": "Tenaga kerja",
   "@labourCostLabel": {},
+  "additionalCostLabel": "Biaya tambahan",
+  "@additionalCostLabel": {},
+  "additionalCostNoteLabel": "Catatan biaya tambahan",
+  "@additionalCostNoteLabel": {},
+  "additionalCostNoteDialogTitle": "Catatan biaya tambahan",
+  "@additionalCostNoteDialogTitle": {},
   "riskCostLabel": "Risiko",
   "@riskCostLabel": {},
   "totalCostLabel": "Total biaya",

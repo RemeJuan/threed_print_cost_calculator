@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Cronologia",
   "@historyAppBarTitle": {},
   "hoursLabel": "Tempo di stampa (ore)",
+  "durationHoursLabel": "Ore",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Tempo di elaborazione",
   "@labourTimeLabel": {},
   "minutesLabel": "Minuti",
+  "durationMinutesLabel": "Minuti",
+  "printingTimeDialogTitle": "Tempo di stampa",
+  "workTimeDialogTitle": "Tempo di lavoro",
   "@minutesLabel": {},
   "premiumHeader": "Solo utenti Premium:",
   "@premiumHeader": {},
@@ -84,6 +88,12 @@
   "@deleteDialogContent": {},
   "cancelButton": "Annulla",
   "@cancelButton": {},
+  "resetButtonLabel": "Reimposta",
+  "@resetButtonLabel": {},
+  "resetCalculationTitle": "Reimpostare il calcolo?",
+  "@resetCalculationTitle": {},
+  "resetCalculationBody": "Questa azione eliminerà i valori correnti del calcolatore e ricaricherà i valori predefiniti correnti.",
+  "@resetCalculationBody": {},
   "deleteButton": "Elimina",
   "@deleteButton": {},
   "selectMaterialHint": "Personalizzato (non salvato)",
@@ -227,7 +237,67 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale",
+  "costTotalLabel": "Costo totale",
+  "markupLabel": "Ricarico",
+  "setupFeeLabel": "Costo di configurazione",
+  "roundingAdjustmentLabel": "Aggiustamento arrotondamento",
+  "finalPriceLabel": "Prezzo finale",
+  "jobPricingOverridesLabel": "Impostazioni lavoro",
+  "pricingOverridesSummary": "{count, plural, one{# override applicato} other{# override applicati}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% ricarico",
+  "pricingSetupFeeLabel": "Costo di configurazione",
+  "pricingRoundingLabel": "Arrotondamento",
+  "pricingRoundingNoneLabel": "Nessuno",
+  "pricingRoundingWholeDollarLabel": "Unità intera",
+  "pricingRoundingPointNinetyNineLabel": "Termina con .99",
+  "currencySymbolLabel": "Simbolo valuta",
+  "currencyPositionLabel": "Posizione del simbolo",
+  "currencyPositionBeforeLabel": "Prima",
+  "currencyPositionAfterLabel": "Dopo",
+  "currencySpacingLabel": "Spazio con simbolo",
+  "currencyPreviewLabel": "Anteprima",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} h {minutes} min",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale,% ricarico,Importo ricarico,Costo di configurazione,Modalità di arrotondamento,Subtotale prima dell'arrotondamento,Aggiustamento arrotondamento,Prezzo finale",
   "historyExportShareText": "Esportazione della cronologia dei costi di stampa 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Informativa sulla privacy",
@@ -296,6 +366,12 @@
   "@filamentCostLabel": {},
   "labourCostLabel": "Lavoro",
   "@labourCostLabel": {},
+  "additionalCostLabel": "Costo aggiuntivo",
+  "@additionalCostLabel": {},
+  "additionalCostNoteLabel": "Nota costo aggiuntivo",
+  "@additionalCostNoteLabel": {},
+  "additionalCostNoteDialogTitle": "Nota costo aggiuntivo",
+  "@additionalCostNoteDialogTitle": {},
   "riskCostLabel": "Rischio",
   "@riskCostLabel": {},
   "totalCostLabel": "Totale",

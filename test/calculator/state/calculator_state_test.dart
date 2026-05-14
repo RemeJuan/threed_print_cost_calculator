@@ -8,16 +8,16 @@ void main() {
   test('starts with empty inputs and default results', () {
     final state = CalculatorState();
 
-    expect(state.inputs, hasLength(11));
+    expect(state.inputs, hasLength(14));
     expect(state.inputs.every((input) => input.isPure), isTrue);
     expect(
       state.results,
       const CalculationResult(
-        electricity: 0,
-        filament: 0,
-        risk: 0,
-        labour: 0,
-        total: 0,
+        electricity: 0.0,
+        filament: 0.0,
+        risk: 0.0,
+        labour: 0.0,
+        total: 0.0,
       ),
     );
     expect(state.materialUsages, isEmpty);

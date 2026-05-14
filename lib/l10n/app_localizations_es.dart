@@ -42,6 +42,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hoursLabel => 'Tiempo de impresión (horas)';
 
   @override
+  String get durationHoursLabel => 'Horas';
+
+  @override
   String get wearAndTearLabel => 'Materiales/Desgaste';
 
   @override
@@ -55,6 +58,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get minutesLabel => 'Minutos';
+
+  @override
+  String get durationMinutesLabel => 'Minutos';
+
+  @override
+  String get printingTimeDialogTitle => 'Tiempo de impresión';
+
+  @override
+  String get workTimeDialogTitle => 'Tiempo de trabajo';
 
   @override
   String get spoolWeightLabel => 'Peso del carrete/resina';
@@ -137,6 +149,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cancelButton => 'Cancelar';
+
+  @override
+  String get resetButtonLabel => 'Restablecer';
+
+  @override
+  String get resetCalculationTitle => '¿Restablecer cálculo?';
+
+  @override
+  String get resetCalculationBody =>
+      'Esto descartará los valores actuales de la calculadora y volverá a cargar los valores predeterminados actuales.';
 
   @override
   String get deleteButton => 'Eliminar';
@@ -526,10 +548,114 @@ class AppLocalizationsEs extends AppLocalizations {
   String get labourCostLabel => 'Costo laboral';
 
   @override
+  String get additionalCostLabel => 'Costo adicional';
+
+  @override
+  String get additionalCostNoteLabel => 'Nota de costo adicional';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'Nota de costo adicional';
+
+  @override
   String get riskCostLabel => 'Riesgo';
 
   @override
   String get totalCostLabel => 'Costo total';
+
+  @override
+  String get costTotalLabel => 'Costo total';
+
+  @override
+  String get markupLabel => 'Margen';
+
+  @override
+  String get setupFeeLabel => 'Tarifa de configuración';
+
+  @override
+  String get roundingAdjustmentLabel => 'Ajuste por redondeo';
+
+  @override
+  String get finalPriceLabel => 'Precio final';
+
+  @override
+  String get jobPricingOverridesLabel => 'Configuración del trabajo';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# sobrescrituras aplicadas',
+      one: '# sobrescritura aplicada',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => '% de margen';
+
+  @override
+  String get pricingSetupFeeLabel => 'Tarifa de configuración';
+
+  @override
+  String get pricingRoundingLabel => 'Redondeo';
+
+  @override
+  String get pricingRoundingNoneLabel => 'Ninguno';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Unidad entera';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Termina en .99';
+
+  @override
+  String get currencySymbolLabel => 'Símbolo de moneda';
+
+  @override
+  String get currencyPositionLabel => 'Posición del símbolo';
+
+  @override
+  String get currencyPositionBeforeLabel => 'Antes';
+
+  @override
+  String get currencyPositionAfterLabel => 'Después';
+
+  @override
+  String get currencySpacingLabel => 'Espacio con símbolo';
+
+  @override
+  String get currencyPreviewLabel => 'Vista previa';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '$hours h $minutes min';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
 
   @override
   String get workCostsLabel => 'Costos de Trabajo';
@@ -605,7 +731,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total';
+      'Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total,% de margen,Monto del margen,Tarifa de configuración,Modo de redondeo,Subtotal antes de redondeo,Ajuste por redondeo,Precio final';
 
   @override
   String get historyExportShareText =>

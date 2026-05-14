@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
@@ -109,10 +110,10 @@ void main() {
       expect(state.wearAndTear.value, 2.5);
       expect(state.failureRisk.value, 11.5);
       expect(state.labourRate.value, 30);
-      expect(state.materialUsages, hasLength(1));
-      expect(state.materialUsages.first.materialId, 'material-1');
-      expect(state.materialUsages.first.materialName, 'PLA');
-      expect(state.materialUsages.first.costPerKg, 25);
+      expect(state.activePrinterId, 'printer-1');
+      expect(state.selectedMaterialId, 'material-1');
+      expect(state.hasHydratedDefaults, isTrue);
+      expect(state.materialUsages, isEmpty);
 
       final savedSettings = await container
           .read(settingsRepositoryProvider)
@@ -128,4 +129,223 @@ void main() {
       expect(await savedPrefs.getStringValue('spoolCost'), '19.99');
     },
   );
+
+  group('local-only override persistence', () {
+    Future<void> seedCalculatorData() async {
+      await StoreRef<String, Object?>.main()
+          .record(DBName.settings.name)
+          .put(
+            db,
+            GeneralSettingsModel(
+              electricityCost: '0.50',
+              wattage: '100',
+              activePrinter: 'printer-1',
+              selectedMaterial: 'material-1',
+              wearAndTear: '1.50',
+              failureRisk: '5.00',
+              labourRate: '20',
+              pricingMarkupPercent: '10',
+              pricingSetupFee: '5',
+              pricingRoundingMode: 'none',
+            ).toMap(),
+          );
+
+      await StoreRef<String, Object?>.main().record('spoolWeight').put(db, {
+        'value': '1000',
+      });
+      await StoreRef<String, Object?>.main().record('spoolCost').put(db, {
+        'value': '25.00',
+      });
+
+      await stringMapStoreFactory
+          .store(DBName.printers.name)
+          .record('printer-1')
+          .put(
+            db,
+            const PrinterModel(
+              id: 'printer-1',
+              name: 'Test Printer',
+              bedSize: '250x210',
+              wattage: '100',
+              archived: false,
+            ).toMap(),
+          );
+
+      await stringMapStoreFactory
+          .store(DBName.materials.name)
+          .record('material-1')
+          .put(
+            db,
+            const MaterialModel(
+              id: 'material-1',
+              name: 'PLA',
+              cost: '25',
+              color: 'Red',
+              weight: '1000',
+              archived: false,
+            ).toMap(),
+          );
+    }
+
+    test(
+      'edited overrides survive re-init simulating navigate away and back',
+      () async {
+        await seedCalculatorData();
+        final notifier = container.read(calculatorProvider.notifier);
+        await notifier.init();
+
+        final initial = container.read(calculatorProvider);
+        expect(initial.wearAndTear.value, 1.5);
+        expect(initial.markupPercent.value, 10);
+
+        notifier.setWearAndTear(5);
+        notifier.setMarkupPercent(20);
+
+        var state = container.read(calculatorProvider);
+        expect(state.wearAndTear.value, 5);
+        expect(state.markupPercent.value, 20);
+
+        await notifier.init();
+
+        state = container.read(calculatorProvider);
+        expect(state.wearAndTear.value, 5);
+        expect(state.markupPercent.value, 20);
+        expect(state.setupFee.value, 5);
+        expect(state.roundingMode, PricingRoundingMode.none);
+      },
+    );
+
+    test('cleared field stays cleared across re-init', () async {
+      await seedCalculatorData();
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      notifier.updateKwCost('');
+      var state = container.read(calculatorProvider);
+      expect(state.kwCost.value, isNull);
+
+      await notifier.init();
+
+      state = container.read(calculatorProvider);
+      expect(
+        state.kwCost.value,
+        isNull,
+        reason: 'blank active value must not silently reload settings default',
+      );
+    });
+
+    test('zero override survives re-init', () async {
+      await seedCalculatorData();
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      var state = container.read(calculatorProvider);
+      expect(state.wearAndTear.value, 1.5);
+
+      notifier.setWearAndTear(0);
+
+      state = container.read(calculatorProvider);
+      expect(state.wearAndTear.value, 0);
+
+      await notifier.init();
+
+      state = container.read(calculatorProvider);
+      expect(
+        state.wearAndTear.value,
+        0,
+        reason: '0 must persist, not be reloaded from settings (1.5)',
+      );
+    });
+
+    test('override cleared to zero does not reload settings default', () async {
+      await seedCalculatorData();
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      var state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 10);
+
+      notifier.setMarkupPercent(20);
+      state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 20);
+
+      notifier.setMarkupPercent(0);
+      state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 0);
+
+      await notifier.init();
+
+      state = container.read(calculatorProvider);
+      expect(
+        state.markupPercent.value,
+        0,
+        reason: 'cleared value must stay 0, not reload settings default 10',
+      );
+    });
+
+    test('submit uses current overrides, not settings defaults', () async {
+      await seedCalculatorData();
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      notifier.setMarkupPercent(25);
+
+      await notifier.init();
+
+      var state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 25);
+
+      notifier.updateHours(2);
+      notifier.submit();
+      state = container.read(calculatorProvider);
+      expect(state.pricing.markupPercent, 25);
+      expect(state.pricing.markupAmount, greaterThan(0));
+    });
+
+    test(
+      'changing settings does not mutate in-progress form until reset',
+      () async {
+        await seedCalculatorData();
+        final notifier = container.read(calculatorProvider.notifier);
+        await notifier.init();
+
+        notifier.setMarkupPercent(25);
+        notifier.updateKwCost('0.77');
+
+        await container
+            .read(settingsRepositoryProvider)
+            .saveSettings(
+              GeneralSettingsModel(
+                electricityCost: '0.99',
+                wattage: '100',
+                activePrinter: 'printer-1',
+                selectedMaterial: 'material-1',
+                wearAndTear: '1.50',
+                failureRisk: '5.00',
+                labourRate: '20',
+                pricingMarkupPercent: '40',
+                pricingSetupFee: '8',
+                pricingRoundingMode: '.00',
+              ),
+            );
+
+        await notifier.init();
+
+        var state = container.read(calculatorProvider);
+        expect(state.markupPercent.value, 25);
+        expect(state.kwCost.value, 0.77);
+        expect(state.setupFee.value, 5);
+        expect(state.roundingMode, PricingRoundingMode.none);
+
+        await notifier.resetToDefaults();
+
+        state = container.read(calculatorProvider);
+        expect(state.markupPercent.value, 40);
+        expect(state.kwCost.value, 0.99);
+        expect(state.setupFee.value, 8);
+        expect(state.roundingMode, PricingRoundingMode.wholeDollar);
+        expect(state.materialUsages, isEmpty);
+      },
+    );
+  });
 }

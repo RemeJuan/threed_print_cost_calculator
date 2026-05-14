@@ -7,6 +7,17 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'analytics_service.dart';
 import 'firebase_analytics_service.dart';
 
+class GCodeFailureReason {
+  GCodeFailureReason._();
+  static const String fileTooLarge = 'file_too_large';
+  static const String invalidExtension = 'invalid_extension';
+  static const String unsupportedContent = 'unsupported_content';
+  static const String readFailed = 'read_failed';
+  static const String parseError = 'parse_error';
+  static const String cancelled = 'cancelled';
+  static const String unknown = 'unknown';
+}
+
 class AppAnalytics {
   static AppLogger logger = AppLogger(
     sink: const DebugPrintAppLogSink(),
@@ -41,6 +52,21 @@ class AppAnalytics {
     if (bytes < 5 * 1024 * 1024) return '1-5MB';
     if (bytes < 20 * 1024 * 1024) return '5-20MB';
     return '20MB+';
+  }
+
+  static String markupBucket(num percent) {
+    if (percent <= 0) return '0';
+    if (percent <= 10) return '1_10';
+    if (percent <= 25) return '11_25';
+    if (percent <= 50) return '26_50';
+    return '50_plus';
+  }
+
+  static String setupFeeBucket(num fee) {
+    if (fee <= 0) return '0';
+    if (fee <= 10) return 'low';
+    if (fee <= 50) return 'medium';
+    return 'high';
   }
 
   static String slicerValue(String? slicer) {
@@ -164,6 +190,7 @@ class AppAnalytics {
     required int materialCount,
     required bool hasFailureRisk,
     required bool hasLabour,
+    required bool hasPricing,
   }) {
     // Firebase Analytics parameter values must be String or num. Don't pass
     // Dart bools directly (they cause an assertion). Encode booleans as 0/1.
@@ -172,8 +199,60 @@ class AppAnalytics {
       params: {
         'material_count': materialCount,
         'has_failure_risk': hasFailureRisk ? 1 : 0,
-        'has_labour_cost': hasLabour ? 1 : 0,
+        'has_labour': hasLabour ? 1 : 0,
+        'has_pricing': hasPricing ? 1 : 0,
       },
+    );
+  }
+
+  static Future<void> pricingSettingsChanged({
+    required num markupPercent,
+    required num setupFee,
+    required String roundingMode,
+  }) {
+    return log(
+      'pricing_settings_changed',
+      params: {
+        'pricing_enabled':
+            (markupPercent > 0 || setupFee > 0 || roundingMode != 'none')
+            ? 1
+            : 0,
+        'markup_bucket': markupBucket(markupPercent),
+        'setup_fee_bucket': setupFeeBucket(setupFee),
+        'rounding_mode': roundingMode,
+      },
+    );
+  }
+
+  static Future<void> pricingOverrideUsed({
+    required String field,
+    required bool hasOverrides,
+  }) {
+    return log(
+      'pricing_override_used',
+      params: {'field': field, 'has_overrides': hasOverrides ? 1 : 0},
+    );
+  }
+
+  static Future<void> pricingSaved({
+    required bool hasPricing,
+    required bool usedOverrides,
+    required String roundingMode,
+  }) {
+    return log(
+      'pricing_saved',
+      params: {
+        'has_pricing': hasPricing ? 1 : 0,
+        'used_overrides': usedOverrides ? 1 : 0,
+        'rounding_mode': roundingMode,
+      },
+    );
+  }
+
+  static Future<void> pricingRoundingUsed({required String roundingMode}) {
+    return log(
+      'pricing_rounding_used',
+      params: {'rounding_mode': roundingMode},
     );
   }
 
@@ -522,6 +601,7 @@ class AppAnalytics {
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
+    String failureReason = GCodeFailureReason.unknown,
   }) {
     _setGcodeContext(
       slicer: slicerValue(slicer),
@@ -529,7 +609,10 @@ class AppAnalytics {
       parseStatus: 'failed',
       fileSizeBucket: fileSizeBucket(fileSizeBytes),
     );
-    return log('gcode_parse_failed', params: _gcodeImportParams());
+    return log(
+      'gcode_parse_failed',
+      params: {..._gcodeImportParams(), 'failure_reason': failureReason},
+    );
   }
 
   static Future<void> gcodePreviewViewed({
@@ -594,9 +677,14 @@ class AppAnalytics {
     return log('gcode_flow_completed', params: params);
   }
 
-  static Future<void> gcodeImportAbandoned() {
+  static Future<void> gcodeImportAbandoned({String? failureReason}) {
     if (_gcodeImportOpenedAt == null) return Future.value();
-    final params = _gcodeImportParams();
+    final trimmed = failureReason?.trim();
+    final reason = (trimmed == null || trimmed.isEmpty) ? null : trimmed;
+    final params = <String, Object?>{
+      ..._gcodeImportParams(),
+      ...?(reason == null ? null : {'failure_reason': reason}),
+    };
     _gcodeImportOpenedAt = null;
     return log('gcode_import_abandoned', params: params);
   }

@@ -85,7 +85,9 @@ void main() {
     }
   }
 
-  testWidgets('falls back to persisted printer and material', (tester) async {
+  testWidgets('uses active calculator printer and material selection', (
+    tester,
+  ) async {
     final settingsRepo = FakeSettingsRepository(
       initialSettings: GeneralSettingsModel.initial().copyWith(
         activePrinter: 'printer-a',
@@ -100,6 +102,8 @@ void main() {
     });
     final helpers = FakeCalculatorHelpers();
     final calculatorState = CalculatorState(
+      activePrinterId: 'printer-a',
+      selectedMaterialId: 'material-a',
       printWeight: const NumberInput.dirty(value: 95),
       hours: const NumberInput.dirty(value: 1),
       minutes: const NumberInput.dirty(value: 5),
@@ -279,6 +283,8 @@ void main() {
       final helpers = FakeCalculatorHelpers();
       final calculatorNotifier = FakeCalculatorNotifier(
         initialState: CalculatorState(
+          activePrinterId: 'printer-a',
+          selectedMaterialId: 'material-a',
           printWeight: const NumberInput.dirty(value: 125),
           hours: const NumberInput.dirty(value: 1),
           minutes: const NumberInput.dirty(value: 45),
@@ -387,6 +393,139 @@ void main() {
 
     expect(helpers.lastSavedPrint, isNull);
     expect(showSave.value, isFalse);
+  });
+
+  testWidgets('active draft selection wins over persisted settings defaults', (
+    tester,
+  ) async {
+    final settingsRepo = FakeSettingsRepository(
+      initialSettings: GeneralSettingsModel.initial().copyWith(
+        activePrinter: 'printer-settings',
+        selectedMaterial: 'material-settings',
+      ),
+    );
+    final printersRepo = FakePrintersRepository({
+      'printer-draft': printer('printer-draft', 'Draft Printer'),
+      'printer-settings': printer('printer-settings', 'Settings Printer'),
+    });
+    final materialsRepo = FakeMaterialsRepository({
+      'material-draft': material('material-draft', 'Draft PLA'),
+      'material-settings': material('material-settings', 'Settings ABS'),
+    });
+    final helpers = FakeCalculatorHelpers();
+    final calculatorNotifier = FakeCalculatorNotifier(
+      initialState: CalculatorState(
+        activePrinterId: 'printer-draft',
+        selectedMaterialId: 'material-draft',
+        printWeight: const NumberInput.dirty(value: 50),
+      ),
+    );
+
+    await tester.pumpApp(
+      SaveForm(
+        data: const CalculationResult(
+          electricity: 0,
+          filament: 0,
+          risk: 0,
+          labour: 0,
+          total: 0,
+        ),
+        showSave: ValueNotifier<bool>(true),
+      ),
+      [
+        calculatorProvider.overrideWith(() => calculatorNotifier),
+        settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        printersRepositoryProvider.overrideWithValue(printersRepo),
+        materialsRepositoryProvider.overrideWithValue(materialsRepo),
+        calculatorHelpersProvider.overrideWithValue(helpers),
+      ],
+    );
+    await tester.pumpAndSettle();
+
+    tester
+        .widget<TextField>(
+          find.byKey(const ValueKey<String>('calculator.save.name.input')),
+        )
+        .onChanged
+        ?.call('Draft wins');
+    await tester.pump();
+    tester
+        .widget<IconButton>(
+          find.byKey(const ValueKey<String>('calculator.save.confirm.button')),
+        )
+        .onPressed
+        ?.call();
+    await tester.pump();
+
+    expect(helpers.lastSavedPrint?.printer, 'Draft Printer');
+    expect(helpers.lastSavedPrint?.material, 'Draft PLA');
+    expect(
+      helpers.lastSavedPrint?.materialUsages.single['materialId'],
+      'material-draft',
+    );
+  });
+
+  testWidgets('blank draft selection does not fall back to settings defaults', (
+    tester,
+  ) async {
+    final settingsRepo = FakeSettingsRepository(
+      initialSettings: GeneralSettingsModel.initial().copyWith(
+        activePrinter: 'printer-settings',
+        selectedMaterial: 'material-settings',
+      ),
+    );
+    final printersRepo = FakePrintersRepository({
+      'printer-settings': printer('printer-settings', 'Settings Printer'),
+    });
+    final materialsRepo = FakeMaterialsRepository({
+      'material-settings': material('material-settings', 'Settings ABS'),
+    });
+    final helpers = FakeCalculatorHelpers();
+    final calculatorNotifier = FakeCalculatorNotifier(
+      initialState: CalculatorState(
+        printWeight: const NumberInput.dirty(value: 50),
+      ),
+    );
+
+    await tester.pumpApp(
+      SaveForm(
+        data: const CalculationResult(
+          electricity: 0,
+          filament: 0,
+          risk: 0,
+          labour: 0,
+          total: 0,
+        ),
+        showSave: ValueNotifier<bool>(true),
+      ),
+      [
+        calculatorProvider.overrideWith(() => calculatorNotifier),
+        settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        printersRepositoryProvider.overrideWithValue(printersRepo),
+        materialsRepositoryProvider.overrideWithValue(materialsRepo),
+        calculatorHelpersProvider.overrideWithValue(helpers),
+      ],
+    );
+    await tester.pumpAndSettle();
+
+    tester
+        .widget<TextField>(
+          find.byKey(const ValueKey<String>('calculator.save.name.input')),
+        )
+        .onChanged
+        ?.call('No fallback');
+    await tester.pump();
+    tester
+        .widget<IconButton>(
+          find.byKey(const ValueKey<String>('calculator.save.confirm.button')),
+        )
+        .onPressed
+        ?.call();
+    await tester.pump();
+
+    expect(helpers.lastSavedPrint?.printer, '');
+    expect(helpers.lastSavedPrint?.material, '');
+    expect(helpers.lastSavedPrint?.materialUsages, isEmpty);
   });
 }
 

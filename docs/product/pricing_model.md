@@ -23,7 +23,75 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 - Same inputs always produce same price
 - Pricing must be explainable in one sentence: `base cost + markup + setup fee, then rounding`
 - Saved jobs and future quotes must snapshot pricing inputs and computed output so later settings changes do not rewrite past prices
-- **Currency-agnostic**: The entire project treats values as raw numbers. No currency symbol (`$`, `€`, `£`, `¥`, etc.) appears anywhere in the UI. All values display as plain numeric strings.
+
+## Currency Formatting
+
+Pricing introduces basic currency display formatting for client-facing values.
+
+Scope is formatting only. No exchange rates, conversions, or locale-aware formatting are included.
+
+### Supported Configuration
+
+* currencySymbol (string)
+* currencyPosition (before | after)
+* currencySpacing (boolean)
+
+### Behavior
+
+* Values remain numeric internally
+* Formatting is applied only at display time
+
+Examples:
+
+* R95.30
+* 95.30 €
+* 95.30€
+
+### Rules
+
+* Symbol is optional (empty = no symbol shown)
+* Position determines placement
+* Spacing controls gap between symbol and value
+* Must be consistent across:
+    * calculator
+    * history
+    * export
+
+### Non-Goals
+
+* Currency codes (USD, EUR)
+* Locale formatting (1,000 vs 1.000)
+* Conversion or exchange rates
+
+### Currency Application Scope
+
+Currency formatting must be applied consistently to all monetary values displayed in the app.
+
+**Applies to:**
+
+* Electricity cost
+* Filament cost
+* Risk cost
+* Labour/material cost
+* Additional cost
+* Cost total
+* Markup amount
+* Setup fee
+* Rounding adjustment
+* Final price
+* Material price per unit (e.g. per kg)
+
+**Does not apply to:**
+
+* Percent values
+* Time values
+* Weight values
+* Wattage or power
+* Dimensions or volume
+* Any internal or stored numeric values
+* CSV exported numeric fields
+
+**Rule:** Currency formatting is a display concern only and must not affect calculations, stored values, or exported raw data.
 
 ## Monetisation
 
@@ -60,14 +128,55 @@ Cost remains internal. Price is derived from cost and displayed separately.
 
 ### Definitions
 
-- **Base cost**: existing calculator total cost output. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`.
+- **Base cost**: existing calculator total cost output, including any additional cost (sundry) amount. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`; `additionalCostAmount` is summed into `CalculationResult.total` before pricing receives it.
 - **Markup %**: percentage applied to base cost only.
 - **Setup fee**: fixed amount added after markup.
 - **Rounding**: final presentation and storage adjustment applied last.
 
+## Additional Costs (Sundry)
+
+### Summary
+
+Single per-job additional cost with optional note. Included in base cost before pricing is applied.
+
+### Behavior
+
+- One numeric input for amount
+- Optional free-text note
+- Included in base cost before markup, setup fee, and rounding
+
+### UI
+
+- Located in Job Costs accordion
+- Inline amount input
+- Pencil/edit icon opens note modal
+
+### Data Model
+
+Stored per job/calculation.
+
+- `additionalCostAmount: number`
+- `additionalCostNote: string?`
+
+### History
+
+- Amount always visible
+- Note visible via expand/accordion
+
+### Constraints
+
+- Single entry only
+- No categories
+- No presets
+
+### Dependency
+
+Feeds into pricing model calculation through base cost.
+
 ### Final Formula
 
 ```text
+baseCost = calculatorOutputTotal + additionalCostAmount
 markupAmount = baseCost * (markupPercent / 100)
 subtotal = baseCost + markupAmount + setupFee
 finalPrice = applyRounding(subtotal, roundingMode)
@@ -78,18 +187,20 @@ finalPrice = applyRounding(subtotal, roundingMode)
 Exact order:
 
 1. Compute base cost using existing engine
-2. Read effective pricing config for current job
-3. Compute markup amount from base cost
-4. Add markup amount to base cost
-5. Add setup fee
-6. Apply selected rounding rule to subtotal
-7. Persist/display rounded result as final price
+2. Include single additional cost amount in base cost when present
+3. Read effective pricing config for current job
+4. Compute markup amount from base cost
+5. Add markup amount to base cost
+6. Add setup fee
+7. Apply selected rounding rule to subtotal
+8. Persist/display rounded result as final price
 
 No alternate order allowed.
 
 ### Important Notes
 
 - Markup applies to base cost only, not setup fee
+- Additional cost feeds base cost before markup
 - Setup fee is flat, never percentage-based
 - Rounding happens once, at end
 - Pricing layer must not mutate or feed back into base cost calculation
@@ -200,12 +311,17 @@ Recommended fields:
 - `pricingMarkupPercent: String`
 - `pricingSetupFee: String`
 - `pricingRoundingMode: String` or enum-backed serialized value where `none` means rounding is disabled
+- `currencySymbol: String`
+- `currencyPosition: String` (before | after)
+- `currencySpacing: bool`
 
 Reason:
 
 - pricing defaults behave like existing calculator defaults
 - offline persistence already exists here
 - no new storage mechanism needed
+
+Currency settings are stored alongside pricing defaults because they directly affect how final price is presented to users.
 
 No separate rounding-enabled boolean is required. The rounding control can be represented by `pricingRoundingMode`, with `none` acting as the disabled state and `.00` / `.99` acting as enabled states.
 
@@ -215,8 +331,10 @@ Current live calculator state needs pricing inputs and computed outputs separate
 
 Recommended additions to calculator state:
 
+- `additionalCostAmount`
+- `additionalCostNote`
 - `pricingMarkupPercent` input
-- `pricingSetupFee` input
+- `pricingSetupFee` resolved value from global settings
 - `pricingRoundingMode`
 - job-level pricing override state for markup where exposed
 - `pricingBaseCost`
@@ -227,6 +345,7 @@ Recommended additions to calculator state:
 
 Recommended computed model:
 
+```ts
 PricingResult {
   baseCost
   markupPercent
@@ -237,6 +356,7 @@ PricingResult {
   roundingAdjustment
   finalPrice
 }
+```
 
 Keep this separate from `CalculationResult`.
 
@@ -252,6 +372,8 @@ Saved records must snapshot both effective pricing inputs and computed outputs a
 
 Recommended additions to saved job model/history model:
 
+- effective `additionalCostAmount`
+- effective `additionalCostNote`
 - effective `baseCost`
 - effective `markupPercent`
 - effective `markupAmount`
@@ -276,8 +398,10 @@ Fields:
 
 - Markup %
 - Setup fee
-- Rounding toggle
-- Rounding mode
+- Rounding mode (none | .00 | .99)
+- Currency symbol
+- Symbol position
+- Spacing toggle
 
 Notes:
 
@@ -285,9 +409,11 @@ Notes:
 - If enabled, rounding always rounds up
 - Pricing controls remain editable only for Pro users
 
+Currency formatting applies only to display values. Internal calculations remain numeric and unaffected.
+
 ### Calculator
 
-Move **Processing Time** next to **Printing Time**.
+Move **Work time** next to **Printing Time**.
 
 Rename existing calculator total label from **Total** to **Cost Total**.
 
@@ -307,19 +433,18 @@ This preserves current mental model:
 
 When both values are present, Final Price should be visually primary and Cost Total should remain visible as supporting detail. Price must not replace or overwrite cost.
 
+Final Price should be the value used by future client-facing surfaces such as quotes and share cards.
+
 ### Job-Level Overrides
 
-Add a pricing override accordion below **Printing Time**, matching the interaction pattern used by Materials.
+Add a job-level settings section below **Printing Time**.
 
-Accordion contains:
+Section contains:
 
 - Wear & tear
 - Failure risk
 - Hourly rate
-- Processing cost inputs
 - Markup
-
-Accordion subheading should show a compact summary, matching the summary pattern used by History cards.
 
 This section is job-level UI. It can adjust current job inputs without mutating global defaults or redefining cost vs price boundaries.
 
@@ -406,11 +531,14 @@ History UI behavior:
 - show final price when present as the primary client-facing value
 - keep cost visible as supporting internal detail
 - do not replace, overwrite, or recompute cost from price
+- apply currency formatting consistently to all displayed price values
 
 Export behavior:
 
 - include pricing fields alongside cost fields
 - include final price when present
+- export raw numeric pricing values for reliable CSV parsing
+- optionally include formatted display values later if a separate client-facing export is introduced
 
 Saved records must remain snapshot-based so future settings changes do not rewrite old prices.
 
@@ -454,22 +582,84 @@ Persisted snapshot:
 
 Cost remains `120.00`. Price becomes `165.99`. Future settings changes must not alter this saved result.
 
+### With Additional Cost
+
+Example inputs:
+
+- Calculator output total: `120.00`
+- Additional cost (sundry): `15.00`
+- Markup: `25%`
+- Setup fee: `15.00`
+- Rounding mode: `.99`
+
+Calculation:
+
+1. baseCost = `120.00 + 15.00 = 135.00`
+2. Markup amount = `135.00 * 25% = 33.75`
+3. Subtotal before rounding = `135.00 + 33.75 + 15.00 = 183.75`
+4. `.99` rounding → next `.99` above subtotal = `183.99`
+5. Final Price / Grand Total = `183.99`
+
+Persisted snapshot:
+
+- additionalCostAmount = `15.00`
+- additionalCostNote = `null` (optional)
+- baseCost = `135.00`
+- markupPercent = `25`
+- markupAmount = `33.75`
+- setupFee = `15.00`
+- roundingMode = `.99`
+- subtotalBeforeRounding = `183.75`
+- roundingAdjustment = `0.24`
+- finalPrice = `183.99`
+
 ## Analytics
 
 Track:
 
 - pricing enabled in settings
 - override usage per job
-- markup value distribution
+- markup usage distribution
+- setup fee usage distribution
 - rounding usage
 - save with pricing vs without pricing
+- pricing accordion/section engagement if hidden behind expandable UI
+
+Recommended events:
+
+- pricing_settings_changed
+- pricing_override_used
+- pricing_rounding_used
+- pricing_saved
+- calculation_created(has_pricing)
+- optional: pricing_section_expanded if pricing UI becomes collapsible
 
 Recommended trigger points:
 
 - when pricing settings change
 - when job-level override state changes
-- when a job is saved
+- when pricing rounding is applied
+- when a priced job is saved
+- when pricing UI is expanded/opened
 - when future quote/client-view entry points use pricing output
+
+Analytics guidance:
+
+- prefer low-cardinality analytics values
+- bucket pricing values instead of sending raw granular values where possible
+- avoid high-cardinality free-form numeric analytics
+- pricing analytics should focus on feature adoption and workflow behavior, not exact financial data
+
+Suggested buckets:
+
+- markup_bucket: 0, 1_10, 11_25, 26_50, 50_plus
+- setup_fee_bucket: 0, low, medium, high
+
+Notes:
+
+- calculation_created(has_pricing) already acts as a lightweight pricing usage signal
+- avoid over-instrumenting before quote/share flows exist
+- future quote/share features will likely become the primary pricing analytics funnel
 
 ## Offline Requirement
 
@@ -490,6 +680,7 @@ Recommended trigger points:
 - Save effective pricing snapshot with history entries needed for future shareable quotes
 - Prefer simple numeric storage and deterministic pure helper functions for rounding
 - Ensure cost and price labels stay distinct in model names, persistence, analytics, and UI copy
+- Keep currency formatting as a thin display layer separate from pricing calculation logic
 
 ## Acceptance Criteria
 

@@ -10,6 +10,7 @@
 .buildlog/
 .history
 .svn/
+untranslated-messages.json
 
 # IntelliJ related
 *.iml
@@ -55,6 +56,7 @@ flutter_*.png
 linked_*.ds
 unlinked.ds
 unlinked_spec.ds
+desiredFileName.json
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -134,3 +136,6 @@ patrol_test/test_bundle.dart
 
 untranslated-messages.json
 service-account-key.json
+
+# Obsidian workspace (per-developer state)
+/docs/.obsidian/workspace.json

@@ -180,6 +180,12 @@ abstract class AppLocalizations {
   /// **'Printing time (hours)'**
   String get hoursLabel;
 
+  /// No description provided for @durationHoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get durationHoursLabel;
+
   /// No description provided for @wearAndTearLabel.
   ///
   /// In en, this message translates to:
@@ -195,7 +201,7 @@ abstract class AppLocalizations {
   /// No description provided for @labourTimeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Processing time'**
+  /// **'Work time'**
   String get labourTimeLabel;
 
   /// No description provided for @failureRiskLabel.
@@ -209,6 +215,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Minutes'**
   String get minutesLabel;
+
+  /// No description provided for @durationMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get durationMinutesLabel;
+
+  /// No description provided for @printingTimeDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Printing time'**
+  String get printingTimeDialogTitle;
+
+  /// No description provided for @workTimeDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Work time'**
+  String get workTimeDialogTitle;
 
   /// No description provided for @spoolWeightLabel.
   ///
@@ -371,6 +395,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancelButton;
+
+  /// No description provided for @resetButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetButtonLabel;
+
+  /// No description provided for @resetCalculationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset calculation?'**
+  String get resetCalculationTitle;
+
+  /// No description provided for @resetCalculationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will discard your current calculator values and reload current defaults.'**
+  String get resetCalculationBody;
 
   /// No description provided for @deleteButton.
   ///
@@ -1068,6 +1110,24 @@ abstract class AppLocalizations {
   /// **'Labour'**
   String get labourCostLabel;
 
+  /// No description provided for @additionalCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional cost'**
+  String get additionalCostLabel;
+
+  /// No description provided for @additionalCostNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional cost note'**
+  String get additionalCostNoteLabel;
+
+  /// No description provided for @additionalCostNoteDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional cost note'**
+  String get additionalCostNoteDialogTitle;
+
   /// No description provided for @riskCostLabel.
   ///
   /// In en, this message translates to:
@@ -1080,10 +1140,159 @@ abstract class AppLocalizations {
   /// **'Total'**
   String get totalCostLabel;
 
+  /// No description provided for @costTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total cost'**
+  String get costTotalLabel;
+
+  /// No description provided for @markupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Markup'**
+  String get markupLabel;
+
+  /// No description provided for @setupFeeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup fee'**
+  String get setupFeeLabel;
+
+  /// No description provided for @roundingAdjustmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounding adjustment'**
+  String get roundingAdjustmentLabel;
+
+  /// No description provided for @finalPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Final price'**
+  String get finalPriceLabel;
+
+  /// No description provided for @jobPricingOverridesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Job settings'**
+  String get jobPricingOverridesLabel;
+
+  /// No description provided for @pricingOverridesSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{# override applied} other{# overrides applied}}'**
+  String pricingOverridesSummary(num count);
+
+  /// No description provided for @pricingMarkupPercentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Markup %'**
+  String get pricingMarkupPercentLabel;
+
+  /// No description provided for @pricingSetupFeeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup fee'**
+  String get pricingSetupFeeLabel;
+
+  /// No description provided for @pricingRoundingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounding'**
+  String get pricingRoundingLabel;
+
+  /// No description provided for @pricingRoundingNoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get pricingRoundingNoneLabel;
+
+  /// No description provided for @pricingRoundingWholeDollarLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole unit'**
+  String get pricingRoundingWholeDollarLabel;
+
+  /// No description provided for @pricingRoundingPointNinetyNineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends in .99'**
+  String get pricingRoundingPointNinetyNineLabel;
+
+  /// No description provided for @currencySymbolLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency symbol'**
+  String get currencySymbolLabel;
+
+  /// No description provided for @currencyPositionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency position'**
+  String get currencyPositionLabel;
+
+  /// No description provided for @currencyPositionBeforeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Before'**
+  String get currencyPositionBeforeLabel;
+
+  /// No description provided for @currencyPositionAfterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'After'**
+  String get currencyPositionAfterLabel;
+
+  /// No description provided for @currencySpacingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Space symbol'**
+  String get currencySpacingLabel;
+
+  /// No description provided for @currencyPreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get currencyPreviewLabel;
+
+  /// No description provided for @materialCostPerKilogramLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{cost}/kg'**
+  String materialCostPerKilogramLabel(Object cost);
+
+  /// No description provided for @historyTimeCompactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours}h {minutes}m'**
+  String historyTimeCompactLabel(Object hours, Object minutes);
+
+  /// No description provided for @historyWeightCompactLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} kg'**
+  String historyWeightCompactLabel(Object weight);
+
+  /// No description provided for @historySummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight} • {time} • {printer} • {material}'**
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  );
+
+  /// No description provided for @historyMaterialUsageWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{weight}g'**
+  String historyMaterialUsageWeightLabel(Object weight);
+
   /// No description provided for @workCostsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Work Costs'**
+  /// **'Pricing & Work Costs'**
   String get workCostsLabel;
 
   /// No description provided for @enterNumber.
@@ -1215,7 +1424,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyCsvHeader.
   ///
   /// In en, this message translates to:
-  /// **'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total'**
+  /// **'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Markup %,Markup Amount,Setup Fee,Rounding Mode,Subtotal Before Rounding,Rounding Adjustment,Final Price'**
   String get historyCsvHeader;
 
   /// No description provided for @historyExportShareText.

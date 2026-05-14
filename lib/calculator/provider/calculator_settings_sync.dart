@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/calculator_preferences_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -17,10 +18,14 @@ class CalculatorSettingsSync {
 
   final Ref ref;
 
+  NumberInput _settingsNumber(String? settingsValue) {
+    return NumberInput.dirty(value: tryParseLocalizedNum(settingsValue));
+  }
+
   Future<CalculatorState> load(
-    CalculatorState current,
-    GeneralSettingsModel settings,
-  ) async {
+    GeneralSettingsModel settings, {
+    bool seedInitialMaterialUsage = false,
+  }) async {
     final preferencesRepository = ref.read(
       calculatorPreferencesRepositoryProvider,
     );
@@ -47,31 +52,41 @@ class CalculatorSettingsSync {
     }
 
     final nextState = CalculatorState(
+      activePrinterId: settings.activePrinter,
+      selectedMaterialId: settings.selectedMaterial,
       watt: NumberInput.dirty(value: watt),
-      kwCost: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.electricityCost),
-      ),
-      printWeight: NumberInput.dirty(value: current.printWeight.value),
-      hours: NumberInput.dirty(value: current.hours.value),
-      minutes: NumberInput.dirty(value: current.minutes.value),
+      kwCost: _settingsNumber(settings.electricityCost),
       spoolWeight: NumberInput.dirty(
         value: tryParseLocalizedNum(spoolWeightVal),
       ),
       spoolCost: NumberInput.dirty(value: tryParseLocalizedNum(spoolCostVal)),
       spoolCostText: spoolCostVal,
-      wearAndTear: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.wearAndTear),
+      wearAndTear: _settingsNumber(settings.wearAndTear),
+      failureRisk: _settingsNumber(settings.failureRisk),
+      labourRate: _settingsNumber(settings.labourRate),
+      markupPercent: _settingsNumber(settings.pricingMarkupPercent),
+      setupFee: _settingsNumber(settings.pricingSetupFee),
+      roundingMode: pricingRoundingModeFromStorage(
+        settings.pricingRoundingMode,
       ),
-      failureRisk: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.failureRisk),
+      hasHydratedDefaults: true,
+      baselineWearAndTear: tryParseLocalizedNum(settings.wearAndTear),
+      baselineFailureRisk: tryParseLocalizedNum(settings.failureRisk),
+      baselineLabourRate: tryParseLocalizedNum(settings.labourRate),
+      baselineLabourTime: 0,
+      baselineMarkupPercent: tryParseLocalizedNum(
+        settings.pricingMarkupPercent,
       ),
-      labourRate: NumberInput.dirty(
-        value: tryParseLocalizedNum(settings.labourRate),
+      baselineSetupFee: tryParseLocalizedNum(settings.pricingSetupFee),
+      baselineRoundingMode: pricingRoundingModeFromStorage(
+        settings.pricingRoundingMode,
       ),
-      labourTime: NumberInput.dirty(value: current.labourTime.value),
-      materialUsages: current.materialUsages,
-      results: current.results,
     );
+
+    if (!seedInitialMaterialUsage) return nextState;
+    if (spoolWeightVal.trim().isNotEmpty && spoolCostVal.trim().isNotEmpty) {
+      return nextState;
+    }
 
     return ensureInitialMaterialUsage(nextState, settings.selectedMaterial);
   }

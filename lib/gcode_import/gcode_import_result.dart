@@ -69,8 +69,13 @@ class GCodeImportResult {
   }
 
   factory GCodeImportResult.fromWireMap(Map<String, dynamic> map) {
+    final rawSlicer = map['slicer']?.toString() ?? GCodeSlicer.unknown.name;
+    final rawExtractedValues = map['rawExtractedValues'];
     return GCodeImportResult(
-      slicer: GCodeSlicer.values.byName(map['slicer'] as String),
+      slicer: GCodeSlicer.values.firstWhere(
+        (slicer) => slicer.name == rawSlicer,
+        orElse: () => GCodeSlicer.unknown,
+      ),
       estimatedDuration: map['estimatedDurationMicros'] == null
           ? null
           : Duration(microseconds: map['estimatedDurationMicros'] as int),
@@ -92,9 +97,11 @@ class GCodeImportResult {
             ),
           )
           .toList(growable: false),
-      rawExtractedValues: Map<String, String>.from(
-        map['rawExtractedValues'] as Map<dynamic, dynamic>? ?? const {},
-      ),
+      rawExtractedValues: rawExtractedValues is Map
+          ? rawExtractedValues.map(
+              (key, value) => MapEntry(key.toString(), value.toString()),
+            )
+          : const <String, String>{},
       hasSafePreview: map['hasSafePreview'] == true,
     );
   }

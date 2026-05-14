@@ -8,12 +8,18 @@ import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers
 class DurationDialog extends StatefulWidget {
   final int initialHours;
   final int initialMinutes;
-  final AppLocalizations l10n;
+  final String title;
+  final String hoursLabel;
+  final String minutesLabel;
+  final String? semanticPrefix;
 
   const DurationDialog({
     required this.initialHours,
     required this.initialMinutes,
-    required this.l10n,
+    required this.title,
+    required this.hoursLabel,
+    required this.minutesLabel,
+    this.semanticPrefix,
     super.key,
   });
 
@@ -74,10 +80,15 @@ class _DurationDialogState extends State<DurationDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final title = widget.title;
+    final semanticsLabel = widget.semanticPrefix == null
+        ? title
+        : '${widget.semanticPrefix} $title';
+
     return AlertDialog(
-      title: Text(
-        '${widget.l10n.hoursLabel} & ${widget.l10n.minutesLabel}',
-        style: Theme.of(context).textTheme.titleMedium,
+      title: Semantics(
+        label: semanticsLabel,
+        child: Text(title, style: Theme.of(context).textTheme.titleMedium),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -94,8 +105,8 @@ class _DurationDialogState extends State<DurationDialog> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
-                    labelText: widget.l10n.hoursLabel,
-                    hintText: widget.l10n.numberExampleHint,
+                    labelText: widget.hoursLabel,
+                    hintText: AppLocalizations.of(context)!.numberExampleHint,
                   ),
                   onChanged: (_) => _normalizeController(_hoursController),
                 ),
@@ -111,9 +122,7 @@ class _DurationDialogState extends State<DurationDialog> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: (_) => _normalizeController(_minutesController),
-                  decoration: InputDecoration(
-                    labelText: widget.l10n.minutesLabel,
-                  ),
+                  decoration: InputDecoration(labelText: widget.minutesLabel),
                 ),
               ),
             ],

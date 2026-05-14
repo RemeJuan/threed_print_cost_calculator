@@ -1,5 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -83,16 +84,55 @@ class CalculatorHistoryLoader {
       materialUsages.add(resolvedUsage);
     }
 
-    final nextState = currentState.copyWith(
+    final markupPercent = entry.model.pricingMarkupPercent;
+    final setupFee = entry.model.pricingSetupFee;
+    final roundingMode = pricingRoundingModeFromStorage(
+      entry.model.pricingRoundingMode,
+    );
+    final pricing = entry.model.finalPrice == null
+        ? const PricingResult.empty()
+        : PricingResult(
+            baseCost: entry.model.totalCost,
+            markupPercent: markupPercent ?? 0,
+            markupAmount: entry.model.pricingMarkupAmount ?? 0,
+            setupFee: setupFee ?? 0,
+            roundingMode: roundingMode,
+            subtotalBeforeRounding:
+                entry.model.pricingSubtotalBeforeRounding ??
+                entry.model.totalCost,
+            roundingAdjustment: entry.model.pricingRoundingAdjustment ?? 0,
+            finalPrice: entry.model.finalPrice ?? entry.model.totalCost,
+          );
+
+    final nextState = CalculatorState(
+      activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
+      selectedMaterialId: materialUsages.isNotEmpty
+          ? materialUsages.first.materialId
+          : '',
       watt: NumberInput.dirty(
         value: parseLocalizedNumOrFallback(
           resolvedPrinter?.wattage ?? settings.wattage,
         ),
       ),
+      kwCost: currentState.kwCost,
       printWeight: NumberInput.dirty(value: entry.model.weight),
       materialUsages: materialUsages,
       hours: NumberInput.dirty(value: parsedTime.hours),
       minutes: NumberInput.dirty(value: parsedTime.minutes),
+      spoolWeight: currentState.spoolWeight,
+      spoolCost: currentState.spoolCost,
+      spoolCostText: currentState.spoolCostText,
+      additionalCostAmount: NumberInput.dirty(
+        value: entry.model.additionalCostAmount,
+      ),
+      additionalCostNote: entry.model.additionalCostNote,
+      wearAndTear: NumberInput.dirty(value: currentState.baselineWearAndTear),
+      failureRisk: NumberInput.dirty(value: currentState.baselineFailureRisk),
+      labourRate: NumberInput.dirty(value: currentState.baselineLabourRate),
+      labourTime: NumberInput.dirty(value: currentState.baselineLabourTime),
+      markupPercent: NumberInput.dirty(value: markupPercent),
+      setupFee: NumberInput.dirty(value: setupFee),
+      roundingMode: roundingMode,
       results: CalculationResult(
         electricity: entry.model.electricityCost,
         filament: entry.model.filamentCost,
@@ -100,8 +140,17 @@ class CalculatorHistoryLoader {
         labour: entry.model.labourCost,
         total: entry.model.totalCost,
       ),
+      pricing: pricing,
       showHistoryLoadReplacementWarning: hasReplacement,
       importedFromGcode: entry.model.importedFromGcode,
+      hasHydratedDefaults: true,
+      baselineWearAndTear: currentState.baselineWearAndTear,
+      baselineFailureRisk: currentState.baselineFailureRisk,
+      baselineLabourRate: currentState.baselineLabourRate,
+      baselineLabourTime: currentState.baselineLabourTime,
+      baselineMarkupPercent: markupPercent,
+      baselineSetupFee: setupFee,
+      baselineRoundingMode: roundingMode,
     );
 
     return CalculatorHistoryLoadResult(

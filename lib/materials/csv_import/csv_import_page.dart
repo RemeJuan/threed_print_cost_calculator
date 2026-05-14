@@ -8,6 +8,9 @@ import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
@@ -304,6 +307,10 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     final valid = _rows.where((r) => r.errors.isEmpty).length;
     final invalid = _rows.length - valid;
     final l10n = _l10n!;
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
 
     return Column(
       children: [
@@ -345,7 +352,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                       : Text(
                           '${row.brand.isNotEmpty ? '${row.brand} · ' : ''}'
                           '${row.materialType.isNotEmpty ? '${row.materialType} · ' : ''}'
-                          '${row.cost.toStringAsFixed(2)}',
+                          '${formatCurrencyValue(row.cost, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing)}',
                           style: const TextStyle(
                             color: Colors.white54,
                             fontSize: 12,

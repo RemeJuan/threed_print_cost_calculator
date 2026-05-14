@@ -86,7 +86,7 @@ void main() {
       container.dispose();
     });
 
-    test('material change updates total for non-zero to non-zero cost', () {
+    test('material change updates total for non-zero to non-zero cost', () async {
       final materialA = _material(
         id: 'mat-a',
         name: 'Material A',
@@ -94,7 +94,7 @@ void main() {
       ).copyWith(brand: 'Sunlu', materialType: 'PLA', autoDeductEnabled: true);
       final materialB = _material(id: 'mat-b', name: 'Material B', cost: '30');
 
-      notifier.selectMaterial(materialA);
+      await notifier.selectMaterial(materialA);
       expect(notifier.state.spoolCost.value, 60);
       expect(notifier.state.materialUsages.single.materialId, 'mat-a');
       expect(notifier.state.materialUsages.single.costPerKg, 60);
@@ -118,7 +118,7 @@ void main() {
         'brand': 'Sunlu',
       });
 
-      notifier.selectMaterial(materialB);
+      await notifier.selectMaterial(materialB);
 
       expect(notifier.state.spoolCost.value, 30);
       expect(notifier.state.materialUsages.single.materialId, 'mat-b');
@@ -127,14 +127,14 @@ void main() {
       expect(notifier.state.results.total, 3.0);
     });
 
-    test('material change updates total for non-zero to zero cost', () {
+    test('material change updates total for non-zero to zero cost', () async {
       final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
       final materialC = _material(id: 'mat-c', name: 'Material C', cost: '0.0');
 
-      notifier.selectMaterial(materialA);
+      await notifier.selectMaterial(materialA);
       expect(notifier.state.results.total, 6.0);
 
-      notifier.selectMaterial(materialC);
+      await notifier.selectMaterial(materialC);
 
       expect(notifier.state.spoolCost.value, 0.0);
       expect(notifier.state.materialUsages.single.materialId, 'mat-c');
@@ -143,14 +143,14 @@ void main() {
       expect(notifier.state.results.total, 0.0);
     });
 
-    test('material change updates total for zero to non-zero cost', () {
+    test('material change updates total for zero to non-zero cost', () async {
       final materialC = _material(id: 'mat-c', name: 'Material C', cost: '0');
       final materialD = _material(id: 'mat-d', name: 'Material D', cost: '45');
 
-      notifier.selectMaterial(materialC);
+      await notifier.selectMaterial(materialC);
       expect(notifier.state.results.total, 0.0);
 
-      notifier.selectMaterial(materialD);
+      await notifier.selectMaterial(materialD);
 
       expect(notifier.state.spoolCost.value, 45);
       expect(notifier.state.materialUsages.single.materialId, 'mat-d');

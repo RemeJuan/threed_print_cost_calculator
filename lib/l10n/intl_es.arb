@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Historial",
   "@historyAppBarTitle": {},
   "hoursLabel": "Tiempo de impresión (horas)",
+  "durationHoursLabel": "Horas",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Tiempo de procesamiento",
   "@labourTimeLabel": {},
   "minutesLabel": "Minutos",
+  "durationMinutesLabel": "Minutos",
+  "printingTimeDialogTitle": "Tiempo de impresión",
+  "workTimeDialogTitle": "Tiempo de trabajo",
   "@minutesLabel": {},
   "premiumHeader": "Sólo usuarios premium:",
   "@premiumHeader": {},
@@ -84,6 +88,12 @@
   "@deleteDialogContent": {},
   "cancelButton": "Cancelar",
   "@cancelButton": {},
+  "resetButtonLabel": "Restablecer",
+  "@resetButtonLabel": {},
+  "resetCalculationTitle": "¿Restablecer cálculo?",
+  "@resetCalculationTitle": {},
+  "resetCalculationBody": "Esto descartará los valores actuales de la calculadora y volverá a cargar los valores predeterminados actuales.",
+  "@resetCalculationBody": {},
   "deleteButton": "Eliminar",
   "@deleteButton": {},
   "selectMaterialHint": "Personalizado (no guardado)",
@@ -226,7 +236,67 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total",
+  "costTotalLabel": "Costo total",
+  "markupLabel": "Margen",
+  "setupFeeLabel": "Tarifa de configuración",
+  "roundingAdjustmentLabel": "Ajuste por redondeo",
+  "finalPriceLabel": "Precio final",
+  "jobPricingOverridesLabel": "Configuración del trabajo",
+  "pricingOverridesSummary": "{count, plural, one{# sobrescritura aplicada} other{# sobrescrituras aplicadas}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% de margen",
+  "pricingSetupFeeLabel": "Tarifa de configuración",
+  "pricingRoundingLabel": "Redondeo",
+  "pricingRoundingNoneLabel": "Ninguno",
+  "pricingRoundingWholeDollarLabel": "Unidad entera",
+  "pricingRoundingPointNinetyNineLabel": "Termina en .99",
+  "currencySymbolLabel": "Símbolo de moneda",
+  "currencyPositionLabel": "Posición del símbolo",
+  "currencyPositionBeforeLabel": "Antes",
+  "currencyPositionAfterLabel": "Después",
+  "currencySpacingLabel": "Espacio con símbolo",
+  "currencyPreviewLabel": "Vista previa",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} h {minutes} min",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historyCsvHeader": "Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total,% de margen,Monto del margen,Tarifa de configuración,Modo de redondeo,Subtotal antes de redondeo,Ajuste por redondeo,Precio final",
   "historyExportShareText": "Exportación del historial de costes de impresión 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de privacidad",
@@ -295,6 +365,12 @@
   "@filamentCostLabel": {},
   "labourCostLabel": "Costo laboral",
   "@labourCostLabel": {},
+  "additionalCostLabel": "Costo adicional",
+  "@additionalCostLabel": {},
+  "additionalCostNoteLabel": "Nota de costo adicional",
+  "@additionalCostNoteLabel": {},
+  "additionalCostNoteDialogTitle": "Nota de costo adicional",
+  "@additionalCostNoteDialogTitle": {},
   "riskCostLabel": "Riesgo",
   "@riskCostLabel": {},
   "totalCostLabel": "Costo total",

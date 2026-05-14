@@ -144,7 +144,7 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('helpSupport.footer.threads')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const ValueKey<String>('helpSupport.footer.privacy')),

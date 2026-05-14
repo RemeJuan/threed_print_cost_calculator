@@ -9,6 +9,7 @@
   "historyAppBarTitle": "Histórico",
   "@historyAppBarTitle": {},
   "hoursLabel": "Tempo de impressão (horas)",
+  "durationHoursLabel": "Horas",
   "@hoursLabel": {},
   "kwh": "kWh",
   "@kwh": {},
@@ -21,6 +22,9 @@
   "labourTimeLabel": "Tempo de processamento",
   "@labourTimeLabel": {},
   "minutesLabel": "Minutos",
+  "durationMinutesLabel": "Minutos",
+  "printingTimeDialogTitle": "Tempo de impressão",
+  "workTimeDialogTitle": "Tempo de trabalho",
   "@minutesLabel": {},
   "premiumHeader": "Apenas usuários premium:",
   "@premiumHeader": {},
@@ -43,6 +47,13 @@
   "electricityCostSettingsLabel": "Custo de eletricidade",
   "submitButton": "Calcular",
   "@submitButton": {},
+  "versionLabel": "Versão {version}",
+  "@versionLabel": {
+    "description": "Label for showing app version",
+    "placeholders": {
+      "version": {}
+    }
+  },
   "watt": "Watt",
   "@watt": {},
   "wattLabel": "Watt (impressora 3D)",
@@ -84,6 +95,12 @@
   "@deleteDialogContent": {},
   "cancelButton": "Cancelar",
   "@cancelButton": {},
+  "resetButtonLabel": "Redefinir",
+  "@resetButtonLabel": {},
+  "resetCalculationTitle": "Redefinir cálculo?",
+  "@resetCalculationTitle": {},
+  "resetCalculationBody": "Isso descartará os valores atuais da calculadora e recarregará os padrões atuais.",
+  "@resetCalculationBody": {},
   "deleteButton": "Excluir",
   "@deleteButton": {},
   "selectMaterialHint": "Personalizado (não salvo)",
@@ -227,7 +244,67 @@
       "error": {}
     }
   },
-  "historyCsvHeader": "Data,Impressora,Material,Materiais,Peso (g),Tempo,Eletricidade,Filamento,Mão de obra,Risco,Total",
+  "costTotalLabel": "Custo total",
+  "markupLabel": "Margem",
+  "setupFeeLabel": "Taxa de configuração",
+  "roundingAdjustmentLabel": "Ajuste de arredondamento",
+  "finalPriceLabel": "Preço final",
+  "jobPricingOverridesLabel": "Configurações do trabalho",
+  "pricingOverridesSummary": "{count, plural, one{# substituição aplicada} other{# substituições aplicadas}}",
+  "@pricingOverridesSummary": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "pricingMarkupPercentLabel": "% de margem",
+  "pricingSetupFeeLabel": "Taxa de configuração",
+  "pricingRoundingLabel": "Arredondamento",
+  "pricingRoundingNoneLabel": "Nenhum",
+  "pricingRoundingWholeDollarLabel": "Unidade inteira",
+  "pricingRoundingPointNinetyNineLabel": "Termina em .99",
+  "currencySymbolLabel": "Símbolo da moeda",
+  "currencyPositionLabel": "Posição do símbolo",
+  "currencyPositionBeforeLabel": "Antes",
+  "currencyPositionAfterLabel": "Depois",
+  "currencySpacingLabel": "Espaço com símbolo",
+  "currencyPreviewLabel": "Pré-visualização",
+  "materialCostPerKilogramLabel": "{cost}/kg",
+  "@materialCostPerKilogramLabel": {
+    "placeholders": {
+      "cost": {}
+    }
+  },
+  "historyTimeCompactLabel": "{hours} h {minutes} min",
+  "@historyTimeCompactLabel": {
+    "placeholders": {
+      "hours": {},
+      "minutes": {}
+    }
+  },
+  "historyWeightCompactLabel": "{weight} kg",
+  "@historyWeightCompactLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historySummaryLabel": "{weight} • {time} • {printer} • {material}",
+  "@historySummaryLabel": {
+    "placeholders": {
+      "weight": {},
+      "time": {},
+      "printer": {},
+      "material": {}
+    }
+  },
+  "historyMaterialUsageWeightLabel": "{weight}g",
+  "@historyMaterialUsageWeightLabel": {
+    "placeholders": {
+      "weight": {}
+    }
+  },
+  "historyCsvHeader": "Data,Impressora,Material,Materiais,Peso (g),Tempo,Eletricidade,Filamento,Mão de obra,Risco,Total,% de margem,Valor da margem,Taxa de configuração,Modo de arredondamento,Subtotal antes do arredondamento,Ajuste de arredondamento,Preço final",
   "historyExportShareText": "Exportação do histórico de custos de impressão 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de Privacidade",
@@ -296,6 +373,12 @@
   "@filamentCostLabel": {},
   "labourCostLabel": "Mão de obra",
   "@labourCostLabel": {},
+  "additionalCostLabel": "Custo adicional",
+  "@additionalCostLabel": {},
+  "additionalCostNoteLabel": "Nota de custo adicional",
+  "@additionalCostNoteLabel": {},
+  "additionalCostNoteDialogTitle": "Nota de custo adicional",
+  "@additionalCostNoteDialogTitle": {},
   "riskCostLabel": "Risco",
   "@riskCostLabel": {},
   "totalCostLabel": "Custo total",

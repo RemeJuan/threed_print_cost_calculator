@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -11,6 +12,7 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
@@ -77,6 +79,27 @@ void main() {
 
       final notifier = container.read(calculatorProvider.notifier);
       notifier.state = CalculatorState(
+        kwCost: const NumberInput.dirty(value: 0.32),
+        spoolWeight: const NumberInput.dirty(value: 1000),
+        spoolCost: const NumberInput.dirty(value: 25),
+        spoolCostText: '25',
+        wearAndTear: const NumberInput.dirty(value: 1.5),
+        failureRisk: const NumberInput.dirty(value: 10),
+        labourRate: const NumberInput.dirty(value: 15),
+        labourTime: const NumberInput.dirty(value: 12),
+        markupPercent: const NumberInput.dirty(value: 99),
+        setupFee: const NumberInput.dirty(value: 42),
+        roundingMode: PricingRoundingMode.pointNinetyNine,
+        pricing: const PricingResult(
+          baseCost: 1,
+          markupPercent: 99,
+          markupAmount: 0.99,
+          setupFee: 42,
+          roundingMode: PricingRoundingMode.pointNinetyNine,
+          subtotalBeforeRounding: 43.99,
+          roundingAdjustment: 0,
+          finalPrice: 43.99,
+        ),
         materialUsages: const [
           MaterialUsageInput(
             materialId: 'material-current',
@@ -110,6 +133,13 @@ void main() {
             material: 'PLA Red',
             weight: 123,
             timeHours: '02:15',
+            pricingMarkupPercent: 20,
+            pricingMarkupAmount: 2.47,
+            pricingSetupFee: 3,
+            pricingRoundingMode: '.99',
+            pricingSubtotalBeforeRounding: 14.81,
+            pricingRoundingAdjustment: 0.18,
+            finalPrice: 14.99,
             materialUsages: const [
               {
                 'materialId': 'mat-pla',
@@ -133,18 +163,27 @@ void main() {
 
       final state = container.read(calculatorProvider);
       expect(state.watt.value, 250);
+      expect(state.kwCost.value, 0.32);
       expect(state.printWeight.value, 123);
       expect(state.hours.value, 2);
       expect(state.minutes.value, 15);
       expect(state.materialUsages, hasLength(2));
+      expect(state.activePrinterId, 'printer-history');
+      expect(state.selectedMaterialId, 'mat-pla');
       expect(state.materialUsages.first.materialId, 'mat-pla');
       expect(state.materialUsages.last.materialId, 'mat-petg');
       expect(state.materialUsages.last.weightGrams, 23);
+      expect(state.markupPercent.value, 20);
+      expect(state.setupFee.value, 3);
+      expect(state.roundingMode, PricingRoundingMode.pointNinetyNine);
       expect(state.results.electricity, 0.45);
       expect(state.results.filament, 7.89);
       expect(state.results.risk, 1.11);
       expect(state.results.labour, 2.89);
       expect(state.results.total, 12.34);
+      expect(state.pricing.finalPrice, 14.99);
+      expect(state.pricing.markupPercent, 20);
+      expect(state.pricing.setupFee, 3);
       expect(state.showHistoryLoadReplacementWarning, isFalse);
       expect(
         settingsRepository.lastSavedSettings?.activePrinter,

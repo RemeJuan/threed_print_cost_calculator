@@ -61,6 +61,13 @@ Finder _field(String key) {
   );
 }
 
+Finder _decorator(String key) {
+  return find.descendant(
+    of: find.byKey(ValueKey<String>(key)),
+    matching: find.byType(InputDecorator),
+  );
+}
+
 GeneralSettingsModel _settings({
   String electricityCost = '',
   String wattage = '',
@@ -217,6 +224,71 @@ void main() {
             .controller!
             .text,
         '',
+      );
+    });
+
+    testWidgets('shows currency adornment on electricity input', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const GeneralSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(
+        const GeneralSettingsModel(
+          electricityCost: '',
+          wattage: '',
+          activePrinter: '',
+          selectedMaterial: '',
+          wearAndTear: '',
+          failureRisk: '',
+          labourRate: '',
+          pricingMarkupPercent: '',
+          pricingSetupFee: '',
+          pricingRoundingMode: 'none',
+          currencySymbol: 'R',
+          currencyPosition: 'before',
+          currencySpacing: false,
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text('R'), findsWidgets);
+    });
+
+    testWidgets('shows readable electricity suffix for after-position currency', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const GeneralSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(
+        const GeneralSettingsModel(
+          electricityCost: '',
+          wattage: '',
+          activePrinter: '',
+          selectedMaterial: '',
+          wearAndTear: '',
+          failureRisk: '',
+          labourRate: '',
+          pricingMarkupPercent: '',
+          pricingSetupFee: '',
+          pricingRoundingMode: 'none',
+          currencySymbol: 'R',
+          currencyPosition: 'after',
+          currencySpacing: true,
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        tester.widget<InputDecorator>(_decorator('settings.electricityCost.input')).decoration.suffixText,
+        'kWh R',
       );
     });
 

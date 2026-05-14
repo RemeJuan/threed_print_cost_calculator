@@ -42,19 +42,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hoursLabel => 'Printing time (hours)';
 
   @override
+  String get durationHoursLabel => 'Hours';
+
+  @override
   String get wearAndTearLabel => 'Materials/Wear + tear';
 
   @override
   String get labourRateLabel => 'Hourly rate';
 
   @override
-  String get labourTimeLabel => 'Processing time';
+  String get labourTimeLabel => 'Work time';
 
   @override
   String get failureRiskLabel => 'Failure risk (%)';
 
   @override
   String get minutesLabel => 'Minutes';
+
+  @override
+  String get durationMinutesLabel => 'Minutes';
+
+  @override
+  String get printingTimeDialogTitle => 'Printing time';
+
+  @override
+  String get workTimeDialogTitle => 'Work time';
 
   @override
   String get spoolWeightLabel => 'Material weight';
@@ -137,6 +149,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelButton => 'Cancel';
+
+  @override
+  String get resetButtonLabel => 'Reset';
+
+  @override
+  String get resetCalculationTitle => 'Reset calculation?';
+
+  @override
+  String get resetCalculationBody =>
+      'This will discard your current calculator values and reload current defaults.';
 
   @override
   String get deleteButton => 'Delete';
@@ -520,13 +542,117 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labourCostLabel => 'Labour';
 
   @override
+  String get additionalCostLabel => 'Additional cost';
+
+  @override
+  String get additionalCostNoteLabel => 'Additional cost note';
+
+  @override
+  String get additionalCostNoteDialogTitle => 'Additional cost note';
+
+  @override
   String get riskCostLabel => 'Risk';
 
   @override
   String get totalCostLabel => 'Total';
 
   @override
-  String get workCostsLabel => 'Work Costs';
+  String get costTotalLabel => 'Total cost';
+
+  @override
+  String get markupLabel => 'Markup';
+
+  @override
+  String get setupFeeLabel => 'Setup fee';
+
+  @override
+  String get roundingAdjustmentLabel => 'Rounding adjustment';
+
+  @override
+  String get finalPriceLabel => 'Final price';
+
+  @override
+  String get jobPricingOverridesLabel => 'Job settings';
+
+  @override
+  String pricingOverridesSummary(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# overrides applied',
+      one: '# override applied',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pricingMarkupPercentLabel => 'Markup %';
+
+  @override
+  String get pricingSetupFeeLabel => 'Setup fee';
+
+  @override
+  String get pricingRoundingLabel => 'Rounding';
+
+  @override
+  String get pricingRoundingNoneLabel => 'None';
+
+  @override
+  String get pricingRoundingWholeDollarLabel => 'Whole unit';
+
+  @override
+  String get pricingRoundingPointNinetyNineLabel => 'Ends in .99';
+
+  @override
+  String get currencySymbolLabel => 'Currency symbol';
+
+  @override
+  String get currencyPositionLabel => 'Currency position';
+
+  @override
+  String get currencyPositionBeforeLabel => 'Before';
+
+  @override
+  String get currencyPositionAfterLabel => 'After';
+
+  @override
+  String get currencySpacingLabel => 'Space symbol';
+
+  @override
+  String get currencyPreviewLabel => 'Preview';
+
+  @override
+  String materialCostPerKilogramLabel(Object cost) {
+    return '$cost/kg';
+  }
+
+  @override
+  String historyTimeCompactLabel(Object hours, Object minutes) {
+    return '${hours}h ${minutes}m';
+  }
+
+  @override
+  String historyWeightCompactLabel(Object weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String historySummaryLabel(
+    Object weight,
+    Object time,
+    Object printer,
+    Object material,
+  ) {
+    return '$weight • $time • $printer • $material';
+  }
+
+  @override
+  String historyMaterialUsageWeightLabel(Object weight) {
+    return '${weight}g';
+  }
+
+  @override
+  String get workCostsLabel => 'Pricing & Work Costs';
 
   @override
   String get enterNumber => 'Please enter a number';
@@ -595,7 +721,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyCsvHeader =>
-      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total';
+      'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Markup %,Markup Amount,Setup Fee,Rounding Mode,Subtotal Before Rounding,Rounding Adjustment,Final Price';
 
   @override
   String get historyExportShareText => '3D Print Cost History Export';
