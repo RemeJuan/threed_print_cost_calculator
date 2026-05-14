@@ -181,6 +181,24 @@ void main() {
 
       await tester.pumpAndSettle();
 
+      // Visible initially (top of page)
+      final generalTopLeft = tester.getTopLeft(
+        find.byKey(const ValueKey<String>('settings.general.section')),
+      );
+      final workCostsTopLeft = tester.getTopLeft(
+        find.byKey(const ValueKey<String>('settings.workCost.section')),
+      );
+
+      // Printers section is off-screen after emit (WorkCosts form is tall).
+      // SliverChildListDelegate only builds elements for visible children,
+      // so we must scroll to reveal it before checking.
+      await tester.dragUntilVisible(
+        find.byKey(const ValueKey<String>('settings.printers.section')),
+        find.byType(ListView),
+        const Offset(0, -300),
+      );
+      await tester.pumpAndSettle();
+
       expect(
         find.byKey(const ValueKey<String>('settings.printers.section')),
         findsOneWidget,
@@ -206,12 +224,6 @@ void main() {
         findsNothing,
       );
 
-      final generalTopLeft = tester.getTopLeft(
-        find.byKey(const ValueKey<String>('settings.general.section')),
-      );
-      final workCostsTopLeft = tester.getTopLeft(
-        find.byKey(const ValueKey<String>('settings.workCost.section')),
-      );
       final printersTopLeft = tester.getTopLeft(
         find.byKey(const ValueKey<String>('settings.printers.section')),
       );
@@ -236,8 +248,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.dragUntilVisible(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
-      find.byType(SingleChildScrollView),
-      const Offset(0, -200),
+      find.byType(ListView),
+      const Offset(0, -300),
     );
     await tester.pumpAndSettle();
 
