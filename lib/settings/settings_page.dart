@@ -19,38 +19,41 @@ class SettingsPage extends ConsumerWidget {
     final style = Theme.of(
       context,
     ).textTheme.titleLarge?.copyWith(color: Colors.white);
-    return ListView(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
-      children: [
-        SettingsSection(
-          headerKey: const ValueKey<String>('settings.general.section'),
-          bodyKey: const ValueKey<String>('settings.general.body'),
-          title: Text(l10n.generalHeader, style: style),
-          child: const GeneralSettings(),
-        ),
-        if (isPremium) ...[
-          const SizedBox(height: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           SettingsSection(
-            headerKey: const ValueKey<String>('settings.workCost.section'),
-            bodyKey: const ValueKey<String>('settings.workCost.body'),
-            title: Text(l10n.workCostsLabel, style: style),
-            child: const WorkCostsSettings(),
+            headerKey: const ValueKey<String>('settings.general.section'),
+            bodyKey: const ValueKey<String>('settings.general.body'),
+            title: Text(l10n.generalHeader, style: style),
+            child: const GeneralSettings(),
           ),
-          const SizedBox(height: 16),
-          SettingsSection(
-            headerKey: const ValueKey<String>('settings.printers.section'),
-            bodyKey: const ValueKey<String>('settings.printers.body'),
-            title: Text(l10n.printersHeader, style: style),
-            action: _action(
-              context,
-              const AddPrinter(),
-              const Icon(Icons.add),
-              const ValueKey<String>('settings.printers.add.button'),
+          if (isPremium) ...[
+            const SizedBox(height: 16),
+            SettingsSection(
+              headerKey: const ValueKey<String>('settings.workCost.section'),
+              bodyKey: const ValueKey<String>('settings.workCost.body'),
+              title: Text(l10n.workCostsLabel, style: style),
+              child: const WorkCostsSettings(),
             ),
-            child: const Printers(),
-          ),
+            const SizedBox(height: 16),
+            SettingsSection(
+              headerKey: const ValueKey<String>('settings.printers.section'),
+              bodyKey: const ValueKey<String>('settings.printers.body'),
+              title: Text(l10n.printersHeader, style: style),
+              action: _action(
+                context,
+                const AddPrinter(),
+                const Icon(Icons.add),
+                const ValueKey<String>('settings.printers.add.button'),
+              ),
+              child: const Printers(),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 

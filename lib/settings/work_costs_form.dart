@@ -205,13 +205,11 @@ class WorkCostsSettings extends HookConsumerWidget {
             data = GeneralSettingsModel.initial();
           }
 
-          // Keep controller in sync with the latest data; avoid overwriting while typing
           final wearText = data.wearAndTear.toString();
           if (wearController.text != wearText) {
             wearController.text = wearText;
           }
 
-          // Update failure and labour controllers when not focused
           if (!failureFocus.hasFocus) {
             failureController.text = data.failureRisk.toString();
           }
@@ -221,8 +219,11 @@ class WorkCostsSettings extends HookConsumerWidget {
 
           return Container(
             padding: const EdgeInsets.only(bottom: 12),
-            child: Column(
-              children: [
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                 FocusSafeTextField(
                   key: const ValueKey<String>(
                     'settings.workCost.wearAndTear.input',
@@ -244,10 +245,11 @@ class WorkCostsSettings extends HookConsumerWidget {
                     return null;
                   },
                   onChanged: (value) {
-                    // Schedule debounced persistence; fire-and-forget
                     persistWear(value);
                   },
-                  decoration: InputDecoration(labelText: l10n.wearAndTearLabel),
+                  decoration: InputDecoration(
+                    labelText: l10n.wearAndTearLabel,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 FocusSafeTextField(
@@ -274,7 +276,9 @@ class WorkCostsSettings extends HookConsumerWidget {
                   onChanged: (value) {
                     persistFailure(value);
                   },
-                  decoration: InputDecoration(labelText: l10n.failureRiskLabel),
+                  decoration: InputDecoration(
+                    labelText: l10n.failureRiskLabel,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 FocusSafeTextField(
