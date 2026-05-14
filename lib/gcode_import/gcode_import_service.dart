@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'gcode_import_file_picker.dart';
+import 'model/gcode_import_file.dart';
 import 'gcode_import_file_reader.dart';
 import 'gcode_import_parser.dart';
 import 'gcode_import_result.dart';

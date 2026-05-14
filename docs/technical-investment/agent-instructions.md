@@ -9,6 +9,8 @@ Before making changes:
 - Do not bundle multiple investment tasks into one PR.
 - Preserve existing behaviour.
 - Report blockers clearly in the task outcome.
+- Do not pause after intake when the task is clear; continue to the next concrete step.
+- If blocked, name the blocker and the exact next action or question.
 
 ## Before Starting
 
@@ -37,6 +39,8 @@ Follow this sequence for every technical-investment task:
 12. Open the PR against `main`.
 13. Move the ClickUp task to `in review`.
 14. Report back with the PR link and outcome.
+
+Never stop after step 1 unless a blocker prevents step 2.
 
 Do not skip ahead in the sequence. If a later step is blocked, stop and report the blocker instead of performing steps out of order.
 
