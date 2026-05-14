@@ -9,6 +9,8 @@ Before making changes:
 - Do not bundle multiple investment tasks into one PR.
 - Preserve existing behaviour.
 - Report blockers clearly in the task outcome.
+- Do not pause after intake when the task is clear; continue to the next concrete step.
+- If blocked, name the blocker and the exact next action or question.
 
 ## Before Starting
 
@@ -18,6 +20,29 @@ Before making changes:
 - Use branch name format: `investment/<clickup-task-id>_<short-task-slug>`.
 - Work only on the linked ClickUp task.
 - Do not combine this task with any other investment task.
+
+## Required Execution Order
+
+Follow this sequence for every technical-investment task:
+
+1. Read the ClickUp task and these instructions.
+2. Checkout `main`.
+3. Pull latest changes.
+4. Create the branch from `main`.
+5. Move the ClickUp task to `in progress`.
+6. Implement the task.
+7. Run required verification.
+8. Run CodeRabbit on the uncommitted diff.
+9. Apply valid fixes and rerun verification as needed.
+10. Commit the changes.
+11. Push the branch.
+12. Open the PR against `main`.
+13. Move the ClickUp task to `in review`.
+14. Report back with the PR link and outcome.
+
+Never stop after step 1 unless a blocker prevents step 2.
+
+Do not skip ahead in the sequence. If a later step is blocked, stop and report the blocker instead of performing steps out of order.
 
 ## Scope Rules
 
@@ -94,6 +119,12 @@ Example:
 
 The ClickUp task ID must be included because webhook automation parses PR titles.
 
+Do not reuse the git commit subject as the PR title unless it already matches this exact format. Commit messages and PR titles may differ.
+
+Before creating the PR, explicitly verify:
+- the title starts with `[<clickup-task-id>]`
+- the rest of the title exactly matches the ClickUp task title
+
 PR body must include:
 - ClickUp task link
 - summary of changes
@@ -104,6 +135,8 @@ PR body must include:
 - wiki updates made, or why none were needed
 
 Move the ClickUp task to `in review` once the PR is created.
+
+Do not move the ClickUp task to `in review` before the PR exists.
 
 PRs must stay focused. If a second investment opportunity is discovered, recommend a separate task instead of including it.
 
@@ -144,8 +177,10 @@ If the PR cannot answer those questions clearly, it is too broad.
 
 ## CodeRabbit Pre-Review
 
-Before pushing the branch, run the custom CodeRabbit command:
+After code changes and verification are complete, but before `git commit` and before pushing the branch, run the custom CodeRabbit command:
 - `cr --prompt-only --type uncommitted`
+
+This command expects the relevant changes to still be uncommitted. Do not commit until the review is complete and any valid fixes are applied.
 
 This is a long-running process. Do not assume the default 2 minute timeout is sufficient. Wait for the command to complete before continuing.
 
@@ -156,6 +191,8 @@ After it completes:
 - Ignore low-signal or incorrect suggestions.
 - Summarize issues fixed, suggestions ignored, and any follow-up still needed.
 
+If the branch was already committed by mistake, either rerun CodeRabbit with a mode that supports committed diffs or return the branch to an uncommitted state before using `--type uncommitted`.
+
 Do not apply CodeRabbit suggestions that:
 - change user-facing behaviour
 - broaden the task scope
@@ -164,3 +201,17 @@ Do not apply CodeRabbit suggestions that:
 - require architectural decisions outside this task
 
 If CodeRabbit raises useful but out-of-scope feedback, mention it as a follow-up in the PR body instead of implementing it.
+
+## Final Pre-Commit / Pre-PR Gate
+
+Before the final response, explicitly verify all of the following:
+
+- ClickUp task is still `in progress` until after PR creation.
+- CodeRabbit was run on the final uncommitted diff.
+- Any valid CodeRabbit fixes were applied.
+- Required verification has been rerun after those fixes.
+- No commit was created before CodeRabbit completed.
+- PR title starts with `[<clickup-task-id>]` and exactly matches the ClickUp task title.
+- ClickUp task was moved to `in review` only after the PR was created.
+
+If any item above is false, do not report the task as finished.

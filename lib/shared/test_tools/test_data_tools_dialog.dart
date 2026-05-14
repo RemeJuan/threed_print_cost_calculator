@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
-enum TestDataAction { seed, purge, enablePremium, previewCancelFeedback }
+enum TestDataAction {
+  seed,
+  purge,
+  enablePremium,
+  forceUpdateAvailable,
+  forceNoUpdate,
+  clearUpdateCooldown,
+  previewCancelFeedback,
+}
 
 class TestDataToolsDialog extends StatelessWidget {
   const TestDataToolsDialog({required this.onAction, super.key});
@@ -32,11 +40,28 @@ class TestDataToolsDialog extends StatelessWidget {
           child: Text(l10n.enablePremiumButton),
         ),
         TextButton(
+          key: const ValueKey<String>('settings.testData.forceUpdate.button'),
+          onPressed: () => onAction(TestDataAction.forceUpdateAvailable),
+          child: Text(l10n.forceUpdateAvailableButton),
+        ),
+        TextButton(
+          key: const ValueKey<String>('settings.testData.forceNoUpdate.button'),
+          onPressed: () => onAction(TestDataAction.forceNoUpdate),
+          child: Text(l10n.forceNoUpdateButton),
+        ),
+        TextButton(
+          key: const ValueKey<String>(
+            'settings.testData.clearUpdateCooldown.button',
+          ),
+          onPressed: () => onAction(TestDataAction.clearUpdateCooldown),
+          child: Text(l10n.clearUpdateCooldownButton),
+        ),
+        TextButton(
           key: const ValueKey<String>(
             'settings.testData.previewCancelFeedback.button',
           ),
           onPressed: () => onAction(TestDataAction.previewCancelFeedback),
-          child: const Text('Preview renewal feedback'),
+          child: Text(l10n.previewCancelFeedbackButton),
         ),
         TextButton(
           key: const ValueKey<String>('settings.testData.cancel.button'),

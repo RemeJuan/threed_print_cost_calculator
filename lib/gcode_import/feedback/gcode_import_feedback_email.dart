@@ -4,7 +4,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod/riverpod.dart';
 
-import 'gcode_import_feedback_models.dart';
+import 'model/gcode_import_feedback_models.dart';
 
 final gcodeImportFeedbackMailerProvider = Provider<GCodeImportFeedbackMailer>((
   ref,
@@ -60,20 +60,6 @@ class PlatformGCodeImportFeedbackMetadataSource
       osVersion: Platform.operatingSystemVersion,
     );
   }
-}
-
-class GCodeImportFeedbackEmailDraft {
-  const GCodeImportFeedbackEmailDraft({
-    required this.recipients,
-    required this.subject,
-    required this.body,
-    required this.attachmentPaths,
-  });
-
-  final List<String> recipients;
-  final String subject;
-  final String body;
-  final List<String> attachmentPaths;
 }
 
 GCodeImportFeedbackEmailDraft buildGCodeImportFeedbackEmailDraft({

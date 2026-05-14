@@ -323,6 +323,10 @@
   "seedTestDataButton": "Tanam data uji",
   "purgeLocalDataButton": "Hapus data lokal",
   "enablePremiumButton": "Aktifkan premium",
+  "forceUpdateAvailableButton": "Paksa pembaruan tersedia",
+  "forceNoUpdateButton": "Paksa tidak ada pembaruan",
+  "clearUpdateCooldownButton": "Hapus jeda pembaruan",
+  "previewCancelFeedbackButton": "Pratinjau umpan balik pembatalan",
   "enablePremiumTitle": "Aktifkan premium",
   "enablePremiumBody": "Masukkan kode konfirmasi untuk mengaktifkan pengujian premium lokal",
   "invalidConfirmationCodeMessage": "Kode konfirmasi tidak valid",
@@ -333,6 +337,17 @@
   "testDataSeededMessage": "Data uji ditanam",
   "testDataPurgedMessage": "Data lokal dihapus",
   "testDataActionFailedMessage": "Tindakan data uji gagal",
+  "updatePromptTitle": "Pembaruan tersedia",
+  "updatePromptBody": "Versi {storeVersion} tersedia. Anda sudah memasang {currentVersion}.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "Ada versi yang lebih baru tersedia.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Buka toko",
   "mailClientError": "Tidak dapat membuka klien email",
   "@mailClientError": {},
   "offeringsError": "Kesalahan: ",

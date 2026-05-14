@@ -329,6 +329,10 @@
   "seedTestDataButton": "Testdaten befüllen",
   "purgeLocalDataButton": "Lokale Daten löschen",
   "enablePremiumButton": "Premium aktivieren",
+  "forceUpdateAvailableButton": "Update erzwingen",
+  "forceNoUpdateButton": "Kein Update erzwingen",
+  "clearUpdateCooldownButton": "Update-Wartezeit löschen",
+  "previewCancelFeedbackButton": "Rückmeldeansicht zur Verlängerung",
   "enablePremiumTitle": "Premium aktivieren",
   "enablePremiumBody": "Bestätigungscode eingeben, um lokale Premium-Tests zu aktivieren",
   "invalidConfirmationCodeMessage": "Ungültiger Bestätigungscode",
@@ -339,6 +343,17 @@
   "testDataSeededMessage": "Testdaten befüllt",
   "testDataPurgedMessage": "Lokale Daten gelöscht",
   "testDataActionFailedMessage": "Testdatenaktion fehlgeschlagen",
+  "updatePromptTitle": "Update verfügbar",
+  "updatePromptBody": "Version {storeVersion} ist verfügbar. Installiert ist {currentVersion}.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "Eine neuere Version ist verfügbar.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Store öffnen",
   "mailClientError": "E-Mail-Client konnte nicht geöffnet werden",
   "@mailClientError": {},
   "offeringsError": "Fehler: ",

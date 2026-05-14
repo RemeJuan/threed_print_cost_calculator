@@ -460,6 +460,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get enablePremiumButton => 'Attiva premium';
 
   @override
+  String get forceUpdateAvailableButton => 'Forza aggiornamento disponibile';
+
+  @override
+  String get forceNoUpdateButton => 'Forza nessun aggiornamento';
+
+  @override
+  String get clearUpdateCooldownButton => 'Cancella attesa aggiornamento';
+
+  @override
+  String get previewCancelFeedbackButton => 'Anteprima feedback annullamento';
+
+  @override
   String get enablePremiumTitle => 'Attiva premium';
 
   @override
@@ -492,6 +504,21 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get testDataActionFailedMessage =>
       'Operazione sui dati di test non riuscita';
+
+  @override
+  String get updatePromptTitle => 'Aggiornamento disponibile';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'La versione $storeVersion è disponibile. Hai installato $currentVersion.';
+  }
+
+  @override
+  String get updatePromptBodyUnknown =>
+      'È disponibile una versione più recente.';
+
+  @override
+  String get updatePromptOpenStoreButton => 'Apri store';
 
   @override
   String get mailClientError => 'Impossibile aprire il client di posta';

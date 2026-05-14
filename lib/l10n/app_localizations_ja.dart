@@ -446,6 +446,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get enablePremiumButton => 'プレミアムを有効化';
 
   @override
+  String get forceUpdateAvailableButton => 'アップデートを強制表示';
+
+  @override
+  String get forceNoUpdateButton => '更新なしを強制';
+
+  @override
+  String get clearUpdateCooldownButton => '更新クールダウンを消去';
+
+  @override
+  String get previewCancelFeedbackButton => '取消フィードバックをプレビュー';
+
+  @override
   String get enablePremiumTitle => 'プレミアムを有効化';
 
   @override
@@ -474,6 +486,20 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get testDataActionFailedMessage => 'テストデータ操作に失敗しました';
+
+  @override
+  String get updatePromptTitle => 'アップデートがあります';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'バージョン $storeVersion が利用できます。現在は $currentVersion がインストールされています。';
+  }
+
+  @override
+  String get updatePromptBodyUnknown => '新しいバージョンがあります。';
+
+  @override
+  String get updatePromptOpenStoreButton => 'ストアを開く';
 
   @override
   String get mailClientError => 'メールクライアントを開けませんでした';

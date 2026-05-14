@@ -457,6 +457,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get enablePremiumButton => 'Aktifkan premium';
 
   @override
+  String get forceUpdateAvailableButton => 'Paksa pembaruan tersedia';
+
+  @override
+  String get forceNoUpdateButton => 'Paksa tidak ada pembaruan';
+
+  @override
+  String get clearUpdateCooldownButton => 'Hapus jeda pembaruan';
+
+  @override
+  String get previewCancelFeedbackButton => 'Pratinjau umpan balik pembatalan';
+
+  @override
   String get enablePremiumTitle => 'Aktifkan premium';
 
   @override
@@ -488,6 +500,20 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get testDataActionFailedMessage => 'Tindakan data uji gagal';
+
+  @override
+  String get updatePromptTitle => 'Pembaruan tersedia';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'Versi $storeVersion tersedia. Anda sudah memasang $currentVersion.';
+  }
+
+  @override
+  String get updatePromptBodyUnknown => 'Ada versi yang lebih baru tersedia.';
+
+  @override
+  String get updatePromptOpenStoreButton => 'Buka toko';
 
   @override
   String get mailClientError => 'Tidak dapat membuka klien email';

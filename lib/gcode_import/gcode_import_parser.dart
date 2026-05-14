@@ -422,7 +422,7 @@ class _StreamingParseState {
     }
 
     if (previewMetadata != null && previewMetadata!.present) {
-      raw['preview'] = previewMetadata!.safeSummary;
+      raw['preview'] = previewMetadata!.safeSummary();
     }
 
     return GCodeImportResult(

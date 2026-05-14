@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'gcode_import_file_picker.dart';
+import 'model/gcode_import_file.dart';
 import 'gcode_import_file_reader_unsupported.dart'
     if (dart.library.io) 'gcode_import_file_reader_io.dart'
     as file_io;
@@ -46,10 +46,10 @@ Future<int?> resolvePickedGCodeFileSize(GCodePickedFile file) async {
   }
   if (file.readAsBytes != null) {
     final size = file.size ?? 0;
-  if (size > 52428800) {
-    throw StateError('File is too large to be read without a direct path.');
-  }
-  final bytes = await file.readAsBytesOrThrow();
+    if (size > 52428800) {
+      throw StateError('File is too large to be read without a direct path.');
+    }
+    final bytes = await file.readAsBytesOrThrow();
     return bytes.length;
   }
   return null;

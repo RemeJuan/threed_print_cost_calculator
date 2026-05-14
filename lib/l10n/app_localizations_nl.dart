@@ -457,6 +457,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get enablePremiumButton => 'Premium inschakelen';
 
   @override
+  String get forceUpdateAvailableButton => 'Update beschikbaar forceren';
+
+  @override
+  String get forceNoUpdateButton => 'Geen update forceren';
+
+  @override
+  String get clearUpdateCooldownButton => 'Update-afkoeling wissen';
+
+  @override
+  String get previewCancelFeedbackButton => 'Voorvertoning annuleringsfeedback';
+
+  @override
   String get enablePremiumTitle => 'Premium inschakelen';
 
   @override
@@ -488,6 +500,21 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get testDataActionFailedMessage => 'Actie voor testgegevens mislukt';
+
+  @override
+  String get updatePromptTitle => 'Update beschikbaar';
+
+  @override
+  String updatePromptBody(Object storeVersion, Object currentVersion) {
+    return 'Versie $storeVersion is beschikbaar. U hebt $currentVersion geïnstalleerd.';
+  }
+
+  @override
+  String get updatePromptBodyUnknown =>
+      'Er is een nieuwere versie beschikbaar.';
+
+  @override
+  String get updatePromptOpenStoreButton => 'Store openen';
 
   @override
   String get mailClientError => 'Kon e-mailclient niet openen';

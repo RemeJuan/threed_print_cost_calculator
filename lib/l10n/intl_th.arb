@@ -324,6 +324,10 @@
   "seedTestDataButton": "ใส่ข้อมูลทดสอบ",
   "purgeLocalDataButton": "ล้างข้อมูลท้องถิ่น",
   "enablePremiumButton": "เปิดใช้งานพรีเมียม",
+  "forceUpdateAvailableButton": "บังคับให้อัปเดตพร้อมใช้งาน",
+  "forceNoUpdateButton": "บังคับว่าไม่มีอัปเดต",
+  "clearUpdateCooldownButton": "ล้างช่วงพักอัปเดต",
+  "previewCancelFeedbackButton": "ดูตัวอย่างความคิดเห็นการยกเลิก",
   "enablePremiumTitle": "เปิดใช้งานพรีเมียม",
   "enablePremiumBody": "ป้อนรหัสยืนยันเพื่อเปิดการทดสอบพรีเมียมภายในเครื่อง",
   "invalidConfirmationCodeMessage": "รหัสยืนยันไม่ถูกต้อง",
@@ -334,6 +338,17 @@
   "testDataSeededMessage": "ใส่ข้อมูลทดสอบแล้ว",
   "testDataPurgedMessage": "ล้างข้อมูลท้องถิ่นแล้ว",
   "testDataActionFailedMessage": "การดำเนินการข้อมูลทดสอบล้มเหลว",
+  "updatePromptTitle": "มีอัปเดตใหม่",
+  "updatePromptBody": "เวอร์ชัน {storeVersion} พร้อมใช้งานแล้ว คุณติดตั้ง {currentVersion} อยู่",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "มีเวอร์ชันใหม่กว่านี้พร้อมใช้งาน",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "เปิดร้านค้า",
   "mailClientError": "ไม่สามารถเปิดแอปอีเมลได้",
   "@mailClientError": {},
   "offeringsError": "ข้อผิดพลาด: ",

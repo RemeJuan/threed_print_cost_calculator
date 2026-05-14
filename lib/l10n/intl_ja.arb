@@ -331,6 +331,10 @@
   "seedTestDataButton": "テストデータを投入",
   "purgeLocalDataButton": "ローカルデータを消去",
   "enablePremiumButton": "プレミアムを有効化",
+  "forceUpdateAvailableButton": "アップデートを強制表示",
+  "forceNoUpdateButton": "更新なしを強制",
+  "clearUpdateCooldownButton": "更新クールダウンを消去",
+  "previewCancelFeedbackButton": "取消フィードバックをプレビュー",
   "enablePremiumTitle": "プレミアムを有効化",
   "enablePremiumBody": "ローカルのプレミアムテストを有効にする確認コードを入力してください",
   "invalidConfirmationCodeMessage": "確認コードが無効です",
@@ -341,6 +345,17 @@
   "testDataSeededMessage": "テストデータを投入しました",
   "testDataPurgedMessage": "ローカルデータを消去しました",
   "testDataActionFailedMessage": "テストデータ操作に失敗しました",
+  "updatePromptTitle": "アップデートがあります",
+  "updatePromptBody": "バージョン {storeVersion} が利用できます。現在は {currentVersion} がインストールされています。",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "新しいバージョンがあります。",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "ストアを開く",
   "mailClientError": "メールクライアントを開けませんでした",
   "@mailClientError": {},
   "offeringsError": "エラー: ",

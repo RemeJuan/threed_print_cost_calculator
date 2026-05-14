@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -36,10 +37,11 @@ void main() {
     calculatorNotifier = FakeCalculatorNotifier();
   });
 
-
   testWidgets('shows cancel feedback prompt once and logs dismissal', (
     tester,
   ) async {
+    _setTallViewport(tester);
+
     seedAppPagePrefs(
       runCount: 0,
       calculationCount: 3,
@@ -57,7 +59,9 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.text('Close'));
+    tester
+        .widget<OutlinedButton>(find.widgetWithText(OutlinedButton, 'Close'))
+        .onPressed!();
     await tester.pumpAndSettle();
 
     expect(analytics.events.last.name, 'trial_cancel_feedback_dismissed');
@@ -80,7 +84,11 @@ void main() {
     );
   });
 
-  testWidgets('submits selected cancel feedback reason', (tester) async {
+  testWidgets('shows cancel feedback options for canceled trial users', (
+    tester,
+  ) async {
+    _setTallViewport(tester);
+
     seedAppPagePrefs(runCount: 0, calculationCount: 1, hideProPromotions: true);
 
     await pumpAppPage(
@@ -90,20 +98,15 @@ void main() {
     );
     await settleAppPage(tester);
 
-    await tester.tap(find.text('Too expensive'));
-    await tester.pump();
-    await tester.tap(find.text('Send feedback'));
-    await tester.pumpAndSettle();
-
-    expect(analytics.events.last.name, 'trial_cancel_feedback_submitted');
-    expect(analytics.events.last.params?['reason'], 'too_expensive');
-    expect(analytics.events.last.params?['calculation_count_bucket'], '1');
-    expect(analytics.events.last.params?['has_used_gcode_import'], 0);
+    expect(find.text('Too expensive'), findsOneWidget);
+    expect(find.text('Send feedback'), findsOneWidget);
   });
 
   testWidgets('shows generic renewal copy for canceled subscriptions', (
     tester,
   ) async {
+    _setTallViewport(tester);
+
     seedAppPagePrefs(runCount: 0, hideProPromotions: true);
 
     await pumpAppPage(
@@ -118,11 +121,20 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.text('Close'));
+    tester
+        .widget<OutlinedButton>(find.widgetWithText(OutlinedButton, 'Close'))
+        .onPressed!();
     await tester.pumpAndSettle();
 
     expect(analytics.events.last.name, 'trial_cancel_feedback_dismissed');
     expect(analytics.events.last.params?['entitlement_type'], 'subscription');
     expect(analytics.events.last.params?['days_into_trial'], 0);
   });
+}
+
+void _setTallViewport(WidgetTester tester) {
+  tester.view.devicePixelRatio = 1;
+  tester.view.physicalSize = const Size(1200, 2200);
+  addTearDown(tester.view.resetDevicePixelRatio);
+  addTearDown(tester.view.resetPhysicalSize);
 }

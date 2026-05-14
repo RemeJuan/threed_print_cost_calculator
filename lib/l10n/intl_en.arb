@@ -184,6 +184,10 @@
   "seedTestDataButton": "Seed test data",
   "purgeLocalDataButton": "Purge local data",
   "enablePremiumButton": "Enable premium",
+  "forceUpdateAvailableButton": "Force update available",
+  "forceNoUpdateButton": "Force no update",
+  "clearUpdateCooldownButton": "Clear update cooldown",
+  "previewCancelFeedbackButton": "Preview renewal feedback",
   "enablePremiumTitle": "Enable premium",
   "enablePremiumBody": "Enter confirmation code to enable local premium testing",
   "invalidConfirmationCodeMessage": "Invalid confirmation code",
@@ -194,6 +198,17 @@
   "testDataSeededMessage": "Test data seeded",
   "testDataPurgedMessage": "Local data purged",
   "testDataActionFailedMessage": "Test data action failed",
+  "updatePromptTitle": "Update available",
+  "updatePromptBody": "Version {storeVersion} is available. You have {currentVersion} installed.",
+  "@updatePromptBody": {
+    "placeholders": {
+      "storeVersion": {},
+      "currentVersion": {}
+    }
+  },
+  "updatePromptBodyUnknown": "A newer version is available.",
+  "@updatePromptBodyUnknown": {},
+  "updatePromptOpenStoreButton": "Open store",
   "mailClientError": "Could not open mail client",
   "offeringsError": "Error: ",
   "currentOfferings": "Current Offerings",

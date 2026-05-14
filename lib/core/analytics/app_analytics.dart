@@ -428,6 +428,66 @@ class AppAnalytics {
     );
   }
 
+  static Future<void> updatePromptShown({
+    required String currentVersion,
+    String? storeVersion,
+    required String platform,
+    required String source,
+  }) {
+    return log(
+      'update_prompt_shown',
+      params: {
+        'current_version': currentVersion,
+        ...?((() {
+          final value = _optionalString(storeVersion ?? '');
+          return value == null ? null : {'store_version': value};
+        })()),
+        'platform': platform,
+        'source': source,
+      },
+    );
+  }
+
+  static Future<void> updatePromptTapped({
+    required String currentVersion,
+    String? storeVersion,
+    required String platform,
+    required String source,
+  }) {
+    return log(
+      'update_prompt_tapped',
+      params: {
+        'current_version': currentVersion,
+        ...?((() {
+          final value = _optionalString(storeVersion ?? '');
+          return value == null ? null : {'store_version': value};
+        })()),
+        'platform': platform,
+        'source': source,
+      },
+    );
+  }
+
+  static Future<void> updatePromptDismissed({
+    required String currentVersion,
+    String? storeVersion,
+    required String platform,
+    required String source,
+  }) {
+    return log(
+      'update_prompt_dismissed',
+      params: {
+        'current_version': currentVersion,
+        ...?((() {
+          final value = _optionalString(storeVersion ?? '');
+          return value == null ? null : {'store_version': value};
+        })()),
+        'platform': platform,
+        'source': source,
+      },
+    );
+  }
+
   static Future<void> trialCancelFeedbackSubmitted({
     required String reason,
     required String platform,
