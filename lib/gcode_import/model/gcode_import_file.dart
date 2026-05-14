@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:path/path.dart' as p;
 
+const List<String> gCodeSupportedExtensions = ['gcode', 'gco', 'nc', 'bin'];
+
 class GCodePickedFile {
   const GCodePickedFile({
     required this.name,
@@ -40,12 +42,10 @@ class GCodePickedFile {
 }
 
 bool hasSupportedGCodeExtension(String name) {
-  switch (p.extension(name).toLowerCase()) {
-    case '.gcode':
-    case '.gco':
-    case '.nc':
-      return true;
-    default:
-      return false;
+  final extension = p.extension(name).toLowerCase();
+  if (extension.length <= 1 || !extension.startsWith('.')) {
+    return false;
   }
+
+  return gCodeSupportedExtensions.contains(extension.substring(1));
 }
