@@ -2,14 +2,7 @@ import 'dart:typed_data';
 
 import 'package:path/path.dart' as p;
 
-const Set<String> gCodeSupportedExtensions = {
-  '.gcode',
-  '.gco',
-  '.nc',
-  '.bin',
-};
-
-const List<String> gCodeSupportedExtensionsWithoutDot = [
+const List<String> gCodeSupportedExtensions = [
   'gcode',
   'gco',
   'nc',
@@ -54,5 +47,7 @@ class GCodePickedFile {
 }
 
 bool hasSupportedGCodeExtension(String name) {
-  return gCodeSupportedExtensions.contains(p.extension(name).toLowerCase());
+  return gCodeSupportedExtensions.contains(
+    p.extension(name).toLowerCase().substring(1),
+  );
 }

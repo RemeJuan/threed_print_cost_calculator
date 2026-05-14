@@ -58,7 +58,7 @@ List<XTypeGroup> gCodeAcceptedTypeGroups(TargetPlatform platform) {
       return [
         const XTypeGroup(
           label: 'G-code',
-          extensions: gCodeSupportedExtensionsWithoutDot,
+          extensions: gCodeSupportedExtensions,
         ),
       ];
   }
