@@ -219,287 +219,322 @@ class WorkCostsSettings extends HookConsumerWidget {
 
           return Container(
             padding: const EdgeInsets.only(bottom: 12),
-            child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.workCost.wearAndTear.input',
-                  ),
-                  controller: wearController,
-                  externalText: wearText,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  inputFormatters: localizedDecimalInputFormatters,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  validator: (value) {
-                    if (normalizeLocalizedNumber(value).isEmpty) {
-                      return l10n.enterNumber;
-                    }
-                    if (tryParseLocalizedNum(value) == null) {
-                      return l10n.invalidNumber;
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    persistWear(value);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.wearAndTearLabel,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.workCost.failureRisk.input',
-                  ),
-                  controller: failureController,
-                  externalText: data.failureRisk.toString(),
-                  focusNode: failureFocus,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  inputFormatters: localizedDecimalInputFormatters,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  validator: (value) {
-                    if (normalizeLocalizedNumber(value).isEmpty) {
-                      return l10n.enterNumber;
-                    }
-                    if (tryParseLocalizedNum(value) == null) {
-                      return l10n.invalidNumber;
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    persistFailure(value);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.failureRiskLabel,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.workCost.labourRate.input',
-                  ),
-                  controller: labourController,
-                  externalText: data.labourRate.toString(),
-                  focusNode: labourFocus,
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  inputFormatters: localizedDecimalInputFormatters,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  validator: (value) {
-                    if (normalizeLocalizedNumber(value).isEmpty) {
-                      return l10n.enterNumber;
-                    }
-                    if (tryParseLocalizedNum(value) == null) {
-                      return l10n.invalidNumber;
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    persistLabour(value);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.labourRateLabel,
-                  ),
-                ),
-                const Divider(height: 32),
-                FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.workCost.pricingMarkupPercent.input',
-                  ),
-                  controller: markupController,
-                  externalText: data.pricingMarkupPercent.toString(),
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  inputFormatters: localizedDecimalInputFormatters,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  validator: (value) {
-                    if (normalizeLocalizedNumber(value).isEmpty) {
-                      return l10n.enterNumber;
-                    }
-                    if (tryParseLocalizedNum(value) == null) {
-                      return l10n.invalidNumber;
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    persistMarkup(value);
-                    firePricingSettingsChanged(data);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.pricingMarkupPercentLabel,
-                    suffixText: '%',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.workCost.pricingSetupFee.input',
-                  ),
-                  controller: setupFeeController,
-                  externalText: data.pricingSetupFee.toString(),
-                  keyboardType: const TextInputType.numberWithOptions(
-                    decimal: true,
-                  ),
-                  inputFormatters: localizedDecimalInputFormatters,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  validator: (value) {
-                    if (normalizeLocalizedNumber(value).isEmpty) {
-                      return l10n.enterNumber;
-                    }
-                    if (tryParseLocalizedNum(value) == null) {
-                      return l10n.invalidNumber;
-                    }
-                    return null;
-                  },
-                  onChanged: (value) {
-                    persistSetupFee(value);
-                    firePricingSettingsChanged(data);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.pricingSetupFeeLabel,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  key: const ValueKey<String>(
-                    'settings.workCost.pricingRoundingMode.dropdown',
-                  ),
-                  initialValue: data.pricingRoundingMode,
-                  decoration: InputDecoration(
-                    labelText: l10n.pricingRoundingLabel,
-                  ),
-                  items: [
-                    DropdownMenuItem(
-                      value: 'none',
-                      child: Text(l10n.pricingRoundingNoneLabel),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.wearAndTear.input',
+                        ),
+                        controller: wearController,
+                        externalText: wearText,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: localizedDecimalInputFormatters,
+                        inputNormalizer: normalizeLeadingZeroNumericInput,
+                        validator: (value) {
+                          if (normalizeLocalizedNumber(value).isEmpty) {
+                            return l10n.enterNumber;
+                          }
+                          if (tryParseLocalizedNum(value) == null) {
+                            return l10n.invalidNumber;
+                          }
+                          return null;
+                        },
+                        onChanged: persistWear,
+                        decoration: InputDecoration(
+                          labelText: l10n.wearAndTearLabel,
+                        ),
+                      ),
                     ),
-                    DropdownMenuItem(
-                      value: '.00',
-                      child: Text(l10n.pricingRoundingWholeDollarLabel),
-                    ),
-                    DropdownMenuItem(
-                      value: '.99',
-                      child: Text(l10n.pricingRoundingPointNinetyNineLabel),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.failureRisk.input',
+                        ),
+                        controller: failureController,
+                        externalText: data.failureRisk.toString(),
+                        focusNode: failureFocus,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: localizedDecimalInputFormatters,
+                        inputNormalizer: normalizeLeadingZeroNumericInput,
+                        validator: (value) {
+                          if (normalizeLocalizedNumber(value).isEmpty) {
+                            return l10n.enterNumber;
+                          }
+                          if (tryParseLocalizedNum(value) == null) {
+                            return l10n.invalidNumber;
+                          }
+                          return null;
+                        },
+                        onChanged: persistFailure,
+                        decoration: InputDecoration(
+                          labelText: l10n.failureRiskLabel,
+                        ),
+                      ),
                     ),
                   ],
-                  onChanged: (value) async {
-                    if (value == null) return;
-                    try {
-                      await settingsService.update(
-                        (settings) =>
-                            settings.copyWith(pricingRoundingMode: value),
-                      );
-                      firePricingSettingsChanged(data);
-                    } catch (e, st) {
-                      logger.error(
-                        AppLogCategory.ui,
-                        'Failed to persist rounding mode',
-                        context: {'setting': 'pricingRoundingMode'},
-                        error: e,
-                        stackTrace: st,
-                      );
-                    }
-                  },
-                ),
-                const Divider(height: 32),
-                FocusSafeTextField(
-                  key: const ValueKey<String>(
-                    'settings.workCost.currencySymbol.input',
-                  ),
-                  controller: currencySymbolController,
-                  externalText: data.currencySymbol,
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    persistCurrencySymbol(value);
-                  },
-                  decoration: InputDecoration(
-                    labelText: l10n.currencySymbolLabel,
-                  ),
                 ),
                 const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  key: const ValueKey<String>(
-                    'settings.workCost.currencyPosition.dropdown',
-                  ),
-                  initialValue: data.currencyPosition,
-                  decoration: InputDecoration(
-                    labelText: l10n.currencyPositionLabel,
-                  ),
-                  items: [
-                    DropdownMenuItem(
-                      value: 'before',
-                      child: Text(l10n.currencyPositionBeforeLabel),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.labourRate.input',
+                        ),
+                        controller: labourController,
+                        externalText: data.labourRate.toString(),
+                        focusNode: labourFocus,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: localizedDecimalInputFormatters,
+                        inputNormalizer: normalizeLeadingZeroNumericInput,
+                        validator: (value) {
+                          if (normalizeLocalizedNumber(value).isEmpty) {
+                            return l10n.enterNumber;
+                          }
+                          if (tryParseLocalizedNum(value) == null) {
+                            return l10n.invalidNumber;
+                          }
+                          return null;
+                        },
+                        onChanged: persistLabour,
+                        decoration: InputDecoration(
+                          labelText: l10n.labourRateLabel,
+                        ),
+                      ),
                     ),
-                    DropdownMenuItem(
-                      value: 'after',
-                      child: Text(l10n.currencyPositionAfterLabel),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.pricingMarkupPercent.input',
+                        ),
+                        controller: markupController,
+                        externalText: data.pricingMarkupPercent.toString(),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: localizedDecimalInputFormatters,
+                        inputNormalizer: normalizeLeadingZeroNumericInput,
+                        validator: (value) {
+                          if (normalizeLocalizedNumber(value).isEmpty) {
+                            return l10n.enterNumber;
+                          }
+                          if (tryParseLocalizedNum(value) == null) {
+                            return l10n.invalidNumber;
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          persistMarkup(value);
+                          firePricingSettingsChanged(data);
+                        },
+                        decoration: InputDecoration(
+                          labelText: l10n.pricingMarkupPercentLabel,
+                          suffixText: '%',
+                        ),
+                      ),
                     ),
                   ],
-                  onChanged: (value) async {
-                    if (value == null) return;
-                    try {
-                      await settingsService.update(
-                        (settings) =>
-                            settings.copyWith(currencyPosition: value),
-                      );
-                    } catch (e, st) {
-                      logger.error(
-                        AppLogCategory.ui,
-                        'Failed to persist currency position',
-                        context: {'setting': 'currencyPosition'},
-                        error: e,
-                        stackTrace: st,
-                      );
-                    }
-                  },
                 ),
-                const SizedBox(height: 8),
-                SwitchListTile.adaptive(
-                  key: const ValueKey<String>(
-                    'settings.workCost.currencySpacing.toggle',
-                  ),
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                  title: Text(l10n.currencySpacingLabel),
-                  value: data.currencySpacing,
-                  onChanged: (value) async {
-                    try {
-                      await settingsService.update(
-                        (settings) =>
-                            settings.copyWith(currencySpacing: value),
-                      );
-                    } catch (e, st) {
-                      logger.error(
-                        AppLogCategory.ui,
-                        'Failed to persist currency spacing',
-                        context: {'setting': 'currencySpacing'},
-                        error: e,
-                        stackTrace: st,
-                      );
-                    }
-                  },
-                ),
-                const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    '${l10n.currencyPreviewLabel}: ${_formatPreview(data)}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white54,
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.pricingSetupFee.input',
+                        ),
+                        controller: setupFeeController,
+                        externalText: data.pricingSetupFee.toString(),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: localizedDecimalInputFormatters,
+                        inputNormalizer: normalizeLeadingZeroNumericInput,
+                        validator: (value) {
+                          if (normalizeLocalizedNumber(value).isEmpty) {
+                            return l10n.enterNumber;
+                          }
+                          if (tryParseLocalizedNum(value) == null) {
+                            return l10n.invalidNumber;
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          persistSetupFee(value);
+                          firePricingSettingsChanged(data);
+                        },
+                        decoration: InputDecoration(
+                          labelText: l10n.pricingSetupFeeLabel,
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        key: const ValueKey<String>(
+                          'settings.workCost.pricingRoundingMode.dropdown',
+                        ),
+                        initialValue: data.pricingRoundingMode,
+                        decoration: InputDecoration(
+                          labelText: l10n.pricingRoundingLabel,
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'none',
+                            child: Text(l10n.pricingRoundingNoneLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: '.00',
+                            child: Text(l10n.pricingRoundingWholeDollarLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: '.99',
+                            child: Text(
+                              l10n.pricingRoundingPointNinetyNineLabel,
+                            ),
+                          ),
+                        ],
+                        onChanged: (value) async {
+                          if (value == null) return;
+                          try {
+                            await settingsService.update(
+                              (settings) =>
+                                  settings.copyWith(pricingRoundingMode: value),
+                            );
+                            firePricingSettingsChanged(data);
+                          } catch (e, st) {
+                            logger.error(
+                              AppLogCategory.ui,
+                              'Failed to persist rounding mode',
+                              context: {'setting': 'pricingRoundingMode'},
+                              error: e,
+                              stackTrace: st,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: FocusSafeTextField(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencySymbol.input',
+                        ),
+                        controller: currencySymbolController,
+                        externalText: data.currencySymbol,
+                        keyboardType: TextInputType.text,
+                        onChanged: persistCurrencySymbol,
+                        decoration: InputDecoration(
+                          labelText: l10n.currencySymbolLabel,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencyPosition.dropdown',
+                        ),
+                        initialValue: data.currencyPosition,
+                        decoration: InputDecoration(
+                          labelText: l10n.currencyPositionLabel,
+                        ),
+                        items: [
+                          DropdownMenuItem(
+                            value: 'before',
+                            child: Text(l10n.currencyPositionBeforeLabel),
+                          ),
+                          DropdownMenuItem(
+                            value: 'after',
+                            child: Text(l10n.currencyPositionAfterLabel),
+                          ),
+                        ],
+                        onChanged: (value) async {
+                          if (value == null) return;
+                          try {
+                            await settingsService.update(
+                              (settings) =>
+                                  settings.copyWith(currencyPosition: value),
+                            );
+                          } catch (e, st) {
+                            logger.error(
+                              AppLogCategory.ui,
+                              'Failed to persist currency position',
+                              context: {'setting': 'currencyPosition'},
+                              error: e,
+                              stackTrace: st,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SwitchListTile.adaptive(
+                        key: const ValueKey<String>(
+                          'settings.workCost.currencySpacing.toggle',
+                        ),
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        title: Text(l10n.currencySpacingLabel),
+                        value: data.currencySpacing,
+                        onChanged: (value) async {
+                          try {
+                            await settingsService.update(
+                              (settings) =>
+                                  settings.copyWith(currencySpacing: value),
+                            );
+                          } catch (e, st) {
+                            logger.error(
+                              AppLogCategory.ui,
+                              'Failed to persist currency spacing',
+                              context: {'setting': 'currencySpacing'},
+                              error: e,
+                              stackTrace: st,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${l10n.currencyPreviewLabel}: ${_formatPreview(data)}',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: Colors.white54),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
             ),
           );
         }
