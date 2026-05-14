@@ -54,6 +54,21 @@ class AppAnalytics {
     return '20MB+';
   }
 
+  static String markupBucket(num percent) {
+    if (percent <= 0) return '0';
+    if (percent <= 10) return '1_10';
+    if (percent <= 25) return '11_25';
+    if (percent <= 50) return '26_50';
+    return '50_plus';
+  }
+
+  static String setupFeeBucket(num fee) {
+    if (fee <= 0) return '0';
+    if (fee <= 10) return 'low';
+    if (fee <= 50) return 'medium';
+    return 'high';
+  }
+
   static String slicerValue(String? slicer) {
     if (slicer == null || slicer.isEmpty) return 'unknown';
     return slicer;
