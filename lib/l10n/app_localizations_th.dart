@@ -596,7 +596,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get pricingRoundingNoneLabel => 'ไม่มี';
 
   @override
-  String get pricingRoundingWholeDollarLabel => 'จำนวนเต็ม';
+  String get pricingRoundingWholeDollarLabel => 'จำนวนเต็มหน่วย';
 
   @override
   String get pricingRoundingPointNinetyNineLabel => 'ลงท้าย .99';

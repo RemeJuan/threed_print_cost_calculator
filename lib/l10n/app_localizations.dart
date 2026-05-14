@@ -1209,7 +1209,7 @@ abstract class AppLocalizations {
   /// No description provided for @pricingRoundingWholeDollarLabel.
   ///
   /// In en, this message translates to:
-  /// **'Whole dollar'**
+  /// **'Whole unit'**
   String get pricingRoundingWholeDollarLabel;
 
   /// No description provided for @pricingRoundingPointNinetyNineLabel.

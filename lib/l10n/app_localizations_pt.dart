@@ -602,7 +602,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get pricingRoundingNoneLabel => 'Nenhum';
 
   @override
-  String get pricingRoundingWholeDollarLabel => 'Valor inteiro';
+  String get pricingRoundingWholeDollarLabel => 'Unidade inteira';
 
   @override
   String get pricingRoundingPointNinetyNineLabel => 'Termina em .99';

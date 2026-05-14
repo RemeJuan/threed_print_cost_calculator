@@ -585,7 +585,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pricingRoundingNoneLabel => 'なし';
 
   @override
-  String get pricingRoundingWholeDollarLabel => '整数に丸める';
+  String get pricingRoundingWholeDollarLabel => '整数単位';
 
   @override
   String get pricingRoundingPointNinetyNineLabel => '.99で終わる';

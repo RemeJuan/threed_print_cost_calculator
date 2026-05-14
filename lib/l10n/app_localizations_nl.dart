@@ -601,7 +601,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get pricingRoundingNoneLabel => 'Geen';
 
   @override
-  String get pricingRoundingWholeDollarLabel => 'Heel bedrag';
+  String get pricingRoundingWholeDollarLabel => 'Hele eenheid';
 
   @override
   String get pricingRoundingPointNinetyNineLabel => 'Eindigt op .99';

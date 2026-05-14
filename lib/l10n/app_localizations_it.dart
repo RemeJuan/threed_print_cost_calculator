@@ -605,7 +605,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get pricingRoundingNoneLabel => 'Nessuno';
 
   @override
-  String get pricingRoundingWholeDollarLabel => 'Importo intero';
+  String get pricingRoundingWholeDollarLabel => 'Unità intera';
 
   @override
   String get pricingRoundingPointNinetyNineLabel => 'Termina con .99';

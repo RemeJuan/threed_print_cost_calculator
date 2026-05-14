@@ -255,7 +255,7 @@
   "pricingSetupFeeLabel": "Costo di configurazione",
   "pricingRoundingLabel": "Arrotondamento",
   "pricingRoundingNoneLabel": "Nessuno",
-  "pricingRoundingWholeDollarLabel": "Importo intero",
+  "pricingRoundingWholeDollarLabel": "Unità intera",
   "pricingRoundingPointNinetyNineLabel": "Termina con .99",
   "currencySymbolLabel": "Simbolo valuta",
   "currencyPositionLabel": "Posizione del simbolo",

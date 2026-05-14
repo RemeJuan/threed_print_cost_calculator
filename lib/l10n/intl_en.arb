@@ -241,7 +241,7 @@
   "pricingSetupFeeLabel": "Setup fee",
   "pricingRoundingLabel": "Rounding",
   "pricingRoundingNoneLabel": "None",
-  "pricingRoundingWholeDollarLabel": "Whole dollar",
+  "pricingRoundingWholeDollarLabel": "Whole unit",
   "pricingRoundingPointNinetyNineLabel": "Ends in .99",
   "currencySymbolLabel": "Currency symbol",
   "currencyPositionLabel": "Currency position",

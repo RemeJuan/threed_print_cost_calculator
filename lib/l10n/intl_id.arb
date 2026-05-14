@@ -255,7 +255,7 @@
   "pricingSetupFeeLabel": "Biaya penyiapan",
   "pricingRoundingLabel": "Pembulatan",
   "pricingRoundingNoneLabel": "Tidak ada",
-  "pricingRoundingWholeDollarLabel": "Bulatan penuh",
+  "pricingRoundingWholeDollarLabel": "Unit utuh",
   "pricingRoundingPointNinetyNineLabel": "Berakhir .99",
   "currencySymbolLabel": "Simbol mata uang",
   "currencyPositionLabel": "Posisi simbol mata uang",

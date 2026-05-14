@@ -262,7 +262,7 @@
   "pricingSetupFeeLabel": "Taxa de configuração",
   "pricingRoundingLabel": "Arredondamento",
   "pricingRoundingNoneLabel": "Nenhum",
-  "pricingRoundingWholeDollarLabel": "Valor inteiro",
+  "pricingRoundingWholeDollarLabel": "Unidade inteira",
   "pricingRoundingPointNinetyNineLabel": "Termina em .99",
   "currencySymbolLabel": "Símbolo da moeda",
   "currencyPositionLabel": "Posição do símbolo",

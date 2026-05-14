@@ -263,7 +263,7 @@
   "pricingSetupFeeLabel": "設定料",
   "pricingRoundingLabel": "端数処理",
   "pricingRoundingNoneLabel": "なし",
-  "pricingRoundingWholeDollarLabel": "整数に丸める",
+  "pricingRoundingWholeDollarLabel": "整数単位",
   "pricingRoundingPointNinetyNineLabel": ".99で終わる",
   "currencySymbolLabel": "通貨記号",
   "currencyPositionLabel": "通貨記号の位置",

@@ -263,7 +263,7 @@
   "pricingSetupFeeLabel": "Frais d'installation",
   "pricingRoundingLabel": "Arrondi",
   "pricingRoundingNoneLabel": "Aucun",
-  "pricingRoundingWholeDollarLabel": "Montant entier",
+  "pricingRoundingWholeDollarLabel": "Unité entière",
   "pricingRoundingPointNinetyNineLabel": "Se termine par .99",
   "currencySymbolLabel": "Symbole monétaire",
   "currencyPositionLabel": "Position du symbole",

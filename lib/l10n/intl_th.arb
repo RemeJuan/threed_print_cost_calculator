@@ -256,7 +256,7 @@
   "pricingSetupFeeLabel": "ค่าตั้งค่า",
   "pricingRoundingLabel": "การปัดเศษ",
   "pricingRoundingNoneLabel": "ไม่มี",
-  "pricingRoundingWholeDollarLabel": "จำนวนเต็ม",
+  "pricingRoundingWholeDollarLabel": "จำนวนเต็มหน่วย",
   "pricingRoundingPointNinetyNineLabel": "ลงท้าย .99",
   "currencySymbolLabel": "สัญลักษณ์สกุลเงิน",
   "currencyPositionLabel": "ตำแหน่งสัญลักษณ์สกุลเงิน",

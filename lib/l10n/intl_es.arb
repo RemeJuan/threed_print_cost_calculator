@@ -254,7 +254,7 @@
   "pricingSetupFeeLabel": "Tarifa de configuración",
   "pricingRoundingLabel": "Redondeo",
   "pricingRoundingNoneLabel": "Ninguno",
-  "pricingRoundingWholeDollarLabel": "Dólar entero",
+  "pricingRoundingWholeDollarLabel": "Unidad entera",
   "pricingRoundingPointNinetyNineLabel": "Termina en .99",
   "currencySymbolLabel": "Símbolo de moneda",
   "currencyPositionLabel": "Posición del símbolo",

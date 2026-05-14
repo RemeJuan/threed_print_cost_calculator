@@ -263,7 +263,7 @@
   "pricingSetupFeeLabel": "Instelkosten",
   "pricingRoundingLabel": "Afronding",
   "pricingRoundingNoneLabel": "Geen",
-  "pricingRoundingWholeDollarLabel": "Heel bedrag",
+  "pricingRoundingWholeDollarLabel": "Hele eenheid",
   "pricingRoundingPointNinetyNineLabel": "Eindigt op .99",
   "currencySymbolLabel": "Valutasymbool",
   "currencyPositionLabel": "Positie van het symbool",
