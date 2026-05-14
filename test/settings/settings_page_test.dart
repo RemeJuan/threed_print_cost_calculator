@@ -234,6 +234,12 @@ void main() {
     settingsRepo.emit(GeneralSettingsModel.initial());
 
     await tester.pumpAndSettle();
+    await tester.dragUntilVisible(
+      find.byKey(const ValueKey<String>('settings.printers.add.button')),
+      find.byType(SingleChildScrollView),
+      const Offset(0, -200),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
