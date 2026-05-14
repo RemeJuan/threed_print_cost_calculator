@@ -47,7 +47,10 @@ class GCodePickedFile {
 }
 
 bool hasSupportedGCodeExtension(String name) {
-  return gCodeSupportedExtensions.contains(
-    p.extension(name).toLowerCase().substring(1),
-  );
+  final extension = p.extension(name).toLowerCase();
+  if (extension.length <= 1 || !extension.startsWith('.')) {
+    return false;
+  }
+
+  return gCodeSupportedExtensions.contains(extension.substring(1));
 }
