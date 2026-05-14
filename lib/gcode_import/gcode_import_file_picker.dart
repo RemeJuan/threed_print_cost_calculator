@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:file_selector/file_selector.dart';
-import 'package:path/path.dart' as p;
 import 'package:riverpod/riverpod.dart';
 
 import 'gcode_import_android_file_picker.dart';
+import 'model/gcode_import_file.dart';
+
+export 'model/gcode_import_file.dart';
 
 final gcodeImportFilePickerProvider = Provider<GCodeImportFilePicker>((ref) {
   return const PlatformGCodeImportFilePicker();
@@ -53,56 +55,11 @@ List<XTypeGroup> gCodeAcceptedTypeGroups(TargetPlatform platform) {
         XTypeGroup(label: 'G-code', uniformTypeIdentifiers: ['public.data']),
       ];
     default:
-      return const [
-        XTypeGroup(label: 'G-code', extensions: ['gcode', 'gco', 'nc', 'bin']),
+      return [
+        const XTypeGroup(
+          label: 'G-code',
+          extensions: gCodeSupportedExtensions,
+        ),
       ];
-  }
-}
-
-class GCodePickedFile {
-  const GCodePickedFile({
-    required this.name,
-    this.originalName,
-    this.path,
-    this.sourceUri,
-    this.mimeType,
-    this.size,
-    this.readAsBytes,
-  });
-
-  final String name;
-  final String? originalName;
-  final String? path;
-  final String? sourceUri;
-  final String? mimeType;
-  final int? size;
-  final Future<Uint8List> Function()? readAsBytes;
-
-  List<String> get candidateNames => [
-    name,
-    if (originalName != null && originalName != name) originalName!,
-  ];
-
-  bool get hasSupportedExtension {
-    return candidateNames.any(hasSupportedGCodeExtension);
-  }
-
-  Future<Uint8List> readAsBytesOrThrow() {
-    final reader = readAsBytes;
-    if (reader == null) {
-      throw StateError('Selected file does not expose eager byte reads.');
-    }
-    return reader();
-  }
-}
-
-bool hasSupportedGCodeExtension(String name) {
-  switch (p.extension(name).toLowerCase()) {
-    case '.gcode':
-    case '.gco':
-    case '.nc':
-      return true;
-    default:
-      return false;
   }
 }

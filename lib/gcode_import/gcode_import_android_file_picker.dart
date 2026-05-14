@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 
-import 'gcode_import_file_picker.dart';
+import 'model/gcode_import_file.dart';
 
 class AndroidGCodeImportFilePicker {
   const AndroidGCodeImportFilePicker();
