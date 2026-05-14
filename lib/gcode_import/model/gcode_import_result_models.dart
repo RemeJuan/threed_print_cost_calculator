@@ -23,9 +23,17 @@ class GCodeParseWarning {
   }
 
   factory GCodeParseWarning.fromWireMap(Map<String, dynamic> map) {
+    final rawCode = map['code'];
+    final code = (() {
+      try {
+        return GCodeParseWarningCode.values.byName(rawCode.toString());
+      } catch (_) {
+        return GCodeParseWarningCode.unknownSlicer;
+      }
+    })();
     return GCodeParseWarning(
-      GCodeParseWarningCode.values.byName(map['code'] as String),
-      details: map['details'] as String?,
+      code,
+      details: map['details']?.toString(),
     );
   }
 }
@@ -56,17 +64,20 @@ class GCodePreviewMetadata {
 
   String safeSummary([AppLocalizations? localizations]) {
     final previewLabel = localizations?.importGcodePreviewLabel ?? 'preview';
-    return format == null || width == null || height == null
-        ? previewLabel
-        : '$previewLabel $format ${width}x$height';
+    final unsafeLabel = localizations?.importGcodePreviewUnavailable ?? previewLabel;
+    if (!present || !isSafe) return unsafeLabel;
+    if (format == null || width == null || height == null) return previewLabel;
+    return '$previewLabel $format ${width}x$height';
   }
 
   String summary([AppLocalizations? localizations]) {
     final availableLabel =
         localizations?.importGcodePreviewAvailable ?? 'Available';
-    return format == null || width == null || height == null
-        ? availableLabel
-        : '$availableLabel · $format · ${width}x$height';
+    final unavailableLabel =
+        localizations?.importGcodePreviewUnavailable ?? 'No preview';
+    if (!present) return unavailableLabel;
+    if (format == null || width == null || height == null) return unavailableLabel;
+    return '$availableLabel · $format · ${width}x$height';
   }
 
   Map<String, dynamic> toWireMap() {
