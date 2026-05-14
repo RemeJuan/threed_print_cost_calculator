@@ -397,6 +397,9 @@ void main() {
   });
 
   test('update prompt analytics wrappers use expected payloads', () async {
+    final fake = _FakeAnalytics();
+    AppAnalytics.service = fake;
+
     await AppAnalytics.updatePromptShown(
       currentVersion: '1.0.0',
       storeVersion: '1.1.0',
@@ -505,4 +508,98 @@ void main() {
       ).called(1);
     },
   );
+
+  group('pricing analytics', () {
+    late _FakeAnalytics fake;
+
+    setUp(() {
+      fake = _FakeAnalytics();
+      AppAnalytics.service = fake;
+    });
+
+    test('pricingSettingsChanged uses buckets and low-cardinality params',
+        () async {
+      await AppAnalytics.pricingSettingsChanged(
+        markupPercent: 15,
+        setupFee: 8,
+        roundingMode: '.99',
+      );
+
+      expect(fake.lastName, 'pricing_settings_changed');
+      expect(fake.lastParams, {
+        'pricing_enabled': 1,
+        'markup_bucket': '11_25',
+        'setup_fee_bucket': 'low',
+        'rounding_mode': '.99',
+      });
+    });
+
+    test('pricingSettingsChanged reports disabled when all zero/none',
+        () async {
+      await AppAnalytics.pricingSettingsChanged(
+        markupPercent: 0,
+        setupFee: 0,
+        roundingMode: 'none',
+      );
+
+      expect(fake.lastName, 'pricing_settings_changed');
+      expect(fake.lastParams, {
+        'pricing_enabled': 0,
+        'markup_bucket': '0',
+        'setup_fee_bucket': '0',
+        'rounding_mode': 'none',
+      });
+    });
+
+    test('pricingSettingsChanged handles high markup bucket', () async {
+      await AppAnalytics.pricingSettingsChanged(
+        markupPercent: 60,
+        setupFee: 100,
+        roundingMode: '.00',
+      );
+
+      expect(fake.lastParams, {
+        'pricing_enabled': 1,
+        'markup_bucket': '50_plus',
+        'setup_fee_bucket': 'high',
+        'rounding_mode': '.00',
+      });
+    });
+
+    test('pricingOverrideUsed sends field and hasOverrides', () async {
+      await AppAnalytics.pricingOverrideUsed(
+        field: 'markup_percent',
+        hasOverrides: true,
+      );
+
+      expect(fake.lastName, 'pricing_override_used');
+      expect(fake.lastParams, {
+        'field': 'markup_percent',
+        'has_overrides': 1,
+      });
+    });
+
+    test('pricingRoundingUsed sends rounding mode', () async {
+      await AppAnalytics.pricingRoundingUsed(roundingMode: '.99');
+
+      expect(fake.lastName, 'pricing_rounding_used');
+      expect(fake.lastParams, {'rounding_mode': '.99'});
+    });
+
+    test('pricingSaved sends hasPricing, usedOverrides, roundingMode',
+        () async {
+      await AppAnalytics.pricingSaved(
+        hasPricing: true,
+        usedOverrides: false,
+        roundingMode: 'none',
+      );
+
+      expect(fake.lastName, 'pricing_saved');
+      expect(fake.lastParams, {
+        'has_pricing': 1,
+        'used_overrides': 0,
+        'rounding_mode': 'none',
+      });
+    });
+  });
 }
