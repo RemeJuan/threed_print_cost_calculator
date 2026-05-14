@@ -19,6 +19,10 @@ class App extends ConsumerWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MaterialApp(
+        scrollBehavior: const MaterialScrollBehavior().copyWith(
+          overscroll: false,
+          physics: const ClampingScrollPhysics(),
+        ),
         builder: BotToastInit(),
         debugShowCheckedModeBanner: false,
         navigatorObservers: [BotToastNavigatorObserver()],
