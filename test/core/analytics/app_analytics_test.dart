@@ -17,6 +17,10 @@ class _AnalyticsEvent {
 class _FakeAnalytics implements AnalyticsService {
   final List<_AnalyticsEvent> events = [];
 
+  String get lastName => events.last.name;
+
+  Map<String, Object>? get lastParams => events.last.params;
+
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {
     events.add(_AnalyticsEvent(name, params));
