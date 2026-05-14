@@ -1,5 +1,4 @@
 # Technical Investment Execution Instructions
-ClickUp Task: 86c9qf1m4
 
 Technical-investment work is maintenance, refactoring, test hardening, structure cleanup, and architecture hygiene. Improve maintainability without changing user-facing behaviour unless the ClickUp task explicitly says otherwise.
 
