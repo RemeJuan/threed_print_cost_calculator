@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_section.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/mocks.dart';
@@ -32,6 +33,44 @@ void main() {
       addTearDown(() => db.close());
       await tester.pumpAndSettle();
       expect(find.byType(CalculatorPage), findsOneWidget);
+    });
+
+    testWidgets('hides batch costing entry when disabled', (tester) async {
+      final db = await tester.pumpApp(const CalculatorPage(), [
+        calculatorProvider.overrideWith(() => mockCalculatorProvider),
+      ]);
+      addTearDown(() => db.close());
+
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(
+          const ValueKey<String>('calculator.batch_costing.open.button'),
+        ),
+        findsNothing,
+      );
+    });
+
+    testWidgets('opens batch costing shell when enabled', (tester) async {
+      SharedPreferences.setMockInitialValues({
+        batchCostingEnabledPreferenceKey: true,
+      });
+      final db = await tester.pumpApp(const CalculatorPage(), [
+        calculatorProvider.overrideWith(() => mockCalculatorProvider),
+      ]);
+      addTearDown(() => db.close());
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(
+        find.byKey(
+          const ValueKey<String>('calculator.batch_costing.open.button'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Batch costing'), findsOneWidget);
+      expect(find.text('Choose how to start batch costing.'), findsOneWidget);
     });
 
     testWidgets(
