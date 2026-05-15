@@ -1,62 +1,62 @@
 {
-  "wn_id": "materials_help_2026_05",
+  "wn_id": "pricing_model_2026_05",
   "en": {
-    "title": "New: Materials & Help",
-    "body": "Manage materials faster with search, filters, stock tracking, and CSV import. A new Help page also brings FAQs and support into one place.",
+    "title": "New: Client Pricing",
+    "body": "Turn your print costs into a client-ready price with markup, setup fees, rounding, and currency formatting. Cost stays separate so you can see what a print costs and what to charge.",
     "cta": "Got it",
     "unlock_pro_cta": "Start free trial"
   },
   "de": {
-    "title": "Neu: Materialien & Hilfe",
-    "body": "Verwalte Materialien schneller mit Suche, Filtern, Lagerbestand und CSV-Import. Eine neue Hilfeseite bündelt außerdem FAQs und Support an einem Ort.",
+    "title": "Neu: Kundenpreise",
+    "body": "Wandle deine Druckkosten mit Aufschlag, Einrichtungsgebühr, Rundung und Währungsformatierung in einen kundenfertigen Preis um. Kosten bleiben getrennt, damit du siehst, was ein Druck kostet und was du berechnen solltest.",
     "cta": "Verstanden",
     "unlock_pro_cta": "Kostenlose Testversion starten"
   },
   "es": {
-    "title": "Nuevo: Materiales y Ayuda",
-    "body": "Gestiona materiales más rápido con búsqueda, filtros, control de stock e importación CSV. Una nueva sección de ayuda reúne preguntas frecuentes y soporte en un solo lugar.",
+    "title": "Nuevo: precios para clientes",
+    "body": "Convierte tus costes de impresión en un precio listo para el cliente con margen, tarifa de preparación, redondeo y formato de moneda. El coste se mantiene separado para que veas cuánto cuesta imprimir y cuánto cobrar.",
     "cta": "Entendido",
     "unlock_pro_cta": "Iniciar prueba gratuita"
   },
   "fr": {
-    "title": "Nouveau : Matériaux et Aide",
-    "body": "Gérez vos matériaux plus rapidement avec recherche, filtres, suivi du stock et import CSV. Une nouvelle page d’aide regroupe FAQ et support en un seul endroit.",
+    "title": "Nouveau : Tarification client",
+    "body": "Transformez vos coûts d’impression en prix prêt pour le client avec marge, frais de préparation, arrondi et formatage de devise. Le coût reste séparé pour voir ce que l’impression coûte et ce qu’il faut facturer.",
     "cta": "Compris",
     "unlock_pro_cta": "Commencer l'essai gratuit"
   },
   "id": {
-    "title": "Baru: Material & Bantuan",
-    "body": "Kelola material lebih cepat dengan pencarian, filter, pelacakan stok, dan impor CSV. Halaman bantuan baru juga menyediakan FAQ dan dukungan dalam satu tempat.",
+    "title": "Baru: Harga untuk Klien",
+    "body": "Ubah biaya cetak menjadi harga siap klien dengan markup, biaya persiapan, pembulatan, dan format mata uang. Biaya tetap terpisah agar kamu bisa melihat biaya cetak dan harga yang perlu dikenakan.",
     "cta": "Mengerti",
     "unlock_pro_cta": "Mulai uji coba gratis"
   },
   "it": {
-    "title": "Novità: Materiali e Aiuto",
-    "body": "Gestisci i materiali più velocemente con ricerca, filtri, controllo dello stock e import CSV. Una nuova pagina di aiuto riunisce FAQ e supporto in un unico posto.",
+    "title": "Novità: prezzi per clienti",
+    "body": "Trasforma i costi di stampa in un prezzo pronto per il cliente con ricarico, costo di preparazione, arrotondamento e formato valuta. Il costo resta separato, così vedi quanto costa stampare e quanto far pagare.",
     "cta": "Capito",
     "unlock_pro_cta": "Inizia la prova gratuita"
   },
   "ja": {
-    "title": "新機能: 材料とヘルプ",
-    "body": "検索、フィルター、在庫管理、CSVインポートで材料管理がより簡単に。新しいヘルプページでFAQとサポートもまとめて確認できます。",
+    "title": "新機能: クライアント向け価格",
+    "body": "マークアップ、セットアップ料金、端数処理、通貨表示を使って、印刷コストをクライアント向けの価格に変換できます。コストは分けて表示されるため、印刷にかかる費用と請求額を確認できます。",
     "cta": "了解",
     "unlock_pro_cta": "無料トライアルを開始"
   },
   "nl": {
-    "title": "Nieuw: Materialen & Help",
-    "body": "Beheer materialen sneller met zoeken, filters, voorraadbeheer en CSV-import. Een nieuwe hulppagina bundelt ook FAQ’s en ondersteuning.",
+    "title": "Nieuw: klantprijzen",
+    "body": "Zet je printkosten om naar een klantklare prijs met opslag, instelkosten, afronding en valutaweergave. Kosten blijven apart, zodat je ziet wat een print kost en wat je moet rekenen.",
     "cta": "Begrepen",
     "unlock_pro_cta": "Start gratis proefperiode"
   },
   "pt": {
-    "title": "Novo: Materiais e Ajuda",
-    "body": "Gerencie materiais mais rápido com busca, filtros, controle de estoque e importação CSV. Uma nova página de ajuda reúne FAQ e suporte em um só lugar.",
+    "title": "Novo: preços para clientes",
+    "body": "Transforme seus custos de impressão em um preço pronto para o cliente com margem, taxa de configuração, arredondamento e formatação de moeda. O custo fica separado para você ver quanto a impressão custa e quanto cobrar.",
     "cta": "Entendi",
     "unlock_pro_cta": "Iniciar teste gratuito"
   },
   "th": {
-    "title": "ใหม่: วัสดุและความช่วยเหลือ",
-    "body": "จัดการวัสดุได้เร็วขึ้นด้วยการค้นหา ตัวกรอง การติดตามสต็อก และการนำเข้า CSV พร้อมหน้าช่วยเหลือใหม่ที่รวมคำถามที่พบบ่อยและการสนับสนุนไว้ในที่เดียว",
+    "title": "ใหม่: ราคาสำหรับลูกค้า",
+    "body": "เปลี่ยนต้นทุนงานพิมพ์ให้เป็นราคาสำหรับลูกค้าด้วยมาร์กอัป ค่าตั้งค่า การปัดเศษ และรูปแบบสกุลเงิน โดยแยกต้นทุนไว้ต่างหาก เพื่อให้เห็นทั้งต้นทุนจริงและราคาที่ควรเรียกเก็บ",
     "cta": "เข้าใจแล้ว",
     "unlock_pro_cta": "เริ่มทดลองใช้ฟรี"
   }
