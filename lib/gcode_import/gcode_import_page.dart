@@ -1,13 +1,18 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
+import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_section.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 import 'gcode_import_controller.dart';
 import 'gcode_import_result.dart';
@@ -20,6 +25,10 @@ class GCodeImportPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final batchCostingEnabled = ref.watch(batchCostingEnabledProvider);
+    final quantity = useState(1);
+    final quantityController = useTextEditingController(text: '1');
+    final quantityFocusNode = useFocusNode();
 
     useEffect(() {
       AppAnalytics.safeLog(AppAnalytics.gcodeImportOpened);
@@ -42,6 +51,35 @@ class GCodeImportPage extends HookConsumerWidget {
         ? 'partial'
         : 'success';
     final fileSizeBytes = state.selectedFileSizeBytes ?? 0;
+    final canCreateBatchFromImport =
+        batchCostingEnabled &&
+        state.result?.estimatedDuration != null &&
+        state.result?.filamentWeightG != null;
+
+    useEffect(() {
+      quantity.value = 1;
+      quantityController.value = const TextEditingValue(
+        text: '1',
+        selection: TextSelection.collapsed(offset: 1),
+      );
+      return null;
+    }, [state.selectedFilePath, state.selectedFileName]);
+
+    useEffect(() {
+      void handleFocusChange() {
+        if (quantityFocusNode.hasFocus) return;
+        final parsed = int.tryParse(quantityController.text);
+        if (parsed != null && parsed >= 1) return;
+        quantity.value = 1;
+        quantityController.value = const TextEditingValue(
+          text: '1',
+          selection: TextSelection.collapsed(offset: 1),
+        );
+      }
+
+      quantityFocusNode.addListener(handleFocusChange);
+      return () => quantityFocusNode.removeListener(handleFocusChange);
+    }, [quantityController, quantityFocusNode]);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.importGcodePageTitle)),
@@ -180,6 +218,48 @@ class GCodeImportPage extends HookConsumerWidget {
                         l10n.importGcodeCalculatorNote,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
+                      if (batchCostingEnabled) ...[
+                        const SizedBox(height: 16),
+                        FocusSafeTextField(
+                          key: const ValueKey<String>(
+                            'gcode_import.quantity.field',
+                          ),
+                          controller: quantityController,
+                          focusNode: quantityFocusNode,
+                          externalText: quantity.value.toString(),
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          inputNormalizer: (value) =>
+                              normalizeLeadingZeroNumericInput(
+                                value,
+                                allowDecimal: false,
+                              ),
+                          decoration: InputDecoration(
+                            labelText: l10n.importGcodeQuantityLabel,
+                            border: const OutlineInputBorder(),
+                          ),
+                          onChanged: (value) {
+                            final parsed = int.tryParse(value);
+                            quantity.value = parsed != null && parsed >= 1
+                                ? parsed
+                                : 1;
+                          },
+                        ),
+                        if (quantity.value > 1 &&
+                            !canCreateBatchFromImport) ...[
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.importGcodeBatchRequiresDetectedValues,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                          ),
+                        ],
+                      ],
                     ],
                   ),
                 ),
@@ -188,44 +268,28 @@ class GCodeImportPage extends HookConsumerWidget {
               ElevatedButton(
                 key: const ValueKey<String>('gcode_import.apply.button'),
                 onPressed:
-                    state.result!.estimatedDuration == null &&
-                        state.result!.filamentWeightG == null
-                    ? null
-                    : () {
-                        AppAnalytics.safeLog(
-                          () => AppAnalytics.gcodeImportSuccess(
-                            hasPrintTime:
-                                state.result!.estimatedDuration != null,
-                            hasFilamentUsage:
-                                state.result!.filamentWeightG != null ||
-                                state.result!.filamentLengthMm != null,
-                            hasPreview: state.result!.hasPreviewMetadata,
-                          ),
-                        );
-                        ref
-                            .read(calculatorProvider.notifier)
-                            .applyImportedValues(
-                              estimatedDuration:
-                                  state.result!.estimatedDuration,
-                              filamentWeightGrams:
-                                  state.result!.filamentWeightG,
-                            );
-                        AppAnalytics.safeLog(
-                          () => AppAnalytics.gcodeFlowCompleted(
-                            slicer: state.result!.slicer.name,
-                            hasPreview: state.result!.hasPreviewMetadata,
-                            fileSizeBytes: fileSizeBytes,
-                            parseStatus: parseStatus,
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.importGcodeAppliedMessage),
-                          ),
-                        );
-                        Navigator.of(context).pop();
-                      },
-                child: Text(l10n.importGcodeUseValuesButton),
+                    _isPrimaryActionEnabled(
+                      state.result!,
+                      quantity: quantity.value,
+                      canCreateBatchFromImport: canCreateBatchFromImport,
+                    )
+                    ? () => _handlePrimaryAction(
+                        context,
+                        ref,
+                        l10n,
+                        result: state.result!,
+                        selectedFileName: state.selectedFileName,
+                        selectedFilePath: state.selectedFilePath,
+                        quantity: quantity.value,
+                        fileSizeBytes: fileSizeBytes,
+                        parseStatus: parseStatus,
+                      )
+                    : null,
+                child: Text(
+                  quantity.value > 1
+                      ? l10n.importGcodeCreateBatchButton
+                      : l10n.importGcodeUseValuesButton,
+                ),
               ),
             ],
             if (state.status == GCodeImportStatus.success ||
@@ -281,6 +345,85 @@ class GCodeImportPage extends HookConsumerWidget {
     final hours = roundedMinutes ~/ 60;
     final minutes = roundedMinutes % 60;
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  }
+
+  bool _isPrimaryActionEnabled(
+    GCodeImportResult result, {
+    required int quantity,
+    required bool canCreateBatchFromImport,
+  }) {
+    if (quantity > 1) {
+      return canCreateBatchFromImport;
+    }
+
+    return result.estimatedDuration != null || result.filamentWeightG != null;
+  }
+
+  void _handlePrimaryAction(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n, {
+    required GCodeImportResult result,
+    required String? selectedFileName,
+    required String? selectedFilePath,
+    required int quantity,
+    required int fileSizeBytes,
+    required String parseStatus,
+  }) {
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeImportSuccess(
+        hasPrintTime: result.estimatedDuration != null,
+        hasFilamentUsage:
+            result.filamentWeightG != null || result.filamentLengthMm != null,
+        hasPreview: result.hasPreviewMetadata,
+      ),
+    );
+
+    if (quantity > 1) {
+      final notifier = ref.read(batchCostingProvider.notifier);
+      notifier.reset();
+      notifier.addItem(
+        BatchCostingItem.fromGCodeImport(
+          id: 'gcode-${DateTime.now().microsecondsSinceEpoch}',
+          displayName: selectedFileName ?? l10n.importGcodeSelectedFileLabel,
+          quantity: quantity,
+          importResult: result,
+          sourceFileName: selectedFileName,
+          sourcePath: selectedFilePath,
+        ),
+      );
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodeFlowCompleted(
+          slicer: result.slicer.name,
+          hasPreview: result.hasPreviewMetadata,
+          fileSizeBytes: fileSizeBytes,
+          parseStatus: parseStatus,
+        ),
+      );
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()));
+      return;
+    }
+
+    ref
+        .read(calculatorProvider.notifier)
+        .applyImportedValues(
+          estimatedDuration: result.estimatedDuration,
+          filamentWeightGrams: result.filamentWeightG,
+        );
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeFlowCompleted(
+        slicer: result.slicer.name,
+        hasPreview: result.hasPreviewMetadata,
+        fileSizeBytes: fileSizeBytes,
+        parseStatus: parseStatus,
+      ),
+    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.importGcodeAppliedMessage)));
+    Navigator.of(context).pop();
   }
 
   Widget _previewValueWidget(

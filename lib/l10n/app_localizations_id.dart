@@ -900,6 +900,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get importGcodeUseValuesButton => 'Gunakan nilai ini';
 
   @override
+  String get importGcodeQuantityLabel => 'Jumlah';
+
+  @override
+  String get importGcodeCreateBatchButton => 'Buat batch';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'Pembuatan batch memerlukan durasi dan berat filamen yang terdeteksi.';
+
+  @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override

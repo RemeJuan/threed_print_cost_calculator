@@ -901,6 +901,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importGcodeUseValuesButton => 'Use these values';
 
   @override
+  String get importGcodeQuantityLabel => 'Quantity';
+
+  @override
+  String get importGcodeCreateBatchButton => 'Create batch';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'Batch creation needs both detected duration and filament weight.';
+
+  @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override
