@@ -1,7 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const String helpSupportWebsiteUrl = 'https://printcostcalc.app';
-const String helpSupportRoadmapUrl = 'https://printcostcalc.app/roadmap';
+const String helpSupportRoadmapUrl = 'https://printcostcalc.app/roadmap/';
 const String helpSupportXUrl = 'https://x.com/PrintCostCalc';
 const String helpSupportInstagramUrl =
     'https://www.instagram.com/3dprintcostcalculator';
@@ -15,5 +16,10 @@ const String helpSupportTermsUrl =
 Future<void> openUrl(String value) async {
   final uri = Uri.tryParse(value);
   if (uri == null) return;
-  await launchUrl(uri, mode: LaunchMode.externalApplication);
+  try {
+    if (await launchUrl(uri, mode: LaunchMode.externalApplication)) return;
+    await launchUrl(uri, mode: LaunchMode.platformDefault);
+  } catch (error) {
+    debugPrint('Unable to open $uri: $error');
+  }
 }
