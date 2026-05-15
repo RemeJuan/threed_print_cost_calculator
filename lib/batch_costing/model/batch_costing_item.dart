@@ -35,7 +35,7 @@ class BatchCostingImportMetadata {
 }
 
 class BatchCostingItem {
-  BatchCostingItem({
+  BatchCostingItem._({
     required this.id,
     required this.displayName,
     required int quantity,
@@ -72,7 +72,7 @@ class BatchCostingItem {
     String? materialId,
     String? pricingProfileId,
   }) {
-    return BatchCostingItem(
+    return BatchCostingItem._(
       id: id,
       displayName: displayName,
       sourceFileName: sourceFileName,
@@ -114,7 +114,7 @@ class BatchCostingItem {
       );
     }
 
-    return BatchCostingItem(
+    return BatchCostingItem._(
       id: id,
       displayName: displayName,
       sourceFileName: sourceFileName,
@@ -148,7 +148,7 @@ class BatchCostingItem {
     String? materialId,
     String? pricingProfileId,
   }) {
-    return BatchCostingItem(
+    return BatchCostingItem._(
       id: id ?? this.id,
       displayName: displayName ?? this.displayName,
       sourceFileName: sourceFileName ?? this.sourceFileName,
