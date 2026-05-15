@@ -117,6 +117,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String get savePrintButton => 'Print opslaan';
 
   @override
+  String get batchCostingAppBarTitle => 'Batchkosten';
+
+  @override
+  String get batchCostingIntro => 'Kies hoe je batchkosten wilt starten.';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'G-code-batch importeren';
+
+  @override
+  String get batchCostingManualBatchButton => 'Handmatige batch';
+
+  @override
   String get printNameHint => 'Printnaam';
 
   @override

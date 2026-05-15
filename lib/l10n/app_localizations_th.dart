@@ -117,6 +117,18 @@ class AppLocalizationsTh extends AppLocalizations {
   String get savePrintButton => 'บันทึกงานพิมพ์';
 
   @override
+  String get batchCostingAppBarTitle => 'คำนวณแบบชุด';
+
+  @override
+  String get batchCostingIntro => 'เลือกวิธีเริ่มการคำนวณแบบชุด';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'นำเข้าชุด G-code';
+
+  @override
+  String get batchCostingManualBatchButton => 'ชุดแบบกำหนดเอง';
+
+  @override
   String get printNameHint => 'ชื่องานพิมพ์';
 
   @override

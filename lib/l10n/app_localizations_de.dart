@@ -117,6 +117,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get savePrintButton => 'Druck speichern';
 
   @override
+  String get batchCostingAppBarTitle => 'Stapelkosten';
+
+  @override
+  String get batchCostingIntro =>
+      'Wähle, wie du mit der Stapelkalkulation startest.';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'G-Code-Stapel importieren';
+
+  @override
+  String get batchCostingManualBatchButton => 'Manueller Stapel';
+
+  @override
   String get printNameHint => 'Name des Drucks';
 
   @override

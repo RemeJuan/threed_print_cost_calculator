@@ -183,7 +183,7 @@ class CalculatorPage extends HookConsumerWidget {
                   );
                 },
                 icon: const Icon(Icons.view_list_outlined),
-                label: const Text('Batch costing'),
+                label: Text(l10n.batchCostingAppBarTitle),
               ),
             ],
             if (showSave.value)

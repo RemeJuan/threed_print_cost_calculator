@@ -330,6 +330,30 @@ abstract class AppLocalizations {
   /// **'Save Print'**
   String get savePrintButton;
 
+  /// No description provided for @batchCostingAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch costing'**
+  String get batchCostingAppBarTitle;
+
+  /// No description provided for @batchCostingIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to start batch costing.'**
+  String get batchCostingIntro;
+
+  /// No description provided for @batchCostingImportGcodeBatchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code batch'**
+  String get batchCostingImportGcodeBatchButton;
+
+  /// No description provided for @batchCostingManualBatchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual batch'**
+  String get batchCostingManualBatchButton;
+
   /// No description provided for @printNameHint.
   ///
   /// In en, this message translates to:

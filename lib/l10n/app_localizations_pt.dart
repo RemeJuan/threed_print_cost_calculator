@@ -117,6 +117,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get savePrintButton => 'Salvar impressão';
 
   @override
+  String get batchCostingAppBarTitle => 'Custo em lote';
+
+  @override
+  String get batchCostingIntro => 'Escolha como iniciar o custo em lote.';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'Importar lote de G-code';
+
+  @override
+  String get batchCostingManualBatchButton => 'Lote manual';
+
+  @override
   String get printNameHint => 'Nome da impressão';
 
   @override

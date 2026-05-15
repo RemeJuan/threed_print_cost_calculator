@@ -117,6 +117,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get savePrintButton => 'Salva stampa';
 
   @override
+  String get batchCostingAppBarTitle => 'Costo batch';
+
+  @override
+  String get batchCostingIntro => 'Scegli come avviare il costo batch.';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'Importa batch G-code';
+
+  @override
+  String get batchCostingManualBatchButton => 'Batch manuale';
+
+  @override
   String get printNameHint => 'Nome stampa';
 
   @override

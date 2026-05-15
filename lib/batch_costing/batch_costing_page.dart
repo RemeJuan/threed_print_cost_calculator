@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 class BatchCostingPage extends ConsumerWidget {
@@ -12,25 +13,27 @@ class BatchCostingPage extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Batch costing')),
+      appBar: AppBar(title: Text(l10n.batchCostingAppBarTitle)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text('Choose how to start batch costing.'),
+            Text(l10n.batchCostingIntro),
             const SizedBox(height: 16),
             OutlinedButton.icon(
               onPressed: null,
               icon: const Icon(Icons.upload_file_outlined),
-              label: const Text('Import G-code batch'),
+              label: Text(l10n.batchCostingImportGcodeBatchButton),
             ),
             const SizedBox(height: 12),
             OutlinedButton.icon(
               onPressed: null,
               icon: const Icon(Icons.edit_outlined),
-              label: const Text('Manual batch'),
+              label: Text(l10n.batchCostingManualBatchButton),
             ),
           ],
         ),

@@ -117,6 +117,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get savePrintButton => 'プリントを保存';
 
   @override
+  String get batchCostingAppBarTitle => 'バッチ計算';
+
+  @override
+  String get batchCostingIntro => 'バッチ計算の開始方法を選択してください。';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'G-code バッチをインポート';
+
+  @override
+  String get batchCostingManualBatchButton => '手動バッチ';
+
+  @override
   String get printNameHint => 'プリント名';
 
   @override

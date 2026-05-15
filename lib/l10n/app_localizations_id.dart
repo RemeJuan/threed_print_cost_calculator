@@ -117,6 +117,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get savePrintButton => 'Simpan cetakan';
 
   @override
+  String get batchCostingAppBarTitle => 'Biaya batch';
+
+  @override
+  String get batchCostingIntro => 'Pilih cara memulai biaya batch.';
+
+  @override
+  String get batchCostingImportGcodeBatchButton => 'Impor batch G-code';
+
+  @override
+  String get batchCostingManualBatchButton => 'Batch manual';
+
+  @override
   String get printNameHint => 'Nama cetak';
 
   @override
