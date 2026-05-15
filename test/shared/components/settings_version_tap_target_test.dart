@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/components/settings_version_tap_target.dart';
+import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -81,6 +82,15 @@ Future<void> _openHiddenTools(WidgetTester tester) async {
     await tester.tap(target);
     await tester.pump(const Duration(milliseconds: 200));
   }
+  await tester.pumpAndSettle();
+}
+
+Future<void> _revealHiddenToolButton(WidgetTester tester, String key) async {
+  await tester.dragUntilVisible(
+    find.byKey(ValueKey<String>(key)),
+    find.byType(SingleChildScrollView),
+    const Offset(0, -200),
+  );
   await tester.pumpAndSettle();
 }
 
@@ -217,6 +227,10 @@ void main() {
     await tester.pumpAndSettle();
     await _openHiddenTools(tester);
 
+    await _revealHiddenToolButton(
+      tester,
+      'settings.testData.previewCancelFeedback.button',
+    );
     await tester.tap(
       find.byKey(
         const ValueKey<String>(
@@ -248,6 +262,10 @@ void main() {
     await tester.pumpAndSettle();
     await _openHiddenTools(tester);
 
+    await _revealHiddenToolButton(
+      tester,
+      'settings.testData.showWhatsNew.button',
+    );
     await tester.tap(
       find.byKey(
         const ValueKey<String>('settings.testData.showWhatsNew.button'),
@@ -266,5 +284,40 @@ void main() {
 
     expect(fakeAnalytics.lastName, 'whats_new_dismissed');
     expect(fakeAnalytics.lastParams?['wn_id'], 'pricing_model_2026_05');
+  });
+
+  testWidgets('can enable batch costing from hidden tools', (tester) async {
+    final fakeCalculator = FakeCalculatorNotifier();
+    final fakeHistory = _FakeHistoryPagedNotifier();
+
+    final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
+      calculatorProvider.overrideWith(() => fakeCalculator),
+      historyPagedProvider.overrideWith(() => fakeHistory),
+      testDataServiceProvider.overrideWith((ref) => _FakeTestDataService(ref)),
+    ]);
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await _openHiddenTools(tester);
+
+    await _revealHiddenToolButton(
+      tester,
+      'settings.testData.enableBatchCosting.button',
+    );
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.testData.enableBatchCosting.button'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final container = ProviderScope.containerOf(
+      tester.element(
+        find.byKey(const ValueKey<String>('settings.version.tapTarget')),
+      ),
+      listen: false,
+    );
+
+    expect(container.read(batchCostingEnabledProvider), isTrue);
   });
 }
