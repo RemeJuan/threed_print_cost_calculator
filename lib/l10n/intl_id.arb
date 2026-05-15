@@ -569,5 +569,20 @@
   "stockBadgeOut": "Habis",
   "stockBadgeLow": "Stok rendah",
   "stockBadgeInStock": "Tersedia",
-  "stockBadgeNoTracking": "Tidak dilacak"
+  "stockBadgeNoTracking": "Tidak dilacak",
+  "batchCostingReviewAppBarTitle": "Batch item review",
+  "batchCostingReviewSubtitle": "Review batch items before printer assignment.",
+  "batchCostingReviewEmptyTitle": "No batch items yet",
+  "batchCostingReviewEmptyBody": "Add imported or manual prints to continue.",
+  "batchCostingReviewContinueButton": "Continue to printer assignment",
+  "batchCostingReviewQuantityLabel": "Quantity",
+  "batchCostingReviewRemoveButton": "Remove",
+  "batchCostingReviewSourceLabel": "Source",
+  "batchCostingReviewSourceManual": "Manual",
+  "batchCostingReviewSourceGcode": "G-code",
+  "batchCostingReviewSourceUnknown": "Unknown",
+  "batchCostingReviewWeightLabel": "Weight",
+  "batchCostingReviewDurationLabel": "Duration",
+  "batchCostingPrinterAssignmentAppBarTitle": "Printer assignment",
+  "batchCostingPrinterAssignmentSubtitle": "Printer assignment continues in the next batch costing step."
 }

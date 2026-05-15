@@ -1152,4 +1152,53 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Sem rastreio';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'Batch item review';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'Review batch items before printer assignment.';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'No batch items yet';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'Add imported or manual prints to continue.';
+
+  @override
+  String get batchCostingReviewContinueButton =>
+      'Continue to printer assignment';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'Quantity';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'Remove';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'Source';
+
+  @override
+  String get batchCostingReviewSourceManual => 'Manual';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'Unknown';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'Weight';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'Duration';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle => 'Printer assignment';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'Printer assignment continues in the next batch costing step.';
 }

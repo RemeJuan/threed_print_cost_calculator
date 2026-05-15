@@ -2176,6 +2176,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tracking'**
   String get stockBadgeNoTracking;
+
+  /// No description provided for @batchCostingReviewAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch item review'**
+  String get batchCostingReviewAppBarTitle;
+
+  /// No description provided for @batchCostingReviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review batch items before printer assignment.'**
+  String get batchCostingReviewSubtitle;
+
+  /// No description provided for @batchCostingReviewEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No batch items yet'**
+  String get batchCostingReviewEmptyTitle;
+
+  /// No description provided for @batchCostingReviewEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add imported or manual prints to continue.'**
+  String get batchCostingReviewEmptyBody;
+
+  /// No description provided for @batchCostingReviewContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to printer assignment'**
+  String get batchCostingReviewContinueButton;
+
+  /// No description provided for @batchCostingReviewQuantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get batchCostingReviewQuantityLabel;
+
+  /// No description provided for @batchCostingReviewRemoveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get batchCostingReviewRemoveButton;
+
+  /// No description provided for @batchCostingReviewSourceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get batchCostingReviewSourceLabel;
+
+  /// No description provided for @batchCostingReviewSourceManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual'**
+  String get batchCostingReviewSourceManual;
+
+  /// No description provided for @batchCostingReviewSourceGcode.
+  ///
+  /// In en, this message translates to:
+  /// **'G-code'**
+  String get batchCostingReviewSourceGcode;
+
+  /// No description provided for @batchCostingReviewSourceUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get batchCostingReviewSourceUnknown;
+
+  /// No description provided for @batchCostingReviewWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get batchCostingReviewWeightLabel;
+
+  /// No description provided for @batchCostingReviewDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get batchCostingReviewDurationLabel;
+
+  /// No description provided for @batchCostingPrinterAssignmentAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer assignment'**
+  String get batchCostingPrinterAssignmentAppBarTitle;
+
+  /// No description provided for @batchCostingPrinterAssignmentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer assignment continues in the next batch costing step.'**
+  String get batchCostingPrinterAssignmentSubtitle;
 }
 
 class _AppLocalizationsDelegate
