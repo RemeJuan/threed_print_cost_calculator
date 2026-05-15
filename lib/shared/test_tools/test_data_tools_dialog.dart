@@ -9,6 +9,7 @@ enum TestDataAction {
   forceNoUpdate,
   clearUpdateCooldown,
   previewCancelFeedback,
+  showWhatsNew,
 }
 
 class TestDataToolsDialog extends StatelessWidget {
@@ -62,6 +63,11 @@ class TestDataToolsDialog extends StatelessWidget {
           ),
           onPressed: () => onAction(TestDataAction.previewCancelFeedback),
           child: Text(l10n.previewCancelFeedbackButton),
+        ),
+        TextButton(
+          key: const ValueKey<String>('settings.testData.showWhatsNew.button'),
+          onPressed: () => onAction(TestDataAction.showWhatsNew),
+          child: const Text('Show What\'s New'),
         ),
         TextButton(
           key: const ValueKey<String>('settings.testData.cancel.button'),
