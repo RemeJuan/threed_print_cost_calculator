@@ -470,6 +470,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Preview renewal feedback';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Enable premium';
 
   @override

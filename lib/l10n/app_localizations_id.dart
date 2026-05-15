@@ -472,6 +472,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Pratinjau umpan balik pembatalan';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Aktifkan premium';
 
   @override

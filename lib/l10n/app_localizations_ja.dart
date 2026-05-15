@@ -461,6 +461,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get previewCancelFeedbackButton => '取消フィードバックをプレビュー';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'プレミアムを有効化';
 
   @override

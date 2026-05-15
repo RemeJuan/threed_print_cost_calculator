@@ -474,6 +474,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Vista previa de comentarios de cancelación';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Activar premium';
 
   @override

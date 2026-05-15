@@ -473,6 +473,12 @@ class AppLocalizationsPt extends AppLocalizations {
       'Prévia do feedback de cancelamento';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Ativar premium';
 
   @override

@@ -978,6 +978,18 @@ abstract class AppLocalizations {
   /// **'Preview renewal feedback'**
   String get previewCancelFeedbackButton;
 
+  /// No description provided for @enableBatchCostingButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable batch costing'**
+  String get enableBatchCostingButton;
+
+  /// No description provided for @showWhatsNewButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Show What\'s New'**
+  String get showWhatsNewButton;
+
   /// No description provided for @enablePremiumTitle.
   ///
   /// In en, this message translates to:

@@ -477,6 +477,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aperçu des commentaires d\'annulation';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Activer le premium';
 
   @override
