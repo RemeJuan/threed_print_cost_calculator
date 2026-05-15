@@ -1151,4 +1151,52 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Keine Verfolgung';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'Batch-Artikelprüfung';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'Batch-Artikel vor Druckerzuweisung prüfen.';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'Noch keine Batch-Artikel';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'Importierte oder manuelle Drucke hinzufügen.';
+
+  @override
+  String get batchCostingReviewContinueButton => 'Weiter zur Druckerzuweisung';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'Menge';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'Entfernen';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'Quelle';
+
+  @override
+  String get batchCostingReviewSourceManual => 'Manuell';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-Code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'Unbekannt';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'Gewicht';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'Dauer';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle => 'Druckerzuweisung';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'Die Druckerzuweisung wird im nächsten Batch-Costing-Schritt fortgesetzt.';
 }

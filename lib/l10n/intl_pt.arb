@@ -570,5 +570,20 @@
   "stockBadgeOut": "Sem estoque",
   "stockBadgeLow": "Estoque baixo",
   "stockBadgeInStock": "Em estoque",
-  "stockBadgeNoTracking": "Sem rastreio"
+  "stockBadgeNoTracking": "Sem rastreio",
+  "batchCostingReviewAppBarTitle": "Revisão de itens do lote",
+  "batchCostingReviewSubtitle": "Revise os itens do lote antes da atribuição de impressora.",
+  "batchCostingReviewEmptyTitle": "Nenhum item de lote ainda",
+  "batchCostingReviewEmptyBody": "Adicione impressões importadas ou manuais para continuar.",
+  "batchCostingReviewContinueButton": "Continuar para atribuição de impressora",
+  "batchCostingReviewQuantityLabel": "Quantidade",
+  "batchCostingReviewRemoveButton": "Remover",
+  "batchCostingReviewSourceLabel": "Origem",
+  "batchCostingReviewSourceManual": "Manual",
+  "batchCostingReviewSourceGcode": "G-code",
+  "batchCostingReviewSourceUnknown": "Desconhecido",
+  "batchCostingReviewWeightLabel": "Peso",
+  "batchCostingReviewDurationLabel": "Duração",
+  "batchCostingPrinterAssignmentAppBarTitle": "Atribuição de impressora",
+  "batchCostingPrinterAssignmentSubtitle": "A atribuição de impressora continua na próxima etapa."
 }

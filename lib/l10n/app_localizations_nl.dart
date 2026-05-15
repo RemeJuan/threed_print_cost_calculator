@@ -1150,4 +1150,53 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Niet bijgehouden';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'Batch-artikelbeoordeling';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'Beoordeel batch-artikelen vóór printertoewijzing.';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'Nog geen batch-artikelen';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'Voeg geïmporteerde of handmatige afdrukken toe om door te gaan.';
+
+  @override
+  String get batchCostingReviewContinueButton =>
+      'Doorgaan naar printertoewijzing';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'Aantal';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'Verwijderen';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'Bron';
+
+  @override
+  String get batchCostingReviewSourceManual => 'Handmatig';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'Onbekend';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'Gewicht';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'Duur';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle => 'Printertoewijzing';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'Printertoewijzing gaat verder in de volgende batch-costing stap.';
 }

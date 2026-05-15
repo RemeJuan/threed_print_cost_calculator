@@ -1129,4 +1129,53 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'ไม่ติดตาม';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'ตรวจสอบรายการชุด';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'ตรวจสอบรายการชุดก่อนกำหนดเครื่องพิมพ์';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'ยังไม่มีรายการชุด';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'เพิ่มงานพิมพ์ที่นำเข้าหรือด้วยตนเองเพื่อดำเนินการต่อ';
+
+  @override
+  String get batchCostingReviewContinueButton =>
+      'ดำเนินการต่อเพื่อกำหนดเครื่องพิมพ์';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'จำนวน';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'ลบ';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'แหล่งที่มา';
+
+  @override
+  String get batchCostingReviewSourceManual => 'ด้วยตนเอง';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'ไม่ทราบ';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'น้ำหนัก';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'ระยะเวลา';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle => 'กำหนดเครื่องพิมพ์';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'การกำหนดเครื่องพิมพ์จะดำเนินการต่อในขั้นตอนถัดไป';
 }

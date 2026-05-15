@@ -1139,4 +1139,53 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Tidak dilacak';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'Tinjauan item batch';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'Tinjau item batch sebelum penugasan printer.';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'Belum ada item batch';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'Tambahkan cetakan impor atau manual untuk melanjutkan.';
+
+  @override
+  String get batchCostingReviewContinueButton =>
+      'Lanjutkan ke penugasan printer';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'Jumlah';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'Hapus';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'Sumber';
+
+  @override
+  String get batchCostingReviewSourceManual => 'Manual';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'Tidak diketahui';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'Berat';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'Durasi';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle => 'Penugasan printer';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'Penugasan printer berlanjut di langkah batch costing berikutnya.';
 }

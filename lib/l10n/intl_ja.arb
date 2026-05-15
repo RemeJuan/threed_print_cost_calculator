@@ -570,5 +570,20 @@
   "stockBadgeOut": "在庫切れ",
   "stockBadgeLow": "残りわずか",
   "stockBadgeInStock": "在庫あり",
-  "stockBadgeNoTracking": "追跡なし"
+  "stockBadgeNoTracking": "追跡なし",
+  "batchCostingReviewAppBarTitle": "バッチアイテムレビュー",
+  "batchCostingReviewSubtitle": "プリンター割り当て前にバッチアイテムを確認します。",
+  "batchCostingReviewEmptyTitle": "まだバッチアイテムがありません",
+  "batchCostingReviewEmptyBody": "インポートまたは手動のプリントを追加して続行します。",
+  "batchCostingReviewContinueButton": "プリンター割り当てに進む",
+  "batchCostingReviewQuantityLabel": "数量",
+  "batchCostingReviewRemoveButton": "削除",
+  "batchCostingReviewSourceLabel": "ソース",
+  "batchCostingReviewSourceManual": "手動",
+  "batchCostingReviewSourceGcode": "G-code",
+  "batchCostingReviewSourceUnknown": "不明",
+  "batchCostingReviewWeightLabel": "重量",
+  "batchCostingReviewDurationLabel": "時間",
+  "batchCostingPrinterAssignmentAppBarTitle": "プリンター割り当て",
+  "batchCostingPrinterAssignmentSubtitle": "プリンター割り当ては次のバッチコスト計算ステップで続行されます。"
 }

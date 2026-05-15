@@ -1115,4 +1115,50 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => '追跡なし';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'バッチアイテムレビュー';
+
+  @override
+  String get batchCostingReviewSubtitle => 'プリンター割り当て前にバッチアイテムを確認します。';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'まだバッチアイテムがありません';
+
+  @override
+  String get batchCostingReviewEmptyBody => 'インポートまたは手動のプリントを追加して続行します。';
+
+  @override
+  String get batchCostingReviewContinueButton => 'プリンター割り当てに進む';
+
+  @override
+  String get batchCostingReviewQuantityLabel => '数量';
+
+  @override
+  String get batchCostingReviewRemoveButton => '削除';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'ソース';
+
+  @override
+  String get batchCostingReviewSourceManual => '手動';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => '不明';
+
+  @override
+  String get batchCostingReviewWeightLabel => '重量';
+
+  @override
+  String get batchCostingReviewDurationLabel => '時間';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle => 'プリンター割り当て';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'プリンター割り当ては次のバッチコスト計算ステップで続行されます。';
 }

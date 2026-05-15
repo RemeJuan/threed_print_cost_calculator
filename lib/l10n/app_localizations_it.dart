@@ -1158,4 +1158,54 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Non tracciato';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'Revisione articoli batch';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'Rivedi gli articoli batch prima dell\'assegnazione stampante.';
+
+  @override
+  String get batchCostingReviewEmptyTitle => 'Nessun articolo batch ancora';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'Aggiungi stampe importate o manuali per continuare.';
+
+  @override
+  String get batchCostingReviewContinueButton =>
+      'Continua all\'assegnazione stampante';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'Quantità';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'Rimuovi';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'Origine';
+
+  @override
+  String get batchCostingReviewSourceManual => 'Manuale';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'Sconosciuto';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'Peso';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'Durata';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle =>
+      'Assegnazione stampante';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'L\'assegnazione stampante continua nel prossimo passaggio.';
 }

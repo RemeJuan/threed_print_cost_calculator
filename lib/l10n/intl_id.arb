@@ -569,5 +569,20 @@
   "stockBadgeOut": "Habis",
   "stockBadgeLow": "Stok rendah",
   "stockBadgeInStock": "Tersedia",
-  "stockBadgeNoTracking": "Tidak dilacak"
+  "stockBadgeNoTracking": "Tidak dilacak",
+  "batchCostingReviewAppBarTitle": "Tinjauan item batch",
+  "batchCostingReviewSubtitle": "Tinjau item batch sebelum penugasan printer.",
+  "batchCostingReviewEmptyTitle": "Belum ada item batch",
+  "batchCostingReviewEmptyBody": "Tambahkan cetakan impor atau manual untuk melanjutkan.",
+  "batchCostingReviewContinueButton": "Lanjutkan ke penugasan printer",
+  "batchCostingReviewQuantityLabel": "Jumlah",
+  "batchCostingReviewRemoveButton": "Hapus",
+  "batchCostingReviewSourceLabel": "Sumber",
+  "batchCostingReviewSourceManual": "Manual",
+  "batchCostingReviewSourceGcode": "G-code",
+  "batchCostingReviewSourceUnknown": "Tidak diketahui",
+  "batchCostingReviewWeightLabel": "Berat",
+  "batchCostingReviewDurationLabel": "Durasi",
+  "batchCostingPrinterAssignmentAppBarTitle": "Penugasan printer",
+  "batchCostingPrinterAssignmentSubtitle": "Penugasan printer berlanjut di langkah batch costing berikutnya."
 }

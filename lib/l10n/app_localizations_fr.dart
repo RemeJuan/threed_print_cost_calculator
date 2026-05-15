@@ -1164,4 +1164,55 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stockBadgeNoTracking => 'Non suivi';
+
+  @override
+  String get batchCostingReviewAppBarTitle => 'Vérification des lots';
+
+  @override
+  String get batchCostingReviewSubtitle =>
+      'Vérifiez les articles du lot avant l\'attribution de l\'imprimante.';
+
+  @override
+  String get batchCostingReviewEmptyTitle =>
+      'Aucun article de lot pour l\'instant';
+
+  @override
+  String get batchCostingReviewEmptyBody =>
+      'Ajoutez des impressions importées ou manuelles pour continuer.';
+
+  @override
+  String get batchCostingReviewContinueButton =>
+      'Continuer vers l\'attribution de l\'imprimante';
+
+  @override
+  String get batchCostingReviewQuantityLabel => 'Quantité';
+
+  @override
+  String get batchCostingReviewRemoveButton => 'Supprimer';
+
+  @override
+  String get batchCostingReviewSourceLabel => 'Source';
+
+  @override
+  String get batchCostingReviewSourceManual => 'Manuel';
+
+  @override
+  String get batchCostingReviewSourceGcode => 'G-code';
+
+  @override
+  String get batchCostingReviewSourceUnknown => 'Inconnu';
+
+  @override
+  String get batchCostingReviewWeightLabel => 'Poids';
+
+  @override
+  String get batchCostingReviewDurationLabel => 'Durée';
+
+  @override
+  String get batchCostingPrinterAssignmentAppBarTitle =>
+      'Attribution de l\'imprimante';
+
+  @override
+  String get batchCostingPrinterAssignmentSubtitle =>
+      'L\'attribution de l\'imprimante continue à l\'étape suivante.';
 }
