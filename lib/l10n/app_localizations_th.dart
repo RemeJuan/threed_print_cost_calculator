@@ -468,6 +468,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get previewCancelFeedbackButton => 'ดูตัวอย่างความคิดเห็นการยกเลิก';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'เปิดใช้งานพรีเมียม';
 
   @override

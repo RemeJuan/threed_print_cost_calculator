@@ -336,6 +336,8 @@
   "forceNoUpdateButton": "更新なしを強制",
   "clearUpdateCooldownButton": "更新クールダウンを消去",
   "previewCancelFeedbackButton": "取消フィードバックをプレビュー",
+  "enableBatchCostingButton": "Enable batch costing",
+  "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "プレミアムを有効化",
   "enablePremiumBody": "ローカルのプレミアムテストを有効にする確認コードを入力してください",
   "invalidConfirmationCodeMessage": "確認コードが無効です",

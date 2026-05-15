@@ -334,6 +334,8 @@
   "forceNoUpdateButton": "Kein Update erzwingen",
   "clearUpdateCooldownButton": "Update-Wartezeit löschen",
   "previewCancelFeedbackButton": "Rückmeldeansicht zur Verlängerung",
+  "enableBatchCostingButton": "Enable batch costing",
+  "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "Premium aktivieren",
   "enablePremiumBody": "Bestätigungscode eingeben, um lokale Premium-Tests zu aktivieren",
   "invalidConfirmationCodeMessage": "Ungültiger Bestätigungscode",

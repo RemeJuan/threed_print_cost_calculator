@@ -472,6 +472,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Rückmeldeansicht zur Verlängerung';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Premium aktivieren';
 
   @override

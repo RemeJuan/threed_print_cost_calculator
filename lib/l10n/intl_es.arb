@@ -327,6 +327,8 @@
   "forceNoUpdateButton": "Forzar sin actualización",
   "clearUpdateCooldownButton": "Borrar pausa de actualización",
   "previewCancelFeedbackButton": "Vista previa de comentarios de cancelación",
+  "enableBatchCostingButton": "Enable batch costing",
+  "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "Activar premium",
   "enablePremiumBody": "Introduce el código de confirmación para activar las pruebas locales de premium",
   "invalidConfirmationCodeMessage": "Código de confirmación inválido",

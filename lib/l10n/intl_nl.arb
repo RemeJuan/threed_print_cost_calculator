@@ -336,6 +336,8 @@
   "forceNoUpdateButton": "Geen update forceren",
   "clearUpdateCooldownButton": "Update-afkoeling wissen",
   "previewCancelFeedbackButton": "Voorvertoning annuleringsfeedback",
+  "enableBatchCostingButton": "Enable batch costing",
+  "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "Premium inschakelen",
   "enablePremiumBody": "Voer de bevestigingscode in om lokale premiumtests in te schakelen",
   "invalidConfirmationCodeMessage": "Ongeldige bevestigingscode",

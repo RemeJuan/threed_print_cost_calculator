@@ -472,6 +472,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Voorvertoning annuleringsfeedback';
 
   @override
+  String get enableBatchCostingButton => 'Enable batch costing';
+
+  @override
+  String get showWhatsNewButton => 'Show What\'s New';
+
+  @override
   String get enablePremiumTitle => 'Premium inschakelen';
 
   @override
