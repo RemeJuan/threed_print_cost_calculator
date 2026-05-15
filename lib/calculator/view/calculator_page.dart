@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
@@ -17,6 +18,7 @@ import 'components/job_pricing_overrides_section.dart';
 import 'components/materials_selection/materials_section.dart';
 import 'components/time_section.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 
 class CalculatorPage extends HookConsumerWidget {
   const CalculatorPage({super.key});
@@ -167,6 +169,23 @@ class CalculatorPage extends HookConsumerWidget {
                 ],
               ],
             ),
+            if (ref.watch(batchCostingEnabledProvider)) ...[
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                key: const ValueKey<String>(
+                  'calculator.batch_costing.open.button',
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const BatchCostingPage(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.view_list_outlined),
+                label: const Text('Batch costing'),
+              ),
+            ],
             if (showSave.value)
               SaveForm(
                 data: state.results,
