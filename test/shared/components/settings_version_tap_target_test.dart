@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
@@ -54,6 +56,17 @@ class _FakeHistoryPagedNotifier extends HistoryPagedNotifier {
   }
 }
 
+class _FakeAnalytics implements AnalyticsService {
+  String? lastName;
+  Map<String, Object>? lastParams;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    lastName = name;
+    lastParams = params;
+  }
+}
+
 String _todayCode() {
   final now = DateTime.now();
   return '${now.year.toString().padLeft(4, '0')}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}';
@@ -73,6 +86,7 @@ Future<void> _openHiddenTools(WidgetTester tester) async {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  late _FakeAnalytics fakeAnalytics;
 
   setUpAll(() async {
     await setupTest();
@@ -83,6 +97,11 @@ void main() {
       buildNumber: '42',
       buildSignature: 'sig',
     );
+  });
+
+  setUp(() {
+    fakeAnalytics = _FakeAnalytics();
+    AppAnalytics.service = fakeAnalytics;
   });
 
   testWidgets('shows invalid code message', (tester) async {
@@ -213,5 +232,39 @@ void main() {
       ),
       findsOneWidget,
     );
+  });
+
+  testWidgets('can show whats new sheet from hidden tools', (tester) async {
+    final fakeCalculator = FakeCalculatorNotifier();
+    final fakeHistory = _FakeHistoryPagedNotifier();
+
+    final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
+      calculatorProvider.overrideWith(() => fakeCalculator),
+      historyPagedProvider.overrideWith(() => fakeHistory),
+      testDataServiceProvider.overrideWith((ref) => _FakeTestDataService(ref)),
+    ]);
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await _openHiddenTools(tester);
+
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.testData.showWhatsNew.button'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('New: Client Pricing'), findsOneWidget);
+    expect(find.text('Start free trial'), findsOneWidget);
+    expect(find.text('Got it'), findsOneWidget);
+    expect(fakeAnalytics.lastName, 'whats_new_shown');
+    expect(fakeAnalytics.lastParams?['wn_id'], 'pricing_model_2026_05');
+
+    await tester.tap(find.text('Got it'));
+    await tester.pumpAndSettle();
+
+    expect(fakeAnalytics.lastName, 'whats_new_dismissed');
+    expect(fakeAnalytics.lastParams?['wn_id'], 'pricing_model_2026_05');
   });
 }
