@@ -22,6 +22,7 @@ void main() {
   });
 
   test('creates gcode batch items from parsed import values', () {
+    final rawValues = <String, String>{'estimatedDuration': '95m'};
     final item = BatchCostingItem.fromGCodeImport(
       id: 'item-2',
       displayName: 'benchy.gcode',
@@ -35,7 +36,7 @@ void main() {
         previewMetadata: null,
         previewImageBytes: null,
         warnings: const [],
-        rawExtractedValues: const {'estimatedDuration': '95m'},
+        rawExtractedValues: rawValues,
         hasSafePreview: true,
       ),
       sourceFileName: 'benchy.gcode',
@@ -46,6 +47,14 @@ void main() {
     expect(item.sourceType, BatchCostingItemSourceType.gcode);
     expect(item.importMetadata?.hasSafePreview, isTrue);
     expect(item.importMetadata?.rawExtractedValues['estimatedDuration'], '95m');
+
+    final metadata = item.importMetadata!;
+    rawValues['estimatedDuration'] = '100m';
+    expect(metadata.rawExtractedValues['estimatedDuration'], '95m');
+    expect(
+      () => metadata.rawExtractedValues['new'] = 'value',
+      throwsUnsupportedError,
+    );
   });
 
   test('rejects invalid batch quantities', () {

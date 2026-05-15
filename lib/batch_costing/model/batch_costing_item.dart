@@ -3,13 +3,13 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.da
 enum BatchCostingItemSourceType { manual, gcode }
 
 class BatchCostingImportMetadata {
-  const BatchCostingImportMetadata({
+  BatchCostingImportMetadata({
     this.sourceFileName,
     this.sourcePath,
     this.slicer,
     this.hasSafePreview = false,
-    this.rawExtractedValues = const <String, String>{},
-  });
+    Map<String, String> rawExtractedValues = const <String, String>{},
+  }) : rawExtractedValues = Map.unmodifiable(rawExtractedValues);
 
   final String? sourceFileName;
   final String? sourcePath;
