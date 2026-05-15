@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/history/components/history_export_options_sheet.dart';
 import 'package:threed_print_cost_calculator/history/components/history_export_preview_sheet.dart';
+import 'package:threed_print_cost_calculator/history/components/history_overflow_hint.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
-import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'provider/history_paged_notifier.dart';
 
 import 'components/history_empty_state.dart';
@@ -18,6 +19,7 @@ import 'components/history_teaser_state.dart';
 import 'components/history_list_view.dart';
 import 'components/history_search_bar.dart';
 import 'components/history_upsell_banner.dart';
+import 'hooks/history_search_query.dart';
 
 enum HistoryPageMode { full, teaser }
 
@@ -64,11 +66,9 @@ class HistoryPage extends HookConsumerWidget {
     final scrollController = useScrollController();
     final showOverflowHint = useState(false);
     final shouldShowUpsell = ref.watch(shouldShowProPromotionProvider);
-
-    // Debounce controller and push updates to the `historyPagedProvider` by calling setQuery.
-    final debounceTimer = useRef<Timer?>(null);
     final overflowHintTimer = useRef<Timer?>(null);
-    const debounceDuration = debounce300ms;
+
+    useHistorySearchQuery(ref: ref, controller: controller);
 
     Future<void> markOverflowHintSeen() async {
       if (prefs.getBool(_overflowHintPreferenceKey) == true) return;
@@ -86,23 +86,6 @@ class HistoryPage extends HookConsumerWidget {
       overflowHintTimer.value?.cancel();
       showOverflowHint.value = false;
     }
-
-    useEffect(() {
-      void listener() {
-        debounceTimer.value?.cancel();
-        debounceTimer.value = Timer(debounceDuration, () {
-          ref.read(historyPagedProvider.notifier).setQuery(controller.text);
-        });
-      }
-
-      controller.addListener(listener);
-
-      return () {
-        controller.removeListener(listener);
-        debounceTimer.value?.cancel();
-        overflowHintTimer.value?.cancel();
-      };
-    }, [controller]);
 
     useEffect(() {
       var disposed = false;
@@ -202,30 +185,9 @@ class HistoryPage extends HookConsumerWidget {
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 180),
                   child: showOverflowHint.value
-                      ? Padding(
+                      ? HistoryOverflowHint(
                           key: const ValueKey<String>('history.overflow.hint'),
-                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 4),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 10,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(l10n.historyOverflowHint),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          message: l10n.historyOverflowHint,
                         )
                       : const SizedBox.shrink(),
                 ),
@@ -287,73 +249,29 @@ class HistoryPage extends HookConsumerWidget {
 
     showModalBottomSheet<void>(
       context: context,
-      builder: (context) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  l10n.historyExportMenuTitle,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              ListTile(
-                title: Text(l10n.historyExportRangeAll),
-                onTap: () async {
-                  Navigator.pop(context);
-                  await ref
-                      .read(csvUtilsProvider)
-                      .exportForRange(
-                        ExportRange.all,
-                        csvHeader: l10n.historyCsvHeader,
-                        shareText: l10n.historyExportShareText,
-                      );
-                  AppAnalytics.safeLog(
-                    () => AppAnalytics.exportUsed('history'),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text(l10n.historyExportRangeLast7Days),
-                onTap: () async {
-                  Navigator.pop(context);
-                  await ref
-                      .read(csvUtilsProvider)
-                      .exportForRange(
-                        ExportRange.last7Days,
-                        csvHeader: l10n.historyCsvHeader,
-                        shareText: l10n.historyExportShareText,
-                      );
-                  AppAnalytics.safeLog(
-                    () => AppAnalytics.exportUsed('history'),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text(l10n.historyExportRangeLast30Days),
-                onTap: () async {
-                  Navigator.pop(context);
-                  await ref
-                      .read(csvUtilsProvider)
-                      .exportForRange(
-                        ExportRange.last30Days,
-                        csvHeader: l10n.historyCsvHeader,
-                        shareText: l10n.historyExportShareText,
-                      );
-                  AppAnalytics.safeLog(
-                    () => AppAnalytics.exportUsed('history'),
-                  );
-                },
-              ),
-              const SizedBox(height: 8),
-            ],
-          ),
+      builder: (_) {
+        return HistoryExportOptionsSheet(
+          onExportSelected: (range) async {
+            await _exportHistoryRange(ref, l10n, range);
+          },
         );
       },
     );
+  }
+
+  Future<void> _exportHistoryRange(
+    WidgetRef ref,
+    AppLocalizations l10n,
+    ExportRange range,
+  ) async {
+    await ref
+        .read(csvUtilsProvider)
+        .exportForRange(
+          range,
+          csvHeader: l10n.historyCsvHeader,
+          shareText: l10n.historyExportShareText,
+        );
+    AppAnalytics.safeLog(() => AppAnalytics.exportUsed('history'));
   }
 
   Future<void> _showTeaserPreview(
@@ -428,7 +346,11 @@ class HistoryPage extends HookConsumerWidget {
     WidgetRef ref,
   ) async {
     AppAnalytics.safeLog(
-      () => AppAnalytics.premiumFeatureTapped('history', isPro: false, source: 'history_upsell'),
+      () => AppAnalytics.premiumFeatureTapped(
+        'history',
+        isPro: false,
+        source: 'history_upsell',
+      ),
     );
     await ref
         .read(paywallPresenterProvider)
