@@ -11,6 +11,7 @@ Before making changes:
 - Report blockers clearly in the task outcome.
 - Do not pause after intake when the task is clear; continue to the next concrete step.
 - If blocked, name the blocker and the exact next action or question.
+- If an error does not block the task outcome, log it once and keep going.
 
 ## Before Starting
 
@@ -152,6 +153,8 @@ Stop and report back when:
 - the implementation would introduce a new package
 - the task appears stale or already completed
 - the ClickUp task lacks enough detail to execute safely
+
+Do not treat best-effort side effects as stop conditions. If the core task can still complete, continue and report the side-effect failure in the outcome.
 
 ## Suggested PR Size
 
