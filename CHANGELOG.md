@@ -1,3 +1,19 @@
+## [2.10.0] - 2026-05-15
+
+### Added
+- New pricing model with markup, setup fees, and rounding options — set defaults in work costs settings or override per job.
+- Additional cost notes on calculator results.
+- In-app update prompt banner when a newer version is available.
+- Anonymous feedback sheet when cancelling a trial or subscription.
+
+### Changed
+- Extended work costs settings with pricing defaults.
+- Restructured history page with a dedicated export options sheet.
+
+### Fixed
+- Resolved several ANR (Application Not Responding) issues on Android.
+- Fixed an Android regression from 2.9.4 where release installs failed due to missing native libraries.
+
 ## [2.9.4] - 2026-05-09
 ### Added
 - Added duplicate and delete actions for saved materials, with confirmation and success feedback when removing a material.
@@ -180,6 +196,7 @@
 ### Added
 - Added in-app update checker
 
+[2.10.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.4...2.10.0
 [2.9.4]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.3...2.9.4
 [2.9.3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.2...2.9.3
 [2.9.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.1...2.9.2
