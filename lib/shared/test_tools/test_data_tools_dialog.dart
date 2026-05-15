@@ -55,7 +55,7 @@ class TestDataToolsDialog extends StatelessWidget {
                   'settings.testData.enableBatchCosting.button',
                 ),
                 onPressed: () => onAction(TestDataAction.enableBatchCosting),
-                child: const Text('Enable batch costing'),
+                child: Text(l10n.enableBatchCostingButton),
               ),
               TextButton(
                 key: const ValueKey<String>(
@@ -90,7 +90,7 @@ class TestDataToolsDialog extends StatelessWidget {
                   'settings.testData.showWhatsNew.button',
                 ),
                 onPressed: () => onAction(TestDataAction.showWhatsNew),
-                child: const Text('Show What\'s New'),
+                child: Text(l10n.showWhatsNewButton),
               ),
             ],
           ),
