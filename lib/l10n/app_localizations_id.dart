@@ -30,6 +30,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get newAnnouncementBadgeLabel => 'Baru';
 
   @override
+  String get whatsNewSeeRecentUpdates => 'Lihat pembaruan terbaru';
+
+  @override
   String get generalHeader => 'Umum';
 
   @override

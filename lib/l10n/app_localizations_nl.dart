@@ -30,6 +30,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get newAnnouncementBadgeLabel => 'Nieuw';
 
   @override
+  String get whatsNewSeeRecentUpdates => 'Zie recente updates';
+
+  @override
   String get generalHeader => 'Algemeen';
 
   @override

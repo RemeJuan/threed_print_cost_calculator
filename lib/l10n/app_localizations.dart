@@ -156,6 +156,12 @@ abstract class AppLocalizations {
   /// **'New'**
   String get newAnnouncementBadgeLabel;
 
+  /// No description provided for @whatsNewSeeRecentUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'See recent updates'**
+  String get whatsNewSeeRecentUpdates;
+
   /// No description provided for @generalHeader.
   ///
   /// In en, this message translates to:

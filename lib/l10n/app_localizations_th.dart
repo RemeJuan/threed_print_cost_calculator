@@ -30,6 +30,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get newAnnouncementBadgeLabel => 'ใหม่';
 
   @override
+  String get whatsNewSeeRecentUpdates => 'ดูอัปเดตล่าสุด';
+
+  @override
   String get generalHeader => 'ทั่วไป';
 
   @override

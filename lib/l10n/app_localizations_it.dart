@@ -30,6 +30,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get newAnnouncementBadgeLabel => 'Nuovo';
 
   @override
+  String get whatsNewSeeRecentUpdates => 'Vedi gli aggiornamenti recenti';
+
+  @override
   String get generalHeader => 'Generale';
 
   @override
