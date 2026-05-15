@@ -1157,31 +1157,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get stockBadgeNoTracking => 'Sin seguimiento';
 
   @override
-  String get batchCostingReviewAppBarTitle => 'Batch item review';
+  String get batchCostingReviewAppBarTitle => 'Revisión de lotes';
 
   @override
   String get batchCostingReviewSubtitle =>
-      'Review batch items before printer assignment.';
+      'Revise los artículos del lote antes de asignar impresora.';
 
   @override
-  String get batchCostingReviewEmptyTitle => 'No batch items yet';
+  String get batchCostingReviewEmptyTitle => 'Aún no hay artículos en lote';
 
   @override
   String get batchCostingReviewEmptyBody =>
-      'Add imported or manual prints to continue.';
+      'Añada impresiones importadas o manuales para continuar.';
 
   @override
   String get batchCostingReviewContinueButton =>
-      'Continue to printer assignment';
+      'Continuar a asignación de impresora';
 
   @override
-  String get batchCostingReviewQuantityLabel => 'Quantity';
+  String get batchCostingReviewQuantityLabel => 'Cantidad';
 
   @override
-  String get batchCostingReviewRemoveButton => 'Remove';
+  String get batchCostingReviewRemoveButton => 'Eliminar';
 
   @override
-  String get batchCostingReviewSourceLabel => 'Source';
+  String get batchCostingReviewSourceLabel => 'Origen';
 
   @override
   String get batchCostingReviewSourceManual => 'Manual';
@@ -1190,18 +1190,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get batchCostingReviewSourceGcode => 'G-code';
 
   @override
-  String get batchCostingReviewSourceUnknown => 'Unknown';
+  String get batchCostingReviewSourceUnknown => 'Desconocido';
 
   @override
-  String get batchCostingReviewWeightLabel => 'Weight';
+  String get batchCostingReviewWeightLabel => 'Peso';
 
   @override
-  String get batchCostingReviewDurationLabel => 'Duration';
+  String get batchCostingReviewDurationLabel => 'Duración';
 
   @override
-  String get batchCostingPrinterAssignmentAppBarTitle => 'Printer assignment';
+  String get batchCostingPrinterAssignmentAppBarTitle =>
+      'Asignación de impresora';
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Printer assignment continues in the next batch costing step.';
+      'La asignación de impresora continúa en el siguiente paso.';
 }

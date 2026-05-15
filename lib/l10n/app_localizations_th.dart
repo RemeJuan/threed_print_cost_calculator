@@ -1131,51 +1131,51 @@ class AppLocalizationsTh extends AppLocalizations {
   String get stockBadgeNoTracking => 'ไม่ติดตาม';
 
   @override
-  String get batchCostingReviewAppBarTitle => 'Batch item review';
+  String get batchCostingReviewAppBarTitle => 'ตรวจสอบรายการชุด';
 
   @override
   String get batchCostingReviewSubtitle =>
-      'Review batch items before printer assignment.';
+      'ตรวจสอบรายการชุดก่อนกำหนดเครื่องพิมพ์';
 
   @override
-  String get batchCostingReviewEmptyTitle => 'No batch items yet';
+  String get batchCostingReviewEmptyTitle => 'ยังไม่มีรายการชุด';
 
   @override
   String get batchCostingReviewEmptyBody =>
-      'Add imported or manual prints to continue.';
+      'เพิ่มงานพิมพ์ที่นำเข้าหรือด้วยตนเองเพื่อดำเนินการต่อ';
 
   @override
   String get batchCostingReviewContinueButton =>
-      'Continue to printer assignment';
+      'ดำเนินการต่อเพื่อกำหนดเครื่องพิมพ์';
 
   @override
-  String get batchCostingReviewQuantityLabel => 'Quantity';
+  String get batchCostingReviewQuantityLabel => 'จำนวน';
 
   @override
-  String get batchCostingReviewRemoveButton => 'Remove';
+  String get batchCostingReviewRemoveButton => 'ลบ';
 
   @override
-  String get batchCostingReviewSourceLabel => 'Source';
+  String get batchCostingReviewSourceLabel => 'แหล่งที่มา';
 
   @override
-  String get batchCostingReviewSourceManual => 'Manual';
+  String get batchCostingReviewSourceManual => 'ด้วยตนเอง';
 
   @override
   String get batchCostingReviewSourceGcode => 'G-code';
 
   @override
-  String get batchCostingReviewSourceUnknown => 'Unknown';
+  String get batchCostingReviewSourceUnknown => 'ไม่ทราบ';
 
   @override
-  String get batchCostingReviewWeightLabel => 'Weight';
+  String get batchCostingReviewWeightLabel => 'น้ำหนัก';
 
   @override
-  String get batchCostingReviewDurationLabel => 'Duration';
+  String get batchCostingReviewDurationLabel => 'ระยะเวลา';
 
   @override
-  String get batchCostingPrinterAssignmentAppBarTitle => 'Printer assignment';
+  String get batchCostingPrinterAssignmentAppBarTitle => 'กำหนดเครื่องพิมพ์';
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Printer assignment continues in the next batch costing step.';
+      'การกำหนดเครื่องพิมพ์จะดำเนินการต่อในขั้นตอนถัดไป';
 }

@@ -1152,51 +1152,51 @@ class AppLocalizationsNl extends AppLocalizations {
   String get stockBadgeNoTracking => 'Niet bijgehouden';
 
   @override
-  String get batchCostingReviewAppBarTitle => 'Batch item review';
+  String get batchCostingReviewAppBarTitle => 'Batch-artikelbeoordeling';
 
   @override
   String get batchCostingReviewSubtitle =>
-      'Review batch items before printer assignment.';
+      'Beoordeel batch-artikelen vóór printertoewijzing.';
 
   @override
-  String get batchCostingReviewEmptyTitle => 'No batch items yet';
+  String get batchCostingReviewEmptyTitle => 'Nog geen batch-artikelen';
 
   @override
   String get batchCostingReviewEmptyBody =>
-      'Add imported or manual prints to continue.';
+      'Voeg geïmporteerde of handmatige afdrukken toe om door te gaan.';
 
   @override
   String get batchCostingReviewContinueButton =>
-      'Continue to printer assignment';
+      'Doorgaan naar printertoewijzing';
 
   @override
-  String get batchCostingReviewQuantityLabel => 'Quantity';
+  String get batchCostingReviewQuantityLabel => 'Aantal';
 
   @override
-  String get batchCostingReviewRemoveButton => 'Remove';
+  String get batchCostingReviewRemoveButton => 'Verwijderen';
 
   @override
-  String get batchCostingReviewSourceLabel => 'Source';
+  String get batchCostingReviewSourceLabel => 'Bron';
 
   @override
-  String get batchCostingReviewSourceManual => 'Manual';
+  String get batchCostingReviewSourceManual => 'Handmatig';
 
   @override
   String get batchCostingReviewSourceGcode => 'G-code';
 
   @override
-  String get batchCostingReviewSourceUnknown => 'Unknown';
+  String get batchCostingReviewSourceUnknown => 'Onbekend';
 
   @override
-  String get batchCostingReviewWeightLabel => 'Weight';
+  String get batchCostingReviewWeightLabel => 'Gewicht';
 
   @override
-  String get batchCostingReviewDurationLabel => 'Duration';
+  String get batchCostingReviewDurationLabel => 'Duur';
 
   @override
-  String get batchCostingPrinterAssignmentAppBarTitle => 'Printer assignment';
+  String get batchCostingPrinterAssignmentAppBarTitle => 'Printertoewijzing';
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Printer assignment continues in the next batch costing step.';
+      'Printertoewijzing gaat verder in de volgende batch-costing stap.';
 }

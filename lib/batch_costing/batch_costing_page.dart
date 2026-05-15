@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -21,7 +22,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   final Map<String, TextEditingController> _quantityControllers =
       <String, TextEditingController>{};
   final Map<String, FocusNode> _quantityFocusNodes = <String, FocusNode>{};
-  Set<String> _itemIds = <String>{};
+  bool _initialSyncDone = false;
 
   @override
   void dispose() {
@@ -44,11 +45,14 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     final batchState = ref.watch(batchCostingProvider);
     final items = batchState.items;
 
-    final itemIds = items.map((item) => item.id).toSet();
-    if (itemIds != _itemIds) {
-      _itemIds = itemIds;
+    if (!_initialSyncDone) {
+      _initialSyncDone = true;
       _syncControllers(items);
     }
+
+    ref.listen(batchCostingProvider, (prev, next) {
+      _syncControllers(next.items);
+    });
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.batchCostingReviewAppBarTitle)),
@@ -260,30 +264,9 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   }
 
   void _continueToPrinterAssignment(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
-            ),
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      l10n.batchCostingPrinterAssignmentSubtitle,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+        builder: (_) => const BatchPrinterAssignmentPage(),
       ),
     );
   }
