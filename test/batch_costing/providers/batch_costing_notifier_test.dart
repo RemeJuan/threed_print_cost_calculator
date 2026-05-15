@@ -23,11 +23,17 @@ void main() {
     notifier.addItem(first);
     expect(container.read(batchCostingProvider).items, [first]);
 
+    expect(() => notifier.addItem(first), throwsArgumentError);
+    expect(container.read(batchCostingProvider).items, [first]);
+
     notifier.updateItem(updated);
     expect(container.read(batchCostingProvider).items.single.quantity, 4);
     expect(container.read(batchCostingProvider).items.single.printWeightG, 60);
 
     notifier.removeItem('item-1');
+    expect(container.read(batchCostingProvider).items, isEmpty);
+
+    notifier.reset();
     expect(container.read(batchCostingProvider).items, isEmpty);
   });
 }

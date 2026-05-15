@@ -19,6 +19,10 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void addItem(BatchCostingItem item) {
+    if (state.items.any((current) => current.id == item.id)) {
+      throw ArgumentError.value(item.id, 'item.id', 'must be unique');
+    }
+
     state = state.copyWith(items: [...state.items, item]);
   }
 
