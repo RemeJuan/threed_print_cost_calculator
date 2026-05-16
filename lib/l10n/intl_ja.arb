@@ -576,6 +576,7 @@
   "stockBadgeNoTracking": "追跡なし",
   "batchCostingReviewAppBarTitle": "バッチアイテムレビュー",
   "batchCostingReviewSubtitle": "プリンター割り当て前にバッチアイテムを確認します。",
+  "batchCostingReviewAddManualItemButton": "手動アイテムを追加",
   "batchCostingReviewEmptyTitle": "まだバッチアイテムがありません",
   "batchCostingReviewEmptyBody": "インポートまたは手動のプリントを追加して続行します。",
   "batchCostingReviewContinueButton": "プリンター割り当てに進む",
@@ -587,6 +588,9 @@
   "batchCostingReviewSourceUnknown": "不明",
   "batchCostingReviewWeightLabel": "重量",
   "batchCostingReviewDurationLabel": "時間",
+  "batchCostingItemEditorAddTitle": "手動アイテムを追加",
+  "batchCostingItemEditorEditTitle": "バッチアイテムを編集",
+  "batchCostingItemNameLabel": "アイテム / モデル名",
   "batchCostingPrinterAssignmentAppBarTitle": "プリンター割り当て",
   "batchCostingPrinterAssignmentSubtitle": "プリンター割り当ては次のバッチコスト計算ステップで続行されます。"
 }

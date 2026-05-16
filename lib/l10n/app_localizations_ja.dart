@@ -1133,6 +1133,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingReviewSubtitle => 'プリンター割り当て前にバッチアイテムを確認します。';
 
   @override
+  String get batchCostingReviewAddManualItemButton => '手動アイテムを追加';
+
+  @override
   String get batchCostingReviewEmptyTitle => 'まだバッチアイテムがありません';
 
   @override
@@ -1164,6 +1167,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => '時間';
+
+  @override
+  String get batchCostingItemEditorAddTitle => '手動アイテムを追加';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'バッチアイテムを編集';
+
+  @override
+  String get batchCostingItemNameLabel => 'アイテム / モデル名';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle => 'プリンター割り当て';

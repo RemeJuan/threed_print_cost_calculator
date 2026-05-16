@@ -2207,6 +2207,12 @@ abstract class AppLocalizations {
   /// **'Review batch items before printer assignment.'**
   String get batchCostingReviewSubtitle;
 
+  /// No description provided for @batchCostingReviewAddManualItemButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add manual item'**
+  String get batchCostingReviewAddManualItemButton;
+
   /// No description provided for @batchCostingReviewEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -2272,6 +2278,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duration'**
   String get batchCostingReviewDurationLabel;
+
+  /// No description provided for @batchCostingItemEditorAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add manual item'**
+  String get batchCostingItemEditorAddTitle;
+
+  /// No description provided for @batchCostingItemEditorEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit batch item'**
+  String get batchCostingItemEditorEditTitle;
+
+  /// No description provided for @batchCostingItemNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item / model name'**
+  String get batchCostingItemNameLabel;
 
   /// No description provided for @batchCostingPrinterAssignmentAppBarTitle.
   ///

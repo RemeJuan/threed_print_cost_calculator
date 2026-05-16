@@ -1177,6 +1177,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Rivedi gli articoli batch prima dell\'assegnazione stampante.';
 
   @override
+  String get batchCostingReviewAddManualItemButton =>
+      'Aggiungi articolo manuale';
+
+  @override
   String get batchCostingReviewEmptyTitle => 'Nessun articolo batch ancora';
 
   @override
@@ -1210,6 +1214,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Durata';
+
+  @override
+  String get batchCostingItemEditorAddTitle => 'Aggiungi articolo manuale';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'Modifica articolo batch';
+
+  @override
+  String get batchCostingItemNameLabel => 'Nome articolo / modello';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle =>

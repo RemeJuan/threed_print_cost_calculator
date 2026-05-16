@@ -503,6 +503,7 @@
   "stockBadgeNoTracking": "No tracking",
   "batchCostingReviewAppBarTitle": "Batch item review",
   "batchCostingReviewSubtitle": "Review batch items before printer assignment.",
+  "batchCostingReviewAddManualItemButton": "Add manual item",
   "batchCostingReviewEmptyTitle": "No batch items yet",
   "batchCostingReviewEmptyBody": "Add imported or manual prints to continue.",
   "batchCostingReviewContinueButton": "Continue to printer assignment",
@@ -514,6 +515,9 @@
   "batchCostingReviewSourceUnknown": "Unknown",
   "batchCostingReviewWeightLabel": "Weight",
   "batchCostingReviewDurationLabel": "Duration",
+  "batchCostingItemEditorAddTitle": "Add manual item",
+  "batchCostingItemEditorEditTitle": "Edit batch item",
+  "batchCostingItemNameLabel": "Item / model name",
   "batchCostingPrinterAssignmentAppBarTitle": "Printer assignment",
   "batchCostingPrinterAssignmentSubtitle": "Printer assignment continues in the next batch costing step."
 }

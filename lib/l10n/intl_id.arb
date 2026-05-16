@@ -575,6 +575,7 @@
   "stockBadgeNoTracking": "Tidak dilacak",
   "batchCostingReviewAppBarTitle": "Tinjauan item batch",
   "batchCostingReviewSubtitle": "Tinjau item batch sebelum penugasan printer.",
+  "batchCostingReviewAddManualItemButton": "Tambah item manual",
   "batchCostingReviewEmptyTitle": "Belum ada item batch",
   "batchCostingReviewEmptyBody": "Tambahkan cetakan impor atau manual untuk melanjutkan.",
   "batchCostingReviewContinueButton": "Lanjutkan ke penugasan printer",
@@ -586,6 +587,9 @@
   "batchCostingReviewSourceUnknown": "Tidak diketahui",
   "batchCostingReviewWeightLabel": "Berat",
   "batchCostingReviewDurationLabel": "Durasi",
+  "batchCostingItemEditorAddTitle": "Tambah item manual",
+  "batchCostingItemEditorEditTitle": "Edit item batch",
+  "batchCostingItemNameLabel": "Nama item / model",
   "batchCostingPrinterAssignmentAppBarTitle": "Penugasan printer",
   "batchCostingPrinterAssignmentSubtitle": "Penugasan printer berlanjut di langkah batch costing berikutnya."
 }

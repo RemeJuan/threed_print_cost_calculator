@@ -1158,6 +1158,9 @@ class AppLocalizationsId extends AppLocalizations {
       'Tinjau item batch sebelum penugasan printer.';
 
   @override
+  String get batchCostingReviewAddManualItemButton => 'Tambah item manual';
+
+  @override
   String get batchCostingReviewEmptyTitle => 'Belum ada item batch';
 
   @override
@@ -1191,6 +1194,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Durasi';
+
+  @override
+  String get batchCostingItemEditorAddTitle => 'Tambah item manual';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'Edit item batch';
+
+  @override
+  String get batchCostingItemNameLabel => 'Nama item / model';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle => 'Penugasan printer';

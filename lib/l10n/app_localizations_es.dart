@@ -1174,6 +1174,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Revise los artículos del lote antes de asignar impresora.';
 
   @override
+  String get batchCostingReviewAddManualItemButton => 'Añadir artículo manual';
+
+  @override
   String get batchCostingReviewEmptyTitle => 'Aún no hay artículos en lote';
 
   @override
@@ -1207,6 +1210,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Duración';
+
+  @override
+  String get batchCostingItemEditorAddTitle => 'Añadir artículo manual';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'Editar artículo del lote';
+
+  @override
+  String get batchCostingItemNameLabel => 'Nombre del artículo/modelo';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle =>

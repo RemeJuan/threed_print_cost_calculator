@@ -577,6 +577,7 @@
   "stockBadgeNoTracking": "Non suivi",
   "batchCostingReviewAppBarTitle": "Vérification des lots",
   "batchCostingReviewSubtitle": "Vérifiez les articles du lot avant l'attribution de l'imprimante.",
+  "batchCostingReviewAddManualItemButton": "Ajouter un article manuel",
   "batchCostingReviewEmptyTitle": "Aucun article de lot pour l'instant",
   "batchCostingReviewEmptyBody": "Ajoutez des impressions importées ou manuelles pour continuer.",
   "batchCostingReviewContinueButton": "Continuer vers l'attribution de l'imprimante",
@@ -588,6 +589,9 @@
   "batchCostingReviewSourceUnknown": "Inconnu",
   "batchCostingReviewWeightLabel": "Poids",
   "batchCostingReviewDurationLabel": "Durée",
+  "batchCostingItemEditorAddTitle": "Ajouter un article manuel",
+  "batchCostingItemEditorEditTitle": "Modifier l'article du lot",
+  "batchCostingItemNameLabel": "Nom de l'article / du modèle",
   "batchCostingPrinterAssignmentAppBarTitle": "Attribution de l'imprimante",
   "batchCostingPrinterAssignmentSubtitle": "L'attribution de l'imprimante continue à l'étape suivante."
 }

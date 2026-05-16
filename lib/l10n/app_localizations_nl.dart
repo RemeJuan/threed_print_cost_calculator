@@ -1169,6 +1169,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Beoordeel batch-artikelen vóór printertoewijzing.';
 
   @override
+  String get batchCostingReviewAddManualItemButton =>
+      'Handmatig item toevoegen';
+
+  @override
   String get batchCostingReviewEmptyTitle => 'Nog geen batch-artikelen';
 
   @override
@@ -1202,6 +1206,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Duur';
+
+  @override
+  String get batchCostingItemEditorAddTitle => 'Handmatig item toevoegen';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'Batch-item bewerken';
+
+  @override
+  String get batchCostingItemNameLabel => 'Item-/modelnaam';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle => 'Printertoewijzing';

@@ -99,6 +99,8 @@ A dedicated Screen 0 should let the user choose how to start:
 
 Both entry paths should merge into the same batch item review flow.
 
+The batch review screen should let users add more manual items, edit existing items, and remove items before continuing.
+
 ## Expected V1 Flow
 
 1. Entry method
@@ -142,6 +144,7 @@ Manual batch entry captures the same core values normally pulled from G-code:
 - Print duration
 
 Manual entry is for users who already know print weight/time or do not have G-code available.
+The first manual item is created in the earlier setup step; the review screen extends that set.
 
 ## Multi-file G-code Import
 
