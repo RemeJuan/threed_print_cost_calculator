@@ -72,7 +72,10 @@ class CalculatorResults extends ConsumerWidget {
             _itemRow(
               context,
               l10n.labourCostPrefix,
-              results.labour,
+              results.total -
+                  results.electricity -
+                  results.filament -
+                  results.risk,
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.labourCost'),
             ),
