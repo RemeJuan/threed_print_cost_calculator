@@ -317,6 +317,7 @@ class _SettingsVersionTapTargetState
     container.invalidate(settingsStreamProvider);
     container.invalidate(printersStreamProvider);
     container.invalidate(materialsStreamProvider);
+    container.invalidate(batchCostingEnabledProvider);
     container.refresh(hideProPromotionsProvider);
     container.invalidate(printersProvider);
     container.invalidate(materialsProvider);
