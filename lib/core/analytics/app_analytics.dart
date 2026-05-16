@@ -704,6 +704,44 @@ class AppAnalytics {
     );
   }
 
+  static Future<void> batchCostingItemAdded({
+    required String id,
+    required String displayName,
+    required int quantity,
+    required double printWeightG,
+    required Duration printDuration,
+  }) {
+    return log(
+      'batch_costing_item_added',
+      params: {
+        'item_id': id,
+        'display_name': displayName,
+        'quantity': quantity,
+        'print_weight_g': printWeightG,
+        'print_duration_min': printDuration.inMinutes,
+      },
+    );
+  }
+
+  static Future<void> batchCostingItemEdited({
+    required String id,
+    required String displayName,
+    required int quantity,
+    required double printWeightG,
+    required Duration printDuration,
+  }) {
+    return log(
+      'batch_costing_item_edited',
+      params: {
+        'item_id': id,
+        'display_name': displayName,
+        'quantity': quantity,
+        'print_weight_g': printWeightG,
+        'print_duration_min': printDuration.inMinutes,
+      },
+    );
+  }
+
   static void safeLog(Future<void> Function() callback) {
     unawaited(callback());
   }

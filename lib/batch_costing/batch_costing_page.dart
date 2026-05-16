@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costi
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing_item_editor_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
@@ -304,18 +305,30 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     );
 
     if (result == null) return;
+    if (!mounted) return;
 
+    final itemId = DateTime.now().microsecondsSinceEpoch.toString();
     ref
         .read(batchCostingProvider.notifier)
         .addItem(
           BatchCostingItem.manual(
-            id: DateTime.now().microsecondsSinceEpoch.toString(),
+            id: itemId,
             displayName: result.displayName,
             quantity: result.quantity,
             printWeightG: result.printWeightG,
             printDuration: result.printDuration,
           ),
         );
+
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchCostingItemAdded(
+        id: itemId,
+        displayName: result.displayName,
+        quantity: result.quantity,
+        printWeightG: result.printWeightG,
+        printDuration: result.printDuration,
+      ),
+    );
   }
 
   Future<void> _editItem(BuildContext context, BatchCostingItem item) async {
@@ -332,16 +345,26 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     );
 
     if (result == null) return;
+    if (!mounted) return;
 
+    final updatedItem = item.copyWith(
+      displayName: result.displayName,
+      quantity: result.quantity,
+      printWeightG: result.printWeightG,
+      printDuration: result.printDuration,
+    );
     ref
         .read(batchCostingProvider.notifier)
-        .updateItem(
-          item.copyWith(
-            displayName: result.displayName,
-            quantity: result.quantity,
-            printWeightG: result.printWeightG,
-            printDuration: result.printDuration,
-          ),
-        );
+        .updateItem(updatedItem);
+
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchCostingItemEdited(
+        id: updatedItem.id,
+        displayName: updatedItem.displayName,
+        quantity: updatedItem.quantity,
+        printWeightG: updatedItem.printWeightG,
+        printDuration: updatedItem.printDuration,
+      ),
+    );
   }
 }
