@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
+import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
@@ -10,6 +13,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/lower_level_test_fakes.dart';
 
 class _FakeSettingsRepository implements SettingsRepository {
   _FakeSettingsRepository(this._settings);
@@ -22,6 +26,7 @@ class _FakeSettingsRepository implements SettingsRepository {
   Stream<GeneralSettingsModel> watchSettings() async* {
     yield _settings;
   }
+
   @override
   Future<void> saveSettings(GeneralSettingsModel settings) async {}
 }
@@ -55,9 +60,16 @@ void main() {
     required bool isPremium,
     required bool shouldShowProPromotion,
     PricingResult pricingResult = pricing,
+    num additionalCostAmount = 0,
   }) async {
+    final calculatorNotifier = FakeCalculatorNotifier(
+      initialState: CalculatorState(
+        additionalCostAmount: NumberInput.dirty(value: additionalCostAmount),
+      ),
+    );
     final db = await tester
         .pumpApp(CalculatorResults(results: results, pricing: pricingResult), [
+          calculatorProvider.overrideWith(() => calculatorNotifier),
           isPremiumProvider.overrideWithValue(isPremium),
           shouldShowProPromotionProvider.overrideWithValue(
             shouldShowProPromotion,
@@ -222,6 +234,41 @@ void main() {
       );
     });
 
+    testWidgets('pricing section keeps additional cost below cost subtotal', (
+      tester,
+    ) async {
+      await pumpResults(
+        tester,
+        isPremium: true,
+        shouldShowProPromotion: false,
+        additionalCostAmount: 4.25,
+      );
+
+      final costFinder = find.byKey(
+        const ValueKey<String>('calculator.result.totalCost'),
+      );
+      final additionalCostFinder = find.byKey(
+        const ValueKey<String>('calculator.result.additionalCost'),
+      );
+      final markupFinder = find.byKey(
+        const ValueKey<String>('calculator.result.markupAmount'),
+      );
+
+      expect(costFinder, findsOneWidget);
+      expect(additionalCostFinder, findsOneWidget);
+      expect(markupFinder, findsOneWidget);
+      expect(
+        tester.getTopLeft(additionalCostFinder).dy,
+        greaterThan(tester.getTopLeft(costFinder).dy),
+      );
+      expect(
+        tester.getTopLeft(markupFinder).dy,
+        greaterThan(tester.getTopLeft(additionalCostFinder).dy),
+      );
+      expect(find.text('Total cost'), findsNothing);
+      expect(find.text('Cost'), findsWidgets);
+    });
+
     testWidgets('premium user sees pricing rows when pricing enabled', (
       tester,
     ) async {
@@ -246,32 +293,30 @@ void main() {
     });
 
     testWidgets('formats final price with currency settings', (tester) async {
-      final db = await tester.pumpApp(
-        CalculatorResults(results: results, pricing: pricing),
-        [
-          isPremiumProvider.overrideWithValue(true),
-          shouldShowProPromotionProvider.overrideWithValue(false),
-          settingsRepositoryProvider.overrideWithValue(
-            _FakeSettingsRepository(
-              const GeneralSettingsModel(
-                electricityCost: '',
-                wattage: '',
-                activePrinter: '',
-                selectedMaterial: '',
-                wearAndTear: '',
-                failureRisk: '',
-                labourRate: '',
-                pricingMarkupPercent: '',
-                pricingSetupFee: '',
-                pricingRoundingMode: 'none',
-                currencySymbol: 'R',
-                currencyPosition: 'before',
-                currencySpacing: false,
+      final db = await tester
+          .pumpApp(CalculatorResults(results: results, pricing: pricing), [
+            isPremiumProvider.overrideWithValue(true),
+            shouldShowProPromotionProvider.overrideWithValue(false),
+            settingsRepositoryProvider.overrideWithValue(
+              _FakeSettingsRepository(
+                const GeneralSettingsModel(
+                  electricityCost: '',
+                  wattage: '',
+                  activePrinter: '',
+                  selectedMaterial: '',
+                  wearAndTear: '',
+                  failureRisk: '',
+                  labourRate: '',
+                  pricingMarkupPercent: '',
+                  pricingSetupFee: '',
+                  pricingRoundingMode: 'none',
+                  currencySymbol: 'R',
+                  currencyPosition: 'before',
+                  currencySpacing: false,
+                ),
               ),
             ),
-          ),
-        ],
-      );
+          ]);
       addTearDown(() => db.close());
       await tester.pumpAndSettle();
 
@@ -301,6 +346,31 @@ void main() {
         find.byKey(const ValueKey('calculator.result.finalPrice')),
         findsNothing,
       );
+    });
+
+    testWidgets('renders without overflow on narrow widths', (tester) async {
+      final calculatorNotifier = FakeCalculatorNotifier(
+        initialState: CalculatorState(
+          additionalCostAmount: NumberInput.dirty(value: 4.25),
+        ),
+      );
+
+      final db = await tester.pumpApp(
+        ConstrainedBox(
+          constraints: const BoxConstraints.tightFor(width: 220),
+          child: CalculatorResults(results: results, pricing: pricing),
+        ),
+        [
+          calculatorProvider.overrideWith(() => calculatorNotifier),
+          isPremiumProvider.overrideWithValue(true),
+          shouldShowProPromotionProvider.overrideWithValue(false),
+        ],
+      );
+      addTearDown(() => db.close());
+
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
     });
   });
 }
