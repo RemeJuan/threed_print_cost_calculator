@@ -576,6 +576,7 @@
   "stockBadgeNoTracking": "Sem rastreio",
   "batchCostingReviewAppBarTitle": "Revisão de itens do lote",
   "batchCostingReviewSubtitle": "Revise os itens do lote antes da atribuição de impressora.",
+  "batchCostingReviewAddManualItemButton": "Adicionar item manual",
   "batchCostingReviewEmptyTitle": "Nenhum item de lote ainda",
   "batchCostingReviewEmptyBody": "Adicione impressões importadas ou manuais para continuar.",
   "batchCostingReviewContinueButton": "Continuar para atribuição de impressora",
@@ -587,6 +588,9 @@
   "batchCostingReviewSourceUnknown": "Desconhecido",
   "batchCostingReviewWeightLabel": "Peso",
   "batchCostingReviewDurationLabel": "Duração",
+  "batchCostingItemEditorAddTitle": "Adicionar item manual",
+  "batchCostingItemEditorEditTitle": "Editar item do lote",
+  "batchCostingItemNameLabel": "Nome do item / modelo",
   "batchCostingPrinterAssignmentAppBarTitle": "Atribuição de impressora",
   "batchCostingPrinterAssignmentSubtitle": "A atribuição de impressora continua na próxima etapa."
 }

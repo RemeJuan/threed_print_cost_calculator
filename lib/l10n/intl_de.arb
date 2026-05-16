@@ -575,6 +575,7 @@
   "stockBadgeNoTracking": "Keine Verfolgung",
   "batchCostingReviewAppBarTitle": "Batch-Artikelprüfung",
   "batchCostingReviewSubtitle": "Batch-Artikel vor Druckerzuweisung prüfen.",
+  "batchCostingReviewAddManualItemButton": "Manuellen Artikel hinzufügen",
   "batchCostingReviewEmptyTitle": "Noch keine Batch-Artikel",
   "batchCostingReviewEmptyBody": "Importierte oder manuelle Drucke hinzufügen.",
   "batchCostingReviewContinueButton": "Weiter zur Druckerzuweisung",
@@ -586,6 +587,9 @@
   "batchCostingReviewSourceUnknown": "Unbekannt",
   "batchCostingReviewWeightLabel": "Gewicht",
   "batchCostingReviewDurationLabel": "Dauer",
+  "batchCostingItemEditorAddTitle": "Manuellen Artikel hinzufügen",
+  "batchCostingItemEditorEditTitle": "Batch-Artikel bearbeiten",
+  "batchCostingItemNameLabel": "Artikel-/Modellname",
   "batchCostingPrinterAssignmentAppBarTitle": "Druckerzuweisung",
   "batchCostingPrinterAssignmentSubtitle": "Die Druckerzuweisung wird im nächsten Batch-Costing-Schritt fortgesetzt."
 }

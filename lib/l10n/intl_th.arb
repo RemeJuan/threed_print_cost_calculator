@@ -576,6 +576,7 @@
   "stockBadgeNoTracking": "ไม่ติดตาม",
   "batchCostingReviewAppBarTitle": "ตรวจสอบรายการชุด",
   "batchCostingReviewSubtitle": "ตรวจสอบรายการชุดก่อนกำหนดเครื่องพิมพ์",
+  "batchCostingReviewAddManualItemButton": "เพิ่มรายการด้วยตนเอง",
   "batchCostingReviewEmptyTitle": "ยังไม่มีรายการชุด",
   "batchCostingReviewEmptyBody": "เพิ่มงานพิมพ์ที่นำเข้าหรือด้วยตนเองเพื่อดำเนินการต่อ",
   "batchCostingReviewContinueButton": "ดำเนินการต่อเพื่อกำหนดเครื่องพิมพ์",
@@ -587,6 +588,9 @@
   "batchCostingReviewSourceUnknown": "ไม่ทราบ",
   "batchCostingReviewWeightLabel": "น้ำหนัก",
   "batchCostingReviewDurationLabel": "ระยะเวลา",
+  "batchCostingItemEditorAddTitle": "เพิ่มรายการด้วยตนเอง",
+  "batchCostingItemEditorEditTitle": "แก้ไขรายการชุด",
+  "batchCostingItemNameLabel": "ชื่อรายการ / รุ่น",
   "batchCostingPrinterAssignmentAppBarTitle": "กำหนดเครื่องพิมพ์",
   "batchCostingPrinterAssignmentSubtitle": "การกำหนดเครื่องพิมพ์จะดำเนินการต่อในขั้นตอนถัดไป"
 }

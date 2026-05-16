@@ -1148,6 +1148,9 @@ class AppLocalizationsTh extends AppLocalizations {
       'ตรวจสอบรายการชุดก่อนกำหนดเครื่องพิมพ์';
 
   @override
+  String get batchCostingReviewAddManualItemButton => 'เพิ่มรายการด้วยตนเอง';
+
+  @override
   String get batchCostingReviewEmptyTitle => 'ยังไม่มีรายการชุด';
 
   @override
@@ -1181,6 +1184,15 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'ระยะเวลา';
+
+  @override
+  String get batchCostingItemEditorAddTitle => 'เพิ่มรายการด้วยตนเอง';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'แก้ไขรายการชุด';
+
+  @override
+  String get batchCostingItemNameLabel => 'ชื่อรายการ / รุ่น';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle => 'กำหนดเครื่องพิมพ์';

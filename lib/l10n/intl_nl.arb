@@ -576,6 +576,7 @@
   "stockBadgeNoTracking": "Niet bijgehouden",
   "batchCostingReviewAppBarTitle": "Batch-artikelbeoordeling",
   "batchCostingReviewSubtitle": "Beoordeel batch-artikelen vóór printertoewijzing.",
+  "batchCostingReviewAddManualItemButton": "Handmatig item toevoegen",
   "batchCostingReviewEmptyTitle": "Nog geen batch-artikelen",
   "batchCostingReviewEmptyBody": "Voeg geïmporteerde of handmatige afdrukken toe om door te gaan.",
   "batchCostingReviewContinueButton": "Doorgaan naar printertoewijzing",
@@ -587,6 +588,9 @@
   "batchCostingReviewSourceUnknown": "Onbekend",
   "batchCostingReviewWeightLabel": "Gewicht",
   "batchCostingReviewDurationLabel": "Duur",
+  "batchCostingItemEditorAddTitle": "Handmatig item toevoegen",
+  "batchCostingItemEditorEditTitle": "Batch-item bewerken",
+  "batchCostingItemNameLabel": "Item-/modelnaam",
   "batchCostingPrinterAssignmentAppBarTitle": "Printertoewijzing",
   "batchCostingPrinterAssignmentSubtitle": "Printertoewijzing gaat verder in de volgende batch-costing stap."
 }

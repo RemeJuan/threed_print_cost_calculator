@@ -6,8 +6,10 @@ import 'package:threed_print_cost_calculator/app/components/focus_safe_text_fiel
 import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing_item_editor_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
@@ -65,6 +67,15 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
               Text(
                 l10n.batchCostingReviewSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 16),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: FilledButton.icon(
+                  onPressed: () => _addManualItem(context),
+                  icon: const Icon(Icons.add),
+                  label: Text(l10n.batchCostingReviewAddManualItemButton),
+                ),
               ),
               const SizedBox(height: 16),
               Expanded(
@@ -174,6 +185,15 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
           overflow: TextOverflow.ellipsis,
         ),
         children: [
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton.icon(
+              onPressed: () => _editItem(context, item),
+              icon: const Icon(Icons.edit_outlined),
+              label: Text(l10n.editButton),
+            ),
+          ),
+          const SizedBox(height: 8),
           _itemDetailRow(
             context,
             l10n.batchCostingReviewWeightLabel,
@@ -267,6 +287,83 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => const BatchPrinterAssignmentPage(),
+      ),
+    );
+  }
+
+  Future<void> _addManualItem(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final result = await showDialog<BatchCostingItemEditorResult>(
+      context: context,
+      builder: (_) => BatchCostingItemEditorDialog(
+        title: l10n.batchCostingItemEditorAddTitle,
+        initialDisplayName: '',
+        initialQuantity: 1,
+        initialPrintWeightG: 1,
+        initialPrintDuration: const Duration(minutes: 1),
+      ),
+    );
+
+    if (result == null) return;
+    if (!mounted) return;
+
+    final itemId = DateTime.now().microsecondsSinceEpoch.toString();
+    ref
+        .read(batchCostingProvider.notifier)
+        .addItem(
+          BatchCostingItem.manual(
+            id: itemId,
+            displayName: result.displayName,
+            quantity: result.quantity,
+            printWeightG: result.printWeightG,
+            printDuration: result.printDuration,
+          ),
+        );
+
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchCostingItemAdded(
+        id: itemId,
+        displayName: result.displayName,
+        quantity: result.quantity,
+        printWeightG: result.printWeightG,
+        printDuration: result.printDuration,
+      ),
+    );
+  }
+
+  Future<void> _editItem(BuildContext context, BatchCostingItem item) async {
+    final l10n = AppLocalizations.of(context)!;
+    final result = await showDialog<BatchCostingItemEditorResult>(
+      context: context,
+      builder: (_) => BatchCostingItemEditorDialog(
+        title: l10n.batchCostingItemEditorEditTitle,
+        initialDisplayName: item.displayName,
+        initialQuantity: item.quantity,
+        initialPrintWeightG: item.printWeightG,
+        initialPrintDuration: item.printDuration,
+      ),
+    );
+
+    if (result == null) return;
+    if (!mounted) return;
+
+    final updatedItem = item.copyWith(
+      displayName: result.displayName,
+      quantity: result.quantity,
+      printWeightG: result.printWeightG,
+      printDuration: result.printDuration,
+    );
+    ref
+        .read(batchCostingProvider.notifier)
+        .updateItem(updatedItem);
+
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchCostingItemEdited(
+        id: updatedItem.id,
+        displayName: updatedItem.displayName,
+        quantity: updatedItem.quantity,
+        printWeightG: updatedItem.printWeightG,
+        printDuration: updatedItem.printDuration,
       ),
     );
   }

@@ -1183,6 +1183,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Vérifiez les articles du lot avant l\'attribution de l\'imprimante.';
 
   @override
+  String get batchCostingReviewAddManualItemButton =>
+      'Ajouter un article manuel';
+
+  @override
   String get batchCostingReviewEmptyTitle =>
       'Aucun article de lot pour l\'instant';
 
@@ -1217,6 +1221,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Durée';
+
+  @override
+  String get batchCostingItemEditorAddTitle => 'Ajouter un article manuel';
+
+  @override
+  String get batchCostingItemEditorEditTitle => 'Modifier l\'article du lot';
+
+  @override
+  String get batchCostingItemNameLabel => 'Nom de l\'article / du modèle';
 
   @override
   String get batchCostingPrinterAssignmentAppBarTitle =>
