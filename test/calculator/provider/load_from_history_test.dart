@@ -174,6 +174,7 @@ void main() {
       expect(state.materialUsages.last.materialId, 'mat-petg');
       expect(state.materialUsages.last.weightGrams, 23);
       expect(state.markupPercent.value, 20);
+      expect(state.markupPercentOverridden, isTrue);
       expect(state.setupFee.value, 3);
       expect(state.roundingMode, PricingRoundingMode.pointNinetyNine);
       expect(state.results.electricity, 0.45);

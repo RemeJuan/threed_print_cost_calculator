@@ -112,6 +112,7 @@ void main() {
       expect(state.labourRate.value, 30);
       expect(state.activePrinterId, 'printer-1');
       expect(state.selectedMaterialId, 'material-1');
+      expect(state.markupPercentOverridden, isFalse);
       expect(state.hasHydratedDefaults, isTrue);
       expect(state.materialUsages, isEmpty);
 
@@ -197,6 +198,7 @@ void main() {
         final initial = container.read(calculatorProvider);
         expect(initial.wearAndTear.value, 1.5);
         expect(initial.markupPercent.value, 10);
+        expect(initial.markupPercentOverridden, isFalse);
 
         notifier.setWearAndTear(5);
         notifier.setMarkupPercent(20);
@@ -204,6 +206,7 @@ void main() {
         var state = container.read(calculatorProvider);
         expect(state.wearAndTear.value, 5);
         expect(state.markupPercent.value, 20);
+        expect(state.markupPercentOverridden, isTrue);
 
         await notifier.init();
 
@@ -264,14 +267,17 @@ void main() {
 
       var state = container.read(calculatorProvider);
       expect(state.markupPercent.value, 10);
+      expect(state.markupPercentOverridden, isFalse);
 
       notifier.setMarkupPercent(20);
       state = container.read(calculatorProvider);
       expect(state.markupPercent.value, 20);
+      expect(state.markupPercentOverridden, isTrue);
 
       notifier.setMarkupPercent(0);
       state = container.read(calculatorProvider);
       expect(state.markupPercent.value, 0);
+      expect(state.markupPercentOverridden, isTrue);
 
       await notifier.init();
 
@@ -294,6 +300,7 @@ void main() {
 
       var state = container.read(calculatorProvider);
       expect(state.markupPercent.value, 25);
+      expect(state.markupPercentOverridden, isTrue);
 
       notifier.updateHours(2);
       notifier.submit();
