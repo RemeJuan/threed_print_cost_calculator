@@ -570,7 +570,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get totalCostLabel => 'Custo total';
 
   @override
-  String get costTotalLabel => 'Custo total';
+  String get costTotalLabel => 'Custo';
 
   @override
   String get markupLabel => 'Margem';

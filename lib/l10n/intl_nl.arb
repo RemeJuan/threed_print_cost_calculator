@@ -246,7 +246,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "Totale kosten",
+  "costTotalLabel": "Kosten",
   "markupLabel": "Opslag",
   "setupFeeLabel": "Instelkosten",
   "roundingAdjustmentLabel": "Afrondingscorrectie",

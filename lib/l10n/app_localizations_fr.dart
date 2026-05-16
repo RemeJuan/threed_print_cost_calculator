@@ -575,7 +575,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get totalCostLabel => 'Coût total';
 
   @override
-  String get costTotalLabel => 'Coût total';
+  String get costTotalLabel => 'Coût';
 
   @override
   String get markupLabel => 'Marge';

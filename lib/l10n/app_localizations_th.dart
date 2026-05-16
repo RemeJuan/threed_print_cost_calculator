@@ -564,7 +564,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get totalCostLabel => 'ทั้งหมด';
 
   @override
-  String get costTotalLabel => 'ต้นทุนรวม';
+  String get costTotalLabel => 'ต้นทุน';
 
   @override
   String get markupLabel => 'ส่วนเพิ่ม';

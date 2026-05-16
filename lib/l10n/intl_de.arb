@@ -244,7 +244,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "Kosten gesamt",
+  "costTotalLabel": "Kosten",
   "markupLabel": "Aufschlag",
   "setupFeeLabel": "Einrichtungsgebühr",
   "roundingAdjustmentLabel": "Rundungsanpassung",

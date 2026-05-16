@@ -237,7 +237,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "Costo total",
+  "costTotalLabel": "Costo",
   "markupLabel": "Margen",
   "setupFeeLabel": "Tarifa de configuración",
   "roundingAdjustmentLabel": "Ajuste por redondeo",

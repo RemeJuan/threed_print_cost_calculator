@@ -246,7 +246,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "Coût total",
+  "costTotalLabel": "Coût",
   "markupLabel": "Marge",
   "setupFeeLabel": "Frais d'installation",
   "roundingAdjustmentLabel": "Ajustement d'arrondi",

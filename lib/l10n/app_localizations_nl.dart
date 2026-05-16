@@ -569,7 +569,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get totalCostLabel => 'Totaal';
 
   @override
-  String get costTotalLabel => 'Totale kosten';
+  String get costTotalLabel => 'Kosten';
 
   @override
   String get markupLabel => 'Opslag';

@@ -238,7 +238,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "Costo totale",
+  "costTotalLabel": "Costo",
   "markupLabel": "Ricarico",
   "setupFeeLabel": "Costo di configurazione",
   "roundingAdjustmentLabel": "Aggiustamento arrotondamento",

@@ -568,7 +568,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get totalCostLabel => 'Total biaya';
 
   @override
-  String get costTotalLabel => 'Total biaya';
+  String get costTotalLabel => 'Biaya';
 
   @override
   String get markupLabel => 'Markup';

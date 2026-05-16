@@ -226,7 +226,7 @@
   "additionalCostNoteDialogTitle": "Additional cost note",
   "riskCostLabel": "Risk",
   "totalCostLabel": "Total",
-  "costTotalLabel": "Total cost",
+  "costTotalLabel": "Cost",
   "markupLabel": "Markup",
   "setupFeeLabel": "Setup fee",
   "roundingAdjustmentLabel": "Rounding adjustment",

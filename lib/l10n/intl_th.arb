@@ -239,7 +239,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "ต้นทุนรวม",
+  "costTotalLabel": "ต้นทุน",
   "markupLabel": "ส่วนเพิ่ม",
   "setupFeeLabel": "ค่าตั้งค่า",
   "roundingAdjustmentLabel": "ปรับปัดเศษ",

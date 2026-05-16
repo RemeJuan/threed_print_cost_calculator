@@ -568,7 +568,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get totalCostLabel => 'Gesamtkosten';
 
   @override
-  String get costTotalLabel => 'Kosten gesamt';
+  String get costTotalLabel => 'Kosten';
 
   @override
   String get markupLabel => 'Aufschlag';

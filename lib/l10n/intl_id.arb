@@ -238,7 +238,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "Total biaya",
+  "costTotalLabel": "Biaya",
   "markupLabel": "Markup",
   "setupFeeLabel": "Biaya penyiapan",
   "roundingAdjustmentLabel": "Penyesuaian pembulatan",

@@ -246,7 +246,7 @@
       "error": {}
     }
   },
-  "costTotalLabel": "合計コスト",
+  "costTotalLabel": "コスト",
   "markupLabel": "上乗せ",
   "setupFeeLabel": "設定料",
   "roundingAdjustmentLabel": "端数調整",

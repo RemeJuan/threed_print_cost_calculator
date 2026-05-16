@@ -553,7 +553,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get totalCostLabel => '総費用';
 
   @override
-  String get costTotalLabel => '合計コスト';
+  String get costTotalLabel => 'コスト';
 
   @override
   String get markupLabel => '上乗せ';
