@@ -309,6 +309,74 @@ void main() {
       expect(state.pricing.markupAmount, greaterThan(0));
     });
 
+    test('settings markup changes sync live until markup is overridden', () async {
+      await seedCalculatorData();
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      notifier.updateKwCost('0.77');
+
+      var state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 10);
+      expect(state.markupPercentOverridden, isFalse);
+      expect(state.baselineMarkupPercent, 10);
+      expect(state.kwCost.value, 0.77);
+
+      await container.read(settingsRepositoryProvider).saveSettings(
+        GeneralSettingsModel(
+          electricityCost: '0.99',
+          wattage: '100',
+          activePrinter: 'printer-1',
+          selectedMaterial: 'material-1',
+          wearAndTear: '1.50',
+          failureRisk: '5.00',
+          labourRate: '20',
+          pricingMarkupPercent: '40',
+          pricingSetupFee: '8',
+          pricingRoundingMode: '.00',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 40);
+      expect(state.markupPercentOverridden, isFalse);
+      expect(state.baselineMarkupPercent, 40);
+      expect(
+        state.kwCost.value,
+        0.77,
+        reason: 'unrelated in-progress fields must stay untouched',
+      );
+
+      notifier.setMarkupPercent(25);
+
+      await container.read(settingsRepositoryProvider).saveSettings(
+        GeneralSettingsModel(
+          electricityCost: '1.25',
+          wattage: '100',
+          activePrinter: 'printer-1',
+          selectedMaterial: 'material-1',
+          wearAndTear: '1.50',
+          failureRisk: '5.00',
+          labourRate: '20',
+          pricingMarkupPercent: '55',
+          pricingSetupFee: '9',
+          pricingRoundingMode: '.00',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      state = container.read(calculatorProvider);
+      expect(state.markupPercent.value, 25);
+      expect(state.markupPercentOverridden, isTrue);
+      expect(state.baselineMarkupPercent, 55);
+      expect(
+        state.kwCost.value,
+        0.77,
+        reason: 'settings markup updates must not clobber local fields',
+      );
+    });
+
     test(
       'changing settings does not mutate in-progress form until reset',
       () async {
