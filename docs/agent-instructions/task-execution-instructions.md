@@ -72,6 +72,10 @@ Batch costing must remain hidden unless the developer/debug flag is enabled.
 - Default state is **disabled**.
 - No incomplete UI may be visible to normal users.
 - Existing calculator and G-code import flows must continue to work when the flag is disabled.
+- `batchCostingEnabled` must hard-gate every visible batch-costing UI surface.
+- With the flag off, normal calculator and G-code flows show zero batch-related UI.
+- Do not rely on route gating alone or a hidden button alone.
+- Batch-costing docs must carry the active ClickUp task ID at top; use cleanup task `86c9uq5xr` for this contract/update work.
 
 ## Behaviour Preservation Rules
 

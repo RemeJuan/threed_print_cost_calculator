@@ -320,4 +320,49 @@ void main() {
 
     expect(container.read(batchCostingEnabledProvider), isTrue);
   });
+
+  testWidgets('purge resets batch costing visibility state', (tester) async {
+    final fakeCalculator = FakeCalculatorNotifier();
+    final fakeHistory = _FakeHistoryPagedNotifier();
+
+    final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
+      calculatorProvider.overrideWith(() => fakeCalculator),
+      historyPagedProvider.overrideWith(() => fakeHistory),
+      testDataServiceProvider.overrideWith((ref) => _FakeTestDataService(ref)),
+    ]);
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await _openHiddenTools(tester);
+    await _revealHiddenToolButton(
+      tester,
+      'settings.testData.enableBatchCosting.button',
+    );
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.testData.enableBatchCosting.button'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final container = ProviderScope.containerOf(
+      tester.element(
+        find.byKey(const ValueKey<String>('settings.version.tapTarget')),
+      ),
+      listen: false,
+    );
+
+    expect(container.read(batchCostingEnabledProvider), isTrue);
+
+    await _openHiddenTools(tester);
+    await _revealHiddenToolButton(tester, 'settings.testData.purge.button');
+    await tester.tap(
+      find.byKey(const ValueKey<String>('settings.testData.purge.button')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(lookupAppLocalizations(const Locale('en')).purgeLocalDataButton));
+    await tester.pumpAndSettle();
+
+    expect(container.read(batchCostingEnabledProvider), isFalse);
+  });
 }

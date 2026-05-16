@@ -71,6 +71,9 @@ Expected behaviour:
 - Enabled: developer/test users can access the batch entry point
 - Existing calculator and G-code import flows must continue to work when disabled
 - Incomplete batch screens must never be reachable by normal users
+- Hard gate: every visible batch-costing entry, action, route, label, button, and card must check `batchCostingEnabled`
+- Do not rely on route gating alone or on a hidden debug button alone
+- Hidden developer/test toggles may exist, but normal users must still see zero batch-related UI when disabled
 
 This is important because the work will likely span multiple branches and releases, while unrelated bug-fix releases may still need to ship.
 

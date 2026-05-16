@@ -69,8 +69,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Batch costing'), findsOneWidget);
-      expect(find.text('Choose how to start batch costing.'), findsOneWidget);
+      expect(find.text('Batch item review'), findsOneWidget);
+      expect(
+        find.text('Review batch items before printer assignment.'),
+        findsOneWidget,
+      );
     });
 
     testWidgets(
