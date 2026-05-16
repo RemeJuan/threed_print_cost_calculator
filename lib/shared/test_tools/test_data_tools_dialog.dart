@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
@@ -51,14 +50,13 @@ class TestDataToolsDialog extends StatelessWidget {
                 onPressed: () => onAction(TestDataAction.enablePremium),
                 child: Text(l10n.enablePremiumButton),
               ),
-              if (kDebugMode)
-                TextButton(
-                  key: const ValueKey<String>(
-                    'settings.testData.enableBatchCosting.button',
-                  ),
-                  onPressed: () => onAction(TestDataAction.enableBatchCosting),
-                  child: Text(l10n.enableBatchCostingButton),
+              TextButton(
+                key: const ValueKey<String>(
+                  'settings.testData.enableBatchCosting.button',
                 ),
+                onPressed: () => onAction(TestDataAction.enableBatchCosting),
+                child: Text(l10n.enableBatchCostingButton),
+              ),
               TextButton(
                 key: const ValueKey<String>(
                   'settings.testData.forceUpdate.button',
