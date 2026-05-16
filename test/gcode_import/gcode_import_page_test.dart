@@ -22,7 +22,7 @@ import '../helpers/helpers.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async {
+  setUp(() async {
     await setupTest();
   });
 
