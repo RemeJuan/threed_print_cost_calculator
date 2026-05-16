@@ -84,5 +84,18 @@ void main() {
       expect(result.subtotalBeforeRounding, 11.0);
       expect(result.finalPrice, 11.0);
     });
+
+    test('negative subtotal clamps to zero', () {
+      final result = PricingCalculator.calculate(
+        baseCost: 0,
+        markupPercent: 0,
+        setupFee: -1,
+        roundingMode: PricingRoundingMode.wholeDollar,
+      );
+
+      expect(result.subtotalBeforeRounding, -1);
+      expect(result.finalPrice, 0);
+      expect(result.roundingAdjustment, 1);
+    });
   });
 }
