@@ -3,17 +3,21 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(() async {
+  setUp(() async {
     await setupTest();
   });
 
@@ -177,6 +181,197 @@ void main() {
 
     expect(find.text('Send feedback'), findsOneWidget);
   });
+
+  testWidgets('shows quantity field and create batch CTA when enabled', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    await tester.pumpApp(const GCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      gcodeImportControllerProvider.overrideWith(
+        () => _FakeController(
+          _successState(
+            slicer: GCodeSlicer.prusaSlicer,
+            previewMetadata: null,
+            previewImageBytes: null,
+          ),
+        ),
+      ),
+    ]);
+
+    expect(
+      find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
+      findsOneWidget,
+    );
+    expect(find.text('Use these values'), findsOneWidget);
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
+      '3',
+    );
+    await tester.pump();
+
+    expect(find.text('Create batch'), findsOneWidget);
+  });
+
+  testWidgets('quantity field stays hidden when batch costing disabled', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: false,
+    });
+
+    await tester.pumpApp(const GCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      gcodeImportControllerProvider.overrideWith(
+        () => _FakeController(
+          _successState(
+            slicer: GCodeSlicer.prusaSlicer,
+            previewMetadata: null,
+            previewImageBytes: null,
+          ),
+        ),
+      ),
+    ]);
+
+    expect(
+      find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
+      findsNothing,
+    );
+    expect(find.text('Use these values'), findsOneWidget);
+  });
+
+  testWidgets('quantity resets to minimum of one on blur', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    await tester.pumpApp(const GCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      gcodeImportControllerProvider.overrideWith(
+        () => _FakeController(
+          _successState(
+            slicer: GCodeSlicer.prusaSlicer,
+            previewMetadata: null,
+            previewImageBytes: null,
+          ),
+        ),
+      ),
+    ]);
+
+    final quantityField = find.byKey(
+      const ValueKey<String>('gcode_import.quantity.field'),
+    );
+    await tester.ensureVisible(quantityField);
+    await tester.tap(quantityField);
+    await tester.pump();
+    await tester.enterText(quantityField, '0');
+    await tester.pump();
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+
+    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Use these values'), findsOneWidget);
+  });
+
+  testWidgets('quantity one uses existing calculator path', (tester) async {
+    final observer = _TestNavigatorObserver();
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    final container = await tester.pumpAppWithContainer(
+      const GCodeImportPage(),
+      overrides: [
+        isPremiumProvider.overrideWithValue(true),
+        gcodeImportControllerProvider.overrideWith(
+          () => _FakeController(
+            _successState(
+              slicer: GCodeSlicer.prusaSlicer,
+              previewMetadata: null,
+              previewImageBytes: null,
+            ),
+          ),
+        ),
+      ],
+      observers: [observer],
+    );
+    final initialPushCount = observer.pushCount;
+
+    final applyButton = find.byKey(
+      const ValueKey<String>('gcode_import.apply.button'),
+    );
+    await tester.ensureVisible(applyButton);
+    await tester.tap(applyButton);
+    await tester.pumpAndSettle();
+
+    final calculatorState = container.read(calculatorProvider);
+    expect(calculatorState.importedFromGcode, isTrue);
+    expect(calculatorState.hours.value, 0);
+    expect(calculatorState.minutes.value, 10);
+    expect(calculatorState.printWeight.value, 10);
+    expect(observer.pushCount, initialPushCount);
+    expect(container.read(batchCostingProvider).items, isEmpty);
+  });
+
+  testWidgets('quantity greater than one creates batch item and navigates', (
+    tester,
+  ) async {
+    final observer = _TestNavigatorObserver();
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    final container = await tester.pumpAppWithContainer(
+      const GCodeImportPage(),
+      overrides: [
+        isPremiumProvider.overrideWithValue(true),
+        gcodeImportControllerProvider.overrideWith(
+          () => _FakeController(
+            _successState(
+              slicer: GCodeSlicer.prusaSlicer,
+              previewMetadata: null,
+              previewImageBytes: null,
+            ),
+          ),
+        ),
+      ],
+      observers: [observer],
+    );
+    final initialPushCount = observer.pushCount;
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
+      '3',
+    );
+    await tester.pump();
+    final applyButton = find.byKey(
+      const ValueKey<String>('gcode_import.apply.button'),
+    );
+    await tester.ensureVisible(applyButton);
+    await tester.tap(applyButton);
+    await tester.pumpAndSettle();
+
+    final batchItems = container.read(batchCostingProvider);
+    expect(batchItems.items, hasLength(1));
+    expect(batchItems.items.single.quantity, 3);
+    expect(batchItems.items.single.displayName, 'preview.gcode');
+    expect(observer.pushCount, initialPushCount + 1);
+  });
+}
+
+class _TestNavigatorObserver extends NavigatorObserver {
+  int pushCount = 0;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushCount += 1;
+    super.didPush(route, previousRoute);
+  }
 }
 
 class _FakeController extends GCodeImportController {

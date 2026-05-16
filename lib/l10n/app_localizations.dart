@@ -1739,6 +1739,24 @@ abstract class AppLocalizations {
   /// **'Use these values'**
   String get importGcodeUseValuesButton;
 
+  /// No description provided for @importGcodeQuantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity'**
+  String get importGcodeQuantityLabel;
+
+  /// No description provided for @importGcodeCreateBatchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create batch'**
+  String get importGcodeCreateBatchButton;
+
+  /// No description provided for @importGcodeBatchRequiresDetectedValues.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch creation needs both detected duration and filament weight.'**
+  String get importGcodeBatchRequiresDetectedValues;
+
   /// No description provided for @importGcodeSlicerLabel.
   ///
   /// In en, this message translates to:

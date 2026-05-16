@@ -907,6 +907,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get importGcodeUseValuesButton => 'Diese Werte verwenden';
 
   @override
+  String get importGcodeQuantityLabel => 'Menge';
+
+  @override
+  String get importGcodeCreateBatchButton => 'Stapel erstellen';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'Für die Stapelerstellung werden erkannte Dauer und Filamentgewicht benötigt.';
+
+  @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override

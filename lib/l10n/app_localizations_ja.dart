@@ -881,6 +881,16 @@ class AppLocalizationsJa extends AppLocalizations {
   String get importGcodeUseValuesButton => 'この値を使用';
 
   @override
+  String get importGcodeQuantityLabel => '数量';
+
+  @override
+  String get importGcodeCreateBatchButton => 'バッチを作成';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'バッチ作成には検出された時間とフィラメント重量の両方が必要です。';
+
+  @override
   String get importGcodeSlicerLabel => 'スライサー';
 
   @override

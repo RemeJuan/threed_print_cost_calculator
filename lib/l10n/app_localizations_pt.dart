@@ -911,6 +911,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get importGcodeUseValuesButton => 'Usar estes valores';
 
   @override
+  String get importGcodeQuantityLabel => 'Quantidade';
+
+  @override
+  String get importGcodeCreateBatchButton => 'Criar lote';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'A criação do lote precisa da duração e do peso do filamento detectados.';
+
+  @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override

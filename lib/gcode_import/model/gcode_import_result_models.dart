@@ -74,8 +74,9 @@ class GCodePreviewMetadata {
     final unavailableLabel =
         localizations?.importGcodePreviewUnavailable ?? 'No preview';
     if (!present) return unavailableLabel;
-    if (format == null || width == null || height == null)
+    if (format == null || width == null || height == null) {
       return unavailableLabel;
+    }
     return '$availableLabel · $format · ${width}x$height';
   }
 

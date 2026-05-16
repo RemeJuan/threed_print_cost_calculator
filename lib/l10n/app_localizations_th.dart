@@ -893,6 +893,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String get importGcodeUseValuesButton => 'ใช้ค่าเหล่านี้';
 
   @override
+  String get importGcodeQuantityLabel => 'จำนวน';
+
+  @override
+  String get importGcodeCreateBatchButton => 'สร้างแบตช์';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'การสร้างแบตช์ต้องมีทั้งเวลาที่ตรวจพบและน้ำหนักฟิลาเมนต์';
+
+  @override
   String get importGcodeSlicerLabel => 'สไลเซอร์';
 
   @override

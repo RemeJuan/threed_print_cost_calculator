@@ -913,6 +913,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get importGcodeUseValuesButton => 'Usa questi valori';
 
   @override
+  String get importGcodeQuantityLabel => 'Quantità';
+
+  @override
+  String get importGcodeCreateBatchButton => 'Crea batch';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'La creazione del batch richiede durata e peso del filamento rilevati.';
+
+  @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override

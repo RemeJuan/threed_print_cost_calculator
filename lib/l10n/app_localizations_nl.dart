@@ -907,6 +907,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get importGcodeUseValuesButton => 'Deze waarden gebruiken';
 
   @override
+  String get importGcodeQuantityLabel => 'Aantal';
+
+  @override
+  String get importGcodeCreateBatchButton => 'Batch maken';
+
+  @override
+  String get importGcodeBatchRequiresDetectedValues =>
+      'Voor batchaanmaak zijn zowel gedetecteerde duur als filamentgewicht nodig.';
+
+  @override
   String get importGcodeSlicerLabel => 'Slicer';
 
   @override
