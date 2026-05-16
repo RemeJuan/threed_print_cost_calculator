@@ -15,8 +15,10 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
@@ -29,6 +31,7 @@ final calculatorProvider =
 
 class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
+  StreamSubscription<GeneralSettingsModel>? _settingsSubscription;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
 
@@ -40,9 +43,40 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     ref.onDispose(() {
       _submitDebounce?.cancel();
       _submitDebounce = null;
+      _settingsSubscription?.cancel();
+      _settingsSubscription = null;
     });
 
+    _settingsSubscription ??= ref
+        .read(settingsRepositoryProvider)
+        .watchSettings()
+        .listen(_syncMarkupFromSettings);
+
     return CalculatorState();
+  }
+
+  void _syncMarkupFromSettings(GeneralSettingsModel settings) {
+    if (!state.hasHydratedDefaults) return;
+
+    final settingsMarkupPercent = tryParseLocalizedNum(
+      settings.pricingMarkupPercent,
+    );
+    final baselineChanged = state.baselineMarkupPercent != settingsMarkupPercent;
+
+    if (state.markupPercentOverridden) {
+      if (!baselineChanged) return;
+      state = state.copyWith(baselineMarkupPercent: settingsMarkupPercent);
+      return;
+    }
+
+    final markupChanged = state.markupPercent.value != settingsMarkupPercent;
+    if (!markupChanged && !baselineChanged) return;
+
+    state = state.copyWith(
+      markupPercent: NumberInput.dirty(value: settingsMarkupPercent),
+      baselineMarkupPercent: settingsMarkupPercent,
+    );
+    submit();
   }
 
   Future<void> init() async {
@@ -622,6 +656,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   num _effectiveMarkupPercent() {
-    return state.markupPercent.value ?? 0;
+    if (state.markupPercentOverridden) {
+      return state.markupPercent.value ?? 0;
+    }
+
+    return state.baselineMarkupPercent ?? state.markupPercent.value ?? 0;
   }
 }
