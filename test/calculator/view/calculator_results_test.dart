@@ -51,6 +51,22 @@ void main() {
     finalPrice: 14.0,
   );
 
+  const labourOnlyResults = CalculationResult(
+    electricity: 1.0,
+    filament: 2.0,
+    risk: 0.5,
+    labour: 0.0,
+    total: 8.5,
+  );
+
+  const labourAndMaterialsResults = CalculationResult(
+    electricity: 1.0,
+    filament: 2.0,
+    risk: 0.5,
+    labour: 3.0,
+    total: 10.0,
+  );
+
   setUpAll(() async {
     await setupTest();
   });
@@ -77,6 +93,11 @@ void main() {
         ]);
     addTearDown(() => db.close());
     await tester.pumpAndSettle();
+  }
+
+  double valueFor(WidgetTester tester, String key) {
+    final text = tester.widget<Text>(find.byKey(ValueKey<String>(key))).data!;
+    return double.parse(text.replaceAll(RegExp(r'[^0-9.\-]'), ''));
   }
 
   group('CalculatorResults', () {
@@ -214,6 +235,42 @@ void main() {
       },
     );
 
+    testWidgets('labour row includes materials when labour is zero', (
+      tester,
+    ) async {
+      final db = await tester.pumpApp(
+        CalculatorResults(results: labourOnlyResults, pricing: pricing),
+        [
+          isPremiumProvider.overrideWithValue(true),
+          shouldShowProPromotionProvider.overrideWithValue(false),
+        ],
+      );
+      addTearDown(() => db.close());
+      await tester.pumpAndSettle();
+
+      expect(valueFor(tester, 'calculator.result.labourCost'), 5.0);
+    });
+
+    testWidgets(
+      'labour row includes labour and materials when both are non-zero',
+      (tester) async {
+        final db = await tester.pumpApp(
+          CalculatorResults(
+            results: labourAndMaterialsResults,
+            pricing: pricing,
+          ),
+          [
+            isPremiumProvider.overrideWithValue(true),
+            shouldShowProPromotionProvider.overrideWithValue(false),
+          ],
+        );
+        addTearDown(() => db.close());
+        await tester.pumpAndSettle();
+
+        expect(valueFor(tester, 'calculator.result.labourCost'), 6.5);
+      },
+    );
+
     testWidgets('promo rendering does not change calculator totals', (
       tester,
     ) async {
@@ -267,6 +324,20 @@ void main() {
       );
       expect(find.text('Total cost'), findsNothing);
       expect(find.text('Cost'), findsWidgets);
+    });
+
+    testWidgets('visible breakdown values sum to displayed total cost', (
+      tester,
+    ) async {
+      await pumpResults(tester, isPremium: true, shouldShowProPromotion: false);
+
+      final breakdown =
+          valueFor(tester, 'calculator.result.electricityCost') +
+          valueFor(tester, 'calculator.result.filamentCost') +
+          valueFor(tester, 'calculator.result.riskCost') +
+          valueFor(tester, 'calculator.result.labourCost');
+
+      expect(breakdown, valueFor(tester, 'calculator.result.totalCost'));
     });
 
     testWidgets('premium user sees pricing rows when pricing enabled', (
