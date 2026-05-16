@@ -52,8 +52,6 @@ extension PumpApp on WidgetTester {
     List<Override> overrides = const [],
     List<NavigatorObserver> observers = const [],
   ]) async {
-    // Provide a default in-memory database override first. Tests can still
-    // override this by passing their own override which will appear later.
     final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
     final db = await databaseFactoryMemory.openDatabase(name);
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -79,5 +77,41 @@ extension PumpApp on WidgetTester {
     addTearDown(safeBotToastCleanAll);
 
     return db;
+  }
+
+  Future<ProviderContainer> pumpAppWithContainer(
+    Widget widget, {
+    List<Override> overrides = const [],
+    List<NavigatorObserver> observers = const [],
+  }) async {
+    final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
+    final db = await databaseFactoryMemory.openDatabase(name);
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final effectiveOverrides = <Override>[
+      databaseProvider.overrideWithValue(db),
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ...overrides,
+    ];
+
+    final container = ProviderContainer(overrides: effectiveOverrides);
+    addTearDown(container.dispose);
+
+    await pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp(
+          builder: BotToastInit(),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(body: widget),
+          navigatorObservers: [BotToastNavigatorObserver(), ...observers],
+        ),
+      ),
+    );
+    await pumpAndSettle();
+
+    addTearDown(safeBotToastCleanAll);
+
+    return container;
   }
 }

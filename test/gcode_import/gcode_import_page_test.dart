@@ -2,19 +2,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sembast/sembast_memory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
-import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
@@ -289,8 +284,7 @@ void main() {
       batchCostingEnabledPreferenceKey: true,
     });
 
-    final container = await _pumpWithContainer(
-      tester,
+    final container = await tester.pumpAppWithContainer(
       const GCodeImportPage(),
       overrides: [
         isPremiumProvider.overrideWithValue(true),
@@ -332,8 +326,7 @@ void main() {
       batchCostingEnabledPreferenceKey: true,
     });
 
-    final container = await _pumpWithContainer(
-      tester,
+    final container = await tester.pumpAppWithContainer(
       const GCodeImportPage(),
       overrides: [
         isPremiumProvider.overrideWithValue(true),
@@ -369,41 +362,6 @@ void main() {
     expect(batchItems.items.single.displayName, 'preview.gcode');
     expect(observer.pushCount, initialPushCount + 1);
   });
-}
-
-Future<ProviderContainer> _pumpWithContainer(
-  WidgetTester tester,
-  Widget widget, {
-  List<Override> overrides = const [],
-  List<NavigatorObserver> observers = const [],
-}) async {
-  final name = 'gcode_import_test_${DateTime.now().microsecondsSinceEpoch}.db';
-  final db = await databaseFactoryMemory.openDatabase(name);
-  final sharedPreferences = await SharedPreferences.getInstance();
-  final container = ProviderContainer(
-    overrides: [
-      databaseProvider.overrideWithValue(db),
-      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      ...overrides,
-    ],
-  );
-
-  addTearDown(container.dispose);
-
-  await tester.pumpWidget(
-    UncontrolledProviderScope(
-      container: container,
-      child: MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(body: widget),
-        navigatorObservers: observers,
-      ),
-    ),
-  );
-  await tester.pumpAndSettle();
-
-  return container;
 }
 
 class _TestNavigatorObserver extends NavigatorObserver {
