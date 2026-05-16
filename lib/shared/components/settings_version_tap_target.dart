@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -116,9 +117,11 @@ class _SettingsVersionTapTargetState
         );
         break;
       case TestDataAction.enableBatchCosting:
-        await container
-            .read(batchCostingEnabledProvider.notifier)
-            .setBatchCostingEnabled(true);
+        if (kDebugMode) {
+          await container
+              .read(batchCostingEnabledProvider.notifier)
+              .setBatchCostingEnabled(true);
+        }
         break;
       case TestDataAction.forceUpdateAvailable:
         container.read(updateCheckerProvider.notifier).forceAvailable();
