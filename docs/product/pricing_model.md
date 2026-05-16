@@ -132,6 +132,7 @@ Cost remains internal. Price is derived from cost and displayed separately.
 - **Markup %**: percentage applied to base cost only.
 - **Setup fee**: fixed amount added after markup.
 - **Rounding**: final presentation and storage adjustment applied last.
+- **Displayed labour row**: UI label `labourCostPrefix` shows combined labour + materials/wear-and-tear cost for the visible breakdown. Total cost math stays unchanged.
 
 ## Additional Costs (Sundry)
 
