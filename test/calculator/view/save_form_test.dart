@@ -288,6 +288,7 @@ void main() {
           printWeight: const NumberInput.dirty(value: 125),
           hours: const NumberInput.dirty(value: 1),
           minutes: const NumberInput.dirty(value: 45),
+          additionalCostAmount: const NumberInput.dirty(value: 3.5),
           materialUsages: const [],
         ),
       );
@@ -334,6 +335,7 @@ void main() {
       expect(saved.labourCost, data.labour);
       expect(saved.riskCost, data.risk);
       expect(saved.totalCost, data.total);
+      expect(saved.additionalCostAmount, 3.5);
 
       expectHistoryFields(
         capture: HistoryModelCapture(saved),

@@ -554,8 +554,11 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
 
+    final pricingBaseCost =
+        results.total + (state.additionalCostAmount.value ?? 0);
+
     final pricing = PricingCalculator.calculate(
-      baseCost: results.total,
+      baseCost: pricingBaseCost,
       markupPercent: markupPercent,
       setupFee: setupFee,
       roundingMode: state.roundingMode,
