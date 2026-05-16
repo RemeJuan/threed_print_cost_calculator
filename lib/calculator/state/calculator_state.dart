@@ -25,6 +25,7 @@ class CalculatorState with FormzMixin {
   final NumberInput additionalCostAmount;
   final String? additionalCostNote;
   final NumberInput markupPercent;
+  final bool markupPercentOverridden;
   final NumberInput setupFee;
   final PricingRoundingMode roundingMode;
   final CalculationResult results;
@@ -59,6 +60,7 @@ class CalculatorState with FormzMixin {
     this.additionalCostAmount = const NumberInput.pure(),
     this.additionalCostNote,
     this.markupPercent = const NumberInput.pure(),
+    this.markupPercentOverridden = false,
     this.setupFee = const NumberInput.pure(),
     this.roundingMode = PricingRoundingMode.none,
     this.results = const CalculationResult(
@@ -102,6 +104,7 @@ class CalculatorState with FormzMixin {
     NumberInput? additionalCostAmount,
     Object? additionalCostNote = _unsetCalculatorStateValue,
     NumberInput? markupPercent,
+    bool? markupPercentOverridden,
     NumberInput? setupFee,
     PricingRoundingMode? roundingMode,
     CalculationResult? results,
@@ -139,6 +142,8 @@ class CalculatorState with FormzMixin {
           ? this.additionalCostNote
           : additionalCostNote as String?,
       markupPercent: markupPercent ?? this.markupPercent,
+      markupPercentOverridden:
+          markupPercentOverridden ?? this.markupPercentOverridden,
       setupFee: setupFee ?? this.setupFee,
       roundingMode: roundingMode ?? this.roundingMode,
       results: results ?? this.results,

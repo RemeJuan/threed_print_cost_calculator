@@ -65,6 +65,7 @@ class CalculatorSettingsSync {
       failureRisk: _settingsNumber(settings.failureRisk),
       labourRate: _settingsNumber(settings.labourRate),
       markupPercent: _settingsNumber(settings.pricingMarkupPercent),
+      markupPercentOverridden: false,
       setupFee: _settingsNumber(settings.pricingSetupFee),
       roundingMode: pricingRoundingModeFromStorage(
         settings.pricingRoundingMode,

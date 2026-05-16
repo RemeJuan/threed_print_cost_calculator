@@ -435,7 +435,10 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   }
 
   void setMarkupPercent(num value) {
-    state = state.copyWith(markupPercent: NumberInput.dirty(value: value));
+    state = state.copyWith(
+      markupPercent: NumberInput.dirty(value: value),
+      markupPercentOverridden: true,
+    );
   }
 
   void setSetupFee(num value) {
@@ -479,7 +482,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final lr = state.labourRate.value ?? 0;
     final lt = state.labourTime.value ?? 0;
     final fr = state.failureRisk.value ?? 0;
-    final markupPercent = state.markupPercent.value ?? 0;
+    final markupPercent = _effectiveMarkupPercent();
     final setupFee = state.setupFee.value ?? 0;
 
     if (w > -1 && (h > -1 || m > -1) && kw > -1) {
@@ -616,5 +619,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       if (materialId.isNotEmpty) return materialId;
     }
     return '';
+  }
+
+  num _effectiveMarkupPercent() {
+    return state.markupPercent.value ?? 0;
   }
 }

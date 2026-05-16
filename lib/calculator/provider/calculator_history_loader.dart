@@ -131,6 +131,7 @@ class CalculatorHistoryLoader {
       labourRate: NumberInput.dirty(value: currentState.baselineLabourRate),
       labourTime: NumberInput.dirty(value: currentState.baselineLabourTime),
       markupPercent: NumberInput.dirty(value: markupPercent),
+      markupPercentOverridden: true,
       setupFee: NumberInput.dirty(value: setupFee),
       roundingMode: roundingMode,
       results: CalculationResult(

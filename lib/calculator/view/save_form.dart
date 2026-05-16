@@ -130,6 +130,7 @@ class SaveForm extends HookConsumerWidget {
                           calcState.markupPercent.value ?? 0,
                           calcState.baselineMarkupPercent ?? 0,
                         ) ||
+                        calcState.markupPercentOverridden ||
                         !_sameNum(
                           calcState.setupFee.value ?? 0,
                           calcState.baselineSetupFee ?? 0,
