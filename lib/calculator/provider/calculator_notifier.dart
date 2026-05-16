@@ -61,22 +61,52 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final settingsMarkupPercent = tryParseLocalizedNum(
       settings.pricingMarkupPercent,
     );
-    final baselineChanged = state.baselineMarkupPercent != settingsMarkupPercent;
+    final settingsSetupFee = tryParseLocalizedNum(settings.pricingSetupFee);
+    final settingsRoundingMode = pricingRoundingModeFromStorage(
+      settings.pricingRoundingMode,
+    );
+    var nextState = state;
+    var shouldSubmit = false;
 
-    if (state.markupPercentOverridden) {
-      if (!baselineChanged) return;
-      state = state.copyWith(baselineMarkupPercent: settingsMarkupPercent);
-      return;
+    if (state.baselineMarkupPercent != settingsMarkupPercent) {
+      nextState = nextState.copyWith(
+        baselineMarkupPercent: settingsMarkupPercent,
+      );
+    }
+    if (!state.markupPercentOverridden &&
+        state.markupPercent.value != settingsMarkupPercent) {
+      nextState = nextState.copyWith(
+        markupPercent: NumberInput.dirty(value: settingsMarkupPercent),
+      );
+      shouldSubmit = true;
     }
 
-    final markupChanged = state.markupPercent.value != settingsMarkupPercent;
-    if (!markupChanged && !baselineChanged) return;
+    if (state.baselineSetupFee != settingsSetupFee) {
+      nextState = nextState.copyWith(baselineSetupFee: settingsSetupFee);
+    }
+    final setupFeeOverridden = state.setupFee.value != state.baselineSetupFee;
+    if (!setupFeeOverridden && state.setupFee.value != settingsSetupFee) {
+      nextState = nextState.copyWith(
+        setupFee: NumberInput.dirty(value: settingsSetupFee),
+      );
+      shouldSubmit = true;
+    }
 
-    state = state.copyWith(
-      markupPercent: NumberInput.dirty(value: settingsMarkupPercent),
-      baselineMarkupPercent: settingsMarkupPercent,
-    );
-    submit();
+    if (state.baselineRoundingMode != settingsRoundingMode) {
+      nextState = nextState.copyWith(
+        baselineRoundingMode: settingsRoundingMode,
+      );
+    }
+    final roundingModeOverridden =
+        state.roundingMode != state.baselineRoundingMode;
+    if (!roundingModeOverridden && state.roundingMode != settingsRoundingMode) {
+      nextState = nextState.copyWith(roundingMode: settingsRoundingMode);
+      shouldSubmit = true;
+    }
+
+    if (identical(nextState, state)) return;
+    state = nextState;
+    if (shouldSubmit) submit();
   }
 
   Future<void> init() async {

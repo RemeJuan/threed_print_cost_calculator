@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
@@ -70,9 +72,11 @@ class FakeCalculatorNotifier extends CalculatorProvider {
 
 class FakeSettingsRepository implements SettingsRepository {
   FakeSettingsRepository({GeneralSettingsModel? initialSettings})
-    : _settings = initialSettings ?? GeneralSettingsModel.initial();
+    : _settings = initialSettings ?? GeneralSettingsModel.initial(),
+      _controller = StreamController<GeneralSettingsModel>.broadcast();
 
   GeneralSettingsModel _settings;
+  final StreamController<GeneralSettingsModel> _controller;
   GeneralSettingsModel? lastSavedSettings;
 
   @override
@@ -84,12 +88,27 @@ class FakeSettingsRepository implements SettingsRepository {
   @override
   Stream<GeneralSettingsModel> watchSettings() async* {
     yield _settings;
+    yield* _controller.stream;
   }
 
   @override
   Future<void> saveSettings(GeneralSettingsModel settings) async {
     _settings = settings;
     lastSavedSettings = settings;
+    if (!_controller.isClosed) {
+      _controller.add(settings);
+    }
+  }
+
+  void emit(GeneralSettingsModel settings) {
+    _settings = settings;
+    if (!_controller.isClosed) {
+      _controller.add(settings);
+    }
+  }
+
+  Future<void> dispose() async {
+    await _controller.close();
   }
 }
 
