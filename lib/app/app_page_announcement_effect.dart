@@ -22,9 +22,12 @@ void useAppPageAnnouncementEffect({
         if (!context.mounted || whatsNewShown.value) return;
         if (!canShowAppPageModalSheet(context)) return;
 
-        whatsNewShown.value = true;
         final dismiss = ref.read(dismissAnnouncementProvider);
         final locale = Localizations.localeOf(context).languageCode;
+        if (!context.mounted || whatsNewShown.value) return;
+        if (!canShowAppPageModalSheet(context)) return;
+
+        whatsNewShown.value = true;
         showWhatsNewSheet(
           context,
           announcement: announcement,

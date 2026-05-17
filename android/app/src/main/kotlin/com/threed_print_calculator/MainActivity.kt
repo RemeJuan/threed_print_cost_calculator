@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
+import androidx.activity.result.contract.ActivityResultContracts.OpenMultipleDocuments
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.plugin.common.MethodChannel
@@ -40,6 +41,33 @@ class MainActivity: FlutterFragmentActivity() {
         }
     }
 
+    private val gcodeMultiPickerLauncher = registerForActivityResult(OpenMultipleDocuments()) { uris ->
+        val result = pendingPickerResult
+        pendingPickerResult = null
+
+        if (result == null) return@registerForActivityResult
+        if (uris.isNullOrEmpty()) {
+            result.success(emptyList<Map<String, Any?>>())
+            return@registerForActivityResult
+        }
+
+        val payload = uris.map { uri ->
+            runCatching {
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                )
+                buildPickerPayload(uri)
+            }.getOrElse { error ->
+                result.error("gcode_picker_failed", error.message, error.toString())
+                pendingPickerResult = null
+                return@registerForActivityResult
+            }
+        }
+
+        result.success(payload)
+    }
+
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
@@ -56,6 +84,16 @@ class MainActivity: FlutterFragmentActivity() {
 
                     pendingPickerResult = result
                     gcodePickerLauncher.launch(arrayOf("*/*"))
+                }
+
+                "pickGCodeFiles" -> {
+                    if (pendingPickerResult != null) {
+                        result.error("gcode_picker_busy", "Another picker request is already active.", null)
+                        return@setMethodCallHandler
+                    }
+
+                    pendingPickerResult = result
+                    gcodeMultiPickerLauncher.launch(arrayOf("*/*"))
                 }
 
                 else -> result.notImplemented()

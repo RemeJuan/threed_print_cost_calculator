@@ -188,6 +188,9 @@ class _FakePicker extends GCodeImportFilePicker {
 
   @override
   Future<GCodePickedFile?> pick() async => file;
+
+  @override
+  Future<List<GCodePickedFile>> pickMany() async => [file];
 }
 
 class _FakeService extends GCodeImportService {
