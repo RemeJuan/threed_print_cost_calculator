@@ -117,6 +117,45 @@ void main() {
     expect(analytics.events.where((e) => e == 'whats_new_shown'), isEmpty);
   });
 
+  testWidgets('does not show whats new if the route changes before the post frame callback', (
+    tester,
+  ) async {
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(freeUser());
+    final announcementCompleter = Completer<WhatsNewAnnouncement?>();
+
+    await pumpAppPage(
+      tester,
+      gateway,
+      calculatorNotifier,
+      useDefaultAnnouncementOverride: false,
+      overrides: [
+        currentAnnouncementProvider.overrideWith(
+          (ref) => announcementCompleter.future,
+        ),
+      ],
+    );
+    await tester.pump();
+
+    announcementCompleter.complete(announcement);
+    await tester.pump();
+
+    final context = tester.element(find.byType(BottomNavigationBar));
+    unawaited(
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => const Scaffold(body: Text('Overlay route')),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(find.text('Overlay route'), findsOneWidget);
+    expect(find.text('Got it'), findsNothing);
+    expect(analytics.events.where((e) => e == 'whats_new_shown'), isEmpty);
+  });
+
   testWidgets('shows teaser history tab for free users when promos enabled', (
     tester,
   ) async {
