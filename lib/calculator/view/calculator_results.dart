@@ -79,6 +79,14 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.labourCost'),
             ),
+            if (additionalCostAmount > 0)
+              _itemRow(
+                context,
+                l10n.additionalCostLabel,
+                additionalCostAmount,
+                currencySettings: currencySettings,
+                key: const ValueKey<String>('calculator.result.additionalCost'),
+              ),
           ] else if (shouldShowProPromotion) ...[
             _lockedPromoRow(
               context,
@@ -114,14 +122,6 @@ class CalculatorResults extends ConsumerWidget {
           ),
           if (isPremium && pricing.isEnabled) ...[
             const Divider(),
-            if (additionalCostAmount > 0)
-              _itemRow(
-                context,
-                l10n.additionalCostLabel,
-                additionalCostAmount,
-                currencySettings: currencySettings,
-                key: const ValueKey<String>('calculator.result.additionalCost'),
-              ),
             _itemRow(
               context,
               '${l10n.markupLabel} (${formatPercent(pricing.markupPercent)}%)',

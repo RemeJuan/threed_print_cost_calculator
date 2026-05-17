@@ -548,6 +548,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     final fr = state.failureRisk.value ?? 0;
     final markupPercent = _effectiveMarkupPercent();
     final setupFee = state.setupFee.value ?? 0;
+    final additionalCost = state.additionalCostAmount.value ?? 0;
 
     if (w > -1 && (h > -1 || m > -1) && kw > -1) {
       electricityCost = ref
@@ -574,7 +575,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     final basePrintCost = electricityCost + filamentCost + labourCost;
     final frCost = basePrintCost * fr / 100;
-    final totalCost = basePrintCost + frCost + wt;
+    final totalCost = basePrintCost + frCost + wt + additionalCost;
 
     final results = CalculationResult(
       electricity: electricityCost,
@@ -584,11 +585,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       total: num.parse(totalCost.toStringAsFixed(2)),
     );
 
-    final pricingBaseCost =
-        results.total + (state.additionalCostAmount.value ?? 0);
-
     final pricing = PricingCalculator.calculate(
-      baseCost: pricingBaseCost,
+      baseCost: results.total,
       markupPercent: markupPercent,
       setupFee: setupFee,
       roundingMode: state.roundingMode,
