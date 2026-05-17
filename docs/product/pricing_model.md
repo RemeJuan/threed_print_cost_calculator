@@ -5,7 +5,7 @@ ClickUp Task: 86c9paekd
 ## Summary
 
 Add client-facing pricing on top of existing calculator cost output.
-Cost math stays unchanged. Pricing reads current cost result, applies a small set of deterministic pricing rules, then produces a final sell price suitable for future shareable quotes.
+Pricing reads the existing Cost result, applies deterministic pricing rules, then produces a final sell price suitable for future shareable quotes.
 
 ## Goals
 
@@ -130,22 +130,22 @@ In the calculator result card, show Additional cost in the Cost section above Co
 ### Definitions
 
 - **Cost**: existing calculator total cost output, including any additional cost (sundry) amount. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`.
-- **Markup %**: percentage applied to cost only.
+- **Markup %**: percentage applied to Cost only.
 - **Setup fee**: fixed amount added after markup.
 - **Rounding**: final presentation and storage adjustment applied last.
-- **Displayed labour row**: UI label `labourCostPrefix` shows combined labour + materials/wear-and-tear cost for the visible breakdown. Total cost math stays unchanged.
+- **Displayed labour row**: UI label `labourCostPrefix` shows labour cost + materials/wear-and-tear only. Additional cost is a separate row and is not included in this value.
 
 ## Additional Costs (Sundry)
 
 ### Summary
 
-Single per-job additional cost with optional note. Included in base cost before pricing is applied.
+Single per-job additional cost with optional note. Included in Cost before pricing is applied.
 
 ### Behavior
 
 - One numeric input for amount
 - Optional free-text note
-- Included in base cost before markup, setup fee, and rounding
+- Included in Cost before markup, setup fee, and rounding
 
 ### UI
 
