@@ -36,13 +36,12 @@ Follow this sequence for every assigned batch costing implementation task:
 5. Move the assigned ClickUp task to **in progress**.
 6. Implement only the assigned task.
 7. Run required verification.
-8. Run CodeRabbit on the uncommitted diff.
-9. Apply valid fixes and rerun verification as needed.
-10. Commit the changes.
-11. Push the branch.
-12. Open the PR against main.
-13. Move the assigned ClickUp task to **in review**.
-14. Report back with the PR link and outcome.
+8. Apply valid fixes and rerun verification as needed.
+9. Commit the changes.
+10. Push the branch.
+11. Open the PR against main.
+12. Move the assigned ClickUp task to **in review**.
+13. Report back with the PR link and outcome.
 
 If a ClickUp status update fails, continue the implementation when safe and report the ClickUp status update failure in the final response and PR body.
 
@@ -197,21 +196,10 @@ Stop and report back when:
 - the task appears stale or already completed
 - the work cannot remain hidden behind the batch costing feature flag
 
-## CodeRabbit Pre-Review
-
-After code changes and verification are complete, but before git commit and before pushing the branch, run:
-
-```
-cr --prompt-only --type uncommitted
-```
-
-Do not commit until the review is complete and any valid fixes are applied.
-
 ## Final Gate
 
 Before the final response, verify:
 
-- CodeRabbit was run on the final uncommitted diff.
 - Required verification has been rerun after fixes.
 - Existing calculator and G-code flows were checked when touched.
 - New user-facing strings are localized, or no new user-facing strings were added.

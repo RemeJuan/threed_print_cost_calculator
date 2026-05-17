@@ -1259,5 +1259,38 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'L\'assegnazione stampante continua nel prossimo passaggio.';
+      'Assegna le stampanti prima dei materiali.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Intero batch';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Per elemento';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Scegli una stampante per tutti gli elementi.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Scegli una stampante per questo elemento.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Scegli una stampante per continuare.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Continua';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Non ci sono ancora stampanti disponibili.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle =>
+      'Assegnazione materiale';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'L\'assegnazione del materiale continua nel passaggio successivo.';
 }

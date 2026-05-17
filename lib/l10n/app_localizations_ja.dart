@@ -1208,6 +1208,35 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingPrinterAssignmentAppBarTitle => 'プリンター割り当て';
 
   @override
-  String get batchCostingPrinterAssignmentSubtitle =>
-      'プリンター割り当ては次のバッチコスト計算ステップで続行されます。';
+  String get batchCostingPrinterAssignmentSubtitle => '材料の前にプリンターを割り当てます。';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'バッチ全体';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => '項目ごと';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'すべての項目に同じプリンターを選択します。';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint => 'この項目のプリンターを選択してください。';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      '続行するプリンターを選択してください。';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => '続行';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'まだ利用できるプリンターがありません。';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => '材料割り当て';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle => '材料の割り当ては次のステップで続きます。';
 }

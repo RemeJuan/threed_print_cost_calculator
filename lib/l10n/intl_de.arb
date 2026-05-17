@@ -600,5 +600,14 @@
   "batchCostingItemEditorEditTitle": "Batch-Artikel bearbeiten",
   "batchCostingItemNameLabel": "Artikel-/Modellname",
   "batchCostingPrinterAssignmentAppBarTitle": "Druckerzuweisung",
-  "batchCostingPrinterAssignmentSubtitle": "Die Druckerzuweisung wird im nächsten Batch-Costing-Schritt fortgesetzt."
+  "batchCostingPrinterAssignmentSubtitle": "Drucker vor Material zuweisen.",
+  "batchCostingPrinterAssignmentBatchWideMode": "Gesamter Stapel",
+  "batchCostingPrinterAssignmentPerItemMode": "Pro Element",
+  "batchCostingPrinterAssignmentBatchWideHint": "Einen Drucker für alle Elemente wählen.",
+  "batchCostingPrinterAssignmentPerItemHint": "Wähle einen Drucker für dieses Element.",
+  "batchCostingPrinterAssignmentRequiredError": "Drucker zum Fortfahren wählen.",
+  "batchCostingPrinterAssignmentContinueButton": "Weiter",
+  "batchCostingPrinterAssignmentNoPrintersMessage": "Noch sind keine Drucker verfügbar.",
+  "batchCostingMaterialAssignmentAppBarTitle": "Materialzuweisung",
+  "batchCostingMaterialAssignmentSubtitle": "Die Materialzuweisung geht im nächsten Schritt weiter."
 }

@@ -602,5 +602,14 @@
   "batchCostingItemEditorEditTitle": "Modifier l'article du lot",
   "batchCostingItemNameLabel": "Nom de l'article / du modèle",
   "batchCostingPrinterAssignmentAppBarTitle": "Attribution de l'imprimante",
-  "batchCostingPrinterAssignmentSubtitle": "L'attribution de l'imprimante continue à l'étape suivante."
+  "batchCostingPrinterAssignmentSubtitle": "Attribuez les imprimantes avant les matériaux.",
+  "batchCostingPrinterAssignmentBatchWideMode": "Tout le lot",
+  "batchCostingPrinterAssignmentPerItemMode": "Par élément",
+  "batchCostingPrinterAssignmentBatchWideHint": "Choisissez une imprimante pour tous les éléments.",
+  "batchCostingPrinterAssignmentPerItemHint": "Choisissez une imprimante pour cet élément.",
+  "batchCostingPrinterAssignmentRequiredError": "Choisissez une imprimante pour continuer.",
+  "batchCostingPrinterAssignmentContinueButton": "Continuer",
+  "batchCostingPrinterAssignmentNoPrintersMessage": "Aucune imprimante n'est encore disponible.",
+  "batchCostingMaterialAssignmentAppBarTitle": "Attribution du matériau",
+  "batchCostingMaterialAssignmentSubtitle": "L'attribution du matériau continue à l'étape suivante."
 }

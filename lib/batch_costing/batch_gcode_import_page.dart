@@ -62,7 +62,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                     subtitle: Text(
                       row.success
                           ? l10n.batchGcodeImportSuccessLabel
-                          : row.errorMessage ?? l10n.batchGcodeImportFailureLabel,
+                          : row.errorMessage ??
+                                l10n.batchGcodeImportFailureLabel,
                     ),
                   );
                 },
@@ -71,7 +72,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
             if (successCount > 0)
               FilledButton(
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute<void>(
                       builder: (_) => const BatchCostingPage(),
                     ),
@@ -84,7 +85,9 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(MaterialLocalizations.of(context).backButtonTooltip),
+                    child: Text(
+                      MaterialLocalizations.of(context).backButtonTooltip,
+                    ),
                   ),
                   const SizedBox(width: 8),
                   TextButton(
@@ -116,7 +119,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
         final file = files[index];
         try {
           final result = await service.importPickedFile(file);
-          if (result.estimatedDuration != null && result.filamentWeightG != null) {
+          if (result.estimatedDuration != null &&
+              result.filamentWeightG != null) {
             notifier.addItem(
               BatchCostingItem.fromGCodeImport(
                 id: '${DateTime.now().microsecondsSinceEpoch}-$index',
@@ -156,9 +160,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
 }
 
 class _BatchImportRow {
-  _BatchImportRow.success(this.file)
-      : success = true,
-        errorMessage = null;
+  _BatchImportRow.success(this.file) : success = true, errorMessage = null;
 
   _BatchImportRow.failure(this.file, this.errorMessage) : success = false;
 
