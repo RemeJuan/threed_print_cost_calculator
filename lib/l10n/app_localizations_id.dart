@@ -1237,5 +1237,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Penugasan printer berlanjut di langkah batch costing berikutnya.';
+      'Tetapkan printer sebelum material.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Satu batch';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Pilih satu printer untuk semua item.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Pilih printer untuk item ini.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Pilih printer untuk lanjut.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Lanjutkan';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Belum ada printer yang tersedia.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Penugasan material';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'Penugasan material berlanjut pada langkah berikutnya.';
 }

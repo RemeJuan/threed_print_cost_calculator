@@ -1251,5 +1251,37 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Printertoewijzing gaat verder in de volgende batch-costing stap.';
+      'Wijs printers toe vóór materiaal.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Hele batch';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Kies één printer voor alle items.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Kies een printer voor dit item.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Kies een printer om door te gaan.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Doorgaan';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Er zijn nog geen printers beschikbaar.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Materiaaltoewijzing';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'De materiaaltoewijzing gaat verder in de volgende stap.';
 }

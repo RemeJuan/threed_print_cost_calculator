@@ -600,5 +600,14 @@
   "batchCostingItemEditorEditTitle": "Edit item batch",
   "batchCostingItemNameLabel": "Nama item / model",
   "batchCostingPrinterAssignmentAppBarTitle": "Penugasan printer",
-  "batchCostingPrinterAssignmentSubtitle": "Penugasan printer berlanjut di langkah batch costing berikutnya."
+  "batchCostingPrinterAssignmentSubtitle": "Tetapkan printer sebelum material.",
+  "batchCostingPrinterAssignmentBatchWideMode": "Satu batch",
+  "batchCostingPrinterAssignmentPerItemMode": "Per item",
+  "batchCostingPrinterAssignmentBatchWideHint": "Pilih satu printer untuk semua item.",
+  "batchCostingPrinterAssignmentPerItemHint": "Pilih printer untuk item ini.",
+  "batchCostingPrinterAssignmentRequiredError": "Pilih printer untuk lanjut.",
+  "batchCostingPrinterAssignmentContinueButton": "Lanjutkan",
+  "batchCostingPrinterAssignmentNoPrintersMessage": "Belum ada printer yang tersedia.",
+  "batchCostingMaterialAssignmentAppBarTitle": "Penugasan material",
+  "batchCostingMaterialAssignmentSubtitle": "Penugasan material berlanjut pada langkah berikutnya."
 }

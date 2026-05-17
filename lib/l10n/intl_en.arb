@@ -528,5 +528,14 @@
   "batchCostingItemEditorEditTitle": "Edit batch item",
   "batchCostingItemNameLabel": "Item / model name",
   "batchCostingPrinterAssignmentAppBarTitle": "Printer assignment",
-  "batchCostingPrinterAssignmentSubtitle": "Printer assignment continues in the next batch costing step."
+  "batchCostingPrinterAssignmentSubtitle": "Assign printers before moving to materials.",
+  "batchCostingPrinterAssignmentBatchWideMode": "Batch-wide",
+  "batchCostingPrinterAssignmentPerItemMode": "Per item",
+  "batchCostingPrinterAssignmentBatchWideHint": "Select one printer for every item.",
+  "batchCostingPrinterAssignmentPerItemHint": "Select a printer for this item.",
+  "batchCostingPrinterAssignmentRequiredError": "Select a printer to continue.",
+  "batchCostingPrinterAssignmentContinueButton": "Continue",
+  "batchCostingPrinterAssignmentNoPrintersMessage": "No printers are available yet.",
+  "batchCostingMaterialAssignmentAppBarTitle": "Material assignment",
+  "batchCostingMaterialAssignmentSubtitle": "Material assignment continues in the next batch costing step."
 }

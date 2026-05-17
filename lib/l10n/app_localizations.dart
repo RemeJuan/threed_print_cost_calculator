@@ -2360,8 +2360,62 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingPrinterAssignmentSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Printer assignment continues in the next batch costing step.'**
+  /// **'Assign printers before moving to materials.'**
   String get batchCostingPrinterAssignmentSubtitle;
+
+  /// No description provided for @batchCostingPrinterAssignmentBatchWideMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch-wide'**
+  String get batchCostingPrinterAssignmentBatchWideMode;
+
+  /// No description provided for @batchCostingPrinterAssignmentPerItemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Per item'**
+  String get batchCostingPrinterAssignmentPerItemMode;
+
+  /// No description provided for @batchCostingPrinterAssignmentBatchWideHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select one printer for every item.'**
+  String get batchCostingPrinterAssignmentBatchWideHint;
+
+  /// No description provided for @batchCostingPrinterAssignmentPerItemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a printer for this item.'**
+  String get batchCostingPrinterAssignmentPerItemHint;
+
+  /// No description provided for @batchCostingPrinterAssignmentRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a printer to continue.'**
+  String get batchCostingPrinterAssignmentRequiredError;
+
+  /// No description provided for @batchCostingPrinterAssignmentContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get batchCostingPrinterAssignmentContinueButton;
+
+  /// No description provided for @batchCostingPrinterAssignmentNoPrintersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No printers are available yet.'**
+  String get batchCostingPrinterAssignmentNoPrintersMessage;
+
+  /// No description provided for @batchCostingMaterialAssignmentAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material assignment'**
+  String get batchCostingMaterialAssignmentAppBarTitle;
+
+  /// No description provided for @batchCostingMaterialAssignmentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material assignment continues in the next batch costing step.'**
+  String get batchCostingMaterialAssignmentSubtitle;
 }
 
 class _AppLocalizationsDelegate

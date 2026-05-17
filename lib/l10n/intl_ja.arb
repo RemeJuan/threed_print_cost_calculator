@@ -601,5 +601,14 @@
   "batchCostingItemEditorEditTitle": "バッチアイテムを編集",
   "batchCostingItemNameLabel": "アイテム / モデル名",
   "batchCostingPrinterAssignmentAppBarTitle": "プリンター割り当て",
-  "batchCostingPrinterAssignmentSubtitle": "プリンター割り当ては次のバッチコスト計算ステップで続行されます。"
+  "batchCostingPrinterAssignmentSubtitle": "材料の前にプリンターを割り当てます。",
+  "batchCostingPrinterAssignmentBatchWideMode": "バッチ全体",
+  "batchCostingPrinterAssignmentPerItemMode": "項目ごと",
+  "batchCostingPrinterAssignmentBatchWideHint": "すべての項目に同じプリンターを選択します。",
+  "batchCostingPrinterAssignmentPerItemHint": "この項目のプリンターを選択してください。",
+  "batchCostingPrinterAssignmentRequiredError": "続行するプリンターを選択してください。",
+  "batchCostingPrinterAssignmentContinueButton": "続行",
+  "batchCostingPrinterAssignmentNoPrintersMessage": "まだ利用できるプリンターがありません。",
+  "batchCostingMaterialAssignmentAppBarTitle": "材料割り当て",
+  "batchCostingMaterialAssignmentSubtitle": "材料の割り当ては次のステップで続きます。"
 }

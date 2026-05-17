@@ -1251,5 +1251,37 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Die Druckerzuweisung wird im nächsten Batch-Costing-Schritt fortgesetzt.';
+      'Drucker vor Material zuweisen.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Gesamter Stapel';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Pro Element';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Einen Drucker für alle Elemente wählen.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Wähle einen Drucker für dieses Element.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Drucker zum Fortfahren wählen.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Weiter';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Noch sind keine Drucker verfügbar.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Materialzuweisung';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'Die Materialzuweisung geht im nächsten Schritt weiter.';
 }

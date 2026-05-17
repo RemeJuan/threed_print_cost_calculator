@@ -1227,5 +1227,37 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'การกำหนดเครื่องพิมพ์จะดำเนินการต่อในขั้นตอนถัดไป';
+      'กำหนดเครื่องพิมพ์ก่อนวัสดุ';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'ทั้งแบตช์';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'แยกรายการ';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'เลือกเครื่องพิมพ์เดียวสำหรับทุกรายการ';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'เลือกเครื่องพิมพ์สำหรับรายการนี้';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'เลือกเครื่องพิมพ์เพื่อดำเนินการต่อ';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'ดำเนินการต่อ';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'ยังไม่มีเครื่องพิมพ์ที่พร้อมใช้งาน';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'กำหนดวัสดุ';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'การกำหนดวัสดุจะดำเนินต่อในขั้นตอนถัดไป';
 }

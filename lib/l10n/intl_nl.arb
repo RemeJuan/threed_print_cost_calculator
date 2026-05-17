@@ -601,5 +601,14 @@
   "batchCostingItemEditorEditTitle": "Batch-item bewerken",
   "batchCostingItemNameLabel": "Item-/modelnaam",
   "batchCostingPrinterAssignmentAppBarTitle": "Printertoewijzing",
-  "batchCostingPrinterAssignmentSubtitle": "Printertoewijzing gaat verder in de volgende batch-costing stap."
+  "batchCostingPrinterAssignmentSubtitle": "Wijs printers toe vóór materiaal.",
+  "batchCostingPrinterAssignmentBatchWideMode": "Hele batch",
+  "batchCostingPrinterAssignmentPerItemMode": "Per item",
+  "batchCostingPrinterAssignmentBatchWideHint": "Kies één printer voor alle items.",
+  "batchCostingPrinterAssignmentPerItemHint": "Kies een printer voor dit item.",
+  "batchCostingPrinterAssignmentRequiredError": "Kies een printer om door te gaan.",
+  "batchCostingPrinterAssignmentContinueButton": "Doorgaan",
+  "batchCostingPrinterAssignmentNoPrintersMessage": "Er zijn nog geen printers beschikbaar.",
+  "batchCostingMaterialAssignmentAppBarTitle": "Materiaaltoewijzing",
+  "batchCostingMaterialAssignmentSubtitle": "De materiaaltoewijzing gaat verder in de volgende stap."
 }
