@@ -21,7 +21,7 @@ Cost math stays unchanged. Pricing reads current cost result, applies a small se
 - Cost remains source of truth for internal calculation
 - Price is additive layer, not replacement
 - Same inputs always produce same price
-- Pricing must be explainable in one sentence: `base cost + markup + setup fee, then rounding`
+- Pricing must be explainable in one sentence: `cost + markup + setup fee, then rounding`
 - Saved jobs and future quotes must snapshot pricing inputs and computed output so later settings changes do not rewrite past prices
 
 ## Currency Formatting
@@ -121,15 +121,16 @@ Currency formatting must be applied consistently to all monetary values displaye
 
 ### Cost vs Price
 
-- **Cost**: what the print costs internally
+- **Cost**: what the print costs internally, including additional cost
 - **Price**: what user charges client
 
 Cost remains internal. Price is derived from cost and displayed separately.
+In the calculator result card, show Additional cost in the Cost section above Cost, not in the pricing section.
 
 ### Definitions
 
-- **Base cost**: existing calculator total cost output, including any additional cost (sundry) amount. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`; `additionalCostAmount` is summed into `CalculationResult.total` before pricing receives it.
-- **Markup %**: percentage applied to base cost only.
+- **Cost**: existing calculator total cost output, including any additional cost (sundry) amount. Current implementation target: same value app already treats as `CalculationResult.total` / `HistoryModel.totalCost`.
+- **Markup %**: percentage applied to cost only.
 - **Setup fee**: fixed amount added after markup.
 - **Rounding**: final presentation and storage adjustment applied last.
 - **Displayed labour row**: UI label `labourCostPrefix` shows combined labour + materials/wear-and-tear cost for the visible breakdown. Total cost math stays unchanged.
@@ -172,14 +173,14 @@ Stored per job/calculation.
 
 ### Dependency
 
-Feeds into pricing model calculation through base cost.
+Feeds into pricing model calculation through Cost.
 
 ### Final Formula
 
 ```text
-baseCost = calculatorOutputTotal + additionalCostAmount
-markupAmount = baseCost * (markupPercent / 100)
-subtotal = baseCost + markupAmount + setupFee
+cost = electricity + filament + risk + labourMaterials + additionalCost
+markupAmount = cost * (markupPercent / 100)
+subtotal = cost + markupAmount + setupFee
 finalPrice = applyRounding(subtotal, roundingMode)
 ```
 
@@ -187,11 +188,11 @@ finalPrice = applyRounding(subtotal, roundingMode)
 
 Exact order:
 
-1. Compute base cost using existing engine
-2. Include single additional cost amount in base cost when present
+1. Compute Cost using existing engine
+2. Include single additional cost amount in Cost when present
 3. Read effective pricing config for current job
-4. Compute markup amount from base cost
-5. Add markup amount to base cost
+4. Compute markup amount from Cost
+5. Add markup amount to Cost
 6. Add setup fee
 7. Apply selected rounding rule to subtotal
 8. Persist/display rounded result as final price
@@ -201,7 +202,8 @@ No alternate order allowed.
 ### Important Notes
 
 - Markup applies to base cost only, not setup fee
-- Additional cost feeds base cost before markup
+- Markup applies to Cost, including additional cost
+- Additional cost feeds Cost before markup
 - Setup fee is flat, never percentage-based
 - Rounding happens once, at end
 - Pricing layer must not mutate or feed back into base cost calculation
