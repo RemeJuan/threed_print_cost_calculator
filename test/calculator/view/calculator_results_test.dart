@@ -41,14 +41,14 @@ void main() {
   );
 
   const pricing = PricingResult(
-    baseCost: 10.0,
+    baseCost: 14.25,
     markupPercent: 25,
-    markupAmount: 2.5,
+    markupAmount: 3.56,
     setupFee: 1.25,
     roundingMode: PricingRoundingMode.wholeDollar,
-    subtotalBeforeRounding: 13.75,
-    roundingAdjustment: 0.25,
-    finalPrice: 14.0,
+    subtotalBeforeRounding: 19.06,
+    roundingAdjustment: 0.94,
+    finalPrice: 20.0,
   );
 
   const labourOnlyResults = CalculationResult(
@@ -67,6 +67,14 @@ void main() {
     total: 10.0,
   );
 
+  const resultsWithAdditionalCost = CalculationResult(
+    electricity: 1.25,
+    filament: 2.5,
+    risk: 0.75,
+    labour: 3.25,
+    total: 14.25,
+  );
+
   setUpAll(() async {
     await setupTest();
   });
@@ -75,6 +83,7 @@ void main() {
     WidgetTester tester, {
     required bool isPremium,
     required bool shouldShowProPromotion,
+    CalculationResult results = results,
     PricingResult pricingResult = pricing,
     num additionalCostAmount = 0,
   }) async {
@@ -291,13 +300,14 @@ void main() {
       );
     });
 
-    testWidgets('pricing section keeps additional cost below cost subtotal', (
+    testWidgets('cost section keeps additional cost above cost subtotal', (
       tester,
     ) async {
       await pumpResults(
         tester,
         isPremium: true,
         shouldShowProPromotion: false,
+        results: resultsWithAdditionalCost,
         additionalCostAmount: 4.25,
       );
 
@@ -316,11 +326,11 @@ void main() {
       expect(markupFinder, findsOneWidget);
       expect(
         tester.getTopLeft(additionalCostFinder).dy,
-        greaterThan(tester.getTopLeft(costFinder).dy),
+        lessThan(tester.getTopLeft(costFinder).dy),
       );
       expect(
         tester.getTopLeft(markupFinder).dy,
-        greaterThan(tester.getTopLeft(additionalCostFinder).dy),
+        greaterThan(tester.getTopLeft(costFinder).dy),
       );
       expect(find.text('Total cost'), findsNothing);
       expect(find.text('Cost'), findsWidgets);
@@ -338,6 +348,22 @@ void main() {
           valueFor(tester, 'calculator.result.labourCost');
 
       expect(breakdown, valueFor(tester, 'calculator.result.totalCost'));
+    });
+
+    testWidgets('cost row includes additional cost and pricing uses it', (
+      tester,
+    ) async {
+      await pumpResults(
+        tester,
+        isPremium: true,
+        shouldShowProPromotion: false,
+        results: resultsWithAdditionalCost,
+        additionalCostAmount: 4.25,
+      );
+
+      expect(valueFor(tester, 'calculator.result.totalCost'), 14.25);
+      expect(valueFor(tester, 'calculator.result.markupAmount'), 3.56);
+      expect(valueFor(tester, 'calculator.result.finalPrice'), 20.0);
     });
 
     testWidgets('premium user sees pricing rows when pricing enabled', (
@@ -391,7 +417,7 @@ void main() {
       addTearDown(() => db.close());
       await tester.pumpAndSettle();
 
-      expect(find.text('R14.00'), findsOneWidget);
+      expect(find.text('R20.00'), findsOneWidget);
     });
 
     testWidgets('free user does not see pricing output rows', (tester) async {

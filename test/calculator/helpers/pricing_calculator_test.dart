@@ -59,15 +59,15 @@ void main() {
 
     test('markup applies only to base cost and setup fee adds globally', () {
       final result = PricingCalculator.calculate(
-        baseCost: 8,
+        baseCost: 12,
         markupPercent: 50,
         setupFee: 2,
         roundingMode: PricingRoundingMode.none,
       );
 
-      expect(result.markupAmount, 4);
-      expect(result.subtotalBeforeRounding, 14);
-      expect(result.finalPrice, 14);
+      expect(result.markupAmount, 6);
+      expect(result.subtotalBeforeRounding, 20);
+      expect(result.finalPrice, 20);
     });
 
     test('rounding happens once at the end', () {
