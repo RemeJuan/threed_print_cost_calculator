@@ -71,7 +71,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
             if (successCount > 0)
               FilledButton(
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute<void>(
                       builder: (_) => const BatchCostingPage(),
                     ),

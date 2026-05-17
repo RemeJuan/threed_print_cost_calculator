@@ -18,8 +18,9 @@ void main() {
   testWidgets('hides flow when batch costing disabled', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpApp(const BatchGCodeImportPage());
-    expect(find.text('Import batch G-code'), findsNothing);
-    expect(find.text('Choose files'), findsNothing);
+    final l10n = AppLocalizations.of(tester.element(find.byType(BatchGCodeImportPage)))!;
+    expect(find.text(l10n.batchGcodeImportTitle), findsNothing);
+    expect(find.text(l10n.batchGcodeImportPickButton), findsNothing);
   });
 
   testWidgets('imports multiple files and seeds batch items', (tester) async {
