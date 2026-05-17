@@ -1184,6 +1184,34 @@ class AppLocalizationsEs extends AppLocalizations {
       'Añada impresiones importadas o manuales para continuar.';
 
   @override
+  String get batchCostingReviewImportGcodeButton => 'Importar archivos G-code';
+
+  @override
+  String get batchGcodeImportTitle => 'Importar G-code en lote';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Elige uno o más archivos G-code. Cada archivo se analiza por separado.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Elegir archivos';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Importado correctamente';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Error de importación';
+
+  @override
+  String get batchGcodeImportParseFailure => 'Este archivo no pudo importarse.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Continuar a revisión de lote';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Elegir de nuevo';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Continuar a asignación de impresora';
 

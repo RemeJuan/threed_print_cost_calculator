@@ -1168,6 +1168,34 @@ class AppLocalizationsId extends AppLocalizations {
       'Tambahkan cetakan impor atau manual untuk melanjutkan.';
 
   @override
+  String get batchCostingReviewImportGcodeButton => 'Impor file G-code';
+
+  @override
+  String get batchGcodeImportTitle => 'Impor G-code batch';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Pilih satu atau beberapa file G-code. Setiap file diurai sendiri.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Pilih file';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Berhasil diimpor';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Impor gagal';
+
+  @override
+  String get batchGcodeImportParseFailure => 'File ini tidak dapat diimpor.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Lanjut ke tinjauan batch';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Pilih lagi';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Lanjutkan ke penugasan printer';
 

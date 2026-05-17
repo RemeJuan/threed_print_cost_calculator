@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
@@ -156,6 +157,16 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             l10n.batchCostingReviewEmptyBody,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 16),
+          FilledButton.icon(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const BatchGCodeImportPage(),
+              ),
+            ),
+            icon: const Icon(Icons.upload_file),
+            label: Text(l10n.batchCostingReviewImportGcodeButton),
           ),
         ],
       ),

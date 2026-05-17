@@ -2225,6 +2225,60 @@ abstract class AppLocalizations {
   /// **'Add imported or manual prints to continue.'**
   String get batchCostingReviewEmptyBody;
 
+  /// No description provided for @batchCostingReviewImportGcodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code files'**
+  String get batchCostingReviewImportGcodeButton;
+
+  /// No description provided for @batchGcodeImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import batch G-code'**
+  String get batchGcodeImportTitle;
+
+  /// No description provided for @batchGcodeImportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick one or more G-code files. Each file is parsed on its own.'**
+  String get batchGcodeImportBody;
+
+  /// No description provided for @batchGcodeImportPickButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose files'**
+  String get batchGcodeImportPickButton;
+
+  /// No description provided for @batchGcodeImportSuccessLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported successfully'**
+  String get batchGcodeImportSuccessLabel;
+
+  /// No description provided for @batchGcodeImportFailureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed'**
+  String get batchGcodeImportFailureLabel;
+
+  /// No description provided for @batchGcodeImportParseFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'This file could not be imported.'**
+  String get batchGcodeImportParseFailure;
+
+  /// No description provided for @batchGcodeImportContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to batch review'**
+  String get batchGcodeImportContinueButton;
+
+  /// No description provided for @batchGcodeImportRetryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose again'**
+  String get batchGcodeImportRetryButton;
+
   /// No description provided for @batchCostingReviewContinueButton.
   ///
   /// In en, this message translates to:

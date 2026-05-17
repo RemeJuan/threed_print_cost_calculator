@@ -1181,6 +1181,36 @@ class AppLocalizationsDe extends AppLocalizations {
       'Importierte oder manuelle Drucke hinzufügen.';
 
   @override
+  String get batchCostingReviewImportGcodeButton =>
+      'G-code-Dateien importieren';
+
+  @override
+  String get batchGcodeImportTitle => 'Batch-G-code importieren';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Wähle eine oder mehrere G-code-Dateien. Jede Datei wird einzeln geparst.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Dateien auswählen';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Erfolgreich importiert';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Import fehlgeschlagen';
+
+  @override
+  String get batchGcodeImportParseFailure =>
+      'Diese Datei konnte nicht importiert werden.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Zur Stapelprüfung fortfahren';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Erneut auswählen';
+
+  @override
   String get batchCostingReviewContinueButton => 'Weiter zur Druckerzuweisung';
 
   @override

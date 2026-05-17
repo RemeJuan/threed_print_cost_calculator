@@ -1142,6 +1142,33 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingReviewEmptyBody => 'インポートまたは手動のプリントを追加して続行します。';
 
   @override
+  String get batchCostingReviewImportGcodeButton => 'G-codeファイルをインポート';
+
+  @override
+  String get batchGcodeImportTitle => 'バッチG-codeのインポート';
+
+  @override
+  String get batchGcodeImportBody => '1つ以上のG-codeファイルを選択します。各ファイルは個別に解析されます。';
+
+  @override
+  String get batchGcodeImportPickButton => 'ファイルを選択';
+
+  @override
+  String get batchGcodeImportSuccessLabel => '正常にインポートされました';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'インポートに失敗しました';
+
+  @override
+  String get batchGcodeImportParseFailure => 'このファイルはインポートできませんでした。';
+
+  @override
+  String get batchGcodeImportContinueButton => 'バッチレビューへ進む';
+
+  @override
+  String get batchGcodeImportRetryButton => 'もう一度選択';
+
+  @override
   String get batchCostingReviewContinueButton => 'プリンター割り当てに進む';
 
   @override
