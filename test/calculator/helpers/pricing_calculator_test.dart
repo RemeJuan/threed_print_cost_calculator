@@ -70,6 +70,21 @@ void main() {
       expect(result.finalPrice, 20);
     });
 
+    test('example pricing math includes additional cost in base cost', () {
+      final result = PricingCalculator.calculate(
+        baseCost: 37.92,
+        markupPercent: 10,
+        setupFee: 10,
+        roundingMode: PricingRoundingMode.wholeDollar,
+      );
+
+      expect(result.baseCost, 37.92);
+      expect(result.markupAmount, 3.79);
+      expect(result.subtotalBeforeRounding, 51.71);
+      expect(result.finalPrice, 52);
+      expect(result.roundingAdjustment, 0.29);
+    });
+
     test('rounding happens once at the end', () {
       final result = PricingCalculator.calculate(
         baseCost: 9.995,
