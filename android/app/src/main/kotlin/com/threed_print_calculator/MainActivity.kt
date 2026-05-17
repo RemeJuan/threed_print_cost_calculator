@@ -51,21 +51,19 @@ class MainActivity: FlutterFragmentActivity() {
             return@registerForActivityResult
         }
 
-        val payload = uris.map { uri ->
+        val payloads = mutableListOf<Map<String, Any?>>()
+
+        uris.forEach { uri ->
             runCatching {
                 contentResolver.takePersistableUriPermission(
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION,
                 )
-                buildPickerPayload(uri)
-            }.getOrElse { error ->
-                result.error("gcode_picker_failed", error.message, error.toString())
-                pendingPickerResult = null
-                return@registerForActivityResult
+                payloads.add(buildPickerPayload(uri))
             }
         }
 
-        result.success(payload)
+        result.success(payloads)
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
