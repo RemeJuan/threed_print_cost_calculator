@@ -24,20 +24,18 @@ void main() {
   });
 
   testWidgets('imports multiple files and seeds batch items', (tester) async {
-    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
-    final files = [
-      _file('one.gcode'),
-      _file('two.gcode'),
-    ];
-    await tester.pumpApp(
-      const BatchGCodeImportPage(),
-      [
-        gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
-        gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
-      ],
-    );
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('one.gcode'), _file('two.gcode')];
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+    ]);
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(BatchGCodeImportPage)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
     await tester.tap(find.text(l10n.batchGcodeImportPickButton));
     await tester.pumpAndSettle();
 
@@ -46,21 +44,29 @@ void main() {
     expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
   });
 
-  testWidgets('shows failures and blocks continue when all fail', (tester) async {
-    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
-    await tester.pumpApp(
-      const BatchGCodeImportPage(),
-      [
-        gcodeImportFilePickerProvider.overrideWithValue(_FakePicker([_file('bad.gcode')])),
-        gcodeImportServiceProvider.overrideWithValue(_FakeService(null)),
-      ],
-    );
+  testWidgets('shows failures and blocks continue when all fail', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(
+        _FakePicker([_file('bad.gcode')]),
+      ),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(null)),
+    ]);
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(BatchGCodeImportPage)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
     await tester.tap(find.text(l10n.batchGcodeImportPickButton));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining(l10n.batchGcodeImportParseFailure), findsOneWidget);
+    expect(
+      find.textContaining(l10n.batchGcodeImportParseFailure),
+      findsOneWidget,
+    );
     expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
   });
 }
