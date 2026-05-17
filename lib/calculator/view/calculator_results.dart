@@ -75,7 +75,8 @@ class CalculatorResults extends ConsumerWidget {
               results.total -
                   results.electricity -
                   results.filament -
-                  results.risk,
+                  results.risk -
+                  additionalCostAmount,
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.labourCost'),
             ),

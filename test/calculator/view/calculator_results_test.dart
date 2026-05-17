@@ -336,16 +336,36 @@ void main() {
       expect(find.text('Cost'), findsWidgets);
     });
 
+    testWidgets('labour row excludes additional cost', (tester) async {
+      await pumpResults(
+        tester,
+        isPremium: true,
+        shouldShowProPromotion: false,
+        results: resultsWithAdditionalCost,
+        additionalCostAmount: 4.25,
+      );
+
+      expect(valueFor(tester, 'calculator.result.labourCost'), 5.5);
+      expect(valueFor(tester, 'calculator.result.additionalCost'), 4.25);
+    });
+
     testWidgets('visible breakdown values sum to displayed total cost', (
       tester,
     ) async {
-      await pumpResults(tester, isPremium: true, shouldShowProPromotion: false);
+      await pumpResults(
+        tester,
+        isPremium: true,
+        shouldShowProPromotion: false,
+        results: resultsWithAdditionalCost,
+        additionalCostAmount: 4.25,
+      );
 
       final breakdown =
           valueFor(tester, 'calculator.result.electricityCost') +
           valueFor(tester, 'calculator.result.filamentCost') +
           valueFor(tester, 'calculator.result.riskCost') +
-          valueFor(tester, 'calculator.result.labourCost');
+          valueFor(tester, 'calculator.result.labourCost') +
+          valueFor(tester, 'calculator.result.additionalCost');
 
       expect(breakdown, valueFor(tester, 'calculator.result.totalCost'));
     });
