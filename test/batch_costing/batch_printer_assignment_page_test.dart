@@ -116,7 +116,8 @@ void main() {
     await tester.tap(find.byType(FilledButton));
     await tester.pump();
 
-    expect(find.text('Select a printer to continue.'), findsWidgets);
+    final l10n = AppLocalizations.of(tester.element(find.byType(BatchPrinterAssignmentPage)))!;
+    expect(find.text(l10n.batchCostingPrinterAssignmentRequiredError), findsWidgets);
   });
 
   testWidgets('complete per-item printers allow continue', (tester) async {

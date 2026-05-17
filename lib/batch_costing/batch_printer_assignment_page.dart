@@ -141,13 +141,40 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
           ),
         );
       },
-      loading: () => const SizedBox.shrink(),
-      error: (error, stackTrace) => const SizedBox.shrink(),
+      loading: () => Scaffold(
+        appBar: AppBar(title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle)),
+        body: const Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stackTrace) => Scaffold(
+        appBar: AppBar(title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle)),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(error.toString(), textAlign: TextAlign.center),
+              ),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.refresh(printersStreamProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   void _continue(BuildContext context, BatchCostingState state) {
-    if (!_formKey.currentState!.validate()) return;
+    if (state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide) {
+      if (!_formKey.currentState!.validate()) return;
+    } else {
+      _formKey.currentState!.validate();
+      final missing = state.items.any((item) => state.itemPrinterIds[item.id] == null);
+      if (missing) return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (_) => const BatchMaterialAssignmentPage()),
     );
