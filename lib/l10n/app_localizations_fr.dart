@@ -1195,6 +1195,36 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ajoutez des impressions importées ou manuelles pour continuer.';
 
   @override
+  String get batchCostingReviewImportGcodeButton =>
+      'Importer des fichiers G-code';
+
+  @override
+  String get batchGcodeImportTitle => 'Importer un lot de G-code';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Choisissez un ou plusieurs fichiers G-code. Chaque fichier est analysé séparément.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Choisir des fichiers';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Importé avec succès';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Échec de l\'import';
+
+  @override
+  String get batchGcodeImportParseFailure =>
+      'Ce fichier n\'a pas pu être importé.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Continuer vers la revue du lot';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Choisir à nouveau';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Continuer vers l\'attribution de l\'imprimante';
 
@@ -1237,5 +1267,38 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'L\'attribution de l\'imprimante continue à l\'étape suivante.';
+      'Attribuez les imprimantes avant les matériaux.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Tout le lot';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Par élément';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Choisissez une imprimante pour tous les éléments.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Choisissez une imprimante pour cet élément.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Choisissez une imprimante pour continuer.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Continuer';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Aucune imprimante n\'est encore disponible.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle =>
+      'Attribution du matériau';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'L\'attribution du matériau continue à l\'étape suivante.';
 }

@@ -1168,6 +1168,34 @@ class AppLocalizationsId extends AppLocalizations {
       'Tambahkan cetakan impor atau manual untuk melanjutkan.';
 
   @override
+  String get batchCostingReviewImportGcodeButton => 'Impor file G-code';
+
+  @override
+  String get batchGcodeImportTitle => 'Impor G-code batch';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Pilih satu atau beberapa file G-code. Setiap file diurai sendiri.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Pilih file';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Berhasil diimpor';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Impor gagal';
+
+  @override
+  String get batchGcodeImportParseFailure => 'File ini tidak dapat diimpor.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Lanjut ke tinjauan batch';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Pilih lagi';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Lanjutkan ke penugasan printer';
 
@@ -1209,5 +1237,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Penugasan printer berlanjut di langkah batch costing berikutnya.';
+      'Tetapkan printer sebelum material.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Satu batch';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Pilih satu printer untuk semua item.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Pilih printer untuk item ini.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Pilih printer untuk lanjut.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Lanjutkan';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Belum ada printer yang tersedia.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Penugasan material';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'Penugasan material berlanjut pada langkah berikutnya.';
 }

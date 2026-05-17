@@ -1180,6 +1180,36 @@ class AppLocalizationsNl extends AppLocalizations {
       'Voeg geïmporteerde of handmatige afdrukken toe om door te gaan.';
 
   @override
+  String get batchCostingReviewImportGcodeButton =>
+      'G-codebestanden importeren';
+
+  @override
+  String get batchGcodeImportTitle => 'Batch G-code importeren';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Kies een of meer G-codebestanden. Elk bestand wordt apart geparseerd.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Bestanden kiezen';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Succesvol geïmporteerd';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Import mislukt';
+
+  @override
+  String get batchGcodeImportParseFailure =>
+      'Dit bestand kon niet worden geïmporteerd.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Verder naar batchcontrole';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Opnieuw kiezen';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Doorgaan naar printertoewijzing';
 
@@ -1221,5 +1251,37 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Printertoewijzing gaat verder in de volgende batch-costing stap.';
+      'Wijs printers toe vóór materiaal.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Hele batch';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Kies één printer voor alle items.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Kies een printer voor dit item.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Kies een printer om door te gaan.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Doorgaan';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Er zijn nog geen printers beschikbaar.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Materiaaltoewijzing';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'De materiaaltoewijzing gaat verder in de volgende stap.';
 }

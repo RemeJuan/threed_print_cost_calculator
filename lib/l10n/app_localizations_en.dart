@@ -1169,6 +1169,34 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add imported or manual prints to continue.';
 
   @override
+  String get batchCostingReviewImportGcodeButton => 'Import G-code files';
+
+  @override
+  String get batchGcodeImportTitle => 'Import batch G-code';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Pick one or more G-code files. Each file is parsed on its own.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Choose files';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Imported successfully';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Import failed';
+
+  @override
+  String get batchGcodeImportParseFailure => 'This file could not be imported.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Continue to batch review';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Choose again';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Continue to printer assignment';
 
@@ -1210,5 +1238,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Printer assignment continues in the next batch costing step.';
+      'Assign printers before moving to materials.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Batch-wide';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Select one printer for every item.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Select a printer for this item.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Select a printer to continue.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Continue';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'No printers are available yet.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Material assignment';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'Material assignment continues in the next batch costing step.';
 }

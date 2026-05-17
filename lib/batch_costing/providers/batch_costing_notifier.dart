@@ -18,6 +18,35 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     state = BatchCostingState();
   }
 
+  void setPrinterAssignmentMode(BatchPrinterAssignmentMode mode) {
+    state = state.copyWith(printerAssignmentMode: mode);
+  }
+
+  void setBatchPrinterId(String? printerId) {
+    final updatedPrinterIds = printerId == null
+        ? state.itemPrinterIds
+        : {
+            for (final item in state.items) item.id: printerId,
+          };
+
+    state = state.copyWith(
+      batchPrinterId: printerId,
+      clearBatchPrinterId: printerId == null,
+      itemPrinterIds: updatedPrinterIds,
+    );
+  }
+
+  void setItemPrinterId(String itemId, String? printerId) {
+    final updated = Map<String, String>.from(state.itemPrinterIds);
+    if (printerId == null) {
+      updated.remove(itemId);
+    } else {
+      updated[itemId] = printerId;
+    }
+
+    state = state.copyWith(itemPrinterIds: updated);
+  }
+
   void addItem(BatchCostingItem item) {
     if (state.items.any((current) => current.id == item.id)) {
       throw ArgumentError.value(item.id, 'item.id', 'must be unique');
@@ -36,10 +65,13 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void removeItem(String itemId) {
+    final updatedPrinterIds = Map<String, String>.from(state.itemPrinterIds)
+      ..remove(itemId);
     state = state.copyWith(
       items: state.items
           .where((item) => item.id != itemId)
           .toList(growable: false),
+      itemPrinterIds: updatedPrinterIds,
     );
   }
 }

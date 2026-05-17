@@ -1158,6 +1158,34 @@ class AppLocalizationsTh extends AppLocalizations {
       'เพิ่มงานพิมพ์ที่นำเข้าหรือด้วยตนเองเพื่อดำเนินการต่อ';
 
   @override
+  String get batchCostingReviewImportGcodeButton => 'นำเข้าไฟล์ G-code';
+
+  @override
+  String get batchGcodeImportTitle => 'นำเข้า G-code แบบชุด';
+
+  @override
+  String get batchGcodeImportBody =>
+      'เลือกไฟล์ G-code หนึ่งไฟล์หรือหลายไฟล์ แต่ละไฟล์จะถูกแยกวิเคราะห์แยกกัน';
+
+  @override
+  String get batchGcodeImportPickButton => 'เลือกไฟล์';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'นำเข้าสำเร็จ';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'นำเข้าไม่สำเร็จ';
+
+  @override
+  String get batchGcodeImportParseFailure => 'ไม่สามารถนำเข้าไฟล์นี้ได้';
+
+  @override
+  String get batchGcodeImportContinueButton => 'ต่อไปยังการตรวจสอบชุด';
+
+  @override
+  String get batchGcodeImportRetryButton => 'เลือกอีกครั้ง';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'ดำเนินการต่อเพื่อกำหนดเครื่องพิมพ์';
 
@@ -1199,5 +1227,37 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'การกำหนดเครื่องพิมพ์จะดำเนินการต่อในขั้นตอนถัดไป';
+      'กำหนดเครื่องพิมพ์ก่อนวัสดุ';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'ทั้งแบตช์';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'แยกรายการ';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'เลือกเครื่องพิมพ์เดียวสำหรับทุกรายการ';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'เลือกเครื่องพิมพ์สำหรับรายการนี้';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'เลือกเครื่องพิมพ์เพื่อดำเนินการต่อ';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'ดำเนินการต่อ';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'ยังไม่มีเครื่องพิมพ์ที่พร้อมใช้งาน';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'กำหนดวัสดุ';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'การกำหนดวัสดุจะดำเนินต่อในขั้นตอนถัดไป';
 }

@@ -37,6 +37,38 @@ class AndroidGCodeImportFilePicker {
     );
   }
 
+  Future<List<GCodePickedFile>> pickMany() async {
+    Object? payload;
+    try {
+      payload = await _channel.invokeMethod<Object?>('pickGCodeFiles');
+    } on PlatformException {
+      return const <GCodePickedFile>[];
+    } catch (e) {
+      return const <GCodePickedFile>[];
+    }
+
+    if (payload is! List) return const <GCodePickedFile>[];
+
+    final files = <GCodePickedFile>[];
+    for (final entry in payload) {
+      if (entry is! Map<Object?, Object?>) continue;
+      final name = _safeString(entry['displayName']);
+      final path = _safeString(entry['path']);
+      if (name == null || path == null) continue;
+      files.add(
+        GCodePickedFile(
+          name: name,
+          originalName: _safeString(entry['originalName']),
+          path: path,
+          sourceUri: _safeString(entry['uri']),
+          mimeType: _safeString(entry['mimeType']),
+          size: _safeInt(entry['size']),
+        ),
+      );
+    }
+    return files;
+  }
+
   String? _safeString(Object? value) {
     if (value is String) {
       final trimmed = value.trim();

@@ -2225,6 +2225,60 @@ abstract class AppLocalizations {
   /// **'Add imported or manual prints to continue.'**
   String get batchCostingReviewEmptyBody;
 
+  /// No description provided for @batchCostingReviewImportGcodeButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code files'**
+  String get batchCostingReviewImportGcodeButton;
+
+  /// No description provided for @batchGcodeImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import batch G-code'**
+  String get batchGcodeImportTitle;
+
+  /// No description provided for @batchGcodeImportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick one or more G-code files. Each file is parsed on its own.'**
+  String get batchGcodeImportBody;
+
+  /// No description provided for @batchGcodeImportPickButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose files'**
+  String get batchGcodeImportPickButton;
+
+  /// No description provided for @batchGcodeImportSuccessLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported successfully'**
+  String get batchGcodeImportSuccessLabel;
+
+  /// No description provided for @batchGcodeImportFailureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed'**
+  String get batchGcodeImportFailureLabel;
+
+  /// No description provided for @batchGcodeImportParseFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'This file could not be imported.'**
+  String get batchGcodeImportParseFailure;
+
+  /// No description provided for @batchGcodeImportContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to batch review'**
+  String get batchGcodeImportContinueButton;
+
+  /// No description provided for @batchGcodeImportRetryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose again'**
+  String get batchGcodeImportRetryButton;
+
   /// No description provided for @batchCostingReviewContinueButton.
   ///
   /// In en, this message translates to:
@@ -2306,8 +2360,62 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingPrinterAssignmentSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Printer assignment continues in the next batch costing step.'**
+  /// **'Assign printers before moving to materials.'**
   String get batchCostingPrinterAssignmentSubtitle;
+
+  /// No description provided for @batchCostingPrinterAssignmentBatchWideMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch-wide'**
+  String get batchCostingPrinterAssignmentBatchWideMode;
+
+  /// No description provided for @batchCostingPrinterAssignmentPerItemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Per item'**
+  String get batchCostingPrinterAssignmentPerItemMode;
+
+  /// No description provided for @batchCostingPrinterAssignmentBatchWideHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select one printer for every item.'**
+  String get batchCostingPrinterAssignmentBatchWideHint;
+
+  /// No description provided for @batchCostingPrinterAssignmentPerItemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a printer for this item.'**
+  String get batchCostingPrinterAssignmentPerItemHint;
+
+  /// No description provided for @batchCostingPrinterAssignmentRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a printer to continue.'**
+  String get batchCostingPrinterAssignmentRequiredError;
+
+  /// No description provided for @batchCostingPrinterAssignmentContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get batchCostingPrinterAssignmentContinueButton;
+
+  /// No description provided for @batchCostingPrinterAssignmentNoPrintersMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No printers are available yet.'**
+  String get batchCostingPrinterAssignmentNoPrintersMessage;
+
+  /// No description provided for @batchCostingMaterialAssignmentAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material assignment'**
+  String get batchCostingMaterialAssignmentAppBarTitle;
+
+  /// No description provided for @batchCostingMaterialAssignmentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Material assignment continues in the next batch costing step.'**
+  String get batchCostingMaterialAssignmentSubtitle;
 }
 
 class _AppLocalizationsDelegate

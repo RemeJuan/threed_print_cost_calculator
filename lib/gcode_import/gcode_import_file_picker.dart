@@ -15,6 +15,8 @@ abstract class GCodeImportFilePicker {
   const GCodeImportFilePicker();
 
   Future<GCodePickedFile?> pick();
+
+  Future<List<GCodePickedFile>> pickMany();
 }
 
 class PlatformGCodeImportFilePicker extends GCodeImportFilePicker {
@@ -44,6 +46,28 @@ class PlatformGCodeImportFilePicker extends GCodeImportFilePicker {
       size: size,
       readAsBytes: file.readAsBytes,
     );
+  }
+
+  @override
+  Future<List<GCodePickedFile>> pickMany() async {
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      return _androidPicker.pickMany();
+    }
+
+    final files = await openFiles(
+      acceptedTypeGroups: gCodeAcceptedTypeGroups(defaultTargetPlatform),
+    );
+    return [
+      for (final file in files)
+        GCodePickedFile(
+          name: file.name,
+          originalName: file.name,
+          path: file.path,
+          mimeType: file.mimeType,
+          size: await file.length(),
+          readAsBytes: file.readAsBytes,
+        ),
+    ];
   }
 }
 

@@ -1181,6 +1181,36 @@ class AppLocalizationsDe extends AppLocalizations {
       'Importierte oder manuelle Drucke hinzufügen.';
 
   @override
+  String get batchCostingReviewImportGcodeButton =>
+      'G-code-Dateien importieren';
+
+  @override
+  String get batchGcodeImportTitle => 'Batch-G-code importieren';
+
+  @override
+  String get batchGcodeImportBody =>
+      'Wähle eine oder mehrere G-code-Dateien. Jede Datei wird einzeln geparst.';
+
+  @override
+  String get batchGcodeImportPickButton => 'Dateien auswählen';
+
+  @override
+  String get batchGcodeImportSuccessLabel => 'Erfolgreich importiert';
+
+  @override
+  String get batchGcodeImportFailureLabel => 'Import fehlgeschlagen';
+
+  @override
+  String get batchGcodeImportParseFailure =>
+      'Diese Datei konnte nicht importiert werden.';
+
+  @override
+  String get batchGcodeImportContinueButton => 'Zur Stapelprüfung fortfahren';
+
+  @override
+  String get batchGcodeImportRetryButton => 'Erneut auswählen';
+
+  @override
   String get batchCostingReviewContinueButton => 'Weiter zur Druckerzuweisung';
 
   @override
@@ -1221,5 +1251,37 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get batchCostingPrinterAssignmentSubtitle =>
-      'Die Druckerzuweisung wird im nächsten Batch-Costing-Schritt fortgesetzt.';
+      'Drucker vor Material zuweisen.';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideMode => 'Gesamter Stapel';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemMode => 'Pro Element';
+
+  @override
+  String get batchCostingPrinterAssignmentBatchWideHint =>
+      'Einen Drucker für alle Elemente wählen.';
+
+  @override
+  String get batchCostingPrinterAssignmentPerItemHint =>
+      'Wähle einen Drucker für dieses Element.';
+
+  @override
+  String get batchCostingPrinterAssignmentRequiredError =>
+      'Drucker zum Fortfahren wählen.';
+
+  @override
+  String get batchCostingPrinterAssignmentContinueButton => 'Weiter';
+
+  @override
+  String get batchCostingPrinterAssignmentNoPrintersMessage =>
+      'Noch sind keine Drucker verfügbar.';
+
+  @override
+  String get batchCostingMaterialAssignmentAppBarTitle => 'Materialzuweisung';
+
+  @override
+  String get batchCostingMaterialAssignmentSubtitle =>
+      'Die Materialzuweisung geht im nächsten Schritt weiter.';
 }
