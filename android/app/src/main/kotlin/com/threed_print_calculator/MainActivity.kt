@@ -62,7 +62,15 @@ class MainActivity : FlutterFragmentActivity() {
                     }
                 }
 
-                result.success(success)
+                if (success.isEmpty()) {
+                    result.error(
+                            "gcode_picker_failed",
+                            "All URIs failed to process",
+                            null,
+                    )
+                } else {
+                    result.success(success)
+                }
             }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
