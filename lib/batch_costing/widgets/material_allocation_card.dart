@@ -41,6 +41,13 @@ class MaterialAllocationCard extends StatelessWidget {
     onSetAllocations(result);
   }
 
+  String _materialName(String targetId) {
+    for (final material in materials) {
+      if (material.id == targetId) return material.name;
+    }
+    return targetId;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -50,14 +57,38 @@ class MaterialAllocationCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(children: [Expanded(child: Text(item.displayName, style: Theme.of(context).textTheme.titleMedium)), Text('${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}', style: Theme.of(context).textTheme.titleMedium)]),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    item.displayName,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                Text(
+                  '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
             for (var index = 0; index < allocations.length; index += 1) ...[
-              MaterialAllocationRow(title: materials.firstWhere((m) => m.id == allocations[index].targetId, orElse: () => materials.first).name, subtitle: null, copies: allocations[index].quantity, onRemove: allocations.length > 1 ? () => onSetAllocations([...allocations]..removeAt(index)) : null),
+              MaterialAllocationRow(
+                title: _materialName(allocations[index].targetId),
+                subtitle: null,
+                copies: allocations[index].quantity,
+                onRemove: allocations.length > 1
+                    ? () => onSetAllocations([...allocations]..removeAt(index))
+                    : null,
+              ),
               if (index != allocations.length - 1) const SizedBox(height: 12),
             ],
             const SizedBox(height: 12),
-            OutlinedButton.icon(onPressed: () => _openPicker(context), icon: const Icon(Icons.search), label: Text(l10n.batchCostingAssignmentSplitCopiesButton)),
+            OutlinedButton.icon(
+              onPressed: () => _openPicker(context),
+              icon: const Icon(Icons.search),
+              label: Text(l10n.batchCostingAssignmentSplitCopiesButton),
+            ),
             if (warningText != null) ...[
               const SizedBox(height: 8),
               WarningBox(text: warningText!),

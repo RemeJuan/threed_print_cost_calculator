@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
@@ -9,6 +10,15 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
+
+class _RecordingLogSink extends AppLogSink {
+  final List<AppLogEvent> events = [];
+
+  @override
+  void log(AppLogEvent event) {
+    events.add(event);
+  }
+}
 
 HistoryModel _model() {
   return HistoryModel(
@@ -255,6 +265,7 @@ void main() {
   });
 
   testWidgets('export action shows failure snackbar', (tester) async {
+    final sink = _RecordingLogSink();
     final db = await tester.pumpApp(
       HistoryItem(
         dbKey: 'history-2',
@@ -263,6 +274,7 @@ void main() {
           throw StateError('boom');
         },
       ),
+      [appLogSinkProvider.overrideWithValue(sink)],
     );
     addTearDown(() => db.close());
 
@@ -274,7 +286,19 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 300));
 
-    expect(find.byType(SnackBar), findsWidgets);
+    expect(
+      sink.events,
+      hasLength(1),
+    );
+    expect(sink.events.single.message, 'History export failed');
+    expect(sink.events.single.category, AppLogCategory.ui);
+    expect(sink.events.single.context['exportType'], 'job');
+    expect(sink.events.single.error, isA<StateError>());
+    expect(
+      (sink.events.single.error as StateError).message,
+      'boom',
+    );
+    await tester.pump(const Duration(seconds: 3));
   });
 
   testWidgets('delete action calls delete handler after confirmation', (

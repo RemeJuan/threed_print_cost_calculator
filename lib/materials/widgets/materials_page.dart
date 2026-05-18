@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -150,19 +151,13 @@ class MaterialsPage extends HookConsumerWidget {
                           try {
                             await materialsRepo.deleteMaterial(material.id);
                             if (!context.mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.deleteMaterialSuccessMessage,
-                                ),
-                              ),
+                            BotToast.showText(
+                              text: l10n.deleteMaterialSuccessMessage,
                             );
                           } catch (_) {
                             if (!context.mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(l10n.deleteRecordErrorMessage),
-                              ),
+                            BotToast.showText(
+                              text: l10n.deleteRecordErrorMessage,
                             );
                             return;
                           }
@@ -186,21 +181,13 @@ class MaterialsPage extends HookConsumerWidget {
                             );
                             await materialsRepo.saveMaterial(copy);
                             if (!context.mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.duplicateMaterialSuccessMessage,
-                                ),
-                              ),
+                            BotToast.showText(
+                              text: l10n.duplicateMaterialSuccessMessage,
                             );
                           } catch (_) {
                             if (!context.mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.duplicateMaterialErrorMessage,
-                                ),
-                              ),
+                            BotToast.showText(
+                              text: l10n.duplicateMaterialErrorMessage,
                             );
                           }
                         },

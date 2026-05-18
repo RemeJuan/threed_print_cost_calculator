@@ -36,7 +36,8 @@ class BatchAllocationPickerDialog extends StatefulWidget {
       _BatchAllocationPickerDialogState();
 }
 
-class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialog> {
+class _BatchAllocationPickerDialogState
+    extends State<BatchAllocationPickerDialog> {
   final _searchController = TextEditingController();
   final Set<String> _selectedIds = {};
   late List<_AllocationEntry> _entries;
@@ -63,7 +64,9 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
       entries.add(
         _AllocationEntry(
           option: option,
-          controller: TextEditingController(text: allocation.quantity.toString()),
+          controller: TextEditingController(
+            text: allocation.quantity.toString(),
+          ),
         ),
       );
     }
@@ -80,20 +83,32 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
     }).toList();
   }
 
-  int get _total => _entries.fold<int>(0, (sum, entry) => sum + (int.tryParse(entry.controller.text) ?? 0));
+  int get _total => _entries.fold<int>(
+    0,
+    (sum, entry) => sum + (int.tryParse(entry.controller.text) ?? 0),
+  );
 
   void _validate() {
     setState(() {
       _errorText = _total == widget.itemQuantity
           ? null
-          : AppLocalizations.of(context)!.batchCostingAssignmentSplitCopiesTotalError(widget.itemQuantity.toString());
+          : AppLocalizations.of(
+              context,
+            )!.batchCostingAssignmentSplitCopiesTotalError(
+              widget.itemQuantity.toString(),
+            );
     });
   }
 
   void _addOption(BatchAllocationPickerOption option) {
     setState(() {
       _selectedIds.add(option.id);
-      _entries.add(_AllocationEntry(option: option, controller: TextEditingController(text: '1')));
+      _entries.add(
+        _AllocationEntry(
+          option: option,
+          controller: TextEditingController(text: '0'),
+        ),
+      );
       _searchController.clear();
       _validate();
     });
@@ -109,9 +124,15 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
   }
 
   void _onQuantityChanged(int index) {
-    final normalized = normalizeLeadingZeroNumericInput(_entries[index].controller.text, allowDecimal: false);
+    final normalized = normalizeLeadingZeroNumericInput(
+      _entries[index].controller.text,
+      allowDecimal: false,
+    );
     if (normalized != _entries[index].controller.text) {
-      _entries[index].controller.value = TextEditingValue(text: normalized, selection: TextSelection.collapsed(offset: normalized.length));
+      _entries[index].controller.value = TextEditingValue(
+        text: normalized,
+        selection: TextSelection.collapsed(offset: normalized.length),
+      );
     }
     _validate();
   }
@@ -121,7 +142,10 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
     if (_errorText != null) return;
     Navigator.of(context).pop([
       for (final entry in _entries)
-        BatchAssignmentAllocation(targetId: entry.option.id, quantity: int.tryParse(entry.controller.text) ?? 0)
+        BatchAssignmentAllocation(
+          targetId: entry.option.id,
+          quantity: int.tryParse(entry.controller.text) ?? 0,
+        ),
     ]);
   }
 
@@ -147,66 +171,106 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-              Text('${l10n.batchCostingReviewQuantityLabel}: ${widget.itemQuantity}'),
-              Text('${l10n.batchCostingAssignmentCopiesLabel}: $_total'),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  labelText: l10n.batchCostingAllocationPickerSearchLabel,
-                  border: const OutlineInputBorder(),
+                Text(
+                  '${l10n.batchCostingReviewQuantityLabel}: ${widget.itemQuantity}',
                 ),
-                onChanged: (_) => setLocalState(() {}),
-              ),
-              const SizedBox(height: 12),
-              Text(l10n.batchCostingAllocationPickerSelectedLabel, style: Theme.of(context).textTheme.titleSmall),
-              const SizedBox(height: 8),
-              for (var i = 0; i < _entries.length; i += 1) ...[
-                Row(
-                  children: [
-                    Expanded(child: Text(_entries[i].option.title, overflow: TextOverflow.ellipsis)),
-                    if (_entries[i].option.subtitle != null) ...[
-                      const SizedBox(width: 8),
-                      Expanded(child: Text(_entries[i].option.subtitle!, overflow: TextOverflow.ellipsis)),
-                    ],
-                    const SizedBox(width: 8),
-                    SizedBox(
-                      width: 72,
-                      child: TextField(
-                        controller: _entries[i].controller,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        onChanged: (_) => _onQuantityChanged(i),
-                      ),
-                    ),
-                    IconButton(onPressed: () => _removeEntry(i), icon: const Icon(Icons.remove_circle_outline)),
-                  ],
+                Text('${l10n.batchCostingAssignmentCopiesLabel}: $_total'),
+                const SizedBox(height: 12),
+                TextField(
+                  key: const ValueKey('allocation_picker_search'),
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: l10n.batchCostingAllocationPickerSearchLabel,
+                    border: const OutlineInputBorder(),
+                  ),
+                  onChanged: (_) => setLocalState(() {}),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  l10n.batchCostingAllocationPickerSelectedLabel,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 8),
-              ],
-              const SizedBox(height: 4),
-              Text(l10n.batchCostingAllocationPickerAvailableLabel, style: Theme.of(context).textTheme.titleSmall),
-              const SizedBox(height: 8),
-              if (_filteredOptions.isEmpty)
-                Text(l10n.batchCostingAllocationPickerNoResultsLabel)
-              else
-                for (final option in _filteredOptions) ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(option.title),
-                  subtitle: option.subtitle == null ? null : Text(option.subtitle!),
-                  trailing: OutlinedButton(
-                    onPressed: () => _addOption(option),
-                    child: Text(l10n.batchCostingAllocationPickerAddButton),
+                for (var i = 0; i < _entries.length; i += 1) ...[
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _entries[i].option.title,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (_entries[i].option.subtitle != null) ...[
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            _entries[i].option.subtitle!,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                      const SizedBox(width: 8),
+                      SizedBox(
+                        width: 72,
+                        child: TextField(
+                          key: ValueKey('allocation_picker_qty_$i'),
+                          controller: _entries[i].controller,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          onChanged: (_) => _onQuantityChanged(i),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => _removeEntry(i),
+                        icon: const Icon(Icons.remove_circle_outline),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 8),
+                ],
+                const SizedBox(height: 4),
+                Text(
+                  l10n.batchCostingAllocationPickerAvailableLabel,
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
-              if (_errorText != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(_errorText!, style: TextStyle(color: Theme.of(context).colorScheme.error))),
+                const SizedBox(height: 8),
+                if (_filteredOptions.isEmpty)
+                  Text(l10n.batchCostingAllocationPickerNoResultsLabel)
+                else
+                  for (final option in _filteredOptions)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(option.title),
+                      subtitle: option.subtitle == null
+                          ? null
+                          : Text(option.subtitle!),
+                      trailing: OutlinedButton(
+                        onPressed: () => _addOption(option),
+                        child: Text(l10n.batchCostingAllocationPickerAddButton),
+                      ),
+                    ),
+                if (_errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      _errorText!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.cancelButton)),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(l10n.cancelButton),
+        ),
         FilledButton(onPressed: _save, child: Text(l10n.saveButton)),
       ],
     );

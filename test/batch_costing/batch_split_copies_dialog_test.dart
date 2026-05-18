@@ -32,7 +32,10 @@ void main() {
                 allocations: const [
                   BatchAssignmentAllocation(targetId: 'p1', quantity: 3),
                 ],
-                printers: [printer('p1', 'Printer 1'), printer('p2', 'Printer 2')],
+                printers: [
+                  printer('p1', 'Printer 1'),
+                  printer('p2', 'Printer 2'),
+                ],
               ),
             );
           },
@@ -45,13 +48,19 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Printer 1'), findsOneWidget);
-    await tester.enterText(find.byType(TextField).first, 'Printer 2');
+    await tester.enterText(
+      find.byKey(const ValueKey('allocation_picker_search')),
+      'Printer 2',
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text('Add'));
     await tester.pumpAndSettle();
 
     expect(find.text('Printer 2'), findsOneWidget);
-    await tester.enterText(find.byType(TextField).last, '2');
+    await tester.enterText(
+      find.byKey(const ValueKey('allocation_picker_qty_1')),
+      '2',
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Save'));
@@ -84,7 +93,10 @@ void main() {
     await tester.tap(find.text('Open'));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField).last, '4');
+    await tester.enterText(
+      find.byKey(const ValueKey('allocation_picker_qty_0')),
+      '4',
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();

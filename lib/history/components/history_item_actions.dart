@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -47,9 +48,7 @@ class HistoryItemActionsController {
       );
       AppAnalytics.safeLog(() => AppAnalytics.exportUsed('job'));
       if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.exportSuccess)));
+      BotToast.showText(text: l10n.exportSuccess);
     } catch (e, st) {
       logger.error(
         AppLogCategory.ui,
@@ -59,9 +58,7 @@ class HistoryItemActionsController {
         stackTrace: st,
       );
       if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.exportError)));
+      BotToast.showText(text: l10n.exportError);
     }
   }
 
@@ -98,10 +95,8 @@ class HistoryItemActionsController {
       await dbHelpers.deleteRecord(dbKey);
     } catch (_) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.deleteRecordErrorMessage),
-        ),
+      BotToast.showText(
+        text: AppLocalizations.of(context)!.deleteRecordErrorMessage,
       );
       return;
     }

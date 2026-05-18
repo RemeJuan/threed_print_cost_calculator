@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -216,14 +217,10 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                 allocations.any((allocation) => allocation.targetId.isEmpty);
     });
     if (missing.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(
-              context,
-            )!.batchCostingPrinterAssignmentRequiredError,
-          ),
-        ),
+      BotToast.showText(
+        text: AppLocalizations.of(
+          context,
+        )!.batchCostingPrinterAssignmentRequiredError,
       );
       return;
     }

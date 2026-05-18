@@ -27,14 +27,34 @@ void main() {
   );
 
   final items = [
-    BatchCostingItem.manual(id: 'item-1', displayName: 'Benchy', quantity: 3, printWeightG: 15, printDuration: const Duration(minutes: 30)),
-    BatchCostingItem.manual(id: 'item-2', displayName: 'Cube', quantity: 1, printWeightG: 20, printDuration: const Duration(minutes: 20)),
+    BatchCostingItem.manual(
+      id: 'item-1',
+      displayName: 'Benchy',
+      quantity: 3,
+      printWeightG: 15,
+      printDuration: const Duration(minutes: 30),
+    ),
+    BatchCostingItem.manual(
+      id: 'item-2',
+      displayName: 'Cube',
+      quantity: 1,
+      printWeightG: 20,
+      printDuration: const Duration(minutes: 20),
+    ),
   ];
 
   testWidgets('batch-wide printer updates state', (tester) async {
-    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
     final notifier = _FakeBatchCostingNotifier(items);
-    await tester.pumpApp(const BatchPrinterAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), printersStreamProvider.overrideWith((ref) => Stream.value([printer('p1', 'Printer 1')])), isPremiumProvider.overrideWithValue(true)]);
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      printersStreamProvider.overrideWith(
+        (ref) => Stream.value([printer('p1', 'Printer 1')]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(BatchAnchorSelector));
@@ -46,24 +66,45 @@ void main() {
   });
 
   testWidgets('per-item mode uses reusable picker', (tester) async {
-    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
     final notifier = _FakeBatchCostingNotifier(items);
-    await tester.pumpApp(const BatchPrinterAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), printersStreamProvider.overrideWith((ref) => Stream.value([printer('p1', 'Printer 1')])), isPremiumProvider.overrideWithValue(true)]);
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      printersStreamProvider.overrideWith(
+        (ref) => Stream.value([printer('p1', 'Printer 1')]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
     await tester.pumpAndSettle();
 
-    tester.widget<SegmentedButton<BatchPrinterAssignmentMode>>(find.byType(SegmentedButton<BatchPrinterAssignmentMode>)).onSelectionChanged?.call({BatchPrinterAssignmentMode.perItem});
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPrinterAssignmentPage)),
+    )!;
+    await tester.tap(
+      find.descendant(
+        of: find.byType(SegmentedButton<BatchPrinterAssignmentMode>),
+        matching: find.text(l10n.batchCostingPrinterAssignmentPerItemMode),
+      ),
+    );
     await tester.pumpAndSettle();
-
-    final l10n = AppLocalizations.of(tester.element(find.byType(BatchPrinterAssignmentPage)))!;
-    expect(find.text(l10n.batchCostingAssignmentSplitCopiesButton), findsNWidgets(2));
-    await tester.tap(find.text(l10n.batchCostingAssignmentSplitCopiesButton).first);
+    expect(
+      find.text(l10n.batchCostingAssignmentSplitCopiesButton),
+      findsNWidgets(2),
+    );
+    await tester.tap(
+      find.text(l10n.batchCostingAssignmentSplitCopiesButton).first,
+    );
     await tester.pumpAndSettle();
     expect(find.text('Printer 1'), findsOneWidget);
   });
 
   testWidgets('disabled feature shows nothing', (tester) async {
     SharedPreferences.setMockInitialValues({});
-    await tester.pumpApp(const BatchPrinterAssignmentPage(), [isPremiumProvider.overrideWithValue(false)]);
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      isPremiumProvider.overrideWithValue(false),
+    ]);
     expect(find.text('Printer assignment'), findsNothing);
   });
 }
@@ -71,5 +112,6 @@ void main() {
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {
   _FakeBatchCostingNotifier(this._items);
   final List<BatchCostingItem> _items;
-  @override BatchCostingState build() => BatchCostingState(items: _items);
+  @override
+  BatchCostingState build() => BatchCostingState(items: _items);
 }
