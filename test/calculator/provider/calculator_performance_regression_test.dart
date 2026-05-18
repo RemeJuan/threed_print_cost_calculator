@@ -3,6 +3,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import '../../helpers/lower_level_test_fakes.dart' show FakeSettingsRepository;
 
 MaterialUsageInput _usage(int i) => MaterialUsageInput(
   materialId: 'mat-$i',
@@ -41,16 +43,23 @@ CalculationResult _submitAndReadResults(CalculatorProvider notifier) {
 
 void main() {
   group('Calculator performance regressions', () {
+    late FakeSettingsRepository settingsRepo;
     late ProviderContainer container;
     late CalculatorProvider notifier;
 
     setUp(() {
-      container = ProviderContainer();
+      settingsRepo = FakeSettingsRepository();
+      container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        ],
+      );
       notifier = container.read(calculatorProvider.notifier);
     });
 
     tearDown(() {
       container.dispose();
+      settingsRepo.dispose();
     });
 
     test('single material row normalization keeps the total on first row', () {
@@ -102,7 +111,13 @@ void main() {
     });
 
     test('normalized totals match previous row-by-row behavior', () {
-      final oldContainer = ProviderContainer();
+      final oldSettingsRepo = FakeSettingsRepository();
+      addTearDown(oldSettingsRepo.dispose);
+      final oldContainer = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(oldSettingsRepo),
+        ],
+      );
       addTearDown(oldContainer.dispose);
       final oldNotifier = oldContainer.read(calculatorProvider.notifier);
 

@@ -1,19 +1,28 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import '../../helpers/lower_level_test_fakes.dart' show FakeSettingsRepository;
 
 void main() {
   group('CalculatorProvider localized parsing', () {
+    late FakeSettingsRepository settingsRepo;
     late ProviderContainer container;
     late CalculatorProvider notifier;
 
     setUp(() {
-      container = ProviderContainer();
+      settingsRepo = FakeSettingsRepository();
+      container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        ],
+      );
       notifier = container.read(calculatorProvider.notifier);
     });
 
     tearDown(() {
       container.dispose();
+      settingsRepo.dispose();
     });
 
     test('parses comma-decimal calculator inputs', () {
