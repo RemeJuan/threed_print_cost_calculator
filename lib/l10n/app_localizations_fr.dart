@@ -1284,6 +1284,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisissez une imprimante pour cet élément.';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'Répartir les copies';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'Copies';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Choisissez une imprimante pour continuer.';
 
@@ -1347,6 +1353,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Définissez où chaque valeur de prix s\'applique.';
 
   @override
+  String get batchCostingPricingScopeItemMode => 'Article';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'Lot';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'Article (par copie)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'Lot (une fois)';
+
+  @override
   String get batchCostingPricingScopeScopeLabel => 'Portée';
 
   @override
@@ -1392,6 +1410,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get batchCostingSummaryBackButton => 'Retour à la portée de prix';
+
+  @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'Retour au calculateur';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'Nouveau lot';
 
   @override
   String get batchCostingSummaryEmptyTitle => 'Aucun résumé de lot';

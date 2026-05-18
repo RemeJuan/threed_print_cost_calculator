@@ -1268,6 +1268,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kies een printer voor dit item.';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'Kopieën splitsen';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'Kopieën';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Kies een printer om door te gaan.';
 
@@ -1330,6 +1336,18 @@ class AppLocalizationsNl extends AppLocalizations {
       'Stel in waar elke prijswaarde geldt.';
 
   @override
+  String get batchCostingPricingScopeItemMode => 'Item';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'Batch';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'Item (per kopie)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'Batch (eenmalig)';
+
+  @override
   String get batchCostingPricingScopeScopeLabel => 'Bereik';
 
   @override
@@ -1374,6 +1392,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get batchCostingSummaryBackButton => 'Terug naar prijsbereik';
+
+  @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'Terug naar calculator';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'Nieuwe batch starten';
 
   @override
   String get batchCostingSummaryEmptyTitle => 'Nog geen batchoverzicht';

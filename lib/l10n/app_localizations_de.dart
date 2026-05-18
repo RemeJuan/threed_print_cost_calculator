@@ -1268,6 +1268,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wähle einen Drucker für dieses Element.';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'Exemplare aufteilen';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'Exemplare';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Drucker zum Fortfahren wählen.';
 
@@ -1330,6 +1336,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'Lege fest, wo jeder Preiswert gilt.';
 
   @override
+  String get batchCostingPricingScopeItemMode => 'Artikel';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'Stapel';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'Artikel (pro Kopie)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'Stapel (einmal)';
+
+  @override
   String get batchCostingPricingScopeScopeLabel => 'Bereich';
 
   @override
@@ -1374,6 +1392,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get batchCostingSummaryBackButton => 'Zur Preis-Scope zurück';
+
+  @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'Zurück zum Rechner';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'Neuen Stapel starten';
 
   @override
   String get batchCostingSummaryEmptyTitle =>

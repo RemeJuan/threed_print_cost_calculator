@@ -1255,6 +1255,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select a printer for this item.';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'Split copies';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'Copies';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Select a printer to continue.';
 
@@ -1316,6 +1322,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Set where each pricing value applies.';
 
   @override
+  String get batchCostingPricingScopeItemMode => 'Item';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'Batch';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'Item (per copy)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'Batch (once)';
+
+  @override
   String get batchCostingPricingScopeScopeLabel => 'Scope';
 
   @override
@@ -1360,6 +1378,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batchCostingSummaryBackButton => 'Back to pricing scope';
+
+  @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'Return to calculator';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'Start new batch';
 
   @override
   String get batchCostingSummaryEmptyTitle => 'No batch summary yet';

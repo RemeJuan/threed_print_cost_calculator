@@ -4,10 +4,9 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 
-final batchCostingProvider =
-    NotifierProvider<BatchCostingNotifier, BatchCostingState>(
-      BatchCostingNotifier.new,
-    );
+final batchCostingProvider = NotifierProvider<BatchCostingNotifier, BatchCostingState>(
+  BatchCostingNotifier.new,
+);
 
 class BatchCostingNotifier extends Notifier<BatchCostingState> {
   @override
@@ -24,37 +23,92 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setBatchPrinterId(String? printerId) {
-    final updatedPrinterIds = printerId == null
+    final printerIds = printerId == null
         ? state.itemPrinterIds
         : {for (final item in state.items) item.id: printerId};
+    final allocations = printerId == null
+        ? state.itemPrinterAllocations
+        : {
+            for (final item in state.items)
+              item.id: [
+                BatchAssignmentAllocation(targetId: printerId, quantity: item.quantity),
+              ],
+          };
 
     state = state.copyWith(
       batchPrinterId: printerId,
       clearBatchPrinterId: printerId == null,
-      itemPrinterIds: updatedPrinterIds,
+      itemPrinterIds: printerIds,
+      itemPrinterAllocations: allocations,
     );
   }
 
   void setItemPrinterId(String itemId, String? printerId) {
-    final updated = Map<String, String>.from(state.itemPrinterIds);
+    final updatedIds = Map<String, String>.from(state.itemPrinterIds);
     if (printerId == null) {
-      updated.remove(itemId);
+      updatedIds.remove(itemId);
     } else {
-      updated[itemId] = printerId;
+      updatedIds[itemId] = printerId;
     }
 
-    state = state.copyWith(itemPrinterIds: updated);
+    state = state.copyWith(
+      itemPrinterIds: updatedIds,
+      itemPrinterAllocations: _replaceSingleAllocation(
+        state.itemPrinterAllocations,
+        itemId,
+        printerId == null ? null : BatchAssignmentAllocation(targetId: printerId, quantity: _itemQuantity(itemId)),
+      ),
+    );
+  }
+
+  void setItemPrinterAllocations(String itemId, List<BatchAssignmentAllocation> allocations) {
+    final normalized = _normalizeAllocations(itemId, allocations);
+    final updatedIds = Map<String, String>.from(state.itemPrinterIds);
+    if (normalized.isEmpty) {
+      updatedIds.remove(itemId);
+    } else {
+      updatedIds[itemId] = normalized.first.targetId;
+    }
+
+    state = state.copyWith(
+      itemPrinterIds: updatedIds,
+      itemPrinterAllocations: _updateAllocations(
+        state.itemPrinterAllocations,
+        itemId,
+        normalized,
+      ),
+    );
+  }
+
+  void addItemPrinterAllocation(String itemId) {
+    final current = state.itemPrinterAllocations[itemId] ?? const <BatchAssignmentAllocation>[];
+    setItemPrinterAllocations(
+      itemId,
+      [...current, const BatchAssignmentAllocation(targetId: '', quantity: 1)],
+    );
+  }
+
+  void removeItemPrinterAllocation(String itemId, int index) {
+    final current = List<BatchAssignmentAllocation>.from(
+      state.itemPrinterAllocations[itemId] ?? const <BatchAssignmentAllocation>[],
+    );
+    if (index < 0 || index >= current.length) return;
+    current.removeAt(index);
+    setItemPrinterAllocations(itemId, current);
   }
 
   void setMaterialAssignmentMode(BatchMaterialAssignmentMode mode) {
     state = state.copyWith(materialAssignmentMode: mode);
-    if (mode == BatchMaterialAssignmentMode.batchWide &&
-        state.batchMaterialId != null) {
+    if (mode == BatchMaterialAssignmentMode.batchWide && state.batchMaterialId != null) {
       final materialId = state.batchMaterialId;
       state = state.copyWith(
-        items: [
-          for (final item in state.items) item.copyWith(materialId: materialId),
-        ],
+        items: [for (final item in state.items) item.copyWith(materialId: materialId)],
+        itemMaterialAllocations: {
+          for (final item in state.items)
+            item.id: [
+              BatchAssignmentAllocation(targetId: materialId!, quantity: item.quantity),
+            ],
+        },
       );
     }
   }
@@ -62,15 +116,21 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   void setBatchMaterialId(String? materialId) {
     final updatedItems = materialId == null
         ? [for (final item in state.items) item.copyWith(materialId: null)]
-        : [
+        : [for (final item in state.items) item.copyWith(materialId: materialId)];
+    final updatedAllocations = materialId == null
+        ? state.itemMaterialAllocations
+        : {
             for (final item in state.items)
-              item.copyWith(materialId: materialId),
-          ];
+              item.id: [
+                BatchAssignmentAllocation(targetId: materialId, quantity: item.quantity),
+              ],
+          };
 
     state = state.copyWith(
       items: updatedItems,
       batchMaterialId: materialId,
       clearBatchMaterialId: materialId == null,
+      itemMaterialAllocations: updatedAllocations,
     );
   }
 
@@ -78,12 +138,41 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     state = state.copyWith(
       items: [
         for (final current in state.items)
-          if (current.id == itemId)
-            current.copyWith(materialId: materialId)
-          else
-            current,
+          if (current.id == itemId) current.copyWith(materialId: materialId) else current,
       ],
+      itemMaterialAllocations: _replaceSingleAllocation(
+        state.itemMaterialAllocations,
+        itemId,
+        materialId == null ? null : BatchAssignmentAllocation(targetId: materialId, quantity: _itemQuantity(itemId)),
+      ),
     );
+  }
+
+  void setItemMaterialAllocations(String itemId, List<BatchAssignmentAllocation> allocations) {
+    state = state.copyWith(
+      itemMaterialAllocations: _updateAllocations(
+        state.itemMaterialAllocations,
+        itemId,
+        _normalizeAllocations(itemId, allocations),
+      ),
+    );
+  }
+
+  void addItemMaterialAllocation(String itemId) {
+    final current = state.itemMaterialAllocations[itemId] ?? const <BatchAssignmentAllocation>[];
+    setItemMaterialAllocations(
+      itemId,
+      [...current, const BatchAssignmentAllocation(targetId: '', quantity: 1)],
+    );
+  }
+
+  void removeItemMaterialAllocation(String itemId, int index) {
+    final current = List<BatchAssignmentAllocation>.from(
+      state.itemMaterialAllocations[itemId] ?? const <BatchAssignmentAllocation>[],
+    );
+    if (index < 0 || index >= current.length) return;
+    current.removeAt(index);
+    setItemMaterialAllocations(itemId, current);
   }
 
   void setFailureRisk(String value) {
@@ -137,9 +226,7 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   void setAdditionalCostAmount(String value) {
     state = state.copyWith(
       pricing: state.pricing.copyWith(
-        additionalCostAmount: state.pricing.additionalCostAmount.copyWith(
-          value: value,
-        ),
+        additionalCostAmount: state.pricing.additionalCostAmount.copyWith(value: value),
       ),
     );
   }
@@ -147,9 +234,7 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   void setAdditionalCostAmountScope(BatchPricingScope scope) {
     state = state.copyWith(
       pricing: state.pricing.copyWith(
-        additionalCostAmount: state.pricing.additionalCostAmount.copyWith(
-          scope: scope,
-        ),
+        additionalCostAmount: state.pricing.additionalCostAmount.copyWith(scope: scope),
       ),
     );
   }
@@ -164,21 +249,74 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
 
   void updateItem(BatchCostingItem item) {
     state = state.copyWith(
-      items: [
-        for (final current in state.items)
-          if (current.id == item.id) item else current,
-      ],
+      items: [for (final current in state.items) if (current.id == item.id) item else current],
     );
   }
 
   void removeItem(String itemId) {
-    final updatedPrinterIds = Map<String, String>.from(state.itemPrinterIds)
-      ..remove(itemId);
+    final updatedPrinterIds = Map<String, String>.from(state.itemPrinterIds)..remove(itemId);
+    final updatedPrinterAllocations = Map<String, List<BatchAssignmentAllocation>>.from(state.itemPrinterAllocations)..remove(itemId);
+    final updatedMaterialAllocations = Map<String, List<BatchAssignmentAllocation>>.from(state.itemMaterialAllocations)..remove(itemId);
     state = state.copyWith(
-      items: state.items
-          .where((item) => item.id != itemId)
-          .toList(growable: false),
+      items: state.items.where((item) => item.id != itemId).toList(growable: false),
       itemPrinterIds: updatedPrinterIds,
+      itemPrinterAllocations: updatedPrinterAllocations,
+      itemMaterialAllocations: updatedMaterialAllocations,
     );
+  }
+
+  int _itemQuantity(String itemId) =>
+      state.items.firstWhere((item) => item.id == itemId).quantity;
+
+  Map<String, List<BatchAssignmentAllocation>> _replaceSingleAllocation(
+    Map<String, List<BatchAssignmentAllocation>> allocations,
+    String itemId,
+    BatchAssignmentAllocation? allocation,
+  ) {
+    final updated = Map<String, List<BatchAssignmentAllocation>>.from(allocations);
+    if (allocation == null) {
+      updated.remove(itemId);
+    } else {
+      updated[itemId] = [allocation];
+    }
+    return updated;
+  }
+
+  Map<String, List<BatchAssignmentAllocation>> _updateAllocations(
+    Map<String, List<BatchAssignmentAllocation>> allocations,
+    String itemId,
+    List<BatchAssignmentAllocation> updatedAllocations,
+  ) {
+    final updated = Map<String, List<BatchAssignmentAllocation>>.from(allocations);
+    if (updatedAllocations.isEmpty) {
+      updated.remove(itemId);
+    } else {
+      updated[itemId] = List.unmodifiable(updatedAllocations);
+    }
+    return updated;
+  }
+
+  List<BatchAssignmentAllocation> _normalizeAllocations(
+    String itemId,
+    List<BatchAssignmentAllocation> allocations,
+  ) {
+    final itemQuantity = _itemQuantity(itemId);
+    if (allocations.isEmpty) {
+      return const <BatchAssignmentAllocation>[];
+    }
+
+    final trimmed = allocations.take(itemQuantity).toList(growable: false);
+    if (trimmed.length == 1) {
+      return [trimmed.first.copyWith(quantity: itemQuantity)];
+    }
+
+    final normalized = <BatchAssignmentAllocation>[];
+    for (var index = 0; index < trimmed.length; index += 1) {
+      final quantity = index == trimmed.length - 1
+          ? itemQuantity - (trimmed.length - 1)
+          : 1;
+      normalized.add(trimmed[index].copyWith(quantity: quantity));
+    }
+    return normalized;
   }
 }

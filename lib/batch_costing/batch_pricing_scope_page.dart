@@ -93,13 +93,8 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   focusNode: _failureRiskFocus,
                   value: state.pricing.failureRisk.value,
                   scope: state.pricing.failureRisk.scope,
-                  scopeLabel: l10n.batchCostingPricingScopeScopeLabel,
-                  onValueChanged: (value) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setFailureRisk(value),
-                  onScopeChanged: (scope) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setFailureRiskScope(scope),
+                  onValueChanged: (value) => ref.read(batchCostingProvider.notifier).setFailureRisk(value),
+                  onScopeChanged: (scope) => ref.read(batchCostingProvider.notifier).setFailureRiskScope(scope),
                   validator: _percentValidator(l10n),
                 ),
                 _pricingFieldCard(
@@ -109,7 +104,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   focusNode: _markupPercentFocus,
                   value: state.pricing.markupPercent.value,
                   scope: state.pricing.markupPercent.scope,
-                  scopeLabel: l10n.batchCostingPricingScopeScopeLabel,
                   onValueChanged: (value) => ref
                       .read(batchCostingProvider.notifier)
                       .setMarkupPercent(value),
@@ -125,7 +119,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   focusNode: _labourRateFocus,
                   value: state.pricing.labourRate.value,
                   scope: state.pricing.labourRate.scope,
-                  scopeLabel: l10n.batchCostingPricingScopeScopeLabel,
                   onValueChanged: (value) => ref
                       .read(batchCostingProvider.notifier)
                       .setLabourRate(value),
@@ -141,7 +134,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   focusNode: _additionalCostFocus,
                   value: state.pricing.additionalCostAmount.value,
                   scope: state.pricing.additionalCostAmount.scope,
-                  scopeLabel: l10n.batchCostingPricingScopeScopeLabel,
                   onValueChanged: (value) => ref
                       .read(batchCostingProvider.notifier)
                       .setAdditionalCostAmount(value),
@@ -183,7 +175,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     required FocusNode focusNode,
     required String value,
     required BatchPricingScope scope,
-    required String scopeLabel,
     required ValueChanged<String> onValueChanged,
     required ValueChanged<BatchPricingScope> onScopeChanged,
     required FormFieldValidator<String> validator,
@@ -214,26 +205,19 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
               onChanged: onValueChanged,
             ),
             const SizedBox(height: 12),
-            DropdownButtonFormField<BatchPricingScope>(
-              initialValue: scope,
-              decoration: InputDecoration(
-                labelText: scopeLabel,
-                border: const OutlineInputBorder(),
-              ),
-              items: [
-                DropdownMenuItem<BatchPricingScope>(
+            SegmentedButton<BatchPricingScope>(
+              segments: [
+                ButtonSegment(
                   value: BatchPricingScope.item,
-                  child: Text(l10n.batchCostingMaterialAssignmentPerItemMode),
+                  label: Text(l10n.batchCostingPricingScopeItemMode),
                 ),
-                DropdownMenuItem<BatchPricingScope>(
+                ButtonSegment(
                   value: BatchPricingScope.batch,
-                  child: Text(l10n.batchCostingMaterialAssignmentBatchWideMode),
+                  label: Text(l10n.batchCostingPricingScopeBatchMode),
                 ),
               ],
-              onChanged: (selected) {
-                if (selected == null) return;
-                onScopeChanged(selected);
-              },
+              selected: {scope},
+              onSelectionChanged: (selected) => onScopeChanged(selected.first),
             ),
           ],
         ),
