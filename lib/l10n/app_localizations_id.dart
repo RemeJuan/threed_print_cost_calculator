@@ -1258,17 +1258,17 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
-    return 'Split copies for $itemName';
+    return 'Bagi salinan untuk $itemName';
   }
 
   @override
   String batchCostingAssignmentSplitCopiesTotalError(Object total) {
-    return 'Total must equal $total';
+    return 'Total harus sama dengan $total';
   }
 
   @override
   String get batchCostingAssignmentQuantityChangedMessage =>
-      'Assignments were reset because quantity changed.';
+      'Penugasan diatur ulang karena kuantitas berubah.';
 
   @override
   String get batchCostingAssignmentCopiesLabel => 'Salinan';

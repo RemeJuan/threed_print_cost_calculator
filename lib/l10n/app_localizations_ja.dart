@@ -1228,17 +1228,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
-    return 'Split copies for $itemName';
+    return '$itemNameのコピーを分割';
   }
 
   @override
   String batchCostingAssignmentSplitCopiesTotalError(Object total) {
-    return 'Total must equal $total';
+    return '合計は$totalと等しくなければなりません';
   }
 
   @override
   String get batchCostingAssignmentQuantityChangedMessage =>
-      'Assignments were reset because quantity changed.';
+      '数量が変更されたため、割り当てがリセットされました。';
 
   @override
   String get batchCostingAssignmentCopiesLabel => '部数';

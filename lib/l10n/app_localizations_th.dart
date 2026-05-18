@@ -1248,17 +1248,17 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
-    return 'Split copies for $itemName';
+    return 'แยกสำเนาสำหรับ $itemName';
   }
 
   @override
   String batchCostingAssignmentSplitCopiesTotalError(Object total) {
-    return 'Total must equal $total';
+    return 'ยอดรวมต้องเท่ากับ $total';
   }
 
   @override
   String get batchCostingAssignmentQuantityChangedMessage =>
-      'Assignments were reset because quantity changed.';
+      'การกำหนดถูกรีเซ็ตเนื่องจากจำนวนที่เปลี่ยนแปลง';
 
   @override
   String get batchCostingAssignmentCopiesLabel => 'สำเนา';
