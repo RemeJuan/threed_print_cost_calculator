@@ -537,5 +537,16 @@
   "batchCostingPrinterAssignmentContinueButton": "Continue",
   "batchCostingPrinterAssignmentNoPrintersMessage": "No printers are available yet.",
   "batchCostingMaterialAssignmentAppBarTitle": "Material assignment",
-  "batchCostingMaterialAssignmentSubtitle": "Material assignment continues in the next batch costing step."
+  "batchCostingMaterialAssignmentSubtitle": "Assign materials or spools before pricing.",
+  "batchCostingMaterialAssignmentMaterialLabel": "Material or spool",
+  "batchCostingMaterialAssignmentBatchWideMode": "Batch-wide",
+  "batchCostingMaterialAssignmentPerItemMode": "Per item",
+  "batchCostingMaterialAssignmentBatchWideHint": "Choose one material for all items.",
+  "batchCostingMaterialAssignmentPerItemHint": "Choose a material for this item.",
+  "batchCostingMaterialAssignmentRequiredError": "Choose a material to continue.",
+  "batchCostingMaterialAssignmentContinueButton": "Continue",
+  "batchCostingMaterialAssignmentNoMaterialsMessage": "Add at least one material or spool to continue.",
+  "batchCostingMaterialAssignmentStockWarning": "Required {required} exceeds selected stock {available}.",
+  "batchCostingPricingScopeAppBarTitle": "Pricing scope",
+  "batchCostingPricingScopeSubtitle": "Set where each pricing value applies."
 }

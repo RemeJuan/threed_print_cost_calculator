@@ -1269,5 +1269,49 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingMaterialAssignmentSubtitle =>
-      'Penugasan material berlanjut pada langkah berikutnya.';
+      'Tetapkan material atau spool sebelum harga.';
+
+  @override
+  String get batchCostingMaterialAssignmentMaterialLabel =>
+      'Material atau spool';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideMode => 'Seluruh batch';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideHint =>
+      'Pilih satu material untuk semua item.';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemHint =>
+      'Pilih material untuk item ini.';
+
+  @override
+  String get batchCostingMaterialAssignmentRequiredError =>
+      'Pilih material untuk melanjutkan.';
+
+  @override
+  String get batchCostingMaterialAssignmentContinueButton => 'Lanjutkan';
+
+  @override
+  String get batchCostingMaterialAssignmentNoMaterialsMessage =>
+      'Tambahkan setidaknya satu material atau spool untuk melanjutkan.';
+
+  @override
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  ) {
+    return 'Yang dibutuhkan $required melebihi stok terpilih $available.';
+  }
+
+  @override
+  String get batchCostingPricingScopeAppBarTitle => 'Ruang harga';
+
+  @override
+  String get batchCostingPricingScopeSubtitle =>
+      'Atur di mana setiap nilai harga berlaku.';
 }

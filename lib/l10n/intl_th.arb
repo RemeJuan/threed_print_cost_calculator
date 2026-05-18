@@ -610,5 +610,16 @@
   "batchCostingPrinterAssignmentContinueButton": "ดำเนินการต่อ",
   "batchCostingPrinterAssignmentNoPrintersMessage": "ยังไม่มีเครื่องพิมพ์ที่พร้อมใช้งาน",
   "batchCostingMaterialAssignmentAppBarTitle": "กำหนดวัสดุ",
-  "batchCostingMaterialAssignmentSubtitle": "การกำหนดวัสดุจะดำเนินต่อในขั้นตอนถัดไป"
+  "batchCostingMaterialAssignmentSubtitle": "กำหนดวัสดุหรือสปูลก่อนตั้งราคา",
+  "batchCostingMaterialAssignmentMaterialLabel": "วัสดุหรือสปูล",
+  "batchCostingMaterialAssignmentBatchWideMode": "ทั้งแบตช์",
+  "batchCostingMaterialAssignmentPerItemMode": "ต่อรายการ",
+  "batchCostingMaterialAssignmentBatchWideHint": "เลือกวัสดุหนึ่งรายการสำหรับทุกรายการ",
+  "batchCostingMaterialAssignmentPerItemHint": "เลือกวัสดุสำหรับรายการนี้",
+  "batchCostingMaterialAssignmentRequiredError": "เลือกวัสดุเพื่อไปต่อ",
+  "batchCostingMaterialAssignmentContinueButton": "ดำเนินการต่อ",
+  "batchCostingMaterialAssignmentNoMaterialsMessage": "เพิ่มวัสดุหรือสปูลอย่างน้อยหนึ่งรายการเพื่อไปต่อ",
+  "batchCostingMaterialAssignmentStockWarning": "ต้องใช้ {required} เกินสต็อกที่เลือก {available}",
+  "batchCostingPricingScopeAppBarTitle": "ขอบเขตราคา",
+  "batchCostingPricingScopeSubtitle": "กำหนดว่าค่าแต่ละรายการใช้กับส่วนใด"
 }

@@ -1300,5 +1300,49 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get batchCostingMaterialAssignmentSubtitle =>
-      'L\'attribution du matériau continue à l\'étape suivante.';
+      'Attribuez les matériaux ou bobines avant le prix.';
+
+  @override
+  String get batchCostingMaterialAssignmentMaterialLabel =>
+      'Matériau ou bobine';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideMode => 'Lot entier';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemMode => 'Par élément';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideHint =>
+      'Choisissez un matériau pour tous les éléments.';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemHint =>
+      'Choisissez un matériau pour cet élément.';
+
+  @override
+  String get batchCostingMaterialAssignmentRequiredError =>
+      'Choisissez un matériau pour continuer.';
+
+  @override
+  String get batchCostingMaterialAssignmentContinueButton => 'Continuer';
+
+  @override
+  String get batchCostingMaterialAssignmentNoMaterialsMessage =>
+      'Ajoutez au moins un matériau ou une bobine pour continuer.';
+
+  @override
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  ) {
+    return 'Le requis $required dépasse le stock sélectionné $available.';
+  }
+
+  @override
+  String get batchCostingPricingScopeAppBarTitle => 'Portée du prix';
+
+  @override
+  String get batchCostingPricingScopeSubtitle =>
+      'Définissez où chaque valeur de prix s\'applique.';
 }

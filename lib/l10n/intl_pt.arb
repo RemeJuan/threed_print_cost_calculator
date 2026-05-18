@@ -610,5 +610,16 @@
   "batchCostingPrinterAssignmentContinueButton": "Continuar",
   "batchCostingPrinterAssignmentNoPrintersMessage": "Ainda não há impressoras disponíveis.",
   "batchCostingMaterialAssignmentAppBarTitle": "Atribuição de material",
-  "batchCostingMaterialAssignmentSubtitle": "A atribuição de material continua na próxima etapa."
+  "batchCostingMaterialAssignmentSubtitle": "Atribua materiais ou bobinas antes do preço.",
+  "batchCostingMaterialAssignmentMaterialLabel": "Material ou bobina",
+  "batchCostingMaterialAssignmentBatchWideMode": "Lote inteiro",
+  "batchCostingMaterialAssignmentPerItemMode": "Por item",
+  "batchCostingMaterialAssignmentBatchWideHint": "Escolha um material para todos os itens.",
+  "batchCostingMaterialAssignmentPerItemHint": "Escolha um material para este item.",
+  "batchCostingMaterialAssignmentRequiredError": "Escolha um material para continuar.",
+  "batchCostingMaterialAssignmentContinueButton": "Continuar",
+  "batchCostingMaterialAssignmentNoMaterialsMessage": "Adicione pelo menos um material ou bobina para continuar.",
+  "batchCostingMaterialAssignmentStockWarning": "O necessário {required} excede o stock selecionado {available}.",
+  "batchCostingPricingScopeAppBarTitle": "Âmbito de preço",
+  "batchCostingPricingScopeSubtitle": "Defina onde cada valor de preço se aplica."
 }

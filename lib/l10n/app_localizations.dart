@@ -2414,8 +2414,77 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingMaterialAssignmentSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Material assignment continues in the next batch costing step.'**
+  /// **'Assign materials or spools before pricing.'**
   String get batchCostingMaterialAssignmentSubtitle;
+
+  /// No description provided for @batchCostingMaterialAssignmentMaterialLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Material or spool'**
+  String get batchCostingMaterialAssignmentMaterialLabel;
+
+  /// No description provided for @batchCostingMaterialAssignmentBatchWideMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch-wide'**
+  String get batchCostingMaterialAssignmentBatchWideMode;
+
+  /// No description provided for @batchCostingMaterialAssignmentPerItemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Per item'**
+  String get batchCostingMaterialAssignmentPerItemMode;
+
+  /// No description provided for @batchCostingMaterialAssignmentBatchWideHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose one material for all items.'**
+  String get batchCostingMaterialAssignmentBatchWideHint;
+
+  /// No description provided for @batchCostingMaterialAssignmentPerItemHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a material for this item.'**
+  String get batchCostingMaterialAssignmentPerItemHint;
+
+  /// No description provided for @batchCostingMaterialAssignmentRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a material to continue.'**
+  String get batchCostingMaterialAssignmentRequiredError;
+
+  /// No description provided for @batchCostingMaterialAssignmentContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get batchCostingMaterialAssignmentContinueButton;
+
+  /// No description provided for @batchCostingMaterialAssignmentNoMaterialsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one material or spool to continue.'**
+  String get batchCostingMaterialAssignmentNoMaterialsMessage;
+
+  /// No description provided for @batchCostingMaterialAssignmentStockWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Required {required} exceeds selected stock {available}.'**
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  );
+
+  /// No description provided for @batchCostingPricingScopeAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing scope'**
+  String get batchCostingPricingScopeAppBarTitle;
+
+  /// No description provided for @batchCostingPricingScopeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set where each pricing value applies.'**
+  String get batchCostingPricingScopeSubtitle;
 }
 
 class _AppLocalizationsDelegate

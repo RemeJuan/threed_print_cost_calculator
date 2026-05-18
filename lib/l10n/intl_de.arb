@@ -609,5 +609,16 @@
   "batchCostingPrinterAssignmentContinueButton": "Weiter",
   "batchCostingPrinterAssignmentNoPrintersMessage": "Noch sind keine Drucker verfügbar.",
   "batchCostingMaterialAssignmentAppBarTitle": "Materialzuweisung",
-  "batchCostingMaterialAssignmentSubtitle": "Die Materialzuweisung geht im nächsten Schritt weiter."
+  "batchCostingMaterialAssignmentSubtitle": "Material oder Spule vor dem Preis festlegen.",
+  "batchCostingMaterialAssignmentMaterialLabel": "Material oder Spule",
+  "batchCostingMaterialAssignmentBatchWideMode": "Gesamter Stapel",
+  "batchCostingMaterialAssignmentPerItemMode": "Pro Element",
+  "batchCostingMaterialAssignmentBatchWideHint": "Ein Material für alle Elemente wählen.",
+  "batchCostingMaterialAssignmentPerItemHint": "Wähle ein Material für dieses Element.",
+  "batchCostingMaterialAssignmentRequiredError": "Material zum Fortfahren wählen.",
+  "batchCostingMaterialAssignmentContinueButton": "Weiter",
+  "batchCostingMaterialAssignmentNoMaterialsMessage": "Mindestens ein Material oder eine Spule hinzufügen, um fortzufahren.",
+  "batchCostingMaterialAssignmentStockWarning": "Benötigt {required} übersteigt den ausgewählten Bestand {available}.",
+  "batchCostingPricingScopeAppBarTitle": "Preisbereich",
+  "batchCostingPricingScopeSubtitle": "Lege fest, wo jeder Preiswert gilt."
 }
