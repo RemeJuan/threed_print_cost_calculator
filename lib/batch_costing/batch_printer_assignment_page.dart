@@ -18,7 +18,8 @@ class BatchPrinterAssignmentPage extends ConsumerStatefulWidget {
       _BatchPrinterAssignmentPageState();
 }
 
-class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignmentPage> {
+class _BatchPrinterAssignmentPageState
+    extends ConsumerState<BatchPrinterAssignmentPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -74,11 +75,15 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
                       segments: [
                         ButtonSegment(
                           value: BatchPrinterAssignmentMode.batchWide,
-                          label: Text(l10n.batchCostingPrinterAssignmentBatchWideMode),
+                          label: Text(
+                            l10n.batchCostingPrinterAssignmentBatchWideMode,
+                          ),
                         ),
                         ButtonSegment(
                           value: BatchPrinterAssignmentMode.perItem,
-                          label: Text(l10n.batchCostingPrinterAssignmentPerItemMode),
+                          label: Text(
+                            l10n.batchCostingPrinterAssignmentPerItemMode,
+                          ),
                         ),
                       ],
                       selected: {state.printerAssignmentMode},
@@ -90,32 +95,42 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
                     ),
                     const SizedBox(height: 16),
                     Expanded(
-                      child: state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide
+                      child:
+                          state.printerAssignmentMode ==
+                              BatchPrinterAssignmentMode.batchWide
                           ? BatchWidePrinterSection(
                               printers: printers,
                               selectedPrinterId: state.batchPrinterId,
                               onChanged: (value) {
-                                ref.read(batchCostingProvider.notifier).setBatchPrinterId(value);
+                                ref
+                                    .read(batchCostingProvider.notifier)
+                                    .setBatchPrinterId(value);
                               },
-                              validatorText: l10n.batchCostingPrinterAssignmentRequiredError,
-                              hintText: l10n.batchCostingPrinterAssignmentBatchWideHint,
+                              validatorText: l10n
+                                  .batchCostingPrinterAssignmentRequiredError,
+                              hintText: l10n
+                                  .batchCostingPrinterAssignmentBatchWideHint,
                             )
                           : ListView.separated(
                               itemCount: items.length,
-                              separatorBuilder: (context, index) => const SizedBox(height: 12),
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 12),
                               itemBuilder: (context, index) {
                                 final item = items[index];
                                 return PerItemPrinterField(
                                   itemName: item.displayName,
                                   printers: printers,
-                                  selectedPrinterId: state.itemPrinterIds[item.id],
+                                  selectedPrinterId:
+                                      state.itemPrinterIds[item.id],
                                   onChanged: (value) {
                                     ref
                                         .read(batchCostingProvider.notifier)
                                         .setItemPrinterId(item.id, value);
                                   },
-                                  hintText: l10n.batchCostingPrinterAssignmentPerItemHint,
-                                  validatorText: l10n.batchCostingPrinterAssignmentRequiredError,
+                                  hintText: l10n
+                                      .batchCostingPrinterAssignmentPerItemHint,
+                                  validatorText: l10n
+                                      .batchCostingPrinterAssignmentRequiredError,
                                 );
                               },
                             ),
@@ -125,12 +140,16 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
                       children: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: Text(MaterialLocalizations.of(context).backButtonTooltip),
+                          child: Text(
+                            MaterialLocalizations.of(context).backButtonTooltip,
+                          ),
                         ),
                         const Spacer(),
                         FilledButton(
                           onPressed: () => _continue(context, state),
-                          child: Text(l10n.batchCostingPrinterAssignmentContinueButton),
+                          child: Text(
+                            l10n.batchCostingPrinterAssignmentContinueButton,
+                          ),
                         ),
                       ],
                     ),
@@ -142,11 +161,15 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
         );
       },
       loading: () => Scaffold(
-        appBar: AppBar(title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle)),
+        appBar: AppBar(
+          title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
+        ),
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (error, stackTrace) => Scaffold(
-        appBar: AppBar(title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle)),
+        appBar: AppBar(
+          title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +181,7 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
               const SizedBox(height: 16),
               FilledButton(
                 onPressed: () => ref.refresh(printersStreamProvider),
-                child: const Text('Retry'),
+                child: Text(l10n.retryButton),
               ),
             ],
           ),
@@ -168,15 +191,29 @@ class _BatchPrinterAssignmentPageState extends ConsumerState<BatchPrinterAssignm
   }
 
   void _continue(BuildContext context, BatchCostingState state) {
-    if (state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide) {
-      if (!_formKey.currentState!.validate()) return;
-    } else {
-      _formKey.currentState!.validate();
-      final missing = state.items.any((item) => state.itemPrinterIds[item.id] == null);
-      if (missing) return;
+    if (!_formKey.currentState!.validate()) return;
+
+    if (state.printerAssignmentMode == BatchPrinterAssignmentMode.perItem) {
+      final missing = state.items.where(
+        (item) => state.itemPrinterIds[item.id] == null,
+      );
+      if (missing.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!
+                  .batchCostingPrinterAssignmentRequiredError,
+            ),
+          ),
+        );
+        return;
+      }
     }
+
     Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const BatchMaterialAssignmentPage()),
+      MaterialPageRoute<void>(
+        builder: (_) => const BatchMaterialAssignmentPage(),
+      ),
     );
   }
 }
