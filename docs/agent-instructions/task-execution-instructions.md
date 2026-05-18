@@ -157,7 +157,7 @@ For every implementation task, run at minimum:
 - existing calculator tests where calculation logic is touched
 - existing G-code import tests where import logic is touched
 
-Run `make flutter_test` when shared app behaviour is touched.
+Run `make flutter_test` to ensure all tests are passing.
 
 For tasks that add or change user-facing strings, verify localization files are updated and generated localization output is refreshed using `fvm flutter gen-l10n`.
 
@@ -189,7 +189,6 @@ Stop and report back when:
 
 - required behaviour is unclear
 - a required previous task output is missing
-- existing tests fail for unrelated reasons
 - the implementation requires changing existing public behaviour
 - the task requires broad architectural changes
 - the implementation would introduce a new package
@@ -200,6 +199,7 @@ Stop and report back when:
 
 Before the final response, verify:
 
+- All unit tests are passing, not just those related to file changes
 - Required verification has been rerun after fixes.
 - Existing calculator and G-code flows were checked when touched.
 - New user-facing strings are localized, or no new user-facing strings were added.
