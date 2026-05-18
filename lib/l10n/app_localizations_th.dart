@@ -1314,6 +1314,49 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingSummarySubtitle => 'ตรวจสอบแบตช์ก่อนสร้างใบเสนอราคา';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'ภาพรวม';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'รายการ';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'จำนวนรวม';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'น้ำหนักรวม';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => 'เวลาพิมพ์รวม';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'น้ำหนัก';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'เวลาพิมพ์';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'ต้นทุนพื้นฐาน';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'การปรับ';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'รวมรายการ';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'ยอดรวมสุดท้าย';
+
+  @override
+  String get batchCostingSummaryBackButton => 'กลับไปยังขอบเขตราคา';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'ยังไม่มีสรุปแบตช์';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'เพิ่มรายการและกำหนดขอบเขตราคาก่อนตรวจสอบสรุป';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'ราคา';
 
   @override

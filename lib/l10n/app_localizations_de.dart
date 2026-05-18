@@ -1340,6 +1340,50 @@ class AppLocalizationsDe extends AppLocalizations {
       'Überprüfen Sie den Batch vor der Angebotserstellung.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Übersicht';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Elemente';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Gesamtmenge';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Gesamtgewicht';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => 'Gesamtdruckzeit';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Gewicht';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Druckzeit';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Grundkosten';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Anpassungen';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Posten gesamt';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Endsumme';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Zur Preis-Scope zurück';
+
+  @override
+  String get batchCostingSummaryEmptyTitle =>
+      'Noch keine Batch-Zusammenfassung';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Fügen Sie Elemente hinzu und setzen Sie den Preis-Scope, bevor Sie die Zusammenfassung prüfen.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Preisgestaltung';
 
   @override

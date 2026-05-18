@@ -1326,6 +1326,49 @@ class AppLocalizationsId extends AppLocalizations {
       'Tinjau batch sebelum membuat kutipan.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Ringkasan';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Item';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Jumlah total';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Berat total';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => 'Waktu cetak total';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Berat';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Waktu cetak';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Biaya dasar';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Penyesuaian';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Total item';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Total akhir';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Kembali ke cakupan harga';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'Belum ada ringkasan batch';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Tambahkan item dan atur cakupan harga sebelum meninjau ringkasan.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Penetapan harga';
 
   @override

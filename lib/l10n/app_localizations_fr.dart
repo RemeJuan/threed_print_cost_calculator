@@ -1357,6 +1357,50 @@ class AppLocalizationsFr extends AppLocalizations {
       'Vérifiez le lot avant de générer un devis.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Aperçu';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Articles';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Quantité totale';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Poids total';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel =>
+      'Temps total d\'impression';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Poids';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Temps d\'impression';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Coût de base';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Ajustements';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Total de l\'article';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Total final';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Retour à la portée de prix';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'Aucun résumé de lot';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Ajoutez des articles et définissez la portée avant de consulter le résumé.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Tarification';
 
   @override

@@ -1343,6 +1343,50 @@ class AppLocalizationsEs extends AppLocalizations {
       'Revise el lote antes de generar una cotización.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Resumen';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Elementos';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Cantidad total';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Peso total';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel =>
+      'Tiempo total de impresión';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Peso';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Tiempo de impresión';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Coste base';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Ajustes';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Total del elemento';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Total final';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Volver al ámbito de precio';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'Aún no hay resumen';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Añade elementos y define el ámbito antes de revisar el resumen.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Precios';
 
   @override

@@ -1340,6 +1340,49 @@ class AppLocalizationsNl extends AppLocalizations {
       'Controleer de batch voordat u een offerte genereert.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Overzicht';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Items';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Totale hoeveelheid';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Totaal gewicht';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => 'Totale printtijd';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Gewicht';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Printtijd';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Basiskosten';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Aanpassingen';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Totaal item';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Eindtotaal';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Terug naar prijsbereik';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'Nog geen batchoverzicht';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Voeg items toe en stel het prijsbereik in voordat u het overzicht bekijkt.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Prijzen';
 
   @override

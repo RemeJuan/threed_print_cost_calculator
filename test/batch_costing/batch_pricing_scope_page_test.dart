@@ -103,14 +103,14 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(2), '10');
     await tester.enterText(find.byType(EditableText).at(3), '10');
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(BatchPricingScopePage)),
-    )!;
     await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(FilledButton));
     await tester.pump();
 
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPricingScopePage)),
+    )!;
     expect(find.text(l10n.invalidNumber), findsOneWidget);
     expect(find.byType(BatchPricingScopePage), findsOneWidget);
   });
@@ -132,9 +132,6 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(2), '30');
     await tester.enterText(find.byType(EditableText).at(3), '40');
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(BatchPricingScopePage)),
-    )!;
     await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
     await tester.pumpAndSettle();
     await tester.tap(find.byType(FilledButton));
