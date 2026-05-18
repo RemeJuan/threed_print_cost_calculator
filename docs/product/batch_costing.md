@@ -1,6 +1,6 @@
 # Batch Costing
 
-ClickUp Task: 86c9u8f06
+ClickUp Task: 86c9u8fkb
 
 Cleanup Task: 86c9uq5xr
 
@@ -61,6 +61,14 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Queue scheduling or production planning
 - Multi-user collaboration
 - Backend/cloud/account/sync work
+
+## Persistence Guardrail
+
+Batch costing V1 stops at calculation and summary.
+
+- Do not add save-to-history behaviour for batch quotes.
+- Do not add export/share flows for batch quotes.
+- Revisit persistence only in a later task that explicitly owns it.
 
 ## Feature Gate
 
