@@ -14,6 +14,6 @@ class NumberInput extends FormzInput<num?, NumberInputError> {
   // Override validator to handle validating a given input value.
   @override
   NumberInputError? validator(num? value) {
-    return (value != null && value > -1) ? NumberInputError.invalid : null;
+    return (value != null && value >= 1) ? null : NumberInputError.invalid;
   }
 }

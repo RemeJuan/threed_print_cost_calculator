@@ -5,6 +5,8 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
+import 'gcode_import_preview_dialog.dart';
+
 class GCodeImportPreviewSection extends StatelessWidget {
   const GCodeImportPreviewSection({
     super.key,
@@ -29,7 +31,10 @@ class GCodeImportPreviewSection extends StatelessWidget {
       );
     }
     final isLowRes =
-        (result.previewWidth ?? 0) < 128 || (result.previewHeight ?? 0) < 128;
+        result.previewWidth != null &&
+        result.previewHeight != null &&
+        result.previewWidth! < 128 &&
+        result.previewHeight! < 128;
     void onPreviewTap() {
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodePreviewViewed(
@@ -120,62 +125,7 @@ class GCodeImportPreviewSection extends StatelessWidget {
       context: context,
       barrierColor: Colors.black87,
       barrierDismissible: true,
-      builder: (dialogContext) {
-        final mediaQuery = MediaQuery.of(dialogContext);
-        final maxWidth = mediaQuery.size.width - 32;
-        final maxHeight = mediaQuery.size.height - 32;
-        return Dialog(
-          backgroundColor: Colors.black,
-          insetPadding: const EdgeInsets.all(16),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: maxWidth,
-              maxHeight: maxHeight,
-            ),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Center(
-                      child: Image.memory(
-                        bytes,
-                        fit: BoxFit.contain,
-                        filterQuality: FilterQuality.none,
-                        gaplessPlayback: true,
-                        isAntiAlias: false,
-                        errorBuilder: (context, error, stackTrace) => Center(
-                          child: Text(
-                            l10n.importGcodePreviewDecodeFailed,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: SafeArea(
-                    bottom: false,
-                    left: false,
-                    child: IconButton(
-                      tooltip: MaterialLocalizations.of(
-                        dialogContext,
-                      ).closeButtonTooltip,
-                      onPressed: () => Navigator.of(dialogContext).pop(),
-                      icon: const Icon(Icons.close, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      builder: (_) => GCodeImportPreviewDialog(bytes: bytes, l10n: l10n),
     );
   }
 }
