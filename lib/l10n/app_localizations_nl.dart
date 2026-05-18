@@ -1283,5 +1283,49 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get batchCostingMaterialAssignmentSubtitle =>
-      'De materiaaltoewijzing gaat verder in de volgende stap.';
+      'Wijs materialen of spoelen toe vóór de prijs.';
+
+  @override
+  String get batchCostingMaterialAssignmentMaterialLabel =>
+      'Materiaal of spoel';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideMode => 'Hele batch';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideHint =>
+      'Kies één materiaal voor alle items.';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemHint =>
+      'Kies een materiaal voor dit item.';
+
+  @override
+  String get batchCostingMaterialAssignmentRequiredError =>
+      'Kies een materiaal om door te gaan.';
+
+  @override
+  String get batchCostingMaterialAssignmentContinueButton => 'Doorgaan';
+
+  @override
+  String get batchCostingMaterialAssignmentNoMaterialsMessage =>
+      'Voeg minstens één materiaal of spoel toe om door te gaan.';
+
+  @override
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  ) {
+    return 'Benodigd $required overschrijdt de geselecteerde voorraad $available.';
+  }
+
+  @override
+  String get batchCostingPricingScopeAppBarTitle => 'Prijsbereik';
+
+  @override
+  String get batchCostingPricingScopeSubtitle =>
+      'Stel in waar elke prijswaarde geldt.';
 }

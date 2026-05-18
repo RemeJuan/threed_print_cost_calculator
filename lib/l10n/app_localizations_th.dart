@@ -1259,5 +1259,48 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingMaterialAssignmentSubtitle =>
-      'การกำหนดวัสดุจะดำเนินต่อในขั้นตอนถัดไป';
+      'กำหนดวัสดุหรือสปูลก่อนตั้งราคา';
+
+  @override
+  String get batchCostingMaterialAssignmentMaterialLabel => 'วัสดุหรือสปูล';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideMode => 'ทั้งแบตช์';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemMode => 'ต่อรายการ';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideHint =>
+      'เลือกวัสดุหนึ่งรายการสำหรับทุกรายการ';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemHint =>
+      'เลือกวัสดุสำหรับรายการนี้';
+
+  @override
+  String get batchCostingMaterialAssignmentRequiredError =>
+      'เลือกวัสดุเพื่อไปต่อ';
+
+  @override
+  String get batchCostingMaterialAssignmentContinueButton => 'ดำเนินการต่อ';
+
+  @override
+  String get batchCostingMaterialAssignmentNoMaterialsMessage =>
+      'เพิ่มวัสดุหรือสปูลอย่างน้อยหนึ่งรายการเพื่อไปต่อ';
+
+  @override
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  ) {
+    return 'ต้องใช้ $required เกินสต็อกที่เลือก $available';
+  }
+
+  @override
+  String get batchCostingPricingScopeAppBarTitle => 'ขอบเขตราคา';
+
+  @override
+  String get batchCostingPricingScopeSubtitle =>
+      'กำหนดว่าค่าแต่ละรายการใช้กับส่วนใด';
 }

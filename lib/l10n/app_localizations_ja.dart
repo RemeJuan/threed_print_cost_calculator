@@ -1238,5 +1238,45 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingMaterialAssignmentAppBarTitle => '材料割り当て';
 
   @override
-  String get batchCostingMaterialAssignmentSubtitle => '材料の割り当ては次のステップで続きます。';
+  String get batchCostingMaterialAssignmentSubtitle => '価格設定の前に材料やスプールを割り当てます。';
+
+  @override
+  String get batchCostingMaterialAssignmentMaterialLabel => '材料またはスプール';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideMode => 'バッチ全体';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemMode => 'アイテムごと';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideHint =>
+      'すべてのアイテムに1つの材料を選びます。';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemHint => 'このアイテムの材料を選びます。';
+
+  @override
+  String get batchCostingMaterialAssignmentRequiredError => '続けるには材料を選んでください。';
+
+  @override
+  String get batchCostingMaterialAssignmentContinueButton => '続ける';
+
+  @override
+  String get batchCostingMaterialAssignmentNoMaterialsMessage =>
+      '続けるには、少なくとも1つの材料またはスプールを追加してください。';
+
+  @override
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  ) {
+    return '必要量 $required が選択中の在庫 $available を超えています。';
+  }
+
+  @override
+  String get batchCostingPricingScopeAppBarTitle => '価格範囲';
+
+  @override
+  String get batchCostingPricingScopeSubtitle => '各価格値の適用先を設定します。';
 }

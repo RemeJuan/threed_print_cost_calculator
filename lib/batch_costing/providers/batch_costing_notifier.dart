@@ -25,9 +25,7 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   void setBatchPrinterId(String? printerId) {
     final updatedPrinterIds = printerId == null
         ? state.itemPrinterIds
-        : {
-            for (final item in state.items) item.id: printerId,
-          };
+        : {for (final item in state.items) item.id: printerId};
 
     state = state.copyWith(
       batchPrinterId: printerId,
@@ -45,6 +43,46 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     }
 
     state = state.copyWith(itemPrinterIds: updated);
+  }
+
+  void setMaterialAssignmentMode(BatchMaterialAssignmentMode mode) {
+    state = state.copyWith(materialAssignmentMode: mode);
+    if (mode == BatchMaterialAssignmentMode.batchWide &&
+        state.batchMaterialId != null) {
+      final materialId = state.batchMaterialId;
+      state = state.copyWith(
+        items: [
+          for (final item in state.items) item.copyWith(materialId: materialId),
+        ],
+      );
+    }
+  }
+
+  void setBatchMaterialId(String? materialId) {
+    final updatedItems = materialId == null
+        ? [for (final item in state.items) item.copyWith(materialId: null)]
+        : [
+            for (final item in state.items)
+              item.copyWith(materialId: materialId),
+          ];
+
+    state = state.copyWith(
+      items: updatedItems,
+      batchMaterialId: materialId,
+      clearBatchMaterialId: materialId == null,
+    );
+  }
+
+  void setItemMaterialId(String itemId, String? materialId) {
+    state = state.copyWith(
+      items: [
+        for (final current in state.items)
+          if (current.id == itemId)
+            current.copyWith(materialId: materialId)
+          else
+            current,
+      ],
+    );
   }
 
   void addItem(BatchCostingItem item) {
