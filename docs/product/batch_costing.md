@@ -62,6 +62,14 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Multi-user collaboration
 - Backend/cloud/account/sync work
 
+## Persistence Guardrail
+
+Batch costing V1 stops at calculation and summary.
+
+- Do not add save-to-history behaviour for batch quotes.
+- Do not add export/share flows for batch quotes.
+- Revisit persistence only in a later task that explicitly owns it.
+
 ## Feature Gate
 
 Batch costing must be hidden behind a developer/debug flag while it is being built.

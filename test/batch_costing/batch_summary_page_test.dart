@@ -22,7 +22,9 @@ void main() {
     expect(find.text('Batch summary'), findsNothing);
   });
 
-  testWidgets('shows empty state with back action when no items', (tester) async {
+  testWidgets('shows empty state with back action when no items', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({
       batchCostingEnabledPreferenceKey: true,
     });
@@ -44,7 +46,9 @@ void main() {
       batchCostingProvider.overrideWith(() => _SummaryBatchCostingNotifier()),
     ]);
 
-    final l10n = AppLocalizations.of(tester.element(find.byType(BatchSummaryPage)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchSummaryPage)),
+    )!;
 
     expect(find.text('1'), findsWidgets);
     expect(find.text('2'), findsWidgets);
@@ -59,9 +63,20 @@ void main() {
     await tester.tap(find.text('Benchy'));
     await tester.pumpAndSettle();
 
-    expect(find.text(l10n.batchCostingSummaryItemBaseCostLabel), findsOneWidget);
-    expect(find.text(l10n.batchCostingSummaryItemAdjustmentLabel), findsOneWidget);
+    expect(
+      find.text(l10n.batchCostingSummaryItemBaseCostLabel),
+      findsOneWidget,
+    );
+    expect(
+      find.text(l10n.batchCostingSummaryItemAdjustmentLabel),
+      findsOneWidget,
+    );
     expect(find.text(l10n.batchCostingSummaryItemTotalLabel), findsOneWidget);
+
+    expect(find.text('Save'), findsNothing);
+    expect(find.text('Export'), findsNothing);
+    expect(find.text('Share'), findsNothing);
+    expect(find.text('History'), findsNothing);
   });
 }
 
