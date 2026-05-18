@@ -6,6 +6,8 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allocation_card.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
@@ -125,7 +127,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                   case final warning?)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 8),
-                                  child: _warningBox(context, warning),
+                                  child: WarningBox(text: warning),
                                 ),
                             ],
                           )
@@ -139,7 +141,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                 state,
                                 item,
                               );
-                              return _MaterialAllocationCard(
+                              return MaterialAllocationCard(
                                 item: item,
                                 allocations: allocations,
                                 materials: sortedMaterials,
@@ -332,167 +334,4 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
       StockStatus.outOfStock => 3,
     };
   }
-}
-
-class _MaterialAllocationCard extends StatelessWidget {
-  const _MaterialAllocationCard({
-    required this.item,
-    required this.allocations,
-    required this.materials,
-    required this.warningText,
-    required this.onAllocationChanged,
-    required this.onAddAllocation,
-    required this.onRemoveAllocation,
-    required this.hintText,
-    required this.addButtonLabel,
-    required this.copiesLabel,
-    required this.labelText,
-  });
-
-  final BatchCostingItem item;
-  final List<BatchAssignmentAllocation> allocations;
-  final List<MaterialModel> materials;
-  final String? warningText;
-  final void Function(int allocationIndex, String? materialId)
-  onAllocationChanged;
-  final VoidCallback onAddAllocation;
-  final void Function(int allocationIndex) onRemoveAllocation;
-  final String hintText;
-  final String addButtonLabel;
-  final String copiesLabel;
-  final String labelText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.displayName,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  '${item.quantity} $copiesLabel',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            for (var index = 0; index < allocations.length; index += 1) ...[
-              _MaterialAllocationRow(
-                copies: allocations[index].quantity,
-                materials: materials,
-                selectedMaterialId: allocations[index].targetId.isEmpty
-                    ? null
-                    : allocations[index].targetId,
-                hintText: hintText,
-                labelText: labelText,
-                onChanged: (value) => onAllocationChanged(index, value),
-                onRemove: allocations.length > 1
-                    ? () => onRemoveAllocation(index)
-                    : null,
-              ),
-              if (index != allocations.length - 1) const SizedBox(height: 12),
-            ],
-            const SizedBox(height: 12),
-            OutlinedButton.icon(
-              onPressed: onAddAllocation,
-              icon: const Icon(Icons.add),
-              label: Text(addButtonLabel),
-            ),
-            if (warningText != null) ...[
-              const SizedBox(height: 8),
-              _warningBox(context, warningText!),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MaterialAllocationRow extends StatelessWidget {
-  const _MaterialAllocationRow({
-    required this.copies,
-    required this.materials,
-    required this.selectedMaterialId,
-    required this.hintText,
-    required this.labelText,
-    required this.onChanged,
-    required this.onRemove,
-  });
-
-  final int copies;
-  final List<MaterialModel> materials;
-  final String? selectedMaterialId;
-  final String hintText;
-  final String labelText;
-  final ValueChanged<String?> onChanged;
-  final VoidCallback? onRemove;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: BatchAnchorSelector(
-            labelText: labelText,
-            hintText: hintText,
-            value:
-                materials.any((material) => material.id == selectedMaterialId)
-                ? selectedMaterialId
-                : null,
-            onChanged: onChanged,
-            entries: [
-              for (final material in materials)
-                BatchAnchorSelectorEntry(
-                  value: material.id,
-                  label: material.name,
-                ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 4, right: 4, top: 12),
-          child: Text(
-            '×$copies',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        if (onRemove != null) ...[
-          const SizedBox(width: 4),
-          IconButton(
-            onPressed: onRemove,
-            icon: const Icon(Icons.remove_circle_outline),
-          ),
-        ],
-      ],
-    );
-  }
-}
-
-Widget _warningBox(BuildContext context, String text) {
-  final colors = Theme.of(context).colorScheme;
-  return Container(
-    width: double.infinity,
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-      color: colors.errorContainer,
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Text(
-      text,
-      style: Theme.of(
-        context,
-      ).textTheme.bodySmall?.copyWith(color: colors.onErrorContainer),
-    ),
-  );
 }
