@@ -37,7 +37,7 @@ class BatchSummaryPage extends ConsumerWidget {
             const SizedBox(height: 8),
             _summaryRow(context, l10n.batchCostingSummaryItemCountLabel, summary.itemCount.toString()),
             _summaryRow(context, l10n.batchCostingSummaryTotalQuantityLabel, summary.totalQuantity.toString()),
-            _summaryRow(context, l10n.batchCostingSummaryTotalWeightLabel, '${summary.totalWeightG.toStringAsFixed(2)} g'),
+            _summaryRow(context, l10n.batchCostingSummaryTotalWeightLabel, '${summary.totalWeightG.toStringAsFixed(2)} ${l10n.gramsSuffix}'),
             _summaryRow(context, l10n.batchCostingSummaryTotalDurationLabel, _formatDuration(summary.totalPrintDuration)),
             const SizedBox(height: 16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
@@ -71,7 +71,7 @@ class BatchSummaryPage extends ConsumerWidget {
                   title: Text(item.item.displayName),
                   subtitle: Text('${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}'),
                   children: [
-                    _summaryRow(context, l10n.batchCostingSummaryItemWeightLabel, '${item.totalWeightG.toStringAsFixed(2)} g'),
+                    _summaryRow(context, l10n.batchCostingSummaryItemWeightLabel, '${item.totalWeightG.toStringAsFixed(2)} ${l10n.gramsSuffix}'),
                     _summaryRow(context, l10n.batchCostingSummaryItemDurationLabel, _formatDuration(item.totalPrintDuration)),
                     _summaryRow(context, l10n.batchCostingSummaryItemBaseCostLabel, item.baseCost.toStringAsFixed(2)),
                     _summaryRow(context, l10n.batchCostingSummaryItemAdjustmentLabel, item.additionalCost.toStringAsFixed(2)),
