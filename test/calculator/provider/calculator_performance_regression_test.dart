@@ -50,9 +50,7 @@ void main() {
     setUp(() {
       settingsRepo = FakeSettingsRepository();
       container = ProviderContainer(
-        overrides: [
-          settingsRepositoryProvider.overrideWithValue(settingsRepo),
-        ],
+        overrides: [settingsRepositoryProvider.overrideWithValue(settingsRepo)],
       );
       notifier = container.read(calculatorProvider.notifier);
     });

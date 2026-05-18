@@ -145,15 +145,39 @@ void main() {
     expect((savedResult.single as MaterialModel).id, 'material-1');
   });
 
-  testWidgets('cost input shows currency prefix when configured', (tester) async {
-    final repo = FakeMaterialsRepository(useExplicitSaveResult: true, saveResult: 'material-1');
+  testWidgets('cost input shows currency prefix when configured', (
+    tester,
+  ) async {
+    final repo = FakeMaterialsRepository(
+      useExplicitSaveResult: true,
+      saveResult: 'material-1',
+    );
     final db = await tester.pumpApp(
-      _MaterialDialogHost(onResult: (_) {}, builder: (_) => const MaterialForm()),
+      _MaterialDialogHost(
+        onResult: (_) {},
+        builder: (_) => const MaterialForm(),
+      ),
       [
         materialsRepositoryProvider.overrideWithValue(repo),
-        settingsStreamProvider.overrideWith((ref) => Stream.value(const GeneralSettingsModel(
-          electricityCost: '', wattage: '', activePrinter: '', selectedMaterial: '', wearAndTear: '', failureRisk: '', labourRate: '', pricingMarkupPercent: '', pricingSetupFee: '', pricingRoundingMode: 'none', currencySymbol: 'R', currencyPosition: 'before', currencySpacing: false,
-        ))),
+        settingsStreamProvider.overrideWith(
+          (ref) => Stream.value(
+            const GeneralSettingsModel(
+              electricityCost: '',
+              wattage: '',
+              activePrinter: '',
+              selectedMaterial: '',
+              wearAndTear: '',
+              failureRisk: '',
+              labourRate: '',
+              pricingMarkupPercent: '',
+              pricingSetupFee: '',
+              pricingRoundingMode: 'none',
+              currencySymbol: 'R',
+              currencyPosition: 'before',
+              currencySpacing: false,
+            ),
+          ),
+        ),
       ],
     );
     addTearDown(db.close);
@@ -163,9 +187,15 @@ void main() {
   });
 
   testWidgets('cost input shows spaced after-position suffix', (tester) async {
-    final repo = FakeMaterialsRepository(useExplicitSaveResult: true, saveResult: 'material-1');
+    final repo = FakeMaterialsRepository(
+      useExplicitSaveResult: true,
+      saveResult: 'material-1',
+    );
     final db = await tester.pumpApp(
-      _MaterialDialogHost(onResult: (_) {}, builder: (_) => const MaterialForm()),
+      _MaterialDialogHost(
+        onResult: (_) {},
+        builder: (_) => const MaterialForm(),
+      ),
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         settingsStreamProvider.overrideWith(
@@ -192,7 +222,13 @@ void main() {
     addTearDown(db.close);
     await tester.tap(find.text('Open'));
     await tester.pumpAndSettle();
-    expect(tester.widget<InputDecorator>(_decorator('settings.materials.cost.input')).decoration.suffixText, ' R');
+    expect(
+      tester
+          .widget<InputDecorator>(_decorator('settings.materials.cost.input'))
+          .decoration
+          .suffixText,
+      ' R',
+    );
   });
 
   testWidgets('invalid values block save and show validation errors', (

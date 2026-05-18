@@ -59,7 +59,9 @@ void main() {
           calculatorPreferencesRepositoryProvider.overrideWith(
             _FakeCalculatorPreferencesRepository.new,
           ),
-          settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
+          settingsRepositoryProvider.overrideWithValue(
+            FakeSettingsRepository(),
+          ),
         ],
       );
       notifier = container.read(calculatorProvider.notifier);
@@ -86,46 +88,54 @@ void main() {
       container.dispose();
     });
 
-    test('material change updates total for non-zero to non-zero cost', () async {
-      final materialA = _material(
-        id: 'mat-a',
-        name: 'Material A',
-        cost: '60',
-      ).copyWith(brand: 'Sunlu', materialType: 'PLA', autoDeductEnabled: true);
-      final materialB = _material(id: 'mat-b', name: 'Material B', cost: '30');
+    test(
+      'material change updates total for non-zero to non-zero cost',
+      () async {
+        final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60')
+            .copyWith(
+              brand: 'Sunlu',
+              materialType: 'PLA',
+              autoDeductEnabled: true,
+            );
+        final materialB = _material(
+          id: 'mat-b',
+          name: 'Material B',
+          cost: '30',
+        );
 
-      await notifier.selectMaterial(materialA);
-      expect(notifier.state.spoolCost.value, 60);
-      expect(notifier.state.materialUsages.single.materialId, 'mat-a');
-      expect(notifier.state.materialUsages.single.costPerKg, 60);
-      expect(notifier.state.results.filament, 6.0);
-      expect(notifier.state.results.total, 6.0);
-      expect(analytics.events, contains('material_selected_in_calculator'));
-      expect(analytics.events, contains('calculation_created'));
-      expect(
-        analytics.events.indexOf('material_selected_in_calculator'),
-        lessThan(analytics.events.indexOf('calculation_created')),
-      );
-      expect(
-        analytics.events
-            .where((e) => e == 'material_selected_in_calculator')
-            .length,
-        1,
-      );
-      expect(analytics.paramsByEvent['material_selected_in_calculator'], {
-        'has_tracking': 1,
-        'material_type': 'PLA',
-        'brand': 'Sunlu',
-      });
+        await notifier.selectMaterial(materialA);
+        expect(notifier.state.spoolCost.value, 60);
+        expect(notifier.state.materialUsages.single.materialId, 'mat-a');
+        expect(notifier.state.materialUsages.single.costPerKg, 60);
+        expect(notifier.state.results.filament, 6.0);
+        expect(notifier.state.results.total, 6.0);
+        expect(analytics.events, contains('material_selected_in_calculator'));
+        expect(analytics.events, contains('calculation_created'));
+        expect(
+          analytics.events.indexOf('material_selected_in_calculator'),
+          lessThan(analytics.events.indexOf('calculation_created')),
+        );
+        expect(
+          analytics.events
+              .where((e) => e == 'material_selected_in_calculator')
+              .length,
+          1,
+        );
+        expect(analytics.paramsByEvent['material_selected_in_calculator'], {
+          'has_tracking': 1,
+          'material_type': 'PLA',
+          'brand': 'Sunlu',
+        });
 
-      await notifier.selectMaterial(materialB);
+        await notifier.selectMaterial(materialB);
 
-      expect(notifier.state.spoolCost.value, 30);
-      expect(notifier.state.materialUsages.single.materialId, 'mat-b');
-      expect(notifier.state.materialUsages.single.costPerKg, 30);
-      expect(notifier.state.results.filament, 3.0);
-      expect(notifier.state.results.total, 3.0);
-    });
+        expect(notifier.state.spoolCost.value, 30);
+        expect(notifier.state.materialUsages.single.materialId, 'mat-b');
+        expect(notifier.state.materialUsages.single.costPerKg, 30);
+        expect(notifier.state.results.filament, 3.0);
+        expect(notifier.state.results.total, 3.0);
+      },
+    );
 
     test('material change updates total for non-zero to zero cost', () async {
       final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
@@ -267,10 +277,9 @@ void main() {
       );
       addTearDown(scopedContainer.dispose);
       final scopedNotifier = scopedContainer.read(calculatorProvider.notifier);
-      final prefsRepo = scopedContainer.read(
-            calculatorPreferencesRepositoryProvider,
-          )
-          as _FakeCalculatorPreferencesRepository;
+      final prefsRepo =
+          scopedContainer.read(calculatorPreferencesRepositoryProvider)
+              as _FakeCalculatorPreferencesRepository;
       final materialA = _material(id: 'mat-a', name: 'Material A', cost: '60');
 
       scopedNotifier

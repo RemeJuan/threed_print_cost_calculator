@@ -40,8 +40,9 @@ class GCodeImportPreviewDialog extends StatelessWidget {
                       child: Text(
                         l10n.importGcodePreviewDecodeFailed,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium
-                            ?.copyWith(color: Colors.white),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.copyWith(color: Colors.white),
                       ),
                     ),
                   ),

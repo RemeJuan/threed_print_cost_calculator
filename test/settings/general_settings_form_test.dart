@@ -227,7 +227,9 @@ void main() {
       );
     });
 
-    testWidgets('shows currency adornment on electricity input', (tester) async {
+    testWidgets('shows currency adornment on electricity input', (
+      tester,
+    ) async {
       final repo = _FakeSettingsRepository();
       final db = await tester.pumpApp(const GeneralSettings(), [
         settingsRepositoryProvider.overrideWithValue(repo),
@@ -258,39 +260,47 @@ void main() {
       expect(find.text('R'), findsWidgets);
     });
 
-    testWidgets('shows readable electricity suffix for after-position currency', (tester) async {
-      final repo = _FakeSettingsRepository();
-      final db = await tester.pumpApp(const GeneralSettings(), [
-        settingsRepositoryProvider.overrideWithValue(repo),
-        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-      ]);
-      addTearDown(db.close);
-      addTearDown(repo.dispose);
+    testWidgets(
+      'shows readable electricity suffix for after-position currency',
+      (tester) async {
+        final repo = _FakeSettingsRepository();
+        final db = await tester.pumpApp(const GeneralSettings(), [
+          settingsRepositoryProvider.overrideWithValue(repo),
+          appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+        ]);
+        addTearDown(db.close);
+        addTearDown(repo.dispose);
 
-      repo.emit(
-        const GeneralSettingsModel(
-          electricityCost: '',
-          wattage: '',
-          activePrinter: '',
-          selectedMaterial: '',
-          wearAndTear: '',
-          failureRisk: '',
-          labourRate: '',
-          pricingMarkupPercent: '',
-          pricingSetupFee: '',
-          pricingRoundingMode: 'none',
-          currencySymbol: 'R',
-          currencyPosition: 'after',
-          currencySpacing: true,
-        ),
-      );
-      await tester.pump();
+        repo.emit(
+          const GeneralSettingsModel(
+            electricityCost: '',
+            wattage: '',
+            activePrinter: '',
+            selectedMaterial: '',
+            wearAndTear: '',
+            failureRisk: '',
+            labourRate: '',
+            pricingMarkupPercent: '',
+            pricingSetupFee: '',
+            pricingRoundingMode: 'none',
+            currencySymbol: 'R',
+            currencyPosition: 'after',
+            currencySpacing: true,
+          ),
+        );
+        await tester.pump();
 
-      expect(
-        tester.widget<InputDecorator>(_decorator('settings.electricityCost.input')).decoration.suffixText,
-        'kWh R',
-      );
-    });
+        expect(
+          tester
+              .widget<InputDecorator>(
+                _decorator('settings.electricityCost.input'),
+              )
+              .decoration
+              .suffixText,
+          'kWh R',
+        );
+      },
+    );
 
     testWidgets('persists the hide Pro promotions toggle', (tester) async {
       final repo = _FakeSettingsRepository();

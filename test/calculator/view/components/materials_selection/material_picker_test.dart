@@ -40,7 +40,9 @@ void main() {
 
       await tester.pumpApp(MaterialPicker(onSelected: (m) => selected = m), [
         materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
-        settingsStreamProvider.overrideWith((ref) => Stream.value(GeneralSettingsModel.initial())),
+        settingsStreamProvider.overrideWith(
+          (ref) => Stream.value(GeneralSettingsModel.initial()),
+        ),
       ]);
 
       // Allow FutureBuilder to complete

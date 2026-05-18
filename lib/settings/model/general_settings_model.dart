@@ -34,7 +34,8 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
       pricingRoundingMode: (map['pricingRoundingMode'] ?? 'none').toString(),
       currencySymbol: (map['currencySymbol'] ?? '').toString(),
       currencyPosition: (map['currencyPosition'] ?? 'before').toString(),
-      currencySpacing: map['currencySpacing'] == true ||
+      currencySpacing:
+          map['currencySpacing'] == true ||
           map['currencySpacing']?.toString() == 'true',
     );
   }

@@ -191,16 +191,18 @@ class MaterialForm extends HookConsumerWidget {
                       : AutovalidateMode.disabled,
                   decoration: InputDecoration(
                     labelText: l10n.costLabel,
-                    prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                    prefixText:
+                        currencySettings.currencySymbol.isNotEmpty &&
                             currencySettings.currencyPosition == 'before'
                         ? currencySettings.currencySymbol +
-                            (currencySettings.currencySpacing ? ' ' : '')
+                              (currencySettings.currencySpacing ? ' ' : '')
                         : null,
-                    suffixText: currencySettings.currencyPosition == 'after' &&
+                    suffixText:
+                        currencySettings.currencyPosition == 'after' &&
                             currencySettings.currencySymbol.isNotEmpty
                         ? (currencySettings.currencySpacing
-                            ? ' ${currencySettings.currencySymbol}'
-                            : currencySettings.currencySymbol)
+                              ? ' ${currencySettings.currencySymbol}'
+                              : currencySettings.currencySymbol)
                         : null,
                   ),
                   onChanged: (v) => notifier.updateCost(v),

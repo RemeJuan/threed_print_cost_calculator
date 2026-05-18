@@ -59,25 +59,21 @@ class GeneralSettings extends HookConsumerWidget {
       final parsed = tryParseLocalizedNum(value);
       if (parsed == null) return;
 
-      electricityDebounceRef.value = Timer(
-        debounce400ms,
-        () async {
-          try {
-            await settingsService.update(
-              (settings) =>
-                  settings.copyWith(electricityCost: parsed.toString()),
-            );
-          } catch (e, st) {
-            logger.error(
-              AppLogCategory.ui,
-              'Failed to persist electricity cost',
-              context: {'setting': 'electricityCost'},
-              error: e,
-              stackTrace: st,
-            );
-          }
-        },
-      );
+      electricityDebounceRef.value = Timer(debounce400ms, () async {
+        try {
+          await settingsService.update(
+            (settings) => settings.copyWith(electricityCost: parsed.toString()),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist electricity cost',
+            context: {'setting': 'electricityCost'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
     }
 
     Future<void> persistWatt(String value) async {
@@ -86,24 +82,21 @@ class GeneralSettings extends HookConsumerWidget {
       final parsed = tryParseLocalizedInt(value);
       if (parsed == null) return;
 
-      wattDebounceRef.value = Timer(
-        debounce400ms,
-        () async {
-          try {
-            await settingsService.update(
-              (settings) => settings.copyWith(wattage: parsed.toString()),
-            );
-          } catch (e, st) {
-            logger.error(
-              AppLogCategory.ui,
-              'Failed to persist wattage',
-              context: {'setting': 'wattage'},
-              error: e,
-              stackTrace: st,
-            );
-          }
-        },
-      );
+      wattDebounceRef.value = Timer(debounce400ms, () async {
+        try {
+          await settingsService.update(
+            (settings) => settings.copyWith(wattage: parsed.toString()),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist wattage',
+            context: {'setting': 'wattage'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
     }
 
     // Use a hook to subscribe to the database record stream at top-level
@@ -151,12 +144,14 @@ class GeneralSettings extends HookConsumerWidget {
                   inputNormalizer: normalizeLeadingZeroNumericInput,
                   decoration: InputDecoration(
                     labelText: l10n.electricityCostSettingsLabel,
-                    prefixText: currencySettings.currencySymbol.isNotEmpty &&
+                    prefixText:
+                        currencySettings.currencySymbol.isNotEmpty &&
                             currencySettings.currencyPosition == 'before'
                         ? currencySettings.currencySymbol +
-                            (currencySettings.currencySpacing ? ' ' : '')
+                              (currencySettings.currencySpacing ? ' ' : '')
                         : null,
-                    suffixText: currencySettings.currencyPosition == 'after' &&
+                    suffixText:
+                        currencySettings.currencyPosition == 'after' &&
                             currencySettings.currencySymbol.isNotEmpty
                         ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
                         : l10n.kwh,

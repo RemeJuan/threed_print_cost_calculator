@@ -79,18 +79,19 @@ void main() {
   });
 
   test('getSettings preserves currency settings roundtrip', () async {
-    await StoreRef<String, Object?>.main().record(DBName.settings.name).put(
-      db,
-      {
-        ..._settings(
-          currencySymbol: 'R',
-          currencyPosition: 'after',
-          currencySpacing: true,
-        ).toMap(),
-      },
-    );
+    await StoreRef<String, Object?>.main()
+        .record(DBName.settings.name)
+        .put(db, {
+          ..._settings(
+            currencySymbol: 'R',
+            currencyPosition: 'after',
+            currencySpacing: true,
+          ).toMap(),
+        });
 
-    final settings = await container.read(settingsRepositoryProvider).getSettings();
+    final settings = await container
+        .read(settingsRepositoryProvider)
+        .getSettings();
 
     expect(settings.currencySymbol, 'R');
     expect(settings.currencyPosition, 'after');

@@ -43,9 +43,8 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
     }
 
     final storeVersion = info.storeVersion;
-    final body = info.showStoreVersion &&
-            storeVersion != null &&
-            storeVersion.isNotEmpty
+    final body =
+        info.showStoreVersion && storeVersion != null && storeVersion.isNotEmpty
         ? l10n.updatePromptBody(storeVersion, info.currentVersion)
         : l10n.updatePromptBodyUnknown;
 

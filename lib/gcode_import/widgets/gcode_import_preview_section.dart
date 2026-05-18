@@ -43,10 +43,8 @@ class GCodeImportPreviewSection extends StatelessWidget {
         context: context,
         barrierColor: Colors.black87,
         barrierDismissible: true,
-        builder: (_) => GCodeImportPreviewDialog(
-          bytes: previewBytes,
-          l10n: l10n,
-        ),
+        builder: (_) =>
+            GCodeImportPreviewDialog(bytes: previewBytes, l10n: l10n),
       );
     }
 
@@ -123,5 +121,4 @@ class GCodeImportPreviewSection extends StatelessWidget {
       ),
     ),
   );
-
 }
