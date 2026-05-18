@@ -653,8 +653,8 @@
   "batchCostingSummaryEmptyBody": "Tambahkan item dan atur cakupan harga sebelum meninjau ringkasan.",
   "batchCostingSummaryPricingTitle": "Penetapan harga",
   "batchCostingSummaryItemsTitle": "Item",
-  "batchCostingNewBatchDialogTitle": "Start new batch",
-  "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
-  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
+  "batchCostingNewBatchDialogTitle": "Mulai batch baru",
+  "batchCostingNewBatchDialogBody": "Ini akan membuang semua kemajuan batch saat ini. Mulai batch baru?",
+  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} per → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Printer"
 }

@@ -653,8 +653,8 @@
   "batchCostingSummaryEmptyBody": "Aggiungi elementi e imposta l'ambito prezzo prima di rivedere il riepilogo.",
   "batchCostingSummaryPricingTitle": "Prezzi",
   "batchCostingSummaryItemsTitle": "Elementi",
-  "batchCostingNewBatchDialogTitle": "Start new batch",
-  "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
-  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Printer"
+  "batchCostingNewBatchDialogTitle": "Avvia nuovo batch",
+  "batchCostingNewBatchDialogBody": "Questo eliminerà tutti i progressi correnti del batch. Avviare un nuovo batch?",
+  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} ciascuno → {lineTotal} totale",
+  "batchCostingAssignmentPrinterLabel": "Stampante"
 }

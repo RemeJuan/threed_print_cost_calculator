@@ -654,8 +654,8 @@
   "batchCostingSummaryEmptyBody": "เพิ่มรายการและกำหนดขอบเขตราคาก่อนตรวจสอบสรุป",
   "batchCostingSummaryPricingTitle": "ราคา",
   "batchCostingSummaryItemsTitle": "รายการ",
-  "batchCostingNewBatchDialogTitle": "Start new batch",
-  "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
-  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Printer"
+  "batchCostingNewBatchDialogTitle": "เริ่มแบตช์ใหม่",
+  "batchCostingNewBatchDialogBody": "การดำเนินการนี้จะละทิ้งความคืบหน้าของแบตช์ปัจจุบันทั้งหมด เริ่มแบตช์ใหม่หรือไม่",
+  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} ต่อชิ้น → {lineTotal} รวม",
+  "batchCostingAssignmentPrinterLabel": "เครื่องพิมพ์"
 }

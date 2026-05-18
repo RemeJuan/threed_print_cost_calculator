@@ -1420,18 +1420,18 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingSummaryItemsTitle => 'Item';
 
   @override
-  String get batchCostingNewBatchDialogTitle => 'Start new batch';
+  String get batchCostingNewBatchDialogTitle => 'Mulai batch baru';
 
   @override
   String get batchCostingNewBatchDialogBody =>
-      'This will discard all current batch progress. Start a new batch?';
+      'Ini akan membuang semua kemajuan batch saat ini. Mulai batch baru?';
 
   @override
   String batchCostingSummaryPricingItemScopeFormat(
     Object lineTotal,
     Object perUnit,
   ) {
-    return '$perUnit each → $lineTotal total';
+    return '$perUnit per → $lineTotal total';
   }
 
   @override

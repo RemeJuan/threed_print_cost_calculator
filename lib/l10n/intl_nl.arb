@@ -654,8 +654,8 @@
   "batchCostingSummaryEmptyBody": "Voeg items toe en stel het prijsbereik in voordat u het overzicht bekijkt.",
   "batchCostingSummaryPricingTitle": "Prijzen",
   "batchCostingSummaryItemsTitle": "Items",
-  "batchCostingNewBatchDialogTitle": "Start new batch",
-  "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
-  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
+  "batchCostingNewBatchDialogTitle": "Nieuwe batch starten",
+  "batchCostingNewBatchDialogBody": "Dit zal alle huidige batchvoortgang wissen. Een nieuwe batch starten?",
+  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} elk → {lineTotal} totaal",
   "batchCostingAssignmentPrinterLabel": "Printer"
 }

@@ -655,8 +655,8 @@
   "batchCostingSummaryEmptyBody": "Ajoutez des articles et définissez la portée avant de consulter le résumé.",
   "batchCostingSummaryPricingTitle": "Tarification",
   "batchCostingSummaryItemsTitle": "Articles",
-  "batchCostingNewBatchDialogTitle": "Start new batch",
-  "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
-  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Printer"
+  "batchCostingNewBatchDialogTitle": "Nouveau lot",
+  "batchCostingNewBatchDialogBody": "Cela supprimera toute la progression actuelle du lot. Démarrer un nouveau lot ?",
+  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} chacun → {lineTotal} total",
+  "batchCostingAssignmentPrinterLabel": "Imprimante"
 }

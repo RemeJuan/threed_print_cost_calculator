@@ -1382,20 +1382,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingSummaryItemsTitle => 'アイテム';
 
   @override
-  String get batchCostingNewBatchDialogTitle => 'Start new batch';
+  String get batchCostingNewBatchDialogTitle => '新しいバッチを開始';
 
   @override
   String get batchCostingNewBatchDialogBody =>
-      'This will discard all current batch progress. Start a new batch?';
+      '現在のバッチの進行状況はすべて破棄されます。新しいバッチを開始しますか？';
 
   @override
   String batchCostingSummaryPricingItemScopeFormat(
     Object lineTotal,
     Object perUnit,
   ) {
-    return '$perUnit each → $lineTotal total';
+    return '$perUnitずつ → 合計$lineTotal';
   }
 
   @override
-  String get batchCostingAssignmentPrinterLabel => 'Printer';
+  String get batchCostingAssignmentPrinterLabel => 'プリンター';
 }

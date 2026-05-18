@@ -653,8 +653,8 @@
   "batchCostingSummaryEmptyBody": "Fügen Sie Elemente hinzu und setzen Sie den Preis-Scope, bevor Sie die Zusammenfassung prüfen.",
   "batchCostingSummaryPricingTitle": "Preisgestaltung",
   "batchCostingSummaryItemsTitle": "Artikel",
-  "batchCostingNewBatchDialogTitle": "Start new batch",
-  "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
-  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Printer"
+  "batchCostingNewBatchDialogTitle": "Neuen Stapel starten",
+  "batchCostingNewBatchDialogBody": "Dadurch wird der gesamte aktuelle Stapelfortschritt verworfen. Einen neuen Stapel starten?",
+  "batchCostingSummaryPricingItemScopeFormat": "{perUnit} pro → {lineTotal} gesamt",
+  "batchCostingAssignmentPrinterLabel": "Drucker"
 }
