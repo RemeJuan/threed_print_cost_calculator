@@ -1349,6 +1349,49 @@ class AppLocalizationsIt extends AppLocalizations {
       'Rivedi il batch prima di generare un preventivo.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Panoramica';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Elementi';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Quantità totale';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Peso totale';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => 'Tempo di stampa totale';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Peso';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Tempo di stampa';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Costo base';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Aggiustamenti';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Totale elemento';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Totale finale';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Torna all\'ambito prezzo';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'Nessun riepilogo batch';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Aggiungi elementi e imposta l\'ambito prezzo prima di rivedere il riepilogo.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Prezzi';
 
   @override

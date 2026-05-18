@@ -2504,6 +2504,90 @@ abstract class AppLocalizations {
   /// **'Review the batch before generating a quote.'**
   String get batchCostingSummarySubtitle;
 
+  /// No description provided for @batchCostingSummaryOverviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get batchCostingSummaryOverviewTitle;
+
+  /// No description provided for @batchCostingSummaryItemCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get batchCostingSummaryItemCountLabel;
+
+  /// No description provided for @batchCostingSummaryTotalQuantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total quantity'**
+  String get batchCostingSummaryTotalQuantityLabel;
+
+  /// No description provided for @batchCostingSummaryTotalWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total weight'**
+  String get batchCostingSummaryTotalWeightLabel;
+
+  /// No description provided for @batchCostingSummaryTotalDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total print time'**
+  String get batchCostingSummaryTotalDurationLabel;
+
+  /// No description provided for @batchCostingSummaryItemWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get batchCostingSummaryItemWeightLabel;
+
+  /// No description provided for @batchCostingSummaryItemDurationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Print time'**
+  String get batchCostingSummaryItemDurationLabel;
+
+  /// No description provided for @batchCostingSummaryItemBaseCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Base cost'**
+  String get batchCostingSummaryItemBaseCostLabel;
+
+  /// No description provided for @batchCostingSummaryItemAdjustmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjustments'**
+  String get batchCostingSummaryItemAdjustmentLabel;
+
+  /// No description provided for @batchCostingSummaryItemTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item total'**
+  String get batchCostingSummaryItemTotalLabel;
+
+  /// No description provided for @batchCostingSummaryFinalTotalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Final total'**
+  String get batchCostingSummaryFinalTotalLabel;
+
+  /// No description provided for @batchCostingSummaryBackButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to pricing scope'**
+  String get batchCostingSummaryBackButton;
+
+  /// No description provided for @batchCostingSummaryEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No batch summary yet'**
+  String get batchCostingSummaryEmptyTitle;
+
+  /// No description provided for @batchCostingSummaryEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add items and set pricing scope before reviewing the summary.'**
+  String get batchCostingSummaryEmptyBody;
+
   /// No description provided for @batchCostingSummaryPricingTitle.
   ///
   /// In en, this message translates to:

@@ -1326,6 +1326,49 @@ class AppLocalizationsEn extends AppLocalizations {
       'Review the batch before generating a quote.';
 
   @override
+  String get batchCostingSummaryOverviewTitle => 'Overview';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => 'Items';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => 'Total quantity';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => 'Total weight';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => 'Total print time';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => 'Weight';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => 'Print time';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => 'Base cost';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => 'Adjustments';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => 'Item total';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => 'Final total';
+
+  @override
+  String get batchCostingSummaryBackButton => 'Back to pricing scope';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'No batch summary yet';
+
+  @override
+  String get batchCostingSummaryEmptyBody =>
+      'Add items and set pricing scope before reviewing the summary.';
+
+  @override
   String get batchCostingSummaryPricingTitle => 'Pricing';
 
   @override

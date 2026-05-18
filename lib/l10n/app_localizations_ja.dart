@@ -1290,6 +1290,48 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingSummarySubtitle => '見積もりを生成する前にバッチを確認してください。';
 
   @override
+  String get batchCostingSummaryOverviewTitle => '概要';
+
+  @override
+  String get batchCostingSummaryItemCountLabel => '項目数';
+
+  @override
+  String get batchCostingSummaryTotalQuantityLabel => '合計数量';
+
+  @override
+  String get batchCostingSummaryTotalWeightLabel => '合計重量';
+
+  @override
+  String get batchCostingSummaryTotalDurationLabel => '合計印刷時間';
+
+  @override
+  String get batchCostingSummaryItemWeightLabel => '重量';
+
+  @override
+  String get batchCostingSummaryItemDurationLabel => '印刷時間';
+
+  @override
+  String get batchCostingSummaryItemBaseCostLabel => '基本料金';
+
+  @override
+  String get batchCostingSummaryItemAdjustmentLabel => '調整額';
+
+  @override
+  String get batchCostingSummaryItemTotalLabel => '項目合計';
+
+  @override
+  String get batchCostingSummaryFinalTotalLabel => '最終合計';
+
+  @override
+  String get batchCostingSummaryBackButton => '価格範囲へ戻る';
+
+  @override
+  String get batchCostingSummaryEmptyTitle => 'まだバッチ概要がありません';
+
+  @override
+  String get batchCostingSummaryEmptyBody => '概要を確認する前に、項目を追加して価格範囲を設定してください。';
+
+  @override
   String get batchCostingSummaryPricingTitle => '価格設定';
 
   @override
