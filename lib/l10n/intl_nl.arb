@@ -622,9 +622,9 @@
   "batchCostingMaterialAssignmentStockWarning": "Benodigd {required} overschrijdt de geselecteerde voorraad {available}.",
   "batchCostingPricingScopeAppBarTitle": "Prijsbereik",
   "batchCostingPricingScopeSubtitle": "Stel in waar elke prijswaarde geldt.",
-  "batchCostingPricingScopeScopeLabel": "Scope",
-  "batchCostingSummaryAppBarTitle": "Batch summary",
-  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
-  "batchCostingSummaryPricingTitle": "Pricing",
+  "batchCostingPricingScopeScopeLabel": "Bereik",
+  "batchCostingSummaryAppBarTitle": "Batchoverzicht",
+  "batchCostingSummarySubtitle": "Controleer de batch voordat u een offerte genereert.",
+  "batchCostingSummaryPricingTitle": "Prijzen",
   "batchCostingSummaryItemsTitle": "Items"
 }

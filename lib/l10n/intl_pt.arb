@@ -622,9 +622,9 @@
   "batchCostingMaterialAssignmentStockWarning": "O necessário {required} excede o stock selecionado {available}.",
   "batchCostingPricingScopeAppBarTitle": "Âmbito de preço",
   "batchCostingPricingScopeSubtitle": "Defina onde cada valor de preço se aplica.",
-  "batchCostingPricingScopeScopeLabel": "Scope",
-  "batchCostingSummaryAppBarTitle": "Batch summary",
-  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
-  "batchCostingSummaryPricingTitle": "Pricing",
-  "batchCostingSummaryItemsTitle": "Items"
+  "batchCostingPricingScopeScopeLabel": "Âmbito",
+  "batchCostingSummaryAppBarTitle": "Resumo do lote",
+  "batchCostingSummarySubtitle": "Revise o lote antes de gerar um orçamento.",
+  "batchCostingSummaryPricingTitle": "Preços",
+  "batchCostingSummaryItemsTitle": "Itens"
 }

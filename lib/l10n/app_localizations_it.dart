@@ -1339,18 +1339,18 @@ class AppLocalizationsIt extends AppLocalizations {
       'Imposta dove si applica ogni valore di prezzo.';
 
   @override
-  String get batchCostingPricingScopeScopeLabel => 'Scope';
+  String get batchCostingPricingScopeScopeLabel => 'Ambito';
 
   @override
-  String get batchCostingSummaryAppBarTitle => 'Batch summary';
+  String get batchCostingSummaryAppBarTitle => 'Riepilogo batch';
 
   @override
   String get batchCostingSummarySubtitle =>
-      'Review the batch before generating a quote.';
+      'Rivedi il batch prima di generare un preventivo.';
 
   @override
-  String get batchCostingSummaryPricingTitle => 'Pricing';
+  String get batchCostingSummaryPricingTitle => 'Prezzi';
 
   @override
-  String get batchCostingSummaryItemsTitle => 'Items';
+  String get batchCostingSummaryItemsTitle => 'Elementi';
 }

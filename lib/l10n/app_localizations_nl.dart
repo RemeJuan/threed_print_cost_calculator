@@ -1330,17 +1330,17 @@ class AppLocalizationsNl extends AppLocalizations {
       'Stel in waar elke prijswaarde geldt.';
 
   @override
-  String get batchCostingPricingScopeScopeLabel => 'Scope';
+  String get batchCostingPricingScopeScopeLabel => 'Bereik';
 
   @override
-  String get batchCostingSummaryAppBarTitle => 'Batch summary';
+  String get batchCostingSummaryAppBarTitle => 'Batchoverzicht';
 
   @override
   String get batchCostingSummarySubtitle =>
-      'Review the batch before generating a quote.';
+      'Controleer de batch voordat u een offerte genereert.';
 
   @override
-  String get batchCostingSummaryPricingTitle => 'Pricing';
+  String get batchCostingSummaryPricingTitle => 'Prijzen';
 
   @override
   String get batchCostingSummaryItemsTitle => 'Items';

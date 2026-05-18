@@ -621,9 +621,9 @@
   "batchCostingMaterialAssignmentStockWarning": "Yang dibutuhkan {required} melebihi stok terpilih {available}.",
   "batchCostingPricingScopeAppBarTitle": "Ruang harga",
   "batchCostingPricingScopeSubtitle": "Atur di mana setiap nilai harga berlaku.",
-  "batchCostingPricingScopeScopeLabel": "Scope",
-  "batchCostingSummaryAppBarTitle": "Batch summary",
-  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
-  "batchCostingSummaryPricingTitle": "Pricing",
-  "batchCostingSummaryItemsTitle": "Items"
+  "batchCostingPricingScopeScopeLabel": "Lingkup",
+  "batchCostingSummaryAppBarTitle": "Ringkasan batch",
+  "batchCostingSummarySubtitle": "Tinjau batch sebelum membuat kutipan.",
+  "batchCostingSummaryPricingTitle": "Penetapan harga",
+  "batchCostingSummaryItemsTitle": "Item"
 }

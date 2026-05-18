@@ -622,9 +622,9 @@
   "batchCostingMaterialAssignmentStockWarning": "必要量 {required} が選択中の在庫 {available} を超えています。",
   "batchCostingPricingScopeAppBarTitle": "価格範囲",
   "batchCostingPricingScopeSubtitle": "各価格値の適用先を設定します。",
-  "batchCostingPricingScopeScopeLabel": "Scope",
-  "batchCostingSummaryAppBarTitle": "Batch summary",
-  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
-  "batchCostingSummaryPricingTitle": "Pricing",
-  "batchCostingSummaryItemsTitle": "Items"
+  "batchCostingPricingScopeScopeLabel": "スコープ",
+  "batchCostingSummaryAppBarTitle": "バッチ概要",
+  "batchCostingSummarySubtitle": "見積もりを生成する前にバッチを確認してください。",
+  "batchCostingSummaryPricingTitle": "価格設定",
+  "batchCostingSummaryItemsTitle": "アイテム"
 }

@@ -1316,18 +1316,18 @@ class AppLocalizationsId extends AppLocalizations {
       'Atur di mana setiap nilai harga berlaku.';
 
   @override
-  String get batchCostingPricingScopeScopeLabel => 'Scope';
+  String get batchCostingPricingScopeScopeLabel => 'Lingkup';
 
   @override
-  String get batchCostingSummaryAppBarTitle => 'Batch summary';
+  String get batchCostingSummaryAppBarTitle => 'Ringkasan batch';
 
   @override
   String get batchCostingSummarySubtitle =>
-      'Review the batch before generating a quote.';
+      'Tinjau batch sebelum membuat kutipan.';
 
   @override
-  String get batchCostingSummaryPricingTitle => 'Pricing';
+  String get batchCostingSummaryPricingTitle => 'Penetapan harga';
 
   @override
-  String get batchCostingSummaryItemsTitle => 'Items';
+  String get batchCostingSummaryItemsTitle => 'Item';
 }

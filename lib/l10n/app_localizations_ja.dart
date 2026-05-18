@@ -1281,18 +1281,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingPricingScopeSubtitle => '各価格値の適用先を設定します。';
 
   @override
-  String get batchCostingPricingScopeScopeLabel => 'Scope';
+  String get batchCostingPricingScopeScopeLabel => 'スコープ';
 
   @override
-  String get batchCostingSummaryAppBarTitle => 'Batch summary';
+  String get batchCostingSummaryAppBarTitle => 'バッチ概要';
 
   @override
-  String get batchCostingSummarySubtitle =>
-      'Review the batch before generating a quote.';
+  String get batchCostingSummarySubtitle => '見積もりを生成する前にバッチを確認してください。';
 
   @override
-  String get batchCostingSummaryPricingTitle => 'Pricing';
+  String get batchCostingSummaryPricingTitle => '価格設定';
 
   @override
-  String get batchCostingSummaryItemsTitle => 'Items';
+  String get batchCostingSummaryItemsTitle => 'アイテム';
 }
