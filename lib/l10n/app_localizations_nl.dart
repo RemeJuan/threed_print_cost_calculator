@@ -1328,4 +1328,20 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Stel in waar elke prijswaarde geldt.';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'Scope';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'Batch summary';
+
+  @override
+  String get batchCostingSummarySubtitle =>
+      'Review the batch before generating a quote.';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'Pricing';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'Items';
 }

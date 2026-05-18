@@ -1330,4 +1330,20 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Defina onde cada valor de preço se aplica.';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'Scope';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'Batch summary';
+
+  @override
+  String get batchCostingSummarySubtitle =>
+      'Review the batch before generating a quote.';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'Pricing';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'Items';
 }

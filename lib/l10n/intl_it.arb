@@ -620,5 +620,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "Aggiungi almeno un materiale o una bobina per continuare.",
   "batchCostingMaterialAssignmentStockWarning": "Il richiesto {required} supera lo stock selezionato {available}.",
   "batchCostingPricingScopeAppBarTitle": "Ambito prezzo",
-  "batchCostingPricingScopeSubtitle": "Imposta dove si applica ogni valore di prezzo."
+  "batchCostingPricingScopeSubtitle": "Imposta dove si applica ogni valore di prezzo.",
+  "batchCostingPricingScopeScopeLabel": "Scope",
+  "batchCostingSummaryAppBarTitle": "Batch summary",
+  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
+  "batchCostingSummaryPricingTitle": "Pricing",
+  "batchCostingSummaryItemsTitle": "Items"
 }

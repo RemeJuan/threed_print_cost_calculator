@@ -201,8 +201,9 @@ class _BatchPrinterAssignmentPageState
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context)!
-                  .batchCostingPrinterAssignmentRequiredError,
+              AppLocalizations.of(
+                context,
+              )!.batchCostingPrinterAssignmentRequiredError,
             ),
           ),
         );

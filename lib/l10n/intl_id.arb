@@ -620,5 +620,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "Tambahkan setidaknya satu material atau spool untuk melanjutkan.",
   "batchCostingMaterialAssignmentStockWarning": "Yang dibutuhkan {required} melebihi stok terpilih {available}.",
   "batchCostingPricingScopeAppBarTitle": "Ruang harga",
-  "batchCostingPricingScopeSubtitle": "Atur di mana setiap nilai harga berlaku."
+  "batchCostingPricingScopeSubtitle": "Atur di mana setiap nilai harga berlaku.",
+  "batchCostingPricingScopeScopeLabel": "Scope",
+  "batchCostingSummaryAppBarTitle": "Batch summary",
+  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
+  "batchCostingSummaryPricingTitle": "Pricing",
+  "batchCostingSummaryItemsTitle": "Items"
 }

@@ -2485,6 +2485,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Set where each pricing value applies.'**
   String get batchCostingPricingScopeSubtitle;
+
+  /// No description provided for @batchCostingPricingScopeScopeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Scope'**
+  String get batchCostingPricingScopeScopeLabel;
+
+  /// No description provided for @batchCostingSummaryAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch summary'**
+  String get batchCostingSummaryAppBarTitle;
+
+  /// No description provided for @batchCostingSummarySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review the batch before generating a quote.'**
+  String get batchCostingSummarySubtitle;
+
+  /// No description provided for @batchCostingSummaryPricingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pricing'**
+  String get batchCostingSummaryPricingTitle;
+
+  /// No description provided for @batchCostingSummaryItemsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get batchCostingSummaryItemsTitle;
 }
 
 class _AppLocalizationsDelegate
