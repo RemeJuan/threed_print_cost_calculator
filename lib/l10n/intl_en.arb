@@ -548,5 +548,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "Add at least one material or spool to continue.",
   "batchCostingMaterialAssignmentStockWarning": "Required {required} exceeds selected stock {available}.",
   "batchCostingPricingScopeAppBarTitle": "Pricing scope",
-  "batchCostingPricingScopeSubtitle": "Set where each pricing value applies."
+  "batchCostingPricingScopeSubtitle": "Set where each pricing value applies.",
+  "batchCostingPricingScopeScopeLabel": "Scope",
+  "batchCostingSummaryAppBarTitle": "Batch summary",
+  "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
+  "batchCostingSummaryPricingTitle": "Pricing",
+  "batchCostingSummaryItemsTitle": "Items"
 }

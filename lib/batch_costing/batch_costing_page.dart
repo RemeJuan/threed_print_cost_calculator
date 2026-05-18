@@ -364,9 +364,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
       printWeightG: result.printWeightG,
       printDuration: result.printDuration,
     );
-    ref
-        .read(batchCostingProvider.notifier)
-        .updateItem(updatedItem);
+    ref.read(batchCostingProvider.notifier).updateItem(updatedItem);
 
     AppAnalytics.safeLog(
       () => AppAnalytics.batchCostingItemEdited(

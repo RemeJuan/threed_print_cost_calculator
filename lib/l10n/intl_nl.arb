@@ -621,5 +621,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "Voeg minstens één materiaal of spoel toe om door te gaan.",
   "batchCostingMaterialAssignmentStockWarning": "Benodigd {required} overschrijdt de geselecteerde voorraad {available}.",
   "batchCostingPricingScopeAppBarTitle": "Prijsbereik",
-  "batchCostingPricingScopeSubtitle": "Stel in waar elke prijswaarde geldt."
+  "batchCostingPricingScopeSubtitle": "Stel in waar elke prijswaarde geldt.",
+  "batchCostingPricingScopeScopeLabel": "Bereik",
+  "batchCostingSummaryAppBarTitle": "Batchoverzicht",
+  "batchCostingSummarySubtitle": "Controleer de batch voordat u een offerte genereert.",
+  "batchCostingSummaryPricingTitle": "Prijzen",
+  "batchCostingSummaryItemsTitle": "Items"
 }

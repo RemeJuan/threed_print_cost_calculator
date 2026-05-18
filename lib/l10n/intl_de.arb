@@ -620,5 +620,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "Mindestens ein Material oder eine Spule hinzufügen, um fortzufahren.",
   "batchCostingMaterialAssignmentStockWarning": "Benötigt {required} übersteigt den ausgewählten Bestand {available}.",
   "batchCostingPricingScopeAppBarTitle": "Preisbereich",
-  "batchCostingPricingScopeSubtitle": "Lege fest, wo jeder Preiswert gilt."
+  "batchCostingPricingScopeSubtitle": "Lege fest, wo jeder Preiswert gilt.",
+  "batchCostingPricingScopeScopeLabel": "Bereich",
+  "batchCostingSummaryAppBarTitle": "Batch-Zusammenfassung",
+  "batchCostingSummarySubtitle": "Überprüfen Sie den Batch vor der Angebotserstellung.",
+  "batchCostingSummaryPricingTitle": "Preisgestaltung",
+  "batchCostingSummaryItemsTitle": "Artikel"
 }

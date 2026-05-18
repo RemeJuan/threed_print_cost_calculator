@@ -1,6 +1,7 @@
 import 'package:formz/formz.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
+import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 
 enum BatchPrinterAssignmentMode { batchWide, perItem }
 
@@ -13,6 +14,7 @@ class BatchCostingState with FormzMixin {
   final Map<String, String> itemPrinterIds;
   final BatchMaterialAssignmentMode materialAssignmentMode;
   final String? batchMaterialId;
+  final BatchPricingState pricing;
 
   BatchCostingState({
     List<BatchCostingItem>? items,
@@ -21,6 +23,7 @@ class BatchCostingState with FormzMixin {
     Map<String, String>? itemPrinterIds,
     this.materialAssignmentMode = BatchMaterialAssignmentMode.batchWide,
     this.batchMaterialId,
+    this.pricing = const BatchPricingState(),
   }) : items = List.unmodifiable(items ?? const <BatchCostingItem>[]),
        itemPrinterIds = Map.unmodifiable(
          itemPrinterIds ?? const <String, String>{},
@@ -36,6 +39,7 @@ class BatchCostingState with FormzMixin {
     BatchMaterialAssignmentMode? materialAssignmentMode,
     String? batchMaterialId,
     bool clearBatchMaterialId = false,
+    BatchPricingState? pricing,
   }) {
     return BatchCostingState(
       items: items ?? this.items,
@@ -52,6 +56,7 @@ class BatchCostingState with FormzMixin {
       batchMaterialId: clearBatchMaterialId
           ? null
           : batchMaterialId ?? this.batchMaterialId,
+      pricing: pricing ?? this.pricing,
     );
   }
 

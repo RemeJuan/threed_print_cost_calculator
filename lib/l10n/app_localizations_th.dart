@@ -1303,4 +1303,19 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'กำหนดว่าค่าแต่ละรายการใช้กับส่วนใด';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'ขอบเขต';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'สรุปแบตช์';
+
+  @override
+  String get batchCostingSummarySubtitle => 'ตรวจสอบแบตช์ก่อนสร้างใบเสนอราคา';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'ราคา';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'รายการ';
 }

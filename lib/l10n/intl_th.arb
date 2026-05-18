@@ -621,5 +621,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "เพิ่มวัสดุหรือสปูลอย่างน้อยหนึ่งรายการเพื่อไปต่อ",
   "batchCostingMaterialAssignmentStockWarning": "ต้องใช้ {required} เกินสต็อกที่เลือก {available}",
   "batchCostingPricingScopeAppBarTitle": "ขอบเขตราคา",
-  "batchCostingPricingScopeSubtitle": "กำหนดว่าค่าแต่ละรายการใช้กับส่วนใด"
+  "batchCostingPricingScopeSubtitle": "กำหนดว่าค่าแต่ละรายการใช้กับส่วนใด",
+  "batchCostingPricingScopeScopeLabel": "ขอบเขต",
+  "batchCostingSummaryAppBarTitle": "สรุปแบตช์",
+  "batchCostingSummarySubtitle": "ตรวจสอบแบตช์ก่อนสร้างใบเสนอราคา",
+  "batchCostingSummaryPricingTitle": "ราคา",
+  "batchCostingSummaryItemsTitle": "รายการ"
 }

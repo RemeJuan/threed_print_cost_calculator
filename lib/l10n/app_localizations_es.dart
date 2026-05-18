@@ -1331,4 +1331,20 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Define dónde se aplica cada valor de precio.';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'Ámbito';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'Resumen del lote';
+
+  @override
+  String get batchCostingSummarySubtitle =>
+      'Revise el lote antes de generar una cotización.';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'Precios';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'Artículos';
 }
