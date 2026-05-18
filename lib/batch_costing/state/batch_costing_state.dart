@@ -45,14 +45,18 @@ class BatchCostingState with FormzMixin {
     this.batchMaterialId,
     Map<String, List<BatchAssignmentAllocation>>? itemMaterialAllocations,
     this.pricing = const BatchPricingState(),
-  })  : items = List.unmodifiable(items ?? const <BatchCostingItem>[]),
-        itemPrinterIds = Map.unmodifiable(itemPrinterIds ?? const <String, String>{}),
-        itemPrinterAllocations = Map.unmodifiable(
-          itemPrinterAllocations ?? const <String, List<BatchAssignmentAllocation>>{},
-        ),
-        itemMaterialAllocations = Map.unmodifiable(
-          itemMaterialAllocations ?? const <String, List<BatchAssignmentAllocation>>{},
-        );
+  }) : items = List.unmodifiable(items ?? const <BatchCostingItem>[]),
+       itemPrinterIds = Map.unmodifiable(
+         itemPrinterIds ?? const <String, String>{},
+       ),
+       itemPrinterAllocations = Map.unmodifiable(
+         itemPrinterAllocations ??
+             const <String, List<BatchAssignmentAllocation>>{},
+       ),
+       itemMaterialAllocations = Map.unmodifiable(
+         itemMaterialAllocations ??
+             const <String, List<BatchAssignmentAllocation>>{},
+       );
 
   BatchCostingState copyWith({
     List<BatchCostingItem>? items,
@@ -72,14 +76,22 @@ class BatchCostingState with FormzMixin {
   }) {
     return BatchCostingState(
       items: items ?? this.items,
-      printerAssignmentMode: printerAssignmentMode ?? this.printerAssignmentMode,
-      batchPrinterId: clearBatchPrinterId ? null : batchPrinterId ?? this.batchPrinterId,
-      itemPrinterIds: clearItemPrinterIds ? null : itemPrinterIds ?? this.itemPrinterIds,
+      printerAssignmentMode:
+          printerAssignmentMode ?? this.printerAssignmentMode,
+      batchPrinterId: clearBatchPrinterId
+          ? null
+          : batchPrinterId ?? this.batchPrinterId,
+      itemPrinterIds: clearItemPrinterIds
+          ? null
+          : itemPrinterIds ?? this.itemPrinterIds,
       itemPrinterAllocations: clearItemPrinterAllocations
           ? null
           : itemPrinterAllocations ?? this.itemPrinterAllocations,
-      materialAssignmentMode: materialAssignmentMode ?? this.materialAssignmentMode,
-      batchMaterialId: clearBatchMaterialId ? null : batchMaterialId ?? this.batchMaterialId,
+      materialAssignmentMode:
+          materialAssignmentMode ?? this.materialAssignmentMode,
+      batchMaterialId: clearBatchMaterialId
+          ? null
+          : batchMaterialId ?? this.batchMaterialId,
       itemMaterialAllocations: clearItemMaterialAllocations
           ? null
           : itemMaterialAllocations ?? this.itemMaterialAllocations,
