@@ -622,5 +622,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "Ajoutez au moins un matériau ou une bobine pour continuer.",
   "batchCostingMaterialAssignmentStockWarning": "Le requis {required} dépasse le stock sélectionné {available}.",
   "batchCostingPricingScopeAppBarTitle": "Portée du prix",
-  "batchCostingPricingScopeSubtitle": "Définissez où chaque valeur de prix s'applique."
+  "batchCostingPricingScopeSubtitle": "Définissez où chaque valeur de prix s'applique.",
+  "batchCostingPricingScopeScopeLabel": "Portée",
+  "batchCostingSummaryAppBarTitle": "Résumé du lot",
+  "batchCostingSummarySubtitle": "Vérifiez le lot avant de générer un devis.",
+  "batchCostingSummaryPricingTitle": "Tarification",
+  "batchCostingSummaryItemsTitle": "Articles"
 }

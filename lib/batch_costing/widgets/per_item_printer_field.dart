@@ -28,7 +28,8 @@ class PerItemPrinterField extends StatelessWidget {
         Text(itemName, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
-          initialValue: printers.any((printer) => printer.id == selectedPrinterId)
+          initialValue:
+              printers.any((printer) => printer.id == selectedPrinterId)
               ? selectedPrinterId
               : null,
           hint: Text(hintText),

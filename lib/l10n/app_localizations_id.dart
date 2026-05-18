@@ -1314,4 +1314,20 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Atur di mana setiap nilai harga berlaku.';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'Lingkup';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'Ringkasan batch';
+
+  @override
+  String get batchCostingSummarySubtitle =>
+      'Tinjau batch sebelum membuat kutipan.';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'Penetapan harga';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'Item';
 }

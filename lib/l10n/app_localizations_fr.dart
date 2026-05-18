@@ -1345,4 +1345,20 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Définissez où chaque valeur de prix s\'applique.';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'Portée';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'Résumé du lot';
+
+  @override
+  String get batchCostingSummarySubtitle =>
+      'Vérifiez le lot avant de générer un devis.';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'Tarification';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'Articles';
 }

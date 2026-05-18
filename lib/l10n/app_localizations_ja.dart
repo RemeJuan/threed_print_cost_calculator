@@ -1279,4 +1279,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingPricingScopeSubtitle => '各価格値の適用先を設定します。';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'スコープ';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'バッチ概要';
+
+  @override
+  String get batchCostingSummarySubtitle => '見積もりを生成する前にバッチを確認してください。';
+
+  @override
+  String get batchCostingSummaryPricingTitle => '価格設定';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'アイテム';
 }

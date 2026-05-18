@@ -1328,4 +1328,20 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Lege fest, wo jeder Preiswert gilt.';
+
+  @override
+  String get batchCostingPricingScopeScopeLabel => 'Bereich';
+
+  @override
+  String get batchCostingSummaryAppBarTitle => 'Batch-Zusammenfassung';
+
+  @override
+  String get batchCostingSummarySubtitle =>
+      'Überprüfen Sie den Batch vor der Angebotserstellung.';
+
+  @override
+  String get batchCostingSummaryPricingTitle => 'Preisgestaltung';
+
+  @override
+  String get batchCostingSummaryItemsTitle => 'Artikel';
 }

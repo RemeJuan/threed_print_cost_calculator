@@ -55,9 +55,15 @@ void main() {
     notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.batchWide);
     notifier.setBatchPrinterId('printer-1');
 
-    expect(container.read(batchCostingProvider).printerAssignmentMode, BatchPrinterAssignmentMode.batchWide);
+    expect(
+      container.read(batchCostingProvider).printerAssignmentMode,
+      BatchPrinterAssignmentMode.batchWide,
+    );
     expect(container.read(batchCostingProvider).batchPrinterId, 'printer-1');
-    expect(container.read(batchCostingProvider).itemPrinterIds['item-1'], 'printer-1');
+    expect(
+      container.read(batchCostingProvider).itemPrinterIds['item-1'],
+      'printer-1',
+    );
   });
 
   test('stores per-item printer assignment state', () {
@@ -77,7 +83,13 @@ void main() {
     notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.perItem);
     notifier.setItemPrinterId('item-1', 'printer-2');
 
-    expect(container.read(batchCostingProvider).printerAssignmentMode, BatchPrinterAssignmentMode.perItem);
-    expect(container.read(batchCostingProvider).itemPrinterIds['item-1'], 'printer-2');
+    expect(
+      container.read(batchCostingProvider).printerAssignmentMode,
+      BatchPrinterAssignmentMode.perItem,
+    );
+    expect(
+      container.read(batchCostingProvider).itemPrinterIds['item-1'],
+      'printer-2',
+    );
   });
 }

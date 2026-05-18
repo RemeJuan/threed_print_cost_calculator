@@ -2,6 +2,7 @@ import 'package:riverpod/riverpod.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 
 final batchCostingProvider =
     NotifierProvider<BatchCostingNotifier, BatchCostingState>(
@@ -82,6 +83,74 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
           else
             current,
       ],
+    );
+  }
+
+  void setFailureRisk(String value) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        failureRisk: state.pricing.failureRisk.copyWith(value: value),
+      ),
+    );
+  }
+
+  void setFailureRiskScope(BatchPricingScope scope) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        failureRisk: state.pricing.failureRisk.copyWith(scope: scope),
+      ),
+    );
+  }
+
+  void setMarkupPercent(String value) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        markupPercent: state.pricing.markupPercent.copyWith(value: value),
+      ),
+    );
+  }
+
+  void setMarkupPercentScope(BatchPricingScope scope) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        markupPercent: state.pricing.markupPercent.copyWith(scope: scope),
+      ),
+    );
+  }
+
+  void setLabourRate(String value) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        labourRate: state.pricing.labourRate.copyWith(value: value),
+      ),
+    );
+  }
+
+  void setLabourRateScope(BatchPricingScope scope) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        labourRate: state.pricing.labourRate.copyWith(scope: scope),
+      ),
+    );
+  }
+
+  void setAdditionalCostAmount(String value) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        additionalCostAmount: state.pricing.additionalCostAmount.copyWith(
+          value: value,
+        ),
+      ),
+    );
+  }
+
+  void setAdditionalCostAmountScope(BatchPricingScope scope) {
+    state = state.copyWith(
+      pricing: state.pricing.copyWith(
+        additionalCostAmount: state.pricing.additionalCostAmount.copyWith(
+          scope: scope,
+        ),
+      ),
     );
   }
 

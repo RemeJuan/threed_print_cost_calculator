@@ -621,5 +621,10 @@
   "batchCostingMaterialAssignmentNoMaterialsMessage": "続けるには、少なくとも1つの材料またはスプールを追加してください。",
   "batchCostingMaterialAssignmentStockWarning": "必要量 {required} が選択中の在庫 {available} を超えています。",
   "batchCostingPricingScopeAppBarTitle": "価格範囲",
-  "batchCostingPricingScopeSubtitle": "各価格値の適用先を設定します。"
+  "batchCostingPricingScopeSubtitle": "各価格値の適用先を設定します。",
+  "batchCostingPricingScopeScopeLabel": "スコープ",
+  "batchCostingSummaryAppBarTitle": "バッチ概要",
+  "batchCostingSummarySubtitle": "見積もりを生成する前にバッチを確認してください。",
+  "batchCostingSummaryPricingTitle": "価格設定",
+  "batchCostingSummaryItemsTitle": "アイテム"
 }

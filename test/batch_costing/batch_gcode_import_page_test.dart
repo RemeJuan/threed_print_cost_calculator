@@ -18,7 +18,9 @@ void main() {
   testWidgets('hides flow when batch costing disabled', (tester) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpApp(const BatchGCodeImportPage());
-    final l10n = AppLocalizations.of(tester.element(find.byType(BatchGCodeImportPage)))!;
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
     expect(find.text(l10n.batchGcodeImportTitle), findsNothing);
     expect(find.text(l10n.batchGcodeImportPickButton), findsNothing);
   });
