@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.da
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
@@ -70,7 +71,12 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
   Future<void> _loadDefaults() async {
     if (!ref.read(batchCostingEnabledProvider)) return;
 
-    final settings = await ref.read(settingsServiceProvider).get();
+    late final GeneralSettingsModel settings;
+    try {
+      settings = await ref.read(settingsServiceProvider).get();
+    } catch (_) {
+      return;
+    }
     if (!mounted) return;
     final notifier = ref.read(batchCostingProvider.notifier);
     final state = ref.read(batchCostingProvider);
