@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_email.dart';
@@ -294,15 +295,11 @@ class _GCodeImportFeedbackPageState
 
       await ref.read(gcodeImportFeedbackMailerProvider).send(draft);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.gcodeImportFeedbackSentMessage)),
-      );
+      BotToast.showText(text: l10n.gcodeImportFeedbackSentMessage);
       Navigator.of(context).pop();
     } catch (_) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.mailClientError)));
+      BotToast.showText(text: l10n.mailClientError);
     } finally {
       if (mounted) {
         setState(() {

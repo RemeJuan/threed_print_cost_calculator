@@ -78,7 +78,6 @@ class _SettingsVersionTapTargetState
     final container =
         appProviderContainer ?? ProviderScope.containerOf(ctx, listen: false);
     final l10n = AppLocalizations.of(ctx)!;
-    final messenger = ScaffoldMessenger.maybeOf(ctx);
 
     final action = await _showToolsDialog();
 
@@ -87,7 +86,6 @@ class _SettingsVersionTapTargetState
       case TestDataAction.seed:
         await _confirmAndRun(
           container: container,
-          messenger: messenger,
           title: l10n.seedTestDataConfirmTitle,
           body: l10n.seedTestDataConfirmBody,
           confirmLabel: l10n.seedTestDataButton,
@@ -99,7 +97,6 @@ class _SettingsVersionTapTargetState
       case TestDataAction.purge:
         await _confirmAndRun(
           container: container,
-          messenger: messenger,
           title: l10n.purgeLocalDataConfirmTitle,
           body: l10n.purgeLocalDataConfirmBody,
           confirmLabel: l10n.purgeLocalDataButton,
@@ -111,7 +108,6 @@ class _SettingsVersionTapTargetState
       case TestDataAction.enablePremium:
         await _enablePremiumFlow(
           container: container,
-          messenger: messenger,
           l10n: l10n,
         );
         break;
@@ -251,7 +247,6 @@ class _SettingsVersionTapTargetState
 
   Future<void> _enablePremiumFlow({
     required ProviderContainer container,
-    required ScaffoldMessengerState? messenger,
     required AppLocalizations l10n,
   }) async {
     final codeOk = await _showEnablePremiumDialog();
@@ -264,15 +259,11 @@ class _SettingsVersionTapTargetState
 
     if (result.success) {
       await _refreshAppState(container);
-      messenger?.showSnackBar(
-        SnackBar(content: Text(l10n.testDataSeededMessage)),
-      );
+      BotToast.showText(text: l10n.testDataSeededMessage);
       return;
     }
 
-    messenger?.showSnackBar(
-      SnackBar(content: Text(l10n.testDataActionFailedMessage)),
-    );
+    BotToast.showText(text: l10n.testDataActionFailedMessage);
   }
 
   String _expectedCode() {
@@ -282,7 +273,6 @@ class _SettingsVersionTapTargetState
 
   Future<void> _confirmAndRun({
     required ProviderContainer container,
-    required ScaffoldMessengerState? messenger,
     required String title,
     required String body,
     required String confirmLabel,
@@ -302,11 +292,11 @@ class _SettingsVersionTapTargetState
 
     if (result.success) {
       await _refreshAppState(container);
-      messenger?.showSnackBar(SnackBar(content: Text(successMessage)));
+      BotToast.showText(text: successMessage);
       return;
     }
 
-    messenger?.showSnackBar(SnackBar(content: Text(failureMessage)));
+    BotToast.showText(text: failureMessage);
   }
 
   Future<void> _refreshAppState(ProviderContainer container) async {

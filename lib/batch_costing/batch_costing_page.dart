@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -257,15 +258,9 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         const Duration(milliseconds: 1000),
                         () {
                           if (!context.mounted) return;
-                          ScaffoldMessenger.of(context)
-                            ..clearSnackBars()
-                            ..showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  l10n.batchCostingAssignmentQuantityChangedMessage,
-                                ),
-                              ),
-                            );
+                          BotToast.showText(
+                            text: l10n.batchCostingAssignmentQuantityChangedMessage,
+                          );
                         },
                       );
                     }
@@ -439,10 +434,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
         .read(batchCostingProvider.notifier)
         .updateItem(updatedItem);
     if (cleared && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.batchCostingAssignmentQuantityChangedMessage),
-        ),
+      BotToast.showText(
+        text: l10n.batchCostingAssignmentQuantityChangedMessage,
       );
     }
 

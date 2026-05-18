@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -37,7 +38,6 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
 
   Future<void> _downloadTemplate() async {
     File? tempFile;
-    final messenger = ScaffoldMessenger.of(context);
     try {
       tempFile = File(
         '${(await getTemporaryDirectory()).path}/material_template.csv',
@@ -52,7 +52,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       );
     } catch (e) {
       if (!mounted) return;
-      messenger.showSnackBar(SnackBar(content: Text(_l10n!.csvTemplateError)));
+      BotToast.showText(text: _l10n!.csvTemplateError);
     } finally {
       if (tempFile != null && await tempFile.exists()) {
         await tempFile.delete();
@@ -61,12 +61,11 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
   }
 
   Future<void> _pickFile() async {
-    final messenger = ScaffoldMessenger.of(context);
     final result = await openFile();
 
     if (result == null) return;
     if (!result.name.toLowerCase().endsWith('.csv')) {
-      messenger.showSnackBar(SnackBar(content: Text(_l10n!.csvFileTypeError)));
+      BotToast.showText(text: _l10n!.csvFileTypeError);
       return;
     }
 
@@ -76,7 +75,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       _parseCsv(content);
     } catch (e) {
       if (!mounted) return;
-      messenger.showSnackBar(SnackBar(content: Text(_l10n!.csvReadError)));
+      BotToast.showText(text: _l10n!.csvReadError);
     }
   }
 
@@ -198,7 +197,6 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       return;
     }
 
-    final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
     final repo = ref.read(materialsRepositoryProvider);
     var imported = 0;
@@ -242,9 +240,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     );
 
     if (!mounted) return;
-    messenger.showSnackBar(
-      SnackBar(content: Text(_l10n!.csvImportSuccessMessage(imported))),
-    );
+    BotToast.showText(text: _l10n!.csvImportSuccessMessage(imported));
     navigator.pop();
   }
 
