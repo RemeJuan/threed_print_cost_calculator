@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costi
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
@@ -34,6 +35,7 @@ void main() {
 
     await tester.pumpApp(const BatchPricingScopePage(), [
       batchCostingProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -55,6 +57,7 @@ void main() {
 
     await tester.pumpApp(const BatchPricingScopePage(), [
       batchCostingProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -94,6 +97,7 @@ void main() {
 
     await tester.pumpApp(const BatchPricingScopePage(), [
       batchCostingProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -123,6 +127,7 @@ void main() {
 
     await tester.pumpApp(const BatchPricingScopePage(), [
       batchCostingProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -156,7 +161,9 @@ void main() {
   testWidgets('disabled feature prevents access', (tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    await tester.pumpApp(const BatchPricingScopePage());
+    await tester.pumpApp(const BatchPricingScopePage(), [
+      isPremiumProvider.overrideWithValue(false),
+    ]);
 
     expect(find.text('Pricing scope'), findsNothing);
   });

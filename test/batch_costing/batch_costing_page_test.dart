@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import '../helpers/helpers.dart';
 
@@ -16,7 +17,9 @@ void main() {
   testWidgets('hides the batch review when disabled', (tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    await tester.pumpApp(const BatchCostingPage());
+    await tester.pumpApp(const BatchCostingPage(), [
+      isPremiumProvider.overrideWithValue(false),
+    ]);
 
     expect(find.text('Batch item review'), findsNothing);
     expect(find.text('No batch items yet'), findsNothing);
@@ -40,6 +43,7 @@ void main() {
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier([item]),
       ),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     final l10n = AppLocalizations.of(
@@ -71,6 +75,7 @@ void main() {
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
       ),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     final l10n = AppLocalizations.of(
@@ -140,6 +145,7 @@ void main() {
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
       ),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     final l10n = AppLocalizations.of(
