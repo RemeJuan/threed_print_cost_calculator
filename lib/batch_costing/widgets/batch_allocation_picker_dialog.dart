@@ -151,6 +151,7 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
               Text('${l10n.batchCostingAssignmentCopiesLabel}: $_total'),
               const SizedBox(height: 12),
               TextField(
+                key: const ValueKey('allocation_picker_search'),
                 controller: _searchController,
                 decoration: InputDecoration(
                   labelText: l10n.batchCostingAllocationPickerSearchLabel,
@@ -173,6 +174,7 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
                     SizedBox(
                       width: 72,
                       child: TextField(
+                        key: ValueKey('allocation_picker_qty_$i'),
                         controller: _entries[i].controller,
                         keyboardType: TextInputType.number,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
