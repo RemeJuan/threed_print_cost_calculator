@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_pick
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
@@ -17,7 +18,9 @@ void main() {
 
   testWidgets('hides flow when batch costing disabled', (tester) async {
     SharedPreferences.setMockInitialValues({});
-    await tester.pumpApp(const BatchGCodeImportPage());
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(false),
+    ]);
     final l10n = AppLocalizations.of(
       tester.element(find.byType(BatchGCodeImportPage)),
     )!;
@@ -33,6 +36,7 @@ void main() {
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
       gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     final l10n = AppLocalizations.of(
@@ -57,6 +61,7 @@ void main() {
         _FakePicker([_file('bad.gcode')]),
       ),
       gcodeImportServiceProvider.overrideWithValue(_FakeService(null)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     final l10n = AppLocalizations.of(

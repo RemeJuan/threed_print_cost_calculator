@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_section.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../../helpers/helpers.dart';
@@ -57,6 +58,7 @@ void main() {
       });
       final db = await tester.pumpApp(const CalculatorPage(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
+        isPremiumProvider.overrideWithValue(true),
       ]);
       addTearDown(() => db.close());
 

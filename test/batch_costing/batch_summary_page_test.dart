@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costi
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
@@ -17,7 +18,9 @@ void main() {
   testWidgets('hides when batch costing is disabled', (tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    await tester.pumpApp(const BatchSummaryPage());
+    await tester.pumpApp(const BatchSummaryPage(), [
+      isPremiumProvider.overrideWithValue(false),
+    ]);
 
     expect(find.text('Batch summary'), findsNothing);
   });
@@ -31,6 +34,7 @@ void main() {
 
     await tester.pumpApp(const BatchSummaryPage(), [
       batchCostingProvider.overrideWith(() => _EmptyBatchCostingNotifier()),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     expect(find.text('No batch summary yet'), findsOneWidget);
@@ -44,6 +48,7 @@ void main() {
 
     await tester.pumpApp(const BatchSummaryPage(), [
       batchCostingProvider.overrideWith(() => _SummaryBatchCostingNotifier()),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     final l10n = AppLocalizations.of(

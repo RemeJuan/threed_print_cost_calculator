@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costi
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
@@ -49,6 +50,7 @@ void main() {
     await tester.pumpApp(const BatchMaterialAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
       materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -68,6 +70,7 @@ void main() {
     await tester.pumpApp(const BatchMaterialAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
       materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -98,6 +101,7 @@ void main() {
     await tester.pumpApp(const BatchMaterialAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
       materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -124,6 +128,7 @@ void main() {
     await tester.pumpApp(const BatchMaterialAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
       materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -157,6 +162,7 @@ void main() {
     await tester.pumpApp(const BatchMaterialAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
       materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -191,7 +197,9 @@ void main() {
   testWidgets('disabled feature prevents access', (tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    await tester.pumpApp(const BatchMaterialAssignmentPage());
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
+      isPremiumProvider.overrideWithValue(false),
+    ]);
 
     expect(find.text('Material assignment'), findsNothing);
   });
