@@ -81,27 +81,31 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       shouldSubmit = true;
     }
 
-    if (state.baselineSetupFee != settingsSetupFee) {
-      nextState = nextState.copyWith(baselineSetupFee: settingsSetupFee);
-    }
-    final setupFeeOverridden = state.setupFee.value != state.baselineSetupFee;
-    if (!setupFeeOverridden && state.setupFee.value != settingsSetupFee) {
-      nextState = nextState.copyWith(
-        setupFee: NumberInput.dirty(value: settingsSetupFee),
-      );
-      shouldSubmit = true;
-    }
+    if (!state.markupPercentOverridden) {
+      if (state.baselineSetupFee != settingsSetupFee) {
+        nextState = nextState.copyWith(baselineSetupFee: settingsSetupFee);
+      }
+      final setupFeeOverridden =
+          state.setupFee.value != state.baselineSetupFee;
+      if (!setupFeeOverridden && state.setupFee.value != settingsSetupFee) {
+        nextState = nextState.copyWith(
+          setupFee: NumberInput.dirty(value: settingsSetupFee),
+        );
+        shouldSubmit = true;
+      }
 
-    if (state.baselineRoundingMode != settingsRoundingMode) {
-      nextState = nextState.copyWith(
-        baselineRoundingMode: settingsRoundingMode,
-      );
-    }
-    final roundingModeOverridden =
-        state.roundingMode != state.baselineRoundingMode;
-    if (!roundingModeOverridden && state.roundingMode != settingsRoundingMode) {
-      nextState = nextState.copyWith(roundingMode: settingsRoundingMode);
-      shouldSubmit = true;
+      if (state.baselineRoundingMode != settingsRoundingMode) {
+        nextState = nextState.copyWith(
+          baselineRoundingMode: settingsRoundingMode,
+        );
+      }
+      final roundingModeOverridden =
+          state.roundingMode != state.baselineRoundingMode;
+      if (!roundingModeOverridden &&
+          state.roundingMode != settingsRoundingMode) {
+        nextState = nextState.copyWith(roundingMode: settingsRoundingMode);
+        shouldSubmit = true;
+      }
     }
 
     if (identical(nextState, state)) return;

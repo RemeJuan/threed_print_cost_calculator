@@ -1270,5 +1270,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batchCostingMaterialAssignmentSubtitle =>
-      'Material assignment continues in the next batch costing step.';
+      'Assign materials or spools before pricing.';
+
+  @override
+  String get batchCostingMaterialAssignmentMaterialLabel => 'Material or spool';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideMode => 'Batch-wide';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemMode => 'Per item';
+
+  @override
+  String get batchCostingMaterialAssignmentBatchWideHint =>
+      'Choose one material for all items.';
+
+  @override
+  String get batchCostingMaterialAssignmentPerItemHint =>
+      'Choose a material for this item.';
+
+  @override
+  String get batchCostingMaterialAssignmentRequiredError =>
+      'Choose a material to continue.';
+
+  @override
+  String get batchCostingMaterialAssignmentContinueButton => 'Continue';
+
+  @override
+  String get batchCostingMaterialAssignmentNoMaterialsMessage =>
+      'Add at least one material or spool to continue.';
+
+  @override
+  String batchCostingMaterialAssignmentStockWarning(
+    Object available,
+    Object required,
+  ) {
+    return 'Required $required exceeds selected stock $available.';
+  }
+
+  @override
+  String get batchCostingPricingScopeAppBarTitle => 'Pricing scope';
+
+  @override
+  String get batchCostingPricingScopeSubtitle =>
+      'Set where each pricing value applies.';
 }

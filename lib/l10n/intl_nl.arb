@@ -610,5 +610,16 @@
   "batchCostingPrinterAssignmentContinueButton": "Doorgaan",
   "batchCostingPrinterAssignmentNoPrintersMessage": "Er zijn nog geen printers beschikbaar.",
   "batchCostingMaterialAssignmentAppBarTitle": "Materiaaltoewijzing",
-  "batchCostingMaterialAssignmentSubtitle": "De materiaaltoewijzing gaat verder in de volgende stap."
+  "batchCostingMaterialAssignmentSubtitle": "Wijs materialen of spoelen toe vóór de prijs.",
+  "batchCostingMaterialAssignmentMaterialLabel": "Materiaal of spoel",
+  "batchCostingMaterialAssignmentBatchWideMode": "Hele batch",
+  "batchCostingMaterialAssignmentPerItemMode": "Per item",
+  "batchCostingMaterialAssignmentBatchWideHint": "Kies één materiaal voor alle items.",
+  "batchCostingMaterialAssignmentPerItemHint": "Kies een materiaal voor dit item.",
+  "batchCostingMaterialAssignmentRequiredError": "Kies een materiaal om door te gaan.",
+  "batchCostingMaterialAssignmentContinueButton": "Doorgaan",
+  "batchCostingMaterialAssignmentNoMaterialsMessage": "Voeg minstens één materiaal of spoel toe om door te gaan.",
+  "batchCostingMaterialAssignmentStockWarning": "Benodigd {required} overschrijdt de geselecteerde voorraad {available}.",
+  "batchCostingPricingScopeAppBarTitle": "Prijsbereik",
+  "batchCostingPricingScopeSubtitle": "Stel in waar elke prijswaarde geldt."
 }

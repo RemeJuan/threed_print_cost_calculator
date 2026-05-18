@@ -609,5 +609,16 @@
   "batchCostingPrinterAssignmentContinueButton": "Lanjutkan",
   "batchCostingPrinterAssignmentNoPrintersMessage": "Belum ada printer yang tersedia.",
   "batchCostingMaterialAssignmentAppBarTitle": "Penugasan material",
-  "batchCostingMaterialAssignmentSubtitle": "Penugasan material berlanjut pada langkah berikutnya."
+  "batchCostingMaterialAssignmentSubtitle": "Tetapkan material atau spool sebelum harga.",
+  "batchCostingMaterialAssignmentMaterialLabel": "Material atau spool",
+  "batchCostingMaterialAssignmentBatchWideMode": "Seluruh batch",
+  "batchCostingMaterialAssignmentPerItemMode": "Per item",
+  "batchCostingMaterialAssignmentBatchWideHint": "Pilih satu material untuk semua item.",
+  "batchCostingMaterialAssignmentPerItemHint": "Pilih material untuk item ini.",
+  "batchCostingMaterialAssignmentRequiredError": "Pilih material untuk melanjutkan.",
+  "batchCostingMaterialAssignmentContinueButton": "Lanjutkan",
+  "batchCostingMaterialAssignmentNoMaterialsMessage": "Tambahkan setidaknya satu material atau spool untuk melanjutkan.",
+  "batchCostingMaterialAssignmentStockWarning": "Yang dibutuhkan {required} melebihi stok terpilih {available}.",
+  "batchCostingPricingScopeAppBarTitle": "Ruang harga",
+  "batchCostingPricingScopeSubtitle": "Atur di mana setiap nilai harga berlaku."
 }
