@@ -50,13 +50,13 @@ class BatchCostingState with FormzMixin {
          itemPrinterIds ?? const <String, String>{},
        ),
        itemPrinterAllocations = Map.unmodifiable(
-         itemPrinterAllocations ??
-             const <String, List<BatchAssignmentAllocation>>{},
-       ),
-       itemMaterialAllocations = Map.unmodifiable(
-         itemMaterialAllocations ??
-             const <String, List<BatchAssignmentAllocation>>{},
-       );
+          itemPrinterAllocations ??
+              const <String, List<BatchAssignmentAllocation>>{},
+        ),
+        itemMaterialAllocations = Map.unmodifiable(
+          itemMaterialAllocations ??
+              const <String, List<BatchAssignmentAllocation>>{},
+        );
 
   BatchCostingState copyWith({
     List<BatchCostingItem>? items,
