@@ -984,6 +984,60 @@ abstract class AppLocalizations {
   /// **'Enable batch costing'**
   String get enableBatchCostingButton;
 
+  /// No description provided for @batchCostingSummarySaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save quote'**
+  String get batchCostingSummarySaveButton;
+
+  /// No description provided for @batchCostingSummarySaveSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote saved'**
+  String get batchCostingSummarySaveSuccessTitle;
+
+  /// No description provided for @batchCostingSummarySaveSuccessBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to history.'**
+  String get batchCostingSummarySaveSuccessBody;
+
+  /// No description provided for @batchCostingSummaryViewHistoryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'View history'**
+  String get batchCostingSummaryViewHistoryButton;
+
+  /// No description provided for @batchCostingSummarySaveErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save quote'**
+  String get batchCostingSummarySaveErrorMessage;
+
+  /// No description provided for @batchCostingSummaryDefaultQuoteName.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch quote'**
+  String get batchCostingSummaryDefaultQuoteName;
+
+  /// No description provided for @batchHistoryItemsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch items'**
+  String get batchHistoryItemsTitle;
+
+  /// No description provided for @batchHistorySummaryLine.
+  ///
+  /// In en, this message translates to:
+  /// **'{itemCount} items • {totalQuantity} copies'**
+  String batchHistorySummaryLine(Object itemCount, Object totalQuantity);
+
+  /// No description provided for @batchHistoryItemRow.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} × {quantity}'**
+  String batchHistoryItemRow(Object name, Object quantity);
+
   /// No description provided for @showWhatsNewButton.
   ///
   /// In en, this message translates to:

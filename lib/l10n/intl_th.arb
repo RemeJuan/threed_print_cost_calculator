@@ -330,6 +330,27 @@
   "clearUpdateCooldownButton": "ล้างช่วงพักอัปเดต",
   "previewCancelFeedbackButton": "ดูตัวอย่างความคิดเห็นการยกเลิก",
   "enableBatchCostingButton": "Enable batch costing",
+  "batchCostingSummarySaveButton": "Save quote",
+  "batchCostingSummarySaveSuccessTitle": "Quote saved",
+  "batchCostingSummarySaveSuccessBody": "Saved to history.",
+  "batchCostingSummaryViewHistoryButton": "View history",
+  "batchCostingSummarySaveErrorMessage": "Could not save quote",
+  "batchCostingSummaryDefaultQuoteName": "Batch quote",
+  "batchHistoryItemsTitle": "Batch items",
+  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "@batchHistorySummaryLine": {
+    "placeholders": {
+      "itemCount": {},
+      "totalQuantity": {}
+    }
+  },
+  "batchHistoryItemRow": "{name} × {quantity}",
+  "@batchHistoryItemRow": {
+    "placeholders": {
+      "name": {},
+      "quantity": {}
+    }
+  },
   "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "เปิดใช้งานพรีเมียม",
   "enablePremiumBody": "ป้อนรหัสยืนยันเพื่อเปิดการทดสอบพรีเมียมภายในเครื่อง",

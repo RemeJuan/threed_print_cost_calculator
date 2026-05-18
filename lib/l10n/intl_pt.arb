@@ -336,6 +336,27 @@
   "clearUpdateCooldownButton": "Limpar espera de atualização",
   "previewCancelFeedbackButton": "Prévia do feedback de cancelamento",
   "enableBatchCostingButton": "Enable batch costing",
+  "batchCostingSummarySaveButton": "Save quote",
+  "batchCostingSummarySaveSuccessTitle": "Quote saved",
+  "batchCostingSummarySaveSuccessBody": "Saved to history.",
+  "batchCostingSummaryViewHistoryButton": "View history",
+  "batchCostingSummarySaveErrorMessage": "Could not save quote",
+  "batchCostingSummaryDefaultQuoteName": "Batch quote",
+  "batchHistoryItemsTitle": "Batch items",
+  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "@batchHistorySummaryLine": {
+    "placeholders": {
+      "itemCount": {},
+      "totalQuantity": {}
+    }
+  },
+  "batchHistoryItemRow": "{name} × {quantity}",
+  "@batchHistoryItemRow": {
+    "placeholders": {
+      "name": {},
+      "quantity": {}
+    }
+  },
   "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "Ativar premium",
   "enablePremiumBody": "Insira o código de confirmação para ativar os testes locais de premium",

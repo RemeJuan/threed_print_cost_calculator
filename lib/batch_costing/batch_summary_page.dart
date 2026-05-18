@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary_calculator.dart';
+import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
+import 'package:threed_print_cost_calculator/history/history_page.dart';
+import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
@@ -204,6 +209,11 @@ class BatchSummaryPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 FilledButton(
+                  onPressed: () => _saveQuote(context, ref, state, summary),
+                  child: Text(l10n.batchCostingSummarySaveButton),
+                ),
+                const SizedBox(height: 12),
+                FilledButton(
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
                   child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
@@ -307,6 +317,64 @@ class BatchSummaryPage extends ConsumerWidget {
 
   Widget _summaryRow(BuildContext context, String label, String value) {
     return _pricingRow(context, label: label, value: value);
+  }
+
+  Future<void> _saveQuote(
+    BuildContext context,
+    WidgetRef ref,
+    BatchCostingState state,
+    BatchSummaryResult summary,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final model = HistoryModel.batchQuote(
+      name: l10n.batchCostingSummaryDefaultQuoteName,
+      date: DateTime.now(),
+      state: state,
+      summary: summary,
+    );
+
+    try {
+      await ref.read(historyRepositoryProvider).saveHistory(model);
+    } catch (_) {
+      if (!context.mounted) return;
+      BotToast.showText(text: l10n.batchCostingSummarySaveErrorMessage);
+      return;
+    }
+
+    if (!context.mounted) return;
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.batchCostingSummarySaveSuccessTitle),
+        content: Text(l10n.batchCostingSummarySaveSuccessBody),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const HistoryPage()),
+              );
+            },
+            child: Text(l10n.batchCostingSummaryViewHistoryButton),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              ref.read(batchCostingProvider.notifier).reset();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+          ),
+        ],
+      ),
+    );
   }
 
   String _pricingSummary(

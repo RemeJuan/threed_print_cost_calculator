@@ -477,6 +477,37 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enableBatchCostingButton => 'Enable batch costing';
 
   @override
+  String get batchCostingSummarySaveButton => 'Save quote';
+
+  @override
+  String get batchCostingSummarySaveSuccessTitle => 'Quote saved';
+
+  @override
+  String get batchCostingSummarySaveSuccessBody => 'Saved to history.';
+
+  @override
+  String get batchCostingSummaryViewHistoryButton => 'View history';
+
+  @override
+  String get batchCostingSummarySaveErrorMessage => 'Could not save quote';
+
+  @override
+  String get batchCostingSummaryDefaultQuoteName => 'Batch quote';
+
+  @override
+  String get batchHistoryItemsTitle => 'Batch items';
+
+  @override
+  String batchHistorySummaryLine(Object itemCount, Object totalQuantity) {
+    return '$itemCount items • $totalQuantity copies';
+  }
+
+  @override
+  String batchHistoryItemRow(Object name, Object quantity) {
+    return '$name × $quantity';
+  }
+
+  @override
   String get showWhatsNewButton => 'Show What\'s New';
 
   @override

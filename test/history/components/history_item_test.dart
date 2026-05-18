@@ -175,6 +175,19 @@ void main() {
     );
   });
 
+  testWidgets('batch quote hides load action', (tester) async {
+    final model = _model().copyWith(batchQuote: true);
+    await tester.pumpApp(HistoryItem(dbKey: 'history-1', data: model));
+
+    await tester.tap(find.byIcon(Icons.more_horiz));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyLoadAction),
+      findsNothing,
+    );
+  });
+
   testWidgets('overflow button keeps strong contrast and tap target', (
     tester,
   ) async {

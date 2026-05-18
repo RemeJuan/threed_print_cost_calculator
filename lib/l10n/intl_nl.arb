@@ -337,6 +337,27 @@
   "clearUpdateCooldownButton": "Update-afkoeling wissen",
   "previewCancelFeedbackButton": "Voorvertoning annuleringsfeedback",
   "enableBatchCostingButton": "Enable batch costing",
+  "batchCostingSummarySaveButton": "Save quote",
+  "batchCostingSummarySaveSuccessTitle": "Quote saved",
+  "batchCostingSummarySaveSuccessBody": "Saved to history.",
+  "batchCostingSummaryViewHistoryButton": "View history",
+  "batchCostingSummarySaveErrorMessage": "Could not save quote",
+  "batchCostingSummaryDefaultQuoteName": "Batch quote",
+  "batchHistoryItemsTitle": "Batch items",
+  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "@batchHistorySummaryLine": {
+    "placeholders": {
+      "itemCount": {},
+      "totalQuantity": {}
+    }
+  },
+  "batchHistoryItemRow": "{name} × {quantity}",
+  "@batchHistoryItemRow": {
+    "placeholders": {
+      "name": {},
+      "quantity": {}
+    }
+  },
   "showWhatsNewButton": "Show What's New",
   "enablePremiumTitle": "Premium inschakelen",
   "enablePremiumBody": "Voer de bevestigingscode in om lokale premiumtests in te schakelen",

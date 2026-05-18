@@ -171,16 +171,17 @@ class HistoryItemActions extends ConsumerWidget {
         }
       },
       itemBuilder: (context) => [
-        PopupMenuItem<_HistoryItemAction>(
-          value: _HistoryItemAction.edit,
-          child: Row(
-            children: [
-              const Icon(Icons.calculate, size: 20),
-              const SizedBox(width: 12),
-              Flexible(child: Text(l10n.historyLoadAction)),
-            ],
+        if (!data.batchQuote)
+          PopupMenuItem<_HistoryItemAction>(
+            value: _HistoryItemAction.edit,
+            child: Row(
+              children: [
+                const Icon(Icons.calculate, size: 20),
+                const SizedBox(width: 12),
+                Flexible(child: Text(l10n.historyLoadAction)),
+              ],
+            ),
           ),
-        ),
         PopupMenuItem<_HistoryItemAction>(
           value: _HistoryItemAction.export,
           child: Row(

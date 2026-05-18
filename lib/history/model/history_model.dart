@@ -1,4 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary_calculator.dart';
+import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
@@ -31,7 +34,53 @@ abstract class HistoryModel with _$HistoryModel {
     num? pricingRoundingAdjustment,
     num? finalPrice,
     bool? pricingUsedOverrides,
+    @Default(false) bool batchQuote,
+    @Default(<Map<String, dynamic>>[]) List<Map<String, dynamic>> batchQuoteItems,
+    Map<String, dynamic>? batchQuoteSummary,
   }) = _HistoryModel;
+
+  factory HistoryModel.batchQuote({
+    required String name,
+    required DateTime date,
+    required BatchCostingState state,
+    required BatchSummaryResult summary,
+  }) {
+    return HistoryModel(
+      name: name,
+      totalCost: summary.finalTotal,
+      riskCost: _pricingValue(state.pricing.failureRisk),
+      filamentCost: 0,
+      electricityCost: 0,
+      labourCost: 0,
+      additionalCostAmount: summary.additionalCost,
+      date: date,
+      printer: state.batchPrinterId ?? kUnassignedLabel,
+      material: state.batchMaterialId ?? kUnassignedLabel,
+      weight: summary.totalWeightG,
+      timeHours: _formatDuration(summary.totalPrintDuration),
+      batchQuote: true,
+      batchQuoteItems: summary.items.map(_batchItemToMap).toList(),
+      batchQuoteSummary: {
+        'itemCount': summary.itemCount,
+        'totalQuantity': summary.totalQuantity,
+        'totalWeightG': summary.totalWeightG,
+        'totalPrintDurationMinutes': summary.totalPrintDuration.inMinutes,
+        'finalTotal': summary.finalTotal,
+        'printerAssignmentMode': state.printerAssignmentMode.name,
+        'materialAssignmentMode': state.materialAssignmentMode.name,
+        'batchPrinterId': state.batchPrinterId,
+        'batchMaterialId': state.batchMaterialId,
+        'pricing': {
+          'failureRisk': _pricingFieldToMap(state.pricing.failureRisk),
+          'markupPercent': _pricingFieldToMap(state.pricing.markupPercent),
+          'labourRate': _pricingFieldToMap(state.pricing.labourRate),
+          'additionalCostAmount': _pricingFieldToMap(
+            state.pricing.additionalCostAmount,
+          ),
+        },
+      },
+    );
+  }
 
   factory HistoryModel.fromMap(Map<String, dynamic> map) {
     final dynamic dateValue = map['date'];
@@ -74,6 +123,9 @@ abstract class HistoryModel with _$HistoryModel {
       pricingUsedOverrides: map['pricingUsedOverrides'] == null
           ? null
           : map['pricingUsedOverrides'] == true,
+      batchQuote: map['batchQuote'] == true,
+      batchQuoteItems: _parseMapList(map['batchQuoteItems']),
+      batchQuoteSummary: _parseMap(map['batchQuoteSummary']),
     );
   }
 
@@ -88,6 +140,59 @@ abstract class HistoryModel with _$HistoryModel {
         .whereType<Map>()
         .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
         .toList();
+  }
+
+  static List<Map<String, dynamic>> _parseMapList(dynamic raw) {
+    if (raw is! List) return const [];
+    return raw
+        .whereType<Map>()
+        .map((e) => e.map((k, v) => MapEntry(k.toString(), v)))
+        .toList();
+  }
+
+  static Map<String, dynamic>? _parseMap(dynamic raw) {
+    if (raw is! Map) return null;
+    return raw.map((k, v) => MapEntry(k.toString(), v));
+  }
+
+  static Map<String, dynamic> _batchItemToMap(
+    BatchSummaryItemBreakdown breakdown,
+  ) {
+    return {
+      'id': breakdown.item.id,
+      'name': breakdown.item.displayName,
+      'quantity': breakdown.totalQuantity,
+      'printerId': breakdown.item.printerId,
+      'materialId': breakdown.item.materialId,
+      'pricingProfileId': breakdown.item.pricingProfileId,
+      'totalWeightG': breakdown.totalWeightG,
+      'totalPrintDurationMinutes': breakdown.totalPrintDuration.inMinutes,
+      'baseCost': breakdown.baseCost,
+      'additionalCost': breakdown.additionalCost,
+      'finalTotal': breakdown.pricing.finalPrice,
+      'pricing': {
+        'markupPercent': breakdown.pricing.markupPercent,
+        'setupFee': breakdown.pricing.setupFee,
+        'subtotalBeforeRounding': breakdown.pricing.subtotalBeforeRounding,
+        'roundingAdjustment': breakdown.pricing.roundingAdjustment,
+      },
+    };
+  }
+
+  static Map<String, dynamic> _pricingFieldToMap(
+    BatchPricingFieldState field,
+  ) {
+    return {'value': field.value, 'scope': field.scope.name};
+  }
+
+  static num _pricingValue(BatchPricingFieldState field) {
+    return num.tryParse(field.value.replaceAll(',', '.')) ?? 0;
+  }
+
+  static String _formatDuration(Duration duration) {
+    final hours = duration.inHours.toString().padLeft(2, '0');
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    return '$hours:$minutes';
   }
 }
 
@@ -117,6 +222,9 @@ extension HistoryModelX on HistoryModel {
       'pricingRoundingAdjustment': pricingRoundingAdjustment,
       'finalPrice': finalPrice,
       'pricingUsedOverrides': pricingUsedOverrides,
+      'batchQuote': batchQuote,
+      'batchQuoteItems': batchQuoteItems,
+      'batchQuoteSummary': batchQuoteSummary,
     };
   }
 }
