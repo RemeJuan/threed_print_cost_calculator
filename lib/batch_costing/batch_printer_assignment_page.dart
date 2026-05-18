@@ -192,6 +192,24 @@ class _BatchPrinterAssignmentPageState
 
   void _continue(BuildContext context, BatchCostingState state) {
     if (!_formKey.currentState!.validate()) return;
+
+    if (state.printerAssignmentMode == BatchPrinterAssignmentMode.perItem) {
+      final missing = state.items.where(
+        (item) => state.itemPrinterIds[item.id] == null,
+      );
+      if (missing.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!
+                  .batchCostingPrinterAssignmentRequiredError,
+            ),
+          ),
+        );
+        return;
+      }
+    }
+
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => const BatchMaterialAssignmentPage(),
