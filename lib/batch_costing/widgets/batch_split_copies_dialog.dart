@@ -186,7 +186,7 @@ class _BatchSplitCopiesDialogState extends State<BatchSplitCopiesDialog> {
               ),
               const SizedBox(height: 4),
               Text(
-                '${l10n.batchCostingAssignmentSplitCopiesButton}: $_totalCopies',
+                '${l10n.batchCostingAssignmentCopiesLabel}: $_totalCopies',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 12),
