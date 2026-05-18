@@ -93,7 +93,7 @@ class _BatchAllocationPickerDialogState extends State<BatchAllocationPickerDialo
   void _addOption(BatchAllocationPickerOption option) {
     setState(() {
       _selectedIds.add(option.id);
-      _entries.add(_AllocationEntry(option: option, controller: TextEditingController(text: '1')));
+      _entries.add(_AllocationEntry(option: option, controller: TextEditingController(text: '0')));
       _searchController.clear();
       _validate();
     });
