@@ -51,10 +51,12 @@ void main() {
     await tester.pumpApp(const BatchPrinterAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), printersStreamProvider.overrideWith((ref) => Stream.value([printer('p1', 'Printer 1')])), isPremiumProvider.overrideWithValue(true)]);
     await tester.pumpAndSettle();
 
-    tester.widget<SegmentedButton<BatchPrinterAssignmentMode>>(find.byType(SegmentedButton<BatchPrinterAssignmentMode>)).onSelectionChanged?.call({BatchPrinterAssignmentMode.perItem});
-    await tester.pumpAndSettle();
-
     final l10n = AppLocalizations.of(tester.element(find.byType(BatchPrinterAssignmentPage)))!;
+    await tester.tap(find.descendant(
+      of: find.byType(SegmentedButton<BatchPrinterAssignmentMode>),
+      matching: find.text(l10n.batchCostingPrinterAssignmentPerItemMode),
+    ));
+    await tester.pumpAndSettle();
     expect(find.text(l10n.batchCostingAssignmentSplitCopiesButton), findsNWidgets(2));
     await tester.tap(find.text(l10n.batchCostingAssignmentSplitCopiesButton).first);
     await tester.pumpAndSettle();

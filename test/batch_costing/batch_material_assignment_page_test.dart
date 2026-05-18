@@ -50,10 +50,12 @@ void main() {
     await tester.pumpApp(const BatchMaterialAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), materialsStreamProvider.overrideWith((ref) => Stream.value(materials)), isPremiumProvider.overrideWithValue(true)]);
     await tester.pumpAndSettle();
 
-    tester.widget<SegmentedButton<BatchMaterialAssignmentMode>>(find.byType(SegmentedButton<BatchMaterialAssignmentMode>)).onSelectionChanged?.call({BatchMaterialAssignmentMode.perItem});
-    await tester.pumpAndSettle();
-
     final l10n = AppLocalizations.of(tester.element(find.byType(BatchMaterialAssignmentPage)))!;
+    await tester.tap(find.descendant(
+      of: find.byType(SegmentedButton<BatchMaterialAssignmentMode>),
+      matching: find.text(l10n.batchCostingMaterialAssignmentPerItemMode),
+    ));
+    await tester.pumpAndSettle();
     expect(find.text(l10n.batchCostingAssignmentSplitCopiesButton), findsNWidgets(2));
     await tester.tap(find.text(l10n.batchCostingAssignmentSplitCopiesButton).first);
     await tester.pumpAndSettle();
