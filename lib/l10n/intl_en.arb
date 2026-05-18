@@ -533,6 +533,8 @@
   "batchCostingPrinterAssignmentPerItemMode": "Per item",
   "batchCostingPrinterAssignmentBatchWideHint": "Select one printer for every item.",
   "batchCostingPrinterAssignmentPerItemHint": "Select a printer for this item.",
+  "batchCostingAssignmentSplitCopiesButton": "Split copies",
+  "batchCostingAssignmentCopiesLabel": "Copies",
   "batchCostingPrinterAssignmentRequiredError": "Select a printer to continue.",
   "batchCostingPrinterAssignmentContinueButton": "Continue",
   "batchCostingPrinterAssignmentNoPrintersMessage": "No printers are available yet.",
@@ -549,6 +551,10 @@
   "batchCostingMaterialAssignmentStockWarning": "Required {required} exceeds selected stock {available}.",
   "batchCostingPricingScopeAppBarTitle": "Pricing scope",
   "batchCostingPricingScopeSubtitle": "Set where each pricing value applies.",
+  "batchCostingPricingScopeItemMode": "Item",
+  "batchCostingPricingScopeBatchMode": "Batch",
+  "batchCostingPricingScopeItemSummaryLabel": "Item (per copy)",
+  "batchCostingPricingScopeBatchSummaryLabel": "Batch (once)",
   "batchCostingPricingScopeScopeLabel": "Scope",
   "batchCostingSummaryAppBarTitle": "Batch summary",
   "batchCostingSummarySubtitle": "Review the batch before generating a quote.",
@@ -564,8 +570,11 @@
   "batchCostingSummaryItemTotalLabel": "Item total",
   "batchCostingSummaryFinalTotalLabel": "Final total",
   "batchCostingSummaryBackButton": "Back to pricing scope",
+  "batchCostingSummaryReturnToCalculatorButton": "Return to calculator",
+  "batchCostingSummaryStartNewBatchButton": "Start new batch",
   "batchCostingSummaryEmptyTitle": "No batch summary yet",
   "batchCostingSummaryEmptyBody": "Add items and set pricing scope before reviewing the summary.",
   "batchCostingSummaryPricingTitle": "Pricing",
   "batchCostingSummaryItemsTitle": "Items"
+
 }

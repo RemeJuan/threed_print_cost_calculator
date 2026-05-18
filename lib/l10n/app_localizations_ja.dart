@@ -1224,6 +1224,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingPrinterAssignmentPerItemHint => 'この項目のプリンターを選択してください。';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'コピーを分割';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => '部数';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       '続行するプリンターを選択してください。';
 
@@ -1281,6 +1287,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingPricingScopeSubtitle => '各価格値の適用先を設定します。';
 
   @override
+  String get batchCostingPricingScopeItemMode => '項目';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'バッチ';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => '項目（1コピーあたり）';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'バッチ（1回）';
+
+  @override
   String get batchCostingPricingScopeScopeLabel => 'スコープ';
 
   @override
@@ -1324,6 +1342,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingSummaryBackButton => '価格範囲へ戻る';
+
+  @override
+  String get batchCostingSummaryReturnToCalculatorButton => '計算機に戻る';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => '新しいバッチを開始';
 
   @override
   String get batchCostingSummaryEmptyTitle => 'まだバッチ概要がありません';

@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_p
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -75,12 +76,9 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    tester
-        .widget<DropdownButtonFormField<String>>(
-          find.byType(DropdownButtonFormField<String>),
-        )
-        .onChanged
-        ?.call('m1');
+    await tester.tap(find.byType(BatchAnchorSelector));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('PLA Red').last);
     await tester.pumpAndSettle();
 
     expect(notifier.state.batchMaterialId, 'm1');
@@ -116,7 +114,7 @@ void main() {
 
     expect(find.text('Benchy'), findsOneWidget);
     expect(find.text('Cube'), findsOneWidget);
-    expect(find.byType(DropdownButtonFormField<String>), findsNWidgets(2));
+    expect(find.byType(BatchAnchorSelector), findsNWidgets(2));
   });
 
   testWidgets('missing per-item selection blocks continue', (tester) async {
@@ -167,12 +165,9 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    tester
-        .widget<DropdownButtonFormField<String>>(
-          find.byType(DropdownButtonFormField<String>),
-        )
-        .onChanged
-        ?.call('m2');
+    await tester.tap(find.byType(BatchAnchorSelector));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('PLA Blue').last);
     await tester.pumpAndSettle();
 
     final l10n = AppLocalizations.of(

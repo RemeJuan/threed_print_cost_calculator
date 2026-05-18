@@ -17,7 +17,7 @@ class BatchSummaryPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
     if (state.items.isEmpty) {
-      return _emptyState(context, l10n);
+      return _emptyState(context, ref, l10n);
     }
 
     final summary = BatchSummaryCalculator.calculate(state);
@@ -75,19 +75,34 @@ class BatchSummaryPage extends ConsumerWidget {
                     _summaryRow(context, l10n.batchCostingSummaryItemDurationLabel, _formatDuration(item.totalPrintDuration)),
                     _summaryRow(context, l10n.batchCostingSummaryItemBaseCostLabel, item.baseCost.toStringAsFixed(2)),
                     _summaryRow(context, l10n.batchCostingSummaryItemAdjustmentLabel, item.additionalCost.toStringAsFixed(2)),
-                    _summaryRow(context, l10n.batchCostingSummaryItemTotalLabel, item.pricing.finalPrice.toStringAsFixed(2)),
+                    _summaryRow(context, l10n.batchCostingSummaryItemTotalLabel, _lineTotalWithQuantity(item)),
                   ],
                 ),
               ),
             const SizedBox(height: 16),
             _summaryRow(context, l10n.batchCostingSummaryFinalTotalLabel, summary.finalTotal.toStringAsFixed(2)),
             const SizedBox(height: 16),
-            Align(
-              alignment: AlignmentDirectional.centerEnd,
-              child: TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.batchCostingSummaryBackButton),
-              ),
+            Wrap(
+              alignment: WrapAlignment.end,
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(l10n.batchCostingSummaryBackButton),
+                ),
+                OutlinedButton(
+                  onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+                  child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    ref.read(batchCostingProvider.notifier).reset();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  },
+                  child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                ),
+              ],
             ),
           ],
         ),
@@ -95,7 +110,7 @@ class BatchSummaryPage extends ConsumerWidget {
     );
   }
 
-  Widget _emptyState(BuildContext context, AppLocalizations l10n) {
+  Widget _emptyState(BuildContext context, WidgetRef ref, AppLocalizations l10n) {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.batchCostingSummaryAppBarTitle)),
       body: Center(
@@ -110,9 +125,27 @@ class BatchSummaryPage extends ConsumerWidget {
               const SizedBox(height: 8),
               Text(l10n.batchCostingSummaryEmptyBody, textAlign: TextAlign.center),
               const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.batchCostingSummaryBackButton),
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 12,
+                runSpacing: 12,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(l10n.batchCostingSummaryBackButton),
+                  ),
+                  OutlinedButton(
+                    onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+                    child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+                  ),
+                  FilledButton(
+                    onPressed: () {
+                      ref.read(batchCostingProvider.notifier).reset();
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    },
+                    child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                  ),
+                ],
               ),
             ],
           ),
@@ -156,11 +189,18 @@ class BatchSummaryPage extends ConsumerWidget {
     AppLocalizations l10n,
   ) {
     final scopeLabel = switch (scope) {
-      BatchPricingScope.item => l10n.batchCostingMaterialAssignmentPerItemMode,
-      BatchPricingScope.batch =>
-        l10n.batchCostingMaterialAssignmentBatchWideMode,
+      BatchPricingScope.item => l10n.batchCostingPricingScopeItemSummaryLabel,
+      BatchPricingScope.batch => l10n.batchCostingPricingScopeBatchSummaryLabel,
     };
     return value.isEmpty ? scopeLabel : '$value · $scopeLabel';
+  }
+
+  String _lineTotalWithQuantity(BatchSummaryItemBreakdown item) {
+    final finalTotal = item.pricing.finalPrice.toStringAsFixed(2);
+    if (item.totalQuantity <= 1) return finalTotal;
+
+    final perCopy = (item.pricing.finalPrice / item.totalQuantity).toStringAsFixed(2);
+    return '$finalTotal ($perCopy × ${item.totalQuantity})';
   }
 
   String _formatDuration(Duration duration) {

@@ -1254,6 +1254,12 @@ class AppLocalizationsId extends AppLocalizations {
       'Pilih printer untuk item ini.';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'Bagi salinan';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'Salinan';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Pilih printer untuk lanjut.';
 
@@ -1316,6 +1322,18 @@ class AppLocalizationsId extends AppLocalizations {
       'Atur di mana setiap nilai harga berlaku.';
 
   @override
+  String get batchCostingPricingScopeItemMode => 'Item';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'Batch';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'Item (per salinan)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'Batch (sekali)';
+
+  @override
   String get batchCostingPricingScopeScopeLabel => 'Lingkup';
 
   @override
@@ -1360,6 +1378,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingSummaryBackButton => 'Kembali ke cakupan harga';
+
+  @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'Kembali ke kalkulator';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'Mulai batch baru';
 
   @override
   String get batchCostingSummaryEmptyTitle => 'Belum ada ringkasan batch';

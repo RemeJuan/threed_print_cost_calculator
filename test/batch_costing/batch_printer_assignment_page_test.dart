@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignm
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -81,10 +82,10 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final dropdown = tester.widget<DropdownButtonFormField<String>>(
-      find.byType(DropdownButtonFormField<String>),
-    );
-    dropdown.onChanged?.call('p1');
+    await tester.tap(find.byType(BatchAnchorSelector));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Printer 1').last);
+    await tester.pumpAndSettle();
 
     expect(notifier.state.batchPrinterId, 'p1');
   });
@@ -116,7 +117,7 @@ void main() {
 
     expect(find.text('Benchy'), findsOneWidget);
     expect(find.text('Cube'), findsOneWidget);
-    expect(find.byType(DropdownButtonFormField<String>), findsNWidgets(2));
+    expect(find.byType(BatchAnchorSelector), findsNWidgets(2));
   });
 
   testWidgets('missing per-item printer blocks continue', (tester) async {
@@ -184,12 +185,12 @@ void main() {
         ?.call({BatchPrinterAssignmentMode.perItem});
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(DropdownButtonFormField<String>).first);
+    await tester.tap(find.byType(BatchAnchorSelector).first);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Printer 1').last);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(DropdownButtonFormField<String>).last);
+    await tester.tap(find.byType(BatchAnchorSelector).last);
     await tester.pumpAndSettle();
     await tester.tap(find.text('Printer 1').last);
     await tester.pumpAndSettle();

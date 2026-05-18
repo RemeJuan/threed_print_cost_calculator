@@ -62,21 +62,25 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final scopeFields = find.byType(DropdownButtonFormField<BatchPricingScope>);
+    final scopeFields = find.byType(SegmentedButton<BatchPricingScope>);
     expect(scopeFields, findsNWidgets(4));
 
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(0)).onChanged?.call(
-      BatchPricingScope.batch,
-    );
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(1)).onChanged?.call(
-      BatchPricingScope.batch,
-    );
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(2)).onChanged?.call(
-      BatchPricingScope.batch,
-    );
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(3)).onChanged?.call(
-      BatchPricingScope.item,
-    );
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(0))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.batch});
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(1))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.batch});
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(2))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.batch});
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(3))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.item});
 
     await tester.pumpAndSettle();
 

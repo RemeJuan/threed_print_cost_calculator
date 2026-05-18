@@ -2387,6 +2387,18 @@ abstract class AppLocalizations {
   /// **'Select a printer for this item.'**
   String get batchCostingPrinterAssignmentPerItemHint;
 
+  /// No description provided for @batchCostingAssignmentSplitCopiesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Split copies'**
+  String get batchCostingAssignmentSplitCopiesButton;
+
+  /// No description provided for @batchCostingAssignmentCopiesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Copies'**
+  String get batchCostingAssignmentCopiesLabel;
+
   /// No description provided for @batchCostingPrinterAssignmentRequiredError.
   ///
   /// In en, this message translates to:
@@ -2486,6 +2498,30 @@ abstract class AppLocalizations {
   /// **'Set where each pricing value applies.'**
   String get batchCostingPricingScopeSubtitle;
 
+  /// No description provided for @batchCostingPricingScopeItemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get batchCostingPricingScopeItemMode;
+
+  /// No description provided for @batchCostingPricingScopeBatchMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch'**
+  String get batchCostingPricingScopeBatchMode;
+
+  /// No description provided for @batchCostingPricingScopeItemSummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item (per copy)'**
+  String get batchCostingPricingScopeItemSummaryLabel;
+
+  /// No description provided for @batchCostingPricingScopeBatchSummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch (once)'**
+  String get batchCostingPricingScopeBatchSummaryLabel;
+
   /// No description provided for @batchCostingPricingScopeScopeLabel.
   ///
   /// In en, this message translates to:
@@ -2575,6 +2611,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to pricing scope'**
   String get batchCostingSummaryBackButton;
+
+  /// No description provided for @batchCostingSummaryReturnToCalculatorButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to calculator'**
+  String get batchCostingSummaryReturnToCalculatorButton;
+
+  /// No description provided for @batchCostingSummaryStartNewBatchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new batch'**
+  String get batchCostingSummaryStartNewBatchButton;
 
   /// No description provided for @batchCostingSummaryEmptyTitle.
   ///
