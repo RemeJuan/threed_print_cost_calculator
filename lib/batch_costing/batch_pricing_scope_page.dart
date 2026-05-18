@@ -222,9 +222,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     required ValueChanged<String> onValueChanged,
     required ValueChanged<BatchPricingScope> onScopeChanged,
     required FormFieldValidator<String> validator,
+    required String scopeItemLabel,
+    required String scopeBatchLabel,
   }) {
-    final l10n = AppLocalizations.of(context)!;
-
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -264,11 +264,11 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                 segments: [
                   ButtonSegment(
                     value: BatchPricingScope.item,
-                    label: Text(l10n.batchCostingPricingScopeItemMode),
+                    label: Text(scopeItemLabel),
                   ),
                   ButtonSegment(
                     value: BatchPricingScope.batch,
-                    label: Text(l10n.batchCostingPricingScopeBatchMode),
+                    label: Text(scopeBatchLabel),
                   ),
                 ],
                 selected: {scope},
