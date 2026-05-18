@@ -360,7 +360,11 @@ void main() {
       find.byKey(const ValueKey<String>('settings.testData.purge.button')),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.text(lookupAppLocalizations(const Locale('en')).purgeLocalDataButton));
+    await tester.tap(
+      find.text(
+        lookupAppLocalizations(const Locale('en')).purgeLocalDataButton,
+      ),
+    );
     await tester.pumpAndSettle();
 
     expect(container.read(batchCostingEnabledProvider), isFalse);

@@ -62,21 +62,25 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final scopeFields = find.byType(DropdownButtonFormField<BatchPricingScope>);
+    final scopeFields = find.byType(SegmentedButton<BatchPricingScope>);
     expect(scopeFields, findsNWidgets(4));
 
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(0)).onChanged?.call(
-      BatchPricingScope.batch,
-    );
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(1)).onChanged?.call(
-      BatchPricingScope.batch,
-    );
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(2)).onChanged?.call(
-      BatchPricingScope.batch,
-    );
-    tester.widget<DropdownButtonFormField<BatchPricingScope>>(scopeFields.at(3)).onChanged?.call(
-      BatchPricingScope.item,
-    );
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(0))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.batch});
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(1))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.batch});
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(2))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.batch});
+    tester
+        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(3))
+        .onSelectionChanged
+        ?.call({BatchPricingScope.item});
 
     await tester.pumpAndSettle();
 
@@ -107,7 +111,10 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(2), '10');
     await tester.enterText(find.byType(EditableText).at(3), '10');
 
-    await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
+    await tester.drag(
+      find.byType(SingleChildScrollView),
+      const Offset(0, -500),
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.byType(FilledButton));
     await tester.pump();
@@ -137,7 +144,10 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(2), '30');
     await tester.enterText(find.byType(EditableText).at(3), '40');
 
-    await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
+    await tester.drag(
+      find.byType(SingleChildScrollView),
+      const Offset(0, -500),
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.byType(FilledButton));
     await tester.pumpAndSettle();
@@ -153,7 +163,10 @@ void main() {
 
     expect(find.byType(BatchPricingScopePage), findsOneWidget);
     expect(
-      tester.widget<EditableText>(find.byType(EditableText).at(0)).controller.text,
+      tester
+          .widget<EditableText>(find.byType(EditableText).at(0))
+          .controller
+          .text,
       '10',
     );
   });

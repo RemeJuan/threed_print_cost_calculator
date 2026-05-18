@@ -226,18 +226,20 @@ class JobPricingOverridesSection extends HookConsumerWidget {
       onChanged: onChanged,
       decoration: InputDecoration(
         labelText: label,
-        prefixText: currencySettings != null &&
+        prefixText:
+            currencySettings != null &&
                 currencySettings.currencySymbol.isNotEmpty &&
                 currencySettings.currencyPosition == 'before'
             ? currencySettings.currencySymbol +
-                (currencySettings.currencySpacing ? ' ' : '')
+                  (currencySettings.currencySpacing ? ' ' : '')
             : null,
-        suffixText: currencySettings != null &&
+        suffixText:
+            currencySettings != null &&
                 currencySettings.currencyPosition == 'after' &&
                 currencySettings.currencySymbol.isNotEmpty
             ? (currencySettings.currencySpacing
-                ? ' ${currencySettings.currencySymbol}'
-                : currencySettings.currencySymbol)
+                  ? ' ${currencySettings.currencySymbol}'
+                  : currencySettings.currencySymbol)
             : null,
       ),
     );

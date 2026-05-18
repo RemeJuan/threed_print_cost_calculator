@@ -2387,17 +2387,53 @@ abstract class AppLocalizations {
   /// **'Select a printer for this item.'**
   String get batchCostingPrinterAssignmentPerItemHint;
 
+  /// No description provided for @batchCostingAssignmentSplitCopiesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Split copies'**
+  String get batchCostingAssignmentSplitCopiesButton;
+
+  /// No description provided for @batchCostingAssignmentSplitCopiesDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Split copies for {itemName}'**
+  String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName);
+
+  /// No description provided for @batchCostingAssignmentSplitCopiesTotalError.
+  ///
+  /// In en, this message translates to:
+  /// **'Total must equal {total}'**
+  String batchCostingAssignmentSplitCopiesTotalError(Object total);
+
+  /// No description provided for @batchCostingAssignmentQuantityChangedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Assignments were reset because quantity changed.'**
+  String get batchCostingAssignmentQuantityChangedMessage;
+
+  /// No description provided for @batchCostingAssignmentCopiesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Copies'**
+  String get batchCostingAssignmentCopiesLabel;
+
   /// No description provided for @batchCostingPrinterAssignmentRequiredError.
   ///
   /// In en, this message translates to:
   /// **'Select a printer to continue.'**
   String get batchCostingPrinterAssignmentRequiredError;
 
-  /// No description provided for @batchCostingPrinterAssignmentContinueButton.
+  /// No description provided for @batchCostingPrinterAssignmentPreviousButton.
   ///
   /// In en, this message translates to:
-  /// **'Continue'**
-  String get batchCostingPrinterAssignmentContinueButton;
+  /// **'Previous'**
+  String get batchCostingPrinterAssignmentPreviousButton;
+
+  /// No description provided for @batchCostingPrinterAssignmentNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get batchCostingPrinterAssignmentNextButton;
 
   /// No description provided for @batchCostingPrinterAssignmentNoPrintersMessage.
   ///
@@ -2453,11 +2489,17 @@ abstract class AppLocalizations {
   /// **'Choose a material to continue.'**
   String get batchCostingMaterialAssignmentRequiredError;
 
-  /// No description provided for @batchCostingMaterialAssignmentContinueButton.
+  /// No description provided for @batchCostingMaterialAssignmentPreviousButton.
   ///
   /// In en, this message translates to:
-  /// **'Continue'**
-  String get batchCostingMaterialAssignmentContinueButton;
+  /// **'Previous'**
+  String get batchCostingMaterialAssignmentPreviousButton;
+
+  /// No description provided for @batchCostingMaterialAssignmentNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get batchCostingMaterialAssignmentNextButton;
 
   /// No description provided for @batchCostingMaterialAssignmentNoMaterialsMessage.
   ///
@@ -2485,6 +2527,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Set where each pricing value applies.'**
   String get batchCostingPricingScopeSubtitle;
+
+  /// No description provided for @batchCostingPricingScopeItemMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get batchCostingPricingScopeItemMode;
+
+  /// No description provided for @batchCostingPricingScopeBatchMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch'**
+  String get batchCostingPricingScopeBatchMode;
+
+  /// No description provided for @batchCostingPricingScopeItemSummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item (per copy)'**
+  String get batchCostingPricingScopeItemSummaryLabel;
+
+  /// No description provided for @batchCostingPricingScopeBatchSummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch (once)'**
+  String get batchCostingPricingScopeBatchSummaryLabel;
 
   /// No description provided for @batchCostingPricingScopeScopeLabel.
   ///
@@ -2576,6 +2642,18 @@ abstract class AppLocalizations {
   /// **'Back to pricing scope'**
   String get batchCostingSummaryBackButton;
 
+  /// No description provided for @batchCostingSummaryReturnToCalculatorButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to calculator'**
+  String get batchCostingSummaryReturnToCalculatorButton;
+
+  /// No description provided for @batchCostingSummaryStartNewBatchButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new batch'**
+  String get batchCostingSummaryStartNewBatchButton;
+
   /// No description provided for @batchCostingSummaryEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -2599,6 +2677,33 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Items'**
   String get batchCostingSummaryItemsTitle;
+
+  /// No description provided for @batchCostingNewBatchDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new batch'**
+  String get batchCostingNewBatchDialogTitle;
+
+  /// No description provided for @batchCostingNewBatchDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will discard all current batch progress. Start a new batch?'**
+  String get batchCostingNewBatchDialogBody;
+
+  /// No description provided for @batchCostingSummaryPricingItemScopeFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'{perUnit} each → {lineTotal} total'**
+  String batchCostingSummaryPricingItemScopeFormat(
+    Object lineTotal,
+    Object perUnit,
+  );
+
+  /// No description provided for @batchCostingAssignmentPrinterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Printer'**
+  String get batchCostingAssignmentPrinterLabel;
 }
 
 class _AppLocalizationsDelegate

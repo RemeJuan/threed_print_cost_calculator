@@ -210,6 +210,193 @@ void main() {
     expect(find.text(l10n.csvNameRequiredError), findsOneWidget);
     expect(find.text('Benchy'), findsOneWidget);
   });
+
+  testWidgets('defaults to 0 for numeric fields in add dialog', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchCostingReviewAddManualItemButton));
+    await tester.pumpAndSettle();
+
+    final quantityField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-quantity')),
+    );
+    expect(quantityField.controller!.text, equals('0'));
+
+    final weightField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-weight')),
+    );
+    expect(weightField.controller!.text, equals('0'));
+
+    final hoursField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-hours')),
+    );
+    expect(hoursField.controller!.text, equals('0'));
+
+    final minutesField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
+    );
+    expect(minutesField.controller!.text, equals('0'));
+  });
+
+  testWidgets('entering digit into defaulted 0 field replaces the 0', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchCostingReviewAddManualItemButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-quantity')),
+      '2',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-weight')),
+      '34.5',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-hours')),
+      '1',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
+      '20',
+    );
+
+    final quantityField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-quantity')),
+    );
+    expect(quantityField.controller!.text, equals('2'));
+
+    final weightField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-weight')),
+    );
+    expect(weightField.controller!.text, equals('34.5'));
+
+    final hoursField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-hours')),
+    );
+    expect(hoursField.controller!.text, equals('1'));
+
+    final minutesField = tester.widget<TextFormField>(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
+    );
+    expect(minutesField.controller!.text, equals('20'));
+
+    await tester.tap(find.text(l10n.saveButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Benchy'), findsNothing);
+  });
+
+  testWidgets('default 0 values block save', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchCostingReviewAddManualItemButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-name')),
+      'Benchy',
+    );
+
+    await tester.tap(find.text(l10n.saveButton));
+    await tester.pump();
+
+    expect(find.text(l10n.invalidNumber), findsWidgets);
+  });
+
+  testWidgets('valid input saves correctly from 0 defaults', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchCostingReviewAddManualItemButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-name')),
+      'Widget',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-quantity')),
+      '3',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-weight')),
+      '50',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-hours')),
+      '0',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
+      '15',
+    );
+    await tester.tap(find.text(l10n.saveButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Widget'), findsOneWidget);
+
+    await tester.tap(find.text('Widget'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(l10n.batchCostingReviewRemoveButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
+  });
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {

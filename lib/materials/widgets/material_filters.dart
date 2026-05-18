@@ -71,10 +71,7 @@ class _FilterSection extends StatelessWidget {
   final List<_FilterChipData> chips;
   final void Function(int index) onSelected;
 
-  const _FilterSection({
-    required this.chips,
-    required this.onSelected,
-  });
+  const _FilterSection({required this.chips, required this.onSelected});
 
   @override
   Widget build(BuildContext context) {

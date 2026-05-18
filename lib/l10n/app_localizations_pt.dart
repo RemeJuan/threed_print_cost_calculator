@@ -1269,11 +1269,34 @@ class AppLocalizationsPt extends AppLocalizations {
       'Escolha uma impressora para este item.';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'Dividir cópias';
+
+  @override
+  String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
+    return 'Dividir cópias para $itemName';
+  }
+
+  @override
+  String batchCostingAssignmentSplitCopiesTotalError(Object total) {
+    return 'O total deve ser igual a $total';
+  }
+
+  @override
+  String get batchCostingAssignmentQuantityChangedMessage =>
+      'As atribuições foram redefinidas porque a quantidade mudou.';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'Cópias';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Escolha uma impressora para continuar.';
 
   @override
-  String get batchCostingPrinterAssignmentContinueButton => 'Continuar';
+  String get batchCostingPrinterAssignmentPreviousButton => 'Anterior';
+
+  @override
+  String get batchCostingPrinterAssignmentNextButton => 'Próximo';
 
   @override
   String get batchCostingPrinterAssignmentNoPrintersMessage =>
@@ -1310,7 +1333,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Escolha um material para continuar.';
 
   @override
-  String get batchCostingMaterialAssignmentContinueButton => 'Continuar';
+  String get batchCostingMaterialAssignmentPreviousButton => 'Anterior';
+
+  @override
+  String get batchCostingMaterialAssignmentNextButton => 'Próximo';
 
   @override
   String get batchCostingMaterialAssignmentNoMaterialsMessage =>
@@ -1330,6 +1356,18 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'Defina onde cada valor de preço se aplica.';
+
+  @override
+  String get batchCostingPricingScopeItemMode => 'Item';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'Lote';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'Item (por cópia)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'Lote (uma vez)';
 
   @override
   String get batchCostingPricingScopeScopeLabel => 'Âmbito';
@@ -1379,6 +1417,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get batchCostingSummaryBackButton => 'Voltar ao escopo de preço';
 
   @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'Voltar à calculadora';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'Iniciar novo lote';
+
+  @override
   String get batchCostingSummaryEmptyTitle => 'Ainda sem resumo do lote';
 
   @override
@@ -1390,4 +1435,22 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get batchCostingSummaryItemsTitle => 'Itens';
+
+  @override
+  String get batchCostingNewBatchDialogTitle => 'Iniciar novo lote';
+
+  @override
+  String get batchCostingNewBatchDialogBody =>
+      'Isto descartará todo o progresso atual do lote. Iniciar um novo lote?';
+
+  @override
+  String batchCostingSummaryPricingItemScopeFormat(
+    Object lineTotal,
+    Object perUnit,
+  ) {
+    return '$perUnit cada → $lineTotal total';
+  }
+
+  @override
+  String get batchCostingAssignmentPrinterLabel => 'Impressora';
 }

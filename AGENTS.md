@@ -50,6 +50,11 @@
 
 ## Workflow notes
 - Before broad exploration, read `docs/navigation.md`.
+- Treat the repository root as the only default filesystem context. Use repo-relative paths for all `Read`, `Grep`, `Glob`, `List`, and search operations.
+- Do not use absolute paths for files or directories inside this repository. If a tool call would target an absolute path that is inside the repo, rewrite it to the equivalent relative path first.
+- Never search parent directories or paths outside the repository unless the task explicitly requires external files.
+- Only request permission for filesystem access when the target is genuinely outside the repository root. If a permission prompt would be caused by an in-repo absolute path, cancel and retry with a relative path.
+- Use `.` for whole-repo searches and narrow with targeted repo-relative paths such as `lib/calculator/` or `test/history/`.
 - Exploration budget before first plan: max 8 `Read`, 4 `Grep`, 2 `Bash` calls.
 - Prefer targeted `rg`/content search over broad filesystem scans.
 - Produce a short plan before code changes.

@@ -1224,11 +1224,34 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingPrinterAssignmentPerItemHint => 'この項目のプリンターを選択してください。';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'コピーを分割';
+
+  @override
+  String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
+    return '$itemNameのコピーを分割';
+  }
+
+  @override
+  String batchCostingAssignmentSplitCopiesTotalError(Object total) {
+    return '合計は$totalと等しくなければなりません';
+  }
+
+  @override
+  String get batchCostingAssignmentQuantityChangedMessage =>
+      '数量が変更されたため、割り当てがリセットされました。';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => '部数';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       '続行するプリンターを選択してください。';
 
   @override
-  String get batchCostingPrinterAssignmentContinueButton => '続行';
+  String get batchCostingPrinterAssignmentPreviousButton => '前へ';
+
+  @override
+  String get batchCostingPrinterAssignmentNextButton => '次へ';
 
   @override
   String get batchCostingPrinterAssignmentNoPrintersMessage =>
@@ -1260,7 +1283,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingMaterialAssignmentRequiredError => '続けるには材料を選んでください。';
 
   @override
-  String get batchCostingMaterialAssignmentContinueButton => '続ける';
+  String get batchCostingMaterialAssignmentPreviousButton => '前へ';
+
+  @override
+  String get batchCostingMaterialAssignmentNextButton => '次へ';
 
   @override
   String get batchCostingMaterialAssignmentNoMaterialsMessage =>
@@ -1279,6 +1305,18 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingPricingScopeSubtitle => '各価格値の適用先を設定します。';
+
+  @override
+  String get batchCostingPricingScopeItemMode => '項目';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'バッチ';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => '項目（1コピーあたり）';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'バッチ（1回）';
 
   @override
   String get batchCostingPricingScopeScopeLabel => 'スコープ';
@@ -1326,6 +1364,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingSummaryBackButton => '価格範囲へ戻る';
 
   @override
+  String get batchCostingSummaryReturnToCalculatorButton => '計算機に戻る';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => '新しいバッチを開始';
+
+  @override
   String get batchCostingSummaryEmptyTitle => 'まだバッチ概要がありません';
 
   @override
@@ -1336,4 +1380,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingSummaryItemsTitle => 'アイテム';
+
+  @override
+  String get batchCostingNewBatchDialogTitle => '新しいバッチを開始';
+
+  @override
+  String get batchCostingNewBatchDialogBody =>
+      '現在のバッチの進行状況はすべて破棄されます。新しいバッチを開始しますか？';
+
+  @override
+  String batchCostingSummaryPricingItemScopeFormat(
+    Object lineTotal,
+    Object perUnit,
+  ) {
+    return '$perUnitずつ → 合計$lineTotal';
+  }
+
+  @override
+  String get batchCostingAssignmentPrinterLabel => 'プリンター';
 }

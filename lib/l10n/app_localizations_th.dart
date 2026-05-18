@@ -1244,11 +1244,34 @@ class AppLocalizationsTh extends AppLocalizations {
       'เลือกเครื่องพิมพ์สำหรับรายการนี้';
 
   @override
+  String get batchCostingAssignmentSplitCopiesButton => 'แยกสำเนา';
+
+  @override
+  String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
+    return 'แยกสำเนาสำหรับ $itemName';
+  }
+
+  @override
+  String batchCostingAssignmentSplitCopiesTotalError(Object total) {
+    return 'ยอดรวมต้องเท่ากับ $total';
+  }
+
+  @override
+  String get batchCostingAssignmentQuantityChangedMessage =>
+      'การกำหนดถูกรีเซ็ตเนื่องจากจำนวนที่เปลี่ยนแปลง';
+
+  @override
+  String get batchCostingAssignmentCopiesLabel => 'สำเนา';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'เลือกเครื่องพิมพ์เพื่อดำเนินการต่อ';
 
   @override
-  String get batchCostingPrinterAssignmentContinueButton => 'ดำเนินการต่อ';
+  String get batchCostingPrinterAssignmentPreviousButton => 'ก่อนหน้า';
+
+  @override
+  String get batchCostingPrinterAssignmentNextButton => 'ถัดไป';
 
   @override
   String get batchCostingPrinterAssignmentNoPrintersMessage =>
@@ -1283,7 +1306,10 @@ class AppLocalizationsTh extends AppLocalizations {
       'เลือกวัสดุเพื่อไปต่อ';
 
   @override
-  String get batchCostingMaterialAssignmentContinueButton => 'ดำเนินการต่อ';
+  String get batchCostingMaterialAssignmentPreviousButton => 'ก่อนหน้า';
+
+  @override
+  String get batchCostingMaterialAssignmentNextButton => 'ถัดไป';
 
   @override
   String get batchCostingMaterialAssignmentNoMaterialsMessage =>
@@ -1303,6 +1329,18 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get batchCostingPricingScopeSubtitle =>
       'กำหนดว่าค่าแต่ละรายการใช้กับส่วนใด';
+
+  @override
+  String get batchCostingPricingScopeItemMode => 'รายการ';
+
+  @override
+  String get batchCostingPricingScopeBatchMode => 'แบตช์';
+
+  @override
+  String get batchCostingPricingScopeItemSummaryLabel => 'รายการ (ต่อสำเนา)';
+
+  @override
+  String get batchCostingPricingScopeBatchSummaryLabel => 'แบตช์ (ครั้งเดียว)';
 
   @override
   String get batchCostingPricingScopeScopeLabel => 'ขอบเขต';
@@ -1350,6 +1388,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingSummaryBackButton => 'กลับไปยังขอบเขตราคา';
 
   @override
+  String get batchCostingSummaryReturnToCalculatorButton =>
+      'กลับไปเครื่องคำนวณ';
+
+  @override
+  String get batchCostingSummaryStartNewBatchButton => 'เริ่มแบตช์ใหม่';
+
+  @override
   String get batchCostingSummaryEmptyTitle => 'ยังไม่มีสรุปแบตช์';
 
   @override
@@ -1361,4 +1406,22 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingSummaryItemsTitle => 'รายการ';
+
+  @override
+  String get batchCostingNewBatchDialogTitle => 'เริ่มแบตช์ใหม่';
+
+  @override
+  String get batchCostingNewBatchDialogBody =>
+      'การดำเนินการนี้จะละทิ้งความคืบหน้าของแบตช์ปัจจุบันทั้งหมด เริ่มแบตช์ใหม่หรือไม่';
+
+  @override
+  String batchCostingSummaryPricingItemScopeFormat(
+    Object lineTotal,
+    Object perUnit,
+  ) {
+    return '$perUnit ต่อชิ้น → $lineTotal รวม';
+  }
+
+  @override
+  String get batchCostingAssignmentPrinterLabel => 'เครื่องพิมพ์';
 }

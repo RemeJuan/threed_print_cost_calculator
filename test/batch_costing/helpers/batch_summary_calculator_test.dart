@@ -21,7 +21,10 @@ void main() {
       BatchCostingState(
         items: [item()],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
         ),
       ),
     );
@@ -36,7 +39,10 @@ void main() {
       BatchCostingState(
         items: [item(quantity: 3)],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
         ),
       ),
     );
@@ -50,8 +56,14 @@ void main() {
       BatchCostingState(
         items: [item(quantity: 2)],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
-          additionalCostAmount: BatchPricingFieldState(value: '5', scope: BatchPricingScope.item),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
+          additionalCostAmount: BatchPricingFieldState(
+            value: '5',
+            scope: BatchPricingScope.item,
+          ),
         ),
       ),
     );
@@ -65,8 +77,14 @@ void main() {
       BatchCostingState(
         items: [item(quantity: 2)],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
-          additionalCostAmount: BatchPricingFieldState(value: '5', scope: BatchPricingScope.batch),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
+          additionalCostAmount: BatchPricingFieldState(
+            value: '5',
+            scope: BatchPricingScope.batch,
+          ),
         ),
       ),
     );
@@ -79,9 +97,18 @@ void main() {
       BatchCostingState(
         items: [item()],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
-          failureRisk: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
-          markupPercent: BatchPricingFieldState(value: '20', scope: BatchPricingScope.item),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
+          failureRisk: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
+          markupPercent: BatchPricingFieldState(
+            value: '20',
+            scope: BatchPricingScope.item,
+          ),
         ),
       ),
     );
@@ -94,9 +121,18 @@ void main() {
       BatchCostingState(
         items: [item()],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
-          failureRisk: BatchPricingFieldState(value: '10', scope: BatchPricingScope.batch),
-          markupPercent: BatchPricingFieldState(value: '20', scope: BatchPricingScope.batch),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
+          failureRisk: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.batch,
+          ),
+          markupPercent: BatchPricingFieldState(
+            value: '20',
+            scope: BatchPricingScope.batch,
+          ),
         ),
       ),
     );
@@ -109,9 +145,18 @@ void main() {
       BatchCostingState(
         items: [item(quantity: 2)],
         pricing: const BatchPricingState(
-          labourRate: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
-          additionalCostAmount: BatchPricingFieldState(value: '5', scope: BatchPricingScope.batch),
-          markupPercent: BatchPricingFieldState(value: '10', scope: BatchPricingScope.item),
+          labourRate: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
+          additionalCostAmount: BatchPricingFieldState(
+            value: '5',
+            scope: BatchPricingScope.batch,
+          ),
+          markupPercent: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.item,
+          ),
         ),
       ),
     );

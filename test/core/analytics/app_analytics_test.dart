@@ -42,10 +42,8 @@ void main() {
     'calculationCreated delegates and encodes booleans as numbers',
     () async {
       when(
-        () => mock.logEvent(
-          'calculation_created',
-          params: any(named: 'params'),
-        ),
+        () =>
+            mock.logEvent('calculation_created', params: any(named: 'params')),
       ).thenAnswer((_) async {});
 
       await AppAnalytics.calculationCreated(
@@ -82,12 +80,14 @@ void main() {
       params: {'b': false, 'm': nested, 'l': list, 'n': null},
     );
 
-    final captured = verify(
-      () => mock.logEvent(
-        'complex_event',
-        params: captureAny(named: 'params'),
-      ),
-    ).captured.single as Map<String, Object?>;
+    final captured =
+        verify(
+              () => mock.logEvent(
+                'complex_event',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
 
     expect(captured['b'], 0);
 
@@ -231,10 +231,8 @@ void main() {
 
     await AppAnalytics.gcodeFileSelected(fileType: 'gcode');
     verify(
-      () => mock.logEvent(
-        'gcode_file_selected',
-        params: {'file_type': 'gcode'},
-      ),
+      () =>
+          mock.logEvent('gcode_file_selected', params: {'file_type': 'gcode'}),
     ).called(1);
 
     await AppAnalytics.gcodeParseFailed(
@@ -298,12 +296,14 @@ void main() {
       fileSizeBytes: 2 * 1024 * 1024,
       parseStatus: 'partial',
     );
-    final captured = verify(
-      () => mock.logEvent(
-        'gcode_apply_to_calculator',
-        params: captureAny(named: 'params'),
-      ),
-    ).captured.single as Map<String, Object?>;
+    final captured =
+        verify(
+              () => mock.logEvent(
+                'gcode_apply_to_calculator',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
     expect(captured['gcode_time_to_value_ms'], isA<num>());
 
     await AppAnalytics.gcodeImportSuccess(
@@ -323,21 +323,25 @@ void main() {
     ).called(1);
 
     await AppAnalytics.paywallViewed('subscriptions');
-    final captured2 = verify(
-      () => mock.logEvent(
-        'paywall_viewed',
-        params: captureAny(named: 'params'),
-      ),
-    ).captured.single as Map<String, Object?>;
+    final captured2 =
+        verify(
+              () => mock.logEvent(
+                'paywall_viewed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
     expect(captured2['entry_point'], 'gcode_import');
 
     await AppAnalytics.purchaseCompleted('subscriptions');
-    final captured3 = verify(
-      () => mock.logEvent(
-        'purchase_completed',
-        params: captureAny(named: 'params'),
-      ),
-    ).captured.single as Map<String, Object?>;
+    final captured3 =
+        verify(
+              () => mock.logEvent(
+                'purchase_completed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
     expect(captured3['entry_point'], 'gcode_import');
 
     AppAnalytics.resetGcodeImportTrackingForTests();
@@ -365,12 +369,14 @@ void main() {
     ).thenAnswer((_) async {});
 
     await AppAnalytics.paywallViewed('history');
-    final captured = verify(
-      () => mock.logEvent(
-        'paywall_viewed',
-        params: captureAny(named: 'params'),
-      ),
-    ).captured.single as Map<String, Object?>;
+    final captured =
+        verify(
+              () => mock.logEvent(
+                'paywall_viewed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
     expect(captured['entry_point'], 'manual');
   });
 
@@ -462,26 +468,17 @@ void main() {
       verify(
         () => mock.logEvent(
           'material_created',
-          params: {
-            'has_tracking': 1,
-            'material_type': 'PLA',
-            'brand': 'Sunlu',
-          },
+          params: {'has_tracking': 1, 'material_type': 'PLA', 'brand': 'Sunlu'},
         ),
       ).called(1);
 
       await AppAnalytics.materialEdited(hasTracking: false, materialType: '');
       verify(
-        () => mock.logEvent(
-          'material_edited',
-          params: {'has_tracking': 0},
-        ),
+        () => mock.logEvent('material_edited', params: {'has_tracking': 0}),
       ).called(1);
 
       await AppAnalytics.csvImportStarted();
-      verify(
-        () => mock.logEvent('csv_import_started', params: null),
-      ).called(1);
+      verify(() => mock.logEvent('csv_import_started', params: null)).called(1);
 
       await AppAnalytics.csvImportCompleted(rowsSuccess: 3, rowsFailed: 1);
       verify(
@@ -517,39 +514,43 @@ void main() {
       AppAnalytics.service = fake;
     });
 
-    test('pricingSettingsChanged uses buckets and low-cardinality params',
-        () async {
-      await AppAnalytics.pricingSettingsChanged(
-        markupPercent: 15,
-        setupFee: 8,
-        roundingMode: '.99',
-      );
+    test(
+      'pricingSettingsChanged uses buckets and low-cardinality params',
+      () async {
+        await AppAnalytics.pricingSettingsChanged(
+          markupPercent: 15,
+          setupFee: 8,
+          roundingMode: '.99',
+        );
 
-      expect(fake.lastName, 'pricing_settings_changed');
-      expect(fake.lastParams, {
-        'pricing_enabled': 1,
-        'markup_bucket': '11_25',
-        'setup_fee_bucket': 'low',
-        'rounding_mode': '.99',
-      });
-    });
+        expect(fake.lastName, 'pricing_settings_changed');
+        expect(fake.lastParams, {
+          'pricing_enabled': 1,
+          'markup_bucket': '11_25',
+          'setup_fee_bucket': 'low',
+          'rounding_mode': '.99',
+        });
+      },
+    );
 
-    test('pricingSettingsChanged reports disabled when all zero/none',
-        () async {
-      await AppAnalytics.pricingSettingsChanged(
-        markupPercent: 0,
-        setupFee: 0,
-        roundingMode: 'none',
-      );
+    test(
+      'pricingSettingsChanged reports disabled when all zero/none',
+      () async {
+        await AppAnalytics.pricingSettingsChanged(
+          markupPercent: 0,
+          setupFee: 0,
+          roundingMode: 'none',
+        );
 
-      expect(fake.lastName, 'pricing_settings_changed');
-      expect(fake.lastParams, {
-        'pricing_enabled': 0,
-        'markup_bucket': '0',
-        'setup_fee_bucket': '0',
-        'rounding_mode': 'none',
-      });
-    });
+        expect(fake.lastName, 'pricing_settings_changed');
+        expect(fake.lastParams, {
+          'pricing_enabled': 0,
+          'markup_bucket': '0',
+          'setup_fee_bucket': '0',
+          'rounding_mode': 'none',
+        });
+      },
+    );
 
     test('pricingSettingsChanged handles high markup bucket', () async {
       await AppAnalytics.pricingSettingsChanged(
@@ -573,10 +574,7 @@ void main() {
       );
 
       expect(fake.lastName, 'pricing_override_used');
-      expect(fake.lastParams, {
-        'field': 'markup_percent',
-        'has_overrides': 1,
-      });
+      expect(fake.lastParams, {'field': 'markup_percent', 'has_overrides': 1});
     });
 
     test('pricingRoundingUsed sends rounding mode', () async {
@@ -586,20 +584,22 @@ void main() {
       expect(fake.lastParams, {'rounding_mode': '.99'});
     });
 
-    test('pricingSaved sends hasPricing, usedOverrides, roundingMode',
-        () async {
-      await AppAnalytics.pricingSaved(
-        hasPricing: true,
-        usedOverrides: false,
-        roundingMode: 'none',
-      );
+    test(
+      'pricingSaved sends hasPricing, usedOverrides, roundingMode',
+      () async {
+        await AppAnalytics.pricingSaved(
+          hasPricing: true,
+          usedOverrides: false,
+          roundingMode: 'none',
+        );
 
-      expect(fake.lastName, 'pricing_saved');
-      expect(fake.lastParams, {
-        'has_pricing': 1,
-        'used_overrides': 0,
-        'rounding_mode': 'none',
-      });
-    });
+        expect(fake.lastName, 'pricing_saved');
+        expect(fake.lastParams, {
+          'has_pricing': 1,
+          'used_overrides': 0,
+          'rounding_mode': 'none',
+        });
+      },
+    );
   });
 }

@@ -181,7 +181,8 @@ class GCodeImportParser {
       ).allMatches(lower).length;
       if (extruderTokens > 1) return true;
 
-      if (key == 'extruder' && RegExp(r'\bextruder\s*[1-9]\d*\b').hasMatch(lower)) {
+      if (key == 'extruder' &&
+          RegExp(r'\bextruder\s*[1-9]\d*\b').hasMatch(lower)) {
         return true;
       }
     }

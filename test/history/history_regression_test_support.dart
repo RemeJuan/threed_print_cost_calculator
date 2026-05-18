@@ -548,9 +548,7 @@ Future<Map<String, String>> pumpCalculatorResultsView(
   final db = await tester.pumpApp(CalculatorResults(results: results), [
     isPremiumProvider.overrideWithValue(true),
     shouldShowProPromotionProvider.overrideWithValue(false),
-    settingsRepositoryProvider.overrideWithValue(
-      FakeSettingsRepository(),
-    ),
+    settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
   ]);
 
   try {
