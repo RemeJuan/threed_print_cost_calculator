@@ -2417,6 +2417,36 @@ abstract class AppLocalizations {
   /// **'Copies'**
   String get batchCostingAssignmentCopiesLabel;
 
+  /// No description provided for @batchCostingAllocationPickerSearchLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Search options'**
+  String get batchCostingAllocationPickerSearchLabel;
+
+  /// No description provided for @batchCostingAllocationPickerAvailableLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get batchCostingAllocationPickerAvailableLabel;
+
+  /// No description provided for @batchCostingAllocationPickerSelectedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected'**
+  String get batchCostingAllocationPickerSelectedLabel;
+
+  /// No description provided for @batchCostingAllocationPickerAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get batchCostingAllocationPickerAddButton;
+
+  /// No description provided for @batchCostingAllocationPickerNoResultsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found.'**
+  String get batchCostingAllocationPickerNoResultsLabel;
+
   /// No description provided for @batchCostingPrinterAssignmentRequiredError.
   ///
   /// In en, this message translates to:

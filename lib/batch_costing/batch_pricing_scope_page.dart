@@ -296,7 +296,8 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
 
   FormFieldValidator<String> _percentValidator(AppLocalizations l10n) {
     return (value) {
-      final parsed = double.tryParse((value ?? '').replaceAll(',', '.'));
+      if (value == null || value.isEmpty) return null;
+      final parsed = double.tryParse(value.replaceAll(',', '.'));
       if (parsed == null || parsed < 0 || parsed > 100) {
         return l10n.invalidNumber;
       }
@@ -306,7 +307,8 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
 
   FormFieldValidator<String> _amountValidator(AppLocalizations l10n) {
     return (value) {
-      final parsed = double.tryParse((value ?? '').replaceAll(',', '.'));
+      if (value == null || value.isEmpty) return null;
+      final parsed = double.tryParse(value.replaceAll(',', '.'));
       if (parsed == null || parsed < 0) {
         return l10n.invalidNumber;
       }

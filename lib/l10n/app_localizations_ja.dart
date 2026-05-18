@@ -1244,6 +1244,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingAssignmentCopiesLabel => '部数';
 
   @override
+  String get batchCostingAllocationPickerSearchLabel => 'オプションを検索';
+
+  @override
+  String get batchCostingAllocationPickerAvailableLabel => '利用可能';
+
+  @override
+  String get batchCostingAllocationPickerSelectedLabel => '選択済み';
+
+  @override
+  String get batchCostingAllocationPickerAddButton => '追加';
+
+  @override
+  String get batchCostingAllocationPickerNoResultsLabel => '結果がありません。';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       '続行するプリンターを選択してください。';
 

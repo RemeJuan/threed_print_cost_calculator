@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -126,35 +127,10 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                             item: item,
                             allocations: allocations,
                             printers: printers,
-                            onAllocationChanged: (allocationIndex, printerId) {
-                              final updated = [...allocations];
-                              updated[allocationIndex] =
-                                  updated[allocationIndex].copyWith(
-                                    targetId: printerId ?? '',
-                                  );
-                              ref
-                                  .read(batchCostingProvider.notifier)
-                                  .setItemPrinterAllocations(item.id, updated);
-                            },
+                            printerLabel: l10n.batchCostingAssignmentPrinterLabel,
                             onSetAllocations: (updated) => ref
                                 .read(batchCostingProvider.notifier)
                                 .setItemPrinterAllocations(item.id, updated),
-                            onAddAllocation: () => ref
-                                .read(batchCostingProvider.notifier)
-                                .addItemPrinterAllocation(item.id),
-                            onRemoveAllocation: (allocationIndex) => ref
-                                .read(batchCostingProvider.notifier)
-                                .removeItemPrinterAllocation(
-                                  item.id,
-                                  allocationIndex,
-                                ),
-                            hintText:
-                                l10n.batchCostingPrinterAssignmentPerItemHint,
-                            addButtonLabel:
-                                l10n.batchCostingAssignmentSplitCopiesButton,
-                            copiesLabel: l10n.batchCostingAssignmentCopiesLabel,
-                            printerLabel:
-                                l10n.batchCostingAssignmentPrinterLabel,
                           );
                         },
                       ),
@@ -241,14 +217,10 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                 allocations.any((allocation) => allocation.targetId.isEmpty);
     });
     if (missing.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(
-              context,
-            )!.batchCostingPrinterAssignmentRequiredError,
-          ),
-        ),
+      BotToast.showText(
+        text: AppLocalizations.of(
+          context,
+        )!.batchCostingPrinterAssignmentRequiredError,
       );
       return;
     }
@@ -266,27 +238,14 @@ class _PrinterAllocationCard extends StatelessWidget {
     required this.item,
     required this.allocations,
     required this.printers,
-    required this.onAllocationChanged,
     required this.onSetAllocations,
-    required this.onAddAllocation,
-    required this.onRemoveAllocation,
-    required this.hintText,
-    required this.addButtonLabel,
-    required this.copiesLabel,
     required this.printerLabel,
   });
 
   final BatchCostingItem item;
   final List<BatchAssignmentAllocation> allocations;
   final List<PrinterModel> printers;
-  final void Function(int allocationIndex, String? printerId)
-  onAllocationChanged;
   final void Function(List<BatchAssignmentAllocation>) onSetAllocations;
-  final VoidCallback onAddAllocation;
-  final void Function(int allocationIndex) onRemoveAllocation;
-  final String hintText;
-  final String addButtonLabel;
-  final String copiesLabel;
   final String printerLabel;
 
   Future<void> _openSplitCopiesDialog(BuildContext context) async {
@@ -299,63 +258,27 @@ class _PrinterAllocationCard extends StatelessWidget {
         printers: printers,
       ),
     );
-
-    if (result == null) return;
-    if (!context.mounted) return;
-
+    if (result == null || !context.mounted) return;
     onSetAllocations(result);
   }
 
   @override
   Widget build(BuildContext context) {
-    final primaryPrinterId = allocations.isNotEmpty
-        ? allocations.first.targetId
-        : null;
-
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.displayName,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  '${item.quantity} $copiesLabel',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ],
-            ),
+            Row(children: [Expanded(child: Text(item.displayName, style: Theme.of(context).textTheme.titleMedium)), Text('${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}', style: Theme.of(context).textTheme.titleMedium)]),
             const SizedBox(height: 8),
-            BatchAnchorSelector(
-              labelText: printerLabel,
-              hintText: hintText,
-              value: printers.any((printer) => printer.id == primaryPrinterId)
-                  ? primaryPrinterId
-                  : null,
-              onChanged: (value) => onAllocationChanged(
-                0,
-                value?.isNotEmpty == true ? value : null,
-              ),
-              entries: [
-                for (final printer in printers)
-                  BatchAnchorSelectorEntry(
-                    value: printer.id,
-                    label: printer.name,
-                  ),
-              ],
-            ),
+            Text(printerLabel),
             const SizedBox(height: 8),
             OutlinedButton.icon(
               onPressed: () => _openSplitCopiesDialog(context),
               icon: const Icon(Icons.tune),
-              label: Text(addButtonLabel),
+              label: Text(l10n.batchCostingAssignmentSplitCopiesButton),
             ),
           ],
         ),

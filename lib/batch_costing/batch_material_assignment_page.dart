@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -155,37 +156,9 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                   ),
                                   _itemRequiredWeight(item),
                                 ),
-                                onAllocationChanged:
-                                    (allocationIndex, materialId) {
-                                      final updated = [...allocations];
-                                      updated[allocationIndex] =
-                                          updated[allocationIndex].copyWith(
-                                            targetId: materialId ?? '',
-                                          );
-                                      ref
-                                          .read(batchCostingProvider.notifier)
-                                          .setItemMaterialAllocations(
-                                            item.id,
-                                            updated,
-                                          );
-                                    },
-                                onAddAllocation: () => ref
+                                onSetAllocations: (updated) => ref
                                     .read(batchCostingProvider.notifier)
-                                    .addItemMaterialAllocation(item.id),
-                                onRemoveAllocation: (allocationIndex) => ref
-                                    .read(batchCostingProvider.notifier)
-                                    .removeItemMaterialAllocation(
-                                      item.id,
-                                      allocationIndex,
-                                    ),
-                                hintText: l10n
-                                    .batchCostingMaterialAssignmentPerItemHint,
-                                addButtonLabel: l10n
-                                    .batchCostingAssignmentSplitCopiesButton,
-                                copiesLabel:
-                                    l10n.batchCostingAssignmentCopiesLabel,
-                                labelText: l10n
-                                    .batchCostingMaterialAssignmentMaterialLabel,
+                                    .setItemMaterialAllocations(item.id, updated),
                               );
                             },
                           ),
@@ -275,14 +248,10 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                 allocations.any((allocation) => allocation.targetId.isEmpty);
     });
     if (missing.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            AppLocalizations.of(
-              context,
-            )!.batchCostingMaterialAssignmentRequiredError,
-          ),
-        ),
+      BotToast.showText(
+        text: AppLocalizations.of(
+          context,
+        )!.batchCostingMaterialAssignmentRequiredError,
       );
       return;
     }

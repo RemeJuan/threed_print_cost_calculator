@@ -112,6 +112,7 @@ void main() {
       await tester.pump();
 
       expect(repo.getMaterialByIdCalls, ['1']);
+      await tester.pump(const Duration(seconds: 3));
     });
   });
 }

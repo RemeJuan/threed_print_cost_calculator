@@ -67,52 +67,56 @@ class BatchSummaryPage extends ConsumerWidget {
             const SizedBox(height: 16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
             const SizedBox(height: 8),
-            _pricingRow(
-              context,
-              label: l10n.failureRiskLabel,
-              value: _pricingSummary(
-                summary.failureRisk.value,
-                summary.failureRisk.scope,
-                summary.totalQuantity,
-                l10n,
-                currencySettings,
-                isPercent: true,
+            if (_showPricing(summary.failureRisk.value))
+              _pricingRow(
+                context,
+                label: l10n.failureRiskLabel,
+                value: _pricingSummary(
+                  summary.failureRisk.value,
+                  summary.failureRisk.scope,
+                  summary.totalQuantity,
+                  l10n,
+                  currencySettings,
+                  isPercent: true,
+                ),
               ),
-            ),
-            _pricingRow(
-              context,
-              label: l10n.pricingMarkupPercentLabel,
-              value: _pricingSummary(
-                summary.markupPercent.value,
-                summary.markupPercent.scope,
-                summary.totalQuantity,
-                l10n,
-                currencySettings,
-                isPercent: true,
+            if (_showPricing(summary.markupPercent.value))
+              _pricingRow(
+                context,
+                label: l10n.pricingMarkupPercentLabel,
+                value: _pricingSummary(
+                  summary.markupPercent.value,
+                  summary.markupPercent.scope,
+                  summary.totalQuantity,
+                  l10n,
+                  currencySettings,
+                  isPercent: true,
+                ),
               ),
-            ),
-            _pricingRow(
-              context,
-              label: l10n.labourRateLabel,
-              value: _pricingSummary(
-                summary.labourRate.value,
-                summary.labourRate.scope,
-                summary.totalQuantity,
-                l10n,
-                currencySettings,
+            if (_showPricing(summary.labourRate.value))
+              _pricingRow(
+                context,
+                label: l10n.labourRateLabel,
+                value: _pricingSummary(
+                  summary.labourRate.value,
+                  summary.labourRate.scope,
+                  summary.totalQuantity,
+                  l10n,
+                  currencySettings,
+                ),
               ),
-            ),
-            _pricingRow(
-              context,
-              label: l10n.additionalCostLabel,
-              value: _pricingSummary(
-                state.pricing.additionalCostAmount.value,
-                state.pricing.additionalCostAmount.scope,
-                summary.totalQuantity,
-                l10n,
-                currencySettings,
+            if (_showPricing(state.pricing.additionalCostAmount.value))
+              _pricingRow(
+                context,
+                label: l10n.additionalCostLabel,
+                value: _pricingSummary(
+                  state.pricing.additionalCostAmount.value,
+                  state.pricing.additionalCostAmount.scope,
+                  summary.totalQuantity,
+                  l10n,
+                  currencySettings,
+                ),
               ),
-            ),
             const SizedBox(height: 24),
             _sectionTitle(context, l10n.batchCostingSummaryItemsTitle),
             const SizedBox(height: 8),
@@ -390,6 +394,9 @@ class BatchSummaryPage extends ConsumerWidget {
     );
     return '$finalTotal ($perCopy × ${item.totalQuantity})';
   }
+
+  bool _showPricing(String value) =>
+      value.isNotEmpty && value != '0';
 
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;

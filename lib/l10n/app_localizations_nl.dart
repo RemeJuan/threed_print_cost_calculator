@@ -1288,6 +1288,21 @@ class AppLocalizationsNl extends AppLocalizations {
   String get batchCostingAssignmentCopiesLabel => 'Kopieën';
 
   @override
+  String get batchCostingAllocationPickerSearchLabel => 'Zoek opties';
+
+  @override
+  String get batchCostingAllocationPickerAvailableLabel => 'Beschikbaar';
+
+  @override
+  String get batchCostingAllocationPickerSelectedLabel => 'Geselecteerd';
+
+  @override
+  String get batchCostingAllocationPickerAddButton => 'Toevoegen';
+
+  @override
+  String get batchCostingAllocationPickerNoResultsLabel => 'Geen resultaten.';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Kies een printer om door te gaan.';
 
