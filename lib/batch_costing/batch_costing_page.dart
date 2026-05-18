@@ -371,7 +371,6 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     if (!context.mounted) return;
 
     ref.read(batchCostingProvider.notifier).reset();
-    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> _addManualItem(BuildContext context) async {
