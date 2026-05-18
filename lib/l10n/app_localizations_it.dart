@@ -1296,6 +1296,21 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchCostingAssignmentCopiesLabel => 'Copie';
 
   @override
+  String get batchCostingAllocationPickerSearchLabel => 'Cerca opzioni';
+
+  @override
+  String get batchCostingAllocationPickerAvailableLabel => 'Disponibile';
+
+  @override
+  String get batchCostingAllocationPickerSelectedLabel => 'Selezionato';
+
+  @override
+  String get batchCostingAllocationPickerAddButton => 'Aggiungi';
+
+  @override
+  String get batchCostingAllocationPickerNoResultsLabel => 'Nessun risultato.';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Scegli una stampante per continuare.';
 

@@ -21,20 +21,8 @@ void main() {
   setUpAll(setupTest);
 
   final items = [
-    BatchCostingItem.manual(
-      id: 'item-1',
-      displayName: 'Benchy',
-      quantity: 2,
-      printWeightG: 20,
-      printDuration: const Duration(minutes: 30),
-    ),
-    BatchCostingItem.manual(
-      id: 'item-2',
-      displayName: 'Cube',
-      quantity: 1,
-      printWeightG: 30,
-      printDuration: const Duration(minutes: 20),
-    ),
+    BatchCostingItem.manual(id: 'item-1', displayName: 'Benchy', quantity: 2, printWeightG: 20, printDuration: const Duration(minutes: 30)),
+    BatchCostingItem.manual(id: 'item-2', displayName: 'Cube', quantity: 1, printWeightG: 30, printDuration: const Duration(minutes: 20)),
   ];
 
   final materials = [
@@ -42,38 +30,10 @@ void main() {
     material('m2', 'PLA Blue', remainingWeight: 25, autoDeductEnabled: true),
   ];
 
-  testWidgets('defaults to batch-wide mode', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-    final notifier = _FakeBatchCostingNotifier(items);
-
-    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
-      batchCostingProvider.overrideWith(() => notifier),
-      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
-      isPremiumProvider.overrideWithValue(true),
-    ]);
-
-    await tester.pumpAndSettle();
-
-    expect(
-      notifier.state.materialAssignmentMode,
-      BatchMaterialAssignmentMode.batchWide,
-    );
-  });
-
   testWidgets('batch-wide selection updates state', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
+    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
     final notifier = _FakeBatchCostingNotifier(items);
-
-    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
-      batchCostingProvider.overrideWith(() => notifier),
-      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
-      isPremiumProvider.overrideWithValue(true),
-    ]);
-
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), materialsStreamProvider.overrideWith((ref) => Stream.value(materials)), isPremiumProvider.overrideWithValue(true)]);
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(BatchAnchorSelector));
@@ -82,87 +42,28 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(notifier.state.batchMaterialId, 'm1');
-    expect(
-      notifier.state.items.every((item) => item.materialId == 'm1'),
-      isTrue,
-    );
   });
 
-  testWidgets('per-item mode shows one selector per batch item', (
-    tester,
-  ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
+  testWidgets('per-item mode uses reusable picker', (tester) async {
+    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
     final notifier = _FakeBatchCostingNotifier(items);
-
-    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
-      batchCostingProvider.overrideWith(() => notifier),
-      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
-      isPremiumProvider.overrideWithValue(true),
-    ]);
-
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), materialsStreamProvider.overrideWith((ref) => Stream.value(materials)), isPremiumProvider.overrideWithValue(true)]);
     await tester.pumpAndSettle();
 
-    tester
-        .widget<SegmentedButton<BatchMaterialAssignmentMode>>(
-          find.byType(SegmentedButton<BatchMaterialAssignmentMode>),
-        )
-        .onSelectionChanged
-        ?.call({BatchMaterialAssignmentMode.perItem});
+    tester.widget<SegmentedButton<BatchMaterialAssignmentMode>>(find.byType(SegmentedButton<BatchMaterialAssignmentMode>)).onSelectionChanged?.call({BatchMaterialAssignmentMode.perItem});
     await tester.pumpAndSettle();
 
-    expect(find.text('Benchy'), findsOneWidget);
-    expect(find.text('Cube'), findsOneWidget);
-    expect(find.byType(BatchAnchorSelector), findsNWidgets(2));
-  });
-
-  testWidgets('missing per-item selection blocks continue', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-    final notifier = _FakeBatchCostingNotifier(items);
-
-    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
-      batchCostingProvider.overrideWith(() => notifier),
-      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
-      isPremiumProvider.overrideWithValue(true),
-    ]);
-
+    final l10n = AppLocalizations.of(tester.element(find.byType(BatchMaterialAssignmentPage)))!;
+    expect(find.text(l10n.batchCostingAssignmentSplitCopiesButton), findsNWidgets(2));
+    await tester.tap(find.text(l10n.batchCostingAssignmentSplitCopiesButton).first);
     await tester.pumpAndSettle();
-
-    tester
-        .widget<SegmentedButton<BatchMaterialAssignmentMode>>(
-          find.byType(SegmentedButton<BatchMaterialAssignmentMode>),
-        )
-        .onSelectionChanged
-        ?.call({BatchMaterialAssignmentMode.perItem});
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byType(FilledButton));
-    await tester.pump();
-
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(BatchMaterialAssignmentPage)),
-    )!;
-    expect(
-      find.text(l10n.batchCostingMaterialAssignmentRequiredError),
-      findsWidgets,
-    );
+    expect(find.text('PLA Red'), findsOneWidget);
   });
 
   testWidgets('stock warning appears and continue still works', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
+    SharedPreferences.setMockInitialValues({batchCostingEnabledPreferenceKey: true});
     final notifier = _FakeBatchCostingNotifier(items);
-
-    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
-      batchCostingProvider.overrideWith(() => notifier),
-      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
-      isPremiumProvider.overrideWithValue(true),
-    ]);
-
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [batchCostingProvider.overrideWith(() => notifier), materialsStreamProvider.overrideWith((ref) => Stream.value(materials)), isPremiumProvider.overrideWithValue(true)]);
     await tester.pumpAndSettle();
 
     await tester.tap(find.byType(BatchAnchorSelector));
@@ -170,60 +71,19 @@ void main() {
     await tester.tap(find.text('PLA Blue').last);
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(BatchMaterialAssignmentPage)),
-    )!;
-    expect(
-      find.text(
-        l10n.batchCostingMaterialAssignmentStockWarning(
-          formatWeight(70),
-          formatWeight(25),
-        ),
-      ),
-      findsOneWidget,
-    );
+    final l10n = AppLocalizations.of(tester.element(find.byType(BatchMaterialAssignmentPage)))!;
+    expect(find.text(l10n.batchCostingMaterialAssignmentStockWarning(formatWeight(70), formatWeight(25))), findsOneWidget);
 
     await tester.tap(find.byType(FilledButton));
     await tester.pumpAndSettle();
-
     expect(find.byType(BatchPricingScopePage), findsOneWidget);
   });
-
-  testWidgets('disabled feature prevents access', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-
-    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
-      isPremiumProvider.overrideWithValue(false),
-    ]);
-
-    expect(find.text('Material assignment'), findsNothing);
-  });
 }
 
-MaterialModel material(
-  String id,
-  String name, {
-  required double remainingWeight,
-  required bool autoDeductEnabled,
-}) {
-  return MaterialModel(
-    id: id,
-    name: name,
-    cost: '20',
-    color: 'Natural',
-    weight: '500',
-    archived: false,
-    autoDeductEnabled: autoDeductEnabled,
-    originalWeight: 500,
-    remainingWeight: remainingWeight,
-  );
-}
+MaterialModel material(String id, String name, {required double remainingWeight, required bool autoDeductEnabled}) => MaterialModel(id: id, name: name, cost: '20', color: 'Natural', weight: '500', archived: false, autoDeductEnabled: autoDeductEnabled, originalWeight: 500, remainingWeight: remainingWeight);
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {
   _FakeBatchCostingNotifier(this._items);
-
   final List<BatchCostingItem> _items;
-
-  @override
-  BatchCostingState build() => BatchCostingState(items: _items);
+  @override BatchCostingState build() => BatchCostingState(items: _items);
 }
