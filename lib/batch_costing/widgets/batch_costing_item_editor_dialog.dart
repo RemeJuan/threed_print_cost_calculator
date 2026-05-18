@@ -200,6 +200,12 @@ class _BatchCostingItemEditorDialogState
                         if (hours == null || hours < 0) {
                           return l10n.invalidNumber;
                         }
+                        final minutes = int.tryParse(
+                          _durationMinutesController.text,
+                        );
+                        if (hours == 0 && (minutes == null || minutes == 0)) {
+                          return l10n.invalidNumber;
+                        }
                         return null;
                       },
                       onFieldSubmitted: (_) =>

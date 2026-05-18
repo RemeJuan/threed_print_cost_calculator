@@ -31,7 +31,7 @@ void main() {
     BatchCostingItem.manual(
       id: 'item-1',
       displayName: 'Benchy',
-      quantity: 1,
+      quantity: 3,
       printWeightG: 15,
       printDuration: const Duration(minutes: 30),
     ),
@@ -90,7 +90,9 @@ void main() {
     expect(notifier.state.batchPrinterId, 'p1');
   });
 
-  testWidgets('per-item mode shows one selector per item', (tester) async {
+  testWidgets('per-item mode shows one selector and split copies per item', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({
       batchCostingEnabledPreferenceKey: true,
     });
@@ -99,7 +101,10 @@ void main() {
     await tester.pumpApp(const BatchPrinterAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
       printersStreamProvider.overrideWith(
-        (ref) => Stream.value([printer('p1', 'Printer 1')]),
+        (ref) => Stream.value([
+          printer('p1', 'Printer 1'),
+          printer('p2', 'Printer 2'),
+        ]),
       ),
       isPremiumProvider.overrideWithValue(true),
     ]);
@@ -118,6 +123,14 @@ void main() {
     expect(find.text('Benchy'), findsOneWidget);
     expect(find.text('Cube'), findsOneWidget);
     expect(find.byType(BatchAnchorSelector), findsNWidgets(2));
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPrinterAssignmentPage)),
+    )!;
+    expect(
+      find.text(l10n.batchCostingAssignmentSplitCopiesButton),
+      findsNWidgets(2),
+    );
   });
 
   testWidgets('missing per-item printer blocks continue', (tester) async {
@@ -238,6 +251,90 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(Form), findsNothing);
+  });
+
+  testWidgets('uses Previous and Next button labels', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final notifier = _FakeBatchCostingNotifier(items);
+
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      printersStreamProvider.overrideWith(
+        (ref) => Stream.value([printer('p1', 'Printer 1')]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPrinterAssignmentPage)),
+    )!;
+
+    expect(
+      find.text(l10n.batchCostingPrinterAssignmentPreviousButton),
+      findsOneWidget,
+    );
+    expect(
+      find.text(l10n.batchCostingPrinterAssignmentNextButton),
+      findsOneWidget,
+    );
+    expect(find.text('Continue'), findsNothing);
+    expect(find.text('Back'), findsNothing);
+  });
+
+  testWidgets('split copies dialog validates totals', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final notifier = _FakeBatchCostingNotifier(items);
+    final printerList = [
+      printer('p1', 'Printer 1'),
+      printer('p2', 'Printer 2'),
+    ];
+
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      printersStreamProvider.overrideWith((ref) => Stream.value(printerList)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    tester
+        .widget<SegmentedButton<BatchPrinterAssignmentMode>>(
+          find.byType(SegmentedButton<BatchPrinterAssignmentMode>),
+        )
+        .onSelectionChanged
+        ?.call({BatchPrinterAssignmentMode.perItem});
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPrinterAssignmentPage)),
+    )!;
+
+    await tester.tap(
+      find.text(l10n.batchCostingAssignmentSplitCopiesButton).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(l10n.batchCostingAssignmentSplitCopiesDialogTitle('Benchy')),
+      findsOneWidget,
+    );
+
+    final textFields = find.byType(TextField);
+    expect(textFields, findsNWidgets(2));
+
+    await tester.tap(find.text(l10n.saveButton));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(l10n.batchCostingAssignmentSplitCopiesTotalError('3')),
+      findsOneWidget,
+    );
   });
 }
 

@@ -30,7 +30,9 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
           ..sort((a, b) {
             final statusA = calculateStockStatus(a);
             final statusB = calculateStockStatus(b);
-            final order = _stockSortOrder(statusA).compareTo(_stockSortOrder(statusB));
+            final order = _stockSortOrder(
+              statusA,
+            ).compareTo(_stockSortOrder(statusB));
             if (order != 0) return order;
             return a.name.toLowerCase().compareTo(b.name.toLowerCase());
           });
@@ -46,17 +48,24 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(l10n.batchCostingMaterialAssignmentSubtitle, style: Theme.of(context).textTheme.bodyMedium),
+                  Text(
+                    l10n.batchCostingMaterialAssignmentSubtitle,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                   const SizedBox(height: 16),
                   SegmentedButton<BatchMaterialAssignmentMode>(
                     segments: [
                       ButtonSegment(
                         value: BatchMaterialAssignmentMode.batchWide,
-                        label: Text(l10n.batchCostingMaterialAssignmentBatchWideMode),
+                        label: Text(
+                          l10n.batchCostingMaterialAssignmentBatchWideMode,
+                        ),
                       ),
                       ButtonSegment(
                         value: BatchMaterialAssignmentMode.perItem,
-                        label: Text(l10n.batchCostingMaterialAssignmentPerItemMode),
+                        label: Text(
+                          l10n.batchCostingMaterialAssignmentPerItemMode,
+                        ),
                       ),
                     ],
                     selected: {state.materialAssignmentMode},
@@ -78,68 +87,124 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                               ),
                             ),
                           )
-                        : state.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide
-                            ? _BatchWideMaterialSection(
-                                materials: sortedMaterials,
-                                selectedMaterialId: state.batchMaterialId,
-                                warningText: _buildStockWarning(
-                                  l10n,
-                                  _materialById(sortedMaterials, state.batchMaterialId),
-                                  _totalRequiredWeight(state),
-                                ),
+                        : state.materialAssignmentMode ==
+                              BatchMaterialAssignmentMode.batchWide
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              BatchAnchorSelector(
+                                labelText: l10n
+                                    .batchCostingMaterialAssignmentMaterialLabel,
+                                hintText: l10n
+                                    .batchCostingMaterialAssignmentBatchWideHint,
+                                value:
+                                    sortedMaterials.any(
+                                      (m) => m.id == state.batchMaterialId,
+                                    )
+                                    ? state.batchMaterialId
+                                    : null,
                                 onChanged: (value) => ref
                                     .read(batchCostingProvider.notifier)
                                     .setBatchMaterialId(value),
-                                labelText: l10n.batchCostingMaterialAssignmentMaterialLabel,
-                                hintText: l10n.batchCostingMaterialAssignmentBatchWideHint,
-                              )
-                            : ListView.separated(
-                                itemCount: state.items.length,
-                                separatorBuilder: (context, index) => const SizedBox(height: 12),
-                                itemBuilder: (context, index) {
-                                  final item = state.items[index];
-                                  final allocations = _materialAllocationsFor(state, item);
-                                  return _MaterialAllocationCard(
-                                    item: item,
-                                    allocations: allocations,
-                                    materials: sortedMaterials,
-                                    warningText: _buildStockWarning(
-                                      l10n,
-                                      _materialById(sortedMaterials, allocations.isEmpty ? null : allocations.first.targetId),
-                                      _itemRequiredWeight(item),
+                                entries: [
+                                  for (final material in sortedMaterials)
+                                    BatchAnchorSelectorEntry(
+                                      value: material.id,
+                                      label: material.name,
                                     ),
-                                    onAllocationChanged: (allocationIndex, materialId) {
+                                ],
+                              ),
+                              if (_buildStockWarning(
+                                    l10n,
+                                    _materialById(
+                                      sortedMaterials,
+                                      state.batchMaterialId,
+                                    ),
+                                    _totalRequiredWeight(state),
+                                  )
+                                  case final warning?)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: _warningBox(context, warning),
+                                ),
+                            ],
+                          )
+                        : ListView.separated(
+                            itemCount: state.items.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 12),
+                            itemBuilder: (context, index) {
+                              final item = state.items[index];
+                              final allocations = _materialAllocationsFor(
+                                state,
+                                item,
+                              );
+                              return _MaterialAllocationCard(
+                                item: item,
+                                allocations: allocations,
+                                materials: sortedMaterials,
+                                warningText: _buildStockWarning(
+                                  l10n,
+                                  _materialById(
+                                    sortedMaterials,
+                                    allocations.isEmpty
+                                        ? null
+                                        : allocations.first.targetId,
+                                  ),
+                                  _itemRequiredWeight(item),
+                                ),
+                                onAllocationChanged:
+                                    (allocationIndex, materialId) {
                                       final updated = [...allocations];
-                                      updated[allocationIndex] = updated[allocationIndex].copyWith(targetId: materialId ?? '');
+                                      updated[allocationIndex] =
+                                          updated[allocationIndex].copyWith(
+                                            targetId: materialId ?? '',
+                                          );
                                       ref
                                           .read(batchCostingProvider.notifier)
-                                          .setItemMaterialAllocations(item.id, updated);
+                                          .setItemMaterialAllocations(
+                                            item.id,
+                                            updated,
+                                          );
                                     },
-                                    onAddAllocation: () => ref
-                                        .read(batchCostingProvider.notifier)
-                                        .addItemMaterialAllocation(item.id),
-                                    onRemoveAllocation: (allocationIndex) => ref
-                                        .read(batchCostingProvider.notifier)
-                                        .removeItemMaterialAllocation(item.id, allocationIndex),
-                                    hintText: l10n.batchCostingMaterialAssignmentPerItemHint,
-                                    addButtonLabel: l10n.batchCostingAssignmentSplitCopiesButton,
-                                    copiesLabel: l10n.batchCostingAssignmentCopiesLabel,
-                                    labelText: l10n.batchCostingMaterialAssignmentMaterialLabel,
-                                  );
-                                },
-                              ),
+                                onAddAllocation: () => ref
+                                    .read(batchCostingProvider.notifier)
+                                    .addItemMaterialAllocation(item.id),
+                                onRemoveAllocation: (allocationIndex) => ref
+                                    .read(batchCostingProvider.notifier)
+                                    .removeItemMaterialAllocation(
+                                      item.id,
+                                      allocationIndex,
+                                    ),
+                                hintText: l10n
+                                    .batchCostingMaterialAssignmentPerItemHint,
+                                addButtonLabel: l10n
+                                    .batchCostingAssignmentSplitCopiesButton,
+                                copiesLabel:
+                                    l10n.batchCostingAssignmentCopiesLabel,
+                                labelText: l10n
+                                    .batchCostingMaterialAssignmentMaterialLabel,
+                              );
+                            },
+                          ),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     children: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(MaterialLocalizations.of(context).backButtonTooltip),
+                        child: Text(
+                          l10n.batchCostingMaterialAssignmentPreviousButton,
+                        ),
                       ),
                       const Spacer(),
                       FilledButton(
-                        onPressed: sortedMaterials.isEmpty ? null : () => _continue(context, ref, state),
-                        child: Text(l10n.batchCostingMaterialAssignmentContinueButton),
+                        onPressed: sortedMaterials.isEmpty
+                            ? null
+                            : () => _continue(context, ref, state),
+                        child: Text(
+                          l10n.batchCostingMaterialAssignmentNextButton,
+                        ),
                       ),
                     ],
                   ),
@@ -150,11 +215,15 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
         );
       },
       loading: () => Scaffold(
-        appBar: AppBar(title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle)),
+        appBar: AppBar(
+          title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle),
+        ),
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (error, stackTrace) => Scaffold(
-        appBar: AppBar(title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle)),
+        appBar: AppBar(
+          title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -175,7 +244,10 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
     );
   }
 
-  List<BatchAssignmentAllocation> _materialAllocationsFor(BatchCostingState state, BatchCostingItem item) {
+  List<BatchAssignmentAllocation> _materialAllocationsFor(
+    BatchCostingState state,
+    BatchCostingItem item,
+  ) {
     final allocations = state.itemMaterialAllocations[item.id];
     if (allocations != null && allocations.isNotEmpty) return allocations;
 
@@ -184,19 +256,31 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
       return [const BatchAssignmentAllocation(targetId: '', quantity: 1)];
     }
 
-    return [BatchAssignmentAllocation(targetId: materialId, quantity: item.quantity)];
+    return [
+      BatchAssignmentAllocation(targetId: materialId, quantity: item.quantity),
+    ];
   }
 
   void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) {
     final missing = state.items.where((item) {
-      final allocations = state.itemMaterialAllocations[item.id] ?? const <BatchAssignmentAllocation>[];
-      return state.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide
+      final allocations =
+          state.itemMaterialAllocations[item.id] ??
+          const <BatchAssignmentAllocation>[];
+      return state.materialAssignmentMode ==
+              BatchMaterialAssignmentMode.batchWide
           ? state.batchMaterialId == null
-          : allocations.isEmpty || allocations.any((allocation) => allocation.targetId.isEmpty);
+          : allocations.isEmpty ||
+                allocations.any((allocation) => allocation.targetId.isEmpty);
     });
     if (missing.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.batchCostingMaterialAssignmentRequiredError)),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(
+              context,
+            )!.batchCostingMaterialAssignmentRequiredError,
+          ),
+        ),
       );
       return;
     }
@@ -207,10 +291,14 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
   }
 
   double _totalRequiredWeight(BatchCostingState state) {
-    return state.items.fold<double>(0, (total, item) => total + _itemRequiredWeight(item));
+    return state.items.fold<double>(
+      0,
+      (total, item) => total + _itemRequiredWeight(item),
+    );
   }
 
-  double _itemRequiredWeight(BatchCostingItem item) => item.printWeightG * item.quantity;
+  double _itemRequiredWeight(BatchCostingItem item) =>
+      item.printWeightG * item.quantity;
 
   MaterialModel? _materialById(List<MaterialModel> materials, String? id) {
     if (id == null || id.isEmpty) return null;
@@ -220,7 +308,11 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
     return null;
   }
 
-  String? _buildStockWarning(AppLocalizations l10n, MaterialModel? material, double requiredWeightG) {
+  String? _buildStockWarning(
+    AppLocalizations l10n,
+    MaterialModel? material,
+    double requiredWeightG,
+  ) {
     if (material == null) return null;
     if (!material.autoDeductEnabled) return null;
     if (requiredWeightG <= 0) return null;
@@ -239,47 +331,6 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
       StockStatus.noTracking => 2,
       StockStatus.outOfStock => 3,
     };
-  }
-}
-
-class _BatchWideMaterialSection extends StatelessWidget {
-  const _BatchWideMaterialSection({
-    required this.materials,
-    required this.selectedMaterialId,
-    required this.warningText,
-    required this.onChanged,
-    required this.labelText,
-    required this.hintText,
-  });
-
-  final List<MaterialModel> materials;
-  final String? selectedMaterialId;
-  final String? warningText;
-  final ValueChanged<String?> onChanged;
-  final String labelText;
-  final String hintText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        BatchAnchorSelector(
-          labelText: labelText,
-          hintText: hintText,
-          value: materials.any((material) => material.id == selectedMaterialId) ? selectedMaterialId : null,
-          onChanged: onChanged,
-          entries: [
-            for (final material in materials)
-              BatchAnchorSelectorEntry(value: material.id, label: material.name),
-          ],
-        ),
-        if (warningText != null) ...[
-          const SizedBox(height: 8),
-          _warningBox(context, warningText!),
-        ],
-      ],
-    );
   }
 }
 
@@ -302,7 +353,8 @@ class _MaterialAllocationCard extends StatelessWidget {
   final List<BatchAssignmentAllocation> allocations;
   final List<MaterialModel> materials;
   final String? warningText;
-  final void Function(int allocationIndex, String? materialId) onAllocationChanged;
+  final void Function(int allocationIndex, String? materialId)
+  onAllocationChanged;
   final VoidCallback onAddAllocation;
   final void Function(int allocationIndex) onRemoveAllocation;
   final String hintText;
@@ -318,18 +370,34 @@ class _MaterialAllocationCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(item.displayName, style: Theme.of(context).textTheme.titleMedium),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    item.displayName,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                Text(
+                  '${item.quantity} $copiesLabel',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
             for (var index = 0; index < allocations.length; index += 1) ...[
               _MaterialAllocationRow(
-                copiesLabel: copiesLabel,
                 copies: allocations[index].quantity,
                 materials: materials,
-                selectedMaterialId: allocations[index].targetId.isEmpty ? null : allocations[index].targetId,
+                selectedMaterialId: allocations[index].targetId.isEmpty
+                    ? null
+                    : allocations[index].targetId,
                 hintText: hintText,
                 labelText: labelText,
                 onChanged: (value) => onAllocationChanged(index, value),
-                onRemove: allocations.length > 1 ? () => onRemoveAllocation(index) : null,
+                onRemove: allocations.length > 1
+                    ? () => onRemoveAllocation(index)
+                    : null,
               ),
               if (index != allocations.length - 1) const SizedBox(height: 12),
             ],
@@ -352,7 +420,6 @@ class _MaterialAllocationCard extends StatelessWidget {
 
 class _MaterialAllocationRow extends StatelessWidget {
   const _MaterialAllocationRow({
-    required this.copiesLabel,
     required this.copies,
     required this.materials,
     required this.selectedMaterialId,
@@ -362,7 +429,6 @@ class _MaterialAllocationRow extends StatelessWidget {
     required this.onRemove,
   });
 
-  final String copiesLabel;
   final int copies;
   final List<MaterialModel> materials;
   final String? selectedMaterialId;
@@ -378,16 +444,35 @@ class _MaterialAllocationRow extends StatelessWidget {
       children: [
         Expanded(
           child: BatchAnchorSelector(
-            labelText: '$labelText · $copiesLabel $copies',
+            labelText: labelText,
             hintText: hintText,
-            value: materials.any((material) => material.id == selectedMaterialId) ? selectedMaterialId : null,
+            value:
+                materials.any((material) => material.id == selectedMaterialId)
+                ? selectedMaterialId
+                : null,
             onChanged: onChanged,
-            entries: [for (final material in materials) BatchAnchorSelectorEntry(value: material.id, label: material.name)],
+            entries: [
+              for (final material in materials)
+                BatchAnchorSelectorEntry(
+                  value: material.id,
+                  label: material.name,
+                ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 4, right: 4, top: 12),
+          child: Text(
+            '×$copies',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         if (onRemove != null) ...[
-          const SizedBox(width: 8),
-          IconButton(onPressed: onRemove, icon: const Icon(Icons.remove_circle_outline)),
+          const SizedBox(width: 4),
+          IconButton(
+            onPressed: onRemove,
+            icon: const Icon(Icons.remove_circle_outline),
+          ),
         ],
       ],
     );
@@ -405,7 +490,9 @@ Widget _warningBox(BuildContext context, String text) {
     ),
     child: Text(
       text,
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colors.onErrorContainer),
+      style: Theme.of(
+        context,
+      ).textTheme.bodySmall?.copyWith(color: colors.onErrorContainer),
     ),
   );
 }

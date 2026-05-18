@@ -61,8 +61,12 @@ class BatchSummaryCalculator {
 
     final batchLabourRate = _parseAmount(state.pricing.labourRate.value);
     final batchFailureRisk = _parsePercent(state.pricing.failureRisk.value);
-    final parsedBatchMarkupPercent = _parsePercent(state.pricing.markupPercent.value);
-    final batchAdditionalCost = _parseAmount(state.pricing.additionalCostAmount.value);
+    final parsedBatchMarkupPercent = _parsePercent(
+      state.pricing.markupPercent.value,
+    );
+    final batchAdditionalCost = _parseAmount(
+      state.pricing.additionalCostAmount.value,
+    );
 
     var batchSubtotal = 0.0;
     for (final item in state.items) {
@@ -71,9 +75,18 @@ class BatchSummaryCalculator {
       totalPrintMinutes += item.printDuration.inMinutes * item.quantity;
 
       final itemBaseCost = _itemBaseCost(item, batchLabourRate, state.pricing);
-      final itemRiskCost = _itemRiskCost(itemBaseCost, batchFailureRisk, state.pricing);
-      final itemAdditionalCost = _itemAdditionalCost(item, batchAdditionalCost, state.pricing);
-      final itemMarkupPercent = state.pricing.markupPercent.scope == BatchPricingScope.item
+      final itemRiskCost = _itemRiskCost(
+        itemBaseCost,
+        batchFailureRisk,
+        state.pricing,
+      );
+      final itemAdditionalCost = _itemAdditionalCost(
+        item,
+        batchAdditionalCost,
+        state.pricing,
+      );
+      final itemMarkupPercent =
+          state.pricing.markupPercent.scope == BatchPricingScope.item
           ? parsedBatchMarkupPercent
           : 0;
       final pricing = PricingCalculator.calculate(
@@ -88,7 +101,9 @@ class BatchSummaryCalculator {
           item: item,
           totalQuantity: item.quantity,
           totalWeightG: item.printWeightG * item.quantity,
-          totalPrintDuration: Duration(minutes: item.printDuration.inMinutes * item.quantity),
+          totalPrintDuration: Duration(
+            minutes: item.printDuration.inMinutes * item.quantity,
+          ),
           baseCost: itemBaseCost,
           additionalCost: itemAdditionalCost,
           pricing: pricing,
@@ -109,7 +124,10 @@ class BatchSummaryCalculator {
     final batchPricing = PricingCalculator.calculate(
       baseCost: batchSubtotal + batchRiskCost,
       markupPercent: batchMarkupPercent,
-      setupFee: _batchScopedSetupFee(state.pricing.additionalCostAmount, batchAdditionalCost),
+      setupFee: _batchScopedSetupFee(
+        state.pricing.additionalCostAmount,
+        batchAdditionalCost,
+      ),
       roundingMode: PricingRoundingMode.none,
     );
 
@@ -148,20 +166,35 @@ class BatchSummaryCalculator {
       return 0;
     }
 
-    final additionalCost = _scopeValue(pricing.additionalCostAmount, batchAdditionalCost);
+    final additionalCost = _scopeValue(
+      pricing.additionalCostAmount,
+      batchAdditionalCost,
+    );
     return additionalCost * item.quantity;
   }
 
-  static num _itemRiskCost(num baseCost, num batchRisk, BatchPricingState pricing) {
-    return pricing.failureRisk.scope == BatchPricingScope.item ? baseCost * batchRisk / 100 : 0;
+  static num _itemRiskCost(
+    num baseCost,
+    num batchRisk,
+    BatchPricingState pricing,
+  ) {
+    return pricing.failureRisk.scope == BatchPricingScope.item
+        ? baseCost * batchRisk / 100
+        : 0;
   }
 
   static num _batchScopedSetupFee(BatchPricingFieldState field, num value) {
     return field.scope == BatchPricingScope.batch ? value : 0;
   }
 
-  static num _batchScopedRisk(num baseCost, num batchRisk, BatchPricingFieldState field) {
-    return field.scope == BatchPricingScope.batch ? baseCost * batchRisk / 100 : 0;
+  static num _batchScopedRisk(
+    num baseCost,
+    num batchRisk,
+    BatchPricingFieldState field,
+  ) {
+    return field.scope == BatchPricingScope.batch
+        ? baseCost * batchRisk / 100
+        : 0;
   }
 
   static num _batchScopedPercent(BatchPricingFieldState field, num value) {
@@ -173,7 +206,9 @@ class BatchSummaryCalculator {
     return field.scope == BatchPricingScope.batch ? batchValue : parsed;
   }
 
-  static num _parseAmount(String value) => num.tryParse(value.replaceAll(',', '.')) ?? 0;
+  static num _parseAmount(String value) =>
+      num.tryParse(value.replaceAll(',', '.')) ?? 0;
 
-  static num _parsePercent(String value) => num.tryParse(value.replaceAll(',', '.')) ?? 0;
+  static num _parsePercent(String value) =>
+      num.tryParse(value.replaceAll(',', '.')) ?? 0;
 }

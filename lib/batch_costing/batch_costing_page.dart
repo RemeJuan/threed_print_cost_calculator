@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
@@ -11,7 +12,6 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class BatchCostingPage extends ConsumerStatefulWidget {
@@ -24,16 +24,14 @@ class BatchCostingPage extends ConsumerStatefulWidget {
 class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   final Map<String, TextEditingController> _quantityControllers =
       <String, TextEditingController>{};
-  final Map<String, FocusNode> _quantityFocusNodes = <String, FocusNode>{};
   bool _initialSyncDone = false;
+  Timer? _quantityChangeTimer;
 
   @override
   void dispose() {
+    _quantityChangeTimer?.cancel();
     for (final controller in _quantityControllers.values) {
       controller.dispose();
-    }
-    for (final focusNode in _quantityFocusNodes.values) {
-      focusNode.dispose();
     }
     super.dispose();
   }
@@ -50,11 +48,11 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
 
     if (!_initialSyncDone) {
       _initialSyncDone = true;
-      _syncControllers(items);
+      _syncQuantityControllers(items);
     }
 
     ref.listen(batchCostingProvider, (prev, next) {
-      _syncControllers(next.items);
+      _syncQuantityControllers(next.items);
     });
 
     return Scaffold(
@@ -70,15 +68,17 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 16),
-              Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: FilledButton.icon(
-                  onPressed: () => _addManualItem(context),
-                  icon: const Icon(Icons.add),
-                  label: Text(l10n.batchCostingReviewAddManualItemButton),
+              if (items.isNotEmpty) ...[
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: TextButton.icon(
+                    onPressed: () => _addManualItem(context),
+                    icon: const Icon(Icons.add),
+                    label: Text(l10n.batchCostingReviewAddManualItemButton),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
+              ],
               Expanded(
                 child: items.isEmpty
                     ? _emptyState(context, l10n)
@@ -99,6 +99,11 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                   icon: const Icon(Icons.arrow_forward),
                   label: Text(l10n.batchCostingReviewContinueButton),
                 ),
+                const SizedBox(height: 12),
+                OutlinedButton(
+                  onPressed: () => _showStartNewBatchDialog(context),
+                  child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                ),
               ],
             ],
           ),
@@ -107,32 +112,24 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     );
   }
 
-  void _syncControllers(List<BatchCostingItem> items) {
+  void _syncQuantityControllers(List<BatchCostingItem> items) {
     final activeIds = items.map((item) => item.id).toSet();
 
-    final removedIds = _quantityControllers.keys
-        .where((itemId) => !activeIds.contains(itemId))
-        .toList(growable: false);
-    for (final itemId in removedIds) {
-      _quantityControllers.remove(itemId)?.dispose();
-      _quantityFocusNodes.remove(itemId)?.dispose();
-    }
+    _quantityControllers.removeWhere((id, controller) {
+      if (!activeIds.contains(id)) {
+        controller.dispose();
+        return true;
+      }
+      return false;
+    });
 
     for (final item in items) {
       final controller = _quantityControllers.putIfAbsent(
         item.id,
         () => TextEditingController(text: item.quantity.toString()),
       );
-      final focusNode = _quantityFocusNodes.putIfAbsent(item.id, FocusNode.new);
-
-      if (!focusNode.hasFocus) {
-        final quantityText = item.quantity.toString();
-        if (controller.text != quantityText) {
-          controller.value = TextEditingValue(
-            text: quantityText,
-            selection: TextSelection.collapsed(offset: quantityText.length),
-          );
-        }
+      if (controller.text != item.quantity.toString()) {
+        controller.text = item.quantity.toString();
       }
     }
   }
@@ -158,7 +155,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           FilledButton.icon(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
@@ -167,6 +164,12 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             ),
             icon: const Icon(Icons.upload_file),
             label: Text(l10n.batchCostingReviewImportGcodeButton),
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            onPressed: () => _addManualItem(context),
+            icon: const Icon(Icons.add),
+            label: Text(l10n.batchCostingReviewAddManualItemButton),
           ),
         ],
       ),
@@ -178,14 +181,13 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     AppLocalizations l10n,
     BatchCostingItem item,
   ) {
-    final controller = _quantityControllers[item.id]!;
-    final focusNode = _quantityFocusNodes[item.id]!;
+    final quantityController = _quantityControllers[item.id];
 
     return Card(
       child: ExpansionTile(
         key: ValueKey<String>('batch-item-${item.id}'),
         tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        childrenPadding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         title: Text(
           item.displayName,
           style: Theme.of(context).textTheme.titleMedium,
@@ -196,64 +198,108 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
           overflow: TextOverflow.ellipsis,
         ),
         children: [
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: TextButton.icon(
-              onPressed: () => _editItem(context, item),
-              icon: const Icon(Icons.edit_outlined),
-              label: Text(l10n.editButton),
-            ),
-          ),
-          const SizedBox(height: 8),
-          _itemDetailRow(
-            context,
-            l10n.batchCostingReviewWeightLabel,
-            '${formatWeight(item.printWeightG)} g',
-          ),
-          const SizedBox(height: 8),
-          _itemDetailRow(
-            context,
-            l10n.batchCostingReviewDurationLabel,
-            _formatDuration(item.printDuration),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _itemDetailRow(
+                      context,
+                      l10n.batchCostingReviewWeightLabel,
+                      Text(
+                        '${formatWeight(item.printWeightG)}${l10n.gramsSuffix}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                    _itemDetailRow(
+                      context,
+                      l10n.batchCostingReviewDurationLabel,
+                      Text(
+                        _formatDuration(item.printDuration),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 1,
+                child: TextField(
+                  controller: quantityController,
+                  decoration: InputDecoration(
+                    labelText: l10n.batchCostingReviewQuantityLabel,
+                    border: const OutlineInputBorder(),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  onChanged: (value) {
+                    final parsed = int.tryParse(value);
+                    if (parsed == null || parsed < 1) return;
+                    if (!context.mounted) return;
+                    final cleared = ref
+                        .read(batchCostingProvider.notifier)
+                        .updateItem(item.copyWith(quantity: parsed));
+                    _quantityChangeTimer?.cancel();
+                    if (cleared) {
+                      _quantityChangeTimer = Timer(
+                        const Duration(milliseconds: 1000),
+                        () {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context)
+                            ..clearSnackBars()
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  l10n.batchCostingAssignmentQuantityChangedMessage,
+                                ),
+                              ),
+                            );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
-          FocusSafeTextField(
-            controller: controller,
-            focusNode: focusNode,
-            externalText: item.quantity.toString(),
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            inputNormalizer: (value) =>
-                normalizeLeadingZeroNumericInput(value, allowDecimal: false),
-            decoration: InputDecoration(
-              labelText: l10n.batchCostingReviewQuantityLabel,
-              border: const OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              final parsed = int.tryParse(value);
-              if (parsed == null || parsed < 1) return;
-              ref
-                  .read(batchCostingProvider.notifier)
-                  .updateItem(item.copyWith(quantity: parsed));
-            },
-          ),
-          const SizedBox(height: 12),
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: TextButton.icon(
-              onPressed: () =>
-                  ref.read(batchCostingProvider.notifier).removeItem(item.id),
-              icon: const Icon(Icons.delete_outline),
-              label: Text(l10n.batchCostingReviewRemoveButton),
-            ),
+          Row(
+            children: [
+              TextButton.icon(
+                style: TextButton.styleFrom(
+                  foregroundColor: Theme.of(context).colorScheme.error,
+                ),
+                onPressed: () =>
+                    ref.read(batchCostingProvider.notifier).removeItem(item.id),
+                icon: const Icon(Icons.delete_outline),
+                label: Text(l10n.batchCostingReviewRemoveButton),
+              ),
+              const Spacer(),
+              TextButton.icon(
+                onPressed: () => _editItem(context, item),
+                icon: const Icon(Icons.edit_outlined),
+                label: Text(l10n.editButton),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _itemDetailRow(BuildContext context, String label, String value) {
+  Widget _itemDetailRow(BuildContext context, String label, Widget child) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -267,9 +313,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
           ),
         ),
         const SizedBox(width: 12),
-        Expanded(
-          child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
-        ),
+        Expanded(child: child),
       ],
     );
   }
@@ -295,11 +339,39 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   }
 
   void _continueToPrinterAssignment(BuildContext context) {
+    _quantityChangeTimer?.cancel();
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => const BatchPrinterAssignmentPage(),
       ),
     );
+  }
+
+  Future<void> _showStartNewBatchDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.batchCostingNewBatchDialogTitle),
+        content: Text(l10n.batchCostingNewBatchDialogBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancelButton),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+    if (!context.mounted) return;
+
+    ref.read(batchCostingProvider.notifier).reset();
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future<void> _addManualItem(BuildContext context) async {
@@ -309,9 +381,9 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
       builder: (_) => BatchCostingItemEditorDialog(
         title: l10n.batchCostingItemEditorAddTitle,
         initialDisplayName: '',
-        initialQuantity: 1,
-        initialPrintWeightG: 1,
-        initialPrintDuration: const Duration(minutes: 1),
+        initialQuantity: 0,
+        initialPrintWeightG: 0,
+        initialPrintDuration: Duration.zero,
       ),
     );
 
@@ -356,7 +428,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     );
 
     if (result == null) return;
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     final updatedItem = item.copyWith(
       displayName: result.displayName,
@@ -364,7 +436,16 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
       printWeightG: result.printWeightG,
       printDuration: result.printDuration,
     );
-    ref.read(batchCostingProvider.notifier).updateItem(updatedItem);
+    final cleared = ref
+        .read(batchCostingProvider.notifier)
+        .updateItem(updatedItem);
+    if (cleared && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l10n.batchCostingAssignmentQuantityChangedMessage),
+        ),
+      );
+    }
 
     AppAnalytics.safeLog(
       () => AppAnalytics.batchCostingItemEdited(

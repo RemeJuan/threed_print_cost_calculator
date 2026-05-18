@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.da
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
@@ -49,6 +50,8 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     _markupPercentFocus = FocusNode();
     _labourRateFocus = FocusNode();
     _additionalCostFocus = FocusNode();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadDefaults());
   }
 
   @override
@@ -64,6 +67,31 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     super.dispose();
   }
 
+  Future<void> _loadDefaults() async {
+    if (!ref.read(batchCostingEnabledProvider)) return;
+
+    final settings = await ref.read(settingsServiceProvider).get();
+    if (!mounted) return;
+    final notifier = ref.read(batchCostingProvider.notifier);
+    final state = ref.read(batchCostingProvider);
+
+    if (settings.failureRisk.isNotEmpty &&
+        state.pricing.failureRisk.value.isEmpty) {
+      notifier.setFailureRisk(settings.failureRisk);
+      _failureRiskController.text = settings.failureRisk;
+    }
+    if (settings.labourRate.isNotEmpty &&
+        state.pricing.labourRate.value.isEmpty) {
+      notifier.setLabourRate(settings.labourRate);
+      _labourRateController.text = settings.labourRate;
+    }
+    if (settings.pricingMarkupPercent.isNotEmpty &&
+        state.pricing.markupPercent.value.isEmpty) {
+      notifier.setMarkupPercent(settings.pricingMarkupPercent);
+      _markupPercentController.text = settings.pricingMarkupPercent;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();
@@ -74,10 +102,10 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     return Scaffold(
       appBar: AppBar(title: Text(l10n.batchCostingPricingScopeAppBarTitle)),
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -86,61 +114,73 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 16),
-                _pricingFieldCard(
-                  context: context,
-                  label: l10n.failureRiskLabel,
-                  controller: _failureRiskController,
-                  focusNode: _failureRiskFocus,
-                  value: state.pricing.failureRisk.value,
-                  scope: state.pricing.failureRisk.scope,
-                  onValueChanged: (value) => ref.read(batchCostingProvider.notifier).setFailureRisk(value),
-                  onScopeChanged: (scope) => ref.read(batchCostingProvider.notifier).setFailureRiskScope(scope),
-                  validator: _percentValidator(l10n),
-                ),
-                _pricingFieldCard(
-                  context: context,
-                  label: l10n.pricingMarkupPercentLabel,
-                  controller: _markupPercentController,
-                  focusNode: _markupPercentFocus,
-                  value: state.pricing.markupPercent.value,
-                  scope: state.pricing.markupPercent.scope,
-                  onValueChanged: (value) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setMarkupPercent(value),
-                  onScopeChanged: (scope) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setMarkupPercentScope(scope),
-                  validator: _percentValidator(l10n),
-                ),
-                _pricingFieldCard(
-                  context: context,
-                  label: l10n.labourRateLabel,
-                  controller: _labourRateController,
-                  focusNode: _labourRateFocus,
-                  value: state.pricing.labourRate.value,
-                  scope: state.pricing.labourRate.scope,
-                  onValueChanged: (value) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setLabourRate(value),
-                  onScopeChanged: (scope) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setLabourRateScope(scope),
-                  validator: _amountValidator(l10n),
-                ),
-                _pricingFieldCard(
-                  context: context,
-                  label: l10n.additionalCostLabel,
-                  controller: _additionalCostController,
-                  focusNode: _additionalCostFocus,
-                  value: state.pricing.additionalCostAmount.value,
-                  scope: state.pricing.additionalCostAmount.scope,
-                  onValueChanged: (value) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setAdditionalCostAmount(value),
-                  onScopeChanged: (scope) => ref
-                      .read(batchCostingProvider.notifier)
-                      .setAdditionalCostAmountScope(scope),
-                  validator: _amountValidator(l10n),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _pricingFieldCard(
+                          context: context,
+                          label: l10n.failureRiskLabel,
+                          controller: _failureRiskController,
+                          focusNode: _failureRiskFocus,
+                          value: state.pricing.failureRisk.value,
+                          scope: state.pricing.failureRisk.scope,
+                          onValueChanged: (value) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setFailureRisk(value),
+                          onScopeChanged: (scope) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setFailureRiskScope(scope),
+                          validator: _percentValidator(l10n),
+                        ),
+                        _pricingFieldCard(
+                          context: context,
+                          label: l10n.pricingMarkupPercentLabel,
+                          controller: _markupPercentController,
+                          focusNode: _markupPercentFocus,
+                          value: state.pricing.markupPercent.value,
+                          scope: state.pricing.markupPercent.scope,
+                          onValueChanged: (value) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setMarkupPercent(value),
+                          onScopeChanged: (scope) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setMarkupPercentScope(scope),
+                          validator: _percentValidator(l10n),
+                        ),
+                        _pricingFieldCard(
+                          context: context,
+                          label: l10n.labourRateLabel,
+                          controller: _labourRateController,
+                          focusNode: _labourRateFocus,
+                          value: state.pricing.labourRate.value,
+                          scope: state.pricing.labourRate.scope,
+                          onValueChanged: (value) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setLabourRate(value),
+                          onScopeChanged: (scope) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setLabourRateScope(scope),
+                          validator: _amountValidator(l10n),
+                        ),
+                        _pricingFieldCard(
+                          context: context,
+                          label: l10n.additionalCostLabel,
+                          controller: _additionalCostController,
+                          focusNode: _additionalCostFocus,
+                          value: state.pricing.additionalCostAmount.value,
+                          scope: state.pricing.additionalCostAmount.scope,
+                          onValueChanged: (value) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setAdditionalCostAmount(value),
+                          onScopeChanged: (scope) => ref
+                              .read(batchCostingProvider.notifier)
+                              .setAdditionalCostAmountScope(scope),
+                          validator: _amountValidator(l10n),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -148,15 +188,13 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
-                        MaterialLocalizations.of(context).backButtonTooltip,
+                        l10n.batchCostingPrinterAssignmentPreviousButton,
                       ),
                     ),
                     const Spacer(),
                     FilledButton(
                       onPressed: () => _continue(context),
-                      child: Text(
-                        l10n.batchCostingPrinterAssignmentContinueButton,
-                      ),
+                      child: Text(l10n.batchCostingPrinterAssignmentNextButton),
                     ),
                   ],
                 ),
@@ -184,40 +222,53 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
           children: [
-            Text(label, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 12),
-            FocusSafeTextField(
-              controller: controller,
-              focusNode: focusNode,
-              externalText: value,
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
+            Expanded(
+              flex: 48,
+              child: FocusSafeTextField(
+                controller: controller,
+                focusNode: focusNode,
+                externalText: value,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: localizedDecimalInputFormatters,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: validator,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  isDense: true,
+                  label: Text(label),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
+                ),
+                onChanged: onValueChanged,
               ),
-              inputFormatters: localizedDecimalInputFormatters,
-              inputNormalizer: normalizeLeadingZeroNumericInput,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: validator,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              onChanged: onValueChanged,
             ),
-            const SizedBox(height: 12),
-            SegmentedButton<BatchPricingScope>(
-              segments: [
-                ButtonSegment(
-                  value: BatchPricingScope.item,
-                  label: Text(l10n.batchCostingPricingScopeItemMode),
-                ),
-                ButtonSegment(
-                  value: BatchPricingScope.batch,
-                  label: Text(l10n.batchCostingPricingScopeBatchMode),
-                ),
-              ],
-              selected: {scope},
-              onSelectionChanged: (selected) => onScopeChanged(selected.first),
+            const Spacer(flex: 4),
+            Expanded(
+              flex: 48,
+              child: SegmentedButton<BatchPricingScope>(
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment(
+                    value: BatchPricingScope.item,
+                    label: Text(l10n.batchCostingPricingScopeItemMode),
+                  ),
+                  ButtonSegment(
+                    value: BatchPricingScope.batch,
+                    label: Text(l10n.batchCostingPricingScopeBatchMode),
+                  ),
+                ],
+                selected: {scope},
+                onSelectionChanged: (selected) =>
+                    onScopeChanged(selected.first),
+              ),
             ),
           ],
         ),
