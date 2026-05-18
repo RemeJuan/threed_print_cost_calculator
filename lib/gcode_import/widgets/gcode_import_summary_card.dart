@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:flutter/services.dart';
+import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
 import 'gcode_import_preview_section.dart';
 
@@ -121,26 +123,23 @@ class GCodeImportSummaryCard extends StatelessWidget {
             ),
             if (batchCostingEnabled) ...[
               const SizedBox(height: 16),
-              TextFormField(
+              FocusSafeTextField(
                 key: const ValueKey<String>('gcode_import.quantity.field'),
                 controller: quantityController,
                 focusNode: quantityFocusNode,
+                externalText: quantity.value.toString(),
                 keyboardType: TextInputType.number,
                 textInputAction: TextInputAction.done,
-                initialValue: null,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                inputNormalizer: (value) => normalizeLeadingZeroNumericInput(
+                  value,
+                  allowDecimal: false,
+                ),
                 decoration: InputDecoration(
                   labelText: l10n.importGcodeQuantityLabel,
                   border: const OutlineInputBorder(),
                 ),
-                onChanged: (value) {
-                  final parsed = num.tryParse(value);
-                  final input = NumberInput.dirty(value: parsed);
-                  onQuantityChanged((input.value ?? 1).toInt().toString());
-                },
-                validator: (value) {
-                  final parsed = num.tryParse(value ?? '');
-                  return NumberInput.dirty(value: parsed).isValid ? null : '';
-                },
+                onChanged: onQuantityChanged,
               ),
               if (quantity.value > 1 && !canCreateBatchFromImport) ...[
                 const SizedBox(height: 8),

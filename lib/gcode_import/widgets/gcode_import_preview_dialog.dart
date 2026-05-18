@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 class GCodeImportPreviewDialog extends StatelessWidget {
   const GCodeImportPreviewDialog({
@@ -10,7 +11,7 @@ class GCodeImportPreviewDialog extends StatelessWidget {
   });
 
   final Uint8List bytes;
-  final dynamic l10n;
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {

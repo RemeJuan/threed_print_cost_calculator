@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
@@ -31,10 +29,7 @@ class GCodeImportPreviewSection extends StatelessWidget {
       );
     }
     final isLowRes =
-        result.previewWidth != null &&
-        result.previewHeight != null &&
-        result.previewWidth! < 128 &&
-        result.previewHeight! < 128;
+        (result.previewWidth ?? 0) < 128 || (result.previewHeight ?? 0) < 128;
     void onPreviewTap() {
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodePreviewViewed(
@@ -44,7 +39,15 @@ class GCodeImportPreviewSection extends StatelessWidget {
           parseStatus: parseStatus,
         ),
       );
-      _showPreviewDialog(context, previewBytes);
+      showDialog<void>(
+        context: context,
+        barrierColor: Colors.black87,
+        barrierDismissible: true,
+        builder: (_) => GCodeImportPreviewDialog(
+          bytes: previewBytes,
+          l10n: l10n,
+        ),
+      );
     }
 
     if (isLowRes) {
@@ -120,12 +123,5 @@ class GCodeImportPreviewSection extends StatelessWidget {
       ),
     ),
   );
-  Future<void> _showPreviewDialog(BuildContext context, Uint8List bytes) {
-    return showDialog<void>(
-      context: context,
-      barrierColor: Colors.black87,
-      barrierDismissible: true,
-      builder: (_) => GCodeImportPreviewDialog(bytes: bytes, l10n: l10n),
-    );
-  }
+
 }
