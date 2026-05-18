@@ -138,6 +138,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                               .read(batchCostingProvider.notifier)
                               .setFailureRiskScope(scope),
                           validator: _percentValidator(l10n),
+                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
+                          scopeBatchLabel:
+                              l10n.batchCostingPricingScopeBatchMode,
                         ),
                         _pricingFieldCard(
                           context: context,
@@ -153,6 +156,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                               .read(batchCostingProvider.notifier)
                               .setMarkupPercentScope(scope),
                           validator: _percentValidator(l10n),
+                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
+                          scopeBatchLabel:
+                              l10n.batchCostingPricingScopeBatchMode,
                         ),
                         _pricingFieldCard(
                           context: context,
@@ -168,6 +174,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                               .read(batchCostingProvider.notifier)
                               .setLabourRateScope(scope),
                           validator: _amountValidator(l10n),
+                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
+                          scopeBatchLabel:
+                              l10n.batchCostingPricingScopeBatchMode,
                         ),
                         _pricingFieldCard(
                           context: context,
@@ -183,6 +192,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                               .read(batchCostingProvider.notifier)
                               .setAdditionalCostAmountScope(scope),
                           validator: _amountValidator(l10n),
+                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
+                          scopeBatchLabel:
+                              l10n.batchCostingPricingScopeBatchMode,
                         ),
                       ],
                     ),
