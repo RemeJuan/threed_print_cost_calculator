@@ -1257,6 +1257,20 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingAssignmentSplitCopiesButton => 'Bagi salinan';
 
   @override
+  String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
+    return 'Split copies for $itemName';
+  }
+
+  @override
+  String batchCostingAssignmentSplitCopiesTotalError(Object total) {
+    return 'Total must equal $total';
+  }
+
+  @override
+  String get batchCostingAssignmentQuantityChangedMessage =>
+      'Assignments were reset because quantity changed.';
+
+  @override
   String get batchCostingAssignmentCopiesLabel => 'Salinan';
 
   @override
@@ -1264,7 +1278,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Pilih printer untuk lanjut.';
 
   @override
-  String get batchCostingPrinterAssignmentContinueButton => 'Lanjutkan';
+  String get batchCostingPrinterAssignmentPreviousButton => 'Sebelumnya';
+
+  @override
+  String get batchCostingPrinterAssignmentNextButton => 'Selanjutnya';
 
   @override
   String get batchCostingPrinterAssignmentNoPrintersMessage =>
@@ -1300,7 +1317,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Pilih material untuk melanjutkan.';
 
   @override
-  String get batchCostingMaterialAssignmentContinueButton => 'Lanjutkan';
+  String get batchCostingMaterialAssignmentPreviousButton => 'Sebelumnya';
+
+  @override
+  String get batchCostingMaterialAssignmentNextButton => 'Selanjutnya';
 
   @override
   String get batchCostingMaterialAssignmentNoMaterialsMessage =>
@@ -1398,4 +1418,22 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingSummaryItemsTitle => 'Item';
+
+  @override
+  String get batchCostingNewBatchDialogTitle => 'Start new batch';
+
+  @override
+  String get batchCostingNewBatchDialogBody =>
+      'This will discard all current batch progress. Start a new batch?';
+
+  @override
+  String batchCostingSummaryPricingItemScopeFormat(
+    Object lineTotal,
+    Object perUnit,
+  ) {
+    return '$perUnit each → $lineTotal total';
+  }
+
+  @override
+  String get batchCostingAssignmentPrinterLabel => 'Printer';
 }

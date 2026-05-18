@@ -1227,6 +1227,20 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingAssignmentSplitCopiesButton => 'コピーを分割';
 
   @override
+  String batchCostingAssignmentSplitCopiesDialogTitle(Object itemName) {
+    return 'Split copies for $itemName';
+  }
+
+  @override
+  String batchCostingAssignmentSplitCopiesTotalError(Object total) {
+    return 'Total must equal $total';
+  }
+
+  @override
+  String get batchCostingAssignmentQuantityChangedMessage =>
+      'Assignments were reset because quantity changed.';
+
+  @override
   String get batchCostingAssignmentCopiesLabel => '部数';
 
   @override
@@ -1234,7 +1248,10 @@ class AppLocalizationsJa extends AppLocalizations {
       '続行するプリンターを選択してください。';
 
   @override
-  String get batchCostingPrinterAssignmentContinueButton => '続行';
+  String get batchCostingPrinterAssignmentPreviousButton => '前へ';
+
+  @override
+  String get batchCostingPrinterAssignmentNextButton => '次へ';
 
   @override
   String get batchCostingPrinterAssignmentNoPrintersMessage =>
@@ -1266,7 +1283,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingMaterialAssignmentRequiredError => '続けるには材料を選んでください。';
 
   @override
-  String get batchCostingMaterialAssignmentContinueButton => '続ける';
+  String get batchCostingMaterialAssignmentPreviousButton => '前へ';
+
+  @override
+  String get batchCostingMaterialAssignmentNextButton => '次へ';
 
   @override
   String get batchCostingMaterialAssignmentNoMaterialsMessage =>
@@ -1360,4 +1380,22 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingSummaryItemsTitle => 'アイテム';
+
+  @override
+  String get batchCostingNewBatchDialogTitle => 'Start new batch';
+
+  @override
+  String get batchCostingNewBatchDialogBody =>
+      'This will discard all current batch progress. Start a new batch?';
+
+  @override
+  String batchCostingSummaryPricingItemScopeFormat(
+    Object lineTotal,
+    Object perUnit,
+  ) {
+    return '$perUnit each → $lineTotal total';
+  }
+
+  @override
+  String get batchCostingAssignmentPrinterLabel => 'Printer';
 }
