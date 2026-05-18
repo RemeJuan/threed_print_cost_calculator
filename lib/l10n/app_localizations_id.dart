@@ -1274,6 +1274,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingAssignmentCopiesLabel => 'Salinan';
 
   @override
+  String get batchCostingAllocationPickerSearchLabel => 'Cari opsi';
+
+  @override
+  String get batchCostingAllocationPickerAvailableLabel => 'Tersedia';
+
+  @override
+  String get batchCostingAllocationPickerSelectedLabel => 'Dipilih';
+
+  @override
+  String get batchCostingAllocationPickerAddButton => 'Tambah';
+
+  @override
+  String get batchCostingAllocationPickerNoResultsLabel => 'Tidak ada hasil.';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'Pilih printer untuk lanjut.';
 

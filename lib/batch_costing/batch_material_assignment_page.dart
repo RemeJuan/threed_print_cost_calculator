@@ -155,37 +155,9 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                   ),
                                   _itemRequiredWeight(item),
                                 ),
-                                onAllocationChanged:
-                                    (allocationIndex, materialId) {
-                                      final updated = [...allocations];
-                                      updated[allocationIndex] =
-                                          updated[allocationIndex].copyWith(
-                                            targetId: materialId ?? '',
-                                          );
-                                      ref
-                                          .read(batchCostingProvider.notifier)
-                                          .setItemMaterialAllocations(
-                                            item.id,
-                                            updated,
-                                          );
-                                    },
-                                onAddAllocation: () => ref
+                                onSetAllocations: (updated) => ref
                                     .read(batchCostingProvider.notifier)
-                                    .addItemMaterialAllocation(item.id),
-                                onRemoveAllocation: (allocationIndex) => ref
-                                    .read(batchCostingProvider.notifier)
-                                    .removeItemMaterialAllocation(
-                                      item.id,
-                                      allocationIndex,
-                                    ),
-                                hintText: l10n
-                                    .batchCostingMaterialAssignmentPerItemHint,
-                                addButtonLabel: l10n
-                                    .batchCostingAssignmentSplitCopiesButton,
-                                copiesLabel:
-                                    l10n.batchCostingAssignmentCopiesLabel,
-                                labelText: l10n
-                                    .batchCostingMaterialAssignmentMaterialLabel,
+                                    .setItemMaterialAllocations(item.id, updated),
                               );
                             },
                           ),

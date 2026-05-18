@@ -1264,6 +1264,21 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingAssignmentCopiesLabel => 'สำเนา';
 
   @override
+  String get batchCostingAllocationPickerSearchLabel => 'ค้นหาตัวเลือก';
+
+  @override
+  String get batchCostingAllocationPickerAvailableLabel => 'พร้อมใช้งาน';
+
+  @override
+  String get batchCostingAllocationPickerSelectedLabel => 'เลือกแล้ว';
+
+  @override
+  String get batchCostingAllocationPickerAddButton => 'เพิ่ม';
+
+  @override
+  String get batchCostingAllocationPickerNoResultsLabel => 'ไม่พบผลลัพธ์';
+
+  @override
   String get batchCostingPrinterAssignmentRequiredError =>
       'เลือกเครื่องพิมพ์เพื่อดำเนินการต่อ';
 
