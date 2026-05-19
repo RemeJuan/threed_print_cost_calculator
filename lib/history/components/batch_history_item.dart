@@ -110,6 +110,7 @@ class BatchHistoryItem extends HookConsumerWidget {
               for (final entry in _pricingEntries(
                 l10n,
                 summary ?? const <String, dynamic>{},
+                currency,
               ))
                 if (entry.value != null)
                   _detailRow(context, entry.label, entry.value!),
@@ -212,25 +213,28 @@ class BatchHistoryItem extends HookConsumerWidget {
   List<({String label, String? value})> _pricingEntries(
     AppLocalizations l10n,
     Map<String, dynamic> summary,
+    GeneralSettingsModel currency,
   ) {
     final pricing = summary['pricing'];
     if (pricing is! Map) return [];
     return [
       (
         label: l10n.failureRiskLabel,
-        value: _pricingValue(pricing, 'failureRisk', l10n, isPercent: true),
+        value: _pricingValue(pricing, 'failureRisk', l10n, currency,
+            isPercent: true),
       ),
       (
         label: l10n.pricingMarkupPercentLabel,
-        value: _pricingValue(pricing, 'markupPercent', l10n, isPercent: true),
+        value: _pricingValue(pricing, 'markupPercent', l10n, currency,
+            isPercent: true),
       ),
       (
         label: l10n.labourRateLabel,
-        value: _pricingValue(pricing, 'labourRate', l10n),
+        value: _pricingValue(pricing, 'labourRate', l10n, currency),
       ),
       (
         label: l10n.additionalCostLabel,
-        value: _pricingValue(pricing, 'additionalCostAmount', l10n),
+        value: _pricingValue(pricing, 'additionalCostAmount', l10n, currency),
       ),
     ];
   }
@@ -238,23 +242,28 @@ class BatchHistoryItem extends HookConsumerWidget {
   String? _pricingValue(
     Map pricing,
     String key,
-    AppLocalizations l10n, {
+    AppLocalizations l10n,
+    GeneralSettingsModel currency, {
     bool isPercent = false,
   }) {
     final field = pricing[key];
     if (field is! Map) return null;
     final raw = (field['value']?.toString() ?? '').trim();
     if (raw.isEmpty || raw == '0') return null;
-    final scope = field['scope']?.toString();
-    final scopeSuffix = scope == 'item'
-        ? ' (${l10n.batchCostingPricingScopeItemMode})'
-        : scope == 'batch'
-        ? ' (${l10n.batchCostingPricingScopeBatchMode})'
-        : scope != null && scope.isNotEmpty
-        ? ' ($scope)'
-        : '';
-    if (isPercent) return '$raw$scopeSuffix';
-    return '$raw$scopeSuffix';
+    final monetaryImpact = field['monetaryImpact'];
+    if (isPercent) {
+      if (monetaryImpact is num && monetaryImpact > 0) {
+        final impact = formatCurrencyValue(
+          monetaryImpact,
+          currencySymbol: currency.currencySymbol,
+          currencyPosition: currency.currencyPosition,
+          currencySpacing: currency.currencySpacing,
+        );
+        return '$raw% → $impact';
+      }
+      return '$raw%';
+    }
+    return raw;
   }
 
   String _amountString(dynamic raw, GeneralSettingsModel currency) {

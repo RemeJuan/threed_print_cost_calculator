@@ -72,8 +72,14 @@ abstract class HistoryModel with _$HistoryModel {
         'batchPrinterId': state.batchPrinterId,
         'batchMaterialId': state.batchMaterialId,
         'pricing': {
-          'failureRisk': _pricingFieldToMap(state.pricing.failureRisk),
-          'markupPercent': _pricingFieldToMap(state.pricing.markupPercent),
+          'failureRisk': {
+            ..._pricingFieldToMap(state.pricing.failureRisk),
+            'monetaryImpact': summary.failureRiskMonetary,
+          },
+          'markupPercent': {
+            ..._pricingFieldToMap(state.pricing.markupPercent),
+            'monetaryImpact': summary.markupPercentMonetary,
+          },
           'labourRate': _pricingFieldToMap(state.pricing.labourRate),
           'additionalCostAmount': _pricingFieldToMap(
             state.pricing.additionalCostAmount,
