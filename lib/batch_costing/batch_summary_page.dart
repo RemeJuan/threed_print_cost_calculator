@@ -459,8 +459,8 @@ class BatchSummaryPage extends ConsumerWidget {
             currencySpacing: currencySettings.currencySpacing,
           );
     return l10n.batchCostingSummaryPricingItemScopeFormat(
-      formattedValue,
       formattedLineTotal,
+      formattedValue,
     );
   }
 
