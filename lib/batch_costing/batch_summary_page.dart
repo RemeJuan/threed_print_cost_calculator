@@ -335,7 +335,8 @@ class BatchSummaryPage extends ConsumerWidget {
 
     try {
       await ref.read(historyRepositoryProvider).saveHistory(model);
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('batch_summary_page._saveQuote error: $e\n$st');
       if (!context.mounted) return;
       BotToast.showText(text: l10n.batchCostingSummarySaveErrorMessage);
       return;
