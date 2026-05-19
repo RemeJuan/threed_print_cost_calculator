@@ -1256,12 +1256,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchGcodeImportApply => 'Terapkan';
 
   @override
+  String get batchGcodeImportDetailsButton => 'Detail';
+
+  @override
   String get batchGcodeImportDuplicateMessage =>
-      'Some files were already added.';
+      'Beberapa file sudah ditambahkan.';
 
   @override
   String get batchGcodeImportQuantityHint =>
-      'Quantities can be adjusted in the next step.';
+      'Jumlah dapat disesuaikan pada langkah berikutnya.';
 
   @override
   String get batchCostingReviewContinueButton =>

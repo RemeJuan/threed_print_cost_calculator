@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_gcode_import_details_sheet.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -38,13 +39,13 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
 
     final l10n = AppLocalizations.of(context)!;
     final hasReady = _rows.any((row) => row.status == _ImportStatus.ready);
-    final hasNeedsDetails =
-        _rows.any((row) => row.status == _ImportStatus.needsDetails);
-    final allDone = !_loading &&
+    final hasNeedsDetails = _rows.any(
+      (row) => row.status == _ImportStatus.needsDetails,
+    );
+    final allDone =
+        !_loading &&
         _rows.isNotEmpty &&
-        _rows.every(
-          (row) => row.status != _ImportStatus.importing,
-        );
+        _rows.every((row) => row.status != _ImportStatus.importing);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.batchGcodeImportTitle)),
@@ -76,7 +77,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                       separatorBuilder: (context, _) =>
                           const SizedBox(height: 8),
                       itemBuilder: (context, index) =>
-                          _buildFileRow(_rows[index], index, l10n),
+                          _buildFileRow(_rows[index], l10n),
                     ),
             ),
             if (allDone && hasReady && !hasNeedsDetails)
@@ -93,7 +94,10 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                   child: Text(l10n.batchGcodeImportContinueButton),
                 ),
               )
-            else if (allDone && _rows.isNotEmpty && !hasReady && !hasNeedsDetails)
+            else if (allDone &&
+                _rows.isNotEmpty &&
+                !hasReady &&
+                !hasNeedsDetails)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
                 child: Row(
@@ -118,7 +122,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     );
   }
 
-  Widget _buildFileRow(_BatchImportRow row, int index, AppLocalizations l10n) {
+  Widget _buildFileRow(_BatchImportRow row, AppLocalizations l10n) {
     switch (row.status) {
       case _ImportStatus.importing:
         return ListTile(
@@ -131,6 +135,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           subtitle: Text(l10n.batchGcodeImportImportingLabel),
         );
       case _ImportStatus.needsDetails:
+        final item = _itemForRow(row);
         return Card(
           margin: EdgeInsets.zero,
           child: Padding(
@@ -140,8 +145,11 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.warning_amber_rounded,
-                        color: Colors.orange, size: 20),
+                    const Icon(
+                      Icons.warning_amber_rounded,
+                      color: Colors.orange,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -149,15 +157,26 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
+                    if (item != null)
+                      IconButton(
+                        key: const ValueKey<String>(
+                          'batch_gcode_import.details.button',
+                        ),
+                        icon: const Icon(Icons.info_outline, size: 20),
+                        tooltip: l10n.batchGcodeImportDetailsButton,
+                        onPressed: () => _showDetails(item),
+                      ),
+                    IconButton(
+                      icon: const Icon(Icons.delete_outline, size: 20),
+                      tooltip: l10n.batchCostingReviewRemoveButton,
+                      onPressed: () => _removeRow(row),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
                   l10n.batchGcodeImportNeedsDetailsLabel,
-                  style: TextStyle(
-                    color: Colors.orange.shade700,
-                    fontSize: 13,
-                  ),
+                  style: TextStyle(color: Colors.orange.shade700, fontSize: 13),
                 ),
                 if (row.missingWeight) ...[
                   const SizedBox(height: 8),
@@ -169,8 +188,9 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                       isDense: true,
                       border: const OutlineInputBorder(),
                     ),
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
                     ],
@@ -182,30 +202,19 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                     controller: row.durationController,
                     decoration: InputDecoration(
                       labelText: l10n.batchGcodeImportNeedsDuration,
-                      suffixText: 'min',
+                      suffixText: l10n.durationMinutesLabel,
                       isDense: true,
                       border: const OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ],
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.error,
-                      ),
-                      onPressed: () => _removeRow(index),
-                      icon: const Icon(Icons.delete_outline, size: 18),
-                      label: Text(l10n.batchCostingReviewRemoveButton),
-                    ),
-                    const Spacer(),
                     FilledButton.tonalIcon(
-                      onPressed: () => _applyDetails(index),
+                      onPressed: () => _applyDetails(row),
                       icon: const Icon(Icons.check, size: 18),
                       label: Text(l10n.batchGcodeImportApply),
                     ),
@@ -216,29 +225,44 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           ),
         );
       case _ImportStatus.ready:
+        final item = _itemForRow(row);
         return ListTile(
           leading: const Icon(Icons.check_circle, color: Colors.green),
           title: Text(row.file.name),
           subtitle: Text(l10n.batchGcodeImportReadyLabel),
-          trailing: IconButton(
-            icon: const Icon(Icons.delete_outline),
-            tooltip: l10n.batchCostingReviewRemoveButton,
-            onPressed: () => _removeRow(index),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (item != null)
+                IconButton(
+                  key: const ValueKey<String>(
+                    'batch_gcode_import.details.button',
+                  ),
+                  icon: const Icon(Icons.info_outline),
+                  tooltip: l10n.batchGcodeImportDetailsButton,
+                  onPressed: () => _showDetails(item),
+                ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline),
+                tooltip: l10n.batchCostingReviewRemoveButton,
+                onPressed: () => _removeRow(row),
+              ),
+            ],
           ),
         );
       case _ImportStatus.failed:
         return ListTile(
-          leading: Icon(Icons.error,
-              color: Theme.of(context).colorScheme.error),
+          leading: Icon(
+            Icons.error,
+            color: Theme.of(context).colorScheme.error,
+          ),
           title: Text(row.file.name),
-          subtitle:
-              Text(row.errorMessage ?? l10n.batchGcodeImportFailureLabel),
+          subtitle: Text(row.errorMessage ?? l10n.batchGcodeImportFailureLabel),
         );
     }
   }
 
-  void _applyDetails(int index) {
-    final row = _rows[index];
+  void _applyDetails(_BatchImportRow row) {
     final notifier = ref.read(batchCostingProvider.notifier);
     final stateItems = ref.read(batchCostingProvider).items;
     final item = stateItems.firstWhere((i) => i.id == row.batchItemId);
@@ -263,16 +287,36 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
       printDuration: duration,
     );
     notifier.updateItem(updated);
-    setState(() => _rows[index].status = _ImportStatus.ready);
+    if (!_rows.contains(row)) return;
+    setState(() => row.status = _ImportStatus.ready);
   }
 
-  void _removeRow(int index) {
-    final row = _rows[index];
+  void _removeRow(_BatchImportRow row) {
     if (row.batchItemId != null) {
       ref.read(batchCostingProvider.notifier).removeItem(row.batchItemId!);
     }
     row.dispose();
-    setState(() => _rows.removeAt(index));
+    setState(() => _rows.remove(row));
+  }
+
+  BatchCostingItem? _itemForRow(_BatchImportRow row) {
+    final batchItemId = row.batchItemId;
+    if (batchItemId == null) return null;
+
+    for (final item in ref.read(batchCostingProvider).items) {
+      if (item.id == batchItemId) return item;
+    }
+
+    return null;
+  }
+
+  void _showDetails(BatchCostingItem item) {
+    final l10n = AppLocalizations.of(context)!;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => BatchGCodeImportDetailsSheet(item: item, l10n: l10n),
+    );
   }
 
   bool _isDuplicate(GCodePickedFile file) {
@@ -319,10 +363,12 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
         return;
       }
 
-      final oldCount = _rows.length;
+      final pendingRows = <_BatchImportRow>[];
       setState(() {
         for (final file in newFiles) {
-          _rows.add(_BatchImportRow(file));
+          final row = _BatchImportRow(file);
+          pendingRows.add(row);
+          _rows.add(row);
         }
       });
 
@@ -330,13 +376,18 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
       final notifier = ref.read(batchCostingProvider.notifier);
       for (var i = 0; i < newFiles.length; i++) {
         if (!mounted) return;
-        final index = oldCount + i;
         final file = newFiles[i];
+        final row = pendingRows[i];
 
-        setState(() => _rows[index].status = _ImportStatus.importing);
+        if (_rows.contains(row)) {
+          setState(() => row.status = _ImportStatus.importing);
+        }
 
         try {
           final result = await service.importPickedFile(file);
+          if (!mounted || !_rows.contains(row)) {
+            continue;
+          }
           final batchId = '${DateTime.now().microsecondsSinceEpoch}-$i';
           notifier.addItem(
             BatchCostingItem.fromGCodeImport(
@@ -346,6 +397,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
               importResult: result,
               sourceFileName: file.name,
               sourcePath: file.path,
+              sourceFileSizeBytes: file.size,
             ),
           );
 
@@ -354,17 +406,17 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
 
           if (missingW || missingD) {
             setState(() {
-              _rows[index].status = _ImportStatus.needsDetails;
-              _rows[index].batchItemId = batchId;
-              _rows[index].missingWeight = missingW;
-              _rows[index].missingDuration = missingD;
-              _rows[index].weightController = TextEditingController();
-              _rows[index].durationController = TextEditingController();
+              row.status = _ImportStatus.needsDetails;
+              row.batchItemId = batchId;
+              row.missingWeight = missingW;
+              row.missingDuration = missingD;
+              row.weightController = TextEditingController();
+              row.durationController = TextEditingController();
             });
           } else {
             setState(() {
-              _rows[index].status = _ImportStatus.ready;
-              _rows[index].batchItemId = batchId;
+              row.status = _ImportStatus.ready;
+              row.batchItemId = batchId;
             });
           }
         } catch (error, stackTrace) {
@@ -373,11 +425,10 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
             error: error,
             stackTrace: stackTrace,
           );
-          if (mounted) {
+          if (mounted && _rows.contains(row)) {
             setState(() {
-              _rows[index].status = _ImportStatus.failed;
-              _rows[index].errorMessage =
-                  '${l10n.batchGcodeImportParseFailure}: $error';
+              row.status = _ImportStatus.failed;
+              row.errorMessage = '${l10n.batchGcodeImportParseFailure}: $error';
             });
           }
         }
@@ -394,8 +445,8 @@ enum _ImportStatus { importing, needsDetails, ready, failed }
 
 class _BatchImportRow {
   _BatchImportRow(this.file)
-      : status = _ImportStatus.importing,
-        errorMessage = null;
+    : status = _ImportStatus.importing,
+      errorMessage = null;
 
   final GCodePickedFile file;
   _ImportStatus status;

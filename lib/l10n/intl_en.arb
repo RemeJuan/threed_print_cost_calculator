@@ -549,6 +549,7 @@
   "batchGcodeImportNeedsWeight": "Weight required",
   "batchGcodeImportNeedsDuration": "Duration required",
   "batchGcodeImportApply": "Apply",
+  "batchGcodeImportDetailsButton": "Details",
   "batchGcodeImportDuplicateMessage": "Some files were already added.",
   "batchGcodeImportQuantityHint": "Quantities can be adjusted in the next step.",
   "batchCostingReviewContinueButton": "Continue to printer assignment",

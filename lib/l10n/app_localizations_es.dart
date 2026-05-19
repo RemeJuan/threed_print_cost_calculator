@@ -1284,12 +1284,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get batchGcodeImportApply => 'Aplicar';
 
   @override
+  String get batchGcodeImportDetailsButton => 'Detalles';
+
+  @override
   String get batchGcodeImportDuplicateMessage =>
-      'Some files were already added.';
+      'Algunos archivos ya se habían añadido.';
 
   @override
   String get batchGcodeImportQuantityHint =>
-      'Quantities can be adjusted in the next step.';
+      'Las cantidades se pueden ajustar en el siguiente paso.';
 
   @override
   String get batchCostingReviewContinueButton =>

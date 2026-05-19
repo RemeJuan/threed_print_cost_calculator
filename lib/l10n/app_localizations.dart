@@ -2387,6 +2387,12 @@ abstract class AppLocalizations {
   /// **'Apply'**
   String get batchGcodeImportApply;
 
+  /// No description provided for @batchGcodeImportDetailsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get batchGcodeImportDetailsButton;
+
   /// No description provided for @batchGcodeImportDuplicateMessage.
   ///
   /// In en, this message translates to:

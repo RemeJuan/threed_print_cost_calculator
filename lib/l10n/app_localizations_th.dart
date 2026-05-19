@@ -1255,12 +1255,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchGcodeImportApply => 'นำไปใช้';
 
   @override
-  String get batchGcodeImportDuplicateMessage =>
-      'Some files were already added.';
+  String get batchGcodeImportDetailsButton => 'รายละเอียด';
 
   @override
-  String get batchGcodeImportQuantityHint =>
-      'Quantities can be adjusted in the next step.';
+  String get batchGcodeImportDuplicateMessage => 'มีการเพิ่มบางไฟล์ไว้แล้ว';
+
+  @override
+  String get batchGcodeImportQuantityHint => 'สามารถปรับจำนวนได้ในขั้นตอนถัดไป';
 
   @override
   String get batchCostingReviewContinueButton =>

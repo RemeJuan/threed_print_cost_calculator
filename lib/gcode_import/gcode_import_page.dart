@@ -2,13 +2,9 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
-import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
-import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import 'gcode_import_controller.dart';
 import 'gcode_import_result.dart';
@@ -25,10 +21,6 @@ class GCodeImportPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final batchCostingEnabled = ref.watch(batchCostingEnabledProvider);
-    final quantity = useState(1);
-    final quantityController = useTextEditingController(text: '1');
-    final quantityFocusNode = useFocusNode();
 
     useEffect(() {
       AppAnalytics.safeLog(AppAnalytics.gcodeImportOpened);
@@ -51,35 +43,6 @@ class GCodeImportPage extends HookConsumerWidget {
         ? 'partial'
         : 'success';
     final fileSizeBytes = state.selectedFileSizeBytes ?? 0;
-    final canCreateBatchFromImport =
-        batchCostingEnabled &&
-        state.result?.estimatedDuration != null &&
-        state.result?.filamentWeightG != null;
-
-    useEffect(() {
-      quantity.value = 1;
-      quantityController.value = const TextEditingValue(
-        text: '1',
-        selection: TextSelection.collapsed(offset: 1),
-      );
-      return null;
-    }, [state.selectedFilePath, state.selectedFileName]);
-
-    useEffect(() {
-      void handleFocusChange() {
-        if (quantityFocusNode.hasFocus) return;
-        final parsed = int.tryParse(quantityController.text);
-        if (parsed != null && parsed >= 1) return;
-        quantity.value = 1;
-        quantityController.value = const TextEditingValue(
-          text: '1',
-          selection: TextSelection.collapsed(offset: 1),
-        );
-      }
-
-      quantityFocusNode.addListener(handleFocusChange);
-      return () => quantityFocusNode.removeListener(handleFocusChange);
-    }, [quantityController, quantityFocusNode]);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.importGcodePageTitle)),
@@ -130,35 +93,16 @@ class GCodeImportPage extends HookConsumerWidget {
                 result: state.result!,
                 l10n: l10n,
                 fileSizeBytes: fileSizeBytes,
-                parseStatus: parseStatus,
-                batchCostingEnabled: batchCostingEnabled,
-                quantity: quantity,
-                quantityController: quantityController,
-                quantityFocusNode: quantityFocusNode,
-                canCreateBatchFromImport: canCreateBatchFromImport,
-                onQuantityChanged: (value) {
-                  final parsed = int.tryParse(value);
-                  quantity.value = parsed != null && parsed >= 1 ? parsed : 1;
-                },
               ),
               const SizedBox(height: 16),
               GCodeImportActions(
                 l10n: l10n,
-                quantity: quantity.value,
-                onPressed:
-                    _isPrimaryActionEnabled(
-                      state.result!,
-                      quantity: quantity.value,
-                      canCreateBatchFromImport: canCreateBatchFromImport,
-                    )
+                onPressed: _isPrimaryActionEnabled(state.result!)
                     ? () => _handlePrimaryAction(
                         context,
                         ref,
                         l10n,
                         result: state.result!,
-                        selectedFileName: state.selectedFileName,
-                        selectedFilePath: state.selectedFilePath,
-                        quantity: quantity.value,
                         fileSizeBytes: fileSizeBytes,
                         parseStatus: parseStatus,
                       )
@@ -194,15 +138,7 @@ class GCodeImportPage extends HookConsumerWidget {
     };
   }
 
-  bool _isPrimaryActionEnabled(
-    GCodeImportResult result, {
-    required int quantity,
-    required bool canCreateBatchFromImport,
-  }) {
-    if (quantity > 1) {
-      return canCreateBatchFromImport;
-    }
-
+  bool _isPrimaryActionEnabled(GCodeImportResult result) {
     return result.estimatedDuration != null || result.filamentWeightG != null;
   }
 
@@ -211,9 +147,6 @@ class GCodeImportPage extends HookConsumerWidget {
     WidgetRef ref,
     AppLocalizations l10n, {
     required GCodeImportResult result,
-    required String? selectedFileName,
-    required String? selectedFilePath,
-    required int quantity,
     required int fileSizeBytes,
     required String parseStatus,
   }) {
@@ -225,33 +158,6 @@ class GCodeImportPage extends HookConsumerWidget {
         hasPreview: result.hasPreviewMetadata,
       ),
     );
-
-    if (quantity > 1) {
-      final notifier = ref.read(batchCostingProvider.notifier);
-      notifier.reset();
-      notifier.addItem(
-        BatchCostingItem.fromGCodeImport(
-          id: 'gcode-${DateTime.now().microsecondsSinceEpoch}',
-          displayName: selectedFileName ?? l10n.importGcodeSelectedFileLabel,
-          quantity: quantity,
-          importResult: result,
-          sourceFileName: selectedFileName,
-          sourcePath: selectedFilePath,
-        ),
-      );
-      AppAnalytics.safeLog(
-        () => AppAnalytics.gcodeFlowCompleted(
-          slicer: result.slicer.name,
-          hasPreview: result.hasPreviewMetadata,
-          fileSizeBytes: fileSizeBytes,
-          parseStatus: parseStatus,
-        ),
-      );
-      Navigator.of(
-        context,
-      ).push(MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()));
-      return;
-    }
 
     ref
         .read(calculatorProvider.notifier)

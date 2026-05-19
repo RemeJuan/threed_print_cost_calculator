@@ -1237,12 +1237,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchGcodeImportApply => '適用';
 
   @override
-  String get batchGcodeImportDuplicateMessage =>
-      'Some files were already added.';
+  String get batchGcodeImportDetailsButton => '詳細';
 
   @override
-  String get batchGcodeImportQuantityHint =>
-      'Quantities can be adjusted in the next step.';
+  String get batchGcodeImportDuplicateMessage => '一部のファイルはすでに追加されています。';
+
+  @override
+  String get batchGcodeImportQuantityHint => '数量は次の手順で調整できます。';
 
   @override
   String get batchCostingReviewContinueButton => 'プリンター割り当てに進む';

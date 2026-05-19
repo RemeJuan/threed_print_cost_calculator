@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
@@ -8,33 +10,42 @@ import 'gcode_import_preview_dialog.dart';
 class GCodeImportPreviewSection extends StatelessWidget {
   const GCodeImportPreviewSection({
     super.key,
-    required this.result,
+    required this.slicer,
+    required this.hasPreviewMetadata,
+    required this.previewWidth,
+    required this.previewHeight,
+    required this.previewImageBytes,
+    required this.hasSafePreview,
     required this.l10n,
     required this.fileSizeBytes,
     required this.parseStatus,
   });
-  final GCodeImportResult result;
+  final GCodeSlicer slicer;
+  final bool hasPreviewMetadata;
+  final int? previewWidth;
+  final int? previewHeight;
+  final Uint8List? previewImageBytes;
+  final bool hasSafePreview;
   final AppLocalizations l10n;
   final int fileSizeBytes;
   final String parseStatus;
   @override
   Widget build(BuildContext context) {
-    final previewBytes = result.previewImageBytes;
+    final previewBytes = previewImageBytes;
     if (previewBytes == null) return _previewPlaceholder(context);
-    if (!result.hasSafePreview) {
+    if (!hasSafePreview) {
       return Text(
         l10n.importGcodePreviewUnavailable,
         textAlign: TextAlign.end,
         style: Theme.of(context).textTheme.bodyMedium,
       );
     }
-    final isLowRes =
-        (result.previewWidth ?? 0) < 128 || (result.previewHeight ?? 0) < 128;
+    final isLowRes = (previewWidth ?? 0) < 128 || (previewHeight ?? 0) < 128;
     void onPreviewTap() {
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodePreviewViewed(
-          slicer: result.slicer.name,
-          hasPreview: result.hasPreviewMetadata,
+          slicer: slicer.name,
+          hasPreview: hasPreviewMetadata,
           fileSizeBytes: fileSizeBytes,
           parseStatus: parseStatus,
         ),

@@ -187,6 +187,7 @@
   - `lib/gcode_import/gcode_import_button.dart`
   - `lib/gcode_import/feedback/gcode_import_feedback_page.dart`
 - Current behavior:
+  - Single-file `GCodeImportPage` remains calculator-only review/apply; batch creation now stays in the dedicated batch multi-file flow.
   - Accepts `.gcode`, `.gco`, and `.nc` files directly when payload looks text-like.
   - Android no longer uses `file_selector` byte payloads. `MainActivity` opens SAF, resolves URI metadata, copies to cache, and returns metadata + cache path only.
   - Treats Android/file picker `.bin` and other unknown/octet-stream picks as sniffable input; reads up to 64 KiB for common G-code markers before rejecting.
@@ -196,6 +197,7 @@
   - Import flow logs analytics + Crashlytics breadcrumbs for start, metadata resolved, size/type rejection, parse failure, and success.
   - Preview summary now shows `Preview · {W}×{H}` for thumbnails smaller than 128 px on either axis, `Preview` for larger previews, and `No preview` when absent.
   - Low-resolution previews stay importable; inline thumbnail uses nearest-neighbour rendering on a dark background instead of blocking import.
+  - `BatchGCodeImportPage` keeps list rows compact, captures missing weight/duration inline, and opens imported metadata/preview details in a modal sheet instead of inline preview rows.
 - Providers/state:
   - `lib/gcode_import/gcode_import_controller.dart`
   - `lib/gcode_import/gcode_import_result.dart`
