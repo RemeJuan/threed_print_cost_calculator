@@ -393,30 +393,36 @@ class BatchSummaryPage extends ConsumerWidget {
         title: Text(l10n.batchCostingSummarySaveSuccessTitle),
         content: Text(l10n.batchCostingSummarySaveSuccessBody),
         actions: [
-          FilledButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              ref
-                  .read(pendingTabNavigationProvider.notifier)
-                  .navigate(AppPageTab.history);
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            child: Text(l10n.batchCostingSummaryViewHistoryButton),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              ref.read(batchCostingProvider.notifier).reset();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: 8,
+            children: [
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  ref
+                      .read(pendingTabNavigationProvider.notifier)
+                      .navigate(AppPageTab.history);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                child: Text(l10n.batchCostingSummaryViewHistoryButton),
+              ),
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                  _showStartNewBatchDialog(context, ref);
+                },
+                child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+              ),
+            ],
           ),
         ],
       ),
