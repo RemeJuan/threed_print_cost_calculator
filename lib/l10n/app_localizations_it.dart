@@ -1261,6 +1261,35 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchGcodeImportRetryButton => 'Scegli di nuovo';
 
   @override
+  String get batchGcodeImportImportingLabel => 'Importazione…';
+
+  @override
+  String get batchGcodeImportPendingLabel => 'In attesa';
+
+  @override
+  String get batchGcodeImportNeedsDetailsLabel => 'Dettagli necessari';
+
+  @override
+  String get batchGcodeImportReadyLabel => 'Pronto';
+
+  @override
+  String get batchGcodeImportNeedsWeight => 'Peso richiesto';
+
+  @override
+  String get batchGcodeImportNeedsDuration => 'Durata richiesta';
+
+  @override
+  String get batchGcodeImportApply => 'Applica';
+
+  @override
+  String get batchGcodeImportDuplicateMessage =>
+      'Some files were already added.';
+
+  @override
+  String get batchGcodeImportQuantityHint =>
+      'Quantities can be adjusted in the next step.';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Continua all\'assegnazione stampante';
 
@@ -1287,6 +1316,16 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Durata';
+
+  @override
+  String get batchCostingReviewWeightRequired => 'Peso richiesto';
+
+  @override
+  String get batchCostingReviewDurationRequired => 'Durata richiesta';
+
+  @override
+  String get batchCostingReviewMissingFieldsError =>
+      'Completa i campi obbligatori';
 
   @override
   String get batchCostingItemEditorAddTitle => 'Aggiungi articolo manuale';

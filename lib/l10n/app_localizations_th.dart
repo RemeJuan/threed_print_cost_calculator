@@ -1228,6 +1228,35 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchGcodeImportRetryButton => 'เลือกอีกครั้ง';
 
   @override
+  String get batchGcodeImportImportingLabel => 'กำลังนำเข้า…';
+
+  @override
+  String get batchGcodeImportPendingLabel => 'รอดำเนินการ';
+
+  @override
+  String get batchGcodeImportNeedsDetailsLabel => 'ต้องการรายละเอียด';
+
+  @override
+  String get batchGcodeImportReadyLabel => 'พร้อม';
+
+  @override
+  String get batchGcodeImportNeedsWeight => 'ต้องระบุน้ำหนัก';
+
+  @override
+  String get batchGcodeImportNeedsDuration => 'ต้องระบุระยะเวลา';
+
+  @override
+  String get batchGcodeImportApply => 'นำไปใช้';
+
+  @override
+  String get batchGcodeImportDuplicateMessage =>
+      'Some files were already added.';
+
+  @override
+  String get batchGcodeImportQuantityHint =>
+      'Quantities can be adjusted in the next step.';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'ดำเนินการต่อเพื่อกำหนดเครื่องพิมพ์';
 
@@ -1254,6 +1283,15 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'ระยะเวลา';
+
+  @override
+  String get batchCostingReviewWeightRequired => 'ต้องระบุนํ้าหนัก';
+
+  @override
+  String get batchCostingReviewDurationRequired => 'ต้องระบุระยะเวลา';
+
+  @override
+  String get batchCostingReviewMissingFieldsError => 'กรุณากรอกข้อมูลที่จำเป็น';
 
   @override
   String get batchCostingItemEditorAddTitle => 'เพิ่มรายการด้วยตนเอง';

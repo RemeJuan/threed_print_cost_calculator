@@ -1254,6 +1254,35 @@ class AppLocalizationsNl extends AppLocalizations {
   String get batchGcodeImportRetryButton => 'Opnieuw kiezen';
 
   @override
+  String get batchGcodeImportImportingLabel => 'Importeren…';
+
+  @override
+  String get batchGcodeImportPendingLabel => 'In afwachting';
+
+  @override
+  String get batchGcodeImportNeedsDetailsLabel => 'Details nodig';
+
+  @override
+  String get batchGcodeImportReadyLabel => 'Gereed';
+
+  @override
+  String get batchGcodeImportNeedsWeight => 'Gewicht vereist';
+
+  @override
+  String get batchGcodeImportNeedsDuration => 'Duur vereist';
+
+  @override
+  String get batchGcodeImportApply => 'Toepassen';
+
+  @override
+  String get batchGcodeImportDuplicateMessage =>
+      'Some files were already added.';
+
+  @override
+  String get batchGcodeImportQuantityHint =>
+      'Quantities can be adjusted in the next step.';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Doorgaan naar printertoewijzing';
 
@@ -1280,6 +1309,15 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Duur';
+
+  @override
+  String get batchCostingReviewWeightRequired => 'Gewicht vereist';
+
+  @override
+  String get batchCostingReviewDurationRequired => 'Duur vereist';
+
+  @override
+  String get batchCostingReviewMissingFieldsError => 'Vul verplichte velden in';
 
   @override
   String get batchCostingItemEditorAddTitle => 'Handmatig item toevoegen';

@@ -1228,6 +1228,35 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchGcodeImportRetryButton => 'Pilih lagi';
 
   @override
+  String get batchGcodeImportImportingLabel => 'Mengimpor…';
+
+  @override
+  String get batchGcodeImportPendingLabel => 'Tertunda';
+
+  @override
+  String get batchGcodeImportNeedsDetailsLabel => 'Detail diperlukan';
+
+  @override
+  String get batchGcodeImportReadyLabel => 'Siap';
+
+  @override
+  String get batchGcodeImportNeedsWeight => 'Berat diperlukan';
+
+  @override
+  String get batchGcodeImportNeedsDuration => 'Durasi diperlukan';
+
+  @override
+  String get batchGcodeImportApply => 'Terapkan';
+
+  @override
+  String get batchGcodeImportDuplicateMessage =>
+      'Some files were already added.';
+
+  @override
+  String get batchGcodeImportQuantityHint =>
+      'Quantities can be adjusted in the next step.';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Lanjutkan ke penugasan printer';
 
@@ -1254,6 +1283,16 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Durasi';
+
+  @override
+  String get batchCostingReviewWeightRequired => 'Berat diperlukan';
+
+  @override
+  String get batchCostingReviewDurationRequired => 'Durasi diperlukan';
+
+  @override
+  String get batchCostingReviewMissingFieldsError =>
+      'Lengkapi bidang yang diperlukan';
 
   @override
   String get batchCostingItemEditorAddTitle => 'Tambah item manual';

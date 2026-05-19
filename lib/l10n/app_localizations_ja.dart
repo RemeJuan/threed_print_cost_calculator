@@ -1210,6 +1210,35 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchGcodeImportRetryButton => 'もう一度選択';
 
   @override
+  String get batchGcodeImportImportingLabel => 'インポート中…';
+
+  @override
+  String get batchGcodeImportPendingLabel => '保留中';
+
+  @override
+  String get batchGcodeImportNeedsDetailsLabel => '詳細が必要です';
+
+  @override
+  String get batchGcodeImportReadyLabel => '準備完了';
+
+  @override
+  String get batchGcodeImportNeedsWeight => '重量が必要';
+
+  @override
+  String get batchGcodeImportNeedsDuration => '時間が必要';
+
+  @override
+  String get batchGcodeImportApply => '適用';
+
+  @override
+  String get batchGcodeImportDuplicateMessage =>
+      'Some files were already added.';
+
+  @override
+  String get batchGcodeImportQuantityHint =>
+      'Quantities can be adjusted in the next step.';
+
+  @override
   String get batchCostingReviewContinueButton => 'プリンター割り当てに進む';
 
   @override
@@ -1235,6 +1264,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => '時間';
+
+  @override
+  String get batchCostingReviewWeightRequired => '重量が必要';
+
+  @override
+  String get batchCostingReviewDurationRequired => '時間が必要';
+
+  @override
+  String get batchCostingReviewMissingFieldsError => '必須項目を入力してください';
 
   @override
   String get batchCostingItemEditorAddTitle => '手動アイテムを追加';

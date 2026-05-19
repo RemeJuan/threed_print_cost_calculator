@@ -1240,6 +1240,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchGcodeImportRetryButton => 'Choose again';
 
   @override
+  String get batchGcodeImportImportingLabel => 'Importing…';
+
+  @override
+  String get batchGcodeImportPendingLabel => 'Pending';
+
+  @override
+  String get batchGcodeImportNeedsDetailsLabel => 'Details needed';
+
+  @override
+  String get batchGcodeImportReadyLabel => 'Ready';
+
+  @override
+  String get batchGcodeImportNeedsWeight => 'Weight required';
+
+  @override
+  String get batchGcodeImportNeedsDuration => 'Duration required';
+
+  @override
+  String get batchGcodeImportApply => 'Apply';
+
+  @override
+  String get batchGcodeImportDuplicateMessage =>
+      'Some files were already added.';
+
+  @override
+  String get batchGcodeImportQuantityHint =>
+      'Quantities can be adjusted in the next step.';
+
+  @override
   String get batchCostingReviewContinueButton =>
       'Continue to printer assignment';
 
@@ -1266,6 +1295,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batchCostingReviewDurationLabel => 'Duration';
+
+  @override
+  String get batchCostingReviewWeightRequired => 'Add weight before continuing';
+
+  @override
+  String get batchCostingReviewDurationRequired =>
+      'Add duration before continuing';
+
+  @override
+  String get batchCostingReviewMissingFieldsError =>
+      'Complete required fields before continuing';
 
   @override
   String get batchCostingItemEditorAddTitle => 'Add manual item';

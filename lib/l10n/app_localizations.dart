@@ -2333,6 +2333,60 @@ abstract class AppLocalizations {
   /// **'Choose again'**
   String get batchGcodeImportRetryButton;
 
+  /// No description provided for @batchGcodeImportImportingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Importing…'**
+  String get batchGcodeImportImportingLabel;
+
+  /// No description provided for @batchGcodeImportPendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get batchGcodeImportPendingLabel;
+
+  /// No description provided for @batchGcodeImportNeedsDetailsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details needed'**
+  String get batchGcodeImportNeedsDetailsLabel;
+
+  /// No description provided for @batchGcodeImportReadyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get batchGcodeImportReadyLabel;
+
+  /// No description provided for @batchGcodeImportNeedsWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight required'**
+  String get batchGcodeImportNeedsWeight;
+
+  /// No description provided for @batchGcodeImportNeedsDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration required'**
+  String get batchGcodeImportNeedsDuration;
+
+  /// No description provided for @batchGcodeImportApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply'**
+  String get batchGcodeImportApply;
+
+  /// No description provided for @batchGcodeImportDuplicateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Some files were already added.'**
+  String get batchGcodeImportDuplicateMessage;
+
+  /// No description provided for @batchGcodeImportQuantityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantities can be adjusted in the next step.'**
+  String get batchGcodeImportQuantityHint;
+
   /// No description provided for @batchCostingReviewContinueButton.
   ///
   /// In en, this message translates to:
@@ -2386,6 +2440,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Duration'**
   String get batchCostingReviewDurationLabel;
+
+  /// No description provided for @batchCostingReviewWeightRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add weight before continuing'**
+  String get batchCostingReviewWeightRequired;
+
+  /// No description provided for @batchCostingReviewDurationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add duration before continuing'**
+  String get batchCostingReviewDurationRequired;
+
+  /// No description provided for @batchCostingReviewMissingFieldsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete required fields before continuing'**
+  String get batchCostingReviewMissingFieldsError;
 
   /// No description provided for @batchCostingItemEditorAddTitle.
   ///
