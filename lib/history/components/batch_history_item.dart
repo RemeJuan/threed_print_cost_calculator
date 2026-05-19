@@ -63,8 +63,8 @@ class BatchHistoryItem extends HookConsumerWidget {
           const SizedBox(height: 8),
           Text(
             l10n.batchHistorySummaryLine(
-              '${summary['itemCount'] ?? 0}',
-              '${summary['totalQuantity'] ?? 0}',
+              (summary['itemCount'] as num?)?.toInt() ?? 0,
+              (summary['totalQuantity'] as num?)?.toInt() ?? 0,
             ),
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -98,22 +98,22 @@ class BatchHistoryItem extends HookConsumerWidget {
               _detailRow(
                 context,
                 l10n.failureRiskLabel,
-                _pricingString(summary, 'failureRisk'),
+                _pricingString(l10n, summary, 'failureRisk'),
               ),
               _detailRow(
                 context,
                 l10n.pricingMarkupPercentLabel,
-                _pricingString(summary, 'markupPercent'),
+                _pricingString(l10n, summary, 'markupPercent'),
               ),
               _detailRow(
                 context,
                 l10n.labourRateLabel,
-                _pricingString(summary, 'labourRate'),
+                _pricingString(l10n, summary, 'labourRate'),
               ),
               _detailRow(
                 context,
                 l10n.additionalCostLabel,
-                _pricingString(summary, 'additionalCostAmount'),
+                _pricingString(l10n, summary, 'additionalCostAmount'),
               ),
             ],
           ),
@@ -210,14 +210,22 @@ class BatchHistoryItem extends HookConsumerWidget {
     );
   }
 
-  String _pricingString(Map<String, dynamic> summary, String key) {
+  String _pricingString(
+    AppLocalizations l10n,
+    Map<String, dynamic> summary,
+    String key,
+  ) {
     final pricing = summary['pricing'];
     if (pricing is! Map) return '—';
     final field = pricing[key];
     if (field is! Map) return '—';
     final value = field['value']?.toString() ?? '0';
     final scope = field['scope']?.toString();
-    return scope == null || scope.isEmpty ? value : '$value ($scope)';
+    if (scope == null || scope.isEmpty) return value;
+
+    if (scope == 'item') return '$value (${l10n.batchCostingPricingScopeItemMode})';
+    if (scope == 'batch') return '$value (${l10n.batchCostingPricingScopeBatchMode})';
+    return '$value ($scope)';
   }
 
   String _amountString(dynamic raw) {

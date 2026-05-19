@@ -197,11 +197,15 @@
   "batchCostingSummarySaveErrorMessage": "Could not save quote",
   "batchCostingSummaryDefaultQuoteName": "Batch quote",
   "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "batchHistorySummaryLine": "{itemCount, plural, one{# item} other{# items}} • {totalQuantity, plural, one{# copy} other{# copies}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

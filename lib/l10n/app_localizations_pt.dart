@@ -473,32 +473,45 @@ class AppLocalizationsPt extends AppLocalizations {
       'Prévia do feedback de cancelamento';
 
   @override
-  String get enableBatchCostingButton => 'Enable batch costing';
+  String get enableBatchCostingButton => 'Ativar cálculo por lote';
 
   @override
-  String get batchCostingSummarySaveButton => 'Save quote';
+  String get batchCostingSummarySaveButton => 'Salvar orçamento';
 
   @override
-  String get batchCostingSummarySaveSuccessTitle => 'Quote saved';
+  String get batchCostingSummarySaveSuccessTitle => 'Orçamento salvo';
 
   @override
-  String get batchCostingSummarySaveSuccessBody => 'Saved to history.';
+  String get batchCostingSummarySaveSuccessBody => 'Salvo no histórico.';
 
   @override
-  String get batchCostingSummaryViewHistoryButton => 'View history';
+  String get batchCostingSummaryViewHistoryButton => 'Ver histórico';
 
   @override
-  String get batchCostingSummarySaveErrorMessage => 'Could not save quote';
+  String get batchCostingSummarySaveErrorMessage =>
+      'Não foi possível salvar o orçamento';
 
   @override
-  String get batchCostingSummaryDefaultQuoteName => 'Batch quote';
+  String get batchCostingSummaryDefaultQuoteName => 'Orçamento de lote';
 
   @override
-  String get batchHistoryItemsTitle => 'Batch items';
+  String get batchHistoryItemsTitle => 'Itens do lote';
 
   @override
-  String batchHistorySummaryLine(Object itemCount, Object totalQuantity) {
-    return '$itemCount items • $totalQuantity copies';
+  String batchHistorySummaryLine(int itemCount, int totalQuantity) {
+    String _temp0 = intl.Intl.pluralLogic(
+      itemCount,
+      locale: localeName,
+      other: '# itens',
+      one: '# item',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      totalQuantity,
+      locale: localeName,
+      other: '# cópias',
+      one: '# cópia',
+    );
+    return '$_temp0 • $_temp1';
   }
 
   @override

@@ -336,19 +336,23 @@
   "forceNoUpdateButton": "Forcer aucune mise à jour",
   "clearUpdateCooldownButton": "Effacer le délai de mise à jour",
   "previewCancelFeedbackButton": "Aperçu des commentaires d'annulation",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "Activer le calcul par lots",
+  "batchCostingSummarySaveButton": "Enregistrer le devis",
+  "batchCostingSummarySaveSuccessTitle": "Devis enregistré",
+  "batchCostingSummarySaveSuccessBody": "Enregistré dans l'historique.",
+  "batchCostingSummaryViewHistoryButton": "Voir l'historique",
+  "batchCostingSummarySaveErrorMessage": "Impossible d'enregistrer le devis",
+  "batchCostingSummaryDefaultQuoteName": "Devis par lots",
+  "batchHistoryItemsTitle": "Articles du lot",
+  "batchHistorySummaryLine": "{itemCount, plural, one{# article} other{# articles}} • {totalQuantity, plural, one{# copie} other{# copies}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

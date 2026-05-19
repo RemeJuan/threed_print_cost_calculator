@@ -472,32 +472,33 @@ class AppLocalizationsId extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Pratinjau umpan balik pembatalan';
 
   @override
-  String get enableBatchCostingButton => 'Enable batch costing';
+  String get enableBatchCostingButton => 'Aktifkan penetapan harga batch';
 
   @override
-  String get batchCostingSummarySaveButton => 'Save quote';
+  String get batchCostingSummarySaveButton => 'Simpan kutipan';
 
   @override
-  String get batchCostingSummarySaveSuccessTitle => 'Quote saved';
+  String get batchCostingSummarySaveSuccessTitle => 'Kutipan disimpan';
 
   @override
-  String get batchCostingSummarySaveSuccessBody => 'Saved to history.';
+  String get batchCostingSummarySaveSuccessBody => 'Disimpan ke riwayat.';
 
   @override
-  String get batchCostingSummaryViewHistoryButton => 'View history';
+  String get batchCostingSummaryViewHistoryButton => 'Lihat riwayat';
 
   @override
-  String get batchCostingSummarySaveErrorMessage => 'Could not save quote';
+  String get batchCostingSummarySaveErrorMessage =>
+      'Tidak dapat menyimpan kutipan';
 
   @override
-  String get batchCostingSummaryDefaultQuoteName => 'Batch quote';
+  String get batchCostingSummaryDefaultQuoteName => 'Kutipan batch';
 
   @override
-  String get batchHistoryItemsTitle => 'Batch items';
+  String get batchHistoryItemsTitle => 'Item batch';
 
   @override
-  String batchHistorySummaryLine(Object itemCount, Object totalQuantity) {
-    return '$itemCount items • $totalQuantity copies';
+  String batchHistorySummaryLine(int itemCount, int totalQuantity) {
+    return '$itemCount item • $totalQuantity salinan';
   }
 
   @override

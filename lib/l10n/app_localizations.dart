@@ -1029,8 +1029,8 @@ abstract class AppLocalizations {
   /// No description provided for @batchHistorySummaryLine.
   ///
   /// In en, this message translates to:
-  /// **'{itemCount} items • {totalQuantity} copies'**
-  String batchHistorySummaryLine(Object itemCount, Object totalQuantity);
+  /// **'{itemCount, plural, one{# item} other{# items}} • {totalQuantity, plural, one{# copy} other{# copies}}'**
+  String batchHistorySummaryLine(int itemCount, int totalQuantity);
 
   /// No description provided for @batchHistoryItemRow.
   ///

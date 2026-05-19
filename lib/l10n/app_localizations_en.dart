@@ -494,8 +494,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchHistoryItemsTitle => 'Batch items';
 
   @override
-  String batchHistorySummaryLine(Object itemCount, Object totalQuantity) {
-    return '$itemCount items • $totalQuantity copies';
+  String batchHistorySummaryLine(int itemCount, int totalQuantity) {
+    String _temp0 = intl.Intl.pluralLogic(
+      itemCount,
+      locale: localeName,
+      other: '# items',
+      one: '# item',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      totalQuantity,
+      locale: localeName,
+      other: '# copies',
+      one: '# copy',
+    );
+    return '$_temp0 • $_temp1';
   }
 
   @override

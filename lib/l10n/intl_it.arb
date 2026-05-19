@@ -328,19 +328,23 @@
   "forceNoUpdateButton": "Forza nessun aggiornamento",
   "clearUpdateCooldownButton": "Cancella attesa aggiornamento",
   "previewCancelFeedbackButton": "Anteprima feedback annullamento",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "Attiva costing batch",
+  "batchCostingSummarySaveButton": "Salva preventivo",
+  "batchCostingSummarySaveSuccessTitle": "Preventivo salvato",
+  "batchCostingSummarySaveSuccessBody": "Salvato nella cronologia.",
+  "batchCostingSummaryViewHistoryButton": "Vedi cronologia",
+  "batchCostingSummarySaveErrorMessage": "Impossibile salvare il preventivo",
+  "batchCostingSummaryDefaultQuoteName": "Preventivo batch",
+  "batchHistoryItemsTitle": "Articoli batch",
+  "batchHistorySummaryLine": "{itemCount, plural, one{# articolo} other{# articoli}} • {totalQuantity, plural, one{# copia} other{# copie}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

@@ -461,32 +461,42 @@ class AppLocalizationsJa extends AppLocalizations {
   String get previewCancelFeedbackButton => '取消フィードバックをプレビュー';
 
   @override
-  String get enableBatchCostingButton => 'Enable batch costing';
+  String get enableBatchCostingButton => 'バッチコスト計算を有効化';
 
   @override
-  String get batchCostingSummarySaveButton => 'Save quote';
+  String get batchCostingSummarySaveButton => '見積もりを保存';
 
   @override
-  String get batchCostingSummarySaveSuccessTitle => 'Quote saved';
+  String get batchCostingSummarySaveSuccessTitle => '見積もりを保存しました';
 
   @override
-  String get batchCostingSummarySaveSuccessBody => 'Saved to history.';
+  String get batchCostingSummarySaveSuccessBody => '履歴に保存されました。';
 
   @override
-  String get batchCostingSummaryViewHistoryButton => 'View history';
+  String get batchCostingSummaryViewHistoryButton => '履歴を見る';
 
   @override
-  String get batchCostingSummarySaveErrorMessage => 'Could not save quote';
+  String get batchCostingSummarySaveErrorMessage => '見積もりを保存できませんでした';
 
   @override
-  String get batchCostingSummaryDefaultQuoteName => 'Batch quote';
+  String get batchCostingSummaryDefaultQuoteName => 'バッチ見積もり';
 
   @override
-  String get batchHistoryItemsTitle => 'Batch items';
+  String get batchHistoryItemsTitle => 'バッチアイテム';
 
   @override
-  String batchHistorySummaryLine(Object itemCount, Object totalQuantity) {
-    return '$itemCount items • $totalQuantity copies';
+  String batchHistorySummaryLine(int itemCount, int totalQuantity) {
+    String _temp0 = intl.Intl.pluralLogic(
+      itemCount,
+      locale: localeName,
+      other: '# アイテム',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      totalQuantity,
+      locale: localeName,
+      other: '# コピー',
+    );
+    return '$_temp0 • $_temp1';
   }
 
   @override

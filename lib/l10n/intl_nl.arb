@@ -336,19 +336,23 @@
   "forceNoUpdateButton": "Geen update forceren",
   "clearUpdateCooldownButton": "Update-afkoeling wissen",
   "previewCancelFeedbackButton": "Voorvertoning annuleringsfeedback",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "Batchkostenberekening inschakelen",
+  "batchCostingSummarySaveButton": "Offerte opslaan",
+  "batchCostingSummarySaveSuccessTitle": "Offerte opgeslagen",
+  "batchCostingSummarySaveSuccessBody": "Opgeslagen in geschiedenis.",
+  "batchCostingSummaryViewHistoryButton": "Geschiedenis bekijken",
+  "batchCostingSummarySaveErrorMessage": "Kon offerte niet opslaan",
+  "batchCostingSummaryDefaultQuoteName": "Batch-offerte",
+  "batchHistoryItemsTitle": "Batchitems",
+  "batchHistorySummaryLine": "{itemCount, plural, one{# item} other{# items}} • {totalQuantity, plural, one{# kopie} other{# kopieën}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

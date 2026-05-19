@@ -334,19 +334,23 @@
   "forceNoUpdateButton": "Kein Update erzwingen",
   "clearUpdateCooldownButton": "Update-Wartezeit löschen",
   "previewCancelFeedbackButton": "Rückmeldeansicht zur Verlängerung",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "Stapelkalkulation aktivieren",
+  "batchCostingSummarySaveButton": "Angebot speichern",
+  "batchCostingSummarySaveSuccessTitle": "Angebot gespeichert",
+  "batchCostingSummarySaveSuccessBody": "Im Verlauf gespeichert.",
+  "batchCostingSummaryViewHistoryButton": "Verlauf anzeigen",
+  "batchCostingSummarySaveErrorMessage": "Angebot konnte nicht gespeichert werden",
+  "batchCostingSummaryDefaultQuoteName": "Stapelangebot",
+  "batchHistoryItemsTitle": "Stapelpositionen",
+  "batchHistorySummaryLine": "{itemCount, plural, one{# Position} other{# Positionen}} • {totalQuantity, plural, one{# Kopie} other{# Kopien}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

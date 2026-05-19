@@ -328,19 +328,23 @@
   "forceNoUpdateButton": "Paksa tidak ada pembaruan",
   "clearUpdateCooldownButton": "Hapus jeda pembaruan",
   "previewCancelFeedbackButton": "Pratinjau umpan balik pembatalan",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "Aktifkan penetapan harga batch",
+  "batchCostingSummarySaveButton": "Simpan kutipan",
+  "batchCostingSummarySaveSuccessTitle": "Kutipan disimpan",
+  "batchCostingSummarySaveSuccessBody": "Disimpan ke riwayat.",
+  "batchCostingSummaryViewHistoryButton": "Lihat riwayat",
+  "batchCostingSummarySaveErrorMessage": "Tidak dapat menyimpan kutipan",
+  "batchCostingSummaryDefaultQuoteName": "Kutipan batch",
+  "batchHistoryItemsTitle": "Item batch",
+  "batchHistorySummaryLine": "{itemCount} item • {totalQuantity} salinan",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

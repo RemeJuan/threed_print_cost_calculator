@@ -329,19 +329,23 @@
   "forceNoUpdateButton": "บังคับว่าไม่มีอัปเดต",
   "clearUpdateCooldownButton": "ล้างช่วงพักอัปเดต",
   "previewCancelFeedbackButton": "ดูตัวอย่างความคิดเห็นการยกเลิก",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "เปิดใช้งานการคิดต้นทุนแบบแบตช์",
+  "batchCostingSummarySaveButton": "บันทึกใบเสนอราคา",
+  "batchCostingSummarySaveSuccessTitle": "บันทึกใบเสนอราคาแล้ว",
+  "batchCostingSummarySaveSuccessBody": "บันทึกไปยังประวัติแล้ว",
+  "batchCostingSummaryViewHistoryButton": "ดูประวัติ",
+  "batchCostingSummarySaveErrorMessage": "ไม่สามารถบันทึกใบเสนอราคาได้",
+  "batchCostingSummaryDefaultQuoteName": "ใบเสนอราคาแบตช์",
+  "batchHistoryItemsTitle": "รายการแบตช์",
+  "batchHistorySummaryLine": "{itemCount, plural, other{# รายการ}} • {totalQuantity, plural, other{# ชุด}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

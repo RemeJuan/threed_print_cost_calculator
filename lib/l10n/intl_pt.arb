@@ -335,19 +335,23 @@
   "forceNoUpdateButton": "Forçar sem atualização",
   "clearUpdateCooldownButton": "Limpar espera de atualização",
   "previewCancelFeedbackButton": "Prévia do feedback de cancelamento",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "Ativar cálculo por lote",
+  "batchCostingSummarySaveButton": "Salvar orçamento",
+  "batchCostingSummarySaveSuccessTitle": "Orçamento salvo",
+  "batchCostingSummarySaveSuccessBody": "Salvo no histórico.",
+  "batchCostingSummaryViewHistoryButton": "Ver histórico",
+  "batchCostingSummarySaveErrorMessage": "Não foi possível salvar o orçamento",
+  "batchCostingSummaryDefaultQuoteName": "Orçamento de lote",
+  "batchHistoryItemsTitle": "Itens do lote",
+  "batchHistorySummaryLine": "{itemCount, plural, one{# item} other{# itens}} • {totalQuantity, plural, one{# cópia} other{# cópias}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",

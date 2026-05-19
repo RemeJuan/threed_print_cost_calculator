@@ -477,32 +477,46 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aperçu des commentaires d\'annulation';
 
   @override
-  String get enableBatchCostingButton => 'Enable batch costing';
+  String get enableBatchCostingButton => 'Activer le calcul par lots';
 
   @override
-  String get batchCostingSummarySaveButton => 'Save quote';
+  String get batchCostingSummarySaveButton => 'Enregistrer le devis';
 
   @override
-  String get batchCostingSummarySaveSuccessTitle => 'Quote saved';
+  String get batchCostingSummarySaveSuccessTitle => 'Devis enregistré';
 
   @override
-  String get batchCostingSummarySaveSuccessBody => 'Saved to history.';
+  String get batchCostingSummarySaveSuccessBody =>
+      'Enregistré dans l\'historique.';
 
   @override
-  String get batchCostingSummaryViewHistoryButton => 'View history';
+  String get batchCostingSummaryViewHistoryButton => 'Voir l\'historique';
 
   @override
-  String get batchCostingSummarySaveErrorMessage => 'Could not save quote';
+  String get batchCostingSummarySaveErrorMessage =>
+      'Impossible d\'enregistrer le devis';
 
   @override
-  String get batchCostingSummaryDefaultQuoteName => 'Batch quote';
+  String get batchCostingSummaryDefaultQuoteName => 'Devis par lots';
 
   @override
-  String get batchHistoryItemsTitle => 'Batch items';
+  String get batchHistoryItemsTitle => 'Articles du lot';
 
   @override
-  String batchHistorySummaryLine(Object itemCount, Object totalQuantity) {
-    return '$itemCount items • $totalQuantity copies';
+  String batchHistorySummaryLine(int itemCount, int totalQuantity) {
+    String _temp0 = intl.Intl.pluralLogic(
+      itemCount,
+      locale: localeName,
+      other: '# articles',
+      one: '# article',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      totalQuantity,
+      locale: localeName,
+      other: '# copies',
+      one: '# copie',
+    );
+    return '$_temp0 • $_temp1';
   }
 
   @override

@@ -336,19 +336,23 @@
   "forceNoUpdateButton": "更新なしを強制",
   "clearUpdateCooldownButton": "更新クールダウンを消去",
   "previewCancelFeedbackButton": "取消フィードバックをプレビュー",
-  "enableBatchCostingButton": "Enable batch costing",
-  "batchCostingSummarySaveButton": "Save quote",
-  "batchCostingSummarySaveSuccessTitle": "Quote saved",
-  "batchCostingSummarySaveSuccessBody": "Saved to history.",
-  "batchCostingSummaryViewHistoryButton": "View history",
-  "batchCostingSummarySaveErrorMessage": "Could not save quote",
-  "batchCostingSummaryDefaultQuoteName": "Batch quote",
-  "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount} items • {totalQuantity} copies",
+  "enableBatchCostingButton": "バッチコスト計算を有効化",
+  "batchCostingSummarySaveButton": "見積もりを保存",
+  "batchCostingSummarySaveSuccessTitle": "見積もりを保存しました",
+  "batchCostingSummarySaveSuccessBody": "履歴に保存されました。",
+  "batchCostingSummaryViewHistoryButton": "履歴を見る",
+  "batchCostingSummarySaveErrorMessage": "見積もりを保存できませんでした",
+  "batchCostingSummaryDefaultQuoteName": "バッチ見積もり",
+  "batchHistoryItemsTitle": "バッチアイテム",
+  "batchHistorySummaryLine": "{itemCount, plural, other{# アイテム}} • {totalQuantity, plural, other{# コピー}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
-      "itemCount": {},
-      "totalQuantity": {}
+      "itemCount": {
+        "type": "int"
+      },
+      "totalQuantity": {
+        "type": "int"
+      }
     }
   },
   "batchHistoryItemRow": "{name} × {quantity}",
