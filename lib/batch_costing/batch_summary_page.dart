@@ -84,6 +84,7 @@ class BatchSummaryPage extends ConsumerWidget {
                   l10n,
                   currencySettings,
                   isPercent: true,
+                  monetaryImpact: summary.failureRiskMonetary,
                 ),
               ),
             if (_showPricing(summary.markupPercent.value))
@@ -97,6 +98,7 @@ class BatchSummaryPage extends ConsumerWidget {
                   l10n,
                   currencySettings,
                   isPercent: true,
+                  monetaryImpact: summary.markupPercentMonetary,
                 ),
               ),
             if (_showPricing(summary.labourRate.value))
@@ -436,28 +438,43 @@ class BatchSummaryPage extends ConsumerWidget {
     AppLocalizations l10n,
     GeneralSettingsModel currencySettings, {
     bool isPercent = false,
+    num monetaryImpact = 0,
   }) {
     if (value.isEmpty) return '';
-    final formattedValue = isPercent
-        ? value
-        : formatCurrencyValue(
-            double.tryParse(value.replaceAll(',', '.')) ?? 0,
-            currencySymbol: currencySettings.currencySymbol,
-            currencyPosition: currencySettings.currencyPosition,
-            currencySpacing: currencySettings.currencySpacing,
-          );
+    final parsed = double.tryParse(value.replaceAll(',', '.')) ?? 0;
+
+    if (isPercent) {
+      final formattedValue = '$value%';
+      final formattedImpact = formatCurrencyValue(
+        monetaryImpact,
+        currencySymbol: currencySettings.currencySymbol,
+        currencyPosition: currencySettings.currencyPosition,
+        currencySpacing: currencySettings.currencySpacing,
+      );
+      if (scope == BatchPricingScope.batch) {
+        return '$formattedValue → $formattedImpact';
+      }
+      return l10n.batchCostingSummaryPricingItemScopeFormat(
+        formattedImpact,
+        formattedValue,
+      );
+    }
+
+    final formattedValue = formatCurrencyValue(
+      parsed,
+      currencySymbol: currencySettings.currencySymbol,
+      currencyPosition: currencySettings.currencyPosition,
+      currencySpacing: currencySettings.currencySpacing,
+    );
     if (scope == BatchPricingScope.batch) return formattedValue;
 
-    final perUnit = double.tryParse(value.replaceAll(',', '.')) ?? 0;
-    final lineTotalValue = perUnit * totalQuantity;
-    final formattedLineTotal = isPercent
-        ? lineTotalValue.toStringAsFixed(1)
-        : formatCurrencyValue(
-            lineTotalValue,
-            currencySymbol: currencySettings.currencySymbol,
-            currencyPosition: currencySettings.currencyPosition,
-            currencySpacing: currencySettings.currencySpacing,
-          );
+    final lineTotalValue = parsed * totalQuantity;
+    final formattedLineTotal = formatCurrencyValue(
+      lineTotalValue,
+      currencySymbol: currencySettings.currencySymbol,
+      currencyPosition: currencySettings.currencyPosition,
+      currencySpacing: currencySettings.currencySpacing,
+    );
     return l10n.batchCostingSummaryPricingItemScopeFormat(
       formattedLineTotal,
       formattedValue,
