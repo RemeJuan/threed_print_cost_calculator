@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
@@ -208,8 +209,11 @@ void main() {
       find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
       findsNothing,
     );
-    expect(find.text('Use these values'), findsOneWidget);
-    expect(find.text('Create batch'), findsNothing);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(GCodeImportPage)),
+    )!;
+    expect(find.text(l10n.importGcodeUseValuesButton), findsOneWidget);
+    expect(find.text(l10n.importGcodeCreateBatchButton), findsNothing);
   });
 
   testWidgets('quantity field stays hidden when batch costing disabled', (
@@ -236,7 +240,10 @@ void main() {
       find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
       findsNothing,
     );
-    expect(find.text('Use these values'), findsOneWidget);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(GCodeImportPage)),
+    )!;
+    expect(find.text(l10n.importGcodeUseValuesButton), findsOneWidget);
   });
 
   testWidgets('quantity one uses existing calculator path', (tester) async {
@@ -385,9 +392,8 @@ GCodePickedFile _pickedFile(String name) {
     name: name,
     originalName: name,
     size: 1024,
-    readAsBytes: () async => Uint8List.fromList(
-      ';FLAVOR:Marlin\nG1 X10 Y10\n;TIME:10\n'.codeUnits,
-    ),
+    readAsBytes: () async =>
+        Uint8List.fromList(';FLAVOR:Marlin\nG1 X10 Y10\n;TIME:10\n'.codeUnits),
   );
 }
 

@@ -299,18 +299,12 @@ void main() {
     );
     await tester.pump(const Duration(milliseconds: 300));
 
-    expect(
-      sink.events,
-      hasLength(1),
-    );
+    expect(sink.events, hasLength(1));
     expect(sink.events.single.message, 'History export failed');
     expect(sink.events.single.category, AppLogCategory.ui);
     expect(sink.events.single.context['exportType'], 'job');
     expect(sink.events.single.error, isA<StateError>());
-    expect(
-      (sink.events.single.error as StateError).message,
-      'boom',
-    );
+    expect((sink.events.single.error as StateError).message, 'boom');
     await tester.pump(const Duration(seconds: 3));
   });
 
