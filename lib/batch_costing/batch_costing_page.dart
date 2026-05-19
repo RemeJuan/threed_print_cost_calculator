@@ -85,7 +85,11 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                       ),
                       const SizedBox(width: 8),
                       TextButton.icon(
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const BatchGCodeImportPage(),
+                          ),
+                        ),
                         icon: const Icon(Icons.upload_file),
                         label: Text(l10n.batchCostingReviewImportGcodeButton),
                       ),

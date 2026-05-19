@@ -703,5 +703,6 @@
   "batchCostingNewBatchDialogTitle": "Iniciar nuevo lote",
   "batchCostingNewBatchDialogBody": "Esto descartará todo el progreso actual del lote. ¿Iniciar un nuevo lote?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} cada uno → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Impresora"
+  "batchCostingAssignmentPrinterLabel": "Impresora",
+  "batchCostingEntryButton": "Costos por lote"
 }

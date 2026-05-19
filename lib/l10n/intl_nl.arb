@@ -705,5 +705,6 @@
   "batchCostingNewBatchDialogTitle": "Nieuwe batch starten",
   "batchCostingNewBatchDialogBody": "Dit zal alle huidige batchvoortgang wissen. Een nieuwe batch starten?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} elk → {lineTotal} totaal",
-  "batchCostingAssignmentPrinterLabel": "Printer"
+  "batchCostingAssignmentPrinterLabel": "Printer",
+  "batchCostingEntryButton": "Batchkosten"
 }

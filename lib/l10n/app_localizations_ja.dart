@@ -1505,4 +1505,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingAssignmentPrinterLabel => 'プリンター';
+
+  @override
+  String get batchCostingEntryButton => 'バッチコスト計算';
 }

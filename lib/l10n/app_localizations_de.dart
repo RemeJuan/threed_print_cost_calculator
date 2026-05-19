@@ -1566,4 +1566,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get batchCostingAssignmentPrinterLabel => 'Drucker';
+
+  @override
+  String get batchCostingEntryButton => 'Stapelkalkulation';
 }

@@ -706,5 +706,6 @@
   "batchCostingNewBatchDialogTitle": "Nouveau lot",
   "batchCostingNewBatchDialogBody": "Cela supprimera toute la progression actuelle du lot. Démarrer un nouveau lot ?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} chacun → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Imprimante"
+  "batchCostingAssignmentPrinterLabel": "Imprimante",
+  "batchCostingEntryButton": "Coût par lot"
 }

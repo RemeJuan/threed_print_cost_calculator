@@ -631,5 +631,6 @@
   "batchCostingNewBatchDialogTitle": "Start new batch",
   "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
-  "batchCostingAssignmentPrinterLabel": "Printer"
+  "batchCostingAssignmentPrinterLabel": "Printer",
+  "batchCostingEntryButton": "Batch costing"
 }
