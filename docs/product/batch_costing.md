@@ -40,20 +40,24 @@ The workflow should default to simple batch-wide choices, then let users opt int
 
 - Dedicated batch costing flow separate from the calculator screen
 - Manual batch item entry
-- Single-file G-code batch entry using quantity greater than 1
+- Single-file G-code batch import
 - Multi-file G-code batch import
 - Batch item review
-- Quantity per item
-- Batch-wide printer assignment with optional per-item printer override
-- Batch-wide material/spool assignment with optional per-item material override
+- Quantity per batch item
+- Batch-wide printer assignment
+- Split-copy printer allocation across multiple printers
+- Batch-wide material/spool assignment
+- Split-copy material allocation across multiple materials/spools/colours
+- Searchable printer/material selection where lists can grow
 - Non-blocking stock warnings when required material exceeds selected stock
 - Pricing values that can apply either to item scope or batch scope
 - Item-level breakdown and batch total summary
+- Saving named batch quotes to history
+- Batch history display for saved quotes
 - Feature gating through the existing version-code/admin/debug flow
 
 ### Out of Scope for V1
 
-- Saving batch quotes to history
 - Exporting batch quotes
 - Shareable quote images or PDFs
 - Quote templates
@@ -141,7 +145,7 @@ Minimum fields:
 - Quantity
 - Print weight
 - Print duration
-- Optional source type: manual or G-code
+- Source type: manual or G-code
 - Optional import metadata
 
 Quantity represents how many times that item/model is printed. Do not duplicate a single model into multiple rows just because quantity is greater than 1.
@@ -150,7 +154,7 @@ Examples:
 
 - One Benchy printed 10 times = one item with quantity 10
 - Three different files = three items with quantity 1 each
-- Same model split across different printers/materials may require separate item assignments or future splitting support
+- A quantity 10 item may still be split across multiple printers/materials without duplicating the item row
 
 ## Manual Batch Entry
 
