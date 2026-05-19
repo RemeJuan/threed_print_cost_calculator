@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searcha
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_copies_dialog.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
@@ -234,6 +235,23 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
       );
       return;
     }
+
+    final mode = state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide
+        ? 'batch'
+        : 'split';
+    final hasSplit = state.printerAssignmentMode == BatchPrinterAssignmentMode.perItem &&
+        state.items.any((item) {
+          final allocs = state.itemPrinterAllocations[item.id];
+          if (allocs == null || allocs.length <= 1) return false;
+          return allocs.map((a) => a.targetId).toSet().length > 1;
+        });
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchAssignmentCompleted(
+        type: 'printer',
+        mode: mode,
+        hasSplitAllocations: hasSplit,
+      ),
+    );
 
     Navigator.of(context).push(
       MaterialPageRoute<void>(

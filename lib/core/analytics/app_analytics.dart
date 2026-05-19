@@ -704,44 +704,134 @@ class AppAnalytics {
     );
   }
 
-  static Future<void> batchCostingItemAdded({
-    required String id,
-    required String displayName,
-    required int quantity,
-    double? printWeightG,
-    Duration? printDuration,
+  static Future<void> batchStarted({required String source}) {
+    return log('batch_started', params: {'source': source});
+  }
+
+  static Future<void> batchItemAdded({required String source}) {
+    return log('batch_item_added', params: {'source': source});
+  }
+
+  static Future<void> batchItemRemoved({required String source}) {
+    return log('batch_item_removed', params: {'source': source});
+  }
+
+  static Future<void> batchItemEdited({
+    required String source,
+    required bool changedQuantity,
+    required bool changedWeight,
+    required bool changedDuration,
   }) {
     return log(
-      'batch_costing_item_added',
+      'batch_item_edited',
       params: {
-        'item_id': id,
-        'display_name': displayName,
-        'quantity': quantity,
-        ...printWeightG == null ? const {} : {'print_weight_g': printWeightG},
-        ...printDuration == null
-            ? const {}
-            : {'print_duration_min': printDuration.inMinutes},
+        'source': source,
+        'changed_quantity': changedQuantity ? 1 : 0,
+        'changed_weight': changedWeight ? 1 : 0,
+        'changed_duration': changedDuration ? 1 : 0,
       },
     );
   }
 
-  static Future<void> batchCostingItemEdited({
-    required String id,
-    required String displayName,
-    required int quantity,
-    double? printWeightG,
-    Duration? printDuration,
+  static Future<void> batchGCodeImportCompleted({
+    required int totalCount,
+    required int readyCount,
+    required int needsDetailsCount,
+    required int failedCount,
+    required int duplicateSkippedCount,
   }) {
     return log(
-      'batch_costing_item_edited',
+      'batch_gcode_import_completed',
       params: {
-        'item_id': id,
-        'display_name': displayName,
-        'quantity': quantity,
-        ...printWeightG == null ? const {} : {'print_weight_g': printWeightG},
-        ...printDuration == null
-            ? const {}
-            : {'print_duration_min': printDuration.inMinutes},
+        'total_count': totalCount,
+        'ready_count': readyCount,
+        'needs_details_count': needsDetailsCount,
+        'failed_count': failedCount,
+        'duplicate_skipped_count': duplicateSkippedCount,
+      },
+    );
+  }
+
+  static Future<void> batchAssignmentCompleted({
+    required String type,
+    required String mode,
+    required bool hasSplitAllocations,
+  }) {
+    return log(
+      'batch_assignment_completed',
+      params: {
+        'type': type,
+        'mode': mode,
+        'has_split_allocations': hasSplitAllocations ? 1 : 0,
+      },
+    );
+  }
+
+  static Future<void> batchPricingCompleted({
+    required bool hasRisk,
+    required bool hasMarkup,
+    required bool hasLabour,
+    required bool hasAdditionalCost,
+    required String riskScope,
+    required String markupScope,
+    required String labourScope,
+    required String additionalCostScope,
+  }) {
+    return log(
+      'batch_pricing_completed',
+      params: {
+        'has_risk': hasRisk ? 1 : 0,
+        'has_markup': hasMarkup ? 1 : 0,
+        'has_labour': hasLabour ? 1 : 0,
+        'has_additional_cost': hasAdditionalCost ? 1 : 0,
+        'risk_scope': riskScope,
+        'markup_scope': markupScope,
+        'labour_scope': labourScope,
+        'additional_cost_scope': additionalCostScope,
+      },
+    );
+  }
+
+  static Future<void> batchSummaryViewed({
+    required int itemCount,
+    required int copyCount,
+    required bool hasGCodeItems,
+    required bool hasManualItems,
+    required bool hasSplitPrinters,
+    required bool hasSplitMaterials,
+  }) {
+    return log(
+      'batch_summary_viewed',
+      params: {
+        'item_count': itemCount,
+        'copy_count': copyCount,
+        'has_gcode_items': hasGCodeItems ? 1 : 0,
+        'has_manual_items': hasManualItems ? 1 : 0,
+        'has_split_printers': hasSplitPrinters ? 1 : 0,
+        'has_split_materials': hasSplitMaterials ? 1 : 0,
+      },
+    );
+  }
+
+  static Future<void> batchQuoteSaved({
+    required String outcome,
+    required int itemCount,
+    required int copyCount,
+    required bool hasGCodeItems,
+    required bool hasManualItems,
+    required bool hasSplitPrinters,
+    required bool hasSplitMaterials,
+  }) {
+    return log(
+      'batch_quote_saved',
+      params: {
+        'outcome': outcome,
+        'item_count': itemCount,
+        'copy_count': copyCount,
+        'has_gcode_items': hasGCodeItems ? 1 : 0,
+        'has_manual_items': hasManualItems ? 1 : 0,
+        'has_split_printers': hasSplitPrinters ? 1 : 0,
+        'has_split_materials': hasSplitMaterials ? 1 : 0,
       },
     );
   }

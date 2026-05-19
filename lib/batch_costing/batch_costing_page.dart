@@ -335,8 +335,18 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                 style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.error,
                 ),
-                onPressed: () =>
-                    ref.read(batchCostingProvider.notifier).removeItem(item.id),
+                onPressed: () {
+                  final src =
+                      item.sourceType == BatchCostingItemSourceType.gcode
+                          ? 'gcode'
+                          : 'manual';
+                  AppAnalytics.safeLog(
+                    () => AppAnalytics.batchItemRemoved(source: src),
+                  );
+                  ref
+                      .read(batchCostingProvider.notifier)
+                      .removeItem(item.id);
+                },
                 icon: const Icon(Icons.delete_outline),
                 label: Text(l10n.batchCostingReviewRemoveButton),
               ),
@@ -450,6 +460,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     if (result == null) return;
     if (!mounted) return;
 
+    final wasEmpty = ref.read(batchCostingProvider).items.isEmpty;
+
     final itemId = DateTime.now().microsecondsSinceEpoch.toString();
     ref
         .read(batchCostingProvider.notifier)
@@ -463,14 +475,14 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
           ),
         );
 
+    if (wasEmpty) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.batchStarted(source: 'manual'),
+      );
+    }
+
     AppAnalytics.safeLog(
-      () => AppAnalytics.batchCostingItemAdded(
-        id: itemId,
-        displayName: result.displayName,
-        quantity: result.quantity,
-        printWeightG: result.printWeightG,
-        printDuration: result.printDuration,
-      ),
+      () => AppAnalytics.batchItemAdded(source: 'manual'),
     );
   }
 
@@ -506,13 +518,19 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
       );
     }
 
+    final source = item.sourceType == BatchCostingItemSourceType.gcode
+        ? 'gcode'
+        : 'manual';
+    final changedQuantity = item.quantity != updatedItem.quantity;
+    final changedWeight = item.printWeightG != updatedItem.printWeightG;
+    final changedDuration = item.printDuration != updatedItem.printDuration;
+
     AppAnalytics.safeLog(
-      () => AppAnalytics.batchCostingItemEdited(
-        id: updatedItem.id,
-        displayName: updatedItem.displayName,
-        quantity: updatedItem.quantity,
-        printWeightG: updatedItem.printWeightG,
-        printDuration: updatedItem.printDuration,
+      () => AppAnalytics.batchItemEdited(
+        source: source,
+        changedQuantity: changedQuantity,
+        changedWeight: changedWeight,
+        changedDuration: changedDuration,
       ),
     );
   }

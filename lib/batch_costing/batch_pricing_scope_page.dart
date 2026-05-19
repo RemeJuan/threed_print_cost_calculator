@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -318,6 +319,29 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
 
   void _continue(BuildContext context) {
     if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    final pricing = ref.read(batchCostingProvider).pricing;
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchPricingCompleted(
+        hasRisk: pricing.failureRisk.value.isNotEmpty,
+        hasMarkup: pricing.markupPercent.value.isNotEmpty,
+        hasLabour: pricing.labourRate.value.isNotEmpty,
+        hasAdditionalCost: pricing.additionalCostAmount.value.isNotEmpty,
+        riskScope: pricing.failureRisk.scope == BatchPricingScope.item
+            ? 'item'
+            : 'batch',
+        markupScope: pricing.markupPercent.scope == BatchPricingScope.item
+            ? 'item'
+            : 'batch',
+        labourScope: pricing.labourRate.scope == BatchPricingScope.item
+            ? 'item'
+            : 'batch',
+        additionalCostScope:
+            pricing.additionalCostAmount.scope == BatchPricingScope.item
+                ? 'item'
+                : 'batch',
+      ),
+    );
 
     Navigator.of(
       context,

@@ -150,6 +150,62 @@
   - feature: Calculator usage
   - notes: only when more than one material usage exists
 
+### Batch Costing
+
+- `batch_started`
+  - params: [`source`]
+  - triggered_from: [`lib/batch_costing/batch_costing_page.dart`, `lib/batch_costing/batch_gcode_import_page.dart`]
+  - feature: Batch costing
+  - notes: fired when a batch session begins; `source` is `manual` (from review page), `gcode_single` (single-file import), or `gcode_multi` (multi-file import)
+
+- `batch_item_added`
+  - params: [`source`]
+  - triggered_from: [`lib/batch_costing/batch_costing_page.dart`, `lib/batch_costing/batch_gcode_import_page.dart`]
+  - feature: Batch costing
+  - notes: fired per batch item added; `source` is `manual` (manual entry) or `gcode` (G-code import). No item name, file name, or content logged
+
+- `batch_item_removed`
+  - params: [`source`]
+  - triggered_from: [`lib/batch_costing/batch_costing_page.dart`, `lib/batch_costing/batch_gcode_import_page.dart`]
+  - feature: Batch costing
+  - notes: fired when a batch item is removed; `source` is `manual` or `gcode`
+
+- `batch_item_edited`
+  - params: [`source`, `changed_quantity`, `changed_weight`, `changed_duration`]
+  - triggered_from: [`lib/batch_costing/batch_costing_page.dart`]
+  - feature: Batch costing
+  - notes: fired when a manual batch item's details are saved; `source` is `manual`; boolean params are `0`/`1` indicating which fields changed. No item name or content logged
+
+- `batch_gcode_import_completed`
+  - params: [`total_count`, `ready_count`, `needs_details_count`, `failed_count`, `duplicate_skipped_count`]
+  - triggered_from: [`lib/batch_costing/batch_gcode_import_page.dart`]
+  - feature: Batch costing
+  - notes: fired after all G-code files are processed in multi-file import mode. `duplicate_skipped_count` is `0` in current instrumentation (dedup handled in the picker)
+
+- `batch_assignment_completed`
+  - params: [`type`, `mode`, `has_split_allocations`]
+  - triggered_from: [`lib/batch_costing/batch_printer_assignment_page.dart`, `lib/batch_costing/batch_material_assignment_page.dart`]
+  - feature: Batch costing
+  - notes: fired on continue from printer or material assignment step; `type` is `printer` or `material`; `mode` is `batch` or `split`; `has_split_allocations` is `1` when mode is `split` and any item has allocations spanning multiple targets
+
+- `batch_pricing_completed`
+  - params: [`has_risk`, `has_markup`, `has_labour`, `has_additional_cost`, `risk_scope`, `markup_scope`, `labour_scope`, `additional_cost_scope`]
+  - triggered_from: [`lib/batch_costing/batch_pricing_scope_page.dart`]
+  - feature: Batch costing
+  - notes: fired on continue from pricing scope step; boolean params indicate non-zero values; scope params are `item` or `batch`
+
+- `batch_summary_viewed`
+  - params: [`total_items`, `total_quantity`, `has_split_printers`, `has_split_materials`]
+  - triggered_from: [`lib/batch_costing/batch_summary_page.dart`]
+  - feature: Batch costing
+  - notes: fired once on summary page mount via postFrameCallback; `has_split_printers`/`has_split_materials` are `0`/`1`
+
+- `batch_quote_saved`
+  - params: [`outcome`]
+  - triggered_from: [`lib/batch_costing/batch_summary_page.dart`]
+  - feature: Batch costing
+  - notes: fired after save attempt; `outcome` is `success` or `failure`
+
 ### History
 
 - `history_overflow_opened`

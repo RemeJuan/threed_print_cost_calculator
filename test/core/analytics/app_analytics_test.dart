@@ -363,6 +363,161 @@ void main() {
     ).called(1);
   });
 
+  group('batch costing analytics', () {
+    late _FakeAnalytics fake;
+
+    setUp(() {
+      fake = _FakeAnalytics();
+      AppAnalytics.service = fake;
+    });
+
+    test('batchStarted sends source', () async {
+      await AppAnalytics.batchStarted(source: 'manual');
+      expect(fake.lastName, 'batch_started');
+      expect(fake.lastParams, {'source': 'manual'});
+    });
+
+    test('batchItemAdded sends source', () async {
+      await AppAnalytics.batchItemAdded(source: 'gcode');
+      expect(fake.lastName, 'batch_item_added');
+      expect(fake.lastParams, {'source': 'gcode'});
+    });
+
+    test('batchItemRemoved sends source', () async {
+      await AppAnalytics.batchItemRemoved(source: 'manual');
+      expect(fake.lastName, 'batch_item_removed');
+      expect(fake.lastParams, {'source': 'manual'});
+    });
+
+    test('batchItemEdited sends changed booleans as numbers', () async {
+      await AppAnalytics.batchItemEdited(
+        source: 'manual',
+        changedQuantity: true,
+        changedWeight: false,
+        changedDuration: true,
+      );
+      expect(fake.lastName, 'batch_item_edited');
+      expect(fake.lastParams, {
+        'source': 'manual',
+        'changed_quantity': 1,
+        'changed_weight': 0,
+        'changed_duration': 1,
+      });
+    });
+
+    test('batchGCodeImportCompleted sends all counts', () async {
+      await AppAnalytics.batchGCodeImportCompleted(
+        totalCount: 5,
+        readyCount: 3,
+        needsDetailsCount: 1,
+        failedCount: 1,
+        duplicateSkippedCount: 2,
+      );
+      expect(fake.lastName, 'batch_gcode_import_completed');
+      expect(fake.lastParams, {
+        'total_count': 5,
+        'ready_count': 3,
+        'needs_details_count': 1,
+        'failed_count': 1,
+        'duplicate_skipped_count': 2,
+      });
+    });
+
+    test('batchAssignmentCompleted sends type, mode, hasSplitAllocations', () async {
+      await AppAnalytics.batchAssignmentCompleted(
+        type: 'printer',
+        mode: 'split',
+        hasSplitAllocations: true,
+      );
+      expect(fake.lastName, 'batch_assignment_completed');
+      expect(fake.lastParams, {
+        'type': 'printer',
+        'mode': 'split',
+        'has_split_allocations': 1,
+      });
+    });
+
+    test('batchAssignmentCompleted with batch mode and no splits', () async {
+      await AppAnalytics.batchAssignmentCompleted(
+        type: 'material',
+        mode: 'batch',
+        hasSplitAllocations: false,
+      );
+      expect(fake.lastName, 'batch_assignment_completed');
+      expect(fake.lastParams, {
+        'type': 'material',
+        'mode': 'batch',
+        'has_split_allocations': 0,
+      });
+    });
+
+    test('batchPricingCompleted sends all existence and scope params', () async {
+      await AppAnalytics.batchPricingCompleted(
+        hasRisk: true,
+        hasMarkup: false,
+        hasLabour: true,
+        hasAdditionalCost: false,
+        riskScope: 'item',
+        markupScope: 'item',
+        labourScope: 'batch',
+        additionalCostScope: 'batch',
+      );
+      expect(fake.lastName, 'batch_pricing_completed');
+      expect(fake.lastParams, {
+        'has_risk': 1,
+        'has_markup': 0,
+        'has_labour': 1,
+        'has_additional_cost': 0,
+        'risk_scope': 'item',
+        'markup_scope': 'item',
+        'labour_scope': 'batch',
+        'additional_cost_scope': 'batch',
+      });
+    });
+
+    test('batchSummaryViewed sends all params', () async {
+      await AppAnalytics.batchSummaryViewed(
+        itemCount: 3,
+        copyCount: 12,
+        hasGCodeItems: true,
+        hasManualItems: true,
+        hasSplitPrinters: false,
+        hasSplitMaterials: false,
+      );
+      expect(fake.lastName, 'batch_summary_viewed');
+      expect(fake.lastParams, {
+        'item_count': 3,
+        'copy_count': 12,
+        'has_gcode_items': 1,
+        'has_manual_items': 1,
+        'has_split_printers': 0,
+        'has_split_materials': 0,
+      });
+    });
+
+    test('batchQuoteSaved sends outcome and summary context', () async {
+      await AppAnalytics.batchQuoteSaved(
+        outcome: 'success',
+        itemCount: 2,
+        copyCount: 5,
+        hasGCodeItems: true,
+        hasManualItems: false,
+        hasSplitPrinters: true,
+        hasSplitMaterials: false,
+      );
+      expect(fake.lastName, 'batch_quote_saved');
+      expect(fake.lastParams, {
+        'outcome': 'success',
+        'item_count': 2,
+        'copy_count': 5,
+        'has_gcode_items': 1,
+        'has_manual_items': 0,
+        'has_split_printers': 1,
+        'has_split_materials': 0,
+      });
+    });
+  });
+
   test('paywall analytics default to manual entry point', () async {
     when(
       () => mock.logEvent(any(), params: any(named: 'params')),
