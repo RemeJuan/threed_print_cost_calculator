@@ -500,6 +500,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Devis par lots';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle => 'Nommez votre devis';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Nom du devis';
+
+  @override
   String get batchHistoryItemsTitle => 'Articles du lot';
 
   @override

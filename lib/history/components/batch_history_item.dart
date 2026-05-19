@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item_actions.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 
 class BatchHistoryItem extends HookConsumerWidget {
   const BatchHistoryItem({
@@ -27,8 +30,12 @@ class BatchHistoryItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final summary = data.batchQuoteSummary ?? const <String, dynamic>{};
+    final summary = data.batchQuoteSummary;
     final items = data.batchQuoteItems;
+    final currencyAsync = ref.watch(settingsStreamProvider);
+    final currency = currencyAsync is AsyncData<GeneralSettingsModel>
+        ? currencyAsync.value
+        : GeneralSettingsModel.initial();
     return Container(
       key: ValueKey<String>('$itemKeyPrefix.card'),
       padding: const EdgeInsets.all(8),
@@ -63,8 +70,10 @@ class BatchHistoryItem extends HookConsumerWidget {
           const SizedBox(height: 8),
           Text(
             l10n.batchHistorySummaryLine(
-              (summary['itemCount'] as num?)?.toInt() ?? 0,
-              (summary['totalQuantity'] as num?)?.toInt() ?? 0,
+              (summary?['itemCount'] as num?)?.toInt() ??
+                  items.map((e) => e['name']?.toString()).toSet().length,
+              (summary?['totalQuantity'] as num?)?.toInt() ??
+                  items.fold<int>(0, (sum, e) => sum + ((e['quantity'] as num?)?.toInt() ?? 0)),
             ),
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -72,7 +81,7 @@ class BatchHistoryItem extends HookConsumerWidget {
           _detailRow(
             context,
             l10n.batchCostingSummaryFinalTotalLabel,
-            data.totalCost.toStringAsFixed(2),
+            _amountString(data.totalCost, currency),
           ),
           _detailRow(
             context,
@@ -95,26 +104,9 @@ class BatchHistoryItem extends HookConsumerWidget {
                   ),
             ),
             children: [
-              _detailRow(
-                context,
-                l10n.failureRiskLabel,
-                _pricingString(l10n, summary, 'failureRisk'),
-              ),
-              _detailRow(
-                context,
-                l10n.pricingMarkupPercentLabel,
-                _pricingString(l10n, summary, 'markupPercent'),
-              ),
-              _detailRow(
-                context,
-                l10n.labourRateLabel,
-                _pricingString(l10n, summary, 'labourRate'),
-              ),
-              _detailRow(
-                context,
-                l10n.additionalCostLabel,
-                _pricingString(l10n, summary, 'additionalCostAmount'),
-              ),
+              for (final entry in _pricingEntries(l10n, summary ?? const <String, dynamic>{}))
+                if (entry.value != null)
+                  _detailRow(context, entry.label, entry.value!),
             ],
           ),
           const SizedBox(height: 4),
@@ -162,17 +154,18 @@ class BatchHistoryItem extends HookConsumerWidget {
                           _detailRow(
                             context,
                             l10n.batchCostingSummaryItemBaseCostLabel,
-                            _amountString(item['baseCost']),
+                            _amountString(item['baseCost'], currency),
                           ),
-                          _detailRow(
-                            context,
-                            l10n.batchCostingSummaryItemAdjustmentLabel,
-                            _amountString(item['additionalCost']),
-                          ),
+                          if ((item['additionalCost'] as num?) != 0)
+                            _detailRow(
+                              context,
+                              l10n.batchCostingSummaryItemAdjustmentLabel,
+                              _amountString(item['additionalCost'], currency),
+                            ),
                           _detailRow(
                             context,
                             l10n.batchCostingSummaryItemTotalLabel,
-                            _amountString(item['finalTotal']),
+                            _amountString(item['finalTotal'], currency),
                           ),
                         ],
                       ),
@@ -210,27 +203,46 @@ class BatchHistoryItem extends HookConsumerWidget {
     );
   }
 
-  String _pricingString(
+  List<({String label, String? value})> _pricingEntries(
     AppLocalizations l10n,
     Map<String, dynamic> summary,
-    String key,
   ) {
     final pricing = summary['pricing'];
-    if (pricing is! Map) return '—';
-    final field = pricing[key];
-    if (field is! Map) return '—';
-    final value = field['value']?.toString() ?? '0';
-    final scope = field['scope']?.toString();
-    if (scope == null || scope.isEmpty) return value;
-
-    if (scope == 'item') return '$value (${l10n.batchCostingPricingScopeItemMode})';
-    if (scope == 'batch') return '$value (${l10n.batchCostingPricingScopeBatchMode})';
-    return '$value ($scope)';
+    if (pricing is! Map) return [];
+    return [
+      (label: l10n.failureRiskLabel, value: _pricingValue(pricing, 'failureRisk', l10n, isPercent: true)),
+      (label: l10n.pricingMarkupPercentLabel, value: _pricingValue(pricing, 'markupPercent', l10n, isPercent: true)),
+      (label: l10n.labourRateLabel, value: _pricingValue(pricing, 'labourRate', l10n)),
+      (label: l10n.additionalCostLabel, value: _pricingValue(pricing, 'additionalCostAmount', l10n)),
+    ];
   }
 
-  String _amountString(dynamic raw) {
-    if (raw is num) return raw.toStringAsFixed(2);
-    return num.tryParse(raw?.toString() ?? '')?.toStringAsFixed(2) ?? '0.00';
+  String? _pricingValue(Map pricing, String key, AppLocalizations l10n, {bool isPercent = false}) {
+    final field = pricing[key];
+    if (field is! Map) return null;
+    final raw = (field['value']?.toString() ?? '').trim();
+    if (raw.isEmpty || raw == '0') return null;
+    final scope = field['scope']?.toString();
+    final scopeSuffix = scope == 'item'
+        ? ' (${l10n.batchCostingPricingScopeItemMode})'
+        : scope == 'batch'
+            ? ' (${l10n.batchCostingPricingScopeBatchMode})'
+            : scope != null && scope.isNotEmpty
+                ? ' ($scope)'
+                : '';
+    if (isPercent) return '$raw$scopeSuffix';
+    return '$raw$scopeSuffix';
+  }
+
+  String _amountString(dynamic raw, GeneralSettingsModel currency) {
+    final num value = raw is num ? raw : (num.tryParse(raw?.toString() ?? '') ?? 0);
+    if (value == 0 && raw is! num) return '0.00';
+    return formatCurrencyValue(
+      value,
+      currencySymbol: currency.currencySymbol,
+      currencyPosition: currency.currencyPosition,
+      currencySpacing: currency.currencySpacing,
+    );
   }
 
   String _formatDurationFromMinutes(dynamic minutesValue) {

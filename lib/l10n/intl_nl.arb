@@ -343,8 +343,10 @@
   "batchCostingSummaryViewHistoryButton": "Geschiedenis bekijken",
   "batchCostingSummarySaveErrorMessage": "Kon offerte niet opslaan",
   "batchCostingSummaryDefaultQuoteName": "Batch-offerte",
+  "batchCostingSummaryQuoteNameDialogTitle": "Geef uw offerte een naam",
+  "batchCostingSummaryQuoteNameHint": "Offertenaam",
   "batchHistoryItemsTitle": "Batchitems",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# item} other{# items}} • {totalQuantity, plural, one{# kopie} other{# kopieën}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{item} other{items}} • {totalQuantity} {totalQuantity, plural, one{kopie} other{kopieën}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

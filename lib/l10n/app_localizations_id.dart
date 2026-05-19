@@ -494,6 +494,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Kutipan batch';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle =>
+      'Beri nama kutipan Anda';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Nama kutipan';
+
+  @override
   String get batchHistoryItemsTitle => 'Item batch';
 
   @override

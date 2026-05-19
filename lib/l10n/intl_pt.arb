@@ -342,8 +342,10 @@
   "batchCostingSummaryViewHistoryButton": "Ver histórico",
   "batchCostingSummarySaveErrorMessage": "Não foi possível salvar o orçamento",
   "batchCostingSummaryDefaultQuoteName": "Orçamento de lote",
+  "batchCostingSummaryQuoteNameDialogTitle": "Dê um nome à sua cotação",
+  "batchCostingSummaryQuoteNameHint": "Nome da cotação",
   "batchHistoryItemsTitle": "Itens do lote",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# item} other{# itens}} • {totalQuantity, plural, one{# cópia} other{# cópias}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{item} other{itens}} • {totalQuantity} {totalQuantity, plural, one{cópia} other{cópias}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

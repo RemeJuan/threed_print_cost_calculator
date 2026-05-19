@@ -336,8 +336,10 @@
   "batchCostingSummaryViewHistoryButton": "ดูประวัติ",
   "batchCostingSummarySaveErrorMessage": "ไม่สามารถบันทึกใบเสนอราคาได้",
   "batchCostingSummaryDefaultQuoteName": "ใบเสนอราคาแบตช์",
+  "batchCostingSummaryQuoteNameDialogTitle": "ตั้งชื่อใบเสนอราคา",
+  "batchCostingSummaryQuoteNameHint": "ชื่อใบเสนอราคา",
   "batchHistoryItemsTitle": "รายการแบตช์",
-  "batchHistorySummaryLine": "{itemCount, plural, other{# รายการ}} • {totalQuantity, plural, other{# ชุด}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, other{รายการ}} • {totalQuantity} {totalQuantity, plural, other{ชุด}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

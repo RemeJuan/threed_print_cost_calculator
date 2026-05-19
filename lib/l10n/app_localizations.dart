@@ -1020,6 +1020,18 @@ abstract class AppLocalizations {
   /// **'Batch quote'**
   String get batchCostingSummaryDefaultQuoteName;
 
+  /// No description provided for @batchCostingSummaryQuoteNameDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name your quote'**
+  String get batchCostingSummaryQuoteNameDialogTitle;
+
+  /// No description provided for @batchCostingSummaryQuoteNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Quote name'**
+  String get batchCostingSummaryQuoteNameHint;
+
   /// No description provided for @batchHistoryItemsTitle.
   ///
   /// In en, this message translates to:

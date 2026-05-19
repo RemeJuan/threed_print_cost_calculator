@@ -494,6 +494,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Batch-offerte';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle =>
+      'Geef uw offerte een naam';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Offertenaam';
+
+  @override
   String get batchHistoryItemsTitle => 'Batchitems';
 
   @override

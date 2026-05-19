@@ -335,6 +335,8 @@
   "batchCostingSummaryViewHistoryButton": "Lihat riwayat",
   "batchCostingSummarySaveErrorMessage": "Tidak dapat menyimpan kutipan",
   "batchCostingSummaryDefaultQuoteName": "Kutipan batch",
+  "batchCostingSummaryQuoteNameDialogTitle": "Beri nama kutipan Anda",
+  "batchCostingSummaryQuoteNameHint": "Nama kutipan",
   "batchHistoryItemsTitle": "Item batch",
   "batchHistorySummaryLine": "{itemCount} item • {totalQuantity} salinan",
   "@batchHistorySummaryLine": {

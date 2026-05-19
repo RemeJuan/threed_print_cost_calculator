@@ -343,8 +343,10 @@
   "batchCostingSummaryViewHistoryButton": "Voir l'historique",
   "batchCostingSummarySaveErrorMessage": "Impossible d'enregistrer le devis",
   "batchCostingSummaryDefaultQuoteName": "Devis par lots",
+  "batchCostingSummaryQuoteNameDialogTitle": "Nommez votre devis",
+  "batchCostingSummaryQuoteNameHint": "Nom du devis",
   "batchHistoryItemsTitle": "Articles du lot",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# article} other{# articles}} • {totalQuantity, plural, one{# copie} other{# copies}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{article} other{articles}} • {totalQuantity} {totalQuantity, plural, one{copie} other{copies}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

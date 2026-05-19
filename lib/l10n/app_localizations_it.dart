@@ -497,6 +497,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Preventivo batch';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle =>
+      'Dai un nome al tuo preventivo';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Nome preventivo';
+
+  @override
   String get batchHistoryItemsTitle => 'Articoli batch';
 
   @override

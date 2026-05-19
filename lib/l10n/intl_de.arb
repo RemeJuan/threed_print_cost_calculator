@@ -341,8 +341,10 @@
   "batchCostingSummaryViewHistoryButton": "Verlauf anzeigen",
   "batchCostingSummarySaveErrorMessage": "Angebot konnte nicht gespeichert werden",
   "batchCostingSummaryDefaultQuoteName": "Stapelangebot",
+  "batchCostingSummaryQuoteNameDialogTitle": "Geben Sie Ihrem Angebot einen Namen",
+  "batchCostingSummaryQuoteNameHint": "Angebotsname",
   "batchHistoryItemsTitle": "Stapelpositionen",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# Position} other{# Positionen}} • {totalQuantity, plural, one{# Kopie} other{# Kopien}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{Position} other{Positionen}} • {totalQuantity} {totalQuantity, plural, one{Kopie} other{Kopien}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

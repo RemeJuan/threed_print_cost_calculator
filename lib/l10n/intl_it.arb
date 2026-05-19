@@ -335,8 +335,10 @@
   "batchCostingSummaryViewHistoryButton": "Vedi cronologia",
   "batchCostingSummarySaveErrorMessage": "Impossibile salvare il preventivo",
   "batchCostingSummaryDefaultQuoteName": "Preventivo batch",
+  "batchCostingSummaryQuoteNameDialogTitle": "Dai un nome al tuo preventivo",
+  "batchCostingSummaryQuoteNameHint": "Nome preventivo",
   "batchHistoryItemsTitle": "Articoli batch",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# articolo} other{# articoli}} • {totalQuantity, plural, one{# copia} other{# copie}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{articolo} other{articoli}} • {totalQuantity} {totalQuantity, plural, one{copia} other{copie}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

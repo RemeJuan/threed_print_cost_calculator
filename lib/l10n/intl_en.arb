@@ -196,8 +196,10 @@
   "batchCostingSummaryViewHistoryButton": "View history",
   "batchCostingSummarySaveErrorMessage": "Could not save quote",
   "batchCostingSummaryDefaultQuoteName": "Batch quote",
+  "batchCostingSummaryQuoteNameDialogTitle": "Name your quote",
+  "batchCostingSummaryQuoteNameHint": "Quote name",
   "batchHistoryItemsTitle": "Batch items",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# item} other{# items}} • {totalQuantity, plural, one{# copy} other{# copies}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{item} other{items}} • {totalQuantity} {totalQuantity, plural, one{copy} other{copies}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

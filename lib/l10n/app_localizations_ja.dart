@@ -482,6 +482,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'バッチ見積もり';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle => '見積もりに名前を付ける';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => '見積もり名';
+
+  @override
   String get batchHistoryItemsTitle => 'バッチアイテム';
 
   @override

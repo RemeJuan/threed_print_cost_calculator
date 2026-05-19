@@ -494,6 +494,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Stapelangebot';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle =>
+      'Geben Sie Ihrem Angebot einen Namen';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Angebotsname';
+
+  @override
   String get batchHistoryItemsTitle => 'Stapelpositionen';
 
   @override

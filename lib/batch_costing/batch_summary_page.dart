@@ -129,6 +129,8 @@ class BatchSummaryPage extends ConsumerWidget {
             for (final item in summary.items)
               Card(
                 child: ExpansionTile(
+                  tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                  childrenPadding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                   title: Text(item.item.displayName),
                   subtitle: Text(
                     '${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}',
@@ -327,8 +329,49 @@ class BatchSummaryPage extends ConsumerWidget {
     BatchSummaryResult summary,
   ) async {
     final l10n = AppLocalizations.of(context)!;
+
+    final quoteName = await showDialog<String>(
+      context: context,
+      builder: (dialogContext) {
+        final controller = TextEditingController(
+          text: l10n.batchCostingSummaryDefaultQuoteName,
+        );
+        return AlertDialog(
+          title: Text(l10n.batchCostingSummaryQuoteNameDialogTitle),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: l10n.batchCostingSummaryDefaultQuoteName,
+              labelText: l10n.batchCostingSummaryQuoteNameHint,
+              border: const OutlineInputBorder(),
+            ),
+            autofocus: true,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(null),
+              child: Text(l10n.cancelButton),
+            ),
+            FilledButton(
+              onPressed: () {
+                final name = controller.text.trim();
+                Navigator.of(dialogContext).pop(
+                  name.isEmpty
+                      ? l10n.batchCostingSummaryDefaultQuoteName
+                      : name,
+                );
+              },
+              child: Text(l10n.saveButton),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (quoteName == null || !context.mounted) return;
+
     final model = HistoryModel.batchQuote(
-      name: l10n.batchCostingSummaryDefaultQuoteName,
+      name: quoteName,
       date: DateTime.now(),
       state: state,
       summary: summary,
@@ -350,14 +393,22 @@ class BatchSummaryPage extends ConsumerWidget {
         title: Text(l10n.batchCostingSummarySaveSuccessTitle),
         content: Text(l10n.batchCostingSummarySaveSuccessBody),
         actions: [
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              ref.read(pendingTabNavigationProvider.notifier)
+                  .navigate(AppPageTab.history);
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            child: Text(l10n.batchCostingSummaryViewHistoryButton),
+          ),
           TextButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const HistoryPage()),
-              );
+              ref.read(batchCostingProvider.notifier).reset();
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
-            child: Text(l10n.batchCostingSummaryViewHistoryButton),
+            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
           ),
           TextButton(
             onPressed: () {
@@ -365,14 +416,6 @@ class BatchSummaryPage extends ConsumerWidget {
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
-          ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              ref.read(batchCostingProvider.notifier).reset();
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
           ),
         ],
       ),

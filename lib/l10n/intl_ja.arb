@@ -343,8 +343,10 @@
   "batchCostingSummaryViewHistoryButton": "履歴を見る",
   "batchCostingSummarySaveErrorMessage": "見積もりを保存できませんでした",
   "batchCostingSummaryDefaultQuoteName": "バッチ見積もり",
+  "batchCostingSummaryQuoteNameDialogTitle": "見積もりに名前を付ける",
+  "batchCostingSummaryQuoteNameHint": "見積もり名",
   "batchHistoryItemsTitle": "バッチアイテム",
-  "batchHistorySummaryLine": "{itemCount, plural, other{# アイテム}} • {totalQuantity, plural, other{# コピー}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, other{アイテム}} • {totalQuantity} {totalQuantity, plural, other{コピー}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {

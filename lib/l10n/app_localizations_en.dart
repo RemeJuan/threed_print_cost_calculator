@@ -491,6 +491,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Batch quote';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle => 'Name your quote';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Quote name';
+
+  @override
   String get batchHistoryItemsTitle => 'Batch items';
 
   @override

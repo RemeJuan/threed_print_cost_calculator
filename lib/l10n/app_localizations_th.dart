@@ -490,6 +490,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'ใบเสนอราคาแบตช์';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle => 'ตั้งชื่อใบเสนอราคา';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'ชื่อใบเสนอราคา';
+
+  @override
   String get batchHistoryItemsTitle => 'รายการแบตช์';
 
   @override

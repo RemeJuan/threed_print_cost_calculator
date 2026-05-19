@@ -496,6 +496,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get batchCostingSummaryDefaultQuoteName => 'Presupuesto por lotes';
 
   @override
+  String get batchCostingSummaryQuoteNameDialogTitle =>
+      'Ponga nombre a su cotización';
+
+  @override
+  String get batchCostingSummaryQuoteNameHint => 'Nombre de la cotización';
+
+  @override
   String get batchHistoryItemsTitle => 'Elementos del lote';
 
   @override

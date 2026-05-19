@@ -334,8 +334,10 @@
   "batchCostingSummaryViewHistoryButton": "Ver historial",
   "batchCostingSummarySaveErrorMessage": "No se pudo guardar el presupuesto",
   "batchCostingSummaryDefaultQuoteName": "Presupuesto por lotes",
+  "batchCostingSummaryQuoteNameDialogTitle": "Ponga nombre a su cotización",
+  "batchCostingSummaryQuoteNameHint": "Nombre de la cotización",
   "batchHistoryItemsTitle": "Elementos del lote",
-  "batchHistorySummaryLine": "{itemCount, plural, one{# elemento} other{# elementos}} • {totalQuantity, plural, one{# copia} other{# copias}}",
+  "batchHistorySummaryLine": "{itemCount} {itemCount, plural, one{elemento} other{elementos}} • {totalQuantity} {totalQuantity, plural, one{copia} other{copias}}",
   "@batchHistorySummaryLine": {
     "placeholders": {
       "itemCount": {
