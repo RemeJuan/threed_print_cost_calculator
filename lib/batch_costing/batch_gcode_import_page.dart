@@ -330,14 +330,14 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ),
-                    if (item != null)
+                    if (item?.importMetadata?.slicer != null)
                       IconButton(
                         key: const ValueKey<String>(
                           'batch_gcode_import.details.button',
                         ),
                         icon: const Icon(Icons.info_outline, size: 20),
                         tooltip: l10n.batchGcodeImportDetailsButton,
-                        onPressed: () => _showDetails(item),
+                        onPressed: () => _showDetails(item!),
                       ),
                     IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),
@@ -406,14 +406,14 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (item != null)
+              if (item?.importMetadata?.slicer != null)
                 IconButton(
                   key: const ValueKey<String>(
                     'batch_gcode_import.details.button',
                   ),
                   icon: const Icon(Icons.info_outline),
                   tooltip: l10n.batchGcodeImportDetailsButton,
-                  onPressed: () => _showDetails(item),
+                  onPressed: () => _showDetails(item!),
                 ),
               IconButton(
                 icon: const Icon(Icons.delete_outline),
@@ -438,7 +438,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
   void _applyDetails(_BatchImportRow row) {
     final notifier = ref.read(batchCostingProvider.notifier);
     final stateItems = ref.read(batchCostingProvider).items;
-    final item = stateItems.firstWhere((i) => i.id == row.batchItemId);
+    final item = _findItemById(stateItems, row.batchItemId);
+    if (item == null) return;
 
     double? weight = item.printWeightG;
     Duration? duration = item.printDuration;
@@ -533,15 +534,19 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     setState(() => _rows.remove(row));
   }
 
-  BatchCostingItem? _itemForRow(_BatchImportRow row) {
-    final batchItemId = row.batchItemId;
-    if (batchItemId == null) return null;
-
-    for (final item in ref.read(batchCostingProvider).items) {
-      if (item.id == batchItemId) return item;
+  BatchCostingItem? _findItemById(
+    List<BatchCostingItem> items,
+    String? id,
+  ) {
+    if (id == null) return null;
+    for (final item in items) {
+      if (item.id == id) return item;
     }
-
     return null;
+  }
+
+  BatchCostingItem? _itemForRow(_BatchImportRow row) {
+    return _findItemById(ref.read(batchCostingProvider).items, row.batchItemId);
   }
 
   void _showDetails(BatchCostingItem item) {
@@ -637,94 +642,93 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     }
 
     for (var i = 0; i < newFiles.length; i++) {
-        if (!mounted) return;
-        final file = newFiles[i];
-        final row = singleFileMode ? null : pendingRows[i];
+      if (!mounted) return;
+      final file = newFiles[i];
+      final row = singleFileMode ? null : pendingRows[i];
 
-        if (row != null && _rows.contains(row)) {
-          setState(() => row.status = _ImportStatus.importing);
+      if (row != null && _rows.contains(row)) {
+        setState(() => row.status = _ImportStatus.importing);
+      }
+
+      try {
+        final result = await service.importPickedFile(file);
+        if (!mounted) {
+          continue;
+        }
+        final batchId = '${DateTime.now().microsecondsSinceEpoch}-$i';
+
+        final missingW = result.filamentWeightG == null;
+        final missingD = result.estimatedDuration == null;
+
+        if (singleFileMode) {
+          setState(() {
+            _singleImport?.dispose();
+            _singleImport = null;
+            for (final row in _rows) {
+              row.dispose();
+            }
+            _rows.clear();
+            _singleImportError = null;
+            _singleImport = _BatchSingleImport(
+              file: file,
+              batchItemId: batchId,
+              result: result,
+              missingWeight: missingW,
+              missingDuration: missingD,
+            );
+          });
+          continue;
         }
 
-        try {
-          final result = await service.importPickedFile(file);
-          if (!mounted) {
-            continue;
-          }
-          final batchId = '${DateTime.now().microsecondsSinceEpoch}-$i';
+        notifier.addItem(
+          BatchCostingItem.fromGCodeImport(
+            id: batchId,
+            displayName: file.name,
+            quantity: 1,
+            importResult: result,
+            sourceFileName: file.name,
+            sourcePath: file.path,
+            sourceFileSizeBytes: file.size,
+          ),
+        );
 
-          final missingW = result.filamentWeightG == null;
-          final missingD = result.estimatedDuration == null;
-
-          if (singleFileMode) {
-            setState(() {
-              _singleImport?.dispose();
-              _singleImport = null;
-              for (final row in _rows) {
-                row.dispose();
-              }
-              _rows.clear();
-              _singleImportError = null;
-              _singleImport = _BatchSingleImport(
-                file: file,
-                batchItemId: batchId,
-                result: result,
-                missingWeight: missingW,
-                missingDuration: missingD,
-              );
-            });
-            continue;
-          }
-
-          notifier.addItem(
-            BatchCostingItem.fromGCodeImport(
-              id: batchId,
-              displayName: file.name,
-              quantity: 1,
-              importResult: result,
-              sourceFileName: file.name,
-              sourcePath: file.path,
-              sourceFileSizeBytes: file.size,
-            ),
-          );
-
-          if (missingW || missingD) {
-            setState(() {
-              row!.status = _ImportStatus.needsDetails;
-              row.batchItemId = batchId;
-              row.missingWeight = missingW;
-              row.missingDuration = missingD;
-              row.weightController = TextEditingController();
-              row.durationController = TextEditingController();
-            });
-          } else {
-            setState(() {
-              row!.status = _ImportStatus.ready;
-              row.batchItemId = batchId;
-            });
-          }
-        } catch (error, stackTrace) {
-          developer.log(
-            'Batch G-code import failed for ${file.name}',
-            error: error,
-            stackTrace: stackTrace,
-          );
-          if (singleFileMode) {
-            setState(() {
-              _singleImport?.dispose();
-              _singleImport = null;
-              _singleImportError =
-                  '${l10n.batchGcodeImportParseFailure}: $error';
-            });
-          } else if (row != null && mounted && _rows.contains(row)) {
-            setState(() {
-              row.status = _ImportStatus.failed;
-              row.errorMessage = '${l10n.batchGcodeImportParseFailure}: $error';
-            });
-          }
+        if (missingW || missingD) {
+          setState(() {
+            row!.status = _ImportStatus.needsDetails;
+            row.batchItemId = batchId;
+            row.missingWeight = missingW;
+            row.missingDuration = missingD;
+            row.weightController = TextEditingController();
+            row.durationController = TextEditingController();
+          });
+        } else {
+          setState(() {
+            row!.status = _ImportStatus.ready;
+            row.batchItemId = batchId;
+          });
+        }
+      } catch (error, stackTrace) {
+        developer.log(
+          'Batch G-code import failed for ${file.name}',
+          error: error,
+          stackTrace: stackTrace,
+        );
+        if (singleFileMode) {
+          setState(() {
+            _singleImport?.dispose();
+            _singleImport = null;
+            _singleImportError = '${l10n.batchGcodeImportParseFailure}: $error';
+          });
+        } else if (row != null && mounted && _rows.contains(row)) {
+          setState(() {
+            row.status = _ImportStatus.failed;
+            row.errorMessage = '${l10n.batchGcodeImportParseFailure}: $error';
+          });
         }
       }
     }
   }
+}
 
 class _BatchSingleImport {
   _BatchSingleImport({
