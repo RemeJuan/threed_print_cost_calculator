@@ -35,7 +35,8 @@ abstract class HistoryModel with _$HistoryModel {
     num? finalPrice,
     bool? pricingUsedOverrides,
     @Default(false) bool batchQuote,
-    @Default(<Map<String, dynamic>>[]) List<Map<String, dynamic>> batchQuoteItems,
+    @Default(<Map<String, dynamic>>[])
+    List<Map<String, dynamic>> batchQuoteItems,
     Map<String, dynamic>? batchQuoteSummary,
   }) = _HistoryModel;
 
@@ -179,9 +180,7 @@ abstract class HistoryModel with _$HistoryModel {
     };
   }
 
-  static Map<String, dynamic> _pricingFieldToMap(
-    BatchPricingFieldState field,
-  ) {
+  static Map<String, dynamic> _pricingFieldToMap(BatchPricingFieldState field) {
     return {'value': field.value, 'scope': field.scope.name};
   }
 

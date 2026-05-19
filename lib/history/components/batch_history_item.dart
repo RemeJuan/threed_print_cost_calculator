@@ -73,7 +73,10 @@ class BatchHistoryItem extends HookConsumerWidget {
               (summary?['itemCount'] as num?)?.toInt() ??
                   items.map((e) => e['name']?.toString()).toSet().length,
               (summary?['totalQuantity'] as num?)?.toInt() ??
-                  items.fold<int>(0, (sum, e) => sum + ((e['quantity'] as num?)?.toInt() ?? 0)),
+                  items.fold<int>(
+                    0,
+                    (sum, e) => sum + ((e['quantity'] as num?)?.toInt() ?? 0),
+                  ),
             ),
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -99,12 +102,15 @@ class BatchHistoryItem extends HookConsumerWidget {
             childrenPadding: const EdgeInsets.only(left: 4, right: 4),
             title: Text(
               l10n.batchCostingSummaryPricingTitle,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
             children: [
-              for (final entry in _pricingEntries(l10n, summary ?? const <String, dynamic>{}))
+              for (final entry in _pricingEntries(
+                l10n,
+                summary ?? const <String, dynamic>{},
+              ))
                 if (entry.value != null)
                   _detailRow(context, entry.label, entry.value!),
             ],
@@ -115,9 +121,9 @@ class BatchHistoryItem extends HookConsumerWidget {
             childrenPadding: const EdgeInsets.only(left: 4, right: 4),
             title: Text(
               l10n.batchHistoryItemsTitle,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
             ),
             children: [
               for (final item in items)
@@ -187,16 +193,16 @@ class BatchHistoryItem extends HookConsumerWidget {
           Expanded(
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.white70,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: Colors.white70),
             ),
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white),
           ),
         ],
       ),
@@ -210,14 +216,31 @@ class BatchHistoryItem extends HookConsumerWidget {
     final pricing = summary['pricing'];
     if (pricing is! Map) return [];
     return [
-      (label: l10n.failureRiskLabel, value: _pricingValue(pricing, 'failureRisk', l10n, isPercent: true)),
-      (label: l10n.pricingMarkupPercentLabel, value: _pricingValue(pricing, 'markupPercent', l10n, isPercent: true)),
-      (label: l10n.labourRateLabel, value: _pricingValue(pricing, 'labourRate', l10n)),
-      (label: l10n.additionalCostLabel, value: _pricingValue(pricing, 'additionalCostAmount', l10n)),
+      (
+        label: l10n.failureRiskLabel,
+        value: _pricingValue(pricing, 'failureRisk', l10n, isPercent: true),
+      ),
+      (
+        label: l10n.pricingMarkupPercentLabel,
+        value: _pricingValue(pricing, 'markupPercent', l10n, isPercent: true),
+      ),
+      (
+        label: l10n.labourRateLabel,
+        value: _pricingValue(pricing, 'labourRate', l10n),
+      ),
+      (
+        label: l10n.additionalCostLabel,
+        value: _pricingValue(pricing, 'additionalCostAmount', l10n),
+      ),
     ];
   }
 
-  String? _pricingValue(Map pricing, String key, AppLocalizations l10n, {bool isPercent = false}) {
+  String? _pricingValue(
+    Map pricing,
+    String key,
+    AppLocalizations l10n, {
+    bool isPercent = false,
+  }) {
     final field = pricing[key];
     if (field is! Map) return null;
     final raw = (field['value']?.toString() ?? '').trim();
@@ -226,16 +249,18 @@ class BatchHistoryItem extends HookConsumerWidget {
     final scopeSuffix = scope == 'item'
         ? ' (${l10n.batchCostingPricingScopeItemMode})'
         : scope == 'batch'
-            ? ' (${l10n.batchCostingPricingScopeBatchMode})'
-            : scope != null && scope.isNotEmpty
-                ? ' ($scope)'
-                : '';
+        ? ' (${l10n.batchCostingPricingScopeBatchMode})'
+        : scope != null && scope.isNotEmpty
+        ? ' ($scope)'
+        : '';
     if (isPercent) return '$raw$scopeSuffix';
     return '$raw$scopeSuffix';
   }
 
   String _amountString(dynamic raw, GeneralSettingsModel currency) {
-    final num value = raw is num ? raw : (num.tryParse(raw?.toString() ?? '') ?? 0);
+    final num value = raw is num
+        ? raw
+        : (num.tryParse(raw?.toString() ?? '') ?? 0);
     if (value == 0 && raw is! num) return '0.00';
     return formatCurrencyValue(
       value,
