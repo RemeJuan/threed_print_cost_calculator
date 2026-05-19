@@ -70,9 +70,12 @@ class BatchSummaryCalculator {
 
     var batchSubtotal = 0.0;
     for (final item in state.items) {
+      final itemWeight = item.printWeightG ?? 0;
+      final itemDurationMin = item.printDuration?.inMinutes ?? 0;
+
       totalQuantity += item.quantity;
-      totalWeightG += item.printWeightG * item.quantity;
-      totalPrintMinutes += item.printDuration.inMinutes * item.quantity;
+      totalWeightG += itemWeight * item.quantity;
+      totalPrintMinutes += itemDurationMin * item.quantity;
 
       final itemBaseCost = _itemBaseCost(item, batchLabourRate, state.pricing);
       final itemRiskCost = _itemRiskCost(
@@ -100,9 +103,9 @@ class BatchSummaryCalculator {
         BatchSummaryItemBreakdown(
           item: item,
           totalQuantity: item.quantity,
-          totalWeightG: item.printWeightG * item.quantity,
+          totalWeightG: itemWeight * item.quantity,
           totalPrintDuration: Duration(
-            minutes: item.printDuration.inMinutes * item.quantity,
+            minutes: itemDurationMin * item.quantity,
           ),
           baseCost: itemBaseCost,
           additionalCost: itemAdditionalCost,
@@ -153,7 +156,7 @@ class BatchSummaryCalculator {
     BatchPricingState pricing,
   ) {
     final labourRate = _scopeValue(pricing.labourRate, batchLabourRate);
-    final hours = item.printDuration.inMinutes / 60;
+    final hours = (item.printDuration?.inMinutes ?? 0) / 60;
     return hours * labourRate * item.quantity;
   }
 

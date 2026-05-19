@@ -23,16 +23,16 @@ class BatchCostingItemEditorDialog extends StatefulWidget {
     required this.title,
     required this.initialDisplayName,
     required this.initialQuantity,
-    required this.initialPrintWeightG,
-    required this.initialPrintDuration,
+    this.initialPrintWeightG,
+    this.initialPrintDuration,
     super.key,
   });
 
   final String title;
   final String initialDisplayName;
   final int initialQuantity;
-  final double initialPrintWeightG;
-  final Duration initialPrintDuration;
+  final double? initialPrintWeightG;
+  final Duration? initialPrintDuration;
 
   @override
   State<BatchCostingItemEditorDialog> createState() =>
@@ -63,16 +63,19 @@ class _BatchCostingItemEditorDialogState
       text: widget.initialQuantity.toString(),
     );
     _printWeightController = TextEditingController(
-      text: widget.initialPrintWeightG.toString().replaceFirst(
-        RegExp(r'\.0$'),
-        '',
-      ),
+      text: widget.initialPrintWeightG != null
+          ? widget.initialPrintWeightG.toString().replaceFirst(
+              RegExp(r'\.0$'),
+              '',
+            )
+          : '',
     );
     _durationHoursController = TextEditingController(
-      text: widget.initialPrintDuration.inHours.toString(),
+      text: widget.initialPrintDuration?.inHours.toString() ?? '',
     );
     _durationMinutesController = TextEditingController(
-      text: widget.initialPrintDuration.inMinutes.remainder(60).toString(),
+      text:
+          widget.initialPrintDuration?.inMinutes.remainder(60).toString() ?? '',
     );
     _displayNameFocusNode = FocusNode();
     _quantityFocusNode = FocusNode();

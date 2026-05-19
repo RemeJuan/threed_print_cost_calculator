@@ -269,7 +269,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
   }
 
   double _itemRequiredWeight(BatchCostingItem item) =>
-      item.printWeightG * item.quantity;
+      (item.printWeightG ?? 0) * item.quantity;
 
   MaterialModel? _materialById(List<MaterialModel> materials, String? id) {
     if (id == null || id.isEmpty) return null;

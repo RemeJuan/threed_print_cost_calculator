@@ -708,8 +708,8 @@ class AppAnalytics {
     required String id,
     required String displayName,
     required int quantity,
-    required double printWeightG,
-    required Duration printDuration,
+    double? printWeightG,
+    Duration? printDuration,
   }) {
     return log(
       'batch_costing_item_added',
@@ -717,8 +717,9 @@ class AppAnalytics {
         'item_id': id,
         'display_name': displayName,
         'quantity': quantity,
-        'print_weight_g': printWeightG,
-        'print_duration_min': printDuration.inMinutes,
+        if (printWeightG != null) 'print_weight_g': printWeightG,
+        if (printDuration != null)
+          'print_duration_min': printDuration.inMinutes,
       },
     );
   }
@@ -727,8 +728,8 @@ class AppAnalytics {
     required String id,
     required String displayName,
     required int quantity,
-    required double printWeightG,
-    required Duration printDuration,
+    double? printWeightG,
+    Duration? printDuration,
   }) {
     return log(
       'batch_costing_item_edited',
@@ -736,8 +737,9 @@ class AppAnalytics {
         'item_id': id,
         'display_name': displayName,
         'quantity': quantity,
-        'print_weight_g': printWeightG,
-        'print_duration_min': printDuration.inMinutes,
+        if (printWeightG != null) 'print_weight_g': printWeightG,
+        if (printDuration != null)
+          'print_duration_min': printDuration.inMinutes,
       },
     );
   }

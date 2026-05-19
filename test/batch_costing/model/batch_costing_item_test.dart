@@ -69,4 +69,72 @@ void main() {
       throwsArgumentError,
     );
   });
+
+  test('fromGCodeImport accepts null duration and weight', () {
+    final item = BatchCostingItem.fromGCodeImport(
+      id: 'partial',
+      displayName: 'partial.gcode',
+      quantity: 1,
+      importResult: GCodeImportResult(
+        slicer: GCodeSlicer.unknown,
+        estimatedDuration: null,
+        filamentLengthMm: null,
+        filamentWeightG: null,
+        layerHeightMm: null,
+        previewMetadata: null,
+        previewImageBytes: null,
+        warnings: const [],
+        rawExtractedValues: const {},
+      ),
+    );
+
+    expect(item.printWeightG, isNull);
+    expect(item.printDuration, isNull);
+    expect(item.sourceType, BatchCostingItemSourceType.gcode);
+    expect(item.quantity, 1);
+  });
+
+  test('fromGCodeImport accepts only duration without weight', () {
+    final item = BatchCostingItem.fromGCodeImport(
+      id: 'dur-only',
+      displayName: 'dur.gcode',
+      quantity: 1,
+      importResult: GCodeImportResult(
+        slicer: GCodeSlicer.prusaSlicer,
+        estimatedDuration: const Duration(hours: 2),
+        filamentLengthMm: null,
+        filamentWeightG: null,
+        layerHeightMm: null,
+        previewMetadata: null,
+        previewImageBytes: null,
+        warnings: const [],
+        rawExtractedValues: const {},
+      ),
+    );
+
+    expect(item.printDuration, const Duration(hours: 2));
+    expect(item.printWeightG, isNull);
+  });
+
+  test('fromGCodeImport accepts only weight without duration', () {
+    final item = BatchCostingItem.fromGCodeImport(
+      id: 'wgt-only',
+      displayName: 'wgt.gcode',
+      quantity: 1,
+      importResult: GCodeImportResult(
+        slicer: GCodeSlicer.prusaSlicer,
+        estimatedDuration: null,
+        filamentLengthMm: 1200,
+        filamentWeightG: 42.7,
+        layerHeightMm: null,
+        previewMetadata: null,
+        previewImageBytes: null,
+        warnings: const [],
+        rawExtractedValues: const {},
+      ),
+    );
+
+    expect(item.printDuration, isNull);
+    expect(item.printWeightG, 42.7);
+  });
 }

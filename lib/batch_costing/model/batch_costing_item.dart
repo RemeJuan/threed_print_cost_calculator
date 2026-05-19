@@ -39,8 +39,8 @@ class BatchCostingItem {
     required this.id,
     required this.displayName,
     required int quantity,
-    required this.printWeightG,
-    required this.printDuration,
+    this.printWeightG,
+    this.printDuration,
     this.sourceFileName,
     this.sourceType,
     this.importMetadata,
@@ -53,8 +53,8 @@ class BatchCostingItem {
   final String displayName;
   final String? sourceFileName;
   final int quantity;
-  final double printWeightG;
-  final Duration printDuration;
+  final double? printWeightG;
+  final Duration? printDuration;
   final BatchCostingItemSourceType? sourceType;
   final BatchCostingImportMetadata? importMetadata;
   final String? printerId;
@@ -97,30 +97,13 @@ class BatchCostingItem {
     String? materialId,
     String? pricingProfileId,
   }) {
-    final estimatedDuration = importResult.estimatedDuration;
-    final filamentWeightG = importResult.filamentWeightG;
-    if (estimatedDuration == null) {
-      throw ArgumentError.value(
-        importResult,
-        'importResult',
-        'estimatedDuration must be present',
-      );
-    }
-    if (filamentWeightG == null) {
-      throw ArgumentError.value(
-        importResult,
-        'importResult',
-        'filamentWeightG must be present',
-      );
-    }
-
     return BatchCostingItem._(
       id: id,
       displayName: displayName,
       sourceFileName: sourceFileName,
       quantity: _validateQuantity(quantity),
-      printWeightG: filamentWeightG,
-      printDuration: estimatedDuration,
+      printWeightG: importResult.filamentWeightG,
+      printDuration: importResult.estimatedDuration,
       sourceType: BatchCostingItemSourceType.gcode,
       importMetadata: BatchCostingImportMetadata(
         sourceFileName: sourceFileName,
