@@ -1,12 +1,24 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 
 ProviderContainer? appProviderContainer;
 
 void registerAppProviderContainer(ProviderContainer container) {
   appProviderContainer = container;
 }
+
+class PendingTabNavigationNotifier extends Notifier<AppPageTab?> {
+  @override
+  AppPageTab? build() => null;
+  void navigate(AppPageTab? tab) => state = tab;
+}
+
+final pendingTabNavigationProvider =
+    NotifierProvider<PendingTabNavigationNotifier, AppPageTab?>(
+  PendingTabNavigationNotifier.new,
+);
 
 final appRefreshProvider = NotifierProvider<AppRefreshNotifier, int>(
   AppRefreshNotifier.new,

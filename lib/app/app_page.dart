@@ -35,6 +35,13 @@ class AppPage extends HookConsumerWidget {
       return null;
     }, const []);
 
+    ref.listen(pendingTabNavigationProvider, (prev, AppPageTab? next) {
+      if (next != null && next != selectedTab.value) {
+        selectedTab.value = next;
+        ref.read(pendingTabNavigationProvider.notifier).navigate(null);
+      }
+    });
+
     final announcementAsync = ref.watch(currentAnnouncementProvider);
 
     useAppPageAnnouncementEffect(
