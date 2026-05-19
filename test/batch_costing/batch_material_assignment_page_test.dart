@@ -7,7 +7,6 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_p
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
-import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -54,9 +53,7 @@ void main() {
     ]);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(BatchAnchorSelector));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('PLA Red').last);
+    await tester.tap(find.text('PLA Red'));
     await tester.pumpAndSettle();
 
     expect(notifier.state.batchMaterialId, 'm1');
@@ -107,9 +104,7 @@ void main() {
     ]);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(BatchAnchorSelector));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('PLA Blue').last);
+    await tester.tap(find.text('PLA Blue'));
     await tester.pumpAndSettle();
 
     final l10n = AppLocalizations.of(

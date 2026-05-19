@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searchable_selector.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allocation_card.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
@@ -95,27 +96,27 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              BatchAnchorSelector(
-                                labelText: l10n
-                                    .batchCostingMaterialAssignmentMaterialLabel,
-                                hintText: l10n
-                                    .batchCostingMaterialAssignmentBatchWideHint,
-                                value:
-                                    sortedMaterials.any(
-                                      (m) => m.id == state.batchMaterialId,
-                                    )
-                                    ? state.batchMaterialId
-                                    : null,
-                                onChanged: (value) => ref
-                                    .read(batchCostingProvider.notifier)
-                                    .setBatchMaterialId(value),
-                                entries: [
-                                  for (final material in sortedMaterials)
-                                    BatchAnchorSelectorEntry(
-                                      value: material.id,
-                                      label: material.name,
-                                    ),
-                                ],
+                              Expanded(
+                                child: BatchSearchableSelector(
+                                  searchHintText: l10n
+                                      .batchCostingMaterialAssignmentBatchWideHint,
+                                  value:
+                                      sortedMaterials.any(
+                                        (m) => m.id == state.batchMaterialId,
+                                      )
+                                      ? state.batchMaterialId
+                                      : null,
+                                  onChanged: (value) => ref
+                                      .read(batchCostingProvider.notifier)
+                                      .setBatchMaterialId(value),
+                                  entries: [
+                                    for (final material in sortedMaterials)
+                                      BatchAnchorSelectorEntry(
+                                        value: material.id,
+                                        label: material.name,
+                                      ),
+                                  ],
+                                ),
                               ),
                               if (_buildStockWarning(
                                     l10n,

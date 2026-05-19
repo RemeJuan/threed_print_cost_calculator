@@ -6,7 +6,6 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignm
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
-import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -57,9 +56,7 @@ void main() {
     ]);
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(BatchAnchorSelector));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Printer 1').last);
+    await tester.tap(find.text('Printer 1'));
     await tester.pumpAndSettle();
 
     expect(notifier.state.batchPrinterId, 'p1');

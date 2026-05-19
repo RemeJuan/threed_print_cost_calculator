@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searchable_selector.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_copies_dialog.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -86,30 +87,29 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   if (state.printerAssignmentMode ==
-                      BatchPrinterAssignmentMode.batchWide) ...[
-                    BatchAnchorSelector(
-                      labelText:
-                          l10n.batchCostingPrinterAssignmentBatchWideMode,
-                      hintText: l10n.batchCostingPrinterAssignmentBatchWideHint,
-                      value:
-                          printers.any(
-                            (printer) => printer.id == state.batchPrinterId,
-                          )
-                          ? state.batchPrinterId
-                          : null,
-                      onChanged: (value) => ref
-                          .read(batchCostingProvider.notifier)
-                          .setBatchPrinterId(value),
-                      entries: [
-                        for (final printer in printers)
-                          BatchAnchorSelectorEntry(
-                            value: printer.id,
-                            label: printer.name,
-                          ),
-                      ],
+                      BatchPrinterAssignmentMode.batchWide)
+                    Expanded(
+                      child: BatchSearchableSelector(
+                        searchHintText:
+                            l10n.batchCostingPrinterAssignmentBatchWideHint,
+                        value:
+                            printers.any(
+                              (printer) => printer.id == state.batchPrinterId,
+                            )
+                            ? state.batchPrinterId
+                            : null,
+                        onChanged: (value) => ref
+                            .read(batchCostingProvider.notifier)
+                            .setBatchPrinterId(value),
+                        entries: [
+                          for (final printer in printers)
+                            BatchAnchorSelectorEntry(
+                              value: printer.id,
+                              label: printer.name,
+                            ),
+                        ],
+                      ),
                     ),
-                    const Spacer(),
-                  ],
                   if (state.printerAssignmentMode ==
                       BatchPrinterAssignmentMode.perItem)
                     Expanded(
