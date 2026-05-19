@@ -87,7 +87,7 @@ class GCodeImportMetadataSummary extends StatelessWidget {
           Text(
             filamentLengthMm == null
                 ? l10n.importGcodeMissingValue
-                : '${filamentLengthMm!.toStringAsFixed(2)} mm',
+                : '${filamentLengthMm!.toStringAsFixed(2)} ${l10n.millimetersSuffix}',
             textAlign: TextAlign.end,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
@@ -98,7 +98,7 @@ class GCodeImportMetadataSummary extends StatelessWidget {
           Text(
             layerHeightMm == null
                 ? l10n.importGcodeMissingValue
-                : '${layerHeightMm!.toStringAsFixed(2)} mm',
+                : '${layerHeightMm!.toStringAsFixed(2)} ${l10n.millimetersSuffix}',
             textAlign: TextAlign.end,
             style: Theme.of(context).textTheme.bodyMedium,
           ),

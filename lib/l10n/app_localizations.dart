@@ -444,6 +444,12 @@ abstract class AppLocalizations {
   /// **'g'**
   String get gramsSuffix;
 
+  /// No description provided for @millimetersSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'mm'**
+  String get millimetersSuffix;
+
   /// No description provided for @remainingLabel.
   ///
   /// In en, this message translates to:

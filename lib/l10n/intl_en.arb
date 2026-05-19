@@ -59,6 +59,7 @@
   "selectMaterialHint": "Custom (unsaved)",
   "materialNone": "None",
   "gramsSuffix": "g",
+  "millimetersSuffix": "mm",
   "remainingLabel": "Remaining:",
   "trackRemainingFilamentLabel": "Track remaining filament",
   "remainingFilamentLabel": "Remaining filament",

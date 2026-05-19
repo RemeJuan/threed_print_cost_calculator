@@ -175,6 +175,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get gramsSuffix => 'g';
 
   @override
+  String get millimetersSuffix => 'mm';
+
+  @override
   String get remainingLabel => 'Sisa:';
 
   @override

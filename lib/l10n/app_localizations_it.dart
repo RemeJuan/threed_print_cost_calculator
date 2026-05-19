@@ -176,6 +176,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get gramsSuffix => 'g';
 
   @override
+  String get millimetersSuffix => 'mm';
+
+  @override
   String get remainingLabel => 'Rimanente:';
 
   @override
