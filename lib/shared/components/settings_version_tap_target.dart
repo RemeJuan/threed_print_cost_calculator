@@ -106,10 +106,7 @@ class _SettingsVersionTapTargetState
         );
         break;
       case TestDataAction.enablePremium:
-        await _enablePremiumFlow(
-          container: container,
-          l10n: l10n,
-        );
+        await _enablePremiumFlow(container: container, l10n: l10n);
         break;
       case TestDataAction.enableBatchCosting:
         await container

@@ -509,21 +509,23 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     final singleImport = _singleImport;
     if (singleImport == null || !singleImport.canContinue) return;
 
-    ref.read(batchCostingProvider.notifier).addItem(
-      BatchCostingItem.fromGCodeImport(
-        id: singleImport.batchItemId,
-        displayName: singleImport.file.name,
-        quantity: 1,
-        importResult: singleImport.result,
-        sourceFileName: singleImport.file.name,
-        sourcePath: singleImport.file.path,
-        sourceFileSizeBytes: singleImport.file.size,
-      ),
-    );
+    ref
+        .read(batchCostingProvider.notifier)
+        .addItem(
+          BatchCostingItem.fromGCodeImport(
+            id: singleImport.batchItemId,
+            displayName: singleImport.file.name,
+            quantity: 1,
+            importResult: singleImport.result,
+            sourceFileName: singleImport.file.name,
+            sourcePath: singleImport.file.path,
+            sourceFileSizeBytes: singleImport.file.size,
+          ),
+        );
 
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()),
-    );
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()));
   }
 
   void _removeRow(_BatchImportRow row) {

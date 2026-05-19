@@ -19,10 +19,17 @@ class MaterialAllocationRow extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Text(title, overflow: TextOverflow.ellipsis)),
-        if (subtitle != null) ...[const SizedBox(width: 8), Expanded(child: Text(subtitle!, overflow: TextOverflow.ellipsis))],
+        if (subtitle != null) ...[
+          const SizedBox(width: 8),
+          Expanded(child: Text(subtitle!, overflow: TextOverflow.ellipsis)),
+        ],
         const SizedBox(width: 8),
         Text('×$copies'),
-        if (onRemove != null) IconButton(onPressed: onRemove, icon: const Icon(Icons.remove_circle_outline)),
+        if (onRemove != null)
+          IconButton(
+            onPressed: onRemove,
+            icon: const Icon(Icons.remove_circle_outline),
+          ),
       ],
     );
   }

@@ -26,7 +26,6 @@ class GCodeImportController extends Notifier<GCodeImportState> {
   }
 
   Future<void> parsePickedFile(GCodePickedFile pickedFile) async {
-
     final fileType = _fileTypeFromName(pickedFile.name);
     logGCodeImportBreadcrumb(
       'import_started',

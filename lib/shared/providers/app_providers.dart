@@ -17,8 +17,8 @@ class PendingTabNavigationNotifier extends Notifier<AppPageTab?> {
 
 final pendingTabNavigationProvider =
     NotifierProvider<PendingTabNavigationNotifier, AppPageTab?>(
-  PendingTabNavigationNotifier.new,
-);
+      PendingTabNavigationNotifier.new,
+    );
 
 final appRefreshProvider = NotifierProvider<AppRefreshNotifier, int>(
   AppRefreshNotifier.new,

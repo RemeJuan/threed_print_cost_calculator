@@ -158,7 +158,10 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                 ),
                                 onSetAllocations: (updated) => ref
                                     .read(batchCostingProvider.notifier)
-                                    .setItemMaterialAllocations(item.id, updated),
+                                    .setItemMaterialAllocations(
+                                      item.id,
+                                      updated,
+                                    ),
                               );
                             },
                           ),

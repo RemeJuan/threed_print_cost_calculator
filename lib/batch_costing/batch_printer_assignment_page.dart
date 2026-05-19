@@ -127,7 +127,8 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                             item: item,
                             allocations: allocations,
                             printers: printers,
-                            printerLabel: l10n.batchCostingAssignmentPrinterLabel,
+                            printerLabel:
+                                l10n.batchCostingAssignmentPrinterLabel,
                             onSetAllocations: (updated) => ref
                                 .read(batchCostingProvider.notifier)
                                 .setItemPrinterAllocations(item.id, updated),
@@ -271,7 +272,20 @@ class _PrinterAllocationCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(children: [Expanded(child: Text(item.displayName, style: Theme.of(context).textTheme.titleMedium)), Text('${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}', style: Theme.of(context).textTheme.titleMedium)]),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    item.displayName,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                Text(
+                  '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
             Text(printerLabel),
             const SizedBox(height: 8),
