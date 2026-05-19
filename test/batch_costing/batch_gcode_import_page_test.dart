@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
@@ -52,13 +53,46 @@ void main() {
     expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
   });
 
+  testWidgets('moves single-file import into batch review on confirm', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(
+        _FakePicker([_file('single.gcode')]),
+      ),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('single.gcode'), findsOneWidget);
+    expect(find.text(l10n.importGcodeSummaryTitle), findsNothing);
+    expect(find.text(l10n.batchGcodeImportQuantityHint), findsNothing);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
+
+    await tester.tap(find.text(l10n.batchGcodeImportAddButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BatchCostingPage), findsOneWidget);
+    expect(find.text('single.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchCostingReviewContinueButton), findsOneWidget);
+  });
+
   testWidgets('shows imported details sheet from ready row', (tester) async {
     SharedPreferences.setMockInitialValues({
       batchCostingEnabledPreferenceKey: true,
     });
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(
-        _FakePicker([_file('preview.gcode')]),
+        _FakePicker([_file('preview-a.gcode'), _file('preview-b.gcode')]),
       ),
       gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
       isPremiumProvider.overrideWithValue(true),
@@ -71,16 +105,18 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.byKey(const ValueKey<String>('batch_gcode_import.details.button')),
+      find
+          .byKey(const ValueKey<String>('batch_gcode_import.details.button'))
+          .first,
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('preview.gcode'), findsWidgets);
+    expect(find.text('preview-a.gcode'), findsWidgets);
     expect(find.text(l10n.importGcodeSummaryTitle), findsOneWidget);
     expect(find.text(l10n.importGcodePreviewUnavailable), findsOneWidget);
   });
 
-  testWidgets('shows failures and blocks continue when all fail', (
+  testWidgets('shows failures and blocks continue when single import fails', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({
@@ -144,7 +180,7 @@ void main() {
     expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportNeedsWeight), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportApply), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
   });
 
   testWidgets('fills in missing weight and continues', (tester) async {
@@ -181,6 +217,7 @@ void main() {
     // Should show needs-details with weight field
     expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportNeedsWeight), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
 
     // Fill in weight
     await tester.enterText(
@@ -193,9 +230,8 @@ void main() {
     await tester.tap(find.text(l10n.batchGcodeImportApply));
     await tester.pumpAndSettle();
 
-    // Should now show Ready and Continue
-    expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+    // Should still show add-to-batch CTA
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
   });
 
   testWidgets('shows importing then ready states', (tester) async {
@@ -216,15 +252,12 @@ void main() {
     )!;
     await tester.tap(find.text(l10n.batchGcodeImportPickButton));
 
-    // Pump — microtasks drain up to the 200ms delay in _SlowFakeService
+    // Pump — parse in progress
     await tester.pump();
-    expect(find.text('slow.gcode'), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportImportingLabel), findsOneWidget);
-
     // Let the fake delay complete
     await tester.pump(const Duration(seconds: 1));
-    expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+    expect(find.text('slow.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
   });
 
   testWidgets('choose files disabled while loading', (tester) async {
