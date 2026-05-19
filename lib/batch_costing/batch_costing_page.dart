@@ -72,10 +72,21 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
               if (items.isNotEmpty) ...[
                 Align(
                   alignment: AlignmentDirectional.centerEnd,
-                  child: TextButton.icon(
-                    onPressed: () => _addManualItem(context),
-                    icon: const Icon(Icons.add),
-                    label: Text(l10n.batchCostingReviewAddManualItemButton),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton.icon(
+                        onPressed: () => _addManualItem(context),
+                        icon: const Icon(Icons.add),
+                        label: Text(l10n.batchCostingReviewAddManualItemButton),
+                      ),
+                      const SizedBox(width: 8),
+                      TextButton.icon(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(Icons.upload_file),
+                        label: Text(l10n.batchCostingReviewImportGcodeButton),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -96,7 +107,9 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
               if (items.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 FilledButton.icon(
-                  onPressed: () => _continueToPrinterAssignment(context),
+                  onPressed: _hasMissingFields(items)
+                      ? null
+                      : () => _continueToPrinterAssignment(context),
                   icon: const Icon(Icons.arrow_forward),
                   label: Text(l10n.batchCostingReviewContinueButton),
                 ),
@@ -189,14 +202,17 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
         key: ValueKey<String>('batch-item-${item.id}'),
         tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         childrenPadding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-        title: Text(
-          item.displayName,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        subtitle: Text(
-          _batchItemSubtitle(l10n, item),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                item.displayName,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const SizedBox(width: 8),
+            _sourceChip(l10n, item),
+          ],
         ),
         children: [
           Row(
@@ -211,18 +227,34 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                     _itemDetailRow(
                       context,
                       l10n.batchCostingReviewWeightLabel,
-                      Text(
-                        '${formatWeight(item.printWeightG)}${l10n.gramsSuffix}',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      item.printWeightG != null
+                          ? Text(
+                              '${formatWeight(item.printWeightG!)}${l10n.gramsSuffix}',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            )
+                          : Text(
+                              l10n.batchCostingReviewWeightRequired,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                            ),
                     ),
                     _itemDetailRow(
                       context,
                       l10n.batchCostingReviewDurationLabel,
-                      Text(
-                        _formatDuration(item.printDuration),
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                      item.printDuration != null
+                          ? Text(
+                              _formatDuration(item.printDuration!),
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            )
+                          : Text(
+                              l10n.batchCostingReviewDurationRequired,
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context).colorScheme.error,
+                                  ),
+                            ),
                     ),
                   ],
                 ),
@@ -259,7 +291,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         () {
                           if (!context.mounted) return;
                           BotToast.showText(
-                            text: l10n.batchCostingAssignmentQuantityChangedMessage,
+                            text: l10n
+                                .batchCostingAssignmentQuantityChangedMessage,
                           );
                         },
                       );
@@ -313,24 +346,31 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     );
   }
 
-  String _batchItemSubtitle(AppLocalizations l10n, BatchCostingItem item) {
-    final source = switch (item.sourceType) {
+  Widget _sourceChip(AppLocalizations l10n, BatchCostingItem item) {
+    final label = switch (item.sourceType) {
       BatchCostingItemSourceType.manual => l10n.batchCostingReviewSourceManual,
       BatchCostingItemSourceType.gcode => l10n.batchCostingReviewSourceGcode,
       null => l10n.batchCostingReviewSourceUnknown,
     };
-    final sourceFile = item.sourceFileName;
-    if (sourceFile == null || sourceFile.isEmpty) {
-      return '${l10n.batchCostingReviewSourceLabel}: $source';
-    }
-
-    return '${l10n.batchCostingReviewSourceLabel}: $source · $sourceFile';
+    return Chip(
+      label: Text(label, style: const TextStyle(fontSize: 12)),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity.compact,
+      padding: EdgeInsets.zero,
+      labelPadding: const EdgeInsets.symmetric(horizontal: 6),
+    );
   }
 
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;
     final minutes = duration.inMinutes.remainder(60);
     return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  }
+
+  bool _hasMissingFields(List<BatchCostingItem> items) {
+    return items.any(
+      (item) => item.printWeightG == null || item.printDuration == null,
+    );
   }
 
   void _continueToPrinterAssignment(BuildContext context) {
@@ -410,6 +450,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
 
   Future<void> _editItem(BuildContext context, BatchCostingItem item) async {
     final l10n = AppLocalizations.of(context)!;
+    if (!context.mounted) return;
     final result = await showDialog<BatchCostingItemEditorResult>(
       context: context,
       builder: (_) => BatchCostingItemEditorDialog(

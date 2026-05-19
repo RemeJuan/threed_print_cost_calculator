@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,6 +48,7 @@ void main() {
 
     expect(find.text('one.gcode'), findsOneWidget);
     expect(find.text('two.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportReadyLabel), findsNWidgets(2));
     expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
   });
 
@@ -75,6 +77,338 @@ void main() {
       findsOneWidget,
     );
     expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+  });
+
+  testWidgets('imports files with missing weight and shows needs-details', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('no-weight.gcode')];
+    final noWeightResult = GCodeImportResult(
+      slicer: GCodeSlicer.prusaSlicer,
+      estimatedDuration: const Duration(minutes: 30),
+      filamentLengthMm: null,
+      filamentWeightG: null,
+      layerHeightMm: 0.2,
+      previewMetadata: null,
+      previewImageBytes: null,
+      warnings: const [],
+      rawExtractedValues: const {},
+    );
+
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(
+        _FakeService(noWeightResult),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('no-weight.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportNeedsWeight), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportApply), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+  });
+
+  testWidgets('fills in missing weight and continues', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('no-weight.gcode')];
+    final noWeightResult = GCodeImportResult(
+      slicer: GCodeSlicer.prusaSlicer,
+      estimatedDuration: const Duration(minutes: 30),
+      filamentLengthMm: null,
+      filamentWeightG: null,
+      layerHeightMm: 0.2,
+      previewMetadata: null,
+      previewImageBytes: null,
+      warnings: const [],
+      rawExtractedValues: const {},
+    );
+
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(
+        _FakeService(noWeightResult),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    // Should show needs-details with weight field
+    expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportNeedsWeight), findsOneWidget);
+
+    // Fill in weight
+    await tester.enterText(
+      find.widgetWithText(TextFormField, l10n.batchGcodeImportNeedsWeight),
+      '5.0',
+    );
+    await tester.pump();
+
+    // Tap Apply
+    await tester.tap(find.text(l10n.batchGcodeImportApply));
+    await tester.pumpAndSettle();
+
+    // Should now show Ready and Continue
+    expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+  });
+
+  testWidgets('shows importing then ready states', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('slow.gcode')];
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(
+        _SlowFakeService(successResult),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+
+    // Pump — microtasks drain up to the 200ms delay in _SlowFakeService
+    await tester.pump();
+    expect(find.text('slow.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportImportingLabel), findsOneWidget);
+
+    // Let the fake delay complete
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+  });
+
+  testWidgets('choose files disabled while loading', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('one.gcode'), _file('two.gcode')];
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(
+        _SlowFakeService(successResult),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+
+    // Button is enabled before tapping
+    final button = find.widgetWithText(
+      FilledButton,
+      l10n.batchGcodeImportPickButton,
+    );
+    expect(tester.widget<FilledButton>(button).onPressed, isNotNull);
+
+    await tester.tap(button);
+
+    // After pump, button should be disabled while loading
+    await tester.pump();
+    expect(tester.widget<FilledButton>(button).onPressed, isNull);
+
+    // Let loading finish
+    await tester.pump(const Duration(seconds: 1));
+    expect(tester.widget<FilledButton>(button).onPressed, isNotNull);
+  });
+
+  testWidgets('deletes ready imported row', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('one.gcode'), _file('two.gcode')];
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('one.gcode'), findsOneWidget);
+    expect(find.text('two.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+
+    // Delete first row
+    await tester.tap(find.byIcon(Icons.delete_outline).first);
+    await tester.pumpAndSettle();
+
+    expect(find.text('one.gcode'), findsNothing);
+    expect(find.text('two.gcode'), findsOneWidget);
+    // Continue should still be visible since 'two.gcode' is ready
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+  });
+
+  testWidgets('deletes needs-details row', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final noWeightResult = GCodeImportResult(
+      slicer: GCodeSlicer.prusaSlicer,
+      estimatedDuration: const Duration(minutes: 30),
+      filamentLengthMm: null,
+      filamentWeightG: null,
+      layerHeightMm: 0.2,
+      previewMetadata: null,
+      previewImageBytes: null,
+      warnings: const [],
+      rawExtractedValues: const {},
+    );
+    final files = [_file('no-weight.gcode')];
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(
+        _FakeService(noWeightResult),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('no-weight.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
+
+    // Find and tap the delete button in the needs-details card
+    await tester.tap(find.byIcon(Icons.delete_outline));
+    await tester.pumpAndSettle();
+
+    expect(find.text('no-weight.gcode'), findsNothing);
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+    expect(find.text(l10n.batchGcodeImportPickButton), findsOneWidget);
+  });
+
+  testWidgets('delete all rows returns to empty state', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('one.gcode')];
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('one.gcode'), findsOneWidget);
+
+    // Delete the only row
+    await tester.tap(find.byIcon(Icons.delete_outline));
+    await tester.pumpAndSettle();
+
+    expect(find.text('one.gcode'), findsNothing);
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+    // Pick button should still be visible
+    expect(find.text(l10n.batchGcodeImportPickButton), findsOneWidget);
+  });
+
+  testWidgets('shows quantity hint text', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    expect(find.text(l10n.batchGcodeImportQuantityHint), findsOneWidget);
+  });
+
+  testWidgets('duplicate file selection does not create duplicate rows', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('one.gcode'), _file('two.gcode')];
+    final picker = _FakePicker(files);
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(picker),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+
+    // First pick
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+    expect(find.text('one.gcode'), findsOneWidget);
+    expect(find.text('two.gcode'), findsOneWidget);
+
+    // Second pick with same files — duplicates should be skipped
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    // Still only 2 rows, not 4
+    expect(find.text('one.gcode'), findsOneWidget);
+    expect(find.text('two.gcode'), findsOneWidget);
+    // Continue button still visible since originals are ready
+    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+  });
+
+  testWidgets('duplicate selection shows snackbar', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    final files = [_file('one.gcode')];
+    final picker = _FakePicker(files);
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(picker),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    // Second pick with same file
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.batchGcodeImportDuplicateMessage), findsOneWidget);
   });
 }
 
@@ -112,5 +446,15 @@ class _FakeService extends GCodeImportService {
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
     if (result == null) throw StateError('fail');
     return result!;
+  }
+}
+
+class _SlowFakeService extends GCodeImportService {
+  _SlowFakeService(this.result);
+  final GCodeImportResult result;
+  @override
+  Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    return result;
   }
 }
