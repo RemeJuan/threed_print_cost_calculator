@@ -176,6 +176,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get gramsSuffix => 'g';
 
   @override
+  String get millimetersSuffix => 'mm';
+
+  @override
   String get remainingLabel => 'Rimanente:';
 
   @override
@@ -1289,12 +1292,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchGcodeImportApply => 'Applica';
 
   @override
+  String get batchGcodeImportAddButton => 'Aggiungi alla revisione batch';
+
+  @override
+  String get batchGcodeImportDetailsButton => 'Dettagli';
+
+  @override
   String get batchGcodeImportDuplicateMessage =>
-      'Some files were already added.';
+      'Alcuni file sono già stati aggiunti.';
 
   @override
   String get batchGcodeImportQuantityHint =>
-      'Quantities can be adjusted in the next step.';
+      'Le quantità possono essere regolate nel passaggio successivo.';
 
   @override
   String get batchCostingReviewContinueButton =>

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
@@ -52,7 +53,70 @@ void main() {
     expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
   });
 
-  testWidgets('shows failures and blocks continue when all fail', (
+  testWidgets('moves single-file import into batch review on confirm', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(
+        _FakePicker([_file('single.gcode')]),
+      ),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('single.gcode'), findsOneWidget);
+    expect(find.text(l10n.importGcodeSummaryTitle), findsNothing);
+    expect(find.text(l10n.batchGcodeImportQuantityHint), findsNothing);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
+
+    await tester.tap(find.text(l10n.batchGcodeImportAddButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BatchCostingPage), findsOneWidget);
+    expect(find.text('single.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchCostingReviewContinueButton), findsOneWidget);
+  });
+
+  testWidgets('shows imported details sheet from ready row', (tester) async {
+    SharedPreferences.setMockInitialValues({
+      batchCostingEnabledPreferenceKey: true,
+    });
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(
+        _FakePicker([_file('preview-a.gcode'), _file('preview-b.gcode')]),
+      ),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find
+          .byKey(const ValueKey<String>('batch_gcode_import.details.button'))
+          .first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('preview-a.gcode'), findsWidgets);
+    expect(find.text(l10n.importGcodeSummaryTitle), findsOneWidget);
+    expect(find.text(l10n.importGcodePreviewUnavailable), findsOneWidget);
+  });
+
+  testWidgets('shows failures and blocks continue when single import fails', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({
@@ -116,7 +180,7 @@ void main() {
     expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportNeedsWeight), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportApply), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
   });
 
   testWidgets('fills in missing weight and continues', (tester) async {
@@ -153,6 +217,7 @@ void main() {
     // Should show needs-details with weight field
     expect(find.text(l10n.batchGcodeImportNeedsDetailsLabel), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportNeedsWeight), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
 
     // Fill in weight
     await tester.enterText(
@@ -165,9 +230,8 @@ void main() {
     await tester.tap(find.text(l10n.batchGcodeImportApply));
     await tester.pumpAndSettle();
 
-    // Should now show Ready and Continue
-    expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+    // Should still show add-to-batch CTA
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
   });
 
   testWidgets('shows importing then ready states', (tester) async {
@@ -188,15 +252,12 @@ void main() {
     )!;
     await tester.tap(find.text(l10n.batchGcodeImportPickButton));
 
-    // Pump — microtasks drain up to the 200ms delay in _SlowFakeService
+    // Pump — parse in progress
     await tester.pump();
-    expect(find.text('slow.gcode'), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportImportingLabel), findsOneWidget);
-
     // Let the fake delay complete
     await tester.pump(const Duration(seconds: 1));
-    expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
-    expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+    expect(find.text('slow.gcode'), findsOneWidget);
+    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
   });
 
   testWidgets('choose files disabled while loading', (tester) async {
@@ -264,6 +325,53 @@ void main() {
     // Continue should still be visible since 'two.gcode' is ready
     expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
   });
+
+  testWidgets(
+    'deleting finished row while another import is pending stays stable',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        batchCostingEnabledPreferenceKey: true,
+      });
+      final files = [_file('fast.gcode'), _file('slow.gcode')];
+      await tester.pumpApp(const BatchGCodeImportPage(), [
+        gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+        gcodeImportServiceProvider.overrideWithValue(
+          _SequencedFakeService(
+            [successResult, successResult],
+            [Duration.zero, const Duration(milliseconds: 400)],
+          ),
+        ),
+        isPremiumProvider.overrideWithValue(true),
+      ]);
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchGCodeImportPage)),
+      )!;
+      await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text('fast.gcode'), findsOneWidget);
+      expect(find.text('slow.gcode'), findsOneWidget);
+      expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
+      expect(find.text(l10n.batchGcodeImportImportingLabel), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.delete_outline).first);
+      await tester.pump();
+
+      expect(find.text('fast.gcode'), findsNothing);
+      expect(find.text('slow.gcode'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pumpAndSettle();
+
+      expect(find.text('slow.gcode'), findsOneWidget);
+      expect(find.text(l10n.batchGcodeImportReadyLabel), findsOneWidget);
+      expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('deletes needs-details row', (tester) async {
     SharedPreferences.setMockInitialValues({
@@ -455,6 +563,26 @@ class _SlowFakeService extends GCodeImportService {
   @override
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
+    return result;
+  }
+}
+
+class _SequencedFakeService extends GCodeImportService {
+  _SequencedFakeService(this.results, this.delays);
+
+  final List<GCodeImportResult?> results;
+  final List<Duration> delays;
+  int _callCount = 0;
+
+  @override
+  Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
+    final index = _callCount++;
+    final delay = delays[index];
+    if (delay > Duration.zero) {
+      await Future<void>.delayed(delay);
+    }
+    final result = results[index];
+    if (result == null) throw StateError('fail');
     return result;
   }
 }

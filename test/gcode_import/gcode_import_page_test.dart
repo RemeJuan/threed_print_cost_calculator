@@ -4,11 +4,14 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
@@ -182,7 +185,7 @@ void main() {
     expect(find.text('Send feedback'), findsOneWidget);
   });
 
-  testWidgets('shows quantity field and create batch CTA when enabled', (
+  testWidgets('keeps quantity field hidden when batch costing enabled', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({
@@ -204,17 +207,13 @@ void main() {
 
     expect(
       find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(find.text('Use these values'), findsOneWidget);
-
-    await tester.enterText(
-      find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
-      '3',
-    );
-    await tester.pump();
-
-    expect(find.text('Create batch'), findsOneWidget);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(GCodeImportPage)),
+    )!;
+    expect(find.text(l10n.importGcodeUseValuesButton), findsOneWidget);
+    expect(find.text(l10n.importGcodeCreateBatchButton), findsNothing);
   });
 
   testWidgets('quantity field stays hidden when batch costing disabled', (
@@ -241,41 +240,10 @@ void main() {
       find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
       findsNothing,
     );
-    expect(find.text('Use these values'), findsOneWidget);
-  });
-
-  testWidgets('quantity resets to minimum of one on blur', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
-    await tester.pumpApp(const GCodeImportPage(), [
-      isPremiumProvider.overrideWithValue(true),
-      gcodeImportControllerProvider.overrideWith(
-        () => _FakeController(
-          _successState(
-            slicer: GCodeSlicer.prusaSlicer,
-            previewMetadata: null,
-            previewImageBytes: null,
-          ),
-        ),
-      ),
-    ]);
-
-    final quantityField = find.byKey(
-      const ValueKey<String>('gcode_import.quantity.field'),
-    );
-    await tester.ensureVisible(quantityField);
-    await tester.tap(quantityField);
-    await tester.pump();
-    await tester.enterText(quantityField, '0');
-    await tester.pump();
-
-    FocusManager.instance.primaryFocus?.unfocus();
-    await tester.pump();
-
-    expect(find.text('1'), findsOneWidget);
-    expect(find.text('Use these values'), findsOneWidget);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(GCodeImportPage)),
+    )!;
+    expect(find.text(l10n.importGcodeUseValuesButton), findsOneWidget);
   });
 
   testWidgets('quantity one uses existing calculator path', (tester) async {
@@ -315,52 +283,33 @@ void main() {
     expect(calculatorState.minutes.value, 10);
     expect(calculatorState.printWeight.value, 10);
     expect(observer.pushCount, initialPushCount);
-    expect(container.read(batchCostingProvider).items, isEmpty);
   });
 
-  testWidgets('quantity greater than one creates batch item and navigates', (
+  testWidgets('multi-file picker switches into batch flow on same page', (
     tester,
   ) async {
-    final observer = _TestNavigatorObserver();
     SharedPreferences.setMockInitialValues({
       batchCostingEnabledPreferenceKey: true,
     });
 
-    final container = await tester.pumpAppWithContainer(
-      const GCodeImportPage(),
-      overrides: [
-        isPremiumProvider.overrideWithValue(true),
-        gcodeImportControllerProvider.overrideWith(
-          () => _FakeController(
-            _successState(
-              slicer: GCodeSlicer.prusaSlicer,
-              previewMetadata: null,
-              previewImageBytes: null,
-            ),
-          ),
-        ),
-      ],
-      observers: [observer],
-    );
-    final initialPushCount = observer.pushCount;
+    final files = [_pickedFile('one.gcode'), _pickedFile('two.gcode')];
 
-    await tester.enterText(
-      find.byKey(const ValueKey<String>('gcode_import.quantity.field')),
-      '3',
+    await tester.pumpApp(const GCodeImportPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(_batchResult)),
+    ]);
+
+    final pickButton = find.byKey(
+      const ValueKey<String>('gcode_import.select_file.button'),
     );
-    await tester.pump();
-    final applyButton = find.byKey(
-      const ValueKey<String>('gcode_import.apply.button'),
-    );
-    await tester.ensureVisible(applyButton);
-    await tester.tap(applyButton);
+    await tester.tap(pickButton);
     await tester.pumpAndSettle();
 
-    final batchItems = container.read(batchCostingProvider);
-    expect(batchItems.items, hasLength(1));
-    expect(batchItems.items.single.quantity, 3);
-    expect(batchItems.items.single.displayName, 'preview.gcode');
-    expect(observer.pushCount, initialPushCount + 1);
+    expect(find.byType(BatchGCodeImportPage), findsOneWidget);
+    expect(find.text('one.gcode'), findsOneWidget);
+    expect(find.text('two.gcode'), findsOneWidget);
+    expect(find.byType(BatchGCodeImportPage), findsOneWidget);
   });
 }
 
@@ -383,6 +332,28 @@ class _FakeController extends GCodeImportController {
   GCodeImportState build() {
     return _state;
   }
+}
+
+class _FakePicker extends GCodeImportFilePicker {
+  _FakePicker(this.files);
+
+  final List<GCodePickedFile> files;
+
+  @override
+  Future<GCodePickedFile?> pick() async => files.isEmpty ? null : files.first;
+
+  @override
+  Future<List<GCodePickedFile>> pickMany() async => files;
+}
+
+class _FakeService extends GCodeImportService {
+  _FakeService(this.result);
+
+  final GCodeImportResult result;
+
+  @override
+  Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async =>
+      result;
 }
 
 GCodeImportState _successState({
@@ -415,3 +386,25 @@ Uint8List _validPngBytes() => Uint8List.fromList([
     'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=',
   ),
 ]);
+
+GCodePickedFile _pickedFile(String name) {
+  return GCodePickedFile(
+    name: name,
+    originalName: name,
+    size: 1024,
+    readAsBytes: () async =>
+        Uint8List.fromList(';FLAVOR:Marlin\nG1 X10 Y10\n;TIME:10\n'.codeUnits),
+  );
+}
+
+final _batchResult = GCodeImportResult(
+  slicer: GCodeSlicer.prusaSlicer,
+  estimatedDuration: const Duration(minutes: 10),
+  filamentLengthMm: 100,
+  filamentWeightG: 10,
+  layerHeightMm: 0.2,
+  previewMetadata: null,
+  previewImageBytes: null,
+  warnings: const [],
+  rawExtractedValues: const {},
+);

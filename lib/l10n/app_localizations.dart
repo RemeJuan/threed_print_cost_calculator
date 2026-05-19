@@ -444,6 +444,12 @@ abstract class AppLocalizations {
   /// **'g'**
   String get gramsSuffix;
 
+  /// No description provided for @millimetersSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'mm'**
+  String get millimetersSuffix;
+
   /// No description provided for @remainingLabel.
   ///
   /// In en, this message translates to:
@@ -2386,6 +2392,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apply'**
   String get batchGcodeImportApply;
+
+  /// No description provided for @batchGcodeImportAddButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to batch review'**
+  String get batchGcodeImportAddButton;
+
+  /// No description provided for @batchGcodeImportDetailsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get batchGcodeImportDetailsButton;
 
   /// No description provided for @batchGcodeImportDuplicateMessage.
   ///

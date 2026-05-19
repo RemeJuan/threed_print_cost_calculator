@@ -60,11 +60,12 @@ final HistoryModel _batchHistoryModel = HistoryModel(
   },
 );
 
-final GeneralSettingsModel _usdSettings = GeneralSettingsModel.initial().copyWith(
-  currencySymbol: r'$',
-  currencyPosition: 'before',
-  currencySpacing: false,
-);
+final GeneralSettingsModel _usdSettings = GeneralSettingsModel.initial()
+    .copyWith(
+      currencySymbol: r'$',
+      currencyPosition: 'before',
+      currencySpacing: false,
+    );
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -717,9 +717,10 @@ class AppAnalytics {
         'item_id': id,
         'display_name': displayName,
         'quantity': quantity,
-        if (printWeightG != null) 'print_weight_g': printWeightG,
-        if (printDuration != null)
-          'print_duration_min': printDuration.inMinutes,
+        ...printWeightG == null ? const {} : {'print_weight_g': printWeightG},
+        ...printDuration == null
+            ? const {}
+            : {'print_duration_min': printDuration.inMinutes},
       },
     );
   }
@@ -737,9 +738,10 @@ class AppAnalytics {
         'item_id': id,
         'display_name': displayName,
         'quantity': quantity,
-        if (printWeightG != null) 'print_weight_g': printWeightG,
-        if (printDuration != null)
-          'print_duration_min': printDuration.inMinutes,
+        ...printWeightG == null ? const {} : {'print_weight_g': printWeightG},
+        ...printDuration == null
+            ? const {}
+            : {'print_duration_min': printDuration.inMinutes},
       },
     );
   }

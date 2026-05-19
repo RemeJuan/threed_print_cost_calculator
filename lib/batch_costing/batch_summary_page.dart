@@ -396,7 +396,8 @@ class BatchSummaryPage extends ConsumerWidget {
           FilledButton(
             onPressed: () {
               Navigator.of(dialogContext).pop();
-              ref.read(pendingTabNavigationProvider.notifier)
+              ref
+                  .read(pendingTabNavigationProvider.notifier)
                   .navigate(AppPageTab.history);
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
@@ -508,8 +509,7 @@ class BatchSummaryPage extends ConsumerWidget {
     return '$finalTotal ($perCopy × ${item.totalQuantity})';
   }
 
-  bool _showPricing(String value) =>
-      value.isNotEmpty && value != '0';
+  bool _showPricing(String value) => value.isNotEmpty && value != '0';
 
   String _formatDuration(Duration duration) {
     final hours = duration.inHours;

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 
 enum BatchCostingItemSourceType { manual, gcode }
@@ -7,6 +9,12 @@ class BatchCostingImportMetadata {
     this.sourceFileName,
     this.sourcePath,
     this.slicer,
+    this.fileSizeBytes,
+    this.filamentLengthMm,
+    this.layerHeightMm,
+    this.previewMetadata,
+    this.previewImageBytes,
+    this.hasPartialMetadata = false,
     this.hasSafePreview = false,
     Map<String, String> rawExtractedValues = const <String, String>{},
   }) : rawExtractedValues = Map.unmodifiable(rawExtractedValues);
@@ -14,6 +22,12 @@ class BatchCostingImportMetadata {
   final String? sourceFileName;
   final String? sourcePath;
   final GCodeSlicer? slicer;
+  final int? fileSizeBytes;
+  final double? filamentLengthMm;
+  final double? layerHeightMm;
+  final GCodePreviewMetadata? previewMetadata;
+  final Uint8List? previewImageBytes;
+  final bool hasPartialMetadata;
   final bool hasSafePreview;
   final Map<String, String> rawExtractedValues;
 
@@ -21,6 +35,12 @@ class BatchCostingImportMetadata {
     String? sourceFileName,
     String? sourcePath,
     GCodeSlicer? slicer,
+    int? fileSizeBytes,
+    double? filamentLengthMm,
+    double? layerHeightMm,
+    GCodePreviewMetadata? previewMetadata,
+    Uint8List? previewImageBytes,
+    bool? hasPartialMetadata,
     bool? hasSafePreview,
     Map<String, String>? rawExtractedValues,
   }) {
@@ -28,6 +48,12 @@ class BatchCostingImportMetadata {
       sourceFileName: sourceFileName ?? this.sourceFileName,
       sourcePath: sourcePath ?? this.sourcePath,
       slicer: slicer ?? this.slicer,
+      fileSizeBytes: fileSizeBytes ?? this.fileSizeBytes,
+      filamentLengthMm: filamentLengthMm ?? this.filamentLengthMm,
+      layerHeightMm: layerHeightMm ?? this.layerHeightMm,
+      previewMetadata: previewMetadata ?? this.previewMetadata,
+      previewImageBytes: previewImageBytes ?? this.previewImageBytes,
+      hasPartialMetadata: hasPartialMetadata ?? this.hasPartialMetadata,
       hasSafePreview: hasSafePreview ?? this.hasSafePreview,
       rawExtractedValues: rawExtractedValues ?? this.rawExtractedValues,
     );
@@ -93,6 +119,7 @@ class BatchCostingItem {
     required GCodeImportResult importResult,
     String? sourceFileName,
     String? sourcePath,
+    int? sourceFileSizeBytes,
     String? printerId,
     String? materialId,
     String? pricingProfileId,
@@ -109,6 +136,12 @@ class BatchCostingItem {
         sourceFileName: sourceFileName,
         sourcePath: sourcePath,
         slicer: importResult.slicer,
+        fileSizeBytes: sourceFileSizeBytes,
+        filamentLengthMm: importResult.filamentLengthMm,
+        layerHeightMm: importResult.layerHeightMm,
+        previewMetadata: importResult.previewMetadata,
+        previewImageBytes: importResult.previewImageBytes,
+        hasPartialMetadata: importResult.hasPartialMetadata,
         hasSafePreview: importResult.hasSafePreview,
         rawExtractedValues: importResult.rawExtractedValues,
       ),

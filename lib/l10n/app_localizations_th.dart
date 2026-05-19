@@ -175,6 +175,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get gramsSuffix => 'g';
 
   @override
+  String get millimetersSuffix => 'mm';
+
+  @override
   String get remainingLabel => 'คงเหลือ:';
 
   @override
@@ -1255,12 +1258,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchGcodeImportApply => 'นำไปใช้';
 
   @override
-  String get batchGcodeImportDuplicateMessage =>
-      'Some files were already added.';
+  String get batchGcodeImportAddButton => 'เพิ่มไปยังการตรวจสอบแบบแบตช์';
 
   @override
-  String get batchGcodeImportQuantityHint =>
-      'Quantities can be adjusted in the next step.';
+  String get batchGcodeImportDetailsButton => 'รายละเอียด';
+
+  @override
+  String get batchGcodeImportDuplicateMessage => 'มีการเพิ่มบางไฟล์ไว้แล้ว';
+
+  @override
+  String get batchGcodeImportQuantityHint => 'สามารถปรับจำนวนได้ในขั้นตอนถัดไป';
 
   @override
   String get batchCostingReviewContinueButton =>

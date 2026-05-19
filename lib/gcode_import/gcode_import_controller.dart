@@ -22,7 +22,10 @@ class GCodeImportController extends Notifier<GCodeImportState> {
   Future<void> pickAndParse() async {
     final pickedFile = await ref.read(gcodeImportFilePickerProvider).pick();
     if (pickedFile == null) return;
+    await parsePickedFile(pickedFile);
+  }
 
+  Future<void> parsePickedFile(GCodePickedFile pickedFile) async {
     final fileType = _fileTypeFromName(pickedFile.name);
     logGCodeImportBreadcrumb(
       'import_started',

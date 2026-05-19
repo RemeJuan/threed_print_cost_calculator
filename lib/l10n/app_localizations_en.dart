@@ -176,6 +176,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gramsSuffix => 'g';
 
   @override
+  String get millimetersSuffix => 'mm';
+
+  @override
   String get remainingLabel => 'Remaining:';
 
   @override
@@ -1265,6 +1268,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get batchGcodeImportApply => 'Apply';
+
+  @override
+  String get batchGcodeImportAddButton => 'Add to batch review';
+
+  @override
+  String get batchGcodeImportDetailsButton => 'Details';
 
   @override
   String get batchGcodeImportDuplicateMessage =>
