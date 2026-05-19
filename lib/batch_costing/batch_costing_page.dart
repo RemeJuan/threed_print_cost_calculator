@@ -25,6 +25,7 @@ class BatchCostingPage extends ConsumerStatefulWidget {
 class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   final Map<String, TextEditingController> _quantityControllers =
       <String, TextEditingController>{};
+  final Set<String> _expandedItemIds = <String>{};
   bool _initialSyncDone = false;
   Timer? _quantityChangeTimer;
 
@@ -46,6 +47,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     final l10n = AppLocalizations.of(context)!;
     final batchState = ref.watch(batchCostingProvider);
     final items = batchState.items;
+
+    _syncExpandedState(items);
 
     if (!_initialSyncDone) {
       _initialSyncDone = true;
@@ -148,6 +151,15 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     }
   }
 
+  void _syncExpandedState(List<BatchCostingItem> items) {
+    final activeIds = items.map((i) => i.id).toSet();
+    _expandedItemIds.removeWhere((id) => !activeIds.contains(id));
+
+    if (items.isNotEmpty && _expandedItemIds.isEmpty) {
+      _expandedItemIds.add(items.first.id);
+    }
+  }
+
   Widget _emptyState(BuildContext context, AppLocalizations l10n) {
     return Center(
       child: Column(
@@ -200,6 +212,16 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     return Card(
       child: ExpansionTile(
         key: ValueKey<String>('batch-item-${item.id}'),
+        initiallyExpanded: _expandedItemIds.contains(item.id),
+        onExpansionChanged: (expanded) {
+          setState(() {
+            if (expanded) {
+              _expandedItemIds.add(item.id);
+            } else {
+              _expandedItemIds.remove(item.id);
+            }
+          });
+        },
         tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         childrenPadding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         title: Row(

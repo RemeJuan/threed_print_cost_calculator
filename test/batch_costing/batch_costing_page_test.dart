@@ -54,9 +54,6 @@ void main() {
     expect(find.text('Benchy'), findsOneWidget);
     expect(find.text(l10n.batchCostingReviewContinueButton), findsOneWidget);
 
-    await tester.tap(find.text('Benchy'));
-    await tester.pumpAndSettle();
-
     expect(find.text(l10n.batchCostingReviewRemoveButton), findsOneWidget);
 
     await tester.tap(find.text(l10n.batchCostingReviewRemoveButton));
@@ -109,9 +106,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Benchy'), findsOneWidget);
-
-    await tester.tap(find.text('Benchy'));
-    await tester.pumpAndSettle();
 
     await tester.tap(find.text(l10n.editButton).last);
     await tester.pumpAndSettle();
@@ -192,9 +186,6 @@ void main() {
       '1',
     );
     await tester.tap(find.text(l10n.saveButton));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Benchy'));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text(l10n.editButton).last);
@@ -388,9 +379,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Widget'), findsOneWidget);
-
-    await tester.tap(find.text('Widget'));
-    await tester.pumpAndSettle();
 
     await tester.tap(find.text(l10n.batchCostingReviewRemoveButton));
     await tester.pumpAndSettle();
