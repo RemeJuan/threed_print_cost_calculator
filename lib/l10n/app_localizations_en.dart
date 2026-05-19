@@ -498,16 +498,16 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       itemCount,
       locale: localeName,
-      other: '# items',
-      one: '# item',
+      other: 'items',
+      one: 'item',
     );
     String _temp1 = intl.Intl.pluralLogic(
       totalQuantity,
       locale: localeName,
-      other: '# copies',
-      one: '# copy',
+      other: 'copies',
+      one: 'copy',
     );
-    return '$_temp0 • $_temp1';
+    return '$itemCount $_temp0 • $totalQuantity $_temp1';
   }
 
   @override
@@ -631,10 +631,10 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '# overrides applied',
-      one: '# override applied',
+      other: 'overrides applied',
+      one: 'override applied',
     );
-    return '$_temp0';
+    return '$count $_temp0';
   }
 
   @override
@@ -824,10 +824,10 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '# materials',
-      one: '# material',
+      other: 'materials',
+      one: 'material',
     );
-    return '$_temp0';
+    return '$count $_temp0';
   }
 
   @override

@@ -252,7 +252,7 @@
   "roundingAdjustmentLabel": "Afrondingscorrectie",
   "finalPriceLabel": "Eindprijs",
   "jobPricingOverridesLabel": "Taakinstellingen",
-  "pricingOverridesSummary": "{count, plural, one{# overschrijving toegepast} other{# overschrijvingen toegepast}}",
+  "pricingOverridesSummary": "{count} {count, plural, one{overschrijving toegepast} other{overschrijvingen toegepast}}",
   "@pricingOverridesSummary": {
     "placeholders": {
       "count": {
@@ -431,7 +431,7 @@
   "addAtLeastOneMaterial": "Voeg minimaal één materiaal toe.",
   "searchMaterialsHint": "Zoek naam of merk",
   "materialBreakdownLabel": "Materiaaluitsplitsing",
-  "materialsCountLabel": "{count, plural, =1{# materiaal} other{# materialen}}",
+  "materialsCountLabel": "{count} {count, plural, =1{materiaal} other{materialen}}",
   "totalMaterialWeightLabel": "Totaal materiaalgewicht: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {

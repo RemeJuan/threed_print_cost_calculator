@@ -245,7 +245,7 @@
   "roundingAdjustmentLabel": "ปรับปัดเศษ",
   "finalPriceLabel": "ราคาสุดท้าย",
   "jobPricingOverridesLabel": "การตั้งค่างาน",
-  "pricingOverridesSummary": "{count, plural, one{# รายการปรับใช้} other{# รายการปรับใช้}}",
+  "pricingOverridesSummary": "{count} {count, plural, one{รายการปรับใช้} other{รายการปรับใช้}}",
   "@pricingOverridesSummary": {
     "placeholders": {
       "count": {

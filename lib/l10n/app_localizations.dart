@@ -1029,7 +1029,7 @@ abstract class AppLocalizations {
   /// No description provided for @batchHistorySummaryLine.
   ///
   /// In en, this message translates to:
-  /// **'{itemCount, plural, one{# item} other{# items}} • {totalQuantity, plural, one{# copy} other{# copies}}'**
+  /// **'{itemCount} {itemCount, plural, one{item} other{items}} • {totalQuantity} {totalQuantity, plural, one{copy} other{copies}}'**
   String batchHistorySummaryLine(int itemCount, int totalQuantity);
 
   /// No description provided for @batchHistoryItemRow.
@@ -1251,7 +1251,7 @@ abstract class AppLocalizations {
   /// No description provided for @pricingOverridesSummary.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{# override applied} other{# overrides applied}}'**
+  /// **'{count} {count, plural, one{override applied} other{overrides applied}}'**
   String pricingOverridesSummary(num count);
 
   /// No description provided for @pricingMarkupPercentLabel.
@@ -1586,7 +1586,7 @@ abstract class AppLocalizations {
   /// No description provided for @materialsCountLabel.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{# material} other{# materials}}'**
+  /// **'{count} {count, plural, one{material} other{materials}}'**
   String materialsCountLabel(num count);
 
   /// No description provided for @totalMaterialWeightLabel.

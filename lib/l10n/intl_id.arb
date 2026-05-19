@@ -244,7 +244,7 @@
   "roundingAdjustmentLabel": "Penyesuaian pembulatan",
   "finalPriceLabel": "Harga akhir",
   "jobPricingOverridesLabel": "Pengaturan tugas",
-  "pricingOverridesSummary": "{count, plural, one{# override diterapkan} other{# override diterapkan}}",
+  "pricingOverridesSummary": "{count} {count, plural, one{override diterapkan} other{override diterapkan}}",
   "@pricingOverridesSummary": {
     "placeholders": {
       "count": {

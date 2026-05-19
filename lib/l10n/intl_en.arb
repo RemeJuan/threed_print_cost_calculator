@@ -257,7 +257,7 @@
   "roundingAdjustmentLabel": "Rounding adjustment",
   "finalPriceLabel": "Final price",
   "jobPricingOverridesLabel": "Job settings",
-  "pricingOverridesSummary": "{count, plural, one{# override applied} other{# overrides applied}}",
+  "pricingOverridesSummary": "{count} {count, plural, one{override applied} other{overrides applied}}",
   "@pricingOverridesSummary": {
     "placeholders": {
       "count": {
@@ -353,7 +353,7 @@
   "addAtLeastOneMaterial": "Add at least one material.",
   "searchMaterialsHint": "Search by name or brand",
   "materialBreakdownLabel": "Material breakdown",
-  "materialsCountLabel": "{count, plural, one{# material} other{# materials}}",
+  "materialsCountLabel": "{count} {count, plural, one{material} other{materials}}",
   "totalMaterialWeightLabel": "Total material weight: {grams}g",
   "@materialsCountLabel": {
     "placeholders": {

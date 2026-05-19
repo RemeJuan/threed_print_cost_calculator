@@ -622,10 +622,10 @@ class AppLocalizationsId extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '# override diterapkan',
-      one: '# override diterapkan',
+      other: 'override diterapkan',
+      one: 'override diterapkan',
     );
-    return '$_temp0';
+    return '$count $_temp0';
   }
 
   @override

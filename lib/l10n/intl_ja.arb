@@ -252,7 +252,7 @@
   "roundingAdjustmentLabel": "端数調整",
   "finalPriceLabel": "最終価格",
   "jobPricingOverridesLabel": "ジョブ設定",
-  "pricingOverridesSummary": "{count, plural, one{# 件の上書き適用} other{# 件の上書き適用}}",
+  "pricingOverridesSummary": "{count} {count, plural, one{件の上書き適用} other{件の上書き適用}}",
   "@pricingOverridesSummary": {
     "placeholders": {
       "count": {
