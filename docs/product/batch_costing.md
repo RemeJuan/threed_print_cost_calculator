@@ -69,70 +69,65 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Multi-user collaboration
 - Backend/cloud/account/sync work
 
-## Persistence Guardrail
-
-Batch costing V1 stops at calculation and summary.
-
-- Do not add save-to-history behaviour for batch quotes.
-- Do not add export/share flows for batch quotes.
-- Revisit persistence only in a later task that explicitly owns it.
-
 ## Feature Gate
 
-Batch costing must be hidden behind a developer/debug flag while it is being built.
+Batch costing must be hidden unless `batchCostingEnabled` is true.
+
+Implementation: `batchCostingEnabledProvider` (in `lib/batch_costing/batch_costing_visibility.dart`) is a dual-gate requiring both `isPremium` AND a SharedPreferences boolean (`batchCostingEnabled` key, defaults `false`).
 
 Expected behaviour:
 
 - Default state: disabled
 - Disabled: no batch costing UI is visible to normal users
-- Enabled: developer/test users can access the batch entry point
-- Existing calculator and G-code import flows must continue to work when disabled
-- Incomplete batch screens must never be reachable by normal users
-- Hard gate: every visible batch-costing entry, action, route, label, button, and card must check `batchCostingEnabled`
-- Do not rely on route gating alone or on a hidden debug button alone
-- Hidden developer/test toggles may exist, but normal users must still see zero batch-related UI when disabled
+- Enabled: developer/test users can access the batch flow
+- Existing calculator and normal G-code import flows must continue to work when disabled
+- Incomplete or batch-only screens must never be reachable by normal users
 
-This is important because the work will likely span multiple branches and releases, while unrelated bug-fix releases may still need to ship.
+Hard gate rule:
+
+- Every visible batch-costing entry, action, route, label, button, card, chip, banner, empty state, and affordance must be gated
+- Each batch page includes a guard: `if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();`
+- Entry point in `calculator_page.dart` is gated by `batchCostingEnabledProvider`
+- Do not rely on route gating alone if the entry point remains visible
+- Do not rely on hiding entry points alone if a route is still reachable through normal navigation
+- Do not leave disabled batch UI visible when the flag is off
+- Hidden developer/test toggles may exist, but normal users must see zero batch-related UI when disabled
 
 ## Entry Points
 
-### G-code Review Quantity
+Batch costing has two product entry paths:
 
-The existing G-code review flow should support a quantity field.
-
-Rules:
-
-- Quantity defaults to 1
-- Minimum quantity is 1
-- Quantity 1 keeps the current behaviour and returns parsed values to the calculator
-- Quantity greater than 1 starts the batch flow with one batch item
-- CTA copy should change based on quantity:
-  - Quantity 1: Use values
-  - Quantity greater than 1: Create batch
-
-This allows a single imported model to become a batch quote without requiring multi-file import.
-
-### Batch Entry Screen
-
-A dedicated Screen 0 should let the user choose how to start:
-
-- Import G-code batch
 - Manual batch
+- Import G-code batch
 
-Both entry paths should merge into the same batch item review flow.
-
-The batch review screen should let users add more manual items, edit existing items, and remove items before continuing.
+Manual and G-code are separate entry points because they start from different user inputs. Single-file and multi-file G-code import should still feel like one coherent G-code import journey.
 
 ## Expected V1 Flow
 
-1. Entry method
-2. Batch item review
-3. Printer assignment
-4. Material assignment
-5. Pricing scope
-6. Summary / quote
+Manual path:
 
-The user should not need to answer per-item questions unless they opt out of batch-wide defaults.
+1. Manual batch setup creates the first manual item
+2. Batch review shows real batch item state
+3. User can add, edit, or remove manual items from review
+4. Printer assignment
+5. Material assignment
+6. Pricing scope
+7. Summary / quote
+8. Save named quote to history or leave/start a new batch
+
+G-code path:
+
+1. User enters the batch G-code import flow
+2. User selects one or more G-code files
+3. Single-file import preserves the rich G-code review/detail experience where applicable
+4. Multi-file import uses a compact list with optional per-file details/preview
+5. Missing required details are captured before batch review
+6. Batch review shows imported items
+7. Printer assignment
+8. Material assignment
+9. Pricing scope
+10. Summary / quote
+11. Save named quote to history or leave/start a new batch
 
 ## Batch Items
 
@@ -166,11 +161,33 @@ Manual batch entry captures the same core values normally pulled from G-code:
 - Print duration
 
 Manual entry is for users who already know print weight/time or do not have G-code available.
-The first manual item is created in the earlier setup step; the review screen extends that set.
 
-## Multi-file G-code Import
+The first manual item is created in the manual setup step. Batch review then lets the user add, edit, and remove items.
 
-The batch G-code path should support selecting multiple files where platform support allows.
+## Batch Review
+
+Batch review is the shared checkpoint for manual and G-code items.
+
+Expected behaviour:
+
+- Show real batch items from shared batch state
+- Auto-expand the first item when entering review if no item is already expanded
+- Preserve user choice after manual expand/collapse
+- Let users edit quantities/details
+- Let users remove items
+- Let users add more manual items
+- Let users import more G-code files where available
+- Continue only when required item details are valid
+
+Source display:
+
+- Item title should be the display name or file name
+- Use a small source chip such as `Manual` or `G-code`
+- Do not repeat the file name in a source subtitle
+
+## G-code Import
+
+The G-code batch flow should support selecting one or more files where platform support allows.
 
 Rules:
 
@@ -180,33 +197,78 @@ Rules:
 - Default quantity to 1 per imported file
 - Reuse the existing G-code parser
 - Handle failures per file where possible
-- Allow the user to continue if at least one file parsed successfully
+- Prevent duplicate files from being imported into the same batch session (duplicate path+name is silently skipped)
+- Allow delete/remove of imported rows before continuing
+- Allow importing more files without clearing the existing batch unless the user starts a new batch
 
-Existing single-file G-code import must remain unchanged outside the batch flow.
+Missing details:
+
+- Missing weight or duration should not make an otherwise valid import fail
+- Missing required values must be captured before continuing to batch review
+- Rows should clearly show `Ready`, `Details needed`, or `Failed`
+- Failed rows should only represent real parse/import failures
+
+Preview/details:
+
+- Multi-file import uses compact rows to avoid overwhelming the screen
+- Each row can expose an info/details action
+- The info/details action opens metadata and preview in a modal/sheet
+- Metadata/preview UI should be shared with the existing rich G-code review/details UI where practical
+
+Quantity rule:
+
+- Quantity is not captured on the G-code upload/review screen
+- Quantity is adjusted in batch review
+- Multi-file import may show helper copy such as `Quantities can be adjusted in the next step.`
+
+Existing single-print calculator G-code import must remain unchanged outside the batch flow.
 
 ## Printer Assignment
 
-Default behaviour should be batch-wide printer selection.
+Printer assignment supports both simple and advanced cases.
 
-Flow:
+Modes:
 
-- Ask whether one printer applies to the full batch
-- Default to yes / batch-wide
-- If the user switches to per-item mode, require a printer for each item
-- Reuse existing printer selection patterns where practical
+- Batch-wide: one printer applies to the full batch
+- Per-item/split: individual batch items can allocate copies across printers
 
-The user should not be forced to choose a printer per item unless they opt into that complexity.
+Expected behaviour:
+
+- Batch-wide selection remains simple
+- Per-item allocation must support quantity greater than 1 without duplicating line items
+- A quantity 10 item can be split across multiple printers
+- Split allocations must validate that allocated copies equal item quantity
+- Allocation UI should avoid forcing users through error-first correction when auto-balancing is possible
+- Quantity edits must update or reset stale assignment state
+
+Selection UI:
+
+- Prefer searchable, scrollable selection lists over large dropdowns for batch-wide assignment
+- Split allocation should use the reusable split allocation picker
+- The same split journey should apply to printers and materials
 
 ## Material Assignment
 
-Default behaviour should be batch-wide material/spool selection.
+Material assignment mirrors printer assignment.
 
-Flow:
+Modes:
 
-- Ask whether one material/spool applies to the full batch
-- Default to yes / batch-wide
-- If the user switches to per-item mode, require a material for each item
-- Reuse existing material selection patterns where practical
+- Batch-wide: one material/spool applies to the full batch
+- Per-item/split: individual batch items can allocate copies across materials/spools/colours
+
+Expected behaviour:
+
+- Batch-wide selection remains simple
+- Per-item allocation must support quantity greater than 1 without duplicating line items
+- A quantity 10 item can be split across multiple materials/spools/colours
+- Split allocations must validate that allocated copies equal item quantity
+- Quantity edits must update or reset stale material assignment state
+
+Selection UI:
+
+- Prefer searchable, scrollable selection lists over large dropdowns for batch-wide assignment
+- Split allocation should use the reusable split allocation picker
+- The same split journey should apply to printers and materials
 
 ### Stock Warnings
 
