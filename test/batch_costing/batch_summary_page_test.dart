@@ -64,7 +64,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('27.00'), findsOneWidget);
-    expect(find.text('Save quote'), findsOneWidget);
+    expect(find.text(l10n.batchCostingSummarySaveButton), findsOneWidget);
 
     await tester.tap(find.text('Benchy'));
     await tester.pumpAndSettle();
