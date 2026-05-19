@@ -1,14 +1,14 @@
 # Batch Costing
 
-ClickUp Task: 86c9u8f06
+ClickUp Parent Task: `86c9pag08`
 
-Cleanup Task: 86c9uq5xr
+Final QA Task: `86c9uf7uv`
 
 ## Summary
 
-Batch costing adds a dedicated workflow for quoting multiple prints together without cluttering the existing single-print calculator screen.
+Batch costing adds a dedicated workflow for quoting and saving multiple prints together without cluttering the existing single-print calculator screen.
 
-The current calculator remains the fast single-print path. Batch costing is a separate guided flow for jobs that contain multiple files, multiple quantities, or mixed printer/material assignments.
+The current calculator remains the fast single-print path. Batch costing is a separate guided flow for jobs that contain multiple files, multiple quantities, split printer/material assignments, or mixed manual and G-code sourced items.
 
 ## Product Intent
 
@@ -17,10 +17,11 @@ Users should be able to cost a client/job/order that contains multiple prints, i
 - The same model printed multiple times
 - Multiple different models in one quote
 - Prints split across different printers
-- Prints using different materials, spools, or resin
+- Prints using different materials, spools, colours, or resin
 - Shared job-level adjustments such as additional cost, shipping, admin, packaging, or order-level fees
+- G-code imported items that may need user-entered missing details before costing
 
-The workflow should default to simple batch-wide choices, then let users opt into per-item overrides where needed.
+The workflow should default to simple batch-wide choices, then let users opt into per-item or split-copy detail where needed.
 
 ## Goals
 
@@ -28,8 +29,10 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Reuse existing calculator rules for multi-job workflows
 - Keep batch results understandable per item and as a total quote
 - Support both G-code-driven and manual batch entry
+- Preserve useful state while users move around the batch flow
+- Allow completed batch quotes to be saved to history
 - Keep the existing calculator screen focused on single-print costing
-- Make the feature safe to build over multiple releases behind a hidden debug/developer flag
+- Keep all batch UI hidden unless the batch costing feature flag is enabled
 
 ## Scope
 
