@@ -1532,4 +1532,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingAssignmentPrinterLabel => 'เครื่องพิมพ์';
+
+  @override
+  String get batchCostingEntryButton => 'ต้นทุนแบทช์';
 }

@@ -2890,6 +2890,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Printer'**
   String get batchCostingAssignmentPrinterLabel;
+
+  /// No description provided for @batchCostingEntryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch costing'**
+  String get batchCostingEntryButton;
 }
 
 class _AppLocalizationsDelegate

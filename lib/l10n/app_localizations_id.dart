@@ -1538,4 +1538,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingAssignmentPrinterLabel => 'Printer';
+
+  @override
+  String get batchCostingEntryButton => 'Biaya batch';
 }

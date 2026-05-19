@@ -704,5 +704,6 @@
   "batchCostingNewBatchDialogTitle": "Avvia nuovo batch",
   "batchCostingNewBatchDialogBody": "Questo eliminerà tutti i progressi correnti del batch. Avviare un nuovo batch?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} ciascuno → {lineTotal} totale",
-  "batchCostingAssignmentPrinterLabel": "Stampante"
+  "batchCostingAssignmentPrinterLabel": "Stampante",
+  "batchCostingEntryButton": "Costi batch"
 }
