@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allo
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
@@ -271,6 +272,25 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
       );
       return;
     }
+
+    final mode = state.materialAssignmentMode ==
+            BatchMaterialAssignmentMode.batchWide
+        ? 'batch'
+        : 'split';
+    final hasSplit = state.materialAssignmentMode ==
+            BatchMaterialAssignmentMode.perItem &&
+        state.items.any((item) {
+          final allocs = state.itemMaterialAllocations[item.id];
+          if (allocs == null || allocs.length <= 1) return false;
+          return allocs.map((a) => a.targetId).toSet().length > 1;
+        });
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchAssignmentCompleted(
+        type: 'material',
+        mode: mode,
+        hasSplitAllocations: hasSplit,
+      ),
+    );
 
     Navigator.of(context).push(
       MaterialPageRoute<void>(builder: (_) => const BatchPricingScopePage()),

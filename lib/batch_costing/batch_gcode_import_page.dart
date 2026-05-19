@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.da
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_metadata_summary.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 class BatchGCodeImportPage extends ConsumerStatefulWidget {
@@ -498,6 +499,9 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
   }
 
   void _removeSingleImport(_BatchSingleImport singleImport) {
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchItemRemoved(source: 'gcode'),
+    );
     ref
         .read(batchCostingProvider.notifier)
         .removeItem(singleImport.batchItemId);
@@ -523,12 +527,22 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           ),
         );
 
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchStarted(source: 'gcode_single'),
+    );
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchItemAdded(source: 'gcode'),
+    );
+
     Navigator.of(
       context,
     ).push(MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()));
   }
 
   void _removeRow(_BatchImportRow row) {
+    AppAnalytics.safeLog(
+      () => AppAnalytics.batchItemRemoved(source: 'gcode'),
+    );
     if (row.batchItemId != null) {
       ref.read(batchCostingProvider.notifier).removeItem(row.batchItemId!);
     }
@@ -641,7 +655,14 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           _rows.add(row);
         }
       });
+      AppAnalytics.safeLog(
+        () => AppAnalytics.batchStarted(source: 'gcode_multi'),
+      );
     }
+
+    var readyCount = 0;
+    var needsDetailsCount = 0;
+    var failedCount = 0;
 
     for (var i = 0; i < newFiles.length; i++) {
       if (!mounted) return;
@@ -694,7 +715,12 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           ),
         );
 
+        AppAnalytics.safeLog(
+          () => AppAnalytics.batchItemAdded(source: 'gcode'),
+        );
+
         if (missingW || missingD) {
+          needsDetailsCount++;
           setState(() {
             row!.status = _ImportStatus.needsDetails;
             row.batchItemId = batchId;
@@ -704,6 +730,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
             row.durationController = TextEditingController();
           });
         } else {
+          readyCount++;
           setState(() {
             row!.status = _ImportStatus.ready;
             row.batchItemId = batchId;
@@ -722,12 +749,25 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
             _singleImportError = '${l10n.batchGcodeImportParseFailure}: $error';
           });
         } else if (row != null && mounted && _rows.contains(row)) {
+          failedCount++;
           setState(() {
             row.status = _ImportStatus.failed;
             row.errorMessage = '${l10n.batchGcodeImportParseFailure}: $error';
           });
         }
       }
+    }
+
+    if (!singleFileMode && mounted) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.batchGCodeImportCompleted(
+          totalCount: readyCount + needsDetailsCount + failedCount,
+          readyCount: readyCount,
+          needsDetailsCount: needsDetailsCount,
+          failedCount: failedCount,
+          duplicateSkippedCount: 0,
+        ),
+      );
     }
   }
 }

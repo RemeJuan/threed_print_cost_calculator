@@ -436,6 +436,26 @@ Expected behaviour:
 - Confirmation copy should make the clearing behaviour clear
 - Starting a new batch should not affect saved history
 
+## Analytics
+
+Batch costing events are logged through `AppAnalytics` in `lib/core/analytics/app_analytics.dart`. The full event catalogue is documented in [`docs/analytics.md`](../analytics.md).
+
+Events and their trigger points:
+
+| Event | Trigger | Key params |
+|---|---|---|
+| `batch_started` | Manual add, single-file import, multi-file import | `source` |
+| `batch_item_added` | Per-item after manual add or G-code import | `source` |
+| `batch_item_removed` | Item delete from review or import list | `source` |
+| `batch_item_edited` | Save on manual item edit dialog | `source`, `changed_quantity`, `changed_weight`, `changed_duration` |
+| `batch_gcode_import_completed` | End of multi-file import loop | Counts: ready, needs details, failed |
+| `batch_assignment_completed` | Continue from printer/material step | `type`, `mode`, `has_split_allocations` |
+| `batch_pricing_completed` | Continue from pricing scope step | Field existence + scope params |
+| `batch_summary_viewed` | Summary page mount | Item/quantity counts, split indicators |
+| `batch_quote_saved` | After quote save | `outcome` |
+
+Privacy constraints: No PII, no item names, no file names, no raw G-code content, no cost payloads. Only feature-interaction metadata.
+
 ## Architecture Notes
 
 Implementation files:
