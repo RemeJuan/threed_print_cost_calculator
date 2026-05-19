@@ -36,6 +36,8 @@ class BatchSummaryResult {
     required this.markupPercent,
     required this.labourRate,
     required this.finalTotal,
+    required this.failureRiskMonetary,
+    required this.markupPercentMonetary,
   });
 
   final int itemCount;
@@ -48,6 +50,8 @@ class BatchSummaryResult {
   final BatchPricingFieldState markupPercent;
   final BatchPricingFieldState labourRate;
   final num finalTotal;
+  final num failureRiskMonetary;
+  final num markupPercentMonetary;
 }
 
 class BatchSummaryCalculator {
@@ -68,6 +72,8 @@ class BatchSummaryCalculator {
       state.pricing.additionalCostAmount.value,
     );
 
+    var failureRiskMonetary = 0.0;
+    var markupPercentMonetary = 0.0;
     var batchSubtotal = 0.0;
     for (final item in state.items) {
       final itemWeight = item.printWeightG ?? 0;
@@ -78,6 +84,9 @@ class BatchSummaryCalculator {
       totalPrintMinutes += itemDurationMin * item.quantity;
 
       final itemBaseCost = _itemBaseCost(item, batchLabourRate, state.pricing);
+      if (state.pricing.failureRisk.scope == BatchPricingScope.item) {
+        failureRiskMonetary += itemBaseCost * batchFailureRisk / 100;
+      }
       final itemRiskCost = _itemRiskCost(
         itemBaseCost,
         batchFailureRisk,
@@ -99,6 +108,13 @@ class BatchSummaryCalculator {
         roundingMode: PricingRoundingMode.none,
       );
 
+      final itemMarkupAmount = pricing.markupPercent > 0
+          ? pricing.finalPrice - pricing.baseCost - pricing.setupFee
+          : 0;
+      if (pricing.markupPercent > 0) {
+        markupPercentMonetary += itemMarkupAmount;
+      }
+
       items.add(
         BatchSummaryItemBreakdown(
           item: item,
@@ -115,6 +131,9 @@ class BatchSummaryCalculator {
       batchSubtotal += pricing.finalPrice;
     }
 
+    if (state.pricing.failureRisk.scope == BatchPricingScope.batch) {
+      failureRiskMonetary = batchSubtotal * batchFailureRisk / 100;
+    }
     final batchRiskCost = _batchScopedRisk(
       batchSubtotal,
       batchFailureRisk,
@@ -134,6 +153,11 @@ class BatchSummaryCalculator {
       roundingMode: PricingRoundingMode.none,
     );
 
+    if (state.pricing.markupPercent.scope == BatchPricingScope.batch) {
+      markupPercentMonetary =
+          (batchSubtotal + batchRiskCost) * parsedBatchMarkupPercent / 100;
+    }
+
     final finalTotal = batchPricing.finalPrice;
 
     return BatchSummaryResult(
@@ -147,6 +171,8 @@ class BatchSummaryCalculator {
       markupPercent: state.pricing.markupPercent,
       labourRate: state.pricing.labourRate,
       finalTotal: finalTotal,
+      failureRiskMonetary: failureRiskMonetary,
+      markupPercentMonetary: markupPercentMonetary,
     );
   }
 
