@@ -178,9 +178,9 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                       ),
                       const Spacer(),
                       FilledButton(
-                        onPressed: sortedMaterials.isEmpty
-                            ? null
-                            : () => _continue(context, ref, state),
+                        onPressed: _nextEnabled(state, sortedMaterials)
+                            ? () => _continue(context, ref, state)
+                            : null,
                         child: Text(
                           l10n.batchCostingMaterialAssignmentNextButton,
                         ),
@@ -238,6 +238,18 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
     return [
       BatchAssignmentAllocation(targetId: materialId, quantity: item.quantity),
     ];
+  }
+
+  bool _nextEnabled(
+    BatchCostingState state,
+    List<MaterialModel> sortedMaterials,
+  ) {
+    if (sortedMaterials.isEmpty) return false;
+    if (state.materialAssignmentMode ==
+        BatchMaterialAssignmentMode.batchWide) {
+      return state.batchMaterialId != null;
+    }
+    return state.items.isNotEmpty;
   }
 
   void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) {

@@ -147,7 +147,9 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                       ),
                       const Spacer(),
                       FilledButton(
-                        onPressed: () => _continue(context, ref, state),
+                        onPressed: _nextEnabled(state)
+                            ? () => _continue(context, ref, state)
+                            : null,
                         child: Text(
                           l10n.batchCostingPrinterAssignmentNextButton,
                         ),
@@ -205,6 +207,13 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
     return [
       BatchAssignmentAllocation(targetId: printerId, quantity: item.quantity),
     ];
+  }
+
+  bool _nextEnabled(BatchCostingState state) {
+    if (state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide) {
+      return state.batchPrinterId != null;
+    }
+    return state.items.isNotEmpty;
   }
 
   void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) {
