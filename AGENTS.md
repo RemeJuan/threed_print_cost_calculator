@@ -51,7 +51,8 @@
 ## Workflow notes
 - Before broad exploration, read `docs/navigation.md`.
 - Treat the repository root as the only default filesystem context. Use repo-relative paths for all `Read`, `Grep`, `Glob`, `List`, and search operations.
-- Do not use absolute paths for files or directories inside this repository. If a tool call would target an absolute path that is inside the repo, rewrite it to the equivalent relative path first.
+- The repo may be displayed as `~/Projects/threed_print_cost_calculator` while tools may expand it to `/Users/remelehane/Projects/threed_print_cost_calculator`; treat those as the same repo and still use only relative paths such as `lib/l10n/`, never the expanded absolute path.
+- Do not use absolute paths or `~`-expanded paths for files or directories inside this repository. If a tool call would target `/Users/remelehane/Projects/threed_print_cost_calculator/...` or `~/Projects/threed_print_cost_calculator/...`, rewrite it to the equivalent relative path first.
 - Never search parent directories or paths outside the repository unless the task explicitly requires external files.
 - Only request permission for filesystem access when the target is genuinely outside the repository root. If a permission prompt would be caused by an in-repo absolute path, cancel and retry with a relative path.
 - Use `.` for whole-repo searches and narrow with targeted repo-relative paths such as `lib/calculator/` or `test/history/`.
@@ -59,7 +60,7 @@
 - Prefer targeted `rg`/content search over broad filesystem scans.
 - Produce a short plan before code changes.
 - MCP is optional and not the first step. Use `codebase-memory-mcp_search_graph` only after `docs/navigation.md`, mainly to confirm relationships or cross-feature links. Limit to 2 MCP queries unless clearly justified.
-- Update docs when feature behavior, analytics/events, architecture, persistence, or app flows change.
+- Update docs when feature behavior, analytics/events, architecture, persistence, premium, localization, testing, or CI notes change.
 - Prefer `docs/feature-map.md` for feature-level changes and `docs/architecture.md` for patterns, persistence, premium, localization, testing, and CI notes.
 
 ## Product planning and roadmap
