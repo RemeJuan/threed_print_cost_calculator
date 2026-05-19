@@ -40,7 +40,9 @@ class GCodeImportPreviewSection extends StatelessWidget {
         style: Theme.of(context).textTheme.bodyMedium,
       );
     }
-    final isLowRes = (previewWidth ?? 0) < 128 || (previewHeight ?? 0) < 128;
+    final isLowRes =
+        (previewWidth != null && previewWidth! < 128) ||
+        (previewHeight != null && previewHeight! < 128);
     void onPreviewTap() {
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodePreviewViewed(

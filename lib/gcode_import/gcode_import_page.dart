@@ -32,7 +32,9 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(gcodeImportControllerProvider);
     final controller = ref.read(gcodeImportControllerProvider.notifier);
-    final parseStatus = state.result?.hasPartialMetadata == true ? 'partial' : 'success';
+    final parseStatus = state.result?.hasPartialMetadata == true
+        ? 'partial'
+        : 'success';
     final fileSizeBytes = state.selectedFileSizeBytes ?? 0;
 
     return Scaffold(
@@ -52,43 +54,74 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
                     GCodeImportHeader(text: l10n.importGcodeIntro),
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
-                      key: const ValueKey<String>('gcode_import.select_file.button'),
-                      onPressed: state.status == GCodeImportStatus.loading ? null : () => _pickFiles(controller),
+                      key: const ValueKey<String>(
+                        'gcode_import.select_file.button',
+                      ),
+                      onPressed: state.status == GCodeImportStatus.loading
+                          ? null
+                          : () => _pickFiles(controller),
                       icon: const Icon(Icons.folder_open),
-                      label: Text(state.result == null ? l10n.importGcodeSelectFileButton : l10n.importGcodePickAnotherButton),
+                      label: Text(
+                        state.result == null
+                            ? l10n.importGcodeSelectFileButton
+                            : l10n.importGcodePickAnotherButton,
+                      ),
                     ),
                     if (state.selectedFileName != null) ...[
                       const SizedBox(height: 16),
-                      Text('${l10n.importGcodeSelectedFileLabel}: ${state.selectedFileName}', style: Theme.of(context).textTheme.bodyMedium),
+                      Text(
+                        '${l10n.importGcodeSelectedFileLabel}: ${state.selectedFileName}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ],
                     if (state.status == GCodeImportStatus.loading) ...[
                       const SizedBox(height: 24),
                       const Center(child: CircularProgressIndicator()),
                     ],
-                    if (state.status == GCodeImportStatus.failure && state.error != null)
+                    if (state.status == GCodeImportStatus.failure &&
+                        state.error != null)
                       Padding(
                         padding: const EdgeInsets.only(top: 16),
                         child: Text(
                           _errorMessage(l10n, state.error!),
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.error),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                         ),
                       ),
                     if (state.result != null) ...[
                       const SizedBox(height: 24),
-                      GCodeImportSummaryCard(result: state.result!, l10n: l10n, fileSizeBytes: fileSizeBytes),
+                      GCodeImportSummaryCard(
+                        result: state.result!,
+                        l10n: l10n,
+                        fileSizeBytes: fileSizeBytes,
+                      ),
                       const SizedBox(height: 16),
                       GCodeImportActions(
                         l10n: l10n,
                         onPressed: _isPrimaryActionEnabled(state.result!)
-                            ? () => _handlePrimaryAction(context, ref, l10n, result: state.result!, fileSizeBytes: fileSizeBytes, parseStatus: parseStatus)
+                            ? () => _handlePrimaryAction(
+                                context,
+                                ref,
+                                l10n,
+                                result: state.result!,
+                                fileSizeBytes: fileSizeBytes,
+                                parseStatus: parseStatus,
+                              )
                             : null,
                       ),
                     ],
-                    if (state.status == GCodeImportStatus.success || state.status == GCodeImportStatus.failure) ...[
+                    if (state.status == GCodeImportStatus.success ||
+                        state.status == GCodeImportStatus.failure) ...[
                       const SizedBox(height: 16),
                       GCodeImportFeedbackEntryPoint(
                         state: state,
-                        importFailureContext: state.status == GCodeImportStatus.failure && state.error != null ? _errorMessage(l10n, state.error!) : null,
+                        importFailureContext:
+                            state.status == GCodeImportStatus.failure &&
+                                state.error != null
+                            ? _errorMessage(l10n, state.error!)
+                            : null,
                       ),
                     ],
                   ],
@@ -115,7 +148,9 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     return switch (error) {
       GCodeImportError.unsupportedType => l10n.importGcodeUnsupportedTypeError,
       GCodeImportError.unsupportedFile => l10n.importGcodeUnsupportedFileError,
-      GCodeImportError.tooLarge => l10n.importGcodeTooLargeError(gCodeImportMaxSizeMb.toString()),
+      GCodeImportError.tooLarge => l10n.importGcodeTooLargeError(
+        gCodeImportMaxSizeMb.toString(),
+      ),
       GCodeImportError.readFailed => l10n.importGcodeReadError,
     };
   }
@@ -132,21 +167,28 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     required int fileSizeBytes,
     required String parseStatus,
   }) {
-    AppAnalytics.safeLog(() => AppAnalytics.gcodeImportSuccess(
-          hasPrintTime: result.estimatedDuration != null,
-          hasFilamentUsage: result.filamentWeightG != null || result.filamentLengthMm != null,
-          hasPreview: result.hasPreviewMetadata,
-        ));
-    ref.read(calculatorProvider.notifier).applyImportedValues(
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeImportSuccess(
+        hasPrintTime: result.estimatedDuration != null,
+        hasFilamentUsage:
+            result.filamentWeightG != null || result.filamentLengthMm != null,
+        hasPreview: result.hasPreviewMetadata,
+      ),
+    );
+    ref
+        .read(calculatorProvider.notifier)
+        .applyImportedValues(
           estimatedDuration: result.estimatedDuration,
           filamentWeightGrams: result.filamentWeightG,
         );
-    AppAnalytics.safeLog(() => AppAnalytics.gcodeFlowCompleted(
-          slicer: result.slicer.name,
-          hasPreview: result.hasPreviewMetadata,
-          fileSizeBytes: fileSizeBytes,
-          parseStatus: parseStatus,
-        ));
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeFlowCompleted(
+        slicer: result.slicer.name,
+        hasPreview: result.hasPreviewMetadata,
+        fileSizeBytes: fileSizeBytes,
+        parseStatus: parseStatus,
+      ),
+    );
     BotToast.showText(text: l10n.importGcodeAppliedMessage);
     Navigator.of(context).pop();
   }
