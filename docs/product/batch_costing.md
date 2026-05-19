@@ -277,9 +277,34 @@ Stock checks should warn, not block.
 Examples:
 
 - Batch-wide material mode: compare total required batch usage against selected material stock
-- Per-item material mode: compare each item requirement against its selected material stock
+- Per-item/split material mode: compare allocated usage against the selected material/spool stock
 
 Users may have another partial roll, refill stock, or still want to continue the quote.
+
+## Reusable Split Allocation Picker
+
+Split allocation should use one reusable picker/model/helper for printers and materials.
+
+Requirements:
+
+- Open from `Split copies`
+- Support search/filter
+- Support adding allocation rows from filtered options
+- Support editing allocated quantity per row
+- Support removing allocation rows
+- Validate inside the dialog/sheet before save
+- Cancel must preserve previous allocation state
+- Save must apply valid allocation to shared batch state
+
+Validation rules:
+
+- Total allocated copies must equal item quantity
+- No allocation below 0
+- No allocation above remaining quantity
+- At least one allocation is required
+- Prevent negative remaining quantities
+
+Auto-balancing is preferred where practical. For example, if the default printer has 13 copies and the user assigns 10 to another printer, the default printer should automatically reduce to 3.
 
 ## Pricing Scope
 
@@ -299,12 +324,25 @@ Supported scopes:
 - Item: applies to the item/unit/item line according to the costing model
 - Batch: applies once to the full job
 
+Pricing UI:
+
+- Pricing values should prepopulate from existing settings/defaults where applicable
+- Blank or zero values are allowed and mean the pricing value is not used
+- Blank or zero values should be hidden from summary/history display
+- Use compact per-field scope controls, not large full-width dropdowns where possible
+
+Percentage display:
+
+- Do not sum percentages across quantity
+- A 4.5% item-scoped risk remains 4.5% per item, not 13.5% for three items
+- Show the percentage rate plus calculated currency impact where possible
+
 Examples:
 
-- 5% risk with item scope applies to the item calculation
-- 5% risk with batch scope applies to the full job calculation
-- $10 additional cost with batch scope applies once to the job
-- $10 additional cost with item scope applies according to item quantity rules
+- `4.5% per item -> R12.34 total`
+- `4.5% batch -> R12.34 total`
+- `R18.00 each -> R54.00 total`
+- `R10.00 batch`
 
 Additional cost remains a single generic field in V1. Do not split it into shipping/admin/packaging line items yet.
 
@@ -321,15 +359,103 @@ Expected summary content:
 - Per-item cost breakdowns
 - Batch-level adjustments
 - Final total quote
+- Save/exit/start-new-batch actions
 
-Calculation rules:
+Display rules:
 
 - Quantity affects item totals
 - Batch-scoped values apply once
-- Item-scoped values apply according to quantity and item scope rules
+- Item-scoped values apply according to item quantity and item scope rules
 - Existing single-print calculator totals must remain unchanged
+- Monetary values must use the standard app currency formatter
+- Do not hardcode currency symbols
+- Percent values remain percentages
+- Hide blank/zero pricing rows
+- Hide zero-value adjustment rows that add no explanation
+- Final total should be visually prominent
+
+Actions:
+
+- `Save quote` is the primary action before save
+- `Return to calculator` is secondary
+- `Back to pricing scope` is navigation/tertiary
+- `Start new batch` should clear current batch state only after confirmation
+
+## Save to History
+
+Completed batch quotes can be saved to history.
+
+Expected behaviour:
+
+- Saving prompts the user to set a quote name
+- Default name can be `Batch quote`, but the user must be able to change it before save
+- Custom quote name is persisted
+- Saved quote appears in normal app history
+- History navigation must use the normal tabbed app shell, not a raw standalone history screen
+- User must be able to navigate out normally after viewing history
+
+Saved data should preserve enough detail to explain the quote later:
+
+- Batch items
+- Quantities
+- Printer assignments
+- Material assignments
+- Pricing values
+- Pricing scopes
+- Calculated item totals
+- Calculated batch total
+- Created date/time
+- Quote name
+
+Existing single-print history must remain unchanged.
+
+## Batch History Display
+
+Batch history should be readable and avoid junk rows.
+
+Rules:
+
+- Show saved quote name
+- Show real item/copy counts, such as `1 item · 12 copies` or `3 items · 26 copies`
+- Use current global currency formatting for monetary display
+- Hide blank/zero pricing rows
+- Hide zero-value adjustment rows that add no explanation
+- Percent fields remain percentages
+- Existing single-print history remains unaffected
+
+## State Persistence and Start New Batch
+
+Batch state may persist while the user leaves and returns to the batch flow. This is useful and avoids frustrating data loss.
+
+Because state persists, the flow must provide an explicit `Start new batch` action.
+
+Expected behaviour:
+
+- Leaving and returning preserves current batch state
+- `Start new batch` clears current batch state only after confirmation
+- Confirmation copy should make the clearing behaviour clear
+- Starting a new batch should not affect saved history
 
 ## Architecture Notes
+
+Implementation files:
+
+- `lib/batch_costing/batch_costing_page.dart` — review screen (shared checkpoint)
+- `lib/batch_costing/batch_gcode_import_page.dart` — single/multi-file G-code import
+- `lib/batch_costing/batch_printer_assignment_page.dart` — printer assignment
+- `lib/batch_costing/batch_material_assignment_page.dart` — material assignment
+- `lib/batch_costing/batch_pricing_scope_page.dart` — pricing scope configuration
+- `lib/batch_costing/batch_summary_page.dart` — summary/quote screen
+- `lib/batch_costing/models/batch_costing_item.dart` — `BatchCostingItem` model
+- `lib/batch_costing/models/batch_costing_state.dart` — `BatchCostingState`, `BatchAssignmentAllocation`
+- `lib/batch_costing/models/batch_pricing_state.dart` — `BatchPricingState`
+- `lib/batch_costing/batch_costing_notifier.dart` — Riverpod `NotifierProvider` for state management
+- `lib/batch_costing/batch_summary_calculator.dart` — pure calculation helper
+- `lib/batch_costing/batch_costing_visibility.dart` — `batchCostingEnabledProvider` dual-gate
+- `lib/history/models/batch_history_item.dart` — saved batch quote display in history
+- Navigation uses `MaterialPageRoute` push/pop (no GoRouter integration)
+
+General notes:
 
 - Reuse existing calculator logic per item instead of introducing a second costing formula path
 - Keep batch-specific state separate from the current single-print calculator state unless intentionally seeding values from it
@@ -337,51 +463,62 @@ Calculation rules:
 - Prefer pure helpers for calculation and scope handling
 - Reuse existing route, validation, localization, and UI conventions
 - Reuse existing G-code parser rather than duplicating parsing logic
-- If persistence is added later, build on current Sembast/history patterns rather than a separate storage stack
+- Reuse shared G-code metadata/preview UI instead of duplicating it
+- Use one reusable split allocation picker for printer and material allocation
+- Save/history should build on existing persistence/history patterns
+- Do not introduce cloud/account/sync behaviour
 
-## Suggested Task Breakdown
+## Localization
 
-1. Feature gate and hidden entry point
-2. G-code quantity enhancement
-3. Screen 0 entry method shell
-4. Batch item domain model and state
-5. Manual batch item flow
-6. Multi-file G-code import
-7. Batch review screen
-8. Printer assignment step
-9. Material assignment step
-10. Pricing scope step
-11. Batch calculation and summary
-12. Persistence/history deferral guardrail
-13. Documentation and validation checklist
+All new user-facing strings must be localized.
 
-## Agent Execution Notes
+Rules:
 
-Implementation agents should start from the assigned ClickUp subtask and read the shared execution contract before coding.
+- Add strings to `lib/l10n/intl_*.arb`
+- Update every supported locale
+- Run `fvm flutter gen-l10n` when required
+- Generated localization output lives in `lib/generated/l10n.dart`
+- Use the existing generated localization pattern
+- Widget tests that render localized text must include localization setup
 
-General expectations:
+## Final QA Expectations
 
-- Create one branch from latest main per subtask
-- Open one PR per subtask
-- Keep changes scoped to the assigned task
-- Keep batch costing hidden unless the debug/developer flag is enabled
-- Avoid unrelated refactors or formatting churn
-- Run `fvm flutter analyze`
-- Run relevant unit/widget tests
-- Verify disabled feature flag behaviour for UI/navigation work
+Before public release or beta feedback, verify:
 
-## Dependencies
+- Feature flag off exposes no batch UI in normal flows
+- Manual path works end-to-end
+- G-code single-file batch path works
+- G-code multi-file batch path works
+- Missing G-code details are captured before batch review
+- Duplicate G-code imports are prevented
+- Imported rows can be removed
+- Info/details bottom sheet works
+- Printer assignment works in batch-wide and split-copy modes
+- Material assignment works in batch-wide and split-copy modes
+- Quantity edits do not leave stale assignments
+- Pricing values/scopes display correctly
+- Percentage rows do not sum percentages
+- Currency formatting appears on monetary values
+- Blank/zero pricing rows are hidden
+- Summary final total is visually prominent
+- Quote save prompts for a name
+- Saved quote appears in normal tabbed history
+- Batch history displays real item/copy counts
+- Start new batch clears state only after confirmation
+- Existing calculator, normal G-code import, and single-print history still work
 
-- Existing calculator cost engine
-- Existing G-code import and parsing flow
-- Existing printer/material configuration
-- Existing version-code/admin/debug flow
-- Existing Riverpod state patterns
-- Existing validation and localization patterns
+## Dead-Code Cleanup Expectations
 
-## Open Questions
+After the feature has stabilized, check for and remove or consolidate:
 
-- How much per-item splitting is needed when the same model is printed across multiple printers/materials?
-- Should batch quotes eventually save to history as one parent record or multiple linked item records?
-- Should future quote sharing/export be CSV, PDF, image, or app-native first?
-- Should discounts be added as a dedicated batch-scoped pricing field later?
+- unused widgets
+- unused providers/notifiers/helpers
+- unused models/enums/extensions
+- unused localization keys added for abandoned UI states
+- abandoned placeholder screens/routes
+- duplicate G-code preview/details code
+- duplicate split allocation implementations
+- stale imports
+- debug prints/logging left from testing
+- unreachable branches from old flow designs
+- comments describing old behaviour that no longer exists
