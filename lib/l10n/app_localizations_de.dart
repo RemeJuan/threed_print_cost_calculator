@@ -1283,6 +1283,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get batchGcodeImportApply => 'Übernehmen';
 
   @override
+  String get batchGcodeImportAddButton => 'Zur Stapelprüfung hinzufügen';
+
+  @override
   String get batchGcodeImportDetailsButton => 'Details';
 
   @override

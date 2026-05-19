@@ -1237,6 +1237,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchGcodeImportApply => '適用';
 
   @override
+  String get batchGcodeImportAddButton => 'バッチレビューに追加';
+
+  @override
   String get batchGcodeImportDetailsButton => '詳細';
 
   @override

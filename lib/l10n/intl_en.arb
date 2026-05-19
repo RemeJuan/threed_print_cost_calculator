@@ -549,6 +549,7 @@
   "batchGcodeImportNeedsWeight": "Weight required",
   "batchGcodeImportNeedsDuration": "Duration required",
   "batchGcodeImportApply": "Apply",
+  "batchGcodeImportAddButton": "Add to batch review",
   "batchGcodeImportDetailsButton": "Details",
   "batchGcodeImportDuplicateMessage": "Some files were already added.",
   "batchGcodeImportQuantityHint": "Quantities can be adjusted in the next step.",

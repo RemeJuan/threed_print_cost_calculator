@@ -621,6 +621,7 @@
   "batchGcodeImportNeedsWeight": "Peso richiesto",
   "batchGcodeImportNeedsDuration": "Durata richiesta",
   "batchGcodeImportApply": "Applica",
+  "batchGcodeImportAddButton": "Aggiungi alla revisione batch",
   "batchGcodeImportDetailsButton": "Dettagli",
   "batchGcodeImportDuplicateMessage": "Alcuni file sono già stati aggiunti.",
   "batchGcodeImportQuantityHint": "Le quantità possono essere regolate nel passaggio successivo.",

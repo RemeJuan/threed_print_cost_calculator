@@ -1256,6 +1256,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchGcodeImportApply => 'Terapkan';
 
   @override
+  String get batchGcodeImportAddButton => 'Tambahkan ke tinjauan batch';
+
+  @override
   String get batchGcodeImportDetailsButton => 'Detail';
 
   @override

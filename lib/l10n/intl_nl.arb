@@ -622,6 +622,7 @@
   "batchGcodeImportNeedsWeight": "Gewicht vereist",
   "batchGcodeImportNeedsDuration": "Duur vereist",
   "batchGcodeImportApply": "Toepassen",
+  "batchGcodeImportAddButton": "Toevoegen aan batchcontrole",
   "batchGcodeImportDetailsButton": "Details",
   "batchGcodeImportDuplicateMessage": "Sommige bestanden zijn al toegevoegd.",
   "batchGcodeImportQuantityHint": "Hoeveelheden kunnen in de volgende stap worden aangepast.",

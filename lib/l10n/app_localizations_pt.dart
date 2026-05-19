@@ -1282,6 +1282,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get batchGcodeImportApply => 'Aplicar';
 
   @override
+  String get batchGcodeImportAddButton => 'Adicionar à revisão em lote';
+
+  @override
   String get batchGcodeImportDetailsButton => 'Detalhes';
 
   @override

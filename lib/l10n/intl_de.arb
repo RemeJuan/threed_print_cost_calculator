@@ -621,6 +621,7 @@
   "batchGcodeImportNeedsWeight": "Gewicht erforderlich",
   "batchGcodeImportNeedsDuration": "Dauer erforderlich",
   "batchGcodeImportApply": "Übernehmen",
+  "batchGcodeImportAddButton": "Zur Stapelprüfung hinzufügen",
   "batchGcodeImportDetailsButton": "Details",
   "batchGcodeImportDuplicateMessage": "Einige Dateien wurden bereits hinzugefügt.",
   "batchGcodeImportQuantityHint": "Mengen können im nächsten Schritt angepasst werden.",

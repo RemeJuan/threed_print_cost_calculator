@@ -622,6 +622,7 @@
   "batchGcodeImportNeedsWeight": "ต้องระบุน้ำหนัก",
   "batchGcodeImportNeedsDuration": "ต้องระบุระยะเวลา",
   "batchGcodeImportApply": "นำไปใช้",
+  "batchGcodeImportAddButton": "เพิ่มไปยังการตรวจสอบแบบแบตช์",
   "batchGcodeImportDetailsButton": "รายละเอียด",
   "batchGcodeImportDuplicateMessage": "มีการเพิ่มบางไฟล์ไว้แล้ว",
   "batchGcodeImportQuantityHint": "สามารถปรับจำนวนได้ในขั้นตอนถัดไป",

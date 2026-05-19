@@ -623,6 +623,7 @@
   "batchGcodeImportNeedsWeight": "Poids requis",
   "batchGcodeImportNeedsDuration": "Durée requise",
   "batchGcodeImportApply": "Appliquer",
+  "batchGcodeImportAddButton": "Ajouter à la revue par lot",
   "batchGcodeImportDetailsButton": "Détails",
   "batchGcodeImportDuplicateMessage": "Certains fichiers ont déjà été ajoutés.",
   "batchGcodeImportQuantityHint": "Les quantités peuvent être ajustées à l’étape suivante.",

@@ -622,6 +622,7 @@
   "batchGcodeImportNeedsWeight": "重量が必要",
   "batchGcodeImportNeedsDuration": "時間が必要",
   "batchGcodeImportApply": "適用",
+  "batchGcodeImportAddButton": "バッチレビューに追加",
   "batchGcodeImportDetailsButton": "詳細",
   "batchGcodeImportDuplicateMessage": "一部のファイルはすでに追加されています。",
   "batchGcodeImportQuantityHint": "数量は次の手順で調整できます。",

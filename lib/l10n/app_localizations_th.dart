@@ -1255,6 +1255,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchGcodeImportApply => 'นำไปใช้';
 
   @override
+  String get batchGcodeImportAddButton => 'เพิ่มไปยังการตรวจสอบแบบแบตช์';
+
+  @override
   String get batchGcodeImportDetailsButton => 'รายละเอียด';
 
   @override

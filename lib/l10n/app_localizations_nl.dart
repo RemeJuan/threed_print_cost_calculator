@@ -1282,6 +1282,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get batchGcodeImportApply => 'Toepassen';
 
   @override
+  String get batchGcodeImportAddButton => 'Toevoegen aan batchcontrole';
+
+  @override
   String get batchGcodeImportDetailsButton => 'Details';
 
   @override
