@@ -275,6 +275,9 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
                       ],
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) =>
+                          _applySingleImportDetails(singleImport),
                     ),
                   ],
                   if (singleImport.missingDuration) ...[
@@ -289,6 +292,9 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                       ),
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      textInputAction: TextInputAction.done,
+                      onFieldSubmitted: (_) =>
+                          _applySingleImportDetails(singleImport),
                     ),
                   ],
                   const SizedBox(height: 12),
@@ -378,6 +384,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r'[\d.]')),
                     ],
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) => _applyDetails(row),
                   ),
                 ],
                 if (row.missingDuration) ...[
@@ -392,6 +400,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) => _applyDetails(row),
                   ),
                 ],
                 const SizedBox(height: 12),
