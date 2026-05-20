@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
-
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
-
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_quote_save_service.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary_calculator.dart';
-import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
-import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchSummaryPage extends ConsumerStatefulWidget {
   const BatchSummaryPage({super.key});
@@ -49,8 +44,8 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
           hasManualItems: s.items.any(
             (item) => item.sourceType == BatchCostingItemSourceType.manual,
           ),
-          hasSplitPrinters: _hasSplitPrinters(s),
-          hasSplitMaterials: _hasSplitMaterials(s),
+          hasSplitPrinters: s.hasSplitPrinters,
+          hasSplitMaterials: s.hasSplitMaterials,
         ),
       );
     });
@@ -76,14 +71,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.batchCostingSummaryAppBarTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home_outlined),
-            tooltip: 'Home',
-            onPressed: () =>
-                Navigator.of(context).popUntil((route) => route.isFirst),
-          ),
-        ],
+        actions: [homeButton(context)],
       ),
       body: SafeArea(
         child: ListView(
@@ -114,7 +102,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
             _summaryRow(
               context,
               l10n.batchCostingSummaryTotalDurationLabel,
-              _formatDuration(summary.totalPrintDuration),
+              formatDuration(summary.totalPrintDuration),
             ),
             const SizedBox(height: 16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
@@ -192,7 +180,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                     _summaryRow(
                       context,
                       l10n.batchCostingSummaryItemDurationLabel,
-                      _formatDuration(item.totalPrintDuration),
+                      formatDuration(item.totalPrintDuration),
                     ),
                     _summaryRow(
                       context,
@@ -260,7 +248,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 FilledButton(
-                  onPressed: () => _saveQuote(context, state, summary),
+                  onPressed: () => saveBatchQuote(context, ref, state, summary),
                   child: Text(l10n.batchCostingSummarySaveButton),
                 ),
                 const SizedBox(height: 12),
@@ -289,14 +277,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.batchCostingSummaryAppBarTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home_outlined),
-            tooltip: 'Home',
-            onPressed: () =>
-                Navigator.of(context).popUntil((route) => route.isFirst),
-          ),
-        ],
+        actions: [homeButton(context)],
       ),
       body: Center(
         child: Padding(
@@ -379,145 +360,6 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     return _pricingRow(context, label: label, value: value);
   }
 
-  Future<void> _saveQuote(
-    BuildContext context,
-    BatchCostingState state,
-    BatchSummaryResult summary,
-  ) async {
-    final l10n = AppLocalizations.of(context)!;
-
-    final quoteName = await showDialog<String>(
-      context: context,
-      builder: (dialogContext) {
-        final controller = TextEditingController(
-          text: l10n.batchCostingSummaryDefaultQuoteName,
-        );
-        return AlertDialog(
-          title: Text(l10n.batchCostingSummaryQuoteNameDialogTitle),
-          content: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              hintText: l10n.batchCostingSummaryDefaultQuoteName,
-              labelText: l10n.batchCostingSummaryQuoteNameHint,
-              border: const OutlineInputBorder(),
-            ),
-            autofocus: true,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(null),
-              child: Text(l10n.cancelButton),
-            ),
-            FilledButton(
-              onPressed: () {
-                final name = controller.text.trim();
-                Navigator.of(dialogContext).pop(
-                  name.isEmpty
-                      ? l10n.batchCostingSummaryDefaultQuoteName
-                      : name,
-                );
-              },
-              child: Text(l10n.saveButton),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (quoteName == null || !context.mounted) return;
-
-    final model = HistoryModel.batchQuote(
-      name: quoteName,
-      date: DateTime.now(),
-      state: state,
-      summary: summary,
-    );
-
-    final copyCount = state.items.fold<int>(0, (sum, item) => sum + item.quantity);
-    final hasGCode = state.items.any(
-      (item) => item.sourceType == BatchCostingItemSourceType.gcode,
-    );
-    final hasManual = state.items.any(
-      (item) => item.sourceType == BatchCostingItemSourceType.manual,
-    );
-    final hasSplitP = _hasSplitPrinters(state);
-    final hasSplitM = _hasSplitMaterials(state);
-
-    try {
-      await ref.read(historyRepositoryProvider).saveHistory(model);
-    } catch (e, st) {
-      debugPrint('batch_summary_page._saveQuote error: $e\n$st');
-      AppAnalytics.safeLog(
-        () => AppAnalytics.batchQuoteSaved(
-          outcome: 'failure',
-          itemCount: state.items.length,
-          copyCount: copyCount,
-          hasGCodeItems: hasGCode,
-          hasManualItems: hasManual,
-          hasSplitPrinters: hasSplitP,
-          hasSplitMaterials: hasSplitM,
-        ),
-      );
-      if (!context.mounted) return;
-      BotToast.showText(text: l10n.batchCostingSummarySaveErrorMessage);
-      return;
-    }
-
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchQuoteSaved(
-        outcome: 'success',
-        itemCount: state.items.length,
-        copyCount: copyCount,
-        hasGCodeItems: hasGCode,
-        hasManualItems: hasManual,
-        hasSplitPrinters: hasSplitP,
-        hasSplitMaterials: hasSplitM,
-      ),
-    );
-
-    if (!context.mounted) return;
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.batchCostingSummarySaveSuccessTitle),
-        content: Text(l10n.batchCostingSummarySaveSuccessBody),
-        actions: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: 8,
-            children: [
-              FilledButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  ref
-                      .read(pendingTabNavigationProvider.notifier)
-                      .navigate(AppPageTab.history);
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                child: Text(l10n.batchCostingSummaryViewHistoryButton),
-              ),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                },
-                child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                  _showStartNewBatchDialog(context);
-                },
-                child: Text(l10n.batchCostingSummaryStartNewBatchButton),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   String _pricingSummary(
     String value,
     BatchPricingScope scope,
@@ -569,52 +411,11 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
   }
 
   Future<void> _showStartNewBatchDialog(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.batchCostingNewBatchDialogTitle),
-        content: Text(l10n.batchCostingNewBatchDialogBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.cancelButton),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != true) return;
+    final confirmed = await showStartNewBatchDialog(context);
+    if (!confirmed) return;
     if (!context.mounted) return;
-
     ref.read(batchCostingProvider.notifier).reset();
     Navigator.of(context).popUntil((route) => route.isFirst);
-  }
-
-  bool _hasSplitPrinters(BatchCostingState s) {
-    if (s.printerAssignmentMode != BatchPrinterAssignmentMode.perItem) {
-      return false;
-    }
-    return s.items.any((item) {
-      final allocs = s.itemPrinterAllocations[item.id];
-      if (allocs == null || allocs.length <= 1) return false;
-      return allocs.map((a) => a.targetId).toSet().length > 1;
-    });
-  }
-
-  bool _hasSplitMaterials(BatchCostingState s) {
-    if (s.materialAssignmentMode != BatchMaterialAssignmentMode.perItem) {
-      return false;
-    }
-    return s.items.any((item) {
-      final allocs = s.itemMaterialAllocations[item.id];
-      if (allocs == null || allocs.length <= 1) return false;
-      return allocs.map((a) => a.targetId).toSet().length > 1;
-    });
   }
 
   String _lineTotalWithQuantity(
@@ -640,9 +441,4 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
 
   bool _showPricing(String value) => value.isNotEmpty && value != '0';
 
-  String _formatDuration(Duration duration) {
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
-  }
 }
