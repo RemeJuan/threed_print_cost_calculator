@@ -180,6 +180,38 @@
   - `Purchases.configure`
   - `history_teaser`
 
+## Batch costing
+
+- Main screens/widgets:
+  - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals
+  - `lib/batch_costing/batch_gcode_import_page.dart` — shell page for multi-file / single-file G-code import flow (447 LOC)
+  - `lib/batch_costing/widgets/batch_gcode_import_body.dart` — body widget rendering file rows, single-import view, action buttons
+  - `lib/batch_costing/widgets/batch_single_import_view.dart` — single-file import card with metadata + inline missing details form
+  - `lib/batch_costing/widgets/batch_import_file_row.dart` — file row per status (importing/needs-details/ready/failed)
+  - `lib/batch_costing/widgets/batch_missing_details_form.dart` — inline weight/duration form for partial-metadata imports
+  - `lib/batch_costing/widgets/batch_gcode_import_details_sheet.dart` — modal bottom sheet with full import metadata/preview
+  - `lib/batch_costing/widgets/batch_searchable_selector.dart`
+  - `lib/batch_costing/widgets/material_allocation_row.dart`
+  - `lib/batch_costing/widgets/material_allocation_card.dart`
+  - `lib/batch_costing/widgets/batch_allocation_picker_dialog.dart`
+  - `lib/batch_costing/widgets/batch_costing_item_editor_dialog.dart`
+  - `lib/batch_costing/widgets/batch_split_copies_dialog.dart`
+  - `lib/batch_costing/widgets/batch_anchor_selector.dart`
+  - `lib/batch_costing/widgets/warning_box.dart`
+- Providers/state:
+  - `lib/batch_costing/providers/batch_costing_notifier.dart` (`batchCostingProvider`)
+  - `lib/batch_costing/model/batch_costing_item.dart`
+  - `lib/batch_costing/model/batch_import_state.dart` — `BatchSingleImport`, `BatchImportRow`, `ImportStatus`
+- Tests:
+  - `test/batch_costing/`
+- Common search terms:
+  - `batchCostingProvider`
+  - `BatchCostingItem`
+  - `BatchGCodeImportPage`
+  - `BatchImportRow`
+  - `ImportStatus`
+  - `batchGcodeImport`
+
 ## G-code import
 
 - Main screens/widgets:
@@ -187,7 +219,7 @@
   - `lib/gcode_import/gcode_import_button.dart`
   - `lib/gcode_import/feedback/gcode_import_feedback_page.dart`
 - Current behavior:
-  - Single-file `GCodeImportPage` remains calculator-only review/apply; batch creation now stays in the dedicated batch multi-file flow.
+  - Single-file `GCodeImportPage` remains calculator-only review/apply; batch creation now stays in the dedicated batch multi-file flow (see Batch costing section).
   - Accepts `.gcode`, `.gco`, and `.nc` files directly when payload looks text-like.
   - Android no longer uses `file_selector` byte payloads. `MainActivity` opens SAF, resolves URI metadata, copies to cache, and returns metadata + cache path only.
   - Treats Android/file picker `.bin` and other unknown/octet-stream picks as sniffable input; reads up to 64 KiB for common G-code markers before rejecting.
