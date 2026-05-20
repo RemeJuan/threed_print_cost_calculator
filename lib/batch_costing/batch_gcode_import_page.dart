@@ -179,7 +179,9 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
           ),
         ],
       ),
-      body: body,
+      body: SafeArea(
+        child: body,
+      ),
     );
   }
 
