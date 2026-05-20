@@ -71,6 +71,94 @@
         }
       ],
       "timeHours": "02:15"
+    },
+    {
+      "id": "history_corporate_gift_set",
+      "name": "Corporate Gift Set",
+      "totalCost": 198.20,
+      "riskCost": 3.15,
+      "filamentCost": 13.44,
+      "electricityCost": 0.41,
+      "labourCost": 141.00,
+      "additionalCostAmount": 5.0,
+      "date": "2026-04-18T16:00:00.000Z",
+      "printer": "Bambu X1 Carbon",
+      "material": "Mixed",
+      "weight": 540,
+      "materialUsages": [],
+      "timeHours": "08:45",
+      "batchQuote": true,
+      "batchQuoteItems": [
+        {
+          "id": "item-keychain-001",
+          "name": "Branded Keychain",
+          "quantity": 25,
+          "printerId": "bambu_x1c",
+          "materialId": "pla_white",
+          "pricingProfileId": null,
+          "totalWeightG": 125,
+          "totalPrintDurationMinutes": 150,
+          "baseCost": 1.93,
+          "additionalCost": 0,
+          "finalTotal": 59.96,
+          "pricing": {
+            "markupPercent": 15,
+            "setupFee": 12.5,
+            "subtotalBeforeRounding": 59.96,
+            "roundingAdjustment": 0
+          }
+        },
+        {
+          "id": "item-phone-stand-002",
+          "name": "Phone Stand",
+          "quantity": 10,
+          "printerId": "bambu_x1c",
+          "materialId": "petg_black",
+          "pricingProfileId": null,
+          "totalWeightG": 350,
+          "totalPrintDurationMinutes": 320,
+          "baseCost": 10.66,
+          "additionalCost": 5.0,
+          "finalTotal": 138.24,
+          "pricing": {
+            "markupPercent": 15,
+            "setupFee": 12.5,
+            "subtotalBeforeRounding": 138.24,
+            "roundingAdjustment": 0
+          }
+        }
+      ],
+      "batchQuoteSummary": {
+        "itemCount": 2,
+        "totalQuantity": 35,
+        "totalWeightG": 540,
+        "totalPrintDurationMinutes": 525,
+        "finalTotal": 198.20,
+        "printerAssignmentMode": "single",
+        "materialAssignmentMode": "per_item",
+        "batchPrinterId": "bambu_x1c",
+        "batchMaterialId": null,
+        "pricing": {
+          "failureRisk": {
+            "value": "4.5",
+            "scope": "batch",
+            "monetaryImpact": 3.15
+          },
+          "markupPercent": {
+            "value": "15",
+            "scope": "batch",
+            "monetaryImpact": 25.85
+          },
+          "labourRate": {
+            "value": "18",
+            "scope": "batch"
+          },
+          "additionalCostAmount": {
+            "value": "5",
+            "scope": "batch"
+          }
+        }
+      }
     }
   ]
 }
