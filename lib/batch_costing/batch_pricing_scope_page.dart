@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/settings/services/settings_service.
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchPricingScopePage extends ConsumerStatefulWidget {
   const BatchPricingScopePage({super.key});
@@ -109,14 +110,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.batchCostingPricingScopeAppBarTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home_outlined),
-            tooltip: 'Home',
-            onPressed: () =>
-                Navigator.of(context).popUntil((route) => route.isFirst),
-          ),
-        ],
+        actions: [homeButton(context)],
       ),
       body: SafeArea(
         child: Padding(

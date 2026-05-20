@@ -10,10 +10,13 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignm
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing_item_editor_dialog.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchCostingPage extends ConsumerStatefulWidget {
   const BatchCostingPage({super.key});
@@ -62,14 +65,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.batchCostingReviewAppBarTitle),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.home_outlined),
-            tooltip: 'Home',
-            onPressed: () =>
-                Navigator.of(context).popUntil((route) => route.isFirst),
-          ),
-        ],
+        actions: [homeButton(context)],
       ),
       body: SafeArea(
         child: Padding(
@@ -288,7 +284,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                       l10n.batchCostingReviewDurationLabel,
                       item.printDuration != null
                           ? Text(
-                              _formatDuration(item.printDuration!),
+                              formatDuration(item.printDuration!),
                               style: Theme.of(context).textTheme.bodyMedium,
                             )
                           : Text(
@@ -414,11 +410,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     );
   }
 
-  String _formatDuration(Duration duration) {
-    final hours = duration.inHours;
-    final minutes = duration.inMinutes.remainder(60);
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
-  }
+
 
   bool _hasMissingFields(List<BatchCostingItem> items) {
     return items.any(
@@ -436,28 +428,9 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   }
 
   Future<void> _showStartNewBatchDialog(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(l10n.batchCostingNewBatchDialogTitle),
-        content: Text(l10n.batchCostingNewBatchDialogBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: Text(l10n.cancelButton),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: Text(l10n.batchCostingSummaryStartNewBatchButton),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != true) return;
+    final confirmed = await showStartNewBatchDialog(context);
+    if (!confirmed) return;
     if (!context.mounted) return;
-
     ref.read(batchCostingProvider.notifier).reset();
   }
 
