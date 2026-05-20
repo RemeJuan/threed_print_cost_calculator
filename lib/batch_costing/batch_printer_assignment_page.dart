@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_assignment_page_shell.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searchable_selector.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_copies_dialog.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
@@ -14,6 +15,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
+
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
   const BatchPrinterAssignmentPage({super.key});
@@ -49,17 +51,9 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
         }
 
         return Scaffold(
-          appBar: AppBar(
-            title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
-            leading: BackButton(onPressed: () => Navigator.of(context).pop()),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.home_outlined),
-                tooltip: 'Home',
-                onPressed: () =>
-                    Navigator.of(context).popUntil((route) => route.isFirst),
-              ),
-            ],
+          appBar: buildAssignmentPageAppBar(
+            context,
+            l10n.batchCostingPrinterAssignmentAppBarTitle,
           ),
           body: SafeArea(
             child: Padding(
@@ -67,12 +61,8 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    l10n.batchCostingPrinterAssignmentSubtitle,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  SegmentedButton<BatchPrinterAssignmentMode>(
+                  AssignmentModeHeader(
+                    subtitle: l10n.batchCostingPrinterAssignmentSubtitle,
                     segments: [
                       ButtonSegment(
                         value: BatchPrinterAssignmentMode.batchWide,
@@ -146,26 +136,14 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                       ),
                     ),
                   const SizedBox(height: 16),
-                  SafeArea(
-                    child: Row(
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(
-                            l10n.batchCostingPrinterAssignmentPreviousButton,
-                          ),
-                        ),
-                        const Spacer(),
-                        FilledButton(
-                          onPressed: _nextEnabled(state)
-                              ? () => _continue(context, ref, state)
-                              : null,
-                          child: Text(
-                            l10n.batchCostingPrinterAssignmentNextButton,
-                          ),
-                        ),
-                      ],
-                    ),
+                  AssignmentNavRow(
+                    previousLabel:
+                        l10n.batchCostingPrinterAssignmentPreviousButton,
+                    nextLabel:
+                        l10n.batchCostingPrinterAssignmentNextButton,
+                    nextEnabled: _nextEnabled(state),
+                    onPrevious: () => Navigator.of(context).pop(),
+                    onNext: () => _continue(context, ref, state),
                   ),
                 ],
               ),
@@ -173,32 +151,14 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
           ),
         );
       },
-      loading: () => Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
+      loading: () => buildAssignmentLoadingState(
+        l10n.batchCostingPrinterAssignmentAppBarTitle,
       ),
-      error: (error, stackTrace) => Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(error.toString(), textAlign: TextAlign.center),
-              ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => ref.refresh(printersStreamProvider),
-                child: Text(l10n.retryButton),
-              ),
-            ],
-          ),
-        ),
+      error: (error, stackTrace) => buildAssignmentErrorState(
+        l10n.batchCostingPrinterAssignmentAppBarTitle,
+        error.toString(),
+        l10n.retryButton,
+        () => ref.refresh(printersStreamProvider),
       ),
     );
   }

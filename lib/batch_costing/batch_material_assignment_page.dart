@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_selector.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_assignment_page_shell.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searchable_selector.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allocation_card.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
@@ -43,17 +44,9 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
           });
 
         return Scaffold(
-          appBar: AppBar(
-            title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle),
-            leading: BackButton(onPressed: () => Navigator.of(context).pop()),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.home_outlined),
-                tooltip: 'Home',
-                onPressed: () =>
-                    Navigator.of(context).popUntil((route) => route.isFirst),
-              ),
-            ],
+          appBar: buildAssignmentPageAppBar(
+            context,
+            l10n.batchCostingMaterialAssignmentAppBarTitle,
           ),
           body: SafeArea(
             child: Padding(
@@ -61,12 +54,8 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    l10n.batchCostingMaterialAssignmentSubtitle,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  SegmentedButton<BatchMaterialAssignmentMode>(
+                  AssignmentModeHeader(
+                    subtitle: l10n.batchCostingMaterialAssignmentSubtitle,
                     segments: [
                       ButtonSegment(
                         value: BatchMaterialAssignmentMode.batchWide,
@@ -177,26 +166,14 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                           ),
                   ),
                   const SizedBox(height: 16),
-                  SafeArea(
-                    child: Row(
-                      children: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(
-                            l10n.batchCostingMaterialAssignmentPreviousButton,
-                          ),
-                        ),
-                        const Spacer(),
-                        FilledButton(
-                          onPressed: _nextEnabled(state, sortedMaterials)
-                              ? () => _continue(context, ref, state)
-                              : null,
-                          child: Text(
-                            l10n.batchCostingMaterialAssignmentNextButton,
-                          ),
-                        ),
-                      ],
-                    ),
+                  AssignmentNavRow(
+                    previousLabel:
+                        l10n.batchCostingMaterialAssignmentPreviousButton,
+                    nextLabel:
+                        l10n.batchCostingMaterialAssignmentNextButton,
+                    nextEnabled: _nextEnabled(state, sortedMaterials),
+                    onPrevious: () => Navigator.of(context).pop(),
+                    onNext: () => _continue(context, ref, state),
                   ),
                 ],
               ),
@@ -204,32 +181,14 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
           ),
         );
       },
-      loading: () => Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
+      loading: () => buildAssignmentLoadingState(
+        l10n.batchCostingMaterialAssignmentAppBarTitle,
       ),
-      error: (error, stackTrace) => Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(error.toString(), textAlign: TextAlign.center),
-              ),
-              const SizedBox(height: 16),
-              FilledButton(
-                onPressed: () => ref.refresh(materialsStreamProvider),
-                child: Text(l10n.retryButton),
-              ),
-            ],
-          ),
-        ),
+      error: (error, stackTrace) => buildAssignmentErrorState(
+        l10n.batchCostingMaterialAssignmentAppBarTitle,
+        error.toString(),
+        l10n.retryButton,
+        () => ref.refresh(materialsStreamProvider),
       ),
     );
   }
