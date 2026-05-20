@@ -1,5 +1,7 @@
 # Batch Costing
 
+ClickUp Task: `86c9u8fvv`
+
 ClickUp Parent Task: `86c9pag08`
 
 Final QA Task: `86c9uf7uv`
@@ -9,6 +11,14 @@ Final QA Task: `86c9uf7uv`
 Batch costing adds a dedicated workflow for quoting and saving multiple prints together without cluttering the existing single-print calculator screen.
 
 The current calculator remains the fast single-print path. Batch costing is a separate guided flow for jobs that contain multiple files, multiple quantities, split printer/material assignments, or mixed manual and G-code sourced items.
+
+Current implementation status:
+
+- End-to-end gated flow is implemented: review -> printer assignment -> material assignment -> pricing scope -> summary/save
+- Manual and G-code entry are both implemented
+- Quantity edits happen in batch review, not during batch G-code import
+- Saving completed batch quotes to history is implemented
+- Existing single-print calculator and single-file G-code apply flow remain available outside batch mode
 
 ## Product Intent
 
@@ -73,7 +83,7 @@ The workflow should default to simple batch-wide choices, then let users opt int
 
 Batch costing must be hidden unless `batchCostingEnabled` is true.
 
-Implementation: `batchCostingEnabledProvider` (in `lib/batch_costing/batch_costing_visibility.dart`) is a dual-gate requiring both `isPremium` AND a SharedPreferences boolean (`batchCostingEnabled` key, defaults `false`).
+Implementation: `batchCostingEnabledProvider` (in `lib/shared/providers/batch_costing_visibility.dart`) is a dual-gate requiring both `isPremium` AND a SharedPreferences boolean (`batchCostingEnabled` key, defaults `false`).
 
 Expected behaviour:
 
@@ -102,6 +112,12 @@ Batch costing has two product entry paths:
 
 Manual and G-code are separate entry points because they start from different user inputs. Single-file and multi-file G-code import should still feel like one coherent G-code import journey.
 
+Implemented entry points:
+
+- Calculator screen button -> `BatchCostingPage` when `batchCostingEnabledProvider` is true
+- Existing `GCodeImportPage` keeps the normal single-file apply path for quantity 1 and switches into batch import mode only when multiple files are selected
+- Batch review screen can add more manual items or open the batch G-code import page to add more files into the same in-memory batch session
+
 ## Expected V1 Flow
 
 Manual path:
@@ -119,7 +135,7 @@ G-code path:
 
 1. User enters the batch G-code import flow
 2. User selects one or more G-code files
-3. Single-file import preserves the rich G-code review/detail experience where applicable
+3. Single-file import uses a focused add-to-batch review card inside the batch import page
 4. Multi-file import uses a compact list with optional per-file details/preview
 5. Missing required details are captured before batch review
 6. Batch review shows imported items
@@ -200,6 +216,14 @@ Rules:
 - Prevent duplicate files from being imported into the same batch session (duplicate path+name is silently skipped)
 - Allow delete/remove of imported rows before continuing
 - Allow importing more files without clearing the existing batch unless the user starts a new batch
+
+Implemented quantity behaviour:
+
+- Existing `GCodeImportPage` no longer exposes a quantity field
+- Quantity 1 on the normal single-file G-code flow keeps the existing calculator apply path
+- Batch G-code import defaults each imported file to quantity 1
+- Batch quantities are adjusted later in batch review
+- Multi-file import shows helper copy that quantities can be adjusted in the next step
 
 Missing details:
 
@@ -466,13 +490,13 @@ Implementation files:
 - `lib/batch_costing/batch_material_assignment_page.dart` — material assignment
 - `lib/batch_costing/batch_pricing_scope_page.dart` — pricing scope configuration
 - `lib/batch_costing/batch_summary_page.dart` — summary/quote screen
-- `lib/batch_costing/models/batch_costing_item.dart` — `BatchCostingItem` model
-- `lib/batch_costing/models/batch_costing_state.dart` — `BatchCostingState`, `BatchAssignmentAllocation`
-- `lib/batch_costing/models/batch_pricing_state.dart` — `BatchPricingState`
-- `lib/batch_costing/batch_costing_notifier.dart` — Riverpod `NotifierProvider` for state management
-- `lib/batch_costing/batch_summary_calculator.dart` — pure calculation helper
-- `lib/batch_costing/batch_costing_visibility.dart` — `batchCostingEnabledProvider` dual-gate
-- `lib/history/models/batch_history_item.dart` — saved batch quote display in history
+- `lib/batch_costing/model/batch_costing_item.dart` — `BatchCostingItem` model
+- `lib/batch_costing/state/batch_costing_state.dart` — `BatchCostingState`, `BatchAssignmentAllocation`
+- `lib/batch_costing/state/batch_pricing_state.dart` — `BatchPricingState`
+- `lib/batch_costing/providers/batch_costing_notifier.dart` — Riverpod `NotifierProvider` for state management
+- `lib/batch_costing/helpers/batch_summary_calculator.dart` — pure calculation helper
+- `lib/shared/providers/batch_costing_visibility.dart` — `batchCostingEnabledProvider` dual-gate
+- `lib/history/components/batch_history_item.dart` — saved batch quote display in history
 - Navigation uses `MaterialPageRoute` push/pop (no GoRouter integration)
 
 General notes:
@@ -497,35 +521,66 @@ Rules:
 - Add strings to `lib/l10n/intl_*.arb`
 - Update every supported locale
 - Run `fvm flutter gen-l10n` when required
-- Generated localization output lives in `lib/generated/l10n.dart`
+- Generated localization output lives in `lib/l10n/app_localizations.dart`
 - Use the existing generated localization pattern
 - Widget tests that render localized text must include localization setup
 
-## Final QA Expectations
+## QA Checklist
 
-Before public release or beta feedback, verify:
+Use this checklist against the actual app build. Run both disabled and enabled states.
 
-- Feature flag off exposes no batch UI in normal flows
-- Manual path works end-to-end
-- G-code single-file batch path works
-- G-code multi-file batch path works
-- Missing G-code details are captured before batch review
-- Duplicate G-code imports are prevented
-- Imported rows can be removed
-- Info/details bottom sheet works
-- Printer assignment works in batch-wide and split-copy modes
-- Material assignment works in batch-wide and split-copy modes
-- Quantity edits do not leave stale assignments
-- Pricing values/scopes display correctly
-- Percentage rows do not sum percentages
-- Currency formatting appears on monetary values
-- Blank/zero pricing rows are hidden
-- Summary final total is visually prominent
-- Quote save prompts for a name
-- Saved quote appears in normal tabbed history
-- Batch history displays real item/copy counts
-- Start new batch clears state only after confirmation
-- Existing calculator, normal G-code import, and single-print history still work
+### Feature gate
+
+- [ ] Feature disabled: no visible batch UI on calculator, normal G-code import, or batch-only routes reached through normal navigation
+- [ ] Feature enabled: calculator batch entry button is reachable for premium users with the debug/admin flag enabled
+- [ ] Feature enabled: batch pages render real UI instead of empty placeholders
+
+### Entry and review
+
+- [ ] Manual batch entry creates the first real batch item
+- [ ] Manual batch item can be added, edited, and removed from batch review
+- [ ] Batch review auto-expands the first item, then preserves manual expand/collapse choices
+- [ ] Batch review preserves real item state while navigating forward/back inside the batch flow
+- [ ] Start new batch asks for confirmation before clearing in-memory batch state
+
+### G-code behaviour
+
+- [ ] Existing single-file G-code import still applies values into the calculator
+- [ ] Quantity 1 G-code import keeps the existing calculator flow
+- [ ] Multi-file selection from `GCodeImportPage` switches into batch import mode on the same page
+- [ ] Batch G-code import handles full success, partial success, and failure rows correctly
+- [ ] Missing weight or duration can be filled in before continuing
+- [ ] Duplicate files are skipped instead of creating duplicate batch items
+- [ ] Batch import details/info sheet opens and shows metadata/preview
+- [ ] Imported rows can be removed before continuing
+- [ ] Quantity greater than 1 is handled from batch review, not the import screen
+
+### Assignment steps
+
+- [ ] Printer assignment supports both batch-wide and per-item modes
+- [ ] Printer split allocations can cover the full item quantity without duplicating item rows
+- [ ] Quantity edits reset stale printer/material assignment state when needed
+- [ ] Material assignment supports both batch-wide and per-item modes
+- [ ] Material split allocations can cover the full item quantity without duplicating item rows
+- [ ] Stock warning appears when required material exceeds selected stock
+- [ ] Stock warning does not block continue
+
+### Pricing and summary
+
+- [ ] Pricing scope defaults are correct: additional cost=batch, labour=item, risk=item, markup=item
+- [ ] Batch-scoped values apply once to the batch total
+- [ ] Item-scoped values apply according to item quantity rules
+- [ ] Percentage rows show the rate without summing percentages across quantity
+- [ ] Blank/zero pricing rows stay hidden where they add no explanation
+- [ ] Summary shows item count, total quantity, total weight, total duration, item rows, and final total
+- [ ] Existing calculator totals remain unchanged outside the batch flow
+
+### Save and history
+
+- [ ] Save quote prompts for a user-editable name
+- [ ] Saved batch quote appears in normal tabbed history
+- [ ] Batch history rows show real item and copy counts
+- [ ] Existing single-print history still works unchanged
 
 ## Dead-Code Cleanup Expectations
 
