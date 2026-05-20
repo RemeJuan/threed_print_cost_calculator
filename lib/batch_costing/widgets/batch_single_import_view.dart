@@ -76,9 +76,11 @@ class BatchSingleImportView extends StatelessWidget {
                     l10n: l10n,
                     missingWeight: singleImport.missingWeight,
                     missingDuration: singleImport.missingDuration,
-                    weightController: singleImport.weightController,
-                    durationController: singleImport.durationController,
-                    onApply: onApplyDetails,
+                    onApply: (weightText, durationText) {
+                      singleImport.weightText = weightText;
+                      singleImport.durationText = durationText;
+                      onApplyDetails();
+                    },
                   ),
                 ],
               ],

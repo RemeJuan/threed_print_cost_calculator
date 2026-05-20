@@ -83,9 +83,11 @@ class BatchImportFileRow extends StatelessWidget {
                   l10n: l10n,
                   missingWeight: row.missingWeight,
                   missingDuration: row.missingDuration,
-                  weightController: row.weightController!,
-                  durationController: row.durationController!,
-                  onApply: onApply,
+                  onApply: (weightText, durationText) {
+                    row.weightText = weightText;
+                    row.durationText = durationText;
+                    onApply();
+                  },
                 ),
               ],
             ),
