@@ -489,12 +489,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
   }
 
   void _applySingleImportDetails(_BatchSingleImport singleImport) {
-    final notifier = ref.read(batchCostingProvider.notifier);
-    final stateItems = ref.read(batchCostingProvider).items;
-    final item = stateItems.firstWhere((i) => i.id == singleImport.batchItemId);
-
-    double? weight = item.printWeightG;
-    Duration? duration = item.printDuration;
+    double? weight = singleImport.result.filamentWeightG;
+    Duration? duration = singleImport.result.estimatedDuration;
 
     if (singleImport.missingWeight) {
       final parsed = double.tryParse(singleImport.weightController.text);
@@ -508,15 +504,12 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
       duration = Duration(minutes: parsed);
     }
 
-    final updated = item.copyWith(
-      printWeightG: weight,
-      printDuration: duration,
-    );
-    notifier.updateItem(updated);
     if (!mounted) return;
     setState(() {
       singleImport.missingWeight = false;
       singleImport.missingDuration = false;
+      singleImport.overrideWeightG = weight;
+      singleImport.overrideDuration = duration;
     });
   }
 
@@ -535,6 +528,27 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     final singleImport = _singleImport;
     if (singleImport == null || !singleImport.canContinue) return;
 
+    final importResult =
+        (singleImport.overrideWeightG != null ||
+                singleImport.overrideDuration != null)
+            ? GCodeImportResult(
+                slicer: singleImport.result.slicer,
+                estimatedDuration:
+                    singleImport.overrideDuration ??
+                    singleImport.result.estimatedDuration,
+                filamentLengthMm: singleImport.result.filamentLengthMm,
+                filamentWeightG:
+                    singleImport.overrideWeightG ??
+                    singleImport.result.filamentWeightG,
+                layerHeightMm: singleImport.result.layerHeightMm,
+                previewMetadata: singleImport.result.previewMetadata,
+                previewImageBytes: singleImport.result.previewImageBytes,
+                warnings: singleImport.result.warnings,
+                rawExtractedValues: singleImport.result.rawExtractedValues,
+                hasSafePreview: singleImport.result.hasSafePreview,
+              )
+            : singleImport.result;
+
     ref
         .read(batchCostingProvider.notifier)
         .addItem(
@@ -542,7 +556,7 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
             id: singleImport.batchItemId,
             displayName: singleImport.file.name,
             quantity: 1,
-            importResult: singleImport.result,
+            importResult: importResult,
             sourceFileName: singleImport.file.name,
             sourcePath: singleImport.file.path,
             sourceFileSizeBytes: singleImport.file.size,
@@ -811,6 +825,8 @@ class _BatchSingleImport {
   bool missingDuration;
   final TextEditingController weightController;
   final TextEditingController durationController;
+  double? overrideWeightG;
+  Duration? overrideDuration;
 
   bool get canContinue => !missingWeight && !missingDuration;
 
