@@ -99,6 +99,28 @@ class BatchCostingState with FormzMixin {
     );
   }
 
+  bool get hasSplitPrinters {
+    if (printerAssignmentMode != BatchPrinterAssignmentMode.perItem) {
+      return false;
+    }
+    return items.any((item) {
+      final allocs = itemPrinterAllocations[item.id];
+      if (allocs == null || allocs.length <= 1) return false;
+      return allocs.map((a) => a.targetId).toSet().length > 1;
+    });
+  }
+
+  bool get hasSplitMaterials {
+    if (materialAssignmentMode != BatchMaterialAssignmentMode.perItem) {
+      return false;
+    }
+    return items.any((item) {
+      final allocs = itemMaterialAllocations[item.id];
+      if (allocs == null || allocs.length <= 1) return false;
+      return allocs.map((a) => a.targetId).toSet().length > 1;
+    });
+  }
+
   @override
   List<FormzInput> get inputs => const [];
 }
