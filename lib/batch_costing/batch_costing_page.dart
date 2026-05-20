@@ -12,7 +12,6 @@ import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costi
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing_item_editor_dialog.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
@@ -43,10 +42,6 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ref.watch(batchCostingEnabledProvider)) {
-      return const SizedBox.shrink();
-    }
-
     final l10n = AppLocalizations.of(context)!;
     final batchState = ref.watch(batchCostingProvider);
     final items = batchState.items;
@@ -133,7 +128,9 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                       const SizedBox(height: 12),
                       OutlinedButton(
                         onPressed: () => _showStartNewBatchDialog(context),
-                        child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                        child: Text(
+                          l10n.batchCostingSummaryStartNewBatchButton,
+                        ),
                       ),
                     ],
                   ),
@@ -351,14 +348,12 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                 onPressed: () {
                   final src =
                       item.sourceType == BatchCostingItemSourceType.gcode
-                          ? 'gcode'
-                          : 'manual';
+                      ? 'gcode'
+                      : 'manual';
                   AppAnalytics.safeLog(
                     () => AppAnalytics.batchItemRemoved(source: src),
                   );
-                  ref
-                      .read(batchCostingProvider.notifier)
-                      .removeItem(item.id);
+                  ref.read(batchCostingProvider.notifier).removeItem(item.id);
                 },
                 icon: const Icon(Icons.delete_outline),
                 label: Text(l10n.batchCostingReviewRemoveButton),
@@ -409,8 +404,6 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
       labelPadding: const EdgeInsets.symmetric(horizontal: 6),
     );
   }
-
-
 
   bool _hasMissingFields(List<BatchCostingItem> items) {
     return items.any(
@@ -466,14 +459,10 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
         );
 
     if (wasEmpty) {
-      AppAnalytics.safeLog(
-        () => AppAnalytics.batchStarted(source: 'manual'),
-      );
+      AppAnalytics.safeLog(() => AppAnalytics.batchStarted(source: 'manual'));
     }
 
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchItemAdded(source: 'manual'),
-    );
+    AppAnalytics.safeLog(() => AppAnalytics.batchItemAdded(source: 'manual'));
   }
 
   Future<void> _editItem(BuildContext context, BatchCostingItem item) async {

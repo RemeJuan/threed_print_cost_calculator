@@ -5,7 +5,6 @@ enum TestDataAction {
   seed,
   purge,
   enablePremium,
-  enableBatchCosting,
   forceUpdateAvailable,
   forceNoUpdate,
   clearUpdateCooldown,
@@ -49,13 +48,6 @@ class TestDataToolsDialog extends StatelessWidget {
                 ),
                 onPressed: () => onAction(TestDataAction.enablePremium),
                 child: Text(l10n.enablePremiumButton),
-              ),
-              TextButton(
-                key: const ValueKey<String>(
-                  'settings.testData.enableBatchCosting.button',
-                ),
-                onPressed: () => onAction(TestDataAction.enableBatchCosting),
-                child: Text(l10n.enableBatchCostingButton),
               ),
               TextButton(
                 key: const ValueKey<String>(

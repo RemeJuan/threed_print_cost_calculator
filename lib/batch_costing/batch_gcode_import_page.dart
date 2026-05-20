@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_gcode_import_body.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_gcode_import_handler.dart';
 
@@ -42,8 +41,6 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();
-
     final l10n = AppLocalizations.of(context)!;
 
     final body = BatchGcodeImportBody(
@@ -51,27 +48,19 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
       singleImport: _pageState.singleImport,
       singleImportError: _pageState.singleImportError,
       loading: _pageState.loading,
-      onPickFiles: () => _handler.pickAndImport(
-        context,
-        _pageState,
-        setState,
-      ),
+      onPickFiles: () => _handler.pickAndImport(context, _pageState, setState),
       onRemoveSingleImport: () {
         _handler.removeSingleImport(_pageState.singleImport!, setState);
         _pageState.singleImport = null;
       },
       onApplySingleImportDetails: () {
         if (_pageState.singleImport != null) {
-          _handler.applySingleImportDetails(
-            _pageState.singleImport!,
-            setState,
-          );
+          _handler.applySingleImportDetails(_pageState.singleImport!, setState);
         }
       },
       onConfirmSingleImport: () =>
           _handler.confirmSingleImport(context, _pageState.singleImport!),
-      onRemoveRow: (row) =>
-          _handler.removeRow(row, _pageState.rows, setState),
+      onRemoveRow: (row) => _handler.removeRow(row, _pageState.rows, setState),
       onApplyDetails: (row) => _handler.applyDetails(row, setState),
     );
 

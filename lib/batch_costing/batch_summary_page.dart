@@ -8,7 +8,6 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_s
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
@@ -31,9 +30,12 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _analyticsFired) return;
       _analyticsFired = true;
-      if (!ref.read(batchCostingEnabledProvider)) return;
+
       final s = ref.read(batchCostingProvider);
-      final copyCount = s.items.fold<int>(0, (sum, item) => sum + item.quantity);
+      final copyCount = s.items.fold<int>(
+        0,
+        (sum, item) => sum + item.quantity,
+      );
       AppAnalytics.safeLog(
         () => AppAnalytics.batchSummaryViewed(
           itemCount: s.items.length,
@@ -53,8 +55,6 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();
-
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
     if (state.items.isEmpty) {
@@ -270,10 +270,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     );
   }
 
-  Widget _emptyState(
-    BuildContext context,
-    AppLocalizations l10n,
-  ) {
+  Widget _emptyState(BuildContext context, AppLocalizations l10n) {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.batchCostingSummaryAppBarTitle),
@@ -440,5 +437,4 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
   }
 
   bool _showPricing(String value) => value.isNotEmpty && value != '0';
-
 }

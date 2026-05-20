@@ -9,7 +9,6 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_s
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
@@ -71,8 +70,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
   }
 
   Future<void> _loadDefaults() async {
-    if (!ref.read(batchCostingEnabledProvider)) return;
-
     late final GeneralSettingsModel settings;
     try {
       settings = await ref.read(settingsServiceProvider).get();
@@ -102,8 +99,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();
-
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
 
@@ -218,7 +213,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                       const Spacer(),
                       FilledButton(
                         onPressed: () => _continue(context),
-                        child: Text(l10n.batchCostingPrinterAssignmentNextButton),
+                        child: Text(
+                          l10n.batchCostingPrinterAssignmentNextButton,
+                        ),
                       ),
                     ],
                   ),
@@ -344,8 +341,8 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
             : 'batch',
         additionalCostScope:
             pricing.additionalCostAmount.scope == BatchPricingScope.item
-                ? 'item'
-                : 'batch',
+            ? 'item'
+            : 'batch',
       ),
     );
 

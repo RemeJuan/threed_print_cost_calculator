@@ -14,16 +14,12 @@ import 'package:threed_print_cost_calculator/database/repositories/printers_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
-
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
   const BatchPrinterAssignmentPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();
-
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
     final printersAsync = ref.watch(printersStreamProvider);
@@ -139,8 +135,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                   AssignmentNavRow(
                     previousLabel:
                         l10n.batchCostingPrinterAssignmentPreviousButton,
-                    nextLabel:
-                        l10n.batchCostingPrinterAssignmentNextButton,
+                    nextLabel: l10n.batchCostingPrinterAssignmentNextButton,
                     nextEnabled: _nextEnabled(state),
                     onPrevious: () => Navigator.of(context).pop(),
                     onNext: () => _continue(context, ref, state),
@@ -206,10 +201,12 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
       return;
     }
 
-    final mode = state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide
+    final mode =
+        state.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide
         ? 'batch'
         : 'split';
-    final hasSplit = state.printerAssignmentMode == BatchPrinterAssignmentMode.perItem &&
+    final hasSplit =
+        state.printerAssignmentMode == BatchPrinterAssignmentMode.perItem &&
         state.items.any((item) {
           final allocs = state.itemPrinterAllocations[item.id];
           if (allocs == null || allocs.length <= 1) return false;

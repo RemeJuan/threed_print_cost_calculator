@@ -13,7 +13,6 @@ import 'package:threed_print_cost_calculator/history/provider/history_providers.
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
@@ -107,11 +106,6 @@ class _SettingsVersionTapTargetState
         break;
       case TestDataAction.enablePremium:
         await _enablePremiumFlow(container: container, l10n: l10n);
-        break;
-      case TestDataAction.enableBatchCosting:
-        await container
-            .read(batchCostingEnabledProvider.notifier)
-            .setBatchCostingEnabled(true);
         break;
       case TestDataAction.forceUpdateAvailable:
         container.read(updateCheckerProvider.notifier).forceAvailable();
@@ -301,7 +295,6 @@ class _SettingsVersionTapTargetState
     container.invalidate(settingsStreamProvider);
     container.invalidate(printersStreamProvider);
     container.invalidate(materialsStreamProvider);
-    container.invalidate(batchCostingEnabledProvider);
     container.refresh(hideProPromotionsProvider);
     container.invalidate(printersProvider);
     container.invalidate(materialsProvider);

@@ -16,7 +16,6 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class BatchMaterialAssignmentPage extends ConsumerWidget {
@@ -24,8 +23,6 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();
-
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
     final materialsAsync = ref.watch(materialsStreamProvider);
@@ -169,8 +166,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                   AssignmentNavRow(
                     previousLabel:
                         l10n.batchCostingMaterialAssignmentPreviousButton,
-                    nextLabel:
-                        l10n.batchCostingMaterialAssignmentNextButton,
+                    nextLabel: l10n.batchCostingMaterialAssignmentNextButton,
                     nextEnabled: _nextEnabled(state, sortedMaterials),
                     onPrevious: () => Navigator.of(context).pop(),
                     onNext: () => _continue(context, ref, state),
@@ -215,8 +211,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
     List<MaterialModel> sortedMaterials,
   ) {
     if (sortedMaterials.isEmpty) return false;
-    if (state.materialAssignmentMode ==
-        BatchMaterialAssignmentMode.batchWide) {
+    if (state.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide) {
       return state.batchMaterialId != null;
     }
     return state.items.isNotEmpty;
@@ -242,12 +237,12 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
       return;
     }
 
-    final mode = state.materialAssignmentMode ==
-            BatchMaterialAssignmentMode.batchWide
+    final mode =
+        state.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide
         ? 'batch'
         : 'split';
-    final hasSplit = state.materialAssignmentMode ==
-            BatchMaterialAssignmentMode.perItem &&
+    final hasSplit =
+        state.materialAssignmentMode == BatchMaterialAssignmentMode.perItem &&
         state.items.any((item) {
           final allocs = state.itemMaterialAllocations[item.id];
           if (allocs == null || allocs.length <= 1) return false;
