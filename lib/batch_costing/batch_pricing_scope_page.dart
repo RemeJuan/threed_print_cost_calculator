@@ -212,20 +212,22 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(
-                        l10n.batchCostingPrinterAssignmentPreviousButton,
+                SafeArea(
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          l10n.batchCostingPrinterAssignmentPreviousButton,
+                        ),
                       ),
-                    ),
-                    const Spacer(),
-                    FilledButton(
-                      onPressed: () => _continue(context),
-                      child: Text(l10n.batchCostingPrinterAssignmentNextButton),
-                    ),
-                  ],
+                      const Spacer(),
+                      FilledButton(
+                        onPressed: () => _continue(context),
+                        child: Text(l10n.batchCostingPrinterAssignmentNextButton),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

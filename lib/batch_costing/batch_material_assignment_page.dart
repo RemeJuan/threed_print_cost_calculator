@@ -177,24 +177,26 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                           ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          l10n.batchCostingMaterialAssignmentPreviousButton,
+                  SafeArea(
+                    child: Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(
+                            l10n.batchCostingMaterialAssignmentPreviousButton,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      FilledButton(
-                        onPressed: _nextEnabled(state, sortedMaterials)
-                            ? () => _continue(context, ref, state)
-                            : null,
-                        child: Text(
-                          l10n.batchCostingMaterialAssignmentNextButton,
+                        const Spacer(),
+                        FilledButton(
+                          onPressed: _nextEnabled(state, sortedMaterials)
+                              ? () => _continue(context, ref, state)
+                              : null,
+                          child: Text(
+                            l10n.batchCostingMaterialAssignmentNextButton,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

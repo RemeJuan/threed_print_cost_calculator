@@ -146,24 +146,26 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                       ),
                     ),
                   const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          l10n.batchCostingPrinterAssignmentPreviousButton,
+                  SafeArea(
+                    child: Row(
+                      children: [
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text(
+                            l10n.batchCostingPrinterAssignmentPreviousButton,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      FilledButton(
-                        onPressed: _nextEnabled(state)
-                            ? () => _continue(context, ref, state)
-                            : null,
-                        child: Text(
-                          l10n.batchCostingPrinterAssignmentNextButton,
+                        const Spacer(),
+                        FilledButton(
+                          onPressed: _nextEnabled(state)
+                              ? () => _continue(context, ref, state)
+                              : null,
+                          child: Text(
+                            l10n.batchCostingPrinterAssignmentNextButton,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
