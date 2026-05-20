@@ -7,10 +7,10 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dar
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_section.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/mocks.dart';
+import '../../../test_support/fake_purchases_gateway.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -53,12 +53,11 @@ void main() {
     });
 
     testWidgets('opens batch costing shell when enabled', (tester) async {
-      SharedPreferences.setMockInitialValues({
-        batchCostingEnabledPreferenceKey: true,
-      });
       final db = await tester.pumpApp(const CalculatorPage(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
-        isPremiumProvider.overrideWithValue(true),
+        purchasesGatewayProvider.overrideWithValue(
+          FakePurchasesGateway.premium(),
+        ),
       ]);
       addTearDown(() => db.close());
 

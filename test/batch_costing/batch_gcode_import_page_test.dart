@@ -2,8 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
@@ -11,29 +9,14 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.da
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
 
 void main() {
   setUpAll(setupTest);
 
-  testWidgets('hides flow when batch costing disabled', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-    await tester.pumpApp(const BatchGCodeImportPage(), [
-      isPremiumProvider.overrideWithValue(false),
-    ]);
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(BatchGCodeImportPage)),
-    )!;
-    expect(find.text(l10n.batchGcodeImportTitle), findsNothing);
-    expect(find.text(l10n.batchGcodeImportPickButton), findsNothing);
-  });
 
   testWidgets('imports multiple files and seeds batch items', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('one.gcode'), _file('two.gcode')];
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
@@ -56,9 +39,6 @@ void main() {
   testWidgets('moves single-file import into batch review on confirm', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(
         _FakePicker([_file('single.gcode')]),
@@ -87,9 +67,6 @@ void main() {
   });
 
   testWidgets('shows imported details sheet from ready row', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(
         _FakePicker([_file('preview-a.gcode'), _file('preview-b.gcode')]),
@@ -119,9 +96,6 @@ void main() {
   testWidgets('shows failures and blocks continue when single import fails', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(
         _FakePicker([_file('bad.gcode')]),
@@ -146,9 +120,6 @@ void main() {
   testWidgets('imports files with missing weight and shows needs-details', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('no-weight.gcode')];
     final noWeightResult = GCodeImportResult(
       slicer: GCodeSlicer.prusaSlicer,
@@ -184,9 +155,6 @@ void main() {
   });
 
   testWidgets('fills in missing weight and continues', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('no-weight.gcode')];
     final noWeightResult = GCodeImportResult(
       slicer: GCodeSlicer.prusaSlicer,
@@ -235,9 +203,6 @@ void main() {
   });
 
   testWidgets('shows importing then ready states', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('slow.gcode')];
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
@@ -261,9 +226,6 @@ void main() {
   });
 
   testWidgets('choose files disabled while loading', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('one.gcode'), _file('two.gcode')];
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
@@ -296,9 +258,6 @@ void main() {
   });
 
   testWidgets('deletes ready imported row', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('one.gcode'), _file('two.gcode')];
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
@@ -329,9 +288,6 @@ void main() {
   testWidgets(
     'deleting finished row while another import is pending stays stable',
     (tester) async {
-      SharedPreferences.setMockInitialValues({
-        batchCostingEnabledPreferenceKey: true,
-      });
       final files = [_file('fast.gcode'), _file('slow.gcode')];
       await tester.pumpApp(const BatchGCodeImportPage(), [
         gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
@@ -374,9 +330,6 @@ void main() {
   );
 
   testWidgets('deletes needs-details row', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final noWeightResult = GCodeImportResult(
       slicer: GCodeSlicer.prusaSlicer,
       estimatedDuration: const Duration(minutes: 30),
@@ -416,9 +369,6 @@ void main() {
   });
 
   testWidgets('delete all rows returns to empty state', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('one.gcode')];
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
@@ -445,9 +395,6 @@ void main() {
   });
 
   testWidgets('shows quantity hint text', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     await tester.pumpApp(const BatchGCodeImportPage(), [
       isPremiumProvider.overrideWithValue(true),
     ]);
@@ -461,9 +408,6 @@ void main() {
   testWidgets('duplicate file selection does not create duplicate rows', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('one.gcode'), _file('two.gcode')];
     final picker = _FakePicker(files);
     await tester.pumpApp(const BatchGCodeImportPage(), [
@@ -494,9 +438,6 @@ void main() {
   });
 
   testWidgets('duplicate selection shows snackbar', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final files = [_file('one.gcode')];
     final picker = _FakePicker(files);
     await tester.pumpApp(const BatchGCodeImportPage(), [

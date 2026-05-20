@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
@@ -10,7 +8,6 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_s
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
 
@@ -28,9 +25,6 @@ void main() {
   ];
 
   testWidgets('defaults to expected pricing scopes', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final notifier = _FakeBatchCostingNotifier(items);
 
     await tester.pumpApp(const BatchPricingScopePage(), [
@@ -50,9 +44,6 @@ void main() {
   });
 
   testWidgets('scope can change per field', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final notifier = _FakeBatchCostingNotifier(items);
 
     await tester.pumpApp(const BatchPricingScopePage(), [
@@ -94,9 +85,6 @@ void main() {
   });
 
   testWidgets('invalid values block continue', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final notifier = _FakeBatchCostingNotifier(items);
 
     await tester.pumpApp(const BatchPricingScopePage(), [
@@ -127,9 +115,6 @@ void main() {
   });
 
   testWidgets('valid values allow continue and preserve state', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final notifier = _FakeBatchCostingNotifier(items);
 
     await tester.pumpApp(const BatchPricingScopePage(), [
@@ -171,15 +156,6 @@ void main() {
     );
   });
 
-  testWidgets('disabled feature prevents access', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-
-    await tester.pumpApp(const BatchPricingScopePage(), [
-      isPremiumProvider.overrideWithValue(false),
-    ]);
-
-    expect(find.text('Pricing scope'), findsNothing);
-  });
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {

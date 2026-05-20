@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
@@ -9,7 +7,6 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_s
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 import '../helpers/helpers.dart';
@@ -43,9 +40,6 @@ void main() {
   ];
 
   testWidgets('batch-wide printer updates state', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final notifier = _FakeBatchCostingNotifier(items);
     await tester.pumpApp(const BatchPrinterAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
@@ -63,9 +57,6 @@ void main() {
   });
 
   testWidgets('per-item mode uses reusable picker', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
     final notifier = _FakeBatchCostingNotifier(items);
     await tester.pumpApp(const BatchPrinterAssignmentPage(), [
       batchCostingProvider.overrideWith(() => notifier),
@@ -97,13 +88,6 @@ void main() {
     expect(find.text('Printer 1'), findsOneWidget);
   });
 
-  testWidgets('disabled feature shows nothing', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
-      isPremiumProvider.overrideWithValue(false),
-    ]);
-    expect(find.text('Printer assignment'), findsNothing);
-  });
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {

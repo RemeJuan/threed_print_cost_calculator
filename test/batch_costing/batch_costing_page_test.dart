@@ -1,35 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 import '../helpers/helpers.dart';
 
 void main() {
   setUpAll(setupTest);
 
-  testWidgets('hides the batch review when disabled', (tester) async {
-    SharedPreferences.setMockInitialValues({});
-
-    await tester.pumpApp(const BatchCostingPage(), [
-      isPremiumProvider.overrideWithValue(false),
-    ]);
-
-    expect(find.text('Batch item review'), findsNothing);
-    expect(find.text('No batch items yet'), findsNothing);
-  });
-
   testWidgets('shows review items and removes them', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     final item = BatchCostingItem.manual(
       id: 'item-1',
       displayName: 'Benchy',
@@ -64,10 +46,6 @@ void main() {
   });
 
   testWidgets('adds edits and removes manual items', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
@@ -131,10 +109,6 @@ void main() {
   });
 
   testWidgets('validates add and edit forms', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
@@ -203,10 +177,6 @@ void main() {
   });
 
   testWidgets('defaults to 0 for numeric fields in add dialog', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
@@ -245,10 +215,6 @@ void main() {
   testWidgets('entering digit into defaulted 0 field replaces the 0', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
@@ -307,10 +273,6 @@ void main() {
   });
 
   testWidgets('default 0 values block save', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
@@ -337,10 +299,6 @@ void main() {
   });
 
   testWidgets('valid input saves correctly from 0 defaults', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
         () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),

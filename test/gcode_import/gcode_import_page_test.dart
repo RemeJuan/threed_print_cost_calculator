@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
@@ -13,7 +12,6 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_pick
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
 
 import '../helpers/helpers.dart';
 
@@ -188,10 +186,6 @@ void main() {
   testWidgets('keeps quantity field hidden when batch costing enabled', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     await tester.pumpApp(const GCodeImportPage(), [
       isPremiumProvider.overrideWithValue(true),
       gcodeImportControllerProvider.overrideWith(
@@ -219,10 +213,6 @@ void main() {
   testWidgets('quantity field stays hidden when batch costing disabled', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: false,
-    });
-
     await tester.pumpApp(const GCodeImportPage(), [
       isPremiumProvider.overrideWithValue(true),
       gcodeImportControllerProvider.overrideWith(
@@ -248,10 +238,6 @@ void main() {
 
   testWidgets('quantity one uses existing calculator path', (tester) async {
     final observer = _TestNavigatorObserver();
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     final container = await tester.pumpAppWithContainer(
       const GCodeImportPage(),
       overrides: [
@@ -288,10 +274,6 @@ void main() {
   testWidgets('multi-file picker switches into batch flow on same page', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      batchCostingEnabledPreferenceKey: true,
-    });
-
     final files = [_pickedFile('one.gcode'), _pickedFile('two.gcode')];
 
     await tester.pumpApp(const GCodeImportPage(), [
