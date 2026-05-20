@@ -1,3 +1,12 @@
+## [2.11.0] - 2026-05-20
+
+### Added
+- Batch costing for premium users — import multiple G-code files, assign printers and materials per item, set quantities, add manual items, calculate batch totals, and save quotes to history.
+- Searchable list selectors for batch printer and material assignment.
+- Monetary impact display in batch pricing summary and history.
+- Manual override controls for G-code import values.
+- Additional cost now displayed in the pricing section alongside other cost rows.
+
 ## [2.10.0] - 2026-05-15
 
 ### Added
@@ -196,6 +205,7 @@
 ### Added
 - Added in-app update checker
 
+[2.11.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.10.0...2.11.0
 [2.10.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.4...2.10.0
 [2.9.4]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.3...2.9.4
 [2.9.3]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.2...2.9.3

@@ -1,15 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/components/settings_version_tap_target.dart';
-import 'package:threed_print_cost_calculator/shared/providers/batch_costing_visibility.dart';
+import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -252,6 +254,12 @@ void main() {
     final fakeCalculator = FakeCalculatorNotifier();
     final fakeHistory = _FakeHistoryPagedNotifier();
 
+    final jsonString =
+        await rootBundle.loadString('assets/whats_new.json');
+    final json = jsonDecode(jsonString) as Map<String, dynamic>;
+    final announcement = WhatsNewAnnouncement.fromJson(json)!;
+    final en = announcement.locales['en']!;
+
     final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
       calculatorProvider.overrideWith(() => fakeCalculator),
       historyPagedProvider.overrideWith(() => fakeHistory),
@@ -273,100 +281,16 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('New: Client Pricing'), findsOneWidget);
-    expect(find.text('Start free trial'), findsOneWidget);
-    expect(find.text('Got it'), findsOneWidget);
+    expect(find.text(en.title), findsOneWidget);
+    expect(find.text(en.unlockProCta), findsOneWidget);
+    expect(find.text(en.cta), findsOneWidget);
     expect(fakeAnalytics.lastName, 'whats_new_shown');
-    expect(fakeAnalytics.lastParams?['wn_id'], 'pricing_model_2026_05');
+    expect(fakeAnalytics.lastParams?['wn_id'], announcement.id);
 
-    await tester.tap(find.text('Got it'));
+    await tester.tap(find.text(en.cta));
     await tester.pumpAndSettle();
 
     expect(fakeAnalytics.lastName, 'whats_new_dismissed');
-    expect(fakeAnalytics.lastParams?['wn_id'], 'pricing_model_2026_05');
-  });
-
-  testWidgets('can enable batch costing from hidden tools', (tester) async {
-    final fakeCalculator = FakeCalculatorNotifier();
-    final fakeHistory = _FakeHistoryPagedNotifier();
-
-    final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
-      calculatorProvider.overrideWith(() => fakeCalculator),
-      historyPagedProvider.overrideWith(() => fakeHistory),
-      testDataServiceProvider.overrideWith((ref) => _FakeTestDataService(ref)),
-    ]);
-    addTearDown(() => db.close());
-
-    await tester.pumpAndSettle();
-    await _openHiddenTools(tester);
-
-    await _revealHiddenToolButton(
-      tester,
-      'settings.testData.enableBatchCosting.button',
-    );
-    await tester.tap(
-      find.byKey(
-        const ValueKey<String>('settings.testData.enableBatchCosting.button'),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    final container = ProviderScope.containerOf(
-      tester.element(
-        find.byKey(const ValueKey<String>('settings.version.tapTarget')),
-      ),
-      listen: false,
-    );
-
-    expect(container.read(batchCostingEnabledProvider), isTrue);
-  });
-
-  testWidgets('purge resets batch costing visibility state', (tester) async {
-    final fakeCalculator = FakeCalculatorNotifier();
-    final fakeHistory = _FakeHistoryPagedNotifier();
-
-    final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
-      calculatorProvider.overrideWith(() => fakeCalculator),
-      historyPagedProvider.overrideWith(() => fakeHistory),
-      testDataServiceProvider.overrideWith((ref) => _FakeTestDataService(ref)),
-    ]);
-    addTearDown(() => db.close());
-
-    await tester.pumpAndSettle();
-    await _openHiddenTools(tester);
-    await _revealHiddenToolButton(
-      tester,
-      'settings.testData.enableBatchCosting.button',
-    );
-    await tester.tap(
-      find.byKey(
-        const ValueKey<String>('settings.testData.enableBatchCosting.button'),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    final container = ProviderScope.containerOf(
-      tester.element(
-        find.byKey(const ValueKey<String>('settings.version.tapTarget')),
-      ),
-      listen: false,
-    );
-
-    expect(container.read(batchCostingEnabledProvider), isTrue);
-
-    await _openHiddenTools(tester);
-    await _revealHiddenToolButton(tester, 'settings.testData.purge.button');
-    await tester.tap(
-      find.byKey(const ValueKey<String>('settings.testData.purge.button')),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.text(
-        lookupAppLocalizations(const Locale('en')).purgeLocalDataButton,
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(container.read(batchCostingEnabledProvider), isFalse);
+    expect(fakeAnalytics.lastParams?['wn_id'], announcement.id);
   });
 }
