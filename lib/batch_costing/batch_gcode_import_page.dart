@@ -168,7 +168,17 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     if (widget.embedded) return body;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.batchGcodeImportTitle)),
+      appBar: AppBar(
+        title: Text(l10n.batchGcodeImportTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: 'Home',
+            onPressed: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
+          ),
+        ],
+      ),
       body: body,
     );
   }

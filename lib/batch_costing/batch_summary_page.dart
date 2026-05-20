@@ -74,7 +74,17 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
         : GeneralSettingsModel.initial();
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.batchCostingSummaryAppBarTitle)),
+      appBar: AppBar(
+        title: Text(l10n.batchCostingSummaryAppBarTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: 'Home',
+            onPressed: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -277,7 +287,17 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     AppLocalizations l10n,
   ) {
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.batchCostingSummaryAppBarTitle)),
+      appBar: AppBar(
+        title: Text(l10n.batchCostingSummaryAppBarTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: 'Home',
+            onPressed: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
+          ),
+        ],
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),

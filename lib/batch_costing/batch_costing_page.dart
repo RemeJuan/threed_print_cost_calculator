@@ -60,7 +60,17 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.batchCostingReviewAppBarTitle)),
+      appBar: AppBar(
+        title: Text(l10n.batchCostingReviewAppBarTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_outlined),
+            tooltip: 'Home',
+            onPressed: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),

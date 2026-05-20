@@ -46,6 +46,14 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
           appBar: AppBar(
             title: Text(l10n.batchCostingMaterialAssignmentAppBarTitle),
             leading: BackButton(onPressed: () => Navigator.of(context).pop()),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.home_outlined),
+                tooltip: 'Home',
+                onPressed: () =>
+                    Navigator.of(context).popUntil((route) => route.isFirst),
+              ),
+            ],
           ),
           body: SafeArea(
             child: Padding(
