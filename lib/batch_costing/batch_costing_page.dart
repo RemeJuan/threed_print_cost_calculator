@@ -123,17 +123,24 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
               ),
               if (items.isNotEmpty) ...[
                 const SizedBox(height: 16),
-                FilledButton.icon(
-                  onPressed: _hasMissingFields(items)
-                      ? null
-                      : () => _continueToPrinterAssignment(context),
-                  icon: const Icon(Icons.arrow_forward),
-                  label: Text(l10n.batchCostingReviewContinueButton),
-                ),
-                const SizedBox(height: 12),
-                OutlinedButton(
-                  onPressed: () => _showStartNewBatchDialog(context),
-                  child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      FilledButton.icon(
+                        onPressed: _hasMissingFields(items)
+                            ? null
+                            : () => _continueToPrinterAssignment(context),
+                        icon: const Icon(Icons.arrow_forward),
+                        label: Text(l10n.batchCostingReviewContinueButton),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton(
+                        onPressed: () => _showStartNewBatchDialog(context),
+                        child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ],

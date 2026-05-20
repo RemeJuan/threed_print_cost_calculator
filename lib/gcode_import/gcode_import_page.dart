@@ -43,9 +43,10 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
           _multiMode ? l10n.batchGcodeImportTitle : l10n.importGcodePageTitle,
         ),
       ),
-      body: _multiMode
-          ? BatchGCodeImportPage(initialFiles: _multiFiles, embedded: true)
-          : SingleChildScrollView(
+      body: SafeArea(
+        child: _multiMode
+            ? BatchGCodeImportPage(initialFiles: _multiFiles, embedded: true)
+            : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Column(
@@ -128,6 +129,7 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
                 ),
               ),
             ),
+      ),
     );
   }
 
