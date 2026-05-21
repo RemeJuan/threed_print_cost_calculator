@@ -63,6 +63,12 @@ GeneralSettingsModel _settings({
   String wearAndTear = '',
   String failureRisk = '',
   String labourRate = '',
+  String pricingMarkupPercent = '',
+  String pricingSetupFee = '',
+  String pricingRoundingMode = 'none',
+  String currencySymbol = '',
+  String currencyPosition = 'before',
+  bool currencySpacing = false,
 }) {
   return GeneralSettingsModel(
     electricityCost: electricityCost,
@@ -72,6 +78,12 @@ GeneralSettingsModel _settings({
     wearAndTear: wearAndTear,
     failureRisk: failureRisk,
     labourRate: labourRate,
+    pricingMarkupPercent: pricingMarkupPercent,
+    pricingSetupFee: pricingSetupFee,
+    pricingRoundingMode: pricingRoundingMode,
+    currencySymbol: currencySymbol,
+    currencyPosition: currencyPosition,
+    currencySpacing: currencySpacing,
   );
 }
 
@@ -171,6 +183,112 @@ void main() {
       expect(repo.savedSettings.single.labourRate, '24.5');
     });
 
+    testWidgets('persists markup after debounce', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      await tester.enterText(
+        _field('settings.workCost.pricingMarkupPercent.input'),
+        '12.5',
+      );
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      expect(repo.savedSettings, hasLength(1));
+      expect(repo.savedSettings.single.pricingMarkupPercent, '12.5');
+    });
+
+    testWidgets('persists setup fee after debounce', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      await tester.enterText(
+        _field('settings.workCost.pricingSetupFee.input'),
+        '8.75',
+      );
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      expect(repo.savedSettings, hasLength(1));
+      expect(repo.savedSettings.single.pricingSetupFee, '8.75');
+    });
+
+    testWidgets('persists rounding mode selection', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      await tester.tap(
+        find.byKey(
+          const ValueKey<String>(
+            'settings.workCost.pricingRoundingMode.dropdown',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Ends in .99').last);
+      await tester.pumpAndSettle();
+
+      expect(repo.savedSettings, hasLength(1));
+      expect(repo.savedSettings.single.pricingRoundingMode, '.99');
+    });
+
+    testWidgets('persists currency symbol and position', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      await tester.enterText(
+        _field('settings.workCost.currencySymbol.input'),
+        '€',
+      );
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      await tester.tap(
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencyPosition.dropdown'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('After').last);
+      await tester.pumpAndSettle();
+
+      expect(repo.savedSettings, isNotEmpty);
+      expect(repo.savedSettings.last.currencySymbol, '€');
+      expect(repo.savedSettings.last.currencyPosition, 'after');
+    });
+
     testWidgets('does not save invalid work cost input', (tester) async {
       final repo = _FakeSettingsRepository();
       final db = await tester.pumpApp(const WorkCostsSettings(), [
@@ -195,6 +313,14 @@ void main() {
         _field('settings.workCost.labourRate.input'),
         'abc',
       );
+      await tester.enterText(
+        _field('settings.workCost.pricingMarkupPercent.input'),
+        'abc',
+      );
+      await tester.enterText(
+        _field('settings.workCost.pricingSetupFee.input'),
+        'abc',
+      );
       await tester.pump(const Duration(milliseconds: 401));
       await tester.pump();
 
@@ -213,7 +339,13 @@ void main() {
       addTearDown(repo.dispose);
 
       repo.emit(
-        _settings(wearAndTear: '0.10', failureRisk: '0.05', labourRate: '20'),
+        _settings(
+          wearAndTear: '0.10',
+          failureRisk: '0.05',
+          labourRate: '20',
+          pricingMarkupPercent: '10',
+          pricingSetupFee: '5',
+        ),
       );
       await tester.pump();
 
@@ -224,7 +356,13 @@ void main() {
       await tester.pump();
 
       repo.emit(
-        _settings(wearAndTear: '0.20', failureRisk: '0.06', labourRate: '30'),
+        _settings(
+          wearAndTear: '0.20',
+          failureRisk: '0.06',
+          labourRate: '30',
+          pricingMarkupPercent: '12',
+          pricingSetupFee: '7',
+        ),
       );
       await tester.pump();
 
