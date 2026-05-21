@@ -1,6 +1,6 @@
 name: threed_print_cost_calculator
 description: A simple 3D Print cost calculator.
-version: 2.11.0+1
+version: 2.11.0+2
 publish_to: none
 
 environment:
@@ -55,6 +55,7 @@ dev_dependencies:
   flutter_lints: 6.0.0
   build_runner: 2.10.4
   freezed: 3.2.3
+  flutter_launcher_icons: ^0.14.4
   patrol: 4.5.0
   shared_preferences_platform_interface:
 
@@ -81,3 +82,17 @@ patrol:
     package_name: com.threed_print_calculator
   ios:
     bundle_id: com.threed-print-calculator
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  web:
+    generate: true
+    background_color: "#ffffff"
+    theme_color: "#ffffff"
+  image_path: "assets/icons/app_icon.png"
+  adaptive_icon_background: "#ffffff"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
+  adaptive_icon_monochrome: "assets/icons/app_icon_monochrome.png"
+  remove_alpha_ios: true
+  min_sdk_android: 21
