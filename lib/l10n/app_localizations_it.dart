@@ -801,6 +801,14 @@ class AppLocalizationsIt extends AppLocalizations {
       'Esportazione della cronologia dei costi di stampa 3D';
 
   @override
+  String get batchQuoteExportShareText =>
+      'Esportazione preventivo batch stampa 3D';
+
+  @override
+  String get mixedHistoryExportShareText =>
+      'Esportazione della cronologia dei costi di stampa 3D';
+
+  @override
   String get historyTeaserTitle =>
       'Conserva ogni preventivo di stampa in un unico posto';
 

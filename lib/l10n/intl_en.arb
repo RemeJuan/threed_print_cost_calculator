@@ -343,6 +343,8 @@
   },
   "historyCsvHeader": "Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Markup %,Markup Amount,Setup Fee,Rounding Mode,Subtotal Before Rounding,Rounding Adjustment,Final Price",
   "historyExportShareText": "3D Print Cost History Export",
+  "batchQuoteExportShareText": "3D Print Cost Batch Quote Export",
+  "mixedHistoryExportShareText": "3D Print Cost History Export",
   "historyTeaserTitle": "Keep every print estimate in one place",
   "historyTeaserDescription": "Review how history works before upgrading. Save completed estimates and export them any time with Pro.",
   "historyTeaserCta": "Save & export history with Pro",

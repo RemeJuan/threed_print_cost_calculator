@@ -796,6 +796,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get historyExportShareText => 'Export van 3D-printkostenoverzicht';
 
   @override
+  String get batchQuoteExportShareText => 'Export van 3D-printbatchofferte';
+
+  @override
+  String get mixedHistoryExportShareText =>
+      'Export van 3D-printkostenoverzicht';
+
+  @override
   String get historyTeaserTitle => 'Bewaar elke printschatting op één plek';
 
   @override

@@ -309,6 +309,8 @@
   },
   "historyCsvHeader": "Data,Impressora,Material,Materiais,Peso (g),Tempo,Eletricidade,Filamento,Mão de obra,Risco,Total,% de margem,Valor da margem,Taxa de configuração,Modo de arredondamento,Subtotal antes do arredondamento,Ajuste de arredondamento,Preço final",
   "historyExportShareText": "Exportação do histórico de custos de impressão 3D",
+  "batchQuoteExportShareText": "Exportação de orçamento em lote de impressão 3D",
+  "mixedHistoryExportShareText": "Exportação do histórico de custos de impressão 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de Privacidade",
   "@privacyPolicyLink": {},

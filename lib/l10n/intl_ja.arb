@@ -310,6 +310,8 @@
   },
   "historyCsvHeader": "日付,プリンター,材料,材料一覧,重量 (g),時間,電力,フィラメント,作業,リスク,合計,上乗せ率 %,上乗せ額,設定料,端数処理,端数処理前小計,端数調整,最終価格",
   "historyExportShareText": "3Dプリント費用履歴の書き出し",
+  "batchQuoteExportShareText": "3Dプリントバッチ見積もりの書き出し",
+  "mixedHistoryExportShareText": "3Dプリント費用履歴の書き出し",
   "@supportIdCopied": {},
   "privacyPolicyLink": "プライバシーポリシー",
   "@privacyPolicyLink": {},

@@ -795,6 +795,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get historyExportShareText => 'Export des 3D-Druck-Kostenverlaufs';
 
   @override
+  String get batchQuoteExportShareText => 'Export des 3D-Druck-Batch-Angebots';
+
+  @override
+  String get mixedHistoryExportShareText =>
+      'Export des 3D-Druck-Kostenverlaufs';
+
+  @override
   String get historyTeaserTitle =>
       'Alle Druckschätzungen an einem Ort speichern';
 

@@ -801,6 +801,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Exportación del historial de costes de impresión 3D';
 
   @override
+  String get batchQuoteExportShareText =>
+      'Exportación de presupuesto por lotes de impresión 3D';
+
+  @override
+  String get mixedHistoryExportShareText =>
+      'Exportación del historial de costes de impresión 3D';
+
+  @override
   String get historyTeaserTitle =>
       'Guarda cada estimación de impresión en un solo lugar';
 

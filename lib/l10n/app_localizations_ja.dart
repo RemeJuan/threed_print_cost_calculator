@@ -773,6 +773,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get historyExportShareText => '3Dプリント費用履歴の書き出し';
 
   @override
+  String get batchQuoteExportShareText => '3Dプリントバッチ見積もりの書き出し';
+
+  @override
+  String get mixedHistoryExportShareText => '3Dプリント費用履歴の書き出し';
+
+  @override
   String get historyTeaserTitle => 'すべての印刷見積もりを1か所に保存';
 
   @override

@@ -1523,6 +1523,18 @@ abstract class AppLocalizations {
   /// **'3D Print Cost History Export'**
   String get historyExportShareText;
 
+  /// No description provided for @batchQuoteExportShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost Batch Quote Export'**
+  String get batchQuoteExportShareText;
+
+  /// No description provided for @mixedHistoryExportShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'3D Print Cost History Export'**
+  String get mixedHistoryExportShareText;
+
   /// No description provided for @historyTeaserTitle.
   ///
   /// In en, this message translates to:

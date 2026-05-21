@@ -301,6 +301,8 @@
   },
   "historyCsvHeader": "Fecha,Impresora,Material,Materiales,Peso (g),Tiempo,Electricidad,Filamento,Mano de obra,Riesgo,Total,% de margen,Monto del margen,Tarifa de configuración,Modo de redondeo,Subtotal antes de redondeo,Ajuste por redondeo,Precio final",
   "historyExportShareText": "Exportación del historial de costes de impresión 3D",
+  "batchQuoteExportShareText": "Exportación de presupuesto por lotes de impresión 3D",
+  "mixedHistoryExportShareText": "Exportación del historial de costes de impresión 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Política de privacidad",
   "@privacyPolicyLink": {},
