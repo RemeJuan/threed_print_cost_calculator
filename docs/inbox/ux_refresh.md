@@ -1,8 +1,10 @@
+
+
 # UX Refresh Direction
 
 ## Goal
 
-Modernise the application UI to better align with the updated branding, launch assets, iconography, and overall product positioning.
+Modernise the application UI to better align with the updated branding, launcher icon direction, launch assets, and overall product positioning.
 
 The app should feel:
 - professional
@@ -13,6 +15,14 @@ The app should feel:
 - premium without being flashy
 
 The refresh is intended to evolve the existing application rather than redesign it completely.
+
+This is no longer a loose design exploration document.
+
+This document defines the intended implementation direction for the UI refresh.
+
+The latest calculator/results mockup should be treated as the primary visual reference for the refresh.
+
+The target outcome is a more premium, cohesive, workshop-tool style application while preserving the simplicity and usability of the current workflows.
 
 ---
 
