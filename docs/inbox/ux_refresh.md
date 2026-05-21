@@ -512,11 +512,11 @@ Bad:
 
 ---
 
-# Scope Management
+# Implementation Strategy
 
-## Important
+## Branch Strategy
 
-This refresh should live on a dedicated branch.
+The refresh should live on its own dedicated branch.
 
 Suggested branch:
 
@@ -524,15 +524,47 @@ Suggested branch:
 feature/ui-theme-refresh
 ```
 
-Main branch should remain focused on feature stability.
+Main should remain focused on:
+- batch costing
+- feature stability
+- release readiness
 
-The refresh should be implemented as:
+The UI refresh should progress independently.
+
+---
+
+## Shared Theme First
+
+The refresh should primarily be implemented through:
+- theme primitives
+- shared surfaces
 - shared components
-- reusable theme primitives
-- inherited styling improvements
+- typography rules
+- navigation styling
+- inherited visual behavior
 
-Not:
-- isolated one-off screen redesigns
+The goal is NOT to redesign every screen individually.
+
+The goal is to allow most screens to inherit improvements automatically.
+
+---
+
+## Anchor Screen
+
+The calculator/results screen is the primary reference screen.
+
+This screen should define:
+- spacing
+- typography
+- card treatment
+- input styling
+- button styling
+- grouping behavior
+- elevation
+- accent usage
+- navigation styling
+
+Most of the rest of the application should naturally inherit from this direction.
 
 ---
 
