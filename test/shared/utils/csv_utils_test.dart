@@ -420,11 +420,23 @@ void main() {
       );
 
       final csv = generateMixedHistoryCsv([batchQuote]);
+      final lines = csv.split('\n').where((s) => s.isNotEmpty).toList();
+      final headerColumns = lines[0].split(',').length;
 
       // Should contain batch_allocation rows for split assignments
       expect(csv, contains('batch_allocation'));
       expect(csv, contains('printer split'));
       expect(csv, contains('material split'));
+
+      // Every allocation row must match header column count
+      final allocRows = lines.where((l) => l.startsWith('batch_allocation'));
+      for (final row in allocRows) {
+        expect(
+          row.split(',').length,
+          headerColumns,
+          reason: 'Allocation row columns must match header',
+        );
+      }
     });
 
     test('sanitizes user-entered text for CSV injection in mixed export', () {
