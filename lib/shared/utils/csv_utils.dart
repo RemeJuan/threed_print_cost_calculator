@@ -391,6 +391,69 @@ String generateBatchQuoteCsv(HistoryModel item) {
     );
   }
 
+  // Allocation rows for split assignments
+  final printerMode = summary['printerAssignmentMode']?.toString();
+  final materialMode = summary['materialAssignmentMode']?.toString();
+
+  if (printerMode == 'perItem' || materialMode == 'perItem') {
+    if (printerMode == 'perItem') {
+      buffer.writeln(
+        '${_quote('allocation')},'
+        '${_quote(quoteId)},'
+        '$quoteName,'
+        '$createdDate,'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('Printer split (per-item)')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('per-item')},'
+        '${_quote('')}',
+      );
+    }
+    if (materialMode == 'perItem') {
+      buffer.writeln(
+        '${_quote('allocation')},'
+        '${_quote(quoteId)},'
+        '$quoteName,'
+        '$createdDate,'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('Material split (per-item)')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('')},'
+        '${_quote('per-item')},'
+        '${_quote('')}',
+      );
+    }
+  }
+
   return buffer.toString();
 }
 
