@@ -308,6 +308,8 @@
   },
   "historyCsvHeader": "Datum,Drucker,Material,Materialien,Gewicht (g),Zeit,Strom,Filament,Arbeit,Risiko,Gesamt,Aufschlag %,Aufschlagbetrag,Einrichtungsgebühr,Rundungsmodus,Zwischensumme vor Rundung,Rundungsanpassung,Endpreis",
   "historyExportShareText": "Export des 3D-Druck-Kostenverlaufs",
+  "batchQuoteExportShareText": "Export des 3D-Druck-Batch-Angebots",
+  "mixedHistoryExportShareText": "Export des 3D-Druck-Kostenverlaufs",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Datenschutzrichtlinie",
   "@privacyPolicyLink": {},

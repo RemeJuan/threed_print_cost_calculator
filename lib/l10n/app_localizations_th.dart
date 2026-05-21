@@ -786,6 +786,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get historyExportShareText => 'การส่งออกประวัติต้นทุนการพิมพ์ 3D';
 
   @override
+  String get batchQuoteExportShareText => 'การส่งออกใบเสนอราคากลุ่มการพิมพ์ 3D';
+
+  @override
+  String get mixedHistoryExportShareText => 'การส่งออกประวัติต้นทุนการพิมพ์ 3D';
+
+  @override
   String get historyTeaserTitle => 'เก็บค่าประมาณการพิมพ์ทุกชิ้นไว้ในที่เดียว';
 
   @override

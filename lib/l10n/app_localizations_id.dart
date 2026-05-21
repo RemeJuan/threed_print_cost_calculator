@@ -782,6 +782,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get historyExportShareText => 'Ekspor riwayat biaya cetak 3D';
 
   @override
+  String get batchQuoteExportShareText => 'Ekspor penawaran batch cetak 3D';
+
+  @override
+  String get mixedHistoryExportShareText => 'Ekspor riwayat biaya cetak 3D';
+
+  @override
   String get historyTeaserTitle =>
       'Simpan setiap estimasi cetak di satu tempat';
 

@@ -788,6 +788,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyExportShareText => '3D Print Cost History Export';
 
   @override
+  String get batchQuoteExportShareText => '3D Print Cost Batch Quote Export';
+
+  @override
+  String get mixedHistoryExportShareText => '3D Print Cost History Export';
+
+  @override
   String get historyTeaserTitle => 'Keep every print estimate in one place';
 
   @override

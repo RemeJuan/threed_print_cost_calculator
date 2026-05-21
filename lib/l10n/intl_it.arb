@@ -302,6 +302,8 @@
   },
   "historyCsvHeader": "Data,Stampante,Materiale,Materiali,Peso (g),Tempo,Energia,Filamento,Manodopera,Rischio,Totale,% ricarico,Importo ricarico,Costo di configurazione,Modalità di arrotondamento,Subtotale prima dell'arrotondamento,Aggiustamento arrotondamento,Prezzo finale",
   "historyExportShareText": "Esportazione della cronologia dei costi di stampa 3D",
+  "batchQuoteExportShareText": "Esportazione preventivo batch stampa 3D",
+  "mixedHistoryExportShareText": "Esportazione della cronologia dei costi di stampa 3D",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Informativa sulla privacy",
   "@privacyPolicyLink": {},

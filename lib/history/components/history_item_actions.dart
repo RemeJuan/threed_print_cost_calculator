@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 typedef HistoryItemExportCsv =
     Future<void> Function(
@@ -41,11 +42,21 @@ class HistoryItemActionsController {
     final l10n = AppLocalizations.of(context)!;
 
     try {
-      await exportCsv(
-        [data],
-        csvHeader: l10n.historyCsvHeader,
-        shareText: l10n.historyExportShareText,
-      );
+      if (data.batchQuote) {
+        // Use batch-specific export for batch quotes
+        final csvUtils = ref.read(csvUtilsProvider);
+        await csvUtils.exportBatchQuote(
+          data,
+          shareText: l10n.batchQuoteExportShareText,
+        );
+      } else {
+        // Use existing single-print export
+        await exportCsv(
+          [data],
+          csvHeader: l10n.historyCsvHeader,
+          shareText: l10n.historyExportShareText,
+        );
+      }
       AppAnalytics.safeLog(() => AppAnalytics.exportUsed('job'));
       if (!context.mounted) return;
       BotToast.showText(text: l10n.exportSuccess);

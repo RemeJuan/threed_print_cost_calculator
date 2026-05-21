@@ -310,6 +310,8 @@
   },
   "historyCsvHeader": "Datum,Printer,Materiaal,Materialen,Gewicht (g),Tijd,Elektriciteit,Filament,Arbeid,Risico,Totaal,Opslag %,Opslagbedrag,Instelkosten,Afrondingsmodus,Tussenbedrag voor afronding,Afrondingscorrectie,Eindprijs",
   "historyExportShareText": "Export van 3D-printkostenoverzicht",
+  "batchQuoteExportShareText": "Export van 3D-printbatchofferte",
+  "mixedHistoryExportShareText": "Export van 3D-printkostenoverzicht",
   "@supportIdCopied": {},
   "privacyPolicyLink": "Privacybeleid",
   "@privacyPolicyLink": {},

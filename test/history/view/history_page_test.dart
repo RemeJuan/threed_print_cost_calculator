@@ -61,9 +61,8 @@ class _FakeCsvUtils extends CsvUtils {
   ExportRange? lastRange;
 
   @override
-  Future<void> exportForRange(
+  Future<void> exportMixedHistoryForRange(
     ExportRange range, {
-    required String csvHeader,
     required String shareText,
   }) async {
     lastRange = range;
