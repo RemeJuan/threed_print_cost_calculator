@@ -576,7 +576,6 @@ void _writeBatchQuoteRows(StringBuffer buffer, HistoryModel item) {
         '${_quote('')},'
         '${_quote('')},'
         '${_quote('')},'
-        '${_quote('')},'
         '${_quote('per-item')},' // Allocation Target
         '${_quote('')}', // Allocation Copies
       );
