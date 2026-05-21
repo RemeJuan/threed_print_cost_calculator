@@ -60,9 +60,41 @@ Not:
 
 ---
 
-# Core Color Palette
+# Visual Direction
 
-## Existing Brand Colors
+The refresh direction is based heavily on the latest calculator/results screen mockup.
+
+The application should move away from:
+- flat material-style utility screens
+- monochromatic dark surfaces
+- visually identical cards
+- generic Flutter styling
+- purely functional layouts
+
+The application should move toward:
+- layered dark surfaces
+- stronger hierarchy
+- richer spacing
+- more intentional grouping
+- refined accent usage
+- more premium visual depth
+- workshop-tool aesthetics
+- professional instrumentation styling
+
+The app should feel:
+- modern
+- technical
+- premium
+- mature
+- intentional
+
+without becoming flashy.
+
+---
+
+# Color System
+
+## Foundation Colors
 
 ```dart
 const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
@@ -70,9 +102,15 @@ const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
 const LIGHT_BLUE = Color.fromRGBO(84, 153, 254, 1);
 ```
 
----
+These remain the core brand foundation colors.
 
-# Color Usage Rules
+However, the refresh is NOT limited to only these three colors anymore.
+
+The newer renders demonstrated that the application benefits significantly from a broader supporting palette.
+
+The refresh should introduce a controlled supporting accent spectrum.
+
+---
 
 ## DEEP_BLUE
 
