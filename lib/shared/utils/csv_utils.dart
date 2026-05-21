@@ -262,7 +262,7 @@ const batchQuoteCsvHeader =
 /// distinguish summary, item, and allocation rows.
 String generateBatchQuoteCsv(HistoryModel item) {
   if (!item.batchQuote) {
-    return generateCsv([item], batchQuoteCsvHeader);
+    throw ArgumentError('HistoryModel is not a batch quote');
   }
 
   final buffer = StringBuffer();
