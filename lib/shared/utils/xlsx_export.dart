@@ -401,9 +401,9 @@ void _buildSingleQuotePricingSheet(Excel excel, HistoryModel item) {
   ]) {
     final field = pricing[entry.$2];
     if (field is! Map) continue;
-    final value = field['value']?.toString() ?? '';
-    final scope = field['scope']?.toString() ?? '';
-    final impact = field['monetaryImpact']?.toString() ?? '';
+    final value = sanitizeForXlsx(field['value']?.toString() ?? '');
+    final scope = sanitizeForXlsx(field['scope']?.toString() ?? '');
+    final impact = sanitizeForXlsx(field['monetaryImpact']?.toString() ?? '');
 
     _writeRow(sheet, rowIndex, [entry.$1, scope, value, impact]);
     rowIndex++;
