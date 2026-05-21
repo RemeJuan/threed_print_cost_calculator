@@ -118,12 +118,13 @@ Primary application background.
 
 Use for:
 - scaffold backgrounds
-- navigation backgrounds
-- dialogs
-- bottom navigation surfaces
 - app chrome
+- navigation surfaces
+- dialogs
+- bottom navigation backgrounds
+- fullscreen surfaces
 
-Should create depth and contrast.
+Should remain the darkest primary color.
 
 ---
 
@@ -133,35 +134,181 @@ Primary elevated surface color.
 
 Use for:
 - cards
-- grouped content sections
-- input containers
-- sheets
-- summary panels
-- settings sections
+- grouped containers
+- summary sections
+- settings surfaces
+- input groups
+- bottom sheets
+- modal surfaces
 
-Should be subtle and restrained.
+Cards should no longer feel visually flat.
 
-Avoid heavy gradients.
+Surfaces should feel layered and intentionally grouped.
 
 ---
 
 ## LIGHT_BLUE
 
-Primary accent color.
+Primary interactive accent.
 
 Use for:
-- active states
 - CTA buttons
-- focused inputs
-- active navigation items
-- important totals
-- icons
-- highlights
-- emphasis text
+- active states
+- selected navigation items
+- totals
+- important values
+- focus states
+- active icons
+- interactive emphasis
 
-Should remain the dominant accent color throughout the application.
+This remains the dominant accent color.
 
-Avoid introducing many additional accent colors.
+---
+
+## Supporting Cyan
+
+Soft cyan/electric blue accents are now allowed.
+
+Use for:
+- subtle glow treatments
+- premium highlights
+- active informational elements
+- focus accents
+- visual polish
+
+Must remain subtle.
+
+Avoid cyberpunk/neon styling.
+
+---
+
+## Amber / Warm Highlight
+
+Muted amber/yellow accents are intentionally allowed.
+
+Use for:
+- risk emphasis
+- warnings
+- key insights
+- important highlighted statistics
+- visual contrast moments
+
+The mockups demonstrated that the warm contrast significantly improved readability and visual richness.
+
+Important:
+- amber/yellow is an accent only
+- it should NEVER become the dominant UI color
+- usage should remain sparse and intentional
+
+---
+
+## Text Colors
+
+Pure white should be avoided where possible.
+
+Use:
+- off-white for primary content
+- muted grey-blue for secondary text
+- lower-contrast text for labels and metadata
+
+This should create stronger visual hierarchy and reduce visual harshness.
+
+---
+
+# Visual Elements To Keep From Mockups
+
+The latest mockup direction introduced several elements worth implementing.
+
+Keep:
+- darker layered surfaces
+- softer elevated cards
+- stronger grouped content
+- more premium spacing
+- refined blue gradients
+- restrained glow accents
+- stronger CTA buttons
+- larger total emphasis
+- cleaner grouped result summaries
+- richer visual depth
+- more intentional typography hierarchy
+
+These changes made the app feel significantly more premium without changing the workflow.
+
+---
+
+# Visual Elements To Avoid
+
+Do NOT introduce:
+- sliders
+- decorative charts
+- decorative 3D previews in workflows
+- fake analytics panels
+- excessive glow
+- gaming UI aesthetics
+- cyberpunk styling
+- overly bright neon colors
+- cluttered dashboards
+- glassmorphism
+- unnecessary motion
+- flashy transitions
+
+The app is still fundamentally:
+- a utility tool
+- a calculation workflow
+- a productivity application
+
+Usability remains the priority.
+
+---
+
+# Launcher Icon Direction
+
+## Current Preferred Direction
+
+The currently preferred launcher direction is:
+- layered print stack
+- simplified print nozzle
+- geometric technical styling
+- dark blue + light blue palette
+- minimal but recognisable structure
+
+The icon should:
+- clearly communicate 3D printing
+- remain readable at small sizes
+- avoid generic layered-shape ambiguity
+- avoid clipart aesthetics
+- avoid finance-style cost iconography
+
+The nozzle + layer stack direction is currently preferred over:
+- layers-only concepts
+- dollar-sign concepts
+- detailed printer illustrations
+
+---
+
+## Android
+
+Android can support:
+- adaptive icons
+- monochrome themed icons
+- launcher-specific treatments
+- feature graphics
+
+Potential direction:
+- full nozzle icon for launcher
+- simplified monochrome layer version for themed icons
+
+---
+
+## iOS
+
+The iOS launcher icon should remain:
+- simple
+- highly readable
+- visually balanced
+- recognisable without context
+
+Avoid excessive detail.
 
 ---
 
@@ -183,6 +330,17 @@ Avoid:
 - harsh shadows
 - strong gradients
 - glassmorphism
+
+The newer mockups demonstrated that slightly richer surfaces significantly improve perceived quality.
+
+The refresh should intentionally introduce:
+- subtle gradients
+- layered visual depth
+- restrained glow separation
+- stronger grouping
+- more premium elevation treatment
+
+without becoming visually noisy.
 
 ---
 
