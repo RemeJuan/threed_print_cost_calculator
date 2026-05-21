@@ -5,6 +5,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/shared/utils/xlsx_export.dart';
 
 String _quote(Object? value) {
   final s = value?.toString() ?? '';
@@ -223,29 +224,23 @@ class CsvUtils {
   }
 
   /// Query and export mixed history (single-print + batch quotes) for the
-  /// given [range]. Uses the flat CSV format with record_type column.
+  /// given [range]. Uses multi-sheet XLSX format by default.
   Future<void> exportMixedHistoryForRange(
     ExportRange range, {
     required String shareText,
   }) async {
     final items = await queryHistory(range);
-    final csv = generateMixedHistoryCsv(items);
-    final path = await writeCsvToFile(csv);
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(path)], text: shareText),
-    );
+    final path = await generateMixedHistoryXlsx(items);
+    await shareXlsxFile(path, shareText);
   }
 
-  /// Export a single batch quote [HistoryModel] as CSV.
+  /// Export a single batch quote [HistoryModel] as multi-sheet XLSX.
   Future<void> exportBatchQuote(
     HistoryModel item, {
     required String shareText,
   }) async {
-    final csv = generateBatchQuoteCsv(item);
-    final path = await writeCsvToFile(csv);
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(path)], text: shareText),
-    );
+    final path = await generateBatchQuoteXlsx(item);
+    await shareXlsxFile(path, shareText);
   }
 }
 

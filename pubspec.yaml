@@ -44,6 +44,7 @@ dependencies:
   shorebird_code_push: 2.0.6
   update_available: 3.2.1
   hugeicons: ^1.1.7
+  excel: ^4.0.6
 
 dev_dependencies:
   bloc_test: 10.0.0
