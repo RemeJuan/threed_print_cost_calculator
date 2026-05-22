@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
 const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
 const LIGHT_BLUE = Color.fromRGBO(84, 153, 254, 1);
+const OFF_WHITE = Color.fromRGBO(230, 233, 240, 1);
 
 ThemeData theme() {
   final themeData = ThemeData(
@@ -40,7 +41,7 @@ ThemeData theme() {
 
   return themeData.copyWith(
     textTheme: themeData.textTheme,
-    scaffoldBackgroundColor: DARK_BLUE,
+    scaffoldBackgroundColor: DEEP_BLUE,
     appBarTheme: AppBarTheme(
       backgroundColor: DEEP_BLUE,
       elevation: 0,
