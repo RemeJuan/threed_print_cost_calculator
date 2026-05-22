@@ -19,6 +19,8 @@ ThemeData theme() {
       backgroundColor: APP_BACKGROUND,
       elevation: 0,
       titleTextStyle: themeData.textTheme.headlineSmall,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: NAV_BAR_BACKGROUND,
