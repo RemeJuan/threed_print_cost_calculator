@@ -416,11 +416,7 @@ void _buildSingleQuoteAllocationsSheet(Excel excel, HistoryModel item) {
   final printerMode = summary['printerAssignmentMode']?.toString();
   final materialMode = summary['materialAssignmentMode']?.toString();
 
-  final headers = [
-    'Allocation Type',
-    'Assignment',
-    'Details',
-  ];
+  final headers = ['Allocation Type', 'Assignment', 'Details'];
   _writeRow(sheet, 0, headers);
 
   var rowIndex = 1;

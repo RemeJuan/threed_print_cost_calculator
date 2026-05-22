@@ -220,13 +220,23 @@ class BatchHistoryItem extends HookConsumerWidget {
     return [
       (
         label: l10n.failureRiskLabel,
-        value: _pricingValue(pricing, 'failureRisk', l10n, currency,
-            isPercent: true),
+        value: _pricingValue(
+          pricing,
+          'failureRisk',
+          l10n,
+          currency,
+          isPercent: true,
+        ),
       ),
       (
         label: l10n.pricingMarkupPercentLabel,
-        value: _pricingValue(pricing, 'markupPercent', l10n, currency,
-            isPercent: true),
+        value: _pricingValue(
+          pricing,
+          'markupPercent',
+          l10n,
+          currency,
+          isPercent: true,
+        ),
       ),
       (
         label: l10n.labourRateLabel,

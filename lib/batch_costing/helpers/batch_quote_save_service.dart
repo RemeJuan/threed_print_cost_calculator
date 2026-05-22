@@ -47,9 +47,7 @@ Future<void> saveBatchQuote(
           onPressed: () {
             final name = nameController.text.trim();
             Navigator.of(dialogContext).pop(
-              name.isEmpty
-                  ? l10n.batchCostingSummaryDefaultQuoteName
-                  : name,
+              name.isEmpty ? l10n.batchCostingSummaryDefaultQuoteName : name,
             );
           },
           child: Text(l10n.saveButton),
@@ -68,7 +66,10 @@ Future<void> saveBatchQuote(
     summary: summary,
   );
 
-  final copyCount = state.items.fold<int>(0, (sum, item) => sum + item.quantity);
+  final copyCount = state.items.fold<int>(
+    0,
+    (sum, item) => sum + item.quantity,
+  );
   final hasGCode = state.items.any(
     (item) => item.sourceType == BatchCostingItemSourceType.gcode,
   );

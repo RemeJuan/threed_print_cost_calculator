@@ -265,10 +265,12 @@ class HistoryPage extends HookConsumerWidget {
     ExportRange range,
   ) async {
     // Use mixed history export to handle both single-print and batch quotes
-    await ref.read(csvUtilsProvider).exportMixedHistoryForRange(
-      range,
-      shareText: l10n.mixedHistoryExportShareText,
-    );
+    await ref
+        .read(csvUtilsProvider)
+        .exportMixedHistoryForRange(
+          range,
+          shareText: l10n.mixedHistoryExportShareText,
+        );
     AppAnalytics.safeLog(() => AppAnalytics.exportUsed('history'));
   }
 
