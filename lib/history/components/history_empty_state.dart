@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:threed_print_cost_calculator/history/components/history_upsell_banner.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
 class HistoryEmptyState extends StatelessWidget {
-  const HistoryEmptyState({
-    required this.showUpsell,
-    required this.onUpsellTap,
-    super.key,
-  });
-
-  final bool showUpsell;
-  final VoidCallback onUpsellTap;
+  const HistoryEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +25,6 @@ class HistoryEmptyState extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
-            if (showUpsell) ...[
-              const SizedBox(height: 16),
-              HistoryUpsellBanner(onTap: onUpsellTap),
-            ],
           ],
         ),
       ),

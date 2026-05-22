@@ -10,15 +10,13 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
 
 import 'components/history_empty_state.dart';
-import 'components/history_teaser_state.dart';
+import 'components/history_teaser.dart';
 import 'components/history_list_view.dart';
 import 'components/history_search_bar.dart';
-import 'components/history_upsell_banner.dart';
 import 'hooks/history_search_query.dart';
 
 enum HistoryPageMode { full, teaser }
@@ -65,7 +63,6 @@ class HistoryPage extends HookConsumerWidget {
     final controller = useTextEditingController(text: paged.query);
     final scrollController = useScrollController();
     final showOverflowHint = useState(false);
-    final shouldShowUpsell = ref.watch(shouldShowProPromotionProvider);
     final overflowHintTimer = useRef<Timer?>(null);
 
     useHistorySearchQuery(ref: ref, controller: controller);
@@ -192,22 +189,10 @@ class HistoryPage extends HookConsumerWidget {
                       : const SizedBox.shrink(),
                 ),
               ),
-              if (!showEmptyState && shouldShowUpsell)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 4, 12, 0),
-                    child: HistoryUpsellBanner(
-                      onTap: () => _showHistoryUpsellPaywall(context, ref),
-                    ),
-                  ),
-                ),
               if (showEmptyState)
                 SliverFillRemaining(
                   hasScrollBody: false,
-                  child: HistoryEmptyState(
-                    showUpsell: shouldShowUpsell,
-                    onUpsellTap: () => _showHistoryUpsellPaywall(context, ref),
-                  ),
+                  child: const HistoryEmptyState(),
                 )
               else
                 HistoryListView(
@@ -341,26 +326,4 @@ class HistoryPage extends HookConsumerWidget {
         );
   }
 
-  Future<void> _showHistoryUpsellPaywall(
-    BuildContext context,
-    WidgetRef ref,
-  ) async {
-    AppAnalytics.safeLog(
-      () => AppAnalytics.premiumFeatureTapped(
-        'history',
-        isPro: false,
-        source: 'history_upsell',
-      ),
-    );
-    await ref
-        .read(paywallPresenterProvider)
-        .present(
-          'pro',
-          triggerFeature: 'history',
-          purchaseSource: 'history',
-          source: 'premium_feature',
-          launchCount:
-              ref.read(sharedPreferencesProvider).getInt('run_count') ?? 0,
-        );
-  }
 }
