@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allo
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -71,7 +72,7 @@ class MaterialAllocationCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kAppSpace8),
           for (var index = 0; index < allocations.length; index += 1) ...[
             MaterialAllocationRow(
               title: _materialName(allocations[index].targetId),
@@ -81,16 +82,16 @@ class MaterialAllocationCard extends StatelessWidget {
                   ? () => onSetAllocations([...allocations]..removeAt(index))
                   : null,
             ),
-            if (index != allocations.length - 1) const SizedBox(height: 12),
+            if (index != allocations.length - 1) const SizedBox(height: kAppSpace12),
           ],
-          const SizedBox(height: 12),
+          const SizedBox(height: kAppSpace12),
           AppSecondaryButton(
             onPressed: () => _openPicker(context),
             icon: const Icon(Icons.search),
             label: l10n.batchCostingAssignmentSplitCopiesButton,
           ),
           if (warningText != null) ...[
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             WarningBox(text: warningText!),
           ],
         ],
