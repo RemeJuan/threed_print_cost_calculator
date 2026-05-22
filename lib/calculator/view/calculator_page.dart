@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
@@ -89,7 +90,10 @@ class CalculatorPage extends HookConsumerWidget {
     }, [appRefreshTick]);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: kAppSpace16,
+        vertical: kAppSpace16,
+      ),
       physics: const ClampingScrollPhysics(),
       child: AutofillGroup(
         child: Column(
@@ -99,27 +103,32 @@ class CalculatorPage extends HookConsumerWidget {
             if (state.showHistoryLoadReplacementWarning)
               const HistoryLoadWarningBanner(),
             AppSurfaceCard(
-              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
-              margin: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.fromLTRB(
+                kAppSpace12,
+                kAppSpace4,
+                kAppSpace12,
+                kAppSpace12,
+              ),
+              margin: const EdgeInsets.symmetric(vertical: kAppSpace8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (isPremium) const PrinterSelect(),
                   const MaterialsSection(),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: kAppSpace8),
                   const TimeSection(),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: kAppSpace8),
                 ],
               ),
             ),
             if (isPremium)
               AppSurfaceCard(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: kAppSpace12),
                 child: const JobPricingOverridesSection(),
               ),
             CalculatorResults(results: state.results, pricing: state.pricing),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             Row(
               children: [
                 Expanded(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/label_utils.dart';
 
 /// A small header widget for the Materials accordion.
@@ -35,7 +36,7 @@ class MaterialsHeader extends StatelessWidget {
     final summary = '$countText · $totalWeight${l10n.gramsSuffix}';
 
     return Material(
-      color: Colors.transparent,
+      color: TRANSPARENT_COLOR,
       child: InkWell(
         key: const ValueKey<String>('calculator.materials.section'),
         onTap: onToggle,
@@ -58,14 +59,7 @@ class MaterialsHeader extends StatelessWidget {
                             Text(
                               summary,
                               style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(
-                                    color:
-                                        (Theme.of(
-                                                  context,
-                                                ).textTheme.bodySmall?.color ??
-                                                Colors.black)
-                                            .withAlpha((0.7 * 255).round()),
-                                  ),
+                                  ?.copyWith(color: TEXT_SECONDARY),
                             ),
                           ],
                         ),

@@ -4,6 +4,8 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
@@ -159,7 +161,7 @@ class _MaterialRowState extends State<MaterialRow> {
           motion: const ScrollMotion(),
           extentRatio: 0.3,
           children: [
-            const SizedBox(width: 12),
+            const SizedBox(width: kAppSpace12),
             CustomSlidableAction(
               flex: 1,
               onPressed: (ctx) async {
@@ -183,22 +185,21 @@ class _MaterialRowState extends State<MaterialRow> {
                 if (confirm != true) return;
                 widget.onRemove();
               },
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: STATUS_ERROR,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(kAppSurfaceRadius),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.delete, size: 20, color: Colors.white),
-                    const SizedBox(height: 4),
+                    const Icon(Icons.delete, size: 20, color: TEXT_INVERSE),
+                    const SizedBox(height: kAppSpace4),
                     Text(
                       l10n.deleteButton,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: TEXT_INVERSE,
                         fontWeight: FontWeight.w600,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -214,7 +215,7 @@ class _MaterialRowState extends State<MaterialRow> {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
       child: isDeletable ? rowWithSwipe(keyedRow) : keyedRow,
     );
   }
