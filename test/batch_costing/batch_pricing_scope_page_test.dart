@@ -155,7 +155,6 @@ void main() {
       '10',
     );
   });
-
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {

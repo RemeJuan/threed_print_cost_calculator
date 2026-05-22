@@ -423,19 +423,22 @@ void main() {
       });
     });
 
-    test('batchAssignmentCompleted sends type, mode, hasSplitAllocations', () async {
-      await AppAnalytics.batchAssignmentCompleted(
-        type: 'printer',
-        mode: 'split',
-        hasSplitAllocations: true,
-      );
-      expect(fake.lastName, 'batch_assignment_completed');
-      expect(fake.lastParams, {
-        'type': 'printer',
-        'mode': 'split',
-        'has_split_allocations': 1,
-      });
-    });
+    test(
+      'batchAssignmentCompleted sends type, mode, hasSplitAllocations',
+      () async {
+        await AppAnalytics.batchAssignmentCompleted(
+          type: 'printer',
+          mode: 'split',
+          hasSplitAllocations: true,
+        );
+        expect(fake.lastName, 'batch_assignment_completed');
+        expect(fake.lastParams, {
+          'type': 'printer',
+          'mode': 'split',
+          'has_split_allocations': 1,
+        });
+      },
+    );
 
     test('batchAssignmentCompleted with batch mode and no splits', () async {
       await AppAnalytics.batchAssignmentCompleted(
@@ -451,29 +454,32 @@ void main() {
       });
     });
 
-    test('batchPricingCompleted sends all existence and scope params', () async {
-      await AppAnalytics.batchPricingCompleted(
-        hasRisk: true,
-        hasMarkup: false,
-        hasLabour: true,
-        hasAdditionalCost: false,
-        riskScope: 'item',
-        markupScope: 'item',
-        labourScope: 'batch',
-        additionalCostScope: 'batch',
-      );
-      expect(fake.lastName, 'batch_pricing_completed');
-      expect(fake.lastParams, {
-        'has_risk': 1,
-        'has_markup': 0,
-        'has_labour': 1,
-        'has_additional_cost': 0,
-        'risk_scope': 'item',
-        'markup_scope': 'item',
-        'labour_scope': 'batch',
-        'additional_cost_scope': 'batch',
-      });
-    });
+    test(
+      'batchPricingCompleted sends all existence and scope params',
+      () async {
+        await AppAnalytics.batchPricingCompleted(
+          hasRisk: true,
+          hasMarkup: false,
+          hasLabour: true,
+          hasAdditionalCost: false,
+          riskScope: 'item',
+          markupScope: 'item',
+          labourScope: 'batch',
+          additionalCostScope: 'batch',
+        );
+        expect(fake.lastName, 'batch_pricing_completed');
+        expect(fake.lastParams, {
+          'has_risk': 1,
+          'has_markup': 0,
+          'has_labour': 1,
+          'has_additional_cost': 0,
+          'risk_scope': 'item',
+          'markup_scope': 'item',
+          'labour_scope': 'batch',
+          'additional_cost_scope': 'batch',
+        });
+      },
+    );
 
     test('batchSummaryViewed sends all params', () async {
       await AppAnalytics.batchSummaryViewed(

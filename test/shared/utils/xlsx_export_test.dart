@@ -72,10 +72,10 @@ void main() {
         summary: _testBatchSummary(),
       );
 
-      final path = await generateMixedHistoryXlsx(
-        [singlePrint, batchQuote],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([
+        singlePrint,
+        batchQuote,
+      ], outputDirectory: testDir);
       final file = File(path);
 
       expect(file.existsSync(), isTrue);
@@ -108,10 +108,9 @@ void main() {
         finalPrice: 26.99,
       );
 
-      final path = await generateMixedHistoryXlsx(
-        [singlePrint],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([
+        singlePrint,
+      ], outputDirectory: testDir);
       final bytes = await File(path).readAsBytes();
       final excel = Excel.decodeBytes(bytes);
       final sheet = excel.tables['Single Prints']!;
@@ -135,10 +134,9 @@ void main() {
         summary: _testBatchSummary(),
       );
 
-      final path = await generateMixedHistoryXlsx(
-        [batchQuote],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([
+        batchQuote,
+      ], outputDirectory: testDir);
       final bytes = await File(path).readAsBytes();
       final excel = Excel.decodeBytes(bytes);
       final sheet = excel.tables['Batch Quotes']!;
@@ -148,32 +146,34 @@ void main() {
       expect(cellValue(dataRow[0]), 'Summary Test');
     });
 
-    test('Batch Items sheet has item rows with quantities and totals', () async {
-      final batchQuote = HistoryModel.batchQuote(
-        name: 'Item Test',
-        date: DateTime.parse('2025-06-16T10:00:00Z'),
-        state: _testBatchState(),
-        summary: _testBatchSummary(),
-      );
+    test(
+      'Batch Items sheet has item rows with quantities and totals',
+      () async {
+        final batchQuote = HistoryModel.batchQuote(
+          name: 'Item Test',
+          date: DateTime.parse('2025-06-16T10:00:00Z'),
+          state: _testBatchState(),
+          summary: _testBatchSummary(),
+        );
 
-      final path = await generateMixedHistoryXlsx(
-        [batchQuote],
-        outputDirectory: testDir,
-      );
-      final bytes = await File(path).readAsBytes();
-      final excel = Excel.decodeBytes(bytes);
-      final sheet = excel.tables['Batch Items']!;
+        final path = await generateMixedHistoryXlsx([
+          batchQuote,
+        ], outputDirectory: testDir);
+        final bytes = await File(path).readAsBytes();
+        final excel = Excel.decodeBytes(bytes);
+        final sheet = excel.tables['Batch Items']!;
 
-      // Header + 2 items
-      expect(sheet.rows.length, greaterThanOrEqualTo(3));
-      final headers = sheet.rows[0].map(cellValue).toList();
-      expect(headers, contains('Item Name'));
-      expect(headers, contains('Quantity'));
+        // Header + 2 items
+        expect(sheet.rows.length, greaterThanOrEqualTo(3));
+        final headers = sheet.rows[0].map(cellValue).toList();
+        expect(headers, contains('Item Name'));
+        expect(headers, contains('Quantity'));
 
-      final itemRow = sheet.rows[1];
-      expect(cellValue(itemRow[0]), 'Item Test');
-      expect(cellValue(itemRow[1]), 'Benchy');
-    });
+        final itemRow = sheet.rows[1];
+        expect(cellValue(itemRow[0]), 'Item Test');
+        expect(cellValue(itemRow[1]), 'Benchy');
+      },
+    );
 
     test('Batch Allocations sheet shows split allocations', () async {
       final stateWithSplits = BatchCostingState(
@@ -210,10 +210,9 @@ void main() {
         summary: summary,
       );
 
-      final path = await generateMixedHistoryXlsx(
-        [batchQuote],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([
+        batchQuote,
+      ], outputDirectory: testDir);
       final bytes = await File(path).readAsBytes();
       final excel = Excel.decodeBytes(bytes);
 
@@ -237,10 +236,9 @@ void main() {
         timeHours: '02:00',
       );
 
-      final path = await generateMixedHistoryXlsx(
-        [singlePrint],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([
+        singlePrint,
+      ], outputDirectory: testDir);
       final bytes = await File(path).readAsBytes();
       final excel = Excel.decodeBytes(bytes);
       final sheet = excel.tables['Single Prints']!;
@@ -252,10 +250,7 @@ void main() {
     });
 
     test('handles empty history gracefully', () async {
-      final path = await generateMixedHistoryXlsx(
-        [],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([], outputDirectory: testDir);
       final file = File(path);
       expect(file.existsSync(), isTrue);
 
@@ -286,10 +281,10 @@ void main() {
         summary: _testBatchSummary(),
       );
 
-      final path = await generateMixedHistoryXlsx(
-        [singlePrint, batchQuote],
-        outputDirectory: testDir,
-      );
+      final path = await generateMixedHistoryXlsx([
+        singlePrint,
+        batchQuote,
+      ], outputDirectory: testDir);
       final bytes = await File(path).readAsBytes();
       final excel = Excel.decodeBytes(bytes);
 
@@ -360,10 +355,7 @@ void main() {
       );
 
       expect(
-        () => generateBatchQuoteXlsx(
-          singlePrint,
-          outputDirectory: testDir,
-        ),
+        () => generateBatchQuoteXlsx(singlePrint, outputDirectory: testDir),
         throwsA(isA<ArgumentError>()),
       );
     });

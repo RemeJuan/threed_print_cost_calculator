@@ -15,7 +15,6 @@ import '../helpers/helpers.dart';
 void main() {
   setUpAll(setupTest);
 
-
   testWidgets('imports multiple files and seeds batch items', (tester) async {
     final files = [_file('one.gcode'), _file('two.gcode')];
     await tester.pumpApp(const BatchGCodeImportPage(), [
