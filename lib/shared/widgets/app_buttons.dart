@@ -160,7 +160,11 @@ class _ButtonContent extends StatelessWidget {
     if (icon != null) {
       return Row(
         mainAxisSize: MainAxisSize.min,
-        children: [icon!, const SizedBox(width: _kIconGap), Text(label)],
+        children: [
+          icon!,
+          const SizedBox(width: _kIconGap),
+          Text(label),
+        ],
       );
     }
     return Text(label);

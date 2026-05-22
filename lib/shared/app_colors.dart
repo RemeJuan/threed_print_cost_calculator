@@ -14,3 +14,6 @@ const SHELL_BORDER = Color(0xFF0F1929);
 // UI refresh typography colors.
 const OFF_WHITE = Color(0xFFE6E9F0);
 const MUTED_BLUE_GREY = Color(0xFF929CB0);
+
+const CALCULATOR_SURFACE = Color(0xFF131B31);
+const RESULT_SURFACE = Color(0xFF16213D);
