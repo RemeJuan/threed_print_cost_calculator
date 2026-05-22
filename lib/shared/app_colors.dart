@@ -8,8 +8,8 @@ const LIGHT_BLUE = Color(0xFF5499FE);
 // UI refresh surface system.
 const APP_BACKGROUND = Color(0xFF010710);
 const CARD_BACKGROUND = Color(0xFF0A1625);
-const NAV_BAR_BACKGROUND = Color(0xFF040C1A);
-const NAV_BAR_BORDER = Color(0xFF0F1929);
+const SHELL_BACKGROUND = Color(0xFF040C1A);
+const SHELL_BORDER = Color(0xFF0F1929);
 
 // UI refresh typography colors.
 const OFF_WHITE = Color(0xFFE6E9F0);

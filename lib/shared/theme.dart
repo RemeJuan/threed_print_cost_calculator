@@ -23,13 +23,13 @@ ThemeData theme() {
       surfaceTintColor: Colors.transparent,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: NAV_BAR_BACKGROUND,
+      backgroundColor: SHELL_BACKGROUND,
       selectedItemColor: LIGHT_BLUE,
       unselectedItemColor: Colors.white54,
     ),
-    dialogTheme: const DialogThemeData(backgroundColor: DEEP_BLUE),
+    dialogTheme: const DialogThemeData(backgroundColor: SHELL_BACKGROUND),
     bottomSheetTheme: const BottomSheetThemeData(
-      backgroundColor: DARK_BLUE,
+      backgroundColor: SHELL_BACKGROUND,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),

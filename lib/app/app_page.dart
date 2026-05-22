@@ -168,10 +168,11 @@ class AppPage extends HookConsumerWidget {
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-          color: NAV_BAR_BACKGROUND,
-          border: Border(top: BorderSide(color: NAV_BAR_BORDER)),
+          color: SHELL_BACKGROUND,
+          border: Border(top: BorderSide(color: SHELL_BORDER)),
         ),
         child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: selectedIndex,
           onTap: (index) {
             final targetTab = tabFromIndex(index);
