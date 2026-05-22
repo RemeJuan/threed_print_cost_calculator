@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/stock_status_badge.dart';
 
@@ -42,13 +43,13 @@ class MaterialCard extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 20, color: color),
-            const SizedBox(height: 4),
+            Icon(icon, size: 16, color: color),
+            const SizedBox(height: 2),
             Text(
               label,
               style: TextStyle(
                 color: color,
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: FontWeight.w600,
               ),
               overflow: TextOverflow.ellipsis,
@@ -65,13 +66,13 @@ class MaterialCard extends ConsumerWidget {
           title: Text(l10n.deleteDialogTitle),
           content: Text(l10n.deleteDialogContent),
           actions: [
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancelButton),
+              label: l10n.cancelButton,
             ),
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(l10n.deleteButton),
+              label: l10n.deleteButton,
             ),
           ],
         ),

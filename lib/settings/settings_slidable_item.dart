@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class SettingsSlidableItem extends StatelessWidget {
   const SettingsSlidableItem({
@@ -36,13 +37,13 @@ class SettingsSlidableItem extends StatelessWidget {
           title: Text(l10n.deleteDialogTitle),
           content: Text(l10n.deleteDialogContent),
           actions: [
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancelButton),
+              label: l10n.cancelButton,
             ),
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(l10n.deleteButton),
+              label: l10n.deleteButton,
             ),
           ],
         ),

@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class Materials extends HookConsumerWidget {
   const Materials({super.key});
@@ -125,9 +126,9 @@ class Materials extends HookConsumerWidget {
               children: [
                 Text(l10n.materialsLoadError(error.toString())),
                 const SizedBox(height: 8),
-                ElevatedButton(
+                AppPrimaryButton(
                   onPressed: () => ref.invalidate(materialsStreamProvider),
-                  child: Text(l10n.retryButton),
+                  label: l10n.retryButton,
                 ),
               ],
             ),

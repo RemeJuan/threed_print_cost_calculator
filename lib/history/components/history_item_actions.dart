@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/history/provider/history_paged_noti
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 typedef HistoryItemExportCsv =
     Future<void> Function(
@@ -82,13 +83,13 @@ class HistoryItemActionsController {
         title: Text(l10n.deleteDialogTitle),
         content: Text(l10n.deleteDialogContent),
         actions: [
-          TextButton(
+          AppTertiaryButton(
             onPressed: () => Navigator.pop(dialogContext, false),
-            child: Text(l10n.cancelButton),
+            label: l10n.cancelButton,
           ),
-          TextButton(
+          AppTertiaryButton(
             onPressed: () => Navigator.pop(dialogContext, true),
-            child: Text(l10n.deleteButton),
+            label: l10n.deleteButton,
           ),
         ],
       ),

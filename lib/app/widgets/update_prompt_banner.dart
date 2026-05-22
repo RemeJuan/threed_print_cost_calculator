@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class UpdatePromptBanner extends ConsumerStatefulWidget {
   const UpdatePromptBanner({super.key});
@@ -66,7 +67,7 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                FilledButton(
+                AppPrimaryButton(
                   onPressed: () async {
                     AppAnalytics.safeLog(
                       () => AppAnalytics.updatePromptTapped(
@@ -78,9 +79,9 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
                     );
                     await openAppStoreForPlatform();
                   },
-                  child: Text(l10n.updatePromptOpenStoreButton),
+                  label: l10n.updatePromptOpenStoreButton,
                 ),
-                TextButton(
+                AppTertiaryButton(
                   onPressed: () {
                     AppAnalytics.safeLog(
                       () => AppAnalytics.updatePromptDismissed(
@@ -92,7 +93,7 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
                     );
                     ref.read(updateCheckerProvider.notifier).dismissPrompt();
                   },
-                  child: Text(l10n.closeButton),
+                  label: l10n.closeButton,
                 ),
               ],
             ),

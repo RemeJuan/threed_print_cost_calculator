@@ -12,7 +12,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class MaterialForm extends HookConsumerWidget {
   final String? dbRef;
@@ -267,21 +267,15 @@ class MaterialForm extends HookConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
+                    AppTertiaryButton(
                       onPressed: () =>
                           Navigator.of(context, rootNavigator: true).pop(null),
-                      child: Text(l10n.cancelButton),
+                      label: l10n.cancelButton,
                     ),
                     const SizedBox(width: 8),
-                    ElevatedButton(
+                    AppPrimaryButton(
                       key: const ValueKey<String>(
                         'settings.materials.save.button',
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: DEEP_BLUE,
-                        textStyle: Theme.of(
-                          context,
-                        ).textTheme.displayMedium?.copyWith(fontSize: 16),
                       ),
                       onPressed: !hasSubmitted.value || isFormValid
                           ? () async {
@@ -320,7 +314,7 @@ class MaterialForm extends HookConsumerWidget {
                               ).pop(material);
                             }
                           : null,
-                      child: Text(l10n.saveButton),
+                      label: l10n.saveButton,
                     ),
                   ],
                 ),
