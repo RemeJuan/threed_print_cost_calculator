@@ -74,10 +74,12 @@ class HelpSupportSupportCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             onTap: canCopy ? onCopySupportId : null,
-            trailing: Tooltip(
-              message: l10n.helpSupportCopySupportIdTooltip,
-              child: const Icon(Icons.copy_outlined, size: 18),
-            ),
+            trailing: canCopy
+                ? Tooltip(
+                    message: l10n.helpSupportCopySupportIdTooltip,
+                    child: const Icon(Icons.copy_outlined, size: 18),
+                  )
+                : null,
           ),
           const Divider(height: 1),
           ListTile(
