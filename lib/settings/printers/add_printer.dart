@@ -40,21 +40,18 @@ class AddPrinter extends HookConsumerWidget {
     }
 
     String? requiredTextValidator(String? value) {
-      return localizedValidationMessage(l10n, validateRequiredText(value));
+      return localizedValidationMessage(l10n, notifier.validateName(value));
     }
 
     String? positiveNumberValidator(String? value) {
-      return localizedValidationMessage(l10n, validatePositiveNumber(value));
+      return localizedValidationMessage(l10n, notifier.validateWattage(value));
     }
 
     String? bedSizeValidator(String? value) {
-      return localizedValidationMessage(l10n, validatePrinterBedSize(value));
+      return localizedValidationMessage(l10n, notifier.validateBedSize(value));
     }
 
-    final isFormValid =
-        validateRequiredText(state.name.value) == null &&
-        validatePrinterBedSize(state.bedSize.value) == null &&
-        validatePositiveNumber(state.wattage.value) == null;
+    final isFormValid = notifier.isValidForSubmit;
 
     return Dialog(
       child: SingleChildScrollView(
