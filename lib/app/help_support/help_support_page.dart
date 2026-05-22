@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/app/help_support/models/help_suppor
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_about_section.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_faq_tile.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_footer.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_section_header.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_support_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -55,11 +56,11 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
           const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
-            child: FilledButton.icon(
+            child: AppPrimaryButton(
               key: const ValueKey<String>('helpSupport.contact.button'),
               onPressed: () => _contactSupport(l10n, supportId),
               icon: const Icon(Icons.email_outlined),
-              label: Text(l10n.helpSupportContactSupportButton),
+              label: l10n.helpSupportContactSupportButton,
             ),
           ),
           const SizedBox(height: 28),

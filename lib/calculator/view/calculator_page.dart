@@ -8,8 +8,8 @@ import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 import 'calculator_results.dart';
@@ -114,12 +114,12 @@ class CalculatorPage extends HookConsumerWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
             CalculatorResults(results: state.results, pricing: state.pricing),
+            const SizedBox(height: 8),
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: AppSecondaryButton(
                     key: const ValueKey<String>('calculator.reset.button'),
                     onPressed: () async {
                       final shouldReset = await showDialog<bool>(
@@ -147,13 +147,13 @@ class CalculatorPage extends HookConsumerWidget {
                       await notifier.resetToDefaults();
                     },
                     icon: const Icon(Icons.refresh),
-                    label: Text(l10n.resetButtonLabel),
+                    label: l10n.resetButtonLabel,
                   ),
                 ),
                 if (isPremium && !showSave.value) ...[
                   const SizedBox(width: 12),
                   Expanded(
-                    child: ElevatedButton.icon(
+                    child: AppPrimaryButton(
                       key: const ValueKey<String>(
                         'calculator.save.open.button',
                       ),
@@ -161,18 +161,7 @@ class CalculatorPage extends HookConsumerWidget {
                         showSave.value = true;
                       },
                       icon: const Icon(Icons.save),
-                      label: Text(l10n.savePrintButton),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: DEEP_BLUE,
-                        foregroundColor: LIGHT_BLUE,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                      label: l10n.savePrintButton,
                     ),
                   ),
                 ],
@@ -180,7 +169,7 @@ class CalculatorPage extends HookConsumerWidget {
             ),
             if (isPremium) ...[
               const SizedBox(height: 12),
-              OutlinedButton.icon(
+              AppSecondaryButton(
                 key: const ValueKey<String>(
                   'calculator.batch_costing.open.button',
                 ),
@@ -192,7 +181,7 @@ class CalculatorPage extends HookConsumerWidget {
                   );
                 },
                 icon: const Icon(Icons.view_list_outlined),
-                label: Text(l10n.batchCostingEntryButton),
+                label: l10n.batchCostingEntryButton,
               ),
             ],
             if (showSave.value)
