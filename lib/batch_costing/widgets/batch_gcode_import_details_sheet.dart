@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_metadata_summary.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class BatchGCodeImportDetailsSheet extends StatelessWidget {
   const BatchGCodeImportDetailsSheet({
@@ -23,7 +24,7 @@ class BatchGCodeImportDetailsSheet extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+        padding: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace16, kAppSpace16, 24),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -46,12 +47,12 @@ class BatchGCodeImportDetailsSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: kAppSpace8),
               Text(
                 l10n.importGcodeSummaryTitle,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: kAppSpace16),
               GCodeImportMetadataSummary(
                 l10n: l10n,
                 slicer: slicer,

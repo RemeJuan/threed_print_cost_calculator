@@ -12,7 +12,9 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_expansion_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
@@ -78,15 +80,15 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
       ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           children: [
             Text(
               l10n.batchCostingSummarySubtitle,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: kAppSpace16),
             _sectionTitle(context, l10n.batchCostingSummaryOverviewTitle),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             _summaryRow(
               context,
               l10n.batchCostingSummaryItemCountLabel,
@@ -107,9 +109,9 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               l10n.batchCostingSummaryTotalDurationLabel,
               formatDuration(summary.totalPrintDuration),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: kAppSpace16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             if (_showPricing(summary.failureRisk.value))
               _pricingRow(
                 context,
@@ -167,57 +169,49 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
             const SizedBox(height: 8),
             for (final item in summary.items)
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: AppSurfaceCard(
-                  padding: EdgeInsets.zero,
-                  child: ExpansionTile(
-                    shape: const Border(),
-                    collapsedShape: const Border(),
-                    tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                    childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                    visualDensity: VisualDensity.compact,
-                    title: Text(item.item.displayName),
-                    subtitle: Text(
-                      '${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}',
-                    ),
-                    children: [
-                      _summaryRow(
-                        context,
-                        l10n.batchCostingSummaryItemWeightLabel,
-                        '${item.totalWeightG.toStringAsFixed(2)} ${l10n.gramsSuffix}',
-                      ),
-                      _summaryRow(
-                        context,
-                        l10n.batchCostingSummaryItemDurationLabel,
-                        formatDuration(item.totalPrintDuration),
-                      ),
-                      _summaryRow(
-                        context,
-                        l10n.batchCostingSummaryItemBaseCostLabel,
-                        formatCurrencyValue(
-                          item.baseCost,
-                          currencySymbol: currencySettings.currencySymbol,
-                          currencyPosition: currencySettings.currencyPosition,
-                          currencySpacing: currencySettings.currencySpacing,
-                        ),
-                      ),
-                      _summaryRow(
-                        context,
-                        l10n.batchCostingSummaryItemAdjustmentLabel,
-                        formatCurrencyValue(
-                          item.additionalCost,
-                          currencySymbol: currencySettings.currencySymbol,
-                          currencyPosition: currencySettings.currencyPosition,
-                          currencySpacing: currencySettings.currencySpacing,
-                        ),
-                      ),
-                      _summaryRow(
-                        context,
-                        l10n.batchCostingSummaryItemTotalLabel,
-                        _lineTotalWithQuantity(item, currencySettings),
-                      ),
-                    ],
+                padding: const EdgeInsets.only(bottom: kAppSpace12),
+                child: AppExpansionCard(
+                  title: Text(item.item.displayName),
+                  subtitle: Text(
+                    '${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}',
                   ),
+                  children: [
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingSummaryItemWeightLabel,
+                      '${item.totalWeightG.toStringAsFixed(2)} ${l10n.gramsSuffix}',
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingSummaryItemDurationLabel,
+                      formatDuration(item.totalPrintDuration),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingSummaryItemBaseCostLabel,
+                      formatCurrencyValue(
+                        item.baseCost,
+                        currencySymbol: currencySettings.currencySymbol,
+                        currencyPosition: currencySettings.currencyPosition,
+                        currencySpacing: currencySettings.currencySpacing,
+                      ),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingSummaryItemAdjustmentLabel,
+                      formatCurrencyValue(
+                        item.additionalCost,
+                        currencySymbol: currencySettings.currencySymbol,
+                        currencyPosition: currencySettings.currencyPosition,
+                        currencySpacing: currencySettings.currencySpacing,
+                      ),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingSummaryItemTotalLabel,
+                      _lineTotalWithQuantity(item, currencySettings),
+                    ),
+                  ],
                 ),
               ),
             AppSurfaceCard(

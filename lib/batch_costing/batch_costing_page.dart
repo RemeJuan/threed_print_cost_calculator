@@ -13,12 +13,13 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_expansion_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_filter_chip.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
-import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchCostingPage extends ConsumerStatefulWidget {
@@ -68,7 +69,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -76,7 +77,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                 l10n.batchCostingReviewSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: kAppSpace16),
               if (items.isNotEmpty) ...[
                 Align(
                   alignment: AlignmentDirectional.center,
@@ -88,7 +89,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         label: l10n.batchCostingReviewAddManualItemButton,
                         icon: const Icon(Icons.add),
                       ),
-                      const SizedBox(width: 8),
+                      const SizedBox(width: kAppSpace8),
                       AppTertiaryButton(
                         onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(
@@ -101,7 +102,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: kAppSpace16),
               ],
               Expanded(
                 child: items.isEmpty
@@ -109,7 +110,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                     : ListView.separated(
                         itemCount: items.length,
                         separatorBuilder: (context, _) =>
-                            const SizedBox(height: 12),
+                            const SizedBox(height: kAppSpace12),
                         itemBuilder: (context, index) {
                           final item = items[index];
                           return _batchItemCard(context, l10n, item);
@@ -117,7 +118,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                       ),
               ),
               if (items.isNotEmpty) ...[
-                const SizedBox(height: 16),
+                const SizedBox(height: kAppSpace16),
                 SafeArea(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -129,7 +130,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         icon: const Icon(Icons.arrow_forward),
                         label: l10n.batchCostingReviewContinueButton,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: kAppSpace12),
                       AppSecondaryButton(
                         onPressed: () => _showStartNewBatchDialog(context),
                         label: l10n.batchCostingSummaryStartNewBatchButton,
@@ -225,9 +226,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   ) {
     final quantityController = _quantityControllers[item.id];
 
-    return AppSurfaceCard(
-      padding: EdgeInsets.zero,
-      child: ExpansionTile(
+    return AppExpansionCard(
         key: ValueKey<String>('batch-item-${item.id}'),
         initiallyExpanded: _expandedItemIds.contains(item.id),
         onExpansionChanged: (expanded) {
@@ -239,11 +238,6 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             }
           });
         },
-        shape: const Border(),
-        collapsedShape: const Border(),
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        visualDensity: VisualDensity.compact,
         title: Row(
           children: [
             Expanded(
@@ -372,7 +366,6 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             ],
           ),
         ],
-      ),
     );
   }
 

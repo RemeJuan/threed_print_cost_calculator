@@ -4,6 +4,8 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_import_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_missing_details_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -40,7 +42,7 @@ class BatchImportFileRow extends StatelessWidget {
         );
       case ImportStatus.needsDetails:
         return AppSurfaceCard(
-          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          padding: const EdgeInsets.fromLTRB(kAppSpace16, 0, kAppSpace16, kAppSpace16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,10 +50,10 @@ class BatchImportFileRow extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.warning_amber_rounded,
-                    color: Colors.orange,
+                    color: STATUS_WARNING,
                     size: 20,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: kAppSpace8),
                   Expanded(
                     child: Text(
                       row.file.name,
@@ -74,10 +76,12 @@ class BatchImportFileRow extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: kAppSpace8),
               Text(
                 l10n.batchGcodeImportNeedsDetailsLabel,
-                style: TextStyle(color: Colors.orange.shade700, fontSize: 13),
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: STATUS_WARNING,
+                ),
               ),
               MissingDetailsForm(
                 l10n: l10n,
@@ -94,7 +98,7 @@ class BatchImportFileRow extends StatelessWidget {
         );
       case ImportStatus.ready:
         return ListTile(
-          leading: const Icon(Icons.check_circle, color: Colors.green),
+          leading: const Icon(Icons.check_circle, color: STATUS_SUCCESS),
           title: Text(row.file.name),
           subtitle: Text(l10n.batchGcodeImportReadyLabel),
           trailing: Row(

@@ -16,6 +16,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
@@ -38,7 +39,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
             body: SafeArea(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(kAppSpace16),
                   child: Text(
                     l10n.batchCostingPrinterAssignmentNoPrintersMessage,
                     textAlign: TextAlign.center,
@@ -56,7 +57,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(kAppSpace16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -83,7 +84,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                           .setPrinterAssignmentMode(selected.first);
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   if (state.printerAssignmentMode ==
                       BatchPrinterAssignmentMode.batchWide)
                     Expanded(
@@ -114,7 +115,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                       child: ListView.separated(
                         itemCount: state.items.length,
                         separatorBuilder: (context, index) =>
-                            const SizedBox(height: 12),
+                            const SizedBox(height: kAppSpace12),
                         itemBuilder: (context, index) {
                           final item = state.items[index];
                           final allocations = _printerAllocationsFor(
@@ -134,7 +135,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                         },
                       ),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   AssignmentNavRow(
                     previousLabel:
                         l10n.batchCostingPrinterAssignmentPreviousButton,
@@ -281,9 +282,9 @@ class _PrinterAllocationCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kAppSpace8),
           Text(printerLabel),
-          const SizedBox(height: 8),
+          const SizedBox(height: kAppSpace8),
           AppSecondaryButton(
             onPressed: () => _openSplitCopiesDialog(context),
             icon: const Icon(Icons.tune),

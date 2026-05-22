@@ -15,6 +15,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class BatchPricingScopePage extends ConsumerStatefulWidget {
   const BatchPricingScopePage({super.key});
@@ -112,7 +113,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -122,7 +123,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   l10n.batchCostingPricingScopeSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: kAppSpace16),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -203,7 +204,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: kAppSpace16),
                 SafeArea(
                   child: Row(
                     children: [
@@ -241,8 +242,8 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     required String scopeBatchLabel,
   }) {
     return AppSurfaceCard(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: kAppSpace8),
+      margin: const EdgeInsets.only(bottom: kAppSpace12),
       child: Row(
         children: [
           Expanded(

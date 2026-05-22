@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_gcode_i
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_import_file_row.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_single_import_view.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchGcodeImportBody extends ConsumerWidget {
@@ -59,18 +60,18 @@ class BatchGcodeImportBody extends ConsumerWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(kAppSpace16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(l10n.batchGcodeImportBody),
-          const SizedBox(height: 16),
+          const SizedBox(height: kAppSpace16),
           AppPrimaryButton(
             onPressed: loading ? null : onPickFiles,
             icon: const Icon(Icons.folder_open),
             label: l10n.batchGcodeImportPickButton,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kAppSpace8),
           if (singleImport == null)
             Text(
               l10n.batchGcodeImportQuantityHint,
@@ -78,7 +79,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
-          const SizedBox(height: 16),
+          const SizedBox(height: kAppSpace16),
           Expanded(
             child: singleImport != null
                 ? BatchSingleImportView(
@@ -92,7 +93,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
                 ? const SizedBox.shrink()
                 : ListView.separated(
                     itemCount: rows.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                    separatorBuilder: (_, _) => const SizedBox(height: kAppSpace8),
                     itemBuilder: (context, index) => BatchImportFileRow(
                       row: rows[index],
                       item: itemForRow(rows[index]),
@@ -108,7 +109,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
           ),
           if (singleImport != null)
             Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: kAppSpace16),
               child: AppPrimaryButton(
                 onPressed: singleImport!.canContinue
                     ? onConfirmSingleImport
@@ -119,7 +120,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
             )
           else if (singleImportError != null)
             Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: kAppSpace16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -129,7 +130,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.error,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: kAppSpace12),
                   AppTertiaryButton(
                     onPressed: onPickFiles,
                     label: l10n.batchGcodeImportRetryButton,
@@ -139,7 +140,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
             )
           else if (allDone && hasReady && !hasNeedsDetails)
             Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: kAppSpace16),
               child: AppPrimaryButton(
                 onPressed: () {
                   Navigator.of(context).push(
@@ -153,14 +154,14 @@ class BatchGcodeImportBody extends ConsumerWidget {
             )
           else if (allDone && rows.isNotEmpty && !hasReady && !hasNeedsDetails)
             Padding(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: kAppSpace16),
               child: Row(
                 children: [
                   AppTertiaryButton(
                     onPressed: () => Navigator.of(context).pop(),
                     label: MaterialLocalizations.of(context).backButtonTooltip,
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: kAppSpace8),
                   AppTertiaryButton(
                     onPressed: onPickFiles,
                     label: l10n.batchGcodeImportRetryButton,

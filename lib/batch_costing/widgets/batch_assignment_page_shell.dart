@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
@@ -35,10 +36,10 @@ Widget buildAssignmentErrorState(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(kAppSpace16),
             child: Text(errorText, textAlign: TextAlign.center),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: kAppSpace16),
           AppPrimaryButton(onPressed: onRetry, label: retryLabel),
         ],
       ),
@@ -66,7 +67,7 @@ class AssignmentModeHeader<T extends Enum> extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
-        const SizedBox(height: 16),
+        const SizedBox(height: kAppSpace16),
         SegmentedButton<T>(
           segments: segments,
           selected: selected,
