@@ -22,28 +22,25 @@ class AppPrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = onPressed != null && !loading;
-    return SizedBox(
-      height: _kButtonHeight,
-      child: ElevatedButton(
-        onPressed: enabled ? onPressed : null,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: LIGHT_BLUE,
-          foregroundColor: Colors.white,
-          disabledBackgroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
-          disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(_kButtonRadius),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          minimumSize: const Size.fromHeight(_kButtonHeight),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+    return ElevatedButton(
+      onPressed: enabled ? onPressed : null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: LIGHT_BLUE,
+        foregroundColor: Colors.white,
+        disabledBackgroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
+        disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_kButtonRadius),
         ),
-        child: _ButtonContent(
-          icon: icon,
-          label: label,
-          loading: loading,
-          activeColor: Colors.white,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        minimumSize: const Size(0, _kButtonHeight),
+        textStyle: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      child: _ButtonContent(
+        icon: icon,
+        label: label,
+        loading: loading,
+        activeColor: Colors.white,
       ),
     );
   }
@@ -66,29 +63,26 @@ class AppSecondaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = onPressed != null && !loading;
-    return SizedBox(
-      height: _kButtonHeight,
-      child: OutlinedButton(
-        onPressed: enabled ? onPressed : null,
-        style: OutlinedButton.styleFrom(
-          foregroundColor: LIGHT_BLUE,
-          disabledForegroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
-          side: BorderSide(
-            color: enabled ? LIGHT_BLUE : LIGHT_BLUE.withValues(alpha: 0.4),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(_kButtonRadius),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          minimumSize: const Size.fromHeight(_kButtonHeight),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+    return OutlinedButton(
+      onPressed: enabled ? onPressed : null,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: LIGHT_BLUE,
+        disabledForegroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
+        side: BorderSide(
+          color: enabled ? LIGHT_BLUE : LIGHT_BLUE.withValues(alpha: 0.4),
         ),
-        child: _ButtonContent(
-          icon: icon,
-          label: label,
-          loading: loading,
-          activeColor: LIGHT_BLUE,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_kButtonRadius),
         ),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        minimumSize: const Size(0, _kButtonHeight),
+        textStyle: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+      child: _ButtonContent(
+        icon: icon,
+        label: label,
+        loading: loading,
+        activeColor: LIGHT_BLUE,
       ),
     );
   }
@@ -111,26 +105,23 @@ class AppTertiaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final enabled = onPressed != null && !loading;
-    return SizedBox(
-      height: _kButtonHeight,
-      child: TextButton(
-        onPressed: enabled ? onPressed : null,
-        style: TextButton.styleFrom(
-          foregroundColor: LIGHT_BLUE,
-          disabledForegroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(_kButtonRadius),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          minimumSize: const Size.fromHeight(_kButtonHeight),
-          textStyle: const TextStyle(fontWeight: FontWeight.w500),
+    return TextButton(
+      onPressed: enabled ? onPressed : null,
+      style: TextButton.styleFrom(
+        foregroundColor: LIGHT_BLUE,
+        disabledForegroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_kButtonRadius),
         ),
-        child: _ButtonContent(
-          icon: icon,
-          label: label,
-          loading: loading,
-          activeColor: LIGHT_BLUE,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        minimumSize: const Size(0, _kButtonHeight),
+        textStyle: const TextStyle(fontWeight: FontWeight.w500),
+      ),
+      child: _ButtonContent(
+        icon: icon,
+        label: label,
+        loading: loading,
+        activeColor: LIGHT_BLUE,
       ),
     );
   }
