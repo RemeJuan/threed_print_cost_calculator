@@ -64,11 +64,16 @@
 ## Shared UI system
 
 - Shared surface, control, and input primitives now live under `lib/shared/widgets/` and `lib/shared/theme.dart`.
+- Shared spacing/radius layout tokens live in `lib/shared/app_ui_tokens.dart`.
 - `AppSurfaceCard` owns grouped-card styling for accordions, settings panels, support surfaces, and batch summary cards.
+- `AppExpansionCard` is the reusable expansion shell for support FAQs and batch review/summary cards.
 - `AppSearchBar` is the reusable search field used by history and materials.
 - `AppPrimaryButton`, `AppSecondaryButton`, and `AppTertiaryButton` centralize button treatment across the app.
 - `AppFilterChip` centralizes selected/unselected chip treatment for batch/material filtering.
+- `StockStatusBadge` centralizes stock-state badge treatment instead of ad-hoc badge styling.
 - Input styling is theme-driven and underlined; `LIGHT_BLUE` remains the focus/accent color for active fields, labels, and icons.
+- Search/header shells should reuse shared spacing rhythm from `kAppSearchSectionPadding` rather than feature-local padding literals.
+- Prefer semantic color tokens from `lib/shared/app_colors.dart` (`TEXT_*`, `ICON_*`, `STATUS_*`, `BORDER_*`, overlay tokens) over direct `Colors.*` or raw `Color(...)` values.
 
 ## Testing conventions
 

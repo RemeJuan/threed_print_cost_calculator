@@ -24,6 +24,13 @@
 - `HistoryPage` exists only for premium users; `AppPage` dynamically removes that tab for free users.
 - **Currency-agnostic**: All values are raw numbers. Do not show `$`, `€`, `£`, `¥`, or any currency symbol in labels, helpers, or UI surfaces.
 
+## Shared UI rules
+- Prefer existing shared primitives before adding feature-local styling: `AppSurfaceCard`, `AppExpansionCard`, `AppSearchBar`, `AppPrimaryButton`, `AppSecondaryButton`, `AppTertiaryButton`, `AppFilterChip`, `StockStatusBadge`.
+- Prefer shared tokens from `lib/shared/app_ui_tokens.dart` for spacing/radius (`kAppSpace*`, `kAppSurfaceRadius*`, `kAppSearchSectionPadding`) instead of new `EdgeInsets`/`SizedBox`/`BorderRadius` literals.
+- Prefer semantic color tokens from `lib/shared/app_colors.dart` (`TEXT_*`, `ICON_*`, `STATUS_*`, `BORDER_*`, overlay tokens) instead of `Colors.*` or raw `Color(...)` values.
+- When touching search/header rows, keep padding rhythm aligned with `kAppSearchSectionPadding` unless a feature has a documented exception.
+- If a screen needs a new reusable visual pattern, extract or extend a shared widget under `lib/shared/widgets/` instead of duplicating the shell in-place.
+
 ## Testing quirks
 - Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.
 - Integration tests should use `integration_test/helpers/integration_test_harness.dart`; it seeds in-memory DB/prefs and fake purchases for free vs premium flows.

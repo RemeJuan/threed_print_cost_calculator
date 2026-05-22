@@ -4,13 +4,18 @@
 
 - Main screens/widgets:
   - `lib/shared/widgets/app_surface_card.dart` — reusable grouped surface wrapper used by cards, accordions, settings sections, and support panels
+  - `lib/shared/widgets/app_expansion_card.dart` — reusable compact expansion-card shell used by support FAQ rows and batch costing review/summary cards
   - `lib/shared/widgets/app_search_bar.dart` — shared search field used by history and materials
   - `lib/shared/widgets/app_buttons.dart` — shared primary/secondary/tertiary button set used across batch costing, history, settings, and dialogs
   - `lib/shared/widgets/app_filter_chip.dart` — shared filter chip used by batch costing source filters
+  - `lib/shared/widgets/stock_status_badge.dart` — shared stock-state badge used for material availability/status display
 - Theme/system notes:
   - shared input styling is theme-driven in `lib/shared/theme.dart`
   - active/focused input accent stays `LIGHT_BLUE`
   - cards and grouped panels use `AppSurfaceCard` instead of ad-hoc `Material` wrappers
+  - shared spacing/radius constants live in `lib/shared/app_ui_tokens.dart`
+  - search/header rows should prefer `kAppSearchSectionPadding` and tokenized spacing (`kAppSpace*`) over feature-local literals
+  - semantic color tokens live in `lib/shared/app_colors.dart`; prefer `TEXT_*`, `ICON_*`, `STATUS_*`, `BORDER_*`, and overlay tokens over direct `Colors.*`
 
 ## Calculator
 
@@ -21,6 +26,7 @@
   - `lib/calculator/view/printer_select.dart`
   - `lib/calculator/view/material_select.dart`
   - `lib/calculator/view/components/materials_selection/`
+  - `lib/calculator/view/components/materials_selection/material_picker.dart` — shared-tokenized material picker sheet with inline add-material CTA
 - Providers/state:
   - `lib/calculator/provider/calculator_notifier.dart` (`calculatorProvider`)
   - `lib/calculator/provider/calculator_history_loader.dart`
@@ -106,7 +112,7 @@
   - `lib/history/components/history_list_view.dart`
   - `lib/history/components/history_item.dart`
   - `lib/history/components/history_search_bar.dart` — search shell around shared `AppSearchBar`
-  - `lib/history/components/history_toolbar.dart`
+  - `lib/history/components/history_toolbar.dart` — tokenized search/header row using shared search padding rhythm
   - `lib/history/components/history_upsell_banner.dart`
 - Providers/state:
   - `lib/history/provider/history_paged_notifier.dart`
@@ -211,7 +217,7 @@
   - `lib/batch_costing/widgets/batch_anchor_selector.dart`
   - `lib/batch_costing/widgets/warning_box.dart`
 - Shared UI usage:
-  - batch summary and batch item cards use support-style `AppSurfaceCard` expansion tiles with zero outer padding and compact density
+  - batch summary and batch item cards use shared `AppExpansionCard` with compact density and shared token padding
   - batch source chips use shared `AppFilterChip`
   - batch action buttons use shared primary/secondary/tertiary buttons
 - Providers/state:
