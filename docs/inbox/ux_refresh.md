@@ -346,6 +346,123 @@ without becoming visually noisy.
 
 # Typography
 
+# Header Component
+
+## AppScreenHeader
+
+The refresh should introduce a reusable shared header component.
+
+Suggested component:
+
+```dart
+AppScreenHeader(
+  title: 'Print History',
+)
+```
+
+This component should become the default top-level screen header throughout the application.
+
+The goal is to centralise:
+- title styling
+- typography rules
+- spacing
+- color emphasis
+- alignment
+- trailing actions
+- subtitle support
+
+into a single reusable implementation.
+
+---
+
+## Header Typography Direction
+
+Headers should feel:
+- cleaner
+- more premium
+- more intentional
+- less like default Flutter app bars
+
+The header styling should become part of the application's visual identity.
+
+Potential characteristics:
+- larger typography
+- stronger spacing
+- reduced visual clutter
+- less default Material styling
+- more custom visual rhythm
+
+---
+
+## Header Color Rules
+
+The header component should automatically apply title color emphasis rules.
+
+### Single Word Titles
+
+Single-word titles should render entirely in `LIGHT_BLUE`.
+
+Examples:
+- `Calculator`
+- `Materials`
+- `Printers`
+- `Settings`
+
+This creates stronger visual identity without awkward color splitting.
+
+---
+
+### Multi-Word Titles
+
+Multi-word titles should transition from darker/off-white text into `LIGHT_BLUE` emphasis.
+
+The final semantic word should generally receive the accent color.
+
+Examples:
+- `Print History`
+- `Batch Costing`
+- `Material Settings`
+- `Power Usage`
+
+Expected behavior:
+- earlier words use off-white
+- final/important word uses `LIGHT_BLUE`
+
+This creates a more natural visual flow and stronger emphasis hierarchy.
+
+---
+
+## Special Cases
+
+Longer titles may bias emphasis toward the final important semantic word.
+
+Example:
+- `3D Print Calculator`
+
+Potential rendering:
+- `3D Print` → off-white
+- `Calculator` → `LIGHT_BLUE`
+
+The emphasis should feel intentional rather than mechanically split.
+
+---
+
+## Header Component Responsibilities
+
+The shared header component should eventually support:
+- optional subtitle
+- optional trailing actions
+- optional leading actions
+- animated transitions
+- page-level consistency
+- spacing standardisation
+- responsive sizing
+
+Avoid per-screen custom header styling where possible.
+
+The goal is to make the header component part of the application's core visual identity.
+
+
 ## Goals
 
 Improve hierarchy and readability.
