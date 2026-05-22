@@ -708,5 +708,5 @@
   "batchCostingNewBatchDialogBody": "現在のバッチの進行状況はすべて破棄されます。新しいバッチを開始しますか？",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit}ずつ → 合計{lineTotal}",
   "batchCostingAssignmentPrinterLabel": "プリンター",
-  "batchCostingEntryButton": "バッチコスト計算"
+  "batchCostingEntryButton": "バッチ見積もりを開始"
 }

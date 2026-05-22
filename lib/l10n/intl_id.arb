@@ -707,5 +707,5 @@
   "batchCostingNewBatchDialogBody": "Ini akan membuang semua kemajuan batch saat ini. Mulai batch baru?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} per → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Printer",
-  "batchCostingEntryButton": "Biaya batch"
+  "batchCostingEntryButton": "Mulai penawaran batch"
 }

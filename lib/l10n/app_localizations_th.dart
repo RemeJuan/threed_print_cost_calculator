@@ -1540,5 +1540,5 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingAssignmentPrinterLabel => 'เครื่องพิมพ์';
 
   @override
-  String get batchCostingEntryButton => 'ต้นทุนแบทช์';
+  String get batchCostingEntryButton => 'เริ่มใบเสนอราคาแบบชุด';
 }

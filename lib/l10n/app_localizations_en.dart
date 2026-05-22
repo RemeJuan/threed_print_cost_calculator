@@ -1557,5 +1557,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchCostingAssignmentPrinterLabel => 'Printer';
 
   @override
-  String get batchCostingEntryButton => 'Batch costing';
+  String get batchCostingEntryButton => 'Start batch quote';
 }

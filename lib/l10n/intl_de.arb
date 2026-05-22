@@ -707,5 +707,5 @@
   "batchCostingNewBatchDialogBody": "Dadurch wird der gesamte aktuelle Stapelfortschritt verworfen. Einen neuen Stapel starten?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} pro → {lineTotal} gesamt",
   "batchCostingAssignmentPrinterLabel": "Drucker",
-  "batchCostingEntryButton": "Stapelkalkulation"
+  "batchCostingEntryButton": "Batch-Angebot starten"
 }

@@ -1579,5 +1579,5 @@ class AppLocalizationsEs extends AppLocalizations {
   String get batchCostingAssignmentPrinterLabel => 'Impresora';
 
   @override
-  String get batchCostingEntryButton => 'Costos por lote';
+  String get batchCostingEntryButton => 'Iniciar presupuesto por lote';
 }

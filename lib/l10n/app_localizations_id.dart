@@ -1546,5 +1546,5 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingAssignmentPrinterLabel => 'Printer';
 
   @override
-  String get batchCostingEntryButton => 'Biaya batch';
+  String get batchCostingEntryButton => 'Mulai penawaran batch';
 }

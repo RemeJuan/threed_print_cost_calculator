@@ -2906,7 +2906,7 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingEntryButton.
   ///
   /// In en, this message translates to:
-  /// **'Batch costing'**
+  /// **'Start batch quote'**
   String get batchCostingEntryButton;
 }
 

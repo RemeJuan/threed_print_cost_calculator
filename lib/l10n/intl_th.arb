@@ -708,5 +708,5 @@
   "batchCostingNewBatchDialogBody": "การดำเนินการนี้จะละทิ้งความคืบหน้าของแบตช์ปัจจุบันทั้งหมด เริ่มแบตช์ใหม่หรือไม่",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} ต่อชิ้น → {lineTotal} รวม",
   "batchCostingAssignmentPrinterLabel": "เครื่องพิมพ์",
-  "batchCostingEntryButton": "ต้นทุนแบทช์"
+  "batchCostingEntryButton": "เริ่มใบเสนอราคาแบบชุด"
 }
