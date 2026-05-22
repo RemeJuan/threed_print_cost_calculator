@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 import 'gcode_import_preview_dialog.dart';
 
@@ -55,7 +56,7 @@ class GCodeImportPreviewSection extends StatelessWidget {
       );
       showDialog<void>(
         context: context,
-        barrierColor: Colors.black87,
+        barrierColor: SCRIM_DARK,
         barrierDismissible: true,
         builder: (_) =>
             GCodeImportPreviewDialog(bytes: previewBytes, l10n: l10n),
@@ -69,11 +70,11 @@ class GCodeImportPreviewSection extends StatelessWidget {
           width: 96,
           height: 96,
           child: Material(
-            color: Colors.transparent,
+            color: TRANSPARENT_COLOR,
             child: InkWell(
               onTap: onPreviewTap,
               child: Container(
-                color: Colors.black87,
+                color: SCRIM_DARK,
                 alignment: Alignment.center,
                 child: Image.memory(
                   previewBytes,
@@ -115,8 +116,8 @@ class GCodeImportPreviewSection extends StatelessWidget {
       width: 96,
       height: 96,
       decoration: BoxDecoration(
-        color: Colors.black87,
-        borderRadius: BorderRadius.circular(8),
+        color: SCRIM_DARK,
+        borderRadius: BorderRadius.circular(kAppSurfaceRadius),
       ),
       alignment: Alignment.center,
       child: Column(
@@ -124,16 +125,16 @@ class GCodeImportPreviewSection extends StatelessWidget {
         children: [
           const Icon(
             Icons.image_not_supported_outlined,
-            color: Colors.white70,
+            color: ICON_MUTED,
             size: 24,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: kAppSpace4),
           Text(
             l10n.importGcodePreviewUnavailable,
             textAlign: TextAlign.center,
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+            ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY),
           ),
         ],
       ),
