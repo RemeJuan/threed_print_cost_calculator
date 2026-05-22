@@ -144,7 +144,7 @@ class CalculatorPage extends HookConsumerWidget {
                 icon: const Icon(Icons.view_list_outlined),
                 label: l10n.batchCostingEntryButton,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: kAppSpace12),
             ],
             Row(
               children: [
