@@ -89,7 +89,7 @@ class CalculatorPage extends HookConsumerWidget {
     }, [appRefreshTick]);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       physics: const ClampingScrollPhysics(),
       child: AutofillGroup(
         child: Column(
@@ -110,10 +110,14 @@ class CalculatorPage extends HookConsumerWidget {
                   const SizedBox(height: 8),
                   const TimeSection(),
                   const SizedBox(height: 8),
-                  if (isPremium) const JobPricingOverridesSection(),
                 ],
               ),
             ),
+            if (isPremium)
+              AppSurfaceCard(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: const JobPricingOverridesSection(),
+              ),
             CalculatorResults(results: state.results, pricing: state.pricing),
             const SizedBox(height: 8),
             Row(

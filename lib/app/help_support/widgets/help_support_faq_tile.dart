@@ -19,6 +19,8 @@ class HelpSupportFaqTile extends StatelessWidget {
       child: AppSurfaceCard(
         padding: EdgeInsets.zero,
         child: ExpansionTile(
+          shape: const Border(),
+          collapsedShape: const Border(),
           key: ValueKey<String>('helpSupport.faq.$index'),
           tilePadding: const EdgeInsets.symmetric(horizontal: 16),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
