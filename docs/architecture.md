@@ -61,6 +61,15 @@
 - After ARB changes, run `fvm flutter gen-l10n` or project codegen workflow.
 - App is currency-agnostic: no currency symbols in user-facing output.
 
+## Shared UI system
+
+- Shared surface, control, and input primitives now live under `lib/shared/widgets/` and `lib/shared/theme.dart`.
+- `AppSurfaceCard` owns grouped-card styling for accordions, settings panels, support surfaces, and batch summary cards.
+- `AppSearchBar` is the reusable search field used by history and materials.
+- `AppPrimaryButton`, `AppSecondaryButton`, and `AppTertiaryButton` centralize button treatment across the app.
+- `AppFilterChip` centralizes selected/unselected chip treatment for batch/material filtering.
+- Input styling is theme-driven and underlined; `LIGHT_BLUE` remains the focus/accent color for active fields, labels, and icons.
+
 ## Testing conventions
 
 - Main lower-level test roots: `test/`, `integration_test/`, `patrol_test/`.
