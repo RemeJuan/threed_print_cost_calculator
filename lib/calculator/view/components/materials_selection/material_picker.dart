@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 /// Reusable material picker widget. Uses the shared materials provider so it
 /// updates live without creating duplicate listeners.
@@ -75,12 +76,12 @@ class MaterialPicker extends HookConsumerWidget {
                   horizontal: 16,
                   vertical: 8,
                 ),
-                child: ElevatedButton.icon(
+                child: AppSecondaryButton(
                   key: const ValueKey<String>(
                     'calculator.materialPicker.add.button',
                   ),
                   icon: const Icon(Icons.add),
-                  label: Text(l10n.addMaterialButton),
+                  label: l10n.addMaterialButton,
                   onPressed: () async {
                     final created = await showDialog<MaterialModel?>(
                       context: context,
@@ -128,7 +129,7 @@ class MaterialPicker extends HookConsumerWidget {
                     ),
                     title: Text(material.name),
                     subtitle: Text(
-                      '${material.color} • ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
+                      '${material.color} \u2022 ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
                     ),
                     onTap: () => onSelected(material),
                   );
@@ -139,12 +140,12 @@ class MaterialPicker extends HookConsumerWidget {
             // material even when the list already contains items.
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ElevatedButton.icon(
+              child: AppSecondaryButton(
                 key: const ValueKey<String>(
                   'calculator.materialPicker.add.button',
                 ),
                 icon: const Icon(Icons.add),
-                label: Text(l10n.addMaterialButton),
+                label: l10n.addMaterialButton,
                 onPressed: () async {
                   final created = await showDialog<MaterialModel?>(
                     context: context,

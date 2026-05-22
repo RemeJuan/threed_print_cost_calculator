@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 import 'gcode_import_preview_dialog.dart';
 
@@ -92,13 +93,17 @@ class GCodeImportPreviewSection extends StatelessWidget {
       child: TextButton.icon(
         onPressed: onPreviewTap,
         icon: const Icon(Icons.launch),
-        label: Text(l10n.importGcodePreviewView),
+        label: Text(
+          l10n.importGcodePreviewView,
+          style: TextStyle(color: LIGHT_BLUE),
+        ),
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
           minimumSize: Size.zero,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity.compact,
           alignment: Alignment.centerRight,
+          iconColor: LIGHT_BLUE,
         ),
       ),
     );
