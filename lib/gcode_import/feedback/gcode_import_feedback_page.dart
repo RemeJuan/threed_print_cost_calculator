@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_email.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_models.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 class GCodeImportFeedbackPage extends ConsumerStatefulWidget {
@@ -235,16 +236,11 @@ class _GCodeImportFeedbackPageState
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               const SizedBox(height: 24),
-              FilledButton(
+              AppPrimaryButton(
                 key: const ValueKey<String>('gcode_feedback.submit'),
-                onPressed: _sending ? null : _submit,
-                child: _sending
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(l10n.gcodeImportFeedbackSendCta),
+                onPressed: _submit,
+                label: l10n.gcodeImportFeedbackSendCta,
+                loading: _sending,
               ),
             ],
           ),

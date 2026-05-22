@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class GCodeImportFeedbackSection extends StatelessWidget {
   const GCodeImportFeedbackSection({
@@ -52,9 +53,9 @@ class GCodeImportFeedbackSection extends StatelessWidget {
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerLeft,
-              child: FilledButton(
+              child: AppPrimaryButton(
                 onPressed: onPressed,
-                child: Text(l10n.gcodeImportFeedbackSendCta),
+                label: l10n.gcodeImportFeedbackSendCta,
               ),
             ),
           ],

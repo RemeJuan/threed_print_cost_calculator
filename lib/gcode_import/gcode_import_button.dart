@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import 'gcode_import_page.dart';
 
@@ -12,7 +13,7 @@ class GCodeImportButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return OutlinedButton.icon(
+    return AppSecondaryButton(
       key: const ValueKey<String>('calculator.gcode_import.open.button'),
       onPressed: () {
         Navigator.of(context).push(
@@ -22,7 +23,7 @@ class GCodeImportButton extends StatelessWidget {
         );
       },
       icon: const Icon(Icons.upload_file_outlined),
-      label: Text(l10n.importGcodeButton),
+      label: l10n.importGcodeButton,
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_h
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_summary_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import 'gcode_import_controller.dart';
 
@@ -55,7 +56,7 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
                     children: [
                       GCodeImportHeader(text: l10n.importGcodeIntro),
                       const SizedBox(height: 16),
-                      ElevatedButton.icon(
+                      AppPrimaryButton(
                         key: const ValueKey<String>(
                           'gcode_import.select_file.button',
                         ),
@@ -63,11 +64,9 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
                             ? null
                             : () => _pickFiles(controller),
                         icon: const Icon(Icons.folder_open),
-                        label: Text(
-                          state.result == null
-                              ? l10n.importGcodeSelectFileButton
-                              : l10n.importGcodePickAnotherButton,
-                        ),
+                        label: state.result == null
+                            ? l10n.importGcodeSelectFileButton
+                            : l10n.importGcodePickAnotherButton,
                       ),
                       if (state.selectedFileName != null) ...[
                         const SizedBox(height: 16),
