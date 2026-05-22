@@ -106,11 +106,9 @@ void main() {
     final notifier = _FakeHistoryPagedNotifier(
       HistoryPagedState.initial().copyWith(hasLoadedOnce: true, hasMore: false),
     );
-    final paywallPresenter = FakePaywallPresenter();
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
-      paywallPresenterProvider.overrideWithValue(paywallPresenter),
     ]);
 
     await tester.pumpAndSettle();
@@ -122,20 +120,10 @@ void main() {
     );
     expect(find.text('No saved prints yet'), findsOneWidget);
     expect(find.text('Re-use past prints in the calculator'), findsOneWidget);
-    expect(find.text('Re-use past prints instantly'), findsOneWidget);
-    expect(find.text('Unlock advanced edits and exports'), findsOneWidget);
     expect(find.text('More actions in ⋯'), findsNothing);
-
-    await tester.tap(
-      find.byKey(const ValueKey<String>('history.upsell.banner')),
-    );
-    await tester.pump();
-
-    expect(paywallPresenter.calls, 1);
-    expect(paywallPresenter.lastOfferingId, 'pro');
   });
 
-  testWidgets('premium users do not see the history upsell', (tester) async {
+  testWidgets('premium users see history items', (tester) async {
     final notifier = _FakeHistoryPagedNotifier(
       HistoryPagedState.initial().copyWith(
         items: [_entry('1', 'Benchy', DateTime.utc(2024, 1, 2))],
@@ -150,11 +138,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(
-      find.byKey(const ValueKey<String>('history.upsell.banner')),
-      findsNothing,
-    );
-    expect(find.text('Re-use past prints instantly'), findsNothing);
+    expect(find.text('Benchy'), findsOneWidget);
   });
 
   testWidgets('shows overflow hint once and dismisses it after menu open', (
@@ -184,10 +168,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('More actions in ⋯'), findsNothing);
-    expect(
-      find.byKey(const ValueKey<String>('history.upsell.banner')),
-      findsOneWidget,
-    );
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
