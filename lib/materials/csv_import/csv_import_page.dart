@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 const _csvHeader =
@@ -255,10 +256,10 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
         actions: [
           TextButton.icon(
             onPressed: _downloadTemplate,
-            icon: const Icon(Icons.download, color: Colors.white70),
+            icon: const Icon(Icons.download, color: OFF_WHITE),
             label: Text(
               _l10n!.csvTemplateButton,
-              style: const TextStyle(color: Colors.white70),
+              style: const TextStyle(color: OFF_WHITE),
             ),
           ),
         ],
@@ -289,11 +290,11 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
             style: const TextStyle(color: Colors.white70),
           ),
           const SizedBox(height: 24),
-          ElevatedButton.icon(
+          AppPrimaryButton(
             key: const ValueKey<String>('csv_import.select_file.button'),
             onPressed: _pickFile,
             icon: const Icon(Icons.folder_open),
-            label: Text(l10n.csvSelectFileButton),
+            label: l10n.csvSelectFileButton,
           ),
         ],
       ),

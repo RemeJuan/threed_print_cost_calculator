@@ -253,12 +253,6 @@ class MaterialForm extends HookConsumerWidget {
                   maxLines: 3,
                   decoration: InputDecoration(
                     labelText: l10n.notesLabel,
-                    filled: true,
-                    fillColor: const Color.fromRGBO(26, 28, 43, 1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.white24),
-                    ),
                   ),
                   onChanged: notifier.updateNotes,
                 ),

@@ -38,11 +38,6 @@ class BatchHistoryItem extends HookConsumerWidget {
         : GeneralSettingsModel.initial();
     return Container(
       key: ValueKey<String>('$itemKeyPrefix.card'),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(8, 8, 18, 1),
-        borderRadius: BorderRadius.circular(8),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

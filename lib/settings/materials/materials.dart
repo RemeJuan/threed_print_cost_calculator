@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -6,6 +7,7 @@ import 'package:threed_print_cost_calculator/settings/materials/material_form.da
 import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart';
 
 class Materials extends HookConsumerWidget {
   const Materials({super.key});
@@ -14,19 +16,36 @@ class Materials extends HookConsumerWidget {
   Widget build(context, ref) {
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final l10n = AppLocalizations.of(context)!;
+    final searchController = useTextEditingController();
 
     return ref
         .watch(materialsStreamProvider)
         .when(
           data: (materials) {
+            final q = searchController.text.toLowerCase();
+            final filtered = materials.where((m) {
+              if (q.isEmpty) return true;
+              return m.name.toLowerCase().contains(q) ||
+                  m.color.toLowerCase().contains(q);
+            }).toList();
+
             return Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                  child: AppSearchBar(
+                    controller: searchController,
+                    hintText: l10n.searchMaterialsHint,
+                    showClearButton: true,
+                    onChanged: (_) {},
+                  ),
+                ),
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height / 4,
                   child: ListView.builder(
-                    itemCount: materials.length,
+                    itemCount: filtered.length,
                     itemBuilder: (_, index) {
-                      final data = materials[index];
+                      final data = filtered[index];
                       final key = data.id;
 
                       return SettingsSlidableItem(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart';
 
 class HistoryToolbar extends StatelessWidget {
   final TextEditingController controller;
@@ -20,31 +21,14 @@ class HistoryToolbar extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ValueListenableBuilder<TextEditingValue>(
-              valueListenable: controller,
-              builder: (_, value, _) {
-                return TextField(
-                  key: const ValueKey<String>('history.search.input'),
-                  controller: controller,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    hintText: l10n.historySearchHint,
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: value.text.isNotEmpty
-                        ? IconButton(
-                            key: const ValueKey<String>(
-                              'history.search.clear.button',
-                            ),
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              controller.clear();
-                            },
-                          )
-                        : null,
-                    border: const OutlineInputBorder(),
-                  ),
-                );
-              },
+            child: AppSearchBar(
+              controller: controller,
+              hintText: l10n.historySearchHint,
+              showClearButton: true,
+              onChanged: (_) {},
+              textFieldKey: const ValueKey<String>('history.search.input'),
+              clearButtonKey:
+                  const ValueKey<String>('history.search.clear.button'),
             ),
           ),
           const SizedBox(width: 8),

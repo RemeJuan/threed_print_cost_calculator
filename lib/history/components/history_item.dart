@@ -49,13 +49,16 @@ class HistoryItem extends HookConsumerWidget {
       deleteLabel: l10n.deleteButton,
       onDelete: () => actionsController.deleteEntry(context, ref),
       child: data.batchQuote
-          ? BatchHistoryItem(
-              dbKey: dbKey,
-              data: data,
-              itemKeyPrefix: itemKeyPrefix,
-              onOverflowMenuOpened: onOverflowMenuOpened,
-              deleteHistoryEntry: deleteHistoryEntry,
-              exportCsv: exportCsv,
+          ? AppSurfaceCard(
+              padding: const EdgeInsets.all(8),
+              child: BatchHistoryItem(
+                dbKey: dbKey,
+                data: data,
+                itemKeyPrefix: itemKeyPrefix,
+                onOverflowMenuOpened: onOverflowMenuOpened,
+                deleteHistoryEntry: deleteHistoryEntry,
+                exportCsv: exportCsv,
+              ),
             )
           : AppSurfaceCard(
               padding: const EdgeInsets.all(8),
