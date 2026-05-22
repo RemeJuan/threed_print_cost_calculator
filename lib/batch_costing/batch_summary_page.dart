@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchSummaryPage extends ConsumerStatefulWidget {
@@ -69,8 +70,8 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
         : GeneralSettingsModel.initial();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchCostingSummaryAppBarTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchCostingSummaryAppBarTitle,
         actions: [homeButton(context)],
       ),
       body: SafeArea(
@@ -272,8 +273,8 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
 
   Widget _emptyState(BuildContext context, AppLocalizations l10n) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchCostingSummaryAppBarTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchCostingSummaryAppBarTitle,
         actions: [homeButton(context)],
       ),
       body: Center(

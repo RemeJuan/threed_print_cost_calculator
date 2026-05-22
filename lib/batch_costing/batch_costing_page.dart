@@ -15,6 +15,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchCostingPage extends ConsumerStatefulWidget {
@@ -58,8 +59,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchCostingReviewAppBarTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchCostingReviewAppBarTitle,
         actions: [homeButton(context)],
       ),
       body: SafeArea(

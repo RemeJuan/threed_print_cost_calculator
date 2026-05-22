@@ -79,7 +79,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
             ),
           const SizedBox(height: 16),
           Expanded(
-              child: singleImport != null
+            child: singleImport != null
                 ? BatchSingleImportView(
                     singleImport: singleImport!,
 
@@ -109,8 +109,9 @@ class BatchGcodeImportBody extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 16),
               child: FilledButton.icon(
-                onPressed:
-                    singleImport!.canContinue ? onConfirmSingleImport : null,
+                onPressed: singleImport!.canContinue
+                    ? onConfirmSingleImport
+                    : null,
                 icon: const Icon(Icons.playlist_add),
                 label: Text(l10n.batchGcodeImportAddButton),
               ),

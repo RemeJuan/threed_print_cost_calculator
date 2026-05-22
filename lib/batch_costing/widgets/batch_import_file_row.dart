@@ -125,8 +125,7 @@ class BatchImportFileRow extends StatelessWidget {
             color: Theme.of(context).colorScheme.error,
           ),
           title: Text(row.file.name),
-          subtitle:
-              Text(row.errorMessage ?? l10n.batchGcodeImportFailureLabel),
+          subtitle: Text(row.errorMessage ?? l10n.batchGcodeImportFailureLabel),
         );
     }
   }

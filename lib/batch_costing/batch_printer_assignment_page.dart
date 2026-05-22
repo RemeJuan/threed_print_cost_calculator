@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_c
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
@@ -28,8 +29,8 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
       data: (printers) {
         if (printers.isEmpty) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
+            appBar: AppScreenHeader(
+              title: l10n.batchCostingPrinterAssignmentAppBarTitle,
               leading: BackButton(onPressed: () => Navigator.of(context).pop()),
             ),
             body: SafeArea(

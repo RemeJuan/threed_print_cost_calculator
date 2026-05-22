@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_email.dart';
 import 'package:threed_print_cost_calculator/gcode_import/feedback/gcode_import_feedback_models.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 class GCodeImportFeedbackPage extends ConsumerStatefulWidget {
   const GCodeImportFeedbackPage({
@@ -69,7 +70,10 @@ class _GCodeImportFeedbackPageState
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.gcodeImportFeedbackTitle)),
+      appBar: AppScreenHeader(
+        title: l10n.gcodeImportFeedbackTitle,
+        subtitle: l10n.gcodeImportFeedbackBetaFeature,
+      ),
       body: Form(
         key: _formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -78,10 +82,6 @@ class _GCodeImportFeedbackPageState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                l10n.gcodeImportFeedbackBetaFeature,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
               if (widget.importFailureContext != null) ...[
                 const SizedBox(height: 12),
                 Text(

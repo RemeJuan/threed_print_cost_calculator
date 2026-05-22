@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_gcode_import_body.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_gcode_import_handler.dart';
 
@@ -67,8 +68,8 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     if (widget.embedded) return body;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchGcodeImportTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchGcodeImportTitle,
         actions: [homeButton(context)],
       ),
       body: SafeArea(child: body),

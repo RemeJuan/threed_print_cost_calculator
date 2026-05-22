@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_f
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_header.dart';
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_summary_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 import 'gcode_import_controller.dart';
 
@@ -38,97 +39,97 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     final fileSizeBytes = state.selectedFileSizeBytes ?? 0;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _multiMode ? l10n.batchGcodeImportTitle : l10n.importGcodePageTitle,
-        ),
+      appBar: AppScreenHeader(
+        title: _multiMode
+            ? l10n.batchGcodeImportTitle
+            : l10n.importGcodePageTitle,
       ),
       body: SafeArea(
         child: _multiMode
             ? BatchGCodeImportPage(initialFiles: _multiFiles, embedded: true)
             : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    GCodeImportHeader(text: l10n.importGcodeIntro),
-                    const SizedBox(height: 16),
-                    ElevatedButton.icon(
-                      key: const ValueKey<String>(
-                        'gcode_import.select_file.button',
-                      ),
-                      onPressed: state.status == GCodeImportStatus.loading
-                          ? null
-                          : () => _pickFiles(controller),
-                      icon: const Icon(Icons.folder_open),
-                      label: Text(
-                        state.result == null
-                            ? l10n.importGcodeSelectFileButton
-                            : l10n.importGcodePickAnotherButton,
-                      ),
-                    ),
-                    if (state.selectedFileName != null) ...[
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      GCodeImportHeader(text: l10n.importGcodeIntro),
                       const SizedBox(height: 16),
-                      Text(
-                        '${l10n.importGcodeSelectedFileLabel}: ${state.selectedFileName}',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                    if (state.status == GCodeImportStatus.loading) ...[
-                      const SizedBox(height: 24),
-                      const Center(child: CircularProgressIndicator()),
-                    ],
-                    if (state.status == GCodeImportStatus.failure &&
-                        state.error != null)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text(
-                          _errorMessage(l10n, state.error!),
-                          style: Theme.of(context).textTheme.bodyMedium
-                              ?.copyWith(
-                                color: Theme.of(context).colorScheme.error,
-                              ),
+                      ElevatedButton.icon(
+                        key: const ValueKey<String>(
+                          'gcode_import.select_file.button',
+                        ),
+                        onPressed: state.status == GCodeImportStatus.loading
+                            ? null
+                            : () => _pickFiles(controller),
+                        icon: const Icon(Icons.folder_open),
+                        label: Text(
+                          state.result == null
+                              ? l10n.importGcodeSelectFileButton
+                              : l10n.importGcodePickAnotherButton,
                         ),
                       ),
-                    if (state.result != null) ...[
-                      const SizedBox(height: 24),
-                      GCodeImportSummaryCard(
-                        result: state.result!,
-                        l10n: l10n,
-                        fileSizeBytes: fileSizeBytes,
-                      ),
-                      const SizedBox(height: 16),
-                      GCodeImportActions(
-                        l10n: l10n,
-                        onPressed: _isPrimaryActionEnabled(state.result!)
-                            ? () => _handlePrimaryAction(
-                                context,
-                                ref,
-                                l10n,
-                                result: state.result!,
-                                fileSizeBytes: fileSizeBytes,
-                                parseStatus: parseStatus,
-                              )
-                            : null,
-                      ),
+                      if (state.selectedFileName != null) ...[
+                        const SizedBox(height: 16),
+                        Text(
+                          '${l10n.importGcodeSelectedFileLabel}: ${state.selectedFileName}',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ],
+                      if (state.status == GCodeImportStatus.loading) ...[
+                        const SizedBox(height: 24),
+                        const Center(child: CircularProgressIndicator()),
+                      ],
+                      if (state.status == GCodeImportStatus.failure &&
+                          state.error != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: Text(
+                            _errorMessage(l10n, state.error!),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                          ),
+                        ),
+                      if (state.result != null) ...[
+                        const SizedBox(height: 24),
+                        GCodeImportSummaryCard(
+                          result: state.result!,
+                          l10n: l10n,
+                          fileSizeBytes: fileSizeBytes,
+                        ),
+                        const SizedBox(height: 16),
+                        GCodeImportActions(
+                          l10n: l10n,
+                          onPressed: _isPrimaryActionEnabled(state.result!)
+                              ? () => _handlePrimaryAction(
+                                  context,
+                                  ref,
+                                  l10n,
+                                  result: state.result!,
+                                  fileSizeBytes: fileSizeBytes,
+                                  parseStatus: parseStatus,
+                                )
+                              : null,
+                        ),
+                      ],
+                      if (state.status == GCodeImportStatus.success ||
+                          state.status == GCodeImportStatus.failure) ...[
+                        const SizedBox(height: 16),
+                        GCodeImportFeedbackEntryPoint(
+                          state: state,
+                          importFailureContext:
+                              state.status == GCodeImportStatus.failure &&
+                                  state.error != null
+                              ? _errorMessage(l10n, state.error!)
+                              : null,
+                        ),
+                      ],
                     ],
-                    if (state.status == GCodeImportStatus.success ||
-                        state.status == GCodeImportStatus.failure) ...[
-                      const SizedBox(height: 16),
-                      GCodeImportFeedbackEntryPoint(
-                        state: state,
-                        importFailureContext:
-                            state.status == GCodeImportStatus.failure &&
-                                state.error != null
-                            ? _errorMessage(l10n, state.error!)
-                            : null,
-                      ),
-                    ],
-                  ],
+                  ),
                 ),
               ),
-            ),
       ),
     );
   }

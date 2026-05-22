@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 const _csvHeader =
     'name,brand,material_type,color,color_hex,spool_weight,'
@@ -249,8 +250,8 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     _l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_l10n!.csvImportTitle),
+      appBar: AppScreenHeader(
+        title: _l10n!.csvImportTitle,
         actions: [
           TextButton.icon(
             onPressed: _downloadTemplate,

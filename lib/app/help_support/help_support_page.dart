@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/app/help_support/widgets/help_suppo
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_support_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 class HelpSupportPage extends ConsumerStatefulWidget {
   const HelpSupportPage({super.key});
@@ -37,7 +38,7 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
     final visibleSupportId = supportId.isEmpty ? '—' : supportId;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.needHelpTitle)),
+      appBar: AppScreenHeader(title: l10n.needHelpTitle),
       body: ListView(
         key: const ValueKey<String>('helpSupport.page'),
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),

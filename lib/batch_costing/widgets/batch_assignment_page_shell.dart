@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
-PreferredSizeWidget buildAssignmentPageAppBar(BuildContext context, String title) {
-  return AppBar(
-    title: Text(title),
+PreferredSizeWidget buildAssignmentPageAppBar(
+  BuildContext context,
+  String title,
+) {
+  return AppScreenHeader(
+    title: title,
     leading: BackButton(onPressed: () => Navigator.of(context).pop()),
     actions: [homeButton(context)],
   );
@@ -12,7 +16,7 @@ PreferredSizeWidget buildAssignmentPageAppBar(BuildContext context, String title
 
 Widget buildAssignmentLoadingState(String title) {
   return Scaffold(
-    appBar: AppBar(title: Text(title)),
+    appBar: AppScreenHeader(title: title),
     body: const Center(child: CircularProgressIndicator()),
   );
 }
@@ -24,7 +28,7 @@ Widget buildAssignmentErrorState(
   VoidCallback onRetry,
 ) {
   return Scaffold(
-    appBar: AppBar(title: Text(title)),
+    appBar: AppScreenHeader(title: title),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -60,10 +64,7 @@ class AssignmentModeHeader<T extends Enum> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          subtitle,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
         const SizedBox(height: 16),
         SegmentedButton<T>(
           segments: segments,

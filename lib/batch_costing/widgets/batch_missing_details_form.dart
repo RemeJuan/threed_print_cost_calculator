@@ -33,10 +33,7 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
   }
 
   void _handleApply() {
-    widget.onApply(
-      _weightController.text,
-      _durationController.text,
-    );
+    widget.onApply(_weightController.text, _durationController.text);
   }
 
   @override
