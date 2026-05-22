@@ -115,7 +115,9 @@ void main() {
 
     final dialogContext = tester.element(find.byType(AlertDialog));
     final l10n = AppLocalizations.of(dialogContext)!;
-    await tester.tap(find.widgetWithText(FilledButton, l10n.resetButtonLabel));
+    await tester.tap(
+      find.widgetWithText(ElevatedButton, l10n.resetButtonLabel),
+    );
     await tester.pumpAndSettle();
 
     expect(calculatorNotifier.resetCalls, 1);

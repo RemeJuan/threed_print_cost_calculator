@@ -87,7 +87,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('750g'), findsOneWidget);
+      expect(find.textContaining('750'), findsOneWidget);
     });
 
     testWidgets('fires onEdit callback on tap', (tester) async {

@@ -109,7 +109,7 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.byType(FilledButton));
+    await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
     expect(find.byType(BatchPricingScopePage), findsOneWidget);
   });

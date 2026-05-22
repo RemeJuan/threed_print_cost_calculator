@@ -240,20 +240,20 @@ void main() {
 
     // Button is enabled before tapping
     final button = find.widgetWithText(
-      FilledButton,
+      ElevatedButton,
       l10n.batchGcodeImportPickButton,
     );
-    expect(tester.widget<FilledButton>(button).onPressed, isNotNull);
+    expect(tester.widget<ElevatedButton>(button).onPressed, isNotNull);
 
     await tester.tap(button);
 
     // After pump, button should be disabled while loading
     await tester.pump();
-    expect(tester.widget<FilledButton>(button).onPressed, isNull);
+    expect(tester.widget<ElevatedButton>(button).onPressed, isNull);
 
     // Let loading finish
     await tester.pump(const Duration(seconds: 1));
-    expect(tester.widget<FilledButton>(button).onPressed, isNotNull);
+    expect(tester.widget<ElevatedButton>(button).onPressed, isNotNull);
   });
 
   testWidgets('deletes ready imported row', (tester) async {

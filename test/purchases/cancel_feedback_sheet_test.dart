@@ -88,8 +88,8 @@ void main() {
     );
     expect(
       tester
-          .widget<FilledButton>(
-            find.widgetWithText(FilledButton, 'Send feedback'),
+          .widget<ElevatedButton>(
+            find.widgetWithText(ElevatedButton, 'Send feedback'),
           )
           .onPressed,
       isNull,
@@ -100,8 +100,8 @@ void main() {
 
     expect(
       tester
-          .widget<FilledButton>(
-            find.widgetWithText(FilledButton, 'Send feedback'),
+          .widget<ElevatedButton>(
+            find.widgetWithText(ElevatedButton, 'Send feedback'),
           )
           .onPressed,
       isNotNull,
