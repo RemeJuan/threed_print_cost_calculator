@@ -103,8 +103,9 @@ const LIGHT_BLUE = Color(0xFF5499FE);
 // UI refresh surface system.
 const APP_BACKGROUND = Color(0xFF010710);
 const CARD_BACKGROUND = Color(0xFF0A1625);
-const NAV_BAR_BACKGROUND = Color(0xFF040C1A);
-const NAV_BAR_BORDER = Color(0xFF0F1929);
+const SHELL_BACKGROUND = Color(0xFF040C1A);
+const SHELL_BORDER = Color(0xFF0F1929);
+const RESULT_SURFACE = Color(0xFF131B31);
 
 // UI refresh typography colors.
 const OFF_WHITE = Color(0xFFE6E9F0);
@@ -161,6 +162,7 @@ Use for:
 - modal content areas
 - reusable surface components
 - FAQ accordion surfaces
+- standard modal content surfaces
 
 This should become the default surface color for refreshed UI components.
 
@@ -196,23 +198,50 @@ This remains the dominant accent color.
 
 ---
 
-## NAV_BAR_BACKGROUND
+## SHELL_BACKGROUND
 
-Primary refreshed bottom navigation background.
+Primary refreshed shell/chrome background.
 
 Use for:
 - bottom navigation container
 - nav shell surfaces
+- header/app chrome surfaces where a visible shell is needed
+- modal chrome where appropriate
 
-This should visually separate the navigation shell from `APP_BACKGROUND` without feeling like a floating component.
+This replaces the narrower `NAV_BAR_BACKGROUND` naming because the color is useful beyond the bottom navigation.
+
+It should visually separate shell/chrome areas from `APP_BACKGROUND` without feeling like a floating component.
 
 ---
 
-## NAV_BAR_BORDER
+## SHELL_BORDER
 
-Top border/separator color for the bottom navigation container.
+Subtle separator color for shell/chrome boundaries.
 
-Apply through the nav container decoration rather than `BottomNavigationBarTheme`, because Flutter's bottom navigation theme does not expose a border property.
+Use for:
+- bottom navigation top border
+- subtle modal separators
+- grouped surface separators where required
+
+Apply through wrapper/container decoration when the Flutter theme does not expose a border property.
+
+---
+
+## RESULT_SURFACE
+
+High-emphasis result surface color.
+
+Use for:
+- final totals
+- quote totals
+- key pricing summaries
+- important financial result cards
+
+This surface should sit between `CARD_BACKGROUND` and `LIGHT_BLUE` in visual priority.
+
+It should feel important and authoritative without becoming a warning, CTA, or decorative accent.
+
+Use sparingly. If applied everywhere, it loses its value.
 
 ---
 
@@ -271,9 +300,10 @@ This should create stronger visual hierarchy and reduce visual harshness.
 The refreshed UI should follow a clear surface hierarchy:
 
 - `APP_BACKGROUND` → page/application background
-- `NAV_BAR_BACKGROUND` → bottom navigation shell
-- `CARD_BACKGROUND` → cards, grouped content, accordions, settings sections, input groups
-- `NAV_BAR_BORDER` → subtle nav/card separators where required
+- `SHELL_BACKGROUND` → bottom navigation shell, header/app chrome, modal chrome where appropriate
+- `CARD_BACKGROUND` → cards, grouped content, accordions, settings sections, input groups, standard modal content
+- `SHELL_BORDER` → subtle nav/card/modal separators where required
+- `RESULT_SURFACE` → final totals, quote totals, key pricing summaries, high-emphasis result cards
 - `LIGHT_BLUE` → primary interaction and emphasis
 - `OFF_WHITE` → primary readable text
 - `MUTED_BLUE_GREY` → secondary text, inactive icons, metadata
@@ -780,8 +810,8 @@ Desired direction:
 - cleaner icons
 
 Implementation notes:
-- use `NAV_BAR_BACKGROUND` for the nav container
-- apply `NAV_BAR_BORDER` as a top border on the nav wrapper/container
+- use `SHELL_BACKGROUND` for the nav container
+- apply `SHELL_BORDER` as a top border on the nav wrapper/container
 - keep spacing safe-area aware
 - avoid a floating/glassmorphism navigation treatment
 - centralise styling in an `AppBottomNavigation` or equivalent wrapper when practical
