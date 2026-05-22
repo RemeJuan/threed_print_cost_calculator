@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/components/settings_version_tap_target.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -32,7 +33,7 @@ class HelpSupportSupportCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+            padding: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace16, kAppSpace16, kAppSpace12),
             child: Text(
               l10n.helpSupportSupportIntro,
               style: theme.textTheme.bodyMedium,
@@ -42,7 +43,7 @@ class HelpSupportSupportCard extends StatelessWidget {
             key: const ValueKey<String>('helpSupport.support.email'),
             dense: true,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: kAppSpace16,
               vertical: 2,
             ),
             title: Text(l10n.helpSupportEmailLabel),
@@ -59,7 +60,7 @@ class HelpSupportSupportCard extends StatelessWidget {
             key: const ValueKey<String>('helpSupport.support.id'),
             dense: true,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: kAppSpace16,
               vertical: 2,
             ),
             title: Text.rich(
@@ -83,7 +84,7 @@ class HelpSupportSupportCard extends StatelessWidget {
             key: const ValueKey<String>('helpSupport.support.roadmap'),
             dense: true,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: kAppSpace16,
               vertical: 2,
             ),
             title: Text(l10n.helpSupportRoadmapLabel),
@@ -103,7 +104,7 @@ class HelpSupportSupportCard extends StatelessWidget {
                     key: const ValueKey<String>('helpSupport.support.version'),
                     dense: true,
                     contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
+                      horizontal: kAppSpace16,
                       vertical: 2,
                     ),
                     title: Text(
