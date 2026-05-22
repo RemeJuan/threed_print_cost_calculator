@@ -4,7 +4,9 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 void showWhatsNewSheet(
   BuildContext context, {
@@ -19,7 +21,9 @@ void showWhatsNewSheet(
     isDismissible: false,
     enableDrag: false,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(kAppSurfaceRadiusLarge),
+      ),
     ),
     builder: (context) => PopScope(
       canPop: false,
@@ -80,7 +84,7 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
 
     return SafeArea(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(kAppSpace16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,12 +93,12 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
+                    horizontal: kAppSpace12,
+                    vertical: kAppSpace4,
                   ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(kAppPillRadius),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -104,15 +108,12 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
                         size: 16,
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: kAppSpace4),
                       Text(
                         l10n.newAnnouncementBadgeLabel,
-                        style: TextStyle(
-                          fontSize: 12,
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.onPrimaryContainer,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ),
                     ],
@@ -121,24 +122,24 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
                 const Spacer(),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: kAppSpace16),
             Text(
               title,
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: kAppSpace12),
             Text(
               body,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: kAppSpace16),
             SizedBox(
               width: double.infinity,
-              child: FilledButton(
+              child: AppPrimaryButton(
                 onPressed: () async {
                   await widget.onDismiss();
                   if (!context.mounted) return;
@@ -152,13 +153,13 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
                   if (!context.mounted) return;
                   Navigator.of(context).pop();
                 },
-                child: Text(cta),
+                label: cta,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: kAppSpace12),
             SizedBox(
               width: double.infinity,
-              child: OutlinedButton(
+              child: AppSecondaryButton(
                 onPressed: () async {
                   AppAnalytics.safeLog(
                     () => AppAnalytics.whatsNewUnlockProTapped(
@@ -185,10 +186,10 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
                     source: 'whats_new',
                   );
                 },
-                child: Text(unlockProCta),
+                label: unlockProCta,
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             Align(
               alignment: Alignment.center,
               child: TextButton(
