@@ -1,5 +1,3 @@
-
-
 # UX Refresh Direction
 
 ## Goal
@@ -97,9 +95,20 @@ without becoming flashy.
 ## Foundation Colors
 
 ```dart
-const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
-const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
-const LIGHT_BLUE = Color.fromRGBO(84, 153, 254, 1);
+// Core brand colors retained from the original palette.
+const DARK_BLUE = Color(0xFF1A1C2B);
+const DEEP_BLUE = Color(0xFF0D0D17);
+const LIGHT_BLUE = Color(0xFF5499FE);
+
+// UI refresh surface system.
+const APP_BACKGROUND = Color(0xFF010710);
+const CARD_BACKGROUND = Color(0xFF0A1625);
+const NAV_BAR_BACKGROUND = Color(0xFF040C1A);
+const NAV_BAR_BORDER = Color(0xFF0F1929);
+
+// UI refresh typography colors.
+const OFF_WHITE = Color(0xFFE6E9F0);
+const MUTED_BLUE_GREY = Color(0xFF929CB0);
 ```
 
 These remain the core brand foundation colors.
@@ -110,27 +119,38 @@ The newer renders demonstrated that the application benefits significantly from 
 
 The refresh should introduce a controlled supporting accent spectrum.
 
+All implementation color tokens should use `Color(0xFF...)` format for consistency.
+
+Avoid mixing `Color.fromRGBO(...)` and hex color declarations unless there is a specific reason.
+
+---
+
+## APP_BACKGROUND
+
+Primary refreshed application background.
+
+Use for:
+- scaffold backgrounds
+- app shell backgrounds
+- launch/splash backgrounds
+- fullscreen surfaces
+- deepest page-level backgrounds
+
+This should become the default page background across the refreshed UI.
+
 ---
 
 ## DEEP_BLUE
 
-Primary application background.
+Legacy deep brand color from the original palette.
 
-Use for:
-- scaffold backgrounds
-- app chrome
-- navigation surfaces
-- dialogs
-- bottom navigation backgrounds
-- fullscreen surfaces
-
-Should remain the darkest primary color.
+Keep available for compatibility and secondary dark surfaces, but prefer `APP_BACKGROUND` for new scaffold/page backgrounds.
 
 ---
 
-## DARK_BLUE
+## CARD_BACKGROUND
 
-Primary elevated surface color.
+Primary refreshed card and grouped surface color.
 
 Use for:
 - cards
@@ -138,12 +158,23 @@ Use for:
 - summary sections
 - settings surfaces
 - input groups
-- bottom sheets
-- modal surfaces
+- modal content areas
+- reusable surface components
+- FAQ accordion surfaces
+
+This should become the default surface color for refreshed UI components.
 
 Cards should no longer feel visually flat.
 
-Surfaces should feel layered and intentionally grouped.
+Surfaces should feel layered and intentionally grouped against `APP_BACKGROUND`.
+
+---
+
+## DARK_BLUE
+
+Legacy elevated surface color from the original palette.
+
+Keep available for compatibility, but prefer `CARD_BACKGROUND` for new refreshed cards and grouped surfaces.
 
 ---
 
@@ -162,6 +193,26 @@ Use for:
 - interactive emphasis
 
 This remains the dominant accent color.
+
+---
+
+## NAV_BAR_BACKGROUND
+
+Primary refreshed bottom navigation background.
+
+Use for:
+- bottom navigation container
+- nav shell surfaces
+
+This should visually separate the navigation shell from `APP_BACKGROUND` without feeling like a floating component.
+
+---
+
+## NAV_BAR_BORDER
+
+Top border/separator color for the bottom navigation container.
+
+Apply through the nav container decoration rather than `BottomNavigationBarTheme`, because Flutter's bottom navigation theme does not expose a border property.
 
 ---
 
@@ -212,6 +263,22 @@ Use:
 - lower-contrast text for labels and metadata
 
 This should create stronger visual hierarchy and reduce visual harshness.
+
+---
+
+# Surface Hierarchy
+
+The refreshed UI should follow a clear surface hierarchy:
+
+- `APP_BACKGROUND` → page/application background
+- `NAV_BAR_BACKGROUND` → bottom navigation shell
+- `CARD_BACKGROUND` → cards, grouped content, accordions, settings sections, input groups
+- `NAV_BAR_BORDER` → subtle nav/card separators where required
+- `LIGHT_BLUE` → primary interaction and emphasis
+- `OFF_WHITE` → primary readable text
+- `MUTED_BLUE_GREY` → secondary text, inactive icons, metadata
+
+Avoid creating one-off background colors unless a new reusable token is deliberately introduced.
 
 ---
 
