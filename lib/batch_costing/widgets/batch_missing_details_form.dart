@@ -50,7 +50,6 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
               labelText: widget.l10n.batchGcodeImportNeedsWeight,
               suffixText: widget.l10n.gramsSuffix,
               isDense: true,
-              border: const OutlineInputBorder(),
             ),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
@@ -68,7 +67,6 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
               labelText: widget.l10n.batchGcodeImportNeedsDuration,
               suffixText: widget.l10n.durationMinutesLabel,
               isDense: true,
-              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],

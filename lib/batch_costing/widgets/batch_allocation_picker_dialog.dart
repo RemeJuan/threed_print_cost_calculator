@@ -182,7 +182,6 @@ class _BatchAllocationPickerDialogState
                   controller: _searchController,
                   decoration: InputDecoration(
                     labelText: l10n.batchCostingAllocationPickerSearchLabel,
-                    border: const OutlineInputBorder(),
                   ),
                   onChanged: (_) => setLocalState(() {}),
                 ),

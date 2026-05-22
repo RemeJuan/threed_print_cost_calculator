@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatte
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchPricingScopePage extends ConsumerStatefulWidget {
@@ -239,59 +240,55 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     required String scopeItemLabel,
     required String scopeBatchLabel,
   }) {
-    return Card(
+    return AppSurfaceCard(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
       margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 48,
-              child: FocusSafeTextField(
-                controller: controller,
-                focusNode: focusNode,
-                externalText: value,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                inputFormatters: localizedDecimalInputFormatters,
-                inputNormalizer: normalizeLeadingZeroNumericInput,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: validator,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  isDense: true,
-                  label: Text(label),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 8,
-                  ),
-                ),
-                onChanged: onValueChanged,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 48,
+            child: FocusSafeTextField(
+              controller: controller,
+              focusNode: focusNode,
+              externalText: value,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
               ),
-            ),
-            const Spacer(flex: 4),
-            Expanded(
-              flex: 48,
-              child: SegmentedButton<BatchPricingScope>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(
-                    value: BatchPricingScope.item,
-                    label: Text(scopeItemLabel),
-                  ),
-                  ButtonSegment(
-                    value: BatchPricingScope.batch,
-                    label: Text(scopeBatchLabel),
-                  ),
-                ],
-                selected: {scope},
-                onSelectionChanged: (selected) =>
-                    onScopeChanged(selected.first),
+              inputFormatters: localizedDecimalInputFormatters,
+              inputNormalizer: normalizeLeadingZeroNumericInput,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: validator,
+              decoration: InputDecoration(
+                isDense: true,
+                label: Text(label),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 8,
+                ),
               ),
+              onChanged: onValueChanged,
             ),
-          ],
-        ),
+          ),
+          const Spacer(flex: 4),
+          Expanded(
+            flex: 48,
+            child: SegmentedButton<BatchPricingScope>(
+              showSelectedIcon: false,
+              segments: [
+                ButtonSegment(
+                  value: BatchPricingScope.item,
+                  label: Text(scopeItemLabel),
+                ),
+                ButtonSegment(
+                  value: BatchPricingScope.batch,
+                  label: Text(scopeBatchLabel),
+                ),
+              ],
+              selected: {scope},
+              onSelectionChanged: (selected) => onScopeChanged(selected.first),
+            ),
+          ),
+        ],
       ),
     );
   }

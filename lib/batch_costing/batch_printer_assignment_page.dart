@@ -16,6 +16,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
   const BatchPrinterAssignmentPage({super.key});
@@ -262,36 +263,33 @@ class _PrinterAllocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.displayName,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+    return AppSurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  item.displayName,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(printerLabel),
-            const SizedBox(height: 8),
-            AppSecondaryButton(
-              onPressed: () => _openSplitCopiesDialog(context),
-              icon: const Icon(Icons.tune),
-              label: l10n.batchCostingAssignmentSplitCopiesButton,
-            ),
-          ],
-        ),
+              ),
+              Text(
+                '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(printerLabel),
+          const SizedBox(height: 8),
+          AppSecondaryButton(
+            onPressed: () => _openSplitCopiesDialog(context),
+            icon: const Icon(Icons.tune),
+            label: l10n.batchCostingAssignmentSplitCopiesButton,
+          ),
+        ],
       ),
     );
   }

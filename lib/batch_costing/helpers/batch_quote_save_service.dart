@@ -22,41 +22,16 @@ Future<void> saveBatchQuote(
   BatchSummaryResult summary,
 ) async {
   final l10n = AppLocalizations.of(context)!;
-
-  final nameController = TextEditingController(
-    text: l10n.batchCostingSummaryDefaultQuoteName,
-  );
   final quoteName = await showDialog<String>(
     context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: Text(l10n.batchCostingSummaryQuoteNameDialogTitle),
-      content: TextField(
-        controller: nameController,
-        decoration: InputDecoration(
-          hintText: l10n.batchCostingSummaryDefaultQuoteName,
-          labelText: l10n.batchCostingSummaryQuoteNameHint,
-          border: const OutlineInputBorder(),
-        ),
-        autofocus: true,
-      ),
-      actions: [
-        AppTertiaryButton(
-          onPressed: () => Navigator.of(dialogContext).pop(null),
-          label: l10n.cancelButton,
-        ),
-        AppPrimaryButton(
-          onPressed: () {
-            final name = nameController.text.trim();
-            Navigator.of(dialogContext).pop(
-              name.isEmpty ? l10n.batchCostingSummaryDefaultQuoteName : name,
-            );
-          },
-          label: l10n.saveButton,
-        ),
-      ],
+    builder: (dialogContext) => _BatchQuoteNameDialog(
+      title: l10n.batchCostingSummaryQuoteNameDialogTitle,
+      hintText: l10n.batchCostingSummaryDefaultQuoteName,
+      labelText: l10n.batchCostingSummaryQuoteNameHint,
+      cancelLabel: l10n.cancelButton,
+      saveLabel: l10n.saveButton,
     ),
   );
-  nameController.dispose();
 
   if (quoteName == null || !context.mounted) return;
 
@@ -157,4 +132,69 @@ Future<void> saveBatchQuote(
       ],
     ),
   );
+}
+
+class _BatchQuoteNameDialog extends StatefulWidget {
+  const _BatchQuoteNameDialog({
+    required this.title,
+    required this.hintText,
+    required this.labelText,
+    required this.cancelLabel,
+    required this.saveLabel,
+  });
+
+  final String title;
+  final String hintText;
+  final String labelText;
+  final String cancelLabel;
+  final String saveLabel;
+
+  @override
+  State<_BatchQuoteNameDialog> createState() => _BatchQuoteNameDialogState();
+}
+
+class _BatchQuoteNameDialogState extends State<_BatchQuoteNameDialog> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.hintText);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.title),
+      content: TextField(
+        controller: _controller,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          labelText: widget.labelText,
+        ),
+        autofocus: true,
+      ),
+      actions: [
+        AppTertiaryButton(
+          onPressed: () => Navigator.of(context).pop(),
+          label: widget.cancelLabel,
+        ),
+        AppPrimaryButton(
+          onPressed: () {
+            final name = _controller.text.trim();
+            Navigator.of(context).pop(
+              name.isEmpty ? widget.hintText : name,
+            );
+          },
+          label: widget.saveLabel,
+        ),
+      ],
+    );
+  }
 }

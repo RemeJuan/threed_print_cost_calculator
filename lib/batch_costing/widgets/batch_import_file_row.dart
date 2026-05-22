@@ -5,6 +5,8 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_import_st
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_missing_details_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
+
 class BatchImportFileRow extends StatelessWidget {
   const BatchImportFileRow({
     super.key,
@@ -37,60 +39,57 @@ class BatchImportFileRow extends StatelessWidget {
           subtitle: Text(l10n.batchGcodeImportImportingLabel),
         );
       case ImportStatus.needsDetails:
-        return Card(
-          margin: EdgeInsets.zero,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.warning_amber_rounded,
-                      color: Colors.orange,
-                      size: 20,
+        return AppSurfaceCard(
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.warning_amber_rounded,
+                    color: Colors.orange,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      row.file.name,
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        row.file.name,
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                    if (item?.importMetadata?.slicer != null)
-                      IconButton(
-                        key: const ValueKey<String>(
-                          'batch_gcode_import.details.button',
-                        ),
-                        icon: const Icon(Icons.info_outline, size: 20),
-                        tooltip: l10n.batchGcodeImportDetailsButton,
-                        onPressed: onShowDetails,
-                      ),
+                  ),
+                  if (item?.importMetadata?.slicer != null)
                     IconButton(
-                      icon: const Icon(Icons.delete_outline, size: 20),
-                      tooltip: l10n.batchCostingReviewRemoveButton,
-                      onPressed: onRemove,
+                      key: const ValueKey<String>(
+                        'batch_gcode_import.details.button',
+                      ),
+                      icon: const Icon(Icons.info_outline, size: 20),
+                      tooltip: l10n.batchGcodeImportDetailsButton,
+                      onPressed: onShowDetails,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  l10n.batchGcodeImportNeedsDetailsLabel,
-                  style: TextStyle(color: Colors.orange.shade700, fontSize: 13),
-                ),
-                MissingDetailsForm(
-                  l10n: l10n,
-                  missingWeight: row.missingWeight,
-                  missingDuration: row.missingDuration,
-                  onApply: (weightText, durationText) {
-                    row.weightText = weightText;
-                    row.durationText = durationText;
-                    onApply();
-                  },
-                ),
-              ],
-            ),
+                  IconButton(
+                    icon: const Icon(Icons.delete_outline, size: 20),
+                    tooltip: l10n.batchCostingReviewRemoveButton,
+                    onPressed: onRemove,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                l10n.batchGcodeImportNeedsDetailsLabel,
+                style: TextStyle(color: Colors.orange.shade700, fontSize: 13),
+              ),
+              MissingDetailsForm(
+                l10n: l10n,
+                missingWeight: row.missingWeight,
+                missingDuration: row.missingDuration,
+                onApply: (weightText, durationText) {
+                  row.weightText = weightText;
+                  row.durationText = durationText;
+                  onApply();
+                },
+              ),
+            ],
           ),
         );
       case ImportStatus.ready:

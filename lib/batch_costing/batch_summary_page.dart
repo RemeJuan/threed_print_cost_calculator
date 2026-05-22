@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchSummaryPage extends ConsumerStatefulWidget {
@@ -165,76 +166,81 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
             _sectionTitle(context, l10n.batchCostingSummaryItemsTitle),
             const SizedBox(height: 8),
             for (final item in summary.items)
-              Card(
-                child: ExpansionTile(
-                  tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                  childrenPadding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                  title: Text(item.item.displayName),
-                  subtitle: Text(
-                    '${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}',
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: AppSurfaceCard(
+                  padding: EdgeInsets.zero,
+                  child: ExpansionTile(
+                    shape: const Border(),
+                    collapsedShape: const Border(),
+                    tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+                    childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    visualDensity: VisualDensity.compact,
+                    title: Text(item.item.displayName),
+                    subtitle: Text(
+                      '${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}',
+                    ),
+                    children: [
+                      _summaryRow(
+                        context,
+                        l10n.batchCostingSummaryItemWeightLabel,
+                        '${item.totalWeightG.toStringAsFixed(2)} ${l10n.gramsSuffix}',
+                      ),
+                      _summaryRow(
+                        context,
+                        l10n.batchCostingSummaryItemDurationLabel,
+                        formatDuration(item.totalPrintDuration),
+                      ),
+                      _summaryRow(
+                        context,
+                        l10n.batchCostingSummaryItemBaseCostLabel,
+                        formatCurrencyValue(
+                          item.baseCost,
+                          currencySymbol: currencySettings.currencySymbol,
+                          currencyPosition: currencySettings.currencyPosition,
+                          currencySpacing: currencySettings.currencySpacing,
+                        ),
+                      ),
+                      _summaryRow(
+                        context,
+                        l10n.batchCostingSummaryItemAdjustmentLabel,
+                        formatCurrencyValue(
+                          item.additionalCost,
+                          currencySymbol: currencySettings.currencySymbol,
+                          currencyPosition: currencySettings.currencyPosition,
+                          currencySpacing: currencySettings.currencySpacing,
+                        ),
+                      ),
+                      _summaryRow(
+                        context,
+                        l10n.batchCostingSummaryItemTotalLabel,
+                        _lineTotalWithQuantity(item, currencySettings),
+                      ),
+                    ],
                   ),
-                  children: [
-                    _summaryRow(
-                      context,
-                      l10n.batchCostingSummaryItemWeightLabel,
-                      '${item.totalWeightG.toStringAsFixed(2)} ${l10n.gramsSuffix}',
-                    ),
-                    _summaryRow(
-                      context,
-                      l10n.batchCostingSummaryItemDurationLabel,
-                      formatDuration(item.totalPrintDuration),
-                    ),
-                    _summaryRow(
-                      context,
-                      l10n.batchCostingSummaryItemBaseCostLabel,
-                      formatCurrencyValue(
-                        item.baseCost,
-                        currencySymbol: currencySettings.currencySymbol,
-                        currencyPosition: currencySettings.currencyPosition,
-                        currencySpacing: currencySettings.currencySpacing,
-                      ),
-                    ),
-                    _summaryRow(
-                      context,
-                      l10n.batchCostingSummaryItemAdjustmentLabel,
-                      formatCurrencyValue(
-                        item.additionalCost,
-                        currencySymbol: currencySettings.currencySymbol,
-                        currencyPosition: currencySettings.currencyPosition,
-                        currencySpacing: currencySettings.currencySpacing,
-                      ),
-                    ),
-                    _summaryRow(
-                      context,
-                      l10n.batchCostingSummaryItemTotalLabel,
-                      _lineTotalWithQuantity(item, currencySettings),
-                    ),
-                  ],
                 ),
               ),
-            Card(
-              color: DEEP_BLUE,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Text(
-                      l10n.batchCostingSummaryFinalTotalLabel,
-                      style: Theme.of(context).textTheme.titleMedium,
+            AppSurfaceCard(
+              backgroundColor: RESULT_SURFACE,
+              child: Row(
+                children: [
+                  Text(
+                    l10n.batchCostingSummaryFinalTotalLabel,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Spacer(),
+                  Text(
+                    formatCurrencyValue(
+                      summary.finalTotal,
+                      currencySymbol: currencySettings.currencySymbol,
+                      currencyPosition: currencySettings.currencyPosition,
+                      currencySpacing: currencySettings.currencySpacing,
                     ),
-                    const Spacer(),
-                    Text(
-                      formatCurrencyValue(
-                        summary.finalTotal,
-                        currencySymbol: currencySettings.currencySymbol,
-                        currencyPosition: currencySettings.currencyPosition,
-                        currencySpacing: currencySettings.currencySpacing,
-                      ),
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 24),
