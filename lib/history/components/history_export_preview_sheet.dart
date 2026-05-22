@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class HistoryExportPreviewSheet extends StatelessWidget {
   const HistoryExportPreviewSheet({
@@ -41,21 +44,21 @@ class HistoryExportPreviewSheet extends StatelessWidget {
               l10n.historyExportPreviewSampleLabel,
               style: Theme.of(
                 context,
-              ).textTheme.labelLarge?.copyWith(color: Colors.white70),
+              ).textTheme.labelLarge?.copyWith(color: TEXT_SECONDARY),
             ),
             const SizedBox(height: 8),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(kAppSpace12),
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(8, 8, 18, 1),
-                borderRadius: BorderRadius.circular(12),
+                color: PREVIEW_SURFACE,
+                borderRadius: BorderRadius.circular(kAppSurfaceRadius),
               ),
               child: SelectableText(
                 csvPreview,
                 key: const ValueKey<String>('history.export.preview.csv'),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white70,
+                  color: TEXT_SECONDARY,
                   fontFamily: 'monospace',
                 ),
               ),
@@ -63,13 +66,13 @@ class HistoryExportPreviewSheet extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
+              child: AppPrimaryButton(
                 key: const ValueKey<String>(
                   'history.export.preview.download.button',
                 ),
                 onPressed: onDownloadPressed,
                 icon: const Icon(Icons.lock_outline),
-                label: Text(l10n.historyExportPreviewAction),
+                label: l10n.historyExportPreviewAction,
               ),
             ),
           ],

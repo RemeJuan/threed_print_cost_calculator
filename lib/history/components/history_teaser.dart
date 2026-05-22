@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -27,7 +28,7 @@ class HistoryTeaser extends StatelessWidget {
               key: const ValueKey<String>('history.teaser.state'),
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.history, size: 56, color: Colors.white70),
+                const Icon(Icons.history, size: 56, color: ICON_PRIMARY),
                 const SizedBox(height: 16),
                 Text(
                   l10n.historyTeaserTitle,
@@ -51,7 +52,7 @@ class HistoryTeaser extends StatelessWidget {
                       l10n.historyExportPreviewSampleLabel,
                       style: Theme.of(
                         context,
-                      ).textTheme.labelMedium?.copyWith(color: Colors.white54),
+                      ).textTheme.labelMedium?.copyWith(color: TEXT_TERTIARY),
                     ),
                     onTap: onExportPreviewPressed,
                   ),

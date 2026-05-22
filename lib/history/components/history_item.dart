@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/history/components/history_item_sum
 import 'package:threed_print_cost_calculator/history/components/batch_history_item.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -50,7 +51,7 @@ class HistoryItem extends HookConsumerWidget {
       onDelete: () => actionsController.deleteEntry(context, ref),
       child: data.batchQuote
           ? AppSurfaceCard(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(kAppSpace8),
               child: BatchHistoryItem(
                 dbKey: dbKey,
                 data: data,
@@ -61,7 +62,7 @@ class HistoryItem extends HookConsumerWidget {
               ),
             )
           : AppSurfaceCard(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(kAppSpace8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -74,11 +75,11 @@ class HistoryItem extends HookConsumerWidget {
                     deleteHistoryEntry: deleteHistoryEntry,
                     exportCsv: exportCsv,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: kAppSpace8),
                   HistoryItemCostRows(data: data, itemKeyPrefix: itemKeyPrefix),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: kAppSpace4),
                   const Divider(),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: kAppSpace4),
                   HistoryItemSummary(data: data, itemKeyPrefix: itemKeyPrefix),
                   if (data.materialUsages.isNotEmpty)
                     HistoryItemMaterialBreakdown(

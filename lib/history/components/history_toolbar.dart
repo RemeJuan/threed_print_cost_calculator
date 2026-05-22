@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart';
 
 class HistoryToolbar extends StatelessWidget {
@@ -17,7 +18,7 @@ class HistoryToolbar extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: kAppSearchSectionPadding,
       child: Row(
         children: [
           Expanded(
@@ -31,7 +32,7 @@ class HistoryToolbar extends StatelessWidget {
                   const ValueKey<String>('history.search.clear.button'),
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: kAppSpace8),
           IconButton(
             key: const ValueKey<String>('history.export.button'),
             icon: const Icon(Icons.upload_file),

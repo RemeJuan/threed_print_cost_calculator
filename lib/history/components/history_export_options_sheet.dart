@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 class HistoryExportOptionsSheet extends StatelessWidget {
@@ -17,7 +18,7 @@ class HistoryExportOptionsSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(kAppSpace16),
             child: Text(
               l10n.historyExportMenuTitle,
               style: Theme.of(context).textTheme.titleLarge,
@@ -44,7 +45,7 @@ class HistoryExportOptionsSheet extends StatelessWidget {
               await onExportSelected(ExportRange.last30Days);
             },
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: kAppSpace8),
         ],
       ),
     );

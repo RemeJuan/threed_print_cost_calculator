@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class HistoryItemMaterialBreakdown extends StatelessWidget {
   const HistoryItemMaterialBreakdown({
@@ -17,19 +18,19 @@ class HistoryItemMaterialBreakdown extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      data: Theme.of(context).copyWith(dividerColor: TRANSPARENT_COLOR),
       child: ExpansionTile(
         tilePadding: EdgeInsets.zero,
         childrenPadding: EdgeInsets.zero,
-        backgroundColor: Colors.transparent,
-        collapsedBackgroundColor: Colors.transparent,
-        iconColor: Colors.white70,
-        collapsedIconColor: Colors.white54,
+        backgroundColor: TRANSPARENT_COLOR,
+        collapsedBackgroundColor: TRANSPARENT_COLOR,
+        iconColor: ICON_PRIMARY,
+        collapsedIconColor: ICON_MUTED,
         title: Text(
           l10n.materialBreakdownLabel,
           style: Theme.of(
             context,
-          ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+          ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
         ),
         children: [
           SingleChildScrollView(
@@ -65,20 +66,20 @@ class HistoryItemMaterialBreakdown extends StatelessWidget {
                             child: Text(
                               materialLabel,
                               style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(color: Colors.white70),
+                                  ?.copyWith(color: TEXT_SECONDARY),
                             ),
                           ),
                           const SizedBox(width: 8),
                           Text(
                             '${weight}g',
                             style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(color: Colors.white60),
+                                ?.copyWith(color: TEXT_TERTIARY),
                           ),
                         ],
                       ),
                     ),
                     if (idx < materialUsages.length - 1)
-                      const Divider(height: 1, color: Colors.white12),
+                      const Divider(height: 1, color: DIVIDER_SUBTLE),
                   ],
                 );
               }),
