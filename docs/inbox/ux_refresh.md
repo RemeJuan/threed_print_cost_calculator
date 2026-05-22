@@ -344,7 +344,104 @@ without becoming visually noisy.
 
 ---
 
+
 # Typography
+
+## Font Selection
+
+The application should migrate from the default system typography to Inter.
+
+Download:
+https://github.com/rsms/inter/releases/download/v4.1/Inter-4.1.zip
+
+Inter was selected because it:
+- feels modern without looking trendy
+- renders numeric values cleanly
+- works well in dense utility interfaces
+- supports technical/productivity aesthetics well
+- improves perceived design quality immediately
+- scales cleanly from labels to large totals
+
+The typography direction should feel:
+- technical
+- premium
+- readable
+- restrained
+- modern
+
+Avoid decorative or futuristic fonts.
+
+---
+
+## Font Weights
+
+Planned usage:
+
+- Inter Regular
+- Inter Medium
+- Inter SemiBold
+- Inter Bold
+
+---
+
+## Typography Usage Rules
+
+### Regular
+
+Use for:
+- helper text
+- metadata
+- descriptions
+- secondary information
+
+---
+
+### Medium
+
+Use for:
+- labels
+- buttons
+- inputs
+- navigation items
+- standard emphasis
+
+---
+
+### SemiBold
+
+Use for:
+- section headers
+- grouped card titles
+- screen subtitles
+- grouped result sections
+
+---
+
+### Bold
+
+Use for:
+- total cost values
+- primary results
+- important statistics
+- major emphasis moments
+
+Should be used intentionally and sparingly.
+
+---
+
+## Typography Goals
+
+The refresh should improve:
+- hierarchy
+- scanability
+- readability
+- perceived polish
+- spacing rhythm
+- emphasis clarity
+
+A significant portion of the visual refresh should come from typography improvements alone.
+
+---
 
 # Header Component
 
