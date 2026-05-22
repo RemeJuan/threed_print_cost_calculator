@@ -65,10 +65,7 @@ class BatchGCodeImportHandler {
     });
   }
 
-  void applyDetails(
-    BatchImportRow row,
-    void Function(VoidCallback) setState,
-  ) {
+  void applyDetails(BatchImportRow row, void Function(VoidCallback) setState) {
     final parsed = _parseOverrideDetails(
       existingWeight: null,
       existingDuration: null,
@@ -144,9 +141,7 @@ class BatchGCodeImportHandler {
     BatchSingleImport singleImport,
     void Function(VoidCallback) setState,
   ) {
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchItemRemoved(source: 'gcode'),
-    );
+    AppAnalytics.safeLog(() => AppAnalytics.batchItemRemoved(source: 'gcode'));
     ref
         .read(batchCostingProvider.notifier)
         .removeItem(singleImport.batchItemId);
@@ -161,24 +156,24 @@ class BatchGCodeImportHandler {
 
     final importResult =
         (singleImport.overrideWeightG != null ||
-                singleImport.overrideDuration != null)
-            ? GCodeImportResult(
-                slicer: singleImport.result.slicer,
-                estimatedDuration:
-                    singleImport.overrideDuration ??
-                    singleImport.result.estimatedDuration,
-                filamentLengthMm: singleImport.result.filamentLengthMm,
-                filamentWeightG:
-                    singleImport.overrideWeightG ??
-                    singleImport.result.filamentWeightG,
-                layerHeightMm: singleImport.result.layerHeightMm,
-                previewMetadata: singleImport.result.previewMetadata,
-                previewImageBytes: singleImport.result.previewImageBytes,
-                warnings: singleImport.result.warnings,
-                rawExtractedValues: singleImport.result.rawExtractedValues,
-                hasSafePreview: singleImport.result.hasSafePreview,
-              )
-            : singleImport.result;
+            singleImport.overrideDuration != null)
+        ? GCodeImportResult(
+            slicer: singleImport.result.slicer,
+            estimatedDuration:
+                singleImport.overrideDuration ??
+                singleImport.result.estimatedDuration,
+            filamentLengthMm: singleImport.result.filamentLengthMm,
+            filamentWeightG:
+                singleImport.overrideWeightG ??
+                singleImport.result.filamentWeightG,
+            layerHeightMm: singleImport.result.layerHeightMm,
+            previewMetadata: singleImport.result.previewMetadata,
+            previewImageBytes: singleImport.result.previewImageBytes,
+            warnings: singleImport.result.warnings,
+            rawExtractedValues: singleImport.result.rawExtractedValues,
+            hasSafePreview: singleImport.result.hasSafePreview,
+          )
+        : singleImport.result;
 
     ref
         .read(batchCostingProvider.notifier)
@@ -197,9 +192,7 @@ class BatchGCodeImportHandler {
     AppAnalytics.safeLog(
       () => AppAnalytics.batchStarted(source: 'gcode_single'),
     );
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchItemAdded(source: 'gcode'),
-    );
+    AppAnalytics.safeLog(() => AppAnalytics.batchItemAdded(source: 'gcode'));
 
     Navigator.of(
       context,
@@ -211,9 +204,7 @@ class BatchGCodeImportHandler {
     List<BatchImportRow> rows,
     void Function(VoidCallback) setState,
   ) {
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchItemRemoved(source: 'gcode'),
-    );
+    AppAnalytics.safeLog(() => AppAnalytics.batchItemRemoved(source: 'gcode'));
     if (row.batchItemId != null) {
       ref.read(batchCostingProvider.notifier).removeItem(row.batchItemId!);
     }
@@ -244,11 +235,7 @@ class BatchGCodeImportHandler {
       final newFiles = <GCodePickedFile>[];
       var dupCount = 0;
       for (final file in files) {
-        if (isDuplicate(
-          file,
-          pageState.singleImport,
-          pageState.rows,
-        )) {
+        if (isDuplicate(file, pageState.singleImport, pageState.rows)) {
           dupCount++;
         } else {
           newFiles.add(file);
@@ -266,12 +253,7 @@ class BatchGCodeImportHandler {
         return;
       }
 
-      await _pickAndImportFromFiles(
-        newFiles,
-        l10n,
-        pageState,
-        setState,
-      );
+      await _pickAndImportFromFiles(newFiles, l10n, pageState, setState);
     } finally {
       if (_mounted) {
         setState(() => pageState.loading = false);
@@ -287,12 +269,7 @@ class BatchGCodeImportHandler {
   ) async {
     setState(() => pageState.loading = true);
     try {
-      await _pickAndImportFromFiles(
-        files,
-        l10n,
-        pageState,
-        setState,
-      );
+      await _pickAndImportFromFiles(files, l10n, pageState, setState);
     } finally {
       if (_mounted) setState(() => pageState.loading = false);
     }
@@ -408,8 +385,7 @@ class BatchGCodeImportHandler {
           failedCount++;
           setState(() {
             row.status = ImportStatus.failed;
-            row.errorMessage =
-                '${l10n.batchGcodeImportParseFailure}: $error';
+            row.errorMessage = '${l10n.batchGcodeImportParseFailure}: $error';
           });
         }
       }

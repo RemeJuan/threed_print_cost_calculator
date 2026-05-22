@@ -8,8 +8,11 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class CalculatorResults extends ConsumerWidget {
   final CalculationResult results;
@@ -37,13 +40,10 @@ class CalculatorResults extends ConsumerWidget {
     );
     const width = kIsWeb ? 250.0 : null;
 
-    return Container(
-      padding: const EdgeInsets.all(8),
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(8, 8, 18, 1),
-        borderRadius: BorderRadius.circular(8),
-      ),
+    return AppSurfaceCard(
+      backgroundColor: CALCULATOR_SURFACE,
+      padding: const EdgeInsets.all(kAppSpace8),
+      margin: const EdgeInsets.symmetric(vertical: kAppSpace8),
       width: width,
       child: Column(
         children: [
@@ -181,8 +181,8 @@ class CalculatorResults extends ConsumerWidget {
               style:
                   Theme.of(
                     context,
-                  ).textTheme.bodyLarge?.copyWith(color: Colors.white70) ??
-                  const TextStyle(color: Colors.white70),
+                  ).textTheme.bodyLarge?.copyWith(color: TEXT_SECONDARY) ??
+                  const TextStyle(color: TEXT_SECONDARY),
             ),
           ),
           const SizedBox(width: 8),
@@ -209,7 +209,7 @@ class CalculatorResults extends ConsumerWidget {
     required GeneralSettingsModel currencySettings,
   }) {
     final style = Theme.of(context).textTheme.bodyLarge?.copyWith(
-      color: Colors.white,
+      color: TEXT_PRIMARY,
       fontWeight: emphasize ? FontWeight.w800 : FontWeight.w600,
     );
     return Padding(
@@ -246,7 +246,7 @@ class CalculatorResults extends ConsumerWidget {
     String placeholder, {
     Key? key,
   }) {
-    const mutedColor = Colors.white38;
+    const mutedColor = TEXT_TERTIARY;
     return Padding(
       key: key,
       padding: const EdgeInsets.only(bottom: 8),

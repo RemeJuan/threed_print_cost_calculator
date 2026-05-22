@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/components/accordion_menu/providers/accordion_notifier.dart';
 
 import 'model/accordion_item_model.dart';
@@ -18,7 +20,7 @@ class AccordionMenu extends HookConsumerWidget {
     super.key,
     required this.items,
     this.allowMultipleOpen = false,
-    this.padding = const EdgeInsets.all(8),
+    this.padding = const EdgeInsets.all(kAppSpace8),
   });
 
   @override
@@ -60,7 +62,7 @@ class AccordionMenu extends HookConsumerWidget {
     // AnimatedSize so the expand/collapse animation is smooth and in sync
     // with the chevron rotation and the header ripple.
     return Card(
-      color: const Color.fromRGBO(8, 8, 18, 1),
+      color: PREVIEW_SURFACE,
       margin: EdgeInsets.zero,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -77,7 +79,7 @@ class AccordionMenu extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Material(
-                color: Colors.transparent,
+                color: TRANSPARENT_COLOR,
                 child: InkWell(
                   key: item.headerKey,
                   onTap: item.isLocked
@@ -87,8 +89,8 @@ class AccordionMenu extends HookConsumerWidget {
                             .toggle(index),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
+                      horizontal: kAppSpace16,
+                      vertical: kAppSpace12,
                     ),
                     child: Row(
                       children: [
@@ -101,7 +103,7 @@ class AccordionMenu extends HookConsumerWidget {
                         // Optional action widget (e.g., IconButton) shown to the left of the chevron.
                         if (item.action != null) ...[
                           Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
+                            padding: const EdgeInsets.only(right: kAppSpace8),
                             child: item.action,
                           ),
                         ],

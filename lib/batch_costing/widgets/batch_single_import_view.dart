@@ -4,6 +4,8 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_import_st
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_missing_details_form.dart';
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_metadata_summary.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class BatchSingleImportView extends StatelessWidget {
   const BatchSingleImportView({
@@ -26,14 +28,14 @@ class BatchSingleImportView extends StatelessWidget {
         Card(
           margin: EdgeInsets.zero,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(kAppSpace16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Row(
                   children: [
                     const Icon(Icons.description_outlined),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: kAppSpace8),
                     Expanded(
                       child: Text(
                         singleImport.file.name,
@@ -47,7 +49,7 @@ class BatchSingleImportView extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: kAppSpace12),
                 GCodeImportMetadataSummary(
                   l10n: l10n,
                   slicer: singleImport.result.slicer,
@@ -64,12 +66,11 @@ class BatchSingleImportView extends StatelessWidget {
                 ),
                 if (singleImport.missingWeight ||
                     singleImport.missingDuration) ...[
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   Text(
                     l10n.batchGcodeImportNeedsDetailsLabel,
-                    style: TextStyle(
-                      color: Colors.orange.shade700,
-                      fontSize: 13,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: STATUS_WARNING,
                     ),
                   ),
                   MissingDetailsForm(

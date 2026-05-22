@@ -16,6 +16,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class BatchMaterialAssignmentPage extends ConsumerWidget {
@@ -47,7 +48,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(kAppSpace16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -74,12 +75,12 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                           .setMaterialAssignmentMode(selected.first);
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   Expanded(
                     child: sortedMaterials.isEmpty
                         ? Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(kAppSpace16),
                               child: Text(
                                 l10n.batchCostingMaterialAssignmentNoMaterialsMessage,
                                 textAlign: TextAlign.center,
@@ -123,7 +124,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                   )
                                   case final warning?)
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 8),
+                                  padding: const EdgeInsets.only(top: kAppSpace8),
                                   child: WarningBox(text: warning),
                                 ),
                             ],
@@ -131,7 +132,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                         : ListView.separated(
                             itemCount: state.items.length,
                             separatorBuilder: (context, index) =>
-                                const SizedBox(height: 12),
+                                const SizedBox(height: kAppSpace12),
                             itemBuilder: (context, index) {
                               final item = state.items[index];
                               final allocations = _materialAllocationsFor(
@@ -162,7 +163,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                             },
                           ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   AssignmentNavRow(
                     previousLabel:
                         l10n.batchCostingMaterialAssignmentPreviousButton,

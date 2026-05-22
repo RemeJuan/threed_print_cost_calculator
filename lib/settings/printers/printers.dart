@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/database/repositories/printers_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printer_list_item.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class Printers extends HookConsumerWidget {
   const Printers({super.key});
@@ -48,9 +49,9 @@ class Printers extends HookConsumerWidget {
               children: [
                 Text(l10n.printersLoadError(error.toString())),
                 const SizedBox(height: 8),
-                ElevatedButton(
+                AppPrimaryButton(
                   onPressed: () => ref.invalidate(printersStreamProvider),
-                  child: Text(l10n.retryButton),
+                  label: l10n.retryButton,
                 ),
               ],
             ),

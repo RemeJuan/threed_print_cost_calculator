@@ -39,5 +39,3 @@ class BatchImportRow {
   String weightText = '';
   String durationText = '';
 }
-
-

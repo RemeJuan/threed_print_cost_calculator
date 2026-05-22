@@ -360,11 +360,15 @@ void main() {
       expect(lines[0], contains('record_type'));
 
       // Should have single_print row
-      final singleRows = lines.where((l) => l.startsWith('single_print')).toList();
+      final singleRows = lines
+          .where((l) => l.startsWith('single_print'))
+          .toList();
       expect(singleRows.length, 1);
 
       // Should have batch_quote row
-      final batchRows = lines.where((l) => l.startsWith('batch_quote')).toList();
+      final batchRows = lines
+          .where((l) => l.startsWith('batch_quote'))
+          .toList();
       expect(batchRows.length, greaterThanOrEqualTo(1));
     });
 

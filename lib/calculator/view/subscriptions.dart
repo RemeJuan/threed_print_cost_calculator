@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> showSubscriptionsSheet(
@@ -47,9 +48,7 @@ class Subscriptions extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final processing = useState<bool>(false);
-    final linkFont = Theme.of(
-      context,
-    ).textTheme.displayMedium?.copyWith(fontSize: 12);
+    final linkFont = Theme.of(context).textTheme.labelMedium;
     final l10n = AppLocalizations.of(context)!;
     final logger = ref.read(appLoggerProvider);
 
@@ -76,7 +75,7 @@ class Subscriptions extends HookConsumerWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(kAppSpace16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -86,7 +85,7 @@ class Subscriptions extends HookConsumerWidget {
                         ),
                         if (processing.value)
                           const Padding(
-                            padding: EdgeInsets.only(left: 8),
+                            padding: EdgeInsets.only(left: kAppSpace8),
                             child: SizedBox(
                               height: 24,
                               width: 24,
@@ -178,7 +177,7 @@ class Subscriptions extends HookConsumerWidget {
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(kAppSpace8),
                     child: RawMaterialButton(
                       onPressed: () async {
                         await Purchases.restorePurchases();
@@ -227,7 +226,7 @@ class Subscriptions extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                const SliverToBoxAdapter(child: SizedBox(height: kAppSpace16)),
               ],
             );
           }

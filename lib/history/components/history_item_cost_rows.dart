@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class HistoryItemCostRows extends StatelessWidget {
   const HistoryItemCostRows({
@@ -63,7 +64,7 @@ Widget _costRow(BuildContext context, String label, num value, {Key? key}) {
           value.toStringAsFixed(2),
           style: Theme.of(
             context,
-          ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+          ).textTheme.bodyMedium?.copyWith(color: TEXT_PRIMARY),
         ),
       ],
     ),

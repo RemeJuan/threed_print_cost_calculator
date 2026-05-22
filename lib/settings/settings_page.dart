@@ -7,6 +7,8 @@ import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart'
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
 import 'package:threed_print_cost_calculator/settings/settings_section.dart';
 import 'package:threed_print_cost_calculator/settings/work_costs_form.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -18,9 +20,9 @@ class SettingsPage extends ConsumerWidget {
 
     final style = Theme.of(
       context,
-    ).textTheme.titleLarge?.copyWith(color: Colors.white);
+    ).textTheme.titleLarge?.copyWith(color: TEXT_PRIMARY);
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(kAppSpace16),
       physics: const ClampingScrollPhysics(),
       children: [
         SettingsSection(
@@ -30,14 +32,14 @@ class SettingsPage extends ConsumerWidget {
           child: const GeneralSettings(),
         ),
         if (isPremium) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: kAppSpace16),
           SettingsSection(
             headerKey: const ValueKey<String>('settings.workCost.section'),
             bodyKey: const ValueKey<String>('settings.workCost.body'),
             title: Text(l10n.workCostsLabel, style: style),
             child: const WorkCostsSettings(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: kAppSpace16),
           SettingsSection(
             headerKey: const ValueKey<String>('settings.printers.section'),
             bodyKey: const ValueKey<String>('settings.printers.body'),

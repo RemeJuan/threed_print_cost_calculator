@@ -18,24 +18,19 @@ class GCodeImportSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: GCodeImportMetadataSummary(
-          l10n: l10n,
-          slicer: result.slicer,
-          estimatedDuration: result.estimatedDuration,
-          filamentWeightG: result.filamentWeightG,
-          filamentLengthMm: result.filamentLengthMm,
-          layerHeightMm: result.layerHeightMm,
-          previewMetadata: result.previewMetadata,
-          previewImageBytes: result.previewImageBytes,
-          hasSafePreview: result.hasSafePreview,
-          fileSizeBytes: fileSizeBytes,
-          hasPartialMetadata: result.hasPartialMetadata,
-          showCalculatorNote: true,
-        ),
-      ),
+    return GCodeImportMetadataSummary(
+      l10n: l10n,
+      slicer: result.slicer,
+      estimatedDuration: result.estimatedDuration,
+      filamentWeightG: result.filamentWeightG,
+      filamentLengthMm: result.filamentLengthMm,
+      layerHeightMm: result.layerHeightMm,
+      previewMetadata: result.previewMetadata,
+      previewImageBytes: result.previewImageBytes,
+      hasSafePreview: result.hasSafePreview,
+      fileSizeBytes: fileSizeBytes,
+      hasPartialMetadata: result.hasPartialMetadata,
+      showCalculatorNote: true,
     );
   }
 }

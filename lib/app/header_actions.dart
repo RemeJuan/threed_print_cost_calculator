@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class HeaderActions extends ConsumerWidget {
   const HeaderActions({super.key});
@@ -28,7 +29,7 @@ class HeaderActions extends ConsumerWidget {
               },
               icon: const Icon(
                 Icons.upload_file_outlined,
-                color: Colors.white54,
+                color: ICON_MUTED,
               ),
             )
           : IconButton(
@@ -49,7 +50,7 @@ class HeaderActions extends ConsumerWidget {
                       source: 'header',
                     );
               },
-              icon: const Icon(Icons.shopping_cart, color: Colors.white54),
+              icon: const Icon(Icons.shopping_cart, color: ICON_MUTED),
             ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class MissingDetailsForm extends StatefulWidget {
   const MissingDetailsForm({
@@ -33,10 +34,7 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
   }
 
   void _handleApply() {
-    widget.onApply(
-      _weightController.text,
-      _durationController.text,
-    );
+    widget.onApply(_weightController.text, _durationController.text);
   }
 
   @override
@@ -52,7 +50,6 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
               labelText: widget.l10n.batchGcodeImportNeedsWeight,
               suffixText: widget.l10n.gramsSuffix,
               isDense: true,
-              border: const OutlineInputBorder(),
             ),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
@@ -70,7 +67,6 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
               labelText: widget.l10n.batchGcodeImportNeedsDuration,
               suffixText: widget.l10n.durationMinutesLabel,
               isDense: true,
-              border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -79,10 +75,10 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
           ),
         ],
         const SizedBox(height: 12),
-        FilledButton.tonalIcon(
+        AppPrimaryButton(
           onPressed: _handleApply,
           icon: const Icon(Icons.check, size: 18),
-          label: Text(widget.l10n.batchGcodeImportApply),
+          label: widget.l10n.batchGcodeImportApply,
         ),
       ],
     );

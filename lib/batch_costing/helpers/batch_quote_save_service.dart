@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 Future<void> saveBatchQuote(
   BuildContext context,
@@ -21,43 +22,16 @@ Future<void> saveBatchQuote(
   BatchSummaryResult summary,
 ) async {
   final l10n = AppLocalizations.of(context)!;
-
-  final nameController = TextEditingController(
-    text: l10n.batchCostingSummaryDefaultQuoteName,
-  );
   final quoteName = await showDialog<String>(
     context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: Text(l10n.batchCostingSummaryQuoteNameDialogTitle),
-      content: TextField(
-        controller: nameController,
-        decoration: InputDecoration(
-          hintText: l10n.batchCostingSummaryDefaultQuoteName,
-          labelText: l10n.batchCostingSummaryQuoteNameHint,
-          border: const OutlineInputBorder(),
-        ),
-        autofocus: true,
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(null),
-          child: Text(l10n.cancelButton),
-        ),
-        FilledButton(
-          onPressed: () {
-            final name = nameController.text.trim();
-            Navigator.of(dialogContext).pop(
-              name.isEmpty
-                  ? l10n.batchCostingSummaryDefaultQuoteName
-                  : name,
-            );
-          },
-          child: Text(l10n.saveButton),
-        ),
-      ],
+    builder: (dialogContext) => _BatchQuoteNameDialog(
+      title: l10n.batchCostingSummaryQuoteNameDialogTitle,
+      hintText: l10n.batchCostingSummaryDefaultQuoteName,
+      labelText: l10n.batchCostingSummaryQuoteNameHint,
+      cancelLabel: l10n.cancelButton,
+      saveLabel: l10n.saveButton,
     ),
   );
-  nameController.dispose();
 
   if (quoteName == null || !context.mounted) return;
 
@@ -68,7 +42,10 @@ Future<void> saveBatchQuote(
     summary: summary,
   );
 
-  final copyCount = state.items.fold<int>(0, (sum, item) => sum + item.quantity);
+  final copyCount = state.items.fold<int>(
+    0,
+    (sum, item) => sum + item.quantity,
+  );
   final hasGCode = state.items.any(
     (item) => item.sourceType == BatchCostingItemSourceType.gcode,
   );
@@ -122,7 +99,7 @@ Future<void> saveBatchQuote(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: 8,
           children: [
-            FilledButton(
+            AppPrimaryButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 ref
@@ -130,16 +107,16 @@ Future<void> saveBatchQuote(
                     .navigate(AppPageTab.history);
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text(l10n.batchCostingSummaryViewHistoryButton),
+              label: l10n.batchCostingSummaryViewHistoryButton,
             ),
-            OutlinedButton(
+            AppSecondaryButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+              label: l10n.batchCostingSummaryReturnToCalculatorButton,
             ),
-            TextButton(
+            AppTertiaryButton(
               onPressed: () async {
                 Navigator.of(dialogContext).pop();
                 final confirmed = await showStartNewBatchDialog(context);
@@ -148,11 +125,76 @@ Future<void> saveBatchQuote(
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 }
               },
-              child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+              label: l10n.batchCostingSummaryStartNewBatchButton,
             ),
           ],
         ),
       ],
     ),
   );
+}
+
+class _BatchQuoteNameDialog extends StatefulWidget {
+  const _BatchQuoteNameDialog({
+    required this.title,
+    required this.hintText,
+    required this.labelText,
+    required this.cancelLabel,
+    required this.saveLabel,
+  });
+
+  final String title;
+  final String hintText;
+  final String labelText;
+  final String cancelLabel;
+  final String saveLabel;
+
+  @override
+  State<_BatchQuoteNameDialog> createState() => _BatchQuoteNameDialogState();
+}
+
+class _BatchQuoteNameDialogState extends State<_BatchQuoteNameDialog> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.hintText);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.title),
+      content: TextField(
+        controller: _controller,
+        decoration: InputDecoration(
+          hintText: widget.hintText,
+          labelText: widget.labelText,
+        ),
+        autofocus: true,
+      ),
+      actions: [
+        AppTertiaryButton(
+          onPressed: () => Navigator.of(context).pop(),
+          label: widget.cancelLabel,
+        ),
+        AppPrimaryButton(
+          onPressed: () {
+            final name = _controller.text.trim();
+            Navigator.of(context).pop(
+              name.isEmpty ? widget.hintText : name,
+            );
+          },
+          label: widget.saveLabel,
+        ),
+      ],
+    );
+  }
 }

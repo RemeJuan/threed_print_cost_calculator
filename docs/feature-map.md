@@ -1,5 +1,17 @@
 # Feature map
 
+## Shared UI primitives
+
+- Main screens/widgets:
+  - `lib/shared/widgets/app_surface_card.dart` — reusable grouped surface wrapper used by cards, accordions, settings sections, and support panels
+  - `lib/shared/widgets/app_search_bar.dart` — shared search field used by history and materials
+  - `lib/shared/widgets/app_buttons.dart` — shared primary/secondary/tertiary button set used across batch costing, history, settings, and dialogs
+  - `lib/shared/widgets/app_filter_chip.dart` — shared filter chip used by batch costing source filters
+- Theme/system notes:
+  - shared input styling is theme-driven in `lib/shared/theme.dart`
+  - active/focused input accent stays `LIGHT_BLUE`
+  - cards and grouped panels use `AppSurfaceCard` instead of ad-hoc `Material` wrappers
+
 ## Calculator
 
 - Main screens/widgets:
@@ -36,7 +48,7 @@
 ## Materials
 
 - Main screens/widgets:
-  - `lib/materials/widgets/materials_page.dart` — premium tab, search/filter, swipe actions, delete/duplicate wiring
+  - `lib/materials/widgets/materials_page.dart` — premium tab, shared search bar, search/filter, swipe actions, delete/duplicate wiring
   - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
   - `lib/materials/csv_import/csv_import_page.dart`
@@ -93,7 +105,7 @@
   - `lib/history/history_page.dart`
   - `lib/history/components/history_list_view.dart`
   - `lib/history/components/history_item.dart`
-  - `lib/history/components/history_search_bar.dart`
+  - `lib/history/components/history_search_bar.dart` — search shell around shared `AppSearchBar`
   - `lib/history/components/history_toolbar.dart`
   - `lib/history/components/history_upsell_banner.dart`
 - Providers/state:
@@ -198,6 +210,10 @@
   - `lib/batch_costing/widgets/batch_split_copies_dialog.dart`
   - `lib/batch_costing/widgets/batch_anchor_selector.dart`
   - `lib/batch_costing/widgets/warning_box.dart`
+- Shared UI usage:
+  - batch summary and batch item cards use support-style `AppSurfaceCard` expansion tiles with zero outer padding and compact density
+  - batch source chips use shared `AppFilterChip`
+  - batch action buttons use shared primary/secondary/tertiary buttons
 - Providers/state:
   - `lib/batch_costing/providers/batch_costing_notifier.dart` (`batchCostingProvider`)
   - `lib/batch_costing/model/batch_costing_item.dart`

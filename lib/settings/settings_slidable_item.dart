@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class SettingsSlidableItem extends StatelessWidget {
   const SettingsSlidableItem({
@@ -36,13 +37,13 @@ class SettingsSlidableItem extends StatelessWidget {
           title: Text(l10n.deleteDialogTitle),
           content: Text(l10n.deleteDialogContent),
           actions: [
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancelButton),
+              label: l10n.cancelButton,
             ),
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(l10n.deleteButton),
+              label: l10n.deleteButton,
             ),
           ],
         ),
@@ -64,25 +65,25 @@ class SettingsSlidableItem extends StatelessWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) async => confirmDelete(),
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: STATUS_ERROR,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
               borderRadius: const BorderRadius.horizontal(
                 left: Radius.circular(28),
               ),
-              child: _actionContent(Icons.delete, Colors.white),
+              child: _actionContent(Icons.delete, TEXT_INVERSE),
             ),
             CustomSlidableAction(
               key: editButtonKey,
               flex: 1,
               onPressed: (_) => onEdit(),
               backgroundColor: LIGHT_BLUE,
-              foregroundColor: Colors.white,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
               borderRadius: const BorderRadius.horizontal(
                 right: Radius.circular(28),
               ),
-              child: _actionContent(Icons.edit, Colors.white),
+              child: _actionContent(Icons.edit, TEXT_INVERSE),
             ),
             const SizedBox(width: 12),
           ],

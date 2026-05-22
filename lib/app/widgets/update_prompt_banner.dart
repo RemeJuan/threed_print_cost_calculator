@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class UpdatePromptBanner extends ConsumerStatefulWidget {
   const UpdatePromptBanner({super.key});
@@ -49,9 +51,9 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
         : l10n.updatePromptBodyUnknown;
 
     return Card(
-      margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      margin: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace12, kAppSpace16, 0),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(kAppSpace16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,14 +61,14 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
               l10n.updatePromptTitle,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             Text(body),
-            const SizedBox(height: 12),
+            const SizedBox(height: kAppSpace12),
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: kAppSpace8,
+              runSpacing: kAppSpace8,
               children: [
-                FilledButton(
+                AppPrimaryButton(
                   onPressed: () async {
                     AppAnalytics.safeLog(
                       () => AppAnalytics.updatePromptTapped(
@@ -78,9 +80,9 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
                     );
                     await openAppStoreForPlatform();
                   },
-                  child: Text(l10n.updatePromptOpenStoreButton),
+                  label: l10n.updatePromptOpenStoreButton,
                 ),
-                TextButton(
+                AppTertiaryButton(
                   onPressed: () {
                     AppAnalytics.safeLog(
                       () => AppAnalytics.updatePromptDismissed(
@@ -92,7 +94,7 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
                     );
                     ref.read(updateCheckerProvider.notifier).dismissPrompt();
                   },
-                  child: Text(l10n.closeButton),
+                  label: l10n.closeButton,
                 ),
               ],
             ),

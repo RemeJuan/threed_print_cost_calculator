@@ -5,10 +5,12 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 /// Reusable material picker widget. Uses the shared materials provider so it
 /// updates live without creating duplicate listeners.
@@ -48,7 +50,7 @@ class MaterialPicker extends HookConsumerWidget {
           return Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(kAppSpace16),
                 child: TextField(
                   key: const ValueKey<String>(
                     'calculator.materialPicker.search.input',
@@ -63,7 +65,7 @@ class MaterialPicker extends HookConsumerWidget {
               Expanded(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(kAppSpace16),
                     child: Text(l10n.addAtLeastOneMaterial),
                   ),
                 ),
@@ -72,15 +74,15 @@ class MaterialPicker extends HookConsumerWidget {
               // if none exist yet.
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
+                  horizontal: kAppSpace16,
+                  vertical: kAppSpace8,
                 ),
-                child: ElevatedButton.icon(
+                child: AppSecondaryButton(
                   key: const ValueKey<String>(
                     'calculator.materialPicker.add.button',
                   ),
                   icon: const Icon(Icons.add),
-                  label: Text(l10n.addMaterialButton),
+                  label: l10n.addMaterialButton,
                   onPressed: () async {
                     final created = await showDialog<MaterialModel?>(
                       context: context,
@@ -101,7 +103,7 @@ class MaterialPicker extends HookConsumerWidget {
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(kAppSpace16),
               child: TextField(
                 key: const ValueKey<String>(
                   'calculator.materialPicker.search.input',
@@ -128,7 +130,7 @@ class MaterialPicker extends HookConsumerWidget {
                     ),
                     title: Text(material.name),
                     subtitle: Text(
-                      '${material.color} • ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
+                      '${material.color} \u2022 ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
                     ),
                     onTap: () => onSelected(material),
                   );
@@ -138,13 +140,16 @@ class MaterialPicker extends HookConsumerWidget {
             // Add material button at the bottom so the user can create a new
             // material even when the list already contains items.
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: ElevatedButton.icon(
+              padding: const EdgeInsets.symmetric(
+                horizontal: kAppSpace16,
+                vertical: kAppSpace8,
+              ),
+              child: AppSecondaryButton(
                 key: const ValueKey<String>(
                   'calculator.materialPicker.add.button',
                 ),
                 icon: const Icon(Icons.add),
-                label: Text(l10n.addMaterialButton),
+                label: l10n.addMaterialButton,
                 onPressed: () async {
                   final created = await showDialog<MaterialModel?>(
                     context: context,
@@ -163,7 +168,7 @@ class MaterialPicker extends HookConsumerWidget {
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stackTrace) => Center(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           child: Text(l10n.materialsLoadError(error.toString())),
         ),
       ),

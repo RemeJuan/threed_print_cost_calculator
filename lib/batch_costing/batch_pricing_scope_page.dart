@@ -11,7 +11,11 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class BatchPricingScopePage extends ConsumerStatefulWidget {
   const BatchPricingScopePage({super.key});
@@ -103,13 +107,13 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     final state = ref.watch(batchCostingProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchCostingPricingScopeAppBarTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchCostingPricingScopeAppBarTitle,
         actions: [homeButton(context)],
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           child: Form(
             key: _formKey,
             child: Column(
@@ -119,7 +123,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   l10n.batchCostingPricingScopeSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: kAppSpace16),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -200,22 +204,18 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: kAppSpace16),
                 SafeArea(
                   child: Row(
                     children: [
-                      TextButton(
+                      AppTertiaryButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          l10n.batchCostingPrinterAssignmentPreviousButton,
-                        ),
+                        label: l10n.batchCostingPrinterAssignmentPreviousButton,
                       ),
                       const Spacer(),
-                      FilledButton(
+                      AppPrimaryButton(
                         onPressed: () => _continue(context),
-                        child: Text(
-                          l10n.batchCostingPrinterAssignmentNextButton,
-                        ),
+                        label: l10n.batchCostingPrinterAssignmentNextButton,
                       ),
                     ],
                   ),
@@ -241,59 +241,55 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     required String scopeItemLabel,
     required String scopeBatchLabel,
   }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 48,
-              child: FocusSafeTextField(
-                controller: controller,
-                focusNode: focusNode,
-                externalText: value,
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                inputFormatters: localizedDecimalInputFormatters,
-                inputNormalizer: normalizeLeadingZeroNumericInput,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: validator,
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
-                  isDense: true,
-                  label: Text(label),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 8,
-                  ),
-                ),
-                onChanged: onValueChanged,
+    return AppSurfaceCard(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: kAppSpace8),
+      margin: const EdgeInsets.only(bottom: kAppSpace12),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 48,
+            child: FocusSafeTextField(
+              controller: controller,
+              focusNode: focusNode,
+              externalText: value,
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
               ),
-            ),
-            const Spacer(flex: 4),
-            Expanded(
-              flex: 48,
-              child: SegmentedButton<BatchPricingScope>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(
-                    value: BatchPricingScope.item,
-                    label: Text(scopeItemLabel),
-                  ),
-                  ButtonSegment(
-                    value: BatchPricingScope.batch,
-                    label: Text(scopeBatchLabel),
-                  ),
-                ],
-                selected: {scope},
-                onSelectionChanged: (selected) =>
-                    onScopeChanged(selected.first),
+              inputFormatters: localizedDecimalInputFormatters,
+              inputNormalizer: normalizeLeadingZeroNumericInput,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: validator,
+              decoration: InputDecoration(
+                isDense: true,
+                label: Text(label),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 8,
+                ),
               ),
+              onChanged: onValueChanged,
             ),
-          ],
-        ),
+          ),
+          const Spacer(flex: 4),
+          Expanded(
+            flex: 48,
+            child: SegmentedButton<BatchPricingScope>(
+              showSelectedIcon: false,
+              segments: [
+                ButtonSegment(
+                  value: BatchPricingScope.item,
+                  label: Text(scopeItemLabel),
+                ),
+                ButtonSegment(
+                  value: BatchPricingScope.batch,
+                  label: Text(scopeBatchLabel),
+                ),
+              ],
+              selected: {scope},
+              onSelectionChanged: (selected) => onScopeChanged(selected.first),
+            ),
+          ),
+        ],
       ),
     );
   }

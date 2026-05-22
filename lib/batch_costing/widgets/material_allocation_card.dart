@@ -7,6 +7,9 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allo
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class MaterialAllocationCard extends StatelessWidget {
   const MaterialAllocationCard({
@@ -51,50 +54,47 @@ class MaterialAllocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.displayName,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+    return AppSurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  item.displayName,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            for (var index = 0; index < allocations.length; index += 1) ...[
-              MaterialAllocationRow(
-                title: _materialName(allocations[index].targetId),
-                subtitle: null,
-                copies: allocations[index].quantity,
-                onRemove: allocations.length > 1
-                    ? () => onSetAllocations([...allocations]..removeAt(index))
-                    : null,
               ),
-              if (index != allocations.length - 1) const SizedBox(height: 12),
+              Text(
+                '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ],
-            const SizedBox(height: 12),
-            OutlinedButton.icon(
-              onPressed: () => _openPicker(context),
-              icon: const Icon(Icons.search),
-              label: Text(l10n.batchCostingAssignmentSplitCopiesButton),
+          ),
+          const SizedBox(height: kAppSpace8),
+          for (var index = 0; index < allocations.length; index += 1) ...[
+            MaterialAllocationRow(
+              title: _materialName(allocations[index].targetId),
+              subtitle: null,
+              copies: allocations[index].quantity,
+              onRemove: allocations.length > 1
+                  ? () => onSetAllocations([...allocations]..removeAt(index))
+                  : null,
             ),
-            if (warningText != null) ...[
-              const SizedBox(height: 8),
-              WarningBox(text: warningText!),
-            ],
+            if (index != allocations.length - 1) const SizedBox(height: kAppSpace12),
           ],
-        ),
+          const SizedBox(height: kAppSpace12),
+          AppSecondaryButton(
+            onPressed: () => _openPicker(context),
+            icon: const Icon(Icons.search),
+            label: l10n.batchCostingAssignmentSplitCopiesButton,
+          ),
+          if (warningText != null) ...[
+            const SizedBox(height: kAppSpace8),
+            WarningBox(text: warningText!),
+          ],
+        ],
       ),
     );
   }

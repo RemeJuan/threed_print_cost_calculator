@@ -10,7 +10,9 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 typedef HistoryItemExportCsv =
     Future<void> Function(
@@ -82,13 +84,13 @@ class HistoryItemActionsController {
         title: Text(l10n.deleteDialogTitle),
         content: Text(l10n.deleteDialogContent),
         actions: [
-          TextButton(
+          AppTertiaryButton(
             onPressed: () => Navigator.pop(dialogContext, false),
-            child: Text(l10n.cancelButton),
+            label: l10n.cancelButton,
           ),
-          TextButton(
+          AppTertiaryButton(
             onPressed: () => Navigator.pop(dialogContext, true),
-            child: Text(l10n.deleteButton),
+            label: l10n.deleteButton,
           ),
         ],
       ),
@@ -162,7 +164,7 @@ class HistoryItemActions extends ConsumerWidget {
       icon: const SizedBox.square(
         dimension: 44,
         child: Center(
-          child: Icon(Icons.more_horiz, color: Colors.white, size: 22),
+          child: Icon(Icons.more_horiz, color: ICON_PRIMARY, size: 22),
         ),
       ),
       padding: EdgeInsets.zero,
@@ -207,12 +209,12 @@ class HistoryItemActions extends ConsumerWidget {
           value: _HistoryItemAction.delete,
           child: Row(
             children: [
-              const Icon(Icons.delete_outline, size: 20, color: Colors.red),
+              const Icon(Icons.delete_outline, size: 20, color: STATUS_ERROR),
               const SizedBox(width: 12),
               Flexible(
                 child: Text(
                   l10n.deleteButton,
-                  style: const TextStyle(color: Colors.red),
+                  style: const TextStyle(color: STATUS_ERROR),
                 ),
               ),
             ],

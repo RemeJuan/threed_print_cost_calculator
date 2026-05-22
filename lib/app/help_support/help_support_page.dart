@@ -9,10 +9,13 @@ import 'package:threed_print_cost_calculator/app/help_support/models/help_suppor
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_about_section.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_faq_tile.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_footer.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_section_header.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_support_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 class HelpSupportPage extends ConsumerStatefulWidget {
   const HelpSupportPage({super.key});
@@ -37,13 +40,13 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
     final visibleSupportId = supportId.isEmpty ? '—' : supportId;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.needHelpTitle)),
+      appBar: AppScreenHeader(title: l10n.needHelpTitle),
       body: ListView(
         key: const ValueKey<String>('helpSupport.page'),
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+        padding: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace16, kAppSpace16, 24),
         children: [
           HelpSupportSectionHeader(title: l10n.helpSupportSupportTitle),
-          const SizedBox(height: 12),
+          const SizedBox(height: kAppSpace12),
           HelpSupportSupportCard(
             supportId: visibleSupportId,
             packageInfoFuture: _packageInfoFuture,
@@ -51,25 +54,25 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
             onCopySupportId: () => _copySupportId(l10n, visibleSupportId),
             onRoadmapTap: () => openUrl(helpSupportRoadmapUrl),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: kAppSpace12),
           SizedBox(
             width: double.infinity,
-            child: FilledButton.icon(
+            child: AppPrimaryButton(
               key: const ValueKey<String>('helpSupport.contact.button'),
               onPressed: () => _contactSupport(l10n, supportId),
               icon: const Icon(Icons.email_outlined),
-              label: Text(l10n.helpSupportContactSupportButton),
+              label: l10n.helpSupportContactSupportButton,
             ),
           ),
           const SizedBox(height: 28),
           HelpSupportSectionHeader(title: l10n.helpSupportFaqTitle),
-          const SizedBox(height: 12),
+          const SizedBox(height: kAppSpace12),
           ..._faqEntries(l10n).asMap().entries.map(
             (entry) => HelpSupportFaqTile(index: entry.key, entry: entry.value),
           ),
           const SizedBox(height: 28),
           HelpSupportSectionHeader(title: l10n.helpSupportAboutTitle),
-          const SizedBox(height: 12),
+          const SizedBox(height: kAppSpace12),
           const HelpSupportAboutSection(),
           const SizedBox(height: 12),
           HelpSupportFooter(),

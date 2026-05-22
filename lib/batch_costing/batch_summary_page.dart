@@ -12,6 +12,11 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_expansion_card.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
 class BatchSummaryPage extends ConsumerStatefulWidget {
@@ -69,21 +74,21 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
         : GeneralSettingsModel.initial();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchCostingSummaryAppBarTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchCostingSummaryAppBarTitle,
         actions: [homeButton(context)],
       ),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           children: [
             Text(
               l10n.batchCostingSummarySubtitle,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: kAppSpace16),
             _sectionTitle(context, l10n.batchCostingSummaryOverviewTitle),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             _summaryRow(
               context,
               l10n.batchCostingSummaryItemCountLabel,
@@ -104,9 +109,9 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               l10n.batchCostingSummaryTotalDurationLabel,
               formatDuration(summary.totalPrintDuration),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: kAppSpace16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
-            const SizedBox(height: 8),
+            const SizedBox(height: kAppSpace8),
             if (_showPricing(summary.failureRisk.value))
               _pricingRow(
                 context,
@@ -163,10 +168,9 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
             _sectionTitle(context, l10n.batchCostingSummaryItemsTitle),
             const SizedBox(height: 8),
             for (final item in summary.items)
-              Card(
-                child: ExpansionTile(
-                  tilePadding: const EdgeInsets.symmetric(horizontal: 16),
-                  childrenPadding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+              Padding(
+                padding: const EdgeInsets.only(bottom: kAppSpace12),
+                child: AppExpansionCard(
                   title: Text(item.item.displayName),
                   subtitle: Text(
                     '${l10n.batchCostingReviewQuantityLabel}: ${item.totalQuantity}',
@@ -210,57 +214,55 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                   ],
                 ),
               ),
-            Card(
-              color: DEEP_BLUE,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Text(
-                      l10n.batchCostingSummaryFinalTotalLabel,
-                      style: Theme.of(context).textTheme.titleMedium,
+            AppSurfaceCard(
+              backgroundColor: RESULT_SURFACE,
+              child: Row(
+                children: [
+                  Text(
+                    l10n.batchCostingSummaryFinalTotalLabel,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Spacer(),
+                  Text(
+                    formatCurrencyValue(
+                      summary.finalTotal,
+                      currencySymbol: currencySettings.currencySymbol,
+                      currencyPosition: currencySettings.currencyPosition,
+                      currencySpacing: currencySettings.currencySpacing,
                     ),
-                    const Spacer(),
-                    Text(
-                      formatCurrencyValue(
-                        summary.finalTotal,
-                        currencySymbol: currencySettings.currencySymbol,
-                        currencyPosition: currencySettings.currencyPosition,
-                        currencySpacing: currencySettings.currencySpacing,
-                      ),
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 24),
             Align(
               alignment: Alignment.centerLeft,
-              child: TextButton(
+              child: AppTertiaryButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.batchCostingSummaryBackButton),
+                label: l10n.batchCostingSummaryBackButton,
               ),
             ),
             const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                AppPrimaryButton(
                   onPressed: () => saveBatchQuote(context, ref, state, summary),
-                  child: Text(l10n.batchCostingSummarySaveButton),
+                  label: l10n.batchCostingSummarySaveButton,
                 ),
                 const SizedBox(height: 12),
-                FilledButton(
+                AppPrimaryButton(
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
-                  child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+                  label: l10n.batchCostingSummaryReturnToCalculatorButton,
                 ),
                 const SizedBox(height: 12),
-                OutlinedButton(
+                AppSecondaryButton(
                   onPressed: () => _showStartNewBatchDialog(context),
-                  child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                  label: l10n.batchCostingSummaryStartNewBatchButton,
                 ),
               ],
             ),
@@ -272,8 +274,8 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
 
   Widget _emptyState(BuildContext context, AppLocalizations l10n) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.batchCostingSummaryAppBarTitle),
+      appBar: AppScreenHeader(
+        title: l10n.batchCostingSummaryAppBarTitle,
         actions: [homeButton(context)],
       ),
       body: Center(
@@ -303,21 +305,19 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  TextButton(
+                  AppTertiaryButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(l10n.batchCostingSummaryBackButton),
+                    label: l10n.batchCostingSummaryBackButton,
                   ),
-                  OutlinedButton(
+                  AppSecondaryButton(
                     onPressed: () => Navigator.of(
                       context,
                     ).popUntil((route) => route.isFirst),
-                    child: Text(
-                      l10n.batchCostingSummaryReturnToCalculatorButton,
-                    ),
+                    label: l10n.batchCostingSummaryReturnToCalculatorButton,
                   ),
-                  FilledButton(
+                  AppPrimaryButton(
                     onPressed: () => _showStartNewBatchDialog(context),
-                    child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                    label: l10n.batchCostingSummaryStartNewBatchButton,
                   ),
                 ],
               ),

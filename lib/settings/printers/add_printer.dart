@@ -7,7 +7,7 @@ import 'package:threed_print_cost_calculator/app/components/focus_safe_text_fiel
 import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class AddPrinter extends HookConsumerWidget {
   const AddPrinter({this.dbRef, super.key});
@@ -115,14 +115,8 @@ class AddPrinter extends HookConsumerWidget {
                   onChanged: notifier.updateWattage,
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
+                AppPrimaryButton(
                   key: const ValueKey<String>('settings.printers.save.button'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: DEEP_BLUE,
-                    textStyle: Theme.of(
-                      context,
-                    ).textTheme.displayMedium?.copyWith(fontSize: 16),
-                  ),
                   onPressed: !hasSubmitted.value || isFormValid
                       ? () async {
                           hasSubmitted.value = true;
@@ -135,7 +129,7 @@ class AddPrinter extends HookConsumerWidget {
                           Navigator.of(context, rootNavigator: true).pop();
                         }
                       : null,
-                  child: Text(l10n.saveButton),
+                  label: l10n.saveButton,
                 ),
               ],
             ),

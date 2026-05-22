@@ -7,6 +7,8 @@ import 'package:threed_print_cost_calculator/app/app_page_cancel_feedback_effect
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/app/widgets/update_prompt_banner.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -132,12 +134,11 @@ class AppPage extends HookConsumerWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(renderedShellTab.title),
+      appBar: AppScreenHeader(
+        title: renderedShellTab.title,
         actions: renderedShellTab.actions,
         leading: IconButton(
-          icon: const Icon(Icons.help_outline, color: Colors.white54),
+          icon: const Icon(Icons.help_outline, color: ICON_MUTED),
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const HelpSupportPage()),
           ),
@@ -165,25 +166,32 @@ class AppPage extends HookConsumerWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          final targetTab = tabFromIndex(index);
-          final targetIndex = tabToIndex(targetTab);
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: SHELL_BACKGROUND,
+          border: Border(top: BorderSide(color: SHELL_BORDER)),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: selectedIndex,
+          onTap: (index) {
+            final targetTab = tabFromIndex(index);
+            final targetIndex = tabToIndex(targetTab);
 
-          if (targetIndex == selectedIndex) {
-            return;
-          }
+            if (targetIndex == selectedIndex) {
+              return;
+            }
 
-          tapNavigationTargetIndex.value = targetIndex;
-          selectedTab.value = targetTab;
-          pageController.animateToPage(
-            targetIndex,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
-        },
-        items: shellTabs.map((tab) => tab.navigationItem).toList(),
+            tapNavigationTargetIndex.value = targetIndex;
+            selectedTab.value = targetTab;
+            pageController.animateToPage(
+              targetIndex,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
+          },
+          items: shellTabs.map((tab) => tab.navigationItem).toList(),
+        ),
       ),
     );
   }

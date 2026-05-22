@@ -128,77 +128,72 @@ class GeneralSettings extends HookConsumerWidget {
       return null;
     }, [data.electricityCost, data.wattage]);
 
-    return Container(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: FocusSafeTextField(
-                  key: const ValueKey<String>('settings.electricityCost.input'),
-                  controller: electricityController,
-                  externalText: data.electricityCost.toString(),
-                  focusNode: electricityFocus,
-                  keyboardType: TextInputType.number,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  decoration: InputDecoration(
-                    labelText: l10n.electricityCostSettingsLabel,
-                    prefixText:
-                        currencySettings.currencySymbol.isNotEmpty &&
-                            currencySettings.currencyPosition == 'before'
-                        ? currencySettings.currencySymbol +
-                              (currencySettings.currencySpacing ? ' ' : '')
-                        : null,
-                    suffixText:
-                        currencySettings.currencyPosition == 'after' &&
-                            currencySettings.currencySymbol.isNotEmpty
-                        ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
-                        : l10n.kwh,
-                  ),
-                  onChanged: (value) async {
-                    await persistElectricity(value);
-                  },
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: FocusSafeTextField(
+                key: const ValueKey<String>('settings.electricityCost.input'),
+                controller: electricityController,
+                externalText: data.electricityCost.toString(),
+                focusNode: electricityFocus,
+                keyboardType: TextInputType.number,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
+                decoration: InputDecoration(
+                  labelText: l10n.electricityCostSettingsLabel,
+                  prefixText:
+                      currencySettings.currencySymbol.isNotEmpty &&
+                          currencySettings.currencyPosition == 'before'
+                      ? currencySettings.currencySymbol +
+                            (currencySettings.currencySpacing ? ' ' : '')
+                      : null,
+                  suffixText:
+                      currencySettings.currencyPosition == 'after' &&
+                          currencySettings.currencySymbol.isNotEmpty
+                      ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
+                      : l10n.kwh,
                 ),
+                onChanged: (value) async {
+                  await persistElectricity(value);
+                },
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: FocusSafeTextField(
-                  key: const ValueKey<String>('settings.generalWattage.input'),
-                  controller: wattController,
-                  externalText: data.wattage.toString(),
-                  focusNode: wattFocus,
-                  keyboardType: TextInputType.number,
-                  inputNormalizer: normalizeLeadingZeroNumericInput,
-                  decoration: InputDecoration(
-                    labelText: l10n.wattLabel,
-                    suffixText: l10n.watt,
-                  ),
-                  onChanged: (value) async {
-                    await persistWatt(value);
-                  },
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: FocusSafeTextField(
+                key: const ValueKey<String>('settings.generalWattage.input'),
+                controller: wattController,
+                externalText: data.wattage.toString(),
+                focusNode: wattFocus,
+                keyboardType: TextInputType.number,
+                inputNormalizer: normalizeLeadingZeroNumericInput,
+                decoration: InputDecoration(
+                  labelText: l10n.wattLabel,
+                  suffixText: l10n.watt,
                 ),
+                onChanged: (value) async {
+                  await persistWatt(value);
+                },
               ),
-            ],
-          ),
-          if (shouldShowHideProPromotionsToggle) ...[
-            const SizedBox(height: 8),
-            SwitchListTile.adaptive(
-              key: const ValueKey<String>('settings.hideProPromotions.toggle'),
-              contentPadding: EdgeInsets.zero,
-              dense: true,
-              title: Text(l10n.hideProPromotionsTitle),
-              subtitle: Text(l10n.hideProPromotionsSubtitle),
-              value: hideProPromotions,
-              onChanged: (value) {
-                unawaited(
-                  hideProPromotionsNotifier.setHideProPromotions(value),
-                );
-              },
             ),
           ],
+        ),
+        if (shouldShowHideProPromotionsToggle) ...[
+          const SizedBox(height: 8),
+          SwitchListTile.adaptive(
+            key: const ValueKey<String>('settings.hideProPromotions.toggle'),
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+            title: Text(l10n.hideProPromotionsTitle),
+            subtitle: Text(l10n.hideProPromotionsSubtitle),
+            value: hideProPromotions,
+            onChanged: (value) {
+              unawaited(hideProPromotionsNotifier.setHideProPromotions(value));
+            },
+          ),
         ],
-      ),
+      ],
     );
   }
 }

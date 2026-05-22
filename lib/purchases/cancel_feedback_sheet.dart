@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 enum CancelFeedbackReason {
   tooExpensive('too_expensive'),
@@ -99,16 +100,16 @@ class _CancelFeedbackSheetState extends State<CancelFeedbackSheet> {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
+                  child: AppSecondaryButton(
                     onPressed: _isSubmitting
                         ? null
                         : () => Navigator.of(context).pop(),
-                    child: Text(l10n.closeButton),
+                    label: l10n.closeButton,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: FilledButton(
+                  child: AppPrimaryButton(
                     onPressed: _isSubmitting || _selectedReason == null
                         ? null
                         : () async {
@@ -128,7 +129,7 @@ class _CancelFeedbackSheetState extends State<CancelFeedbackSheet> {
                               }
                             }
                           },
-                    child: Text(l10n.feedbackSubmitButton),
+                    label: l10n.feedbackSubmitButton,
                   ),
                 ),
               ],

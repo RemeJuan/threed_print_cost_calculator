@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchCostingItemEditorResult {
   const BatchCostingItemEditorResult({
@@ -254,14 +255,14 @@ class _BatchCostingItemEditorDialogState
         ),
       ),
       actions: [
-        TextButton(
+        AppTertiaryButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          label: MaterialLocalizations.of(context).cancelButtonLabel,
         ),
-        FilledButton(
+        AppPrimaryButton(
           key: const ValueKey<String>('batch-costing-item-editor-save'),
           onPressed: () => _save(context),
-          child: Text(l10n.saveButton),
+          label: l10n.saveButton,
         ),
       ],
     );

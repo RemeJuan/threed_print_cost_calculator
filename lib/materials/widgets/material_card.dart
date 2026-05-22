@@ -5,8 +5,13 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
-import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/stock_status_badge.dart';
 
 class MaterialCard extends ConsumerWidget {
   final MaterialModel material;
@@ -40,13 +45,12 @@ class MaterialCard extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 20, color: color),
-            const SizedBox(height: 4),
+            Icon(icon, size: 16, color: color),
+            const SizedBox(height: 2),
             Text(
               label,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
-                fontSize: 11,
                 fontWeight: FontWeight.w600,
               ),
               overflow: TextOverflow.ellipsis,
@@ -63,13 +67,13 @@ class MaterialCard extends ConsumerWidget {
           title: Text(l10n.deleteDialogTitle),
           content: Text(l10n.deleteDialogContent),
           actions: [
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, false),
-              child: Text(l10n.cancelButton),
+              label: l10n.cancelButton,
             ),
-            TextButton(
+            AppTertiaryButton(
               onPressed: () => Navigator.pop(dialogContext, true),
-              child: Text(l10n.deleteButton),
+              label: l10n.deleteButton,
             ),
           ],
         ),
@@ -80,113 +84,105 @@ class MaterialCard extends ConsumerWidget {
       }
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            extentRatio: 0.65,
-            children: [
-              CustomSlidableAction(
-                flex: 1,
-                onPressed: (_) => onEdit(),
-                backgroundColor: LIGHT_BLUE,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.zero,
-                borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(12),
-                ),
-                child: buildActionContent(
-                  Icons.edit,
-                  l10n.editButton,
-                  Colors.white,
-                ),
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: kAppSpace16,
+        vertical: kAppSpace4,
+      ),
+      child: Slidable(
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          extentRatio: 0.65,
+          children: [
+            CustomSlidableAction(
+              flex: 1,
+              onPressed: (_) => onEdit(),
+              backgroundColor: LIGHT_BLUE,
+              foregroundColor: TEXT_INVERSE,
+              padding: EdgeInsets.zero,
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(kAppSurfaceRadius),
               ),
-              CustomSlidableAction(
-                flex: 1,
-                onPressed: (_) => onDuplicate(),
-                backgroundColor: Colors.teal,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.zero,
-                borderRadius: BorderRadius.zero,
-                child: buildActionContent(
-                  Icons.content_copy,
-                  l10n.duplicateButton,
-                  Colors.white,
-                ),
+              child: buildActionContent(
+                Icons.edit,
+                l10n.editButton,
+                TEXT_INVERSE,
               ),
-              CustomSlidableAction(
-                flex: 1,
-                onPressed: (_) => confirmDelete(),
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.zero,
-                borderRadius: const BorderRadius.horizontal(
-                  right: Radius.circular(12),
-                ),
-                child: buildActionContent(
-                  Icons.delete,
-                  l10n.deleteButton,
-                  Colors.white,
-                ),
-              ),
-            ],
-          ),
-          child: Card(
-            color: DARK_BLUE,
-            margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
             ),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(12),
-              onTap: onEdit,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: swatchColor,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.white24, width: 1),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            material.name,
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(color: Colors.white),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 2),
-                          _MergedInfoLine(material: material),
-                          const SizedBox(height: 4),
-                          if (material.autoDeductEnabled)
-                            Text(
-                              '${formatWeight(material.remainingWeight)}${l10n.gramsSuffix}',
-                              style: const TextStyle(
-                                color: Colors.white70,
-                                fontSize: 13,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    _StockBadge(status: status, l10n: l10n),
-                  ],
-                ),
+            CustomSlidableAction(
+              flex: 1,
+              onPressed: (_) => onDuplicate(),
+              backgroundColor: ACTION_DUPLICATE,
+              foregroundColor: TEXT_INVERSE,
+              padding: EdgeInsets.zero,
+              borderRadius: BorderRadius.zero,
+              child: buildActionContent(
+                Icons.content_copy,
+                l10n.duplicateButton,
+                TEXT_INVERSE,
               ),
+            ),
+            CustomSlidableAction(
+              flex: 1,
+              onPressed: (_) => confirmDelete(),
+              backgroundColor: STATUS_ERROR,
+              foregroundColor: TEXT_INVERSE,
+              padding: EdgeInsets.zero,
+              borderRadius: const BorderRadius.horizontal(
+                right: Radius.circular(kAppSurfaceRadius),
+              ),
+              child: buildActionContent(
+                Icons.delete,
+                l10n.deleteButton,
+                TEXT_INVERSE,
+              ),
+            ),
+          ],
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(kAppSurfaceRadius),
+          onTap: onEdit,
+          child: AppSurfaceCard(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            child: Row(
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: swatchColor,
+                    borderRadius: BorderRadius.circular(kAppPillRadius),
+                    border: Border.all(color: BORDER_SUBTLE, width: 1),
+                  ),
+                ),
+                const SizedBox(width: kAppSpace12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        material.name,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(color: TEXT_PRIMARY),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: kAppSpace2),
+                      _MergedInfoLine(material: material),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: kAppSpace8),
+                StockStatusBadge(
+                  status: status,
+                  label: switch (status) {
+                    StockStatus.outOfStock => l10n.stockBadgeOut,
+                    StockStatus.lowStock => l10n.stockBadgeLow,
+                    StockStatus.inStock => l10n.stockBadgeInStock,
+                    StockStatus.noTracking => l10n.stockBadgeNoTracking,
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -215,45 +211,15 @@ class _MergedInfoLine extends StatelessWidget {
       final perKg = cost / weight * 1000;
       parts.add('$perKg/kg');
     }
-
+    if (material.autoDeductEnabled && material.weight.isNotEmpty) {
+      parts.add('${material.remainingWeight} g');
+    }
     if (parts.isEmpty) return const SizedBox.shrink();
 
     return Text(
       parts.join(' · '),
-      style: const TextStyle(color: Colors.white54, fontSize: 12),
-    );
-  }
-}
-
-class _StockBadge extends StatelessWidget {
-  final StockStatus status;
-  final AppLocalizations l10n;
-
-  const _StockBadge({required this.status, required this.l10n});
-
-  @override
-  Widget build(BuildContext context) {
-    final (Color color, String label) = switch (status) {
-      StockStatus.outOfStock => (Colors.red, l10n.stockBadgeOut),
-      StockStatus.lowStock => (Colors.orange, l10n.stockBadgeLow),
-      StockStatus.inStock => (Colors.green, l10n.stockBadgeInStock),
-      StockStatus.noTracking => (Colors.grey, l10n.stockBadgeNoTracking),
-    };
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withAlpha(30),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withAlpha(80), width: 1),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: color,
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: TEXT_TERTIARY,
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/history/components/history_item.dar
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
@@ -200,7 +201,7 @@ void main() {
     final icon = (trigger.child as Center).child as Icon;
 
     expect(icon.icon, Icons.more_horiz);
-    expect(icon.color, Colors.white);
+    expect(icon.color, ICON_PRIMARY);
     expect(trigger.width, 44);
     expect(trigger.height, 44);
   });

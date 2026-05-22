@@ -254,8 +254,7 @@ void main() {
     final fakeCalculator = FakeCalculatorNotifier();
     final fakeHistory = _FakeHistoryPagedNotifier();
 
-    final jsonString =
-        await rootBundle.loadString('assets/whats_new.json');
+    final jsonString = await rootBundle.loadString('assets/whats_new.json');
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
     final announcement = WhatsNewAnnouncement.fromJson(json)!;
     final en = announcement.locales['en']!;

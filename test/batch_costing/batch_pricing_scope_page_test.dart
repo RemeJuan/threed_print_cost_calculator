@@ -99,12 +99,9 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(2), '10');
     await tester.enterText(find.byType(EditableText).at(3), '10');
 
-    await tester.drag(
-      find.byType(SingleChildScrollView),
-      const Offset(0, -500),
-    );
+    await tester.ensureVisible(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(FilledButton));
+    await tester.tap(find.byType(ElevatedButton));
     await tester.pump();
 
     final l10n = AppLocalizations.of(
@@ -129,12 +126,9 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(2), '30');
     await tester.enterText(find.byType(EditableText).at(3), '40');
 
-    await tester.drag(
-      find.byType(SingleChildScrollView),
-      const Offset(0, -500),
-    );
+    await tester.ensureVisible(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(FilledButton));
+    await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
 
     expect(find.byType(BatchSummaryPage), findsOneWidget);
@@ -155,7 +149,6 @@ void main() {
       '10',
     );
   });
-
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
-PreferredSizeWidget buildAssignmentPageAppBar(BuildContext context, String title) {
-  return AppBar(
-    title: Text(title),
+PreferredSizeWidget buildAssignmentPageAppBar(
+  BuildContext context,
+  String title,
+) {
+  return AppScreenHeader(
+    title: title,
     leading: BackButton(onPressed: () => Navigator.of(context).pop()),
     actions: [homeButton(context)],
   );
@@ -12,7 +18,7 @@ PreferredSizeWidget buildAssignmentPageAppBar(BuildContext context, String title
 
 Widget buildAssignmentLoadingState(String title) {
   return Scaffold(
-    appBar: AppBar(title: Text(title)),
+    appBar: AppScreenHeader(title: title),
     body: const Center(child: CircularProgressIndicator()),
   );
 }
@@ -24,17 +30,17 @@ Widget buildAssignmentErrorState(
   VoidCallback onRetry,
 ) {
   return Scaffold(
-    appBar: AppBar(title: Text(title)),
+    appBar: AppScreenHeader(title: title),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(kAppSpace16),
             child: Text(errorText, textAlign: TextAlign.center),
           ),
-          const SizedBox(height: 16),
-          FilledButton(onPressed: onRetry, child: Text(retryLabel)),
+          const SizedBox(height: kAppSpace16),
+          AppPrimaryButton(onPressed: onRetry, label: retryLabel),
         ],
       ),
     ),
@@ -60,11 +66,8 @@ class AssignmentModeHeader<T extends Enum> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          subtitle,
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
-        const SizedBox(height: 16),
+        Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
+        const SizedBox(height: kAppSpace16),
         SegmentedButton<T>(
           segments: segments,
           selected: selected,
@@ -96,11 +99,11 @@ class AssignmentNavRow extends StatelessWidget {
     return SafeArea(
       child: Row(
         children: [
-          TextButton(onPressed: onPrevious, child: Text(previousLabel)),
+          AppTertiaryButton(onPressed: onPrevious, label: previousLabel),
           const Spacer(),
-          FilledButton(
+          AppPrimaryButton(
             onPressed: nextEnabled ? onNext : null,
-            child: Text(nextLabel),
+            label: nextLabel,
           ),
         ],
       ),

@@ -13,7 +13,11 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_c
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
   const BatchPrinterAssignmentPage({super.key});
@@ -28,14 +32,14 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
       data: (printers) {
         if (printers.isEmpty) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(l10n.batchCostingPrinterAssignmentAppBarTitle),
+            appBar: AppScreenHeader(
+              title: l10n.batchCostingPrinterAssignmentAppBarTitle,
               leading: BackButton(onPressed: () => Navigator.of(context).pop()),
             ),
             body: SafeArea(
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(kAppSpace16),
                   child: Text(
                     l10n.batchCostingPrinterAssignmentNoPrintersMessage,
                     textAlign: TextAlign.center,
@@ -53,7 +57,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
           ),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(kAppSpace16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -80,7 +84,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                           .setPrinterAssignmentMode(selected.first);
                     },
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   if (state.printerAssignmentMode ==
                       BatchPrinterAssignmentMode.batchWide)
                     Expanded(
@@ -111,7 +115,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                       child: ListView.separated(
                         itemCount: state.items.length,
                         separatorBuilder: (context, index) =>
-                            const SizedBox(height: 12),
+                            const SizedBox(height: kAppSpace12),
                         itemBuilder: (context, index) {
                           final item = state.items[index];
                           final allocations = _printerAllocationsFor(
@@ -131,7 +135,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                         },
                       ),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: kAppSpace16),
                   AssignmentNavRow(
                     previousLabel:
                         l10n.batchCostingPrinterAssignmentPreviousButton,
@@ -260,36 +264,33 @@ class _PrinterAllocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    item.displayName,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+    return AppSurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  item.displayName,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(printerLabel),
-            const SizedBox(height: 8),
-            OutlinedButton.icon(
-              onPressed: () => _openSplitCopiesDialog(context),
-              icon: const Icon(Icons.tune),
-              label: Text(l10n.batchCostingAssignmentSplitCopiesButton),
-            ),
-          ],
-        ),
+              ),
+              Text(
+                '${item.quantity} ${l10n.batchCostingAssignmentCopiesLabel}',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ],
+          ),
+          const SizedBox(height: kAppSpace8),
+          Text(printerLabel),
+          const SizedBox(height: kAppSpace8),
+          AppSecondaryButton(
+            onPressed: () => _openSplitCopiesDialog(context),
+            icon: const Icon(Icons.tune),
+            label: l10n.batchCostingAssignmentSplitCopiesButton,
+          ),
+        ],
       ),
     );
   }

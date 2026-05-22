@@ -1,7 +1,10 @@
 import 'dart:typed_data';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class GCodeImportPreviewDialog extends StatelessWidget {
   const GCodeImportPreviewDialog({
@@ -16,19 +19,19 @@ class GCodeImportPreviewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final maxWidth = mediaQuery.size.width - 32;
-    final maxHeight = mediaQuery.size.height - 32;
+    final maxWidth = math.max(0.0, mediaQuery.size.width - (kAppSpace16 * 2));
+    final maxHeight = math.max(0.0, mediaQuery.size.height - (kAppSpace16 * 2));
 
     return Dialog(
-      backgroundColor: Colors.black,
-      insetPadding: const EdgeInsets.all(16),
+      backgroundColor: PREVIEW_BACKDROP,
+      insetPadding: const EdgeInsets.all(kAppSpace16),
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: maxWidth, maxHeight: maxHeight),
         child: Stack(
           children: [
             Positioned.fill(
               child: Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(kAppSpace16),
                 child: Center(
                   child: Image.memory(
                     bytes,
@@ -42,7 +45,7 @@ class GCodeImportPreviewDialog extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: Theme.of(
                           context,
-                        ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                        ).textTheme.bodyMedium?.copyWith(color: TEXT_PRIMARY),
                       ),
                     ),
                   ),
@@ -58,7 +61,7 @@ class GCodeImportPreviewDialog extends StatelessWidget {
                 child: IconButton(
                   tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
                   onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: const Icon(Icons.close, color: ICON_PRIMARY),
                 ),
               ),
             ),

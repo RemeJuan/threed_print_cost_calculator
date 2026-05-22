@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 
 class SuggestionTypeahead extends HookWidget {
@@ -86,8 +88,8 @@ class SuggestionTypeahead extends HookWidget {
               offset: const Offset(0, 0),
               child: Material(
                 elevation: 4,
-                color: const Color.fromRGBO(26, 28, 43, 1),
-                borderRadius: BorderRadius.circular(8),
+                color: DARK_BLUE,
+                borderRadius: BorderRadius.circular(kAppSurfaceRadius),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxHeight: 200),
                   child: ListView.builder(
@@ -105,12 +107,16 @@ class SuggestionTypeahead extends HookWidget {
                         onTap: () => select(item),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 10,
+                            horizontal: kAppSpace16,
+                            vertical: kAppSpace12,
                           ),
                           child: Text(
                             item,
-                            style: const TextStyle(color: Colors.white70),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.copyWith(
+                              color: TEXT_SECONDARY,
+                            ),
                           ),
                         ),
                       );

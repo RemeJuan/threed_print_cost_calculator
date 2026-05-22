@@ -1,59 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/typography.dart';
 
-const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
-const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
-const LIGHT_BLUE = Color.fromRGBO(84, 153, 254, 1);
+export 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 ThemeData theme() {
   final themeData = ThemeData(
     brightness: Brightness.dark,
-    textTheme: const TextTheme(
-      displayMedium: TextStyle(
-        color: LIGHT_BLUE,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-      displaySmall: TextStyle(
-        color: Colors.white,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      titleLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-      ),
-      titleMedium: TextStyle(
-        color: Colors.white54,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      titleSmall: TextStyle(
-        color: Colors.white54,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
+    fontFamily: AppTypography.fontFamily,
+    textTheme: AppTypography.textTheme,
   );
 
-  // Create the final text theme with GoogleFonts applied
+  UnderlineInputBorder underlineBorder(Color color) {
+    return UnderlineInputBorder(borderSide: BorderSide(color: color));
+  }
 
   return themeData.copyWith(
+    inputDecorationTheme: InputDecorationTheme(
+      border: underlineBorder(OFF_WHITE),
+      enabledBorder: underlineBorder(OFF_WHITE.withValues(alpha: 0.7)),
+      focusedBorder: underlineBorder(LIGHT_BLUE),
+      disabledBorder: underlineBorder(OFF_WHITE.withValues(alpha: 0.35)),
+      errorBorder: underlineBorder(themeData.colorScheme.error),
+      focusedErrorBorder: underlineBorder(themeData.colorScheme.error),
+      floatingLabelStyle: const TextStyle(color: LIGHT_BLUE),
+      prefixIconColor: LIGHT_BLUE,
+      suffixIconColor: LIGHT_BLUE,
+    ),
     textTheme: themeData.textTheme,
-    scaffoldBackgroundColor: DARK_BLUE,
+    primaryTextTheme: themeData.textTheme,
+    scaffoldBackgroundColor: APP_BACKGROUND,
     appBarTheme: AppBarTheme(
-      backgroundColor: DEEP_BLUE,
+      backgroundColor: APP_BACKGROUND,
       elevation: 0,
-      titleTextStyle: themeData.textTheme.displayMedium,
+      titleTextStyle: themeData.textTheme.headlineSmall,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: TRANSPARENT_COLOR,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: DEEP_BLUE,
+      backgroundColor: SHELL_BACKGROUND,
       selectedItemColor: LIGHT_BLUE,
-      unselectedItemColor: Colors.white54,
+      unselectedItemColor: ICON_MUTED,
     ),
-    dialogTheme: const DialogThemeData(backgroundColor: DEEP_BLUE),
+    dialogTheme: const DialogThemeData(backgroundColor: SHELL_BACKGROUND),
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) return LIGHT_BLUE;
+          return TRANSPARENT_COLOR;
+        }),
+        foregroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) return DEEP_BLUE;
+          return MUTED_BLUE_GREY;
+        }),
+        side: WidgetStateProperty.all(const BorderSide(color: OFF_WHITE)),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        ),
+      ),
+    ),
     bottomSheetTheme: const BottomSheetThemeData(
-      backgroundColor: DARK_BLUE,
+      backgroundColor: SHELL_BACKGROUND,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),

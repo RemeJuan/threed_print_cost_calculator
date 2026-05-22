@@ -11,9 +11,8 @@ class MaterialsSection extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isPremium = ref.watch(isPremiumProvider);
 
-    if (!isPremium) {
-      return const MaterialsSectionFree();
-    }
-    return const MaterialsSectionPremium();
+    return isPremium
+        ? const MaterialsSectionPremium()
+        : const MaterialsSectionFree();
   }
 }

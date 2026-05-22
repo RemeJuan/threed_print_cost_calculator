@@ -87,7 +87,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Printer 1'), findsOneWidget);
   });
-
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {

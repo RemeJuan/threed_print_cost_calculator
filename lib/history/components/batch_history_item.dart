@@ -6,6 +6,8 @@ import 'package:threed_print_cost_calculator/history/components/history_item_act
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 
@@ -38,11 +40,6 @@ class BatchHistoryItem extends HookConsumerWidget {
         : GeneralSettingsModel.initial();
     return Container(
       key: ValueKey<String>('$itemKeyPrefix.card'),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(8, 8, 18, 1),
-        borderRadius: BorderRadius.circular(8),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -52,7 +49,7 @@ class BatchHistoryItem extends HookConsumerWidget {
                 key: ValueKey<String>('$itemKeyPrefix.name'),
                 data.name,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Colors.white,
+                  color: TEXT_PRIMARY,
                   fontWeight: FontWeight.w800,
                 ),
               ),
@@ -104,7 +101,7 @@ class BatchHistoryItem extends HookConsumerWidget {
               l10n.batchCostingSummaryPricingTitle,
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+              ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
             ),
             children: [
               for (final entry in _pricingEntries(
@@ -116,36 +113,36 @@ class BatchHistoryItem extends HookConsumerWidget {
                   _detailRow(context, entry.label, entry.value!),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: kAppSpace4),
           ExpansionTile(
             tilePadding: EdgeInsets.zero,
-            childrenPadding: const EdgeInsets.only(left: 4, right: 4),
+            childrenPadding: const EdgeInsets.symmetric(horizontal: kAppSpace4),
             title: Text(
               l10n.batchHistoryItemsTitle,
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.white70),
+              ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
             ),
             children: [
               for (final item in items)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: kAppSpace8),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(255, 255, 255, 0.04),
-                      borderRadius: BorderRadius.circular(8),
+                      color: SURFACE_OVERLAY_SUBTLE,
+                      borderRadius: BorderRadius.circular(kAppSurfaceRadius),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(kAppSpace8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${item['name']?.toString() ?? ''} × ${item['quantity']?.toString() ?? '0'}',
                             style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: Colors.white),
+                                ?.copyWith(color: TEXT_PRIMARY),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: kAppSpace4),
                           _detailRow(
                             context,
                             l10n.batchCostingSummaryItemWeightLabel,
@@ -188,7 +185,7 @@ class BatchHistoryItem extends HookConsumerWidget {
 
   Widget _detailRow(BuildContext context, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: kAppSpace4),
       child: Row(
         children: [
           Expanded(
@@ -196,14 +193,14 @@ class BatchHistoryItem extends HookConsumerWidget {
               label,
               style: Theme.of(
                 context,
-              ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+              ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY),
             ),
           ),
           Text(
             value,
             style: Theme.of(
               context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.white),
+            ).textTheme.bodySmall?.copyWith(color: TEXT_PRIMARY),
           ),
         ],
       ),
@@ -220,13 +217,23 @@ class BatchHistoryItem extends HookConsumerWidget {
     return [
       (
         label: l10n.failureRiskLabel,
-        value: _pricingValue(pricing, 'failureRisk', l10n, currency,
-            isPercent: true),
+        value: _pricingValue(
+          pricing,
+          'failureRisk',
+          l10n,
+          currency,
+          isPercent: true,
+        ),
       ),
       (
         label: l10n.pricingMarkupPercentLabel,
-        value: _pricingValue(pricing, 'markupPercent', l10n, currency,
-            isPercent: true),
+        value: _pricingValue(
+          pricing,
+          'markupPercent',
+          l10n,
+          currency,
+          isPercent: true,
+        ),
       ),
       (
         label: l10n.labourRateLabel,

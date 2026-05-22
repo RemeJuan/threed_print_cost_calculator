@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class HistoryItemSummary extends StatelessWidget {
   const HistoryItemSummary({
@@ -38,7 +39,7 @@ class HistoryItemSummary extends StatelessWidget {
             Text(
               l10n.totalCostLabel,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.white,
+                color: TEXT_PRIMARY,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -47,7 +48,7 @@ class HistoryItemSummary extends StatelessWidget {
               key: ValueKey<String>('$itemKeyPrefix.totalCost'),
               data.totalCost.toStringAsFixed(2),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.white,
+                color: TEXT_PRIMARY,
                 fontWeight: FontWeight.w600,
               ),
             ),

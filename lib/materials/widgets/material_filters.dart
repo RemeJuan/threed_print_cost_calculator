@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_filter_chip.dart';
 
 class MaterialFilters extends ConsumerWidget {
   const MaterialFilters({super.key});
@@ -20,9 +21,7 @@ class MaterialFilters extends ConsumerWidget {
         if (types.isNotEmpty)
           _FilterSection(
             chips: [
-              ...types.map(
-                (t) => _FilterChipData(label: t, selected: selectedType == t),
-              ),
+              ...types.map((t) => (label: t, selected: selectedType == t)),
             ],
             onSelected: (index) {
               final type = types[index];
@@ -32,15 +31,15 @@ class MaterialFilters extends ConsumerWidget {
           ),
         _FilterSection(
           chips: [
-            _FilterChipData(
+            (
               label: l10n.materialsFilterInStock,
               selected: selectedStock == StockStatus.inStock,
             ),
-            _FilterChipData(
+            (
               label: l10n.materialsFilterLowStock,
               selected: selectedStock == StockStatus.lowStock,
             ),
-            _FilterChipData(
+            (
               label: l10n.materialsFilterOutOfStock,
               selected: selectedStock == StockStatus.outOfStock,
             ),
@@ -61,14 +60,8 @@ class MaterialFilters extends ConsumerWidget {
   }
 }
 
-class _FilterChipData {
-  final String label;
-  final bool selected;
-  const _FilterChipData({required this.label, required this.selected});
-}
-
 class _FilterSection extends StatelessWidget {
-  final List<_FilterChipData> chips;
+  final List<({String label, bool selected})> chips;
   final void Function(int index) onSelected;
 
   const _FilterSection({required this.chips, required this.onSelected});
@@ -84,23 +77,10 @@ class _FilterSection extends StatelessWidget {
             ...chips.asMap().entries.map(
               (entry) => Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: FilterChip(
-                  label: Text(entry.value.label),
+                child: AppFilterChip(
+                  label: entry.value.label,
                   selected: entry.value.selected,
-                  onSelected: (_) => onSelected(entry.key),
-                  visualDensity: VisualDensity.compact,
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    color: entry.value.selected ? Colors.white : Colors.white70,
-                  ),
-                  selectedColor: const Color.fromRGBO(84, 153, 254, 0.3),
-                  checkmarkColor: Colors.white,
-                  backgroundColor: const Color.fromRGBO(26, 28, 43, 1),
-                  side: BorderSide(
-                    color: entry.value.selected
-                        ? const Color.fromRGBO(84, 153, 254, 0.6)
-                        : Colors.white24,
-                  ),
+                  onTap: () => onSelected(entry.key),
                 ),
               ),
             ),

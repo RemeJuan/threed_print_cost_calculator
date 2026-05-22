@@ -23,7 +23,6 @@ class BatchAnchorSelector extends StatelessWidget {
       hint: Text(hintText),
       decoration: InputDecoration(
         labelText: labelText,
-        border: const OutlineInputBorder(),
       ),
       selectedItemBuilder: (context) =>
           entries.map((entry) => Text(entry.label)).toList(),

@@ -13,7 +13,10 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 const _csvHeader =
     'name,brand,material_type,color,color_hex,spool_weight,'
@@ -249,15 +252,15 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     _l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_l10n!.csvImportTitle),
+      appBar: AppScreenHeader(
+        title: _l10n!.csvImportTitle,
         actions: [
           TextButton.icon(
             onPressed: _downloadTemplate,
-            icon: const Icon(Icons.download, color: Colors.white70),
+            icon: const Icon(Icons.download, color: OFF_WHITE),
             label: Text(
               _l10n!.csvTemplateButton,
-              style: const TextStyle(color: Colors.white70),
+              style: const TextStyle(color: OFF_WHITE),
             ),
           ),
         ],
@@ -280,19 +283,19 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.upload_file, size: 64, color: Colors.white38),
-          const SizedBox(height: 16),
+          Icon(Icons.upload_file, size: 64, color: TEXT_TERTIARY),
+          const SizedBox(height: kAppSpace16),
           Text(
             l10n.csvImportIntro,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70),
+            style: const TextStyle(color: TEXT_SECONDARY),
           ),
-          const SizedBox(height: 24),
-          ElevatedButton.icon(
+          const SizedBox(height: kAppSpace16),
+          AppPrimaryButton(
             key: const ValueKey<String>('csv_import.select_file.button'),
             onPressed: _pickFile,
             icon: const Icon(Icons.folder_open),
-            label: Text(l10n.csvSelectFileButton),
+            label: l10n.csvSelectFileButton,
           ),
         ],
       ),
@@ -311,10 +314,10 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(kAppSpace16),
           child: Text(
             l10n.csvPreviewSummary(_rows.length, valid, invalid),
-            style: const TextStyle(color: Colors.white70),
+            style: const TextStyle(color: TEXT_SECONDARY),
           ),
         ),
         Expanded(
@@ -325,40 +328,43 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
               final hasErrors = row.errors.isNotEmpty;
               return Card(
                 color: hasErrors
-                    ? Colors.red.withAlpha(15)
-                    : const Color.fromRGBO(26, 28, 43, 1),
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                    ? STATUS_ERROR.withValues(alpha: 0.15)
+                    : DARK_BLUE,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: kAppSpace16,
+                  vertical: kAppSpace2,
+                ),
                 child: ListTile(
                   title: Text(
                     row.name.isNotEmpty
                         ? row.name
                         : l10n.csvEmptyNamePlaceholder,
                     style: TextStyle(
-                      color: hasErrors ? Colors.red[300] : Colors.white,
+                      color: hasErrors
+                          ? STATUS_ERROR.withValues(alpha: 0.8)
+                          : TEXT_PRIMARY,
                     ),
                   ),
                   subtitle: hasErrors
                       ? Text(
                           row.errors.join(', '),
-                          style: TextStyle(
-                            color: Colors.red[200],
-                            fontSize: 12,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: STATUS_ERROR.withValues(alpha: 0.7),
                           ),
                         )
                       : Text(
                           '${row.brand.isNotEmpty ? '${row.brand} · ' : ''}'
                           '${row.materialType.isNotEmpty ? '${row.materialType} · ' : ''}'
                           '${formatCurrencyValue(row.cost, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing)}',
-                          style: const TextStyle(
-                            color: Colors.white54,
-                            fontSize: 12,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: TEXT_TERTIARY,
                           ),
                         ),
                   trailing: hasErrors
-                      ? const Icon(Icons.error_outline, color: Colors.red)
+                      ? const Icon(Icons.error_outline, color: STATUS_ERROR)
                       : const Icon(
                           Icons.check_circle_outline,
-                          color: Colors.green,
+                          color: STATUS_SUCCESS,
                         ),
                 ),
               );

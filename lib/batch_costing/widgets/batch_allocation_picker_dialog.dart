@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchAllocationPickerOption {
   const BatchAllocationPickerOption({
@@ -181,7 +182,6 @@ class _BatchAllocationPickerDialogState
                   controller: _searchController,
                   decoration: InputDecoration(
                     labelText: l10n.batchCostingAllocationPickerSearchLabel,
-                    border: const OutlineInputBorder(),
                   ),
                   onChanged: (_) => setLocalState(() {}),
                 ),
@@ -246,9 +246,9 @@ class _BatchAllocationPickerDialogState
                       subtitle: option.subtitle == null
                           ? null
                           : Text(option.subtitle!),
-                      trailing: OutlinedButton(
+                      trailing: AppSecondaryButton(
                         onPressed: () => _addOption(option),
-                        child: Text(l10n.batchCostingAllocationPickerAddButton),
+                        label: l10n.batchCostingAllocationPickerAddButton,
                       ),
                     ),
                 if (_errorText != null)
@@ -267,11 +267,11 @@ class _BatchAllocationPickerDialogState
         ),
       ),
       actions: [
-        TextButton(
+        AppTertiaryButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.cancelButton),
+          label: l10n.cancelButton,
         ),
-        FilledButton(onPressed: _save, child: Text(l10n.saveButton)),
+        AppPrimaryButton(onPressed: _save, label: l10n.saveButton),
       ],
     );
   }

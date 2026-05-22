@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
-class HistoryTeaserState extends StatelessWidget {
-  const HistoryTeaserState({
+class HistoryTeaser extends StatelessWidget {
+  const HistoryTeaser({
     super.key,
     required this.onUpgradePressed,
     required this.onExportPreviewPressed,
@@ -25,7 +28,7 @@ class HistoryTeaserState extends StatelessWidget {
               key: const ValueKey<String>('history.teaser.state'),
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.history, size: 56, color: Colors.white70),
+                const Icon(Icons.history, size: 56, color: ICON_PRIMARY),
                 const SizedBox(height: 16),
                 Text(
                   l10n.historyTeaserTitle,
@@ -39,7 +42,8 @@ class HistoryTeaserState extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 24),
-                Card(
+                AppSurfaceCard(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 0),
                   child: ListTile(
                     key: const ValueKey<String>('history.export.preview.entry'),
                     leading: const Icon(Icons.upload_file_outlined),
@@ -48,7 +52,7 @@ class HistoryTeaserState extends StatelessWidget {
                       l10n.historyExportPreviewSampleLabel,
                       style: Theme.of(
                         context,
-                      ).textTheme.labelMedium?.copyWith(color: Colors.white54),
+                      ).textTheme.labelMedium?.copyWith(color: TEXT_TERTIARY),
                     ),
                     onTap: onExportPreviewPressed,
                   ),
@@ -56,10 +60,10 @@ class HistoryTeaserState extends StatelessWidget {
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: AppSecondaryButton(
+                    label: l10n.historyTeaserCta,
                     key: const ValueKey<String>('history.teaser.cta'),
                     onPressed: onUpgradePressed,
-                    child: Text(l10n.historyTeaserCta),
                   ),
                 ),
               ],

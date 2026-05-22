@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart';
 
 class Materials extends HookConsumerWidget {
   const Materials({super.key});
@@ -13,19 +18,37 @@ class Materials extends HookConsumerWidget {
   Widget build(context, ref) {
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final l10n = AppLocalizations.of(context)!;
+    final searchController = useTextEditingController();
+    useListenable(searchController);
 
     return ref
         .watch(materialsStreamProvider)
         .when(
           data: (materials) {
+            final q = searchController.text.toLowerCase();
+            final filtered = materials.where((m) {
+              if (q.isEmpty) return true;
+              return m.name.toLowerCase().contains(q) ||
+                  m.color.toLowerCase().contains(q);
+            }).toList();
+
             return Column(
               children: [
+                Padding(
+                  padding: kAppSearchSectionPadding,
+                  child: AppSearchBar(
+                    controller: searchController,
+                    hintText: l10n.searchMaterialsHint,
+                    showClearButton: true,
+                    onChanged: (_) {},
+                  ),
+                ),
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height / 4,
                   child: ListView.builder(
-                    itemCount: materials.length,
+                    itemCount: filtered.length,
                     itemBuilder: (_, index) {
-                      final data = materials[index];
+                      final data = filtered[index];
                       final key = data.id;
 
                       return SettingsSlidableItem(
@@ -59,7 +82,7 @@ class Materials extends HookConsumerWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
-                                        ?.copyWith(color: Colors.white),
+                                        ?.copyWith(color: TEXT_PRIMARY),
                                   ),
                                   Text(
                                     key: ValueKey<String>(
@@ -69,8 +92,7 @@ class Materials extends HookConsumerWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .titleSmall
-                                        ?.copyWith(fontSize: 12),
+                                        .bodySmall,
                                   ),
                                   if (data.autoDeductEnabled)
                                     Text(
@@ -81,13 +103,12 @@ class Materials extends HookConsumerWidget {
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleSmall
-                                          ?.copyWith(fontSize: 12),
+                                          .bodySmall,
                                     ),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: kAppSpace12),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -97,15 +118,15 @@ class Materials extends HookConsumerWidget {
                                   ),
                                   data.cost,
                                   style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(color: Colors.white),
+                                      ?.copyWith(color: TEXT_PRIMARY),
                                 ),
                                 Text(
                                   key: ValueKey<String>(
                                     'settings.materials.item.$index.weight',
                                   ),
                                   '${data.weight}${l10n.gramsSuffix}',
-                                  style: Theme.of(context).textTheme.titleSmall
-                                      ?.copyWith(fontSize: 12),
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(color: TEXT_SECONDARY),
                                 ),
                               ],
                             ),
@@ -125,9 +146,9 @@ class Materials extends HookConsumerWidget {
               children: [
                 Text(l10n.materialsLoadError(error.toString())),
                 const SizedBox(height: 8),
-                ElevatedButton(
+                AppPrimaryButton(
                   onPressed: () => ref.invalidate(materialsStreamProvider),
-                  child: Text(l10n.retryButton),
+                  label: l10n.retryButton,
                 ),
               ],
             ),

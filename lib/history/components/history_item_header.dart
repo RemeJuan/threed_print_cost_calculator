@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item_actions.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 class HistoryItemHeader extends StatelessWidget {
@@ -33,7 +34,7 @@ class HistoryItemHeader extends StatelessWidget {
           key: ValueKey<String>('$itemKeyPrefix.name'),
           data.name,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Colors.white,
+            color: TEXT_PRIMARY,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -50,7 +51,7 @@ class HistoryItemHeader extends StatelessWidget {
         Text(
           DateFormat('dd MMM yyyy').format(data.date),
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.white,
+            color: TEXT_PRIMARY,
             fontWeight: FontWeight.w600,
           ),
         ),

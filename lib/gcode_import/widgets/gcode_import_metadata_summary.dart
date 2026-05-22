@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 import 'gcode_import_preview_section.dart';
 
@@ -40,99 +41,101 @@ class GCodeImportMetadataSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (showTitle) ...[
-          Text(
-            l10n.importGcodeSummaryTitle,
-            style: Theme.of(context).textTheme.titleMedium,
+    return AppSurfaceCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (showTitle) ...[
+            Text(
+              l10n.importGcodeSummaryTitle,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 16),
+          ],
+          _summaryRow(
+            context,
+            l10n.importGcodeSlicerLabel,
+            Text(
+              slicer.label(l10n),
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
-          const SizedBox(height: 16),
+          _summaryRow(
+            context,
+            l10n.importGcodeDurationLabel,
+            Text(
+              estimatedDuration == null
+                  ? l10n.importGcodeMissingValue
+                  : _formatDuration(estimatedDuration!),
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+          _summaryRow(
+            context,
+            l10n.importGcodeFilamentWeightLabel,
+            Text(
+              filamentWeightG == null
+                  ? l10n.importGcodeMissingValue
+                  : '${filamentWeightG!.toStringAsFixed(2)} ${l10n.gramsSuffix}',
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+          _summaryRow(
+            context,
+            l10n.importGcodeFilamentLengthLabel,
+            Text(
+              filamentLengthMm == null
+                  ? l10n.importGcodeMissingValue
+                  : '${filamentLengthMm!.toStringAsFixed(2)} ${l10n.millimetersSuffix}',
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+          _summaryRow(
+            context,
+            l10n.importGcodeLayerHeightLabel,
+            Text(
+              layerHeightMm == null
+                  ? l10n.importGcodeMissingValue
+                  : '${layerHeightMm!.toStringAsFixed(2)} ${l10n.millimetersSuffix}',
+              textAlign: TextAlign.end,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+          _summaryRow(
+            context,
+            _previewLabel(l10n),
+            GCodeImportPreviewSection(
+              slicer: slicer,
+              hasPreviewMetadata: previewMetadata?.present ?? false,
+              previewWidth: previewMetadata?.width,
+              previewHeight: previewMetadata?.height,
+              previewImageBytes: previewImageBytes,
+              hasSafePreview: hasSafePreview,
+              l10n: l10n,
+              fileSizeBytes: fileSizeBytes,
+              parseStatus: hasPartialMetadata ? 'partial' : 'success',
+            ),
+          ),
+          if (_shouldShowPreviewNote) ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.importGcodePreviewCuraNote,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+          if (showCalculatorNote) ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.importGcodeCalculatorNote,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
         ],
-        _summaryRow(
-          context,
-          l10n.importGcodeSlicerLabel,
-          Text(
-            slicer.label(l10n),
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        _summaryRow(
-          context,
-          l10n.importGcodeDurationLabel,
-          Text(
-            estimatedDuration == null
-                ? l10n.importGcodeMissingValue
-                : _formatDuration(estimatedDuration!),
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        _summaryRow(
-          context,
-          l10n.importGcodeFilamentWeightLabel,
-          Text(
-            filamentWeightG == null
-                ? l10n.importGcodeMissingValue
-                : '${filamentWeightG!.toStringAsFixed(2)} ${l10n.gramsSuffix}',
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        _summaryRow(
-          context,
-          l10n.importGcodeFilamentLengthLabel,
-          Text(
-            filamentLengthMm == null
-                ? l10n.importGcodeMissingValue
-                : '${filamentLengthMm!.toStringAsFixed(2)} ${l10n.millimetersSuffix}',
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        _summaryRow(
-          context,
-          l10n.importGcodeLayerHeightLabel,
-          Text(
-            layerHeightMm == null
-                ? l10n.importGcodeMissingValue
-                : '${layerHeightMm!.toStringAsFixed(2)} ${l10n.millimetersSuffix}',
-            textAlign: TextAlign.end,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        _summaryRow(
-          context,
-          _previewLabel(l10n),
-          GCodeImportPreviewSection(
-            slicer: slicer,
-            hasPreviewMetadata: previewMetadata?.present ?? false,
-            previewWidth: previewMetadata?.width,
-            previewHeight: previewMetadata?.height,
-            previewImageBytes: previewImageBytes,
-            hasSafePreview: hasSafePreview,
-            l10n: l10n,
-            fileSizeBytes: fileSizeBytes,
-            parseStatus: hasPartialMetadata ? 'partial' : 'success',
-          ),
-        ),
-        if (_shouldShowPreviewNote) ...[
-          const SizedBox(height: 8),
-          Text(
-            l10n.importGcodePreviewCuraNote,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-        if (showCalculatorNote) ...[
-          const SizedBox(height: 8),
-          Text(
-            l10n.importGcodeCalculatorNote,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ],
+      ),
     );
   }
 

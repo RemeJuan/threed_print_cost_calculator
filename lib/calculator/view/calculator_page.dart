@@ -8,8 +8,10 @@ import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 import 'calculator_results.dart';
 import 'components/history_load_warning_banner.dart';
@@ -88,7 +90,10 @@ class CalculatorPage extends HookConsumerWidget {
     }, [appRefreshTick]);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+      padding: const EdgeInsets.symmetric(
+        horizontal: kAppSpace16,
+        vertical: kAppSpace16,
+      ),
       physics: const ClampingScrollPhysics(),
       child: AutofillGroup(
         child: Column(
@@ -97,19 +102,37 @@ class CalculatorPage extends HookConsumerWidget {
           children: [
             if (state.showHistoryLoadReplacementWarning)
               const HistoryLoadWarningBanner(),
-            if (isPremium) const PrinterSelect(),
-            // Let MaterialsSection manage its own controllers and focus state
-            const MaterialsSection(),
-            const SizedBox(height: 8),
-            const TimeSection(),
-            const SizedBox(height: 8),
-            if (isPremium) const JobPricingOverridesSection(),
-            const SizedBox(height: 16),
+            AppSurfaceCard(
+              padding: const EdgeInsets.fromLTRB(
+                kAppSpace12,
+                kAppSpace4,
+                kAppSpace12,
+                kAppSpace12,
+              ),
+              margin: const EdgeInsets.symmetric(vertical: kAppSpace8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (isPremium) const PrinterSelect(),
+                  const MaterialsSection(),
+                  const SizedBox(height: kAppSpace8),
+                  const TimeSection(),
+                  const SizedBox(height: kAppSpace8),
+                ],
+              ),
+            ),
+            if (isPremium)
+              AppSurfaceCard(
+                padding: const EdgeInsets.symmetric(horizontal: kAppSpace12),
+                child: const JobPricingOverridesSection(),
+              ),
             CalculatorResults(results: state.results, pricing: state.pricing),
+            const SizedBox(height: kAppSpace8),
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: AppSecondaryButton(
                     key: const ValueKey<String>('calculator.reset.button'),
                     onPressed: () async {
                       final shouldReset = await showDialog<bool>(
@@ -118,15 +141,15 @@ class CalculatorPage extends HookConsumerWidget {
                           title: Text(l10n.resetCalculationTitle),
                           content: Text(l10n.resetCalculationBody),
                           actions: [
-                            TextButton(
+                            AppTertiaryButton(
                               onPressed: () =>
                                   Navigator.of(dialogContext).pop(false),
-                              child: Text(l10n.cancelButton),
+                              label: l10n.cancelButton,
                             ),
-                            FilledButton(
+                            AppPrimaryButton(
                               onPressed: () =>
                                   Navigator.of(dialogContext).pop(true),
-                              child: Text(l10n.resetButtonLabel),
+                              label: l10n.resetButtonLabel,
                             ),
                           ],
                         ),
@@ -137,13 +160,13 @@ class CalculatorPage extends HookConsumerWidget {
                       await notifier.resetToDefaults();
                     },
                     icon: const Icon(Icons.refresh),
-                    label: Text(l10n.resetButtonLabel),
+                    label: l10n.resetButtonLabel,
                   ),
                 ),
                 if (isPremium && !showSave.value) ...[
                   const SizedBox(width: 12),
                   Expanded(
-                    child: ElevatedButton.icon(
+                    child: AppPrimaryButton(
                       key: const ValueKey<String>(
                         'calculator.save.open.button',
                       ),
@@ -151,18 +174,7 @@ class CalculatorPage extends HookConsumerWidget {
                         showSave.value = true;
                       },
                       icon: const Icon(Icons.save),
-                      label: Text(l10n.savePrintButton),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: DEEP_BLUE,
-                        foregroundColor: LIGHT_BLUE,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                      label: l10n.savePrintButton,
                     ),
                   ),
                 ],
@@ -170,7 +182,7 @@ class CalculatorPage extends HookConsumerWidget {
             ),
             if (isPremium) ...[
               const SizedBox(height: 12),
-              OutlinedButton.icon(
+              AppSecondaryButton(
                 key: const ValueKey<String>(
                   'calculator.batch_costing.open.button',
                 ),
@@ -182,7 +194,7 @@ class CalculatorPage extends HookConsumerWidget {
                   );
                 },
                 icon: const Icon(Icons.view_list_outlined),
-                label: Text(l10n.batchCostingEntryButton),
+                label: l10n.batchCostingEntryButton,
               ),
             ],
             if (showSave.value)

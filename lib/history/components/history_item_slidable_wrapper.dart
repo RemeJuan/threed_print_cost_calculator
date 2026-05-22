@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class HistoryItemSlidableWrapper extends StatelessWidget {
   const HistoryItemSlidableWrapper({
@@ -18,33 +20,35 @@ class HistoryItemSlidableWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.symmetric(
+        horizontal: kAppSpace12,
+        vertical: kAppSpace8,
+      ),
       child: Slidable(
         key: ValueKey(dbKey),
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           extentRatio: 0.3,
           children: [
-            const SizedBox(width: 12),
+            const SizedBox(width: kAppSpace12),
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) async => onDelete(),
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: STATUS_ERROR,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(kAppSurfaceRadius),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.delete, size: 20, color: Colors.white),
-                    const SizedBox(height: 4),
+                    const Icon(Icons.delete, size: 20, color: TEXT_INVERSE),
+                    const SizedBox(height: kAppSpace4),
                     Text(
                       deleteLabel,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: TEXT_INVERSE,
                         fontWeight: FontWeight.w600,
                       ),
                       overflow: TextOverflow.ellipsis,
@@ -53,7 +57,7 @@ class HistoryItemSlidableWrapper extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: kAppSpace12),
           ],
         ),
         child: child,

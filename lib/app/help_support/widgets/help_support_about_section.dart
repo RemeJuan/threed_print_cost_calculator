@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_filter_chip.dart';
 
 class HelpSupportAboutSection extends StatelessWidget {
   const HelpSupportAboutSection({super.key});
@@ -28,10 +29,7 @@ class HelpSupportAboutSection extends StatelessWidget {
                       l10n.helpSupportTrustLocalData,
                     ]
                     .map(
-                      (label) => Chip(
-                        label: Text(label),
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
+                      (label) => AppFilterChip(label: label),
                     )
                     .toList(growable: false),
           ),

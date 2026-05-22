@@ -9,8 +9,10 @@ import 'package:threed_print_cost_calculator/materials/providers/materials_provi
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_filters.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart';
 
 class MaterialsPage extends HookConsumerWidget {
   const MaterialsPage({super.key});
@@ -20,8 +22,6 @@ class MaterialsPage extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final materials = ref.watch(filteredMaterialsProvider);
     final searchController = useTextEditingController();
-    useListenable(searchController);
-    final searchFocus = useFocusNode();
     final materialsRepo = ref.read(materialsRepositoryProvider);
 
     final prefs = ref.read(sharedPreferencesProvider);
@@ -37,42 +37,23 @@ class MaterialsPage extends HookConsumerWidget {
 
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: TextField(
+            padding: kAppSearchSectionPadding,
+            child: AppSearchBar(
               controller: searchController,
-              focusNode: searchFocus,
-              decoration: InputDecoration(
-                hintText: l10n.searchMaterialsHint,
-                prefixIcon: const Icon(Icons.search, color: Colors.white38),
-                suffixIcon: searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.white38),
-                        onPressed: () {
-                          searchController.clear();
-                          ref
-                                  .read(materialsSearchQueryProvider.notifier)
-                                  .state =
-                              '';
-                        },
-                      )
-                    : null,
-                filled: true,
-                fillColor: const Color.fromRGBO(26, 28, 43, 1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.white24),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-              ),
-              style: const TextStyle(color: Colors.white),
+              hintText: l10n.searchMaterialsHint,
+              showClearButton: true,
               onChanged: (v) {
                 ref.read(materialsSearchQueryProvider.notifier).state = v;
               },
+              textFieldKey: const ValueKey<String>(
+                'materials.search.input',
+              ),
+              clearButtonKey: const ValueKey<String>(
+                'materials.search.clear.button',
+              ),
             ),
           ),
           if (showSwipeHint.value)
@@ -83,22 +64,24 @@ class MaterialsPage extends HookConsumerWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
+                  horizontal: kAppSpace12,
+                  vertical: kAppSpace8,
                 ),
                 decoration: BoxDecoration(
                   color: LIGHT_BLUE.withAlpha(30),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(kAppSurfaceRadius),
                   border: Border.all(color: LIGHT_BLUE.withAlpha(80)),
                 ),
                 child: Row(
                   children: [
                     Icon(Icons.swipe, size: 16, color: LIGHT_BLUE),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: kAppSpace8),
                     Expanded(
                       child: Text(
                         l10n.materialsSwipeHint,
-                        style: TextStyle(color: LIGHT_BLUE, fontSize: 13),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: LIGHT_BLUE,
+                        ),
                       ),
                     ),
                     GestureDetector(
@@ -124,12 +107,12 @@ class MaterialsPage extends HookConsumerWidget {
                         Icon(
                           Icons.inventory_2_outlined,
                           size: 48,
-                          color: Colors.white38,
+                          color: TEXT_TERTIARY,
                         ),
                         const SizedBox(height: 12),
                         Text(
                           l10n.materialsEmpty,
-                          style: const TextStyle(color: Colors.white54),
+                          style: const TextStyle(color: TEXT_TERTIARY),
                         ),
                       ],
                     ),
@@ -206,7 +189,7 @@ class MaterialsPage extends HookConsumerWidget {
             builder: (_) => const MaterialForm(),
           );
         },
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add, color: TEXT_INVERSE),
       ),
     );
   }

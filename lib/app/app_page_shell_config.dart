@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_pag
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 enum AppPageTab { calculator, materials, history, settings }
 
@@ -61,7 +62,7 @@ List<AppPageShellTab> buildAppPageShellTabs({
                 MaterialPageRoute<void>(builder: (_) => const CsvImportPage()),
               );
             },
-            icon: const Icon(Icons.file_upload_outlined, color: Colors.white54),
+            icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
           ),
         ],
         navigationItem: BottomNavigationBarItem(
