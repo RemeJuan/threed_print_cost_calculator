@@ -1,54 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/typography.dart';
 
-const DARK_BLUE = Color.fromRGBO(26, 28, 43, 1);
-const DEEP_BLUE = Color.fromRGBO(13, 13, 23, 1);
-const LIGHT_BLUE = Color.fromRGBO(84, 153, 254, 1);
-const OFF_WHITE = Color.fromRGBO(230, 233, 240, 1);
+export 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 ThemeData theme() {
   final themeData = ThemeData(
     brightness: Brightness.dark,
-    textTheme: const TextTheme(
-      displayMedium: TextStyle(
-        color: LIGHT_BLUE,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-      displaySmall: TextStyle(
-        color: Colors.white,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      titleLarge: TextStyle(
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-      ),
-      titleMedium: TextStyle(
-        color: Colors.white54,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-      ),
-      titleSmall: TextStyle(
-        color: Colors.white54,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
+    fontFamily: AppTypography.fontFamily,
+    textTheme: AppTypography.textTheme,
   );
-
-  // Create the final text theme with GoogleFonts applied
 
   return themeData.copyWith(
     textTheme: themeData.textTheme,
-    scaffoldBackgroundColor: DEEP_BLUE,
+    primaryTextTheme: themeData.textTheme,
+    scaffoldBackgroundColor: APP_BACKGROUND,
     appBarTheme: AppBarTheme(
-      backgroundColor: DEEP_BLUE,
+      backgroundColor: APP_BACKGROUND,
       elevation: 0,
-      titleTextStyle: themeData.textTheme.displayMedium,
+      titleTextStyle: themeData.textTheme.headlineSmall,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: DEEP_BLUE,
+      backgroundColor: NAV_BAR_BACKGROUND,
       selectedItemColor: LIGHT_BLUE,
       unselectedItemColor: Colors.white54,
     ),
