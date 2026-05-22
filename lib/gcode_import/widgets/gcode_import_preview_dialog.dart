@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -18,8 +19,8 @@ class GCodeImportPreviewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final maxWidth = mediaQuery.size.width - (kAppSpace16 * 2);
-    final maxHeight = mediaQuery.size.height - (kAppSpace16 * 2);
+    final maxWidth = math.max(0.0, mediaQuery.size.width - (kAppSpace16 * 2));
+    final maxHeight = math.max(0.0, mediaQuery.size.height - (kAppSpace16 * 2));
 
     return Dialog(
       backgroundColor: PREVIEW_BACKDROP,
