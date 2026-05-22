@@ -411,6 +411,44 @@ without becoming visually noisy.
 
 ---
 
+## AppSurfaceCard
+
+The refresh should introduce a thin reusable surface wrapper.
+
+Suggested component:
+
+```dart
+AppSurfaceCard(
+  child: ...,
+)
+```
+
+This component should own:
+- `CARD_BACKGROUND`
+- subtle border treatment
+- border radius
+- standard padding
+- optional margin
+- child passthrough
+
+The component should NOT own:
+- business logic
+- calculator-specific behavior
+- row/column layout decisions
+- form behavior
+
+Use `AppSurfaceCard` for:
+- calculator cost summary
+- calculator grouped input area
+- settings cards
+- history teaser card
+- support/help cards
+- FAQ accordion surfaces
+- any grouped card-like UI block
+
+The goal is to prevent ad-hoc card styling across the app.
+
+---
 
 # Typography
 
@@ -514,7 +552,7 @@ A significant portion of the visual refresh should come from typography improvem
 
 ## AppScreenHeader
 
-The refresh should introduce a reusable shared header component.
+The refresh should use a reusable shared header component. The current direction is for `AppScreenHeader` to act as the full screen header/app bar surface, not just styled title text.
 
 Suggested component:
 
@@ -523,6 +561,11 @@ AppScreenHeader(
   title: 'Print History',
 )
 ```
+
+Implementation direction:
+- `AppScreenHeader` may implement `PreferredSizeWidget` if used directly as a `Scaffold.appBar`
+- it should own the full header bar area
+- it should not be limited to title text rendering
 
 This component should become the default top-level screen header throughout the application.
 
@@ -697,6 +740,10 @@ Avoid introducing interaction complexity.
 
 The app remains data-entry heavy.
 
+The calculator input fields should sit inside a grouped `AppSurfaceCard` wrapper.
+
+Floating input fields directly on the page background should be avoided because they feel visually disconnected from the refreshed design language.
+
 ---
 
 # Result Section Direction
@@ -731,22 +778,149 @@ Desired direction:
 - slightly more refined spacing
 - cleaner icons
 
+Implementation notes:
+- use `NAV_BAR_BACKGROUND` for the nav container
+- apply `NAV_BAR_BORDER` as a top border on the nav wrapper/container
+- keep spacing safe-area aware
+- avoid a floating/glassmorphism navigation treatment
+- centralise styling in an `AppBottomNavigation` or equivalent wrapper when practical
+
 Avoid floating/glassmorphism navigation.
 
 ---
 
 # Buttons
 
-## Primary Actions
+The refresh should introduce reusable app button components instead of relying directly on mixed `ElevatedButton`, `OutlinedButton`, `FilledButton`, and `TextButton` usage per screen.
 
-Primary CTA buttons should:
-- use LIGHT_BLUE
-- feel substantial
-- have stronger presence
-- use cleaner spacing
-- avoid excessive rounding
+Button styling should be centralised so actions feel consistent across calculator, settings, history, paywall, support, and batch costing flows.
 
-Avoid glossy button styling.
+---
+
+## Button Components
+
+Suggested reusable components:
+
+- `AppPrimaryButton`
+- `AppSecondaryButton`
+- `AppTertiaryButton`
+
+These should own:
+- colour treatment
+- typography
+- border radius
+- minimum height
+- horizontal padding
+- disabled state
+- loading state if needed
+- icon spacing when used with icons
+
+They should NOT own:
+- business logic
+- navigation logic
+- form behavior
+- screen-specific layout
+
+---
+
+## Shared Button Rules
+
+All app buttons should share:
+- consistent height
+- consistent radius
+- Inter Medium or SemiBold text treatment
+- predictable icon spacing
+- accessible tap targets
+- clear disabled states
+
+Avoid one-off button styling in individual screens.
+
+---
+
+## Primary Button
+
+Primary buttons are for the main action on a screen or section.
+
+Use for:
+- save
+- continue
+- calculate/recalculate
+- upgrade where it is the primary CTA
+- confirm actions
+
+Visual treatment:
+- filled background
+- use `LIGHT_BLUE` as the default fill
+- the render direction suggests `#4485F1`, which is close enough to `LIGHT_BLUE` that a new token is not required unless visual testing proves otherwise
+- text should be high contrast
+- strong but not glossy
+
+Avoid:
+- gradients unless deliberately added later as a tokenised style
+- oversized shadows
+- glossy effects
+
+---
+
+## Secondary Button
+
+Secondary buttons are for visible but lower-priority actions.
+
+Use for:
+- reset
+- cancel-like alternatives
+- secondary navigation actions
+- batch costing entry if not the main page action
+- preview/sample actions
+
+Visual treatment:
+- transparent background
+- `LIGHT_BLUE` border
+- `LIGHT_BLUE` text
+- same height/radius as primary buttons
+- lower visual weight than primary
+
+This should replace harsh white-outline buttons where possible.
+
+The calculator reset button is a good candidate for the secondary button style.
+
+---
+
+## Tertiary Button
+
+Tertiary buttons are for low-emphasis actions.
+
+Use for:
+- inline actions
+- help links
+- minor dismiss actions
+- low-priority text actions
+
+Visual treatment:
+- text only
+- `LIGHT_BLUE` text
+- no border
+- no filled background
+- minimal visual weight
+
+---
+
+## Button Implementation Direction
+
+Initial implementation should:
+- create the reusable button components
+- migrate obvious low-risk usages first
+- avoid changing workflows
+- avoid redesigning entire screens at the same time
+
+Priority candidates:
+- calculator reset button → `AppSecondaryButton`
+- calculator save button → `AppPrimaryButton`
+- batch costing entry button → likely `AppSecondaryButton` unless it becomes the main CTA
+- support/contact button → `AppPrimaryButton` or `AppSecondaryButton` depending on screen context
+- low-emphasis links/actions → `AppTertiaryButton`
+
+The goal is to test the button system in practice before applying it everywhere.
 
 ---
 
@@ -853,10 +1027,12 @@ Most of the rest of the application should naturally inherit from this direction
 
 Potential reusable components:
 
-- `AppSurfaceCard`
+- `AppSurfaceCard` — thin reusable surface wrapper for cards, accordions, grouped inputs, settings sections, and support panels
 - `CalculatorInputRow`
 - `CostSummaryCard`
-- `PrimaryActionButton`
+- `AppPrimaryButton` — filled primary CTA using the refreshed blue action treatment
+- `AppSecondaryButton` — transparent outlined button with blue border/text
+- `AppTertiaryButton` — text-only low-emphasis action button
 - `AppBottomNavigation`
 - `SectionHeader`
 - `AppMetricRow`
