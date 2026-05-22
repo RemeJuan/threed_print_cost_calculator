@@ -19,6 +19,7 @@ class Materials extends HookConsumerWidget {
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final l10n = AppLocalizations.of(context)!;
     final searchController = useTextEditingController();
+    useListenable(searchController);
 
     return ref
         .watch(materialsStreamProvider)
