@@ -129,6 +129,23 @@ class CalculatorPage extends HookConsumerWidget {
               ),
             CalculatorResults(results: state.results, pricing: state.pricing),
             const SizedBox(height: kAppSpace8),
+            if (isPremium) ...[
+              AppSecondaryButton(
+                key: const ValueKey<String>(
+                  'calculator.batch_costing.open.button',
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => const BatchCostingPage(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.view_list_outlined),
+                label: l10n.batchCostingEntryButton,
+              ),
+              const SizedBox(height: 12),
+            ],
             Row(
               children: [
                 Expanded(
@@ -180,24 +197,6 @@ class CalculatorPage extends HookConsumerWidget {
                 ],
               ],
             ),
-            if (isPremium) ...[
-              const SizedBox(height: 12),
-              AppSecondaryButton(
-                key: const ValueKey<String>(
-                  'calculator.batch_costing.open.button',
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const BatchCostingPage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.view_list_outlined),
-                label: l10n.batchCostingEntryButton,
-              ),
-              const SizedBox(height: 12),
-            ],
             if (showSave.value)
               SaveForm(
                 data: state.results,
