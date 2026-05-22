@@ -444,6 +444,8 @@ without becoming visually noisy.
 
 ## AppSurfaceCard
 
+Status: implemented in `lib/shared/widgets/app_surface_card.dart` and used for support FAQ tiles, batch summary cards, and grouped surfaces.
+
 The refresh should introduce a thin reusable surface wrapper.
 
 Suggested component:
@@ -836,6 +838,8 @@ Suggested reusable components:
 - `AppSecondaryButton`
 - `AppTertiaryButton`
 
+Status: implemented in `lib/shared/widgets/app_buttons.dart` and migrated across batch costing, history, settings, and related dialogs.
+
 These should own:
 - colour treatment
 - typography
@@ -985,6 +989,8 @@ Avoid creating one overloaded component that handles both jobs.
 ---
 
 ## AppFilterChip
+
+Status: implemented in `lib/shared/widgets/app_filter_chip.dart` and used in batch costing source filters.
 
 Used for:
 - material type filters
