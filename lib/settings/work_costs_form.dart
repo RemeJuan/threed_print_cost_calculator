@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
@@ -524,7 +525,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                         child: Text(
                           '${l10n.currencyPreviewLabel}: ${_formatPreview(data)}',
                           style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: Colors.white54),
+                              ?.copyWith(color: TEXT_TERTIARY),
                         ),
                       ),
                     ),

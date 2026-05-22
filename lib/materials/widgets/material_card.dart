@@ -5,6 +5,8 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
@@ -47,9 +49,8 @@ class MaterialCard extends ConsumerWidget {
             const SizedBox(height: 2),
             Text(
               label,
-              style: TextStyle(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
-                fontSize: 10,
                 fontWeight: FontWeight.w600,
               ),
               overflow: TextOverflow.ellipsis,
@@ -84,7 +85,10 @@ class MaterialCard extends ConsumerWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      margin: const EdgeInsets.symmetric(
+        horizontal: kAppSpace16,
+        vertical: kAppSpace4,
+      ),
       child: Slidable(
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
@@ -94,49 +98,49 @@ class MaterialCard extends ConsumerWidget {
               flex: 1,
               onPressed: (_) => onEdit(),
               backgroundColor: LIGHT_BLUE,
-              foregroundColor: Colors.white,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
               borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(12),
+                left: Radius.circular(kAppSurfaceRadius),
               ),
               child: buildActionContent(
                 Icons.edit,
                 l10n.editButton,
-                Colors.white,
+                TEXT_INVERSE,
               ),
             ),
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => onDuplicate(),
-              backgroundColor: Colors.teal,
-              foregroundColor: Colors.white,
+              backgroundColor: ACTION_DUPLICATE,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
               borderRadius: BorderRadius.zero,
               child: buildActionContent(
                 Icons.content_copy,
                 l10n.duplicateButton,
-                Colors.white,
+                TEXT_INVERSE,
               ),
             ),
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => confirmDelete(),
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              backgroundColor: STATUS_ERROR,
+              foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
               borderRadius: const BorderRadius.horizontal(
-                right: Radius.circular(12),
+                right: Radius.circular(kAppSurfaceRadius),
               ),
               child: buildActionContent(
                 Icons.delete,
                 l10n.deleteButton,
-                Colors.white,
+                TEXT_INVERSE,
               ),
             ),
           ],
         ),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(kAppSurfaceRadius),
           onTap: onEdit,
           child: AppSurfaceCard(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -147,11 +151,11 @@ class MaterialCard extends ConsumerWidget {
                   height: 32,
                   decoration: BoxDecoration(
                     color: swatchColor,
-                    borderRadius: BorderRadius.circular(32),
-                    border: Border.all(color: Colors.white24, width: 1),
+                    borderRadius: BorderRadius.circular(kAppPillRadius),
+                    border: Border.all(color: BORDER_SUBTLE, width: 1),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: kAppSpace12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,16 +163,16 @@ class MaterialCard extends ConsumerWidget {
                       Text(
                         material.name,
                         style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(color: Colors.white, fontSize: 14),
+                            ?.copyWith(color: TEXT_PRIMARY),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: kAppSpace2),
                       _MergedInfoLine(material: material),
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: kAppSpace8),
                 StockStatusBadge(
                   status: status,
                   label: switch (status) {
@@ -214,7 +218,9 @@ class _MergedInfoLine extends StatelessWidget {
 
     return Text(
       parts.join(' · '),
-      style: const TextStyle(color: Colors.white54, fontSize: 10),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+        color: TEXT_TERTIARY,
+      ),
     );
   }
 }

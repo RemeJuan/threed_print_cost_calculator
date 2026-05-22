@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class SettingsSection extends StatelessWidget {
@@ -20,7 +21,7 @@ class SettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppSurfaceCard(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(kAppSpace12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -34,10 +35,10 @@ class SettingsSection extends StatelessWidget {
                   child: title,
                 ),
               ),
-              if (action != null) ...[const SizedBox(width: 8), action!],
+              if (action != null) ...[const SizedBox(width: kAppSpace8), action!],
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: kAppSpace16),
           KeyedSubtree(key: bodyKey, child: child),
         ],
       ),

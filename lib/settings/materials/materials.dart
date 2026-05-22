@@ -5,6 +5,8 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart';
@@ -32,7 +34,7 @@ class Materials extends HookConsumerWidget {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                  padding: kAppSearchSectionPadding,
                   child: AppSearchBar(
                     controller: searchController,
                     hintText: l10n.searchMaterialsHint,
@@ -79,7 +81,7 @@ class Materials extends HookConsumerWidget {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
-                                        ?.copyWith(color: Colors.white),
+                                        ?.copyWith(color: TEXT_PRIMARY),
                                   ),
                                   Text(
                                     key: ValueKey<String>(
@@ -89,8 +91,7 @@ class Materials extends HookConsumerWidget {
                                     overflow: TextOverflow.ellipsis,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .titleSmall
-                                        ?.copyWith(fontSize: 12),
+                                        .bodySmall,
                                   ),
                                   if (data.autoDeductEnabled)
                                     Text(
@@ -101,13 +102,12 @@ class Materials extends HookConsumerWidget {
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context)
                                           .textTheme
-                                          .titleSmall
-                                          ?.copyWith(fontSize: 12),
+                                          .bodySmall,
                                     ),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: kAppSpace12),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -117,15 +117,15 @@ class Materials extends HookConsumerWidget {
                                   ),
                                   data.cost,
                                   style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(color: Colors.white),
+                                      ?.copyWith(color: TEXT_PRIMARY),
                                 ),
                                 Text(
                                   key: ValueKey<String>(
                                     'settings.materials.item.$index.weight',
                                   ),
                                   '${data.weight}${l10n.gramsSuffix}',
-                                  style: Theme.of(context).textTheme.titleSmall
-                                      ?.copyWith(fontSize: 12),
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(color: TEXT_SECONDARY),
                                 ),
                               ],
                             ),

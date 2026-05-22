@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/settings/settings_slidable_item.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class PrinterListItem extends StatelessWidget {
   const PrinterListItem({
@@ -40,7 +41,7 @@ class PrinterListItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: Theme.of(
                 context,
-              ).textTheme.titleMedium?.copyWith(color: Colors.white),
+              ).textTheme.titleMedium?.copyWith(color: TEXT_PRIMARY),
             ),
           ),
           const SizedBox(width: 12),
