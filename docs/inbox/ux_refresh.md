@@ -1281,6 +1281,231 @@ Goal:
 
 ---
 
+# Design System Audit Backlog
+
+Latest audit pass found the refresh foundation is in place, but the app still has several style gaps where widgets bypass shared tokens or hardcode visual values inline.
+
+The biggest remaining issue is not the base palette itself.
+
+The biggest remaining issue is missing semantic tokens layered on top of the base palette.
+
+`app_colors.dart` now covers the core brand/surface colors well, but the app still needs shared semantic tokens for:
+- text emphasis levels
+- icon emphasis levels
+- subtle borders/dividers
+- overlay/scrim surfaces
+- status colors
+- destructive/warning/success/info treatments
+
+Without those semantic tokens, refreshed screens still fall back to `Colors.white*`, `Colors.red`, `Colors.green`, `Colors.orange`, `Colors.amber`, and raw `Color.fromRGBO(...)` values.
+
+---
+
+## Highest-Priority Cleanup Targets
+
+### 1. Duplicate Raw Palette Values
+
+These should be converted to shared tokens first because they represent clear design-system drift rather than legitimate one-off styling.
+
+Current duplicate/raw values found:
+- `Color.fromRGBO(26, 28, 43, 1)`
+  - `lib/materials/csv_import/csv_import_page.dart`
+  - `lib/settings/materials/suggestion_typeahead.dart`
+  - this should map to an existing shared token, likely `DARK_BLUE`
+- `Color.fromRGBO(8, 8, 18, 1)`
+  - `lib/shared/components/accordion_menu/accordion_menu.dart`
+  - `lib/history/components/history_export_preview_sheet.dart`
+  - this should become a named token, likely a preview/export/overlay surface token such as `PREVIEW_SURFACE` or `OVERLAY_SURFACE`
+- `Color.fromRGBO(255, 255, 255, 0.04)`
+  - `lib/history/components/batch_history_item.dart`
+  - this should become a semantic overlay token such as `SURFACE_OVERLAY_SUBTLE`
+
+These are strong candidates because they appear intentional and reusable, not accidental.
+
+---
+
+### 2. Status Colors Are Still Scattered
+
+The audit found many places still using raw status/action colors directly in widgets.
+
+Examples:
+- `lib/shared/widgets/stock_status_badge.dart`
+- `lib/materials/csv_import/csv_import_page.dart`
+- `lib/batch_costing/widgets/batch_import_file_row.dart`
+- `lib/calculator/view/components/history_load_warning_banner.dart`
+- `lib/materials/widgets/material_card.dart`
+- `lib/settings/settings_slidable_item.dart`
+- `lib/history/components/history_item_slidable_wrapper.dart`
+- `lib/calculator/view/components/materials_selection/material_row.dart`
+- `lib/history/components/history_item_actions.dart`
+- `lib/app/promo_history_tab_icon.dart`
+
+Recommended semantic tokens to introduce:
+- `STATUS_SUCCESS`
+- `STATUS_WARNING`
+- `STATUS_ERROR`
+- `STATUS_INFO`
+- `STATUS_NEUTRAL`
+- optionally `ACTION_DUPLICATE` if duplicate actions intentionally keep a distinct accent from primary/edit actions
+
+Important:
+- destructive actions should not rely on raw `Colors.red`
+- warnings should not rely on raw `Colors.amber`
+- success states should not rely on raw `Colors.green`
+- informational/status badges should come from shared semantic intent tokens
+
+---
+
+### 3. White / Grey Text and Icon Variants Are Hardcoded Too Often
+
+Many refreshed surfaces still use direct Flutter whites instead of shared text/icon tokens.
+
+Recurring values found:
+- `Colors.white`
+- `Colors.white70`
+- `Colors.white60`
+- `Colors.white54`
+- `Colors.white38`
+- `Colors.white24`
+- `Colors.white12`
+
+High-signal files include:
+- `lib/materials/widgets/material_card.dart`
+- `lib/history/components/batch_history_item.dart`
+- `lib/history/components/history_item_material_breakdown.dart`
+- `lib/calculator/view/calculator_results.dart`
+- `lib/materials/csv_import/csv_import_page.dart`
+- `lib/materials/widgets/materials_page.dart`
+- `lib/app/header_actions.dart`
+- `lib/app/app_page.dart`
+- `lib/app/app_page_shell_config.dart`
+- `lib/history/components/history_teaser.dart`
+- `lib/gcode_import/widgets/gcode_import_preview_section.dart`
+
+Recommended semantic tokens to introduce:
+- `TEXT_PRIMARY`
+- `TEXT_SECONDARY`
+- `TEXT_TERTIARY`
+- `ICON_PRIMARY`
+- `ICON_MUTED`
+- `BORDER_SUBTLE`
+- `DIVIDER_SUBTLE`
+
+Likely direction:
+- `TEXT_PRIMARY` should align with `OFF_WHITE`
+- lower emphasis levels should use shared muted values rather than ad-hoc alpha variants in every feature
+
+---
+
+### 4. Overlay / Preview / Scrim Blacks Are Still Hardcoded
+
+Preview surfaces and scrims still use direct black values in a few places.
+
+Examples:
+- `lib/gcode_import/widgets/gcode_import_preview_section.dart`
+- `lib/gcode_import/widgets/gcode_import_preview_dialog.dart`
+- `lib/calculator/view/components/materials_selection/materials_header.dart`
+
+Current raw values include:
+- `Colors.black`
+- `Colors.black87`
+- `Colors.transparent`
+
+Recommended tokens:
+- `SCRIM_DARK`
+- `PREVIEW_BACKDROP`
+- `TRANSPARENT`
+
+Even if these remain visually identical, naming them makes the design language explicit and keeps these treatments discoverable.
+
+---
+
+## Lower-Priority Cleanup
+
+These are less urgent, but still worth addressing after the semantic token pass.
+
+- `lib/shared/theme.dart`
+  - `unselectedItemColor: Colors.white54`
+  - should eventually route through shared nav/text/icon tokens
+- `lib/shared/widgets/app_buttons.dart`
+  - uses raw white foreground/loading colors
+  - acceptable short-term, but should eventually use shared semantic foreground tokens
+- `lib/history/components/history_export_preview_sheet.dart`
+  - preview surface still uses raw color token candidate and raw `ElevatedButton.icon`
+  - should eventually align with shared surface/button patterns
+
+---
+
+## Recommended Cleanup Order
+
+### Phase A — Expand Shared Tokens
+
+Add semantic color tokens to `lib/shared/app_colors.dart` for:
+- text emphasis
+- icon emphasis
+- subtle borders/dividers
+- overlays/scrims
+- status/destructive/success/warning/info usage
+
+This is the key missing layer in the current design system.
+
+### Phase B — Replace Duplicate Raw Palette Values
+
+Replace obvious shared-value repeats first:
+- repeated dark surfaces
+- repeated translucent overlays
+- repeated export/preview backgrounds
+
+These are low-risk, high-confidence conversions.
+
+### Phase C — Replace Status Colors
+
+Centralise all destructive, warning, success, and informational colors through shared semantic tokens.
+
+This should cover:
+- slide actions
+- delete affordances
+- warning banners
+- import validation states
+- stock badges
+- teaser/promo highlights
+
+### Phase D — Replace White/Grey Text and Icon Variants
+
+Move all major `Colors.white*` styling to semantic text/icon tokens.
+
+This reduces drift and makes future contrast tuning much easier.
+
+### Phase E — Clean Overlay and Preview Treatments
+
+Move black/transparent preview treatments to named shared tokens.
+
+This is lower priority than status/text cleanup, but still part of finishing the design system coherently.
+
+---
+
+## Architectural Takeaway
+
+The refresh is no longer blocked on reusable components.
+
+The app already has the major primitives in place:
+- `AppSurfaceCard`
+- shared buttons
+- shared search bar
+- shared filter chip
+- theme-driven inputs
+
+The next coherence step is semantic color centralisation.
+
+In other words:
+- base palette layer = mostly done
+- reusable component layer = mostly done
+- semantic intent layer = still incomplete
+
+That semantic intent layer is what will eliminate the remaining UI drift.
+
+---
+
 # Initial Implementation Priority
 
 ## Phase 1
