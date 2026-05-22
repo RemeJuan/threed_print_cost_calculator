@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/app/app_page_cancel_feedback_effect
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/app/widgets/update_prompt_banner.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -134,7 +135,7 @@ class AppPage extends HookConsumerWidget {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(renderedShellTab.title),
+        title: AppScreenHeader(title: renderedShellTab.title),
         actions: renderedShellTab.actions,
         leading: IconButton(
           icon: const Icon(Icons.help_outline, color: Colors.white54),
