@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class PromoHistoryTabIcon extends StatelessWidget {
   const PromoHistoryTabIcon({super.key});
@@ -16,7 +17,7 @@ class PromoHistoryTabIcon extends StatelessWidget {
             Icons.workspace_premium,
             key: ValueKey<String>('nav.history.pro.badge'),
             size: 12,
-            color: Colors.amberAccent,
+            color: PREMIUM_ACCENT,
           ),
         ),
       ],

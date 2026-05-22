@@ -138,7 +138,7 @@ class AppPage extends HookConsumerWidget {
         title: renderedShellTab.title,
         actions: renderedShellTab.actions,
         leading: IconButton(
-          icon: const Icon(Icons.help_outline, color: Colors.white54),
+          icon: const Icon(Icons.help_outline, color: ICON_MUTED),
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute<void>(builder: (_) => const HelpSupportPage()),
           ),
