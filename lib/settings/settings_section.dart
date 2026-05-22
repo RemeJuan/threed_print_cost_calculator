@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({
@@ -18,31 +19,27 @@ class SettingsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: const Color.fromRGBO(8, 8, 18, 1),
-      margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              key: headerKey,
-              children: [
-                Expanded(
-                  child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.titleMedium!,
-                    child: title,
-                  ),
+    return AppSurfaceCard(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            key: headerKey,
+            children: [
+              Expanded(
+                child: DefaultTextStyle(
+                  style: Theme.of(context).textTheme.titleMedium!,
+                  child: title,
                 ),
-                if (action != null) ...[const SizedBox(width: 8), action!],
-              ],
-            ),
-            const SizedBox(height: 16),
-            KeyedSubtree(key: bodyKey, child: child),
-          ],
-        ),
+              ),
+              if (action != null) ...[const SizedBox(width: 8), action!],
+            ],
+          ),
+          const SizedBox(height: 16),
+          KeyedSubtree(key: bodyKey, child: child),
+        ],
       ),
     );
   }

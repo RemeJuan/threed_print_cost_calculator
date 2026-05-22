@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class HistoryTeaserState extends StatelessWidget {
   const HistoryTeaserState({
@@ -39,7 +40,7 @@ class HistoryTeaserState extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 24),
-                Card(
+                AppSurfaceCard(
                   child: ListTile(
                     key: const ValueKey<String>('history.export.preview.entry'),
                     leading: const Icon(Icons.upload_file_outlined),

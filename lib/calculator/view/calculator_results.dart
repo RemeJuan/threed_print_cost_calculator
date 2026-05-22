@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class CalculatorResults extends ConsumerWidget {
   final CalculationResult results;
@@ -37,13 +38,9 @@ class CalculatorResults extends ConsumerWidget {
     );
     const width = kIsWeb ? 250.0 : null;
 
-    return Container(
+    return AppSurfaceCard(
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(8, 8, 18, 1),
-        borderRadius: BorderRadius.circular(8),
-      ),
       width: width,
       child: Column(
         children: [

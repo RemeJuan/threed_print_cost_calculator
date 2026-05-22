@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/history/components/batch_history_it
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class HistoryItem extends HookConsumerWidget {
   final String dbKey;
@@ -56,13 +57,8 @@ class HistoryItem extends HookConsumerWidget {
               deleteHistoryEntry: deleteHistoryEntry,
               exportCsv: exportCsv,
             )
-          : Container(
-              key: ValueKey<String>('$itemKeyPrefix.card'),
+          : AppSurfaceCard(
               padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(8, 8, 18, 1),
-                borderRadius: BorderRadius.circular(8),
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

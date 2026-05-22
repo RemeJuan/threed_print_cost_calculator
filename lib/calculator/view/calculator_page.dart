@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 import 'calculator_results.dart';
 import 'components/history_load_warning_banner.dart';
@@ -97,13 +98,22 @@ class CalculatorPage extends HookConsumerWidget {
           children: [
             if (state.showHistoryLoadReplacementWarning)
               const HistoryLoadWarningBanner(),
-            if (isPremium) const PrinterSelect(),
-            // Let MaterialsSection manage its own controllers and focus state
-            const MaterialsSection(),
-            const SizedBox(height: 8),
-            const TimeSection(),
-            const SizedBox(height: 8),
-            if (isPremium) const JobPricingOverridesSection(),
+            AppSurfaceCard(
+              padding: const EdgeInsets.fromLTRB(12, 4, 12, 12),
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (isPremium) const PrinterSelect(),
+                  const MaterialsSection(),
+                  const SizedBox(height: 8),
+                  const TimeSection(),
+                  const SizedBox(height: 8),
+                  if (isPremium) const JobPricingOverridesSection(),
+                ],
+              ),
+            ),
             const SizedBox(height: 16),
             CalculatorResults(results: state.results, pricing: state.pricing),
             Row(

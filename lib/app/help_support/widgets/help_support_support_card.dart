@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/components/settings_version_tap_target.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class HelpSupportSupportCard extends StatelessWidget {
   const HelpSupportSupportCard({
@@ -25,9 +26,8 @@ class HelpSupportSupportCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final canCopy = supportId != '—';
 
-    return Card(
-      margin: EdgeInsets.zero,
-      clipBehavior: Clip.antiAlias,
+    return AppSurfaceCard(
+      padding: EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -73,10 +73,9 @@ class HelpSupportSupportCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             onTap: canCopy ? onCopySupportId : null,
-            trailing: IconButton(
-              icon: const Icon(Icons.copy_outlined, size: 18),
-              tooltip: l10n.helpSupportCopySupportIdTooltip,
-              onPressed: canCopy ? onCopySupportId : null,
+            trailing: Tooltip(
+              message: l10n.helpSupportCopySupportIdTooltip,
+              child: const Icon(Icons.copy_outlined, size: 18),
             ),
           ),
           const Divider(height: 1),
