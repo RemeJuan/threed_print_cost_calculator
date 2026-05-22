@@ -63,6 +63,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
+      expect(find.text('Start batch quote'), findsOneWidget);
+
       await tester.tap(
         find.byKey(
           const ValueKey<String>('calculator.batch_costing.open.button'),
