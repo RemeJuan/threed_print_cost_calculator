@@ -483,6 +483,26 @@ The goal is to prevent ad-hoc card styling across the app.
 
 ---
 
+## Modals, Dialogs, and Sheets
+
+Modal surfaces should use the shared surface system rather than default Material colors.
+
+Preferred defaults:
+- dialog content surfaces → `CARD_BACKGROUND`
+- modal/sheet chrome where visible → `SHELL_BACKGROUND`
+- modal separators → `SHELL_BORDER`
+- page-level modal backgrounds → `APP_BACKGROUND` only when the modal behaves like a full screen route
+
+Theme configuration should globally cover:
+- `dialogTheme`
+- `bottomSheetTheme`
+- modal bottom sheets where supported
+- date/time picker themes if used
+
+Any direct `showDialog` or `showModalBottomSheet` background overrides should be checked during the final inline-color audit.
+
+---
+
 # Typography
 
 ## Font Selection
@@ -1017,6 +1037,20 @@ The component should preserve compact readability without feeling cramped.
 
 ---
 
+## Shared Search Bar
+
+Status: implemented in `lib/shared/widgets/app_search_bar.dart` and reused by history plus materials search surfaces.
+
+The shared search bar should own:
+- compact outlined/underlined search treatment consistent with the app theme
+- shared clear-button behavior
+- optional labels and hints
+- consistent search icon treatment
+
+It should stay a thin wrapper around `TextField`/`TextFormField`-style inputs rather than owning page-specific filtering logic.
+
+---
+
 ## StockStatusBadge
 
 Used for:
@@ -1081,6 +1115,26 @@ Priority targets:
 Do not change filtering behavior or stock logic.
 
 This is a visual/component extraction task only.
+
+---
+
+# Segmented Controls
+
+Segmented buttons are used for mutually exclusive mode selection, such as batch-wide vs per-item configuration.
+
+They are not filter chips and should not use `AppFilterChip`.
+
+Theme direction:
+- use global `segmentedButtonTheme` where possible
+- selected segment should use a muted filled/tinted surface
+- unselected segment should remain transparent or close to `APP_BACKGROUND`
+- border should use `SHELL_BORDER` or another subtle shared separator token
+- text should carry the state clearly
+- avoid default Material styling where it clashes with the refreshed UI
+
+Do not add decorative selected icons unless the specific control already requires them semantically.
+
+The goal is a clean mode switch, not a checklist or filter chip.
 
 ---
 
@@ -1195,6 +1249,27 @@ Potential reusable components:
 - `AppTertiaryButton` — text-only low-emphasis action button
 - `AppFilterChip` — reusable interactive filter chip for material/stock filters
 - `StockStatusBadge` — reusable informational status badge for stock state display
+- `AppSegmentedControl` or global `segmentedButtonTheme` — mutually exclusive mode selection styling
+# Key Reminder
+
+# Final Technical Pass
+
+Before considering the refresh complete, do a focused technical cleanup pass.
+
+Check for:
+- inline `Color(...)` usage that should be a shared token
+- `Colors.white`, `Colors.white54`, and similar defaults that should use `OFF_WHITE`, `MUTED_BLUE_GREY`, or semantic text/icon tokens
+- remaining `DEEP_BLUE` / `DARK_BLUE` usages that should now be `APP_BACKGROUND`, `CARD_BACKGROUND`, `SHELL_BACKGROUND`, or `RESULT_SURFACE`
+- direct button styling that should use `AppPrimaryButton`, `AppSecondaryButton`, or `AppTertiaryButton`
+- direct card/container decoration that should use `AppSurfaceCard`
+- modal/dialog background overrides that should be handled through theme tokens
+- duplicated chip/status styling that should use `AppFilterChip` or `StockStatusBadge`
+
+This pass should not change UX flows.
+
+It is only to remove visual drift and hardcoded styling.
+
+---
 - `AppBottomNavigation`
 - `SectionHeader`
 - `AppMetricRow`
