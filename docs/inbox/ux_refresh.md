@@ -1021,7 +1021,7 @@ Inactive state:
 - visually recedes
 - uses a filled muted surface
 - uses `CARD_BACKGROUND` or a very close derived surface color
-- uses subtle border treatment, likely `NAV_BAR_BORDER`
+- uses subtle border treatment, likely `BORDER_SUBTLE`
 - uses muted/off-white text
 - avoids dominant white outlines
 
@@ -1250,7 +1250,7 @@ Potential reusable components:
 - `AppFilterChip` — reusable interactive filter chip for material/stock filters
 - `StockStatusBadge` — reusable informational status badge for stock state display
 - `AppSegmentedControl` or global `segmentedButtonTheme` — mutually exclusive mode selection styling
-# Key Reminder
+## Key Reminder
 
 # Final Technical Pass
 
