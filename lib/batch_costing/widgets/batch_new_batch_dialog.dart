@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 Future<bool> showStartNewBatchDialog(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
@@ -10,13 +11,13 @@ Future<bool> showStartNewBatchDialog(BuildContext context) async {
       title: Text(l10n.batchCostingNewBatchDialogTitle),
       content: Text(l10n.batchCostingNewBatchDialogBody),
       actions: [
-        TextButton(
+        AppTertiaryButton(
           onPressed: () => Navigator.of(dialogContext).pop(false),
-          child: Text(l10n.cancelButton),
+          label: l10n.cancelButton,
         ),
-        FilledButton(
+        AppPrimaryButton(
           onPressed: () => Navigator.of(dialogContext).pop(true),
-          child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+          label: l10n.batchCostingSummaryStartNewBatchButton,
         ),
       ],
     ),

@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 Future<void> saveBatchQuote(
   BuildContext context,
@@ -39,18 +40,18 @@ Future<void> saveBatchQuote(
         autofocus: true,
       ),
       actions: [
-        TextButton(
+        AppTertiaryButton(
           onPressed: () => Navigator.of(dialogContext).pop(null),
-          child: Text(l10n.cancelButton),
+          label: l10n.cancelButton,
         ),
-        FilledButton(
+        AppPrimaryButton(
           onPressed: () {
             final name = nameController.text.trim();
             Navigator.of(dialogContext).pop(
               name.isEmpty ? l10n.batchCostingSummaryDefaultQuoteName : name,
             );
           },
-          child: Text(l10n.saveButton),
+          label: l10n.saveButton,
         ),
       ],
     ),
@@ -123,7 +124,7 @@ Future<void> saveBatchQuote(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: 8,
           children: [
-            FilledButton(
+            AppPrimaryButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 ref
@@ -131,16 +132,16 @@ Future<void> saveBatchQuote(
                     .navigate(AppPageTab.history);
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text(l10n.batchCostingSummaryViewHistoryButton),
+              label: l10n.batchCostingSummaryViewHistoryButton,
             ),
-            OutlinedButton(
+            AppSecondaryButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+              label: l10n.batchCostingSummaryReturnToCalculatorButton,
             ),
-            TextButton(
+            AppTertiaryButton(
               onPressed: () async {
                 Navigator.of(dialogContext).pop();
                 final confirmed = await showStartNewBatchDialog(context);
@@ -149,7 +150,7 @@ Future<void> saveBatchQuote(
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 }
               },
-              child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+              label: l10n.batchCostingSummaryStartNewBatchButton,
             ),
           ],
         ),

@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
@@ -239,29 +240,29 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
             const SizedBox(height: 24),
             Align(
               alignment: Alignment.centerLeft,
-              child: TextButton(
+              child: AppTertiaryButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.batchCostingSummaryBackButton),
+                label: l10n.batchCostingSummaryBackButton,
               ),
             ),
             const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                AppPrimaryButton(
                   onPressed: () => saveBatchQuote(context, ref, state, summary),
-                  child: Text(l10n.batchCostingSummarySaveButton),
+                  label: l10n.batchCostingSummarySaveButton,
                 ),
                 const SizedBox(height: 12),
-                FilledButton(
+                AppPrimaryButton(
                   onPressed: () =>
                       Navigator.of(context).popUntil((route) => route.isFirst),
-                  child: Text(l10n.batchCostingSummaryReturnToCalculatorButton),
+                  label: l10n.batchCostingSummaryReturnToCalculatorButton,
                 ),
                 const SizedBox(height: 12),
-                OutlinedButton(
+                AppSecondaryButton(
                   onPressed: () => _showStartNewBatchDialog(context),
-                  child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                  label: l10n.batchCostingSummaryStartNewBatchButton,
                 ),
               ],
             ),
@@ -304,21 +305,19 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  TextButton(
+                  AppTertiaryButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(l10n.batchCostingSummaryBackButton),
+                    label: l10n.batchCostingSummaryBackButton,
                   ),
-                  OutlinedButton(
+                  AppSecondaryButton(
                     onPressed: () => Navigator.of(
                       context,
                     ).popUntil((route) => route.isFirst),
-                    child: Text(
-                      l10n.batchCostingSummaryReturnToCalculatorButton,
-                    ),
+                    label: l10n.batchCostingSummaryReturnToCalculatorButton,
                   ),
-                  FilledButton(
+                  AppPrimaryButton(
                     onPressed: () => _showStartNewBatchDialog(context),
-                    child: Text(l10n.batchCostingSummaryStartNewBatchButton),
+                    label: l10n.batchCostingSummaryStartNewBatchButton,
                   ),
                 ],
               ),

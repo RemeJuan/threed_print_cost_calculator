@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_gcode_i
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_import_file_row.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_single_import_view.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchGcodeImportBody extends ConsumerWidget {
   const BatchGcodeImportBody({
@@ -64,10 +65,10 @@ class BatchGcodeImportBody extends ConsumerWidget {
         children: [
           Text(l10n.batchGcodeImportBody),
           const SizedBox(height: 16),
-          FilledButton.icon(
+          AppPrimaryButton(
             onPressed: loading ? null : onPickFiles,
             icon: const Icon(Icons.folder_open),
-            label: Text(l10n.batchGcodeImportPickButton),
+            label: l10n.batchGcodeImportPickButton,
           ),
           const SizedBox(height: 8),
           if (singleImport == null)
@@ -108,12 +109,12 @@ class BatchGcodeImportBody extends ConsumerWidget {
           if (singleImport != null)
             Padding(
               padding: const EdgeInsets.only(top: 16),
-              child: FilledButton.icon(
+              child: AppPrimaryButton(
                 onPressed: singleImport!.canContinue
                     ? onConfirmSingleImport
                     : null,
                 icon: const Icon(Icons.playlist_add),
-                label: Text(l10n.batchGcodeImportAddButton),
+                label: l10n.batchGcodeImportAddButton,
               ),
             )
           else if (singleImportError != null)
@@ -129,9 +130,9 @@ class BatchGcodeImportBody extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  TextButton(
+                  AppTertiaryButton(
                     onPressed: onPickFiles,
-                    child: Text(l10n.batchGcodeImportRetryButton),
+                    label: l10n.batchGcodeImportRetryButton,
                   ),
                 ],
               ),
@@ -139,7 +140,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
           else if (allDone && hasReady && !hasNeedsDetails)
             Padding(
               padding: const EdgeInsets.only(top: 16),
-              child: FilledButton(
+              child: AppPrimaryButton(
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
@@ -147,7 +148,7 @@ class BatchGcodeImportBody extends ConsumerWidget {
                     ),
                   );
                 },
-                child: Text(l10n.batchGcodeImportContinueButton),
+                label: l10n.batchGcodeImportContinueButton,
               ),
             )
           else if (allDone && rows.isNotEmpty && !hasReady && !hasNeedsDetails)
@@ -155,16 +156,14 @@ class BatchGcodeImportBody extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 16),
               child: Row(
                 children: [
-                  TextButton(
+                  AppTertiaryButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text(
-                      MaterialLocalizations.of(context).backButtonTooltip,
-                    ),
+                    label: MaterialLocalizations.of(context).backButtonTooltip,
                   ),
                   const SizedBox(width: 8),
-                  TextButton(
+                  AppTertiaryButton(
                     onPressed: onPickFiles,
-                    child: Text(l10n.batchGcodeImportRetryButton),
+                    label: l10n.batchGcodeImportRetryButton,
                   ),
                 ],
               ),

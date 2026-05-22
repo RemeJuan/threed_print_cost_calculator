@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
@@ -38,7 +39,7 @@ Widget buildAssignmentErrorState(
             child: Text(errorText, textAlign: TextAlign.center),
           ),
           const SizedBox(height: 16),
-          FilledButton(onPressed: onRetry, child: Text(retryLabel)),
+          AppPrimaryButton(onPressed: onRetry, label: retryLabel),
         ],
       ),
     ),
@@ -97,11 +98,11 @@ class AssignmentNavRow extends StatelessWidget {
     return SafeArea(
       child: Row(
         children: [
-          TextButton(onPressed: onPrevious, child: Text(previousLabel)),
+          AppTertiaryButton(onPressed: onPrevious, label: previousLabel),
           const Spacer(),
-          FilledButton(
+          AppPrimaryButton(
             onPressed: nextEnabled ? onNext : null,
-            child: Text(nextLabel),
+            label: nextLabel,
           ),
         ],
       ),

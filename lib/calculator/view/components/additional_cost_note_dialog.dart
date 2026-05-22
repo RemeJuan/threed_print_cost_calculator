@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class AdditionalCostNoteDialog extends StatefulWidget {
   const AdditionalCostNoteDialog({required this.initialValue, super.key});
@@ -48,16 +49,16 @@ class _AdditionalCostNoteDialogState extends State<AdditionalCostNoteDialog> {
         decoration: InputDecoration(labelText: l10n.additionalCostNoteLabel),
       ),
       actions: [
-        TextButton(
+        AppTertiaryButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          label: MaterialLocalizations.of(context).cancelButtonLabel,
         ),
-        TextButton(
+        AppTertiaryButton(
           key: const ValueKey<String>(
             'calculator.additionalCost.note.save.button',
           ),
           onPressed: () => Navigator.of(context).pop(_controller.text),
-          child: Text(MaterialLocalizations.of(context).okButtonLabel),
+          label: MaterialLocalizations.of(context).okButtonLabel,
         ),
       ],
     );

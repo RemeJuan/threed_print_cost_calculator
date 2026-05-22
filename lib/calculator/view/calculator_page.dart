@@ -132,15 +132,15 @@ class CalculatorPage extends HookConsumerWidget {
                           title: Text(l10n.resetCalculationTitle),
                           content: Text(l10n.resetCalculationBody),
                           actions: [
-                            TextButton(
+                            AppTertiaryButton(
                               onPressed: () =>
                                   Navigator.of(dialogContext).pop(false),
-                              child: Text(l10n.cancelButton),
+                              label: l10n.cancelButton,
                             ),
-                            FilledButton(
+                            AppPrimaryButton(
                               onPressed: () =>
                                   Navigator.of(dialogContext).pop(true),
-                              child: Text(l10n.resetButtonLabel),
+                              label: l10n.resetButtonLabel,
                             ),
                           ],
                         ),

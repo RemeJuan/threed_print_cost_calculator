@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 /// A dialog that lets the user input hours (free numeric) and minutes (0-59).
 /// Returns a `Map<String,int>` via Navigator.pop: {'hours': hours, 'minutes': minutes}.
@@ -130,11 +131,11 @@ class _DurationDialogState extends State<DurationDialog> {
         ],
       ),
       actions: [
-        TextButton(
+        AppTertiaryButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          label: MaterialLocalizations.of(context).cancelButtonLabel,
         ),
-        TextButton(
+        AppTertiaryButton(
           key: const ValueKey<String>('calculator.duration.save.button'),
           onPressed: () {
             final hours = int.tryParse(_hoursController.text) ?? 0;
@@ -142,7 +143,7 @@ class _DurationDialogState extends State<DurationDialog> {
             final minutes = rawMinutes.clamp(0, 59);
             Navigator.of(context).pop({'hours': hours, 'minutes': minutes});
           },
-          child: Text(MaterialLocalizations.of(context).okButtonLabel),
+          label: MaterialLocalizations.of(context).okButtonLabel,
         ),
       ],
     );

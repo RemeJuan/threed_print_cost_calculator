@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_c
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
@@ -284,10 +285,10 @@ class _PrinterAllocationCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(printerLabel),
             const SizedBox(height: 8),
-            OutlinedButton.icon(
+            AppSecondaryButton(
               onPressed: () => _openSplitCopiesDialog(context),
               icon: const Icon(Icons.tune),
-              label: Text(l10n.batchCostingAssignmentSplitCopiesButton),
+              label: l10n.batchCostingAssignmentSplitCopiesButton,
             ),
           ],
         ),

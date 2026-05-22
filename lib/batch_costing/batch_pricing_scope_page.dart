@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
@@ -205,18 +206,14 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                 SafeArea(
                   child: Row(
                     children: [
-                      TextButton(
+                      AppTertiaryButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          l10n.batchCostingPrinterAssignmentPreviousButton,
-                        ),
+                        label: l10n.batchCostingPrinterAssignmentPreviousButton,
                       ),
                       const Spacer(),
-                      FilledButton(
+                      AppPrimaryButton(
                         onPressed: () => _continue(context),
-                        child: Text(
-                          l10n.batchCostingPrinterAssignmentNextButton,
-                        ),
+                        label: l10n.batchCostingPrinterAssignmentNextButton,
                       ),
                     ],
                   ),

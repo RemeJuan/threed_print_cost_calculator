@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class MissingDetailsForm extends StatefulWidget {
   const MissingDetailsForm({
@@ -76,10 +77,10 @@ class _MissingDetailsFormState extends State<MissingDetailsForm> {
           ),
         ],
         const SizedBox(height: 12),
-        FilledButton.tonalIcon(
+        AppPrimaryButton(
           onPressed: _handleApply,
           icon: const Icon(Icons.check, size: 18),
-          label: Text(widget.l10n.batchGcodeImportApply),
+          label: widget.l10n.batchGcodeImportApply,
         ),
       ],
     );

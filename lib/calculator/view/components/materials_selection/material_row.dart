@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
@@ -168,13 +169,13 @@ class _MaterialRowState extends State<MaterialRow> {
                     title: Text(l10n.deleteDialogTitle),
                     content: Text(l10n.deleteDialogContent),
                     actions: [
-                      TextButton(
+                      AppTertiaryButton(
                         onPressed: () => Navigator.pop(dialogContext, false),
-                        child: Text(l10n.cancelButton),
+                        label: l10n.cancelButton,
                       ),
-                      TextButton(
+                      AppTertiaryButton(
                         onPressed: () => Navigator.pop(dialogContext, true),
-                        child: Text(l10n.deleteButton),
+                        label: l10n.deleteButton,
                       ),
                     ],
                   ),

@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allo
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class MaterialAllocationCard extends StatelessWidget {
   const MaterialAllocationCard({
@@ -84,10 +85,10 @@ class MaterialAllocationCard extends StatelessWidget {
               if (index != allocations.length - 1) const SizedBox(height: 12),
             ],
             const SizedBox(height: 12),
-            OutlinedButton.icon(
+            AppSecondaryButton(
               onPressed: () => _openPicker(context),
               icon: const Icon(Icons.search),
-              label: Text(l10n.batchCostingAssignmentSplitCopiesButton),
+              label: l10n.batchCostingAssignmentSplitCopiesButton,
             ),
             if (warningText != null) ...[
               const SizedBox(height: 8),

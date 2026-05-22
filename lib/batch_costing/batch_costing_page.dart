@@ -15,6 +15,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 
@@ -119,19 +120,17 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      FilledButton.icon(
+                      AppPrimaryButton(
                         onPressed: _hasMissingFields(items)
                             ? null
                             : () => _continueToPrinterAssignment(context),
                         icon: const Icon(Icons.arrow_forward),
-                        label: Text(l10n.batchCostingReviewContinueButton),
+                        label: l10n.batchCostingReviewContinueButton,
                       ),
                       const SizedBox(height: 12),
-                      OutlinedButton(
+                      AppSecondaryButton(
                         onPressed: () => _showStartNewBatchDialog(context),
-                        child: Text(
-                          l10n.batchCostingSummaryStartNewBatchButton,
-                        ),
+                        label: l10n.batchCostingSummaryStartNewBatchButton,
                       ),
                     ],
                   ),
@@ -197,20 +196,20 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 24),
-          FilledButton.icon(
+          AppPrimaryButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute<void>(
                 builder: (_) => const BatchGCodeImportPage(),
               ),
             ),
             icon: const Icon(Icons.upload_file),
-            label: Text(l10n.batchCostingReviewImportGcodeButton),
+            label: l10n.batchCostingReviewImportGcodeButton,
           ),
           const SizedBox(height: 12),
-          OutlinedButton.icon(
+          AppSecondaryButton(
             onPressed: () => _addManualItem(context),
             icon: const Icon(Icons.add),
-            label: Text(l10n.batchCostingReviewAddManualItemButton),
+            label: l10n.batchCostingReviewAddManualItemButton,
           ),
         ],
       ),
