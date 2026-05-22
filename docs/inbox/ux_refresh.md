@@ -277,6 +277,7 @@ The refreshed UI should follow a clear surface hierarchy:
 - `LIGHT_BLUE` → primary interaction and emphasis
 - `OFF_WHITE` → primary readable text
 - `MUTED_BLUE_GREY` → secondary text, inactive icons, metadata
+- status accent colors → stock/risk/status badges only, used sparingly and semantically
 
 Avoid creating one-off background colors unless a new reusable token is deliberately introduced.
 
@@ -920,7 +921,130 @@ Priority candidates:
 - support/contact button → `AppPrimaryButton` or `AppSecondaryButton` depending on screen context
 - low-emphasis links/actions → `AppTertiaryButton`
 
+
 The goal is to test the button system in practice before applying it everywhere.
+
+---
+
+# Chips & Badges
+
+The refresh should introduce reusable chip and badge components instead of relying on default Material chip styling.
+
+The Materials screen is the first clear use case.
+
+Current filter chips feel too close to default form controls and should be refined to match the new surface language.
+
+---
+
+## Component Split
+
+Filter chips and stock badges should be separate reusable components.
+
+Suggested components:
+
+- `AppFilterChip`
+- `StockStatusBadge`
+
+They may share internal styling primitives, but they represent different semantics:
+
+- filter chips are interactive controls
+- stock badges are informational status indicators
+
+Avoid creating one overloaded component that handles both jobs.
+
+---
+
+## AppFilterChip
+
+Used for:
+- material type filters
+- stock state filters
+- future segmented filtering/grouping controls
+
+Inactive state:
+- visually recedes
+- uses a filled muted surface
+- uses `CARD_BACKGROUND` or a very close derived surface color
+- uses subtle border treatment, likely `NAV_BAR_BORDER`
+- uses muted/off-white text
+- avoids dominant white outlines
+
+Active state:
+- clearly selected
+- visually connects to the refreshed blue accent system
+- uses `LIGHT_BLUE` as the primary accent reference
+- may use a subtle blue tint/fill
+- may use stronger text/icon contrast
+- should not become neon or glossy
+
+The component should preserve compact readability without feeling cramped.
+
+---
+
+## StockStatusBadge
+
+Used for:
+- `In stock`
+- `Low stock`
+- `Out of stock`
+
+These badges are informational, not interactive.
+
+They should be visually distinct from filter chips.
+
+### In Stock
+
+Visual direction:
+- restrained green tinted surface
+- subtle border
+- readable green text
+- premium/tooling feel rather than game-style saturation
+
+### Low Stock
+
+Visual direction:
+- muted amber/orange tinted surface
+- amber/orange text
+- subtle border
+- noticeable but restrained
+
+### Out Of Stock
+
+Visual direction:
+- muted/dimmed surface
+- low-emphasis text
+- should immediately communicate reduced availability
+
+---
+
+## Shared Chip/Badge Rules
+
+Both chip and badge components should:
+- use Inter typography
+- share the radius system
+- align with the card/surface hierarchy
+- avoid hardcoded one-off styling
+- avoid oversized padding
+- remain compact but readable
+
+Avoid:
+- default Material chip styling
+- harsh white borders
+- glossy effects
+- neon fills
+- ad-hoc per-screen badge colors
+
+---
+
+## Initial Implementation Targets
+
+Priority targets:
+- Materials filter chips
+- Materials stock status badges
+
+Do not change filtering behavior or stock logic.
+
+This is a visual/component extraction task only.
 
 ---
 
@@ -1033,6 +1157,8 @@ Potential reusable components:
 - `AppPrimaryButton` — filled primary CTA using the refreshed blue action treatment
 - `AppSecondaryButton` — transparent outlined button with blue border/text
 - `AppTertiaryButton` — text-only low-emphasis action button
+- `AppFilterChip` — reusable interactive filter chip for material/stock filters
+- `StockStatusBadge` — reusable informational status badge for stock state display
 - `AppBottomNavigation`
 - `SectionHeader`
 - `AppMetricRow`
