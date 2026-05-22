@@ -45,7 +45,7 @@ class HistoryPage extends HookConsumerWidget {
 
     if (mode == HistoryPageMode.teaser) {
       final isPremium = ref.watch(isPremiumProvider);
-      return HistoryTeaserState(
+      return HistoryTeaser(
         onUpgradePressed: () => _showTeaserPaywall(
           context,
           ref: ref,

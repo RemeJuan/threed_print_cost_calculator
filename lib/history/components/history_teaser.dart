@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
-class HistoryTeaserState extends StatelessWidget {
-  const HistoryTeaserState({
+class HistoryTeaser extends StatelessWidget {
+  const HistoryTeaser({
     super.key,
     required this.onUpgradePressed,
     required this.onExportPreviewPressed,
@@ -41,6 +42,7 @@ class HistoryTeaserState extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 AppSurfaceCard(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 0),
                   child: ListTile(
                     key: const ValueKey<String>('history.export.preview.entry'),
                     leading: const Icon(Icons.upload_file_outlined),
@@ -57,10 +59,10 @@ class HistoryTeaserState extends StatelessWidget {
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: AppSecondaryButton(
+                    label: l10n.historyTeaserCta,
                     key: const ValueKey<String>('history.teaser.cta'),
                     onPressed: onUpgradePressed,
-                    child: Text(l10n.historyTeaserCta),
                   ),
                 ),
               ],
