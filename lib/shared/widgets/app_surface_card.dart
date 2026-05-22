@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class AppSurfaceCard extends StatelessWidget {
   const AppSurfaceCard({
     super.key,
     required this.child,
-    this.padding = const EdgeInsets.all(16),
+    this.padding = const EdgeInsets.all(kAppSpace16),
     this.margin,
     this.backgroundColor = CARD_BACKGROUND,
-    this.borderRadius = 8,
+    this.borderRadius = kAppSurfaceRadius,
     this.elevation = 0,
     this.width,
   });

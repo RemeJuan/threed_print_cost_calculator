@@ -26,9 +26,9 @@ class AppPrimaryButton extends StatelessWidget {
       onPressed: enabled ? onPressed : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: LIGHT_BLUE,
-        foregroundColor: Colors.white,
+        foregroundColor: TEXT_INVERSE,
         disabledBackgroundColor: LIGHT_BLUE.withValues(alpha: 0.4),
-        disabledForegroundColor: Colors.white.withValues(alpha: 0.5),
+        disabledForegroundColor: TEXT_INVERSE.withValues(alpha: 0.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(_kButtonRadius),
         ),
@@ -40,7 +40,7 @@ class AppPrimaryButton extends StatelessWidget {
         icon: icon,
         label: label,
         loading: loading,
-        activeColor: Colors.white,
+        activeColor: TEXT_INVERSE,
       ),
     );
   }

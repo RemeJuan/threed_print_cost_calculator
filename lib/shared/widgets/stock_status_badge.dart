@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 const _badgeColors = {
-  StockStatus.inStock: Color(0xFF2E7D32),
-  StockStatus.lowStock: Color(0xFFE65100),
-  StockStatus.outOfStock: Color(0xFF616161),
-  StockStatus.noTracking: Color(0xFF546E7A),
+  StockStatus.inStock: STATUS_SUCCESS,
+  StockStatus.lowStock: STATUS_WARNING,
+  StockStatus.outOfStock: STATUS_NEUTRAL,
+  StockStatus.noTracking: STATUS_INFO,
 };
 
 class StockStatusBadge extends StatelessWidget {
@@ -23,10 +25,10 @@ class StockStatusBadge extends StatelessWidget {
     final baseColor = _badgeColors[status]!;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: kAppSpace8, vertical: 4),
       decoration: BoxDecoration(
         color: baseColor.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(kAppBadgeRadius),
         border: Border.all(
           color: baseColor.withValues(alpha: 0.4),
           width: 1,
@@ -34,9 +36,8 @@ class StockStatusBadge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: TextStyle(
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: baseColor,
-          fontSize: 11,
           fontWeight: FontWeight.w600,
         ),
       ),

@@ -35,19 +35,19 @@ ThemeData theme() {
       elevation: 0,
       titleTextStyle: themeData.textTheme.headlineSmall,
       scrolledUnderElevation: 0,
-      surfaceTintColor: Colors.transparent,
+      surfaceTintColor: TRANSPARENT_COLOR,
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: SHELL_BACKGROUND,
       selectedItemColor: LIGHT_BLUE,
-      unselectedItemColor: Colors.white54,
+      unselectedItemColor: ICON_MUTED,
     ),
     dialogTheme: const DialogThemeData(backgroundColor: SHELL_BACKGROUND),
     segmentedButtonTheme: SegmentedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) return LIGHT_BLUE;
-          return Colors.transparent;
+          return TRANSPARENT_COLOR;
         }),
         foregroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) return DEEP_BLUE;
