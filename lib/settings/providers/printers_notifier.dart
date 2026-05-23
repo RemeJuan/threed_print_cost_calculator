@@ -19,6 +19,18 @@ class PrintersNotifier extends Notifier<PrinterState> {
   PrintersRepository get _printersRepository =>
       ref.read(printersRepositoryProvider);
 
+  FieldValidationError? validateName(String? value) {
+    return validateRequiredText(value);
+  }
+
+  FieldValidationError? validateBedSize(String? value) {
+    return validatePrinterBedSize(value);
+  }
+
+  FieldValidationError? validateWattage(String? value) {
+    return validatePositiveNumber(value);
+  }
+
   Future<void> init(String? key) async {
     if (key != null) {
       final printer = await _printersRepository.getPrinterById(key);
@@ -43,7 +55,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
   }
 
   Future<bool> submit(String? dbRef) async {
-    if (!_isValidForSubmit) {
+    if (!isValidForSubmit) {
       return false;
     }
 
@@ -60,9 +72,9 @@ class PrintersNotifier extends Notifier<PrinterState> {
     return true;
   }
 
-  bool get _isValidForSubmit {
-    return validateRequiredText(state.name.value) == null &&
-        validatePrinterBedSize(state.bedSize.value) == null &&
-        validatePositiveNumber(state.wattage.value) == null;
+  bool get isValidForSubmit {
+    return validateName(state.name.value) == null &&
+        validateBedSize(state.bedSize.value) == null &&
+        validateWattage(state.wattage.value) == null;
   }
 }
