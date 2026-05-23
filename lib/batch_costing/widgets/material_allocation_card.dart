@@ -54,6 +54,10 @@ class MaterialAllocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final visibleIndices = <int>[
+      for (var index = 0; index < allocations.length; index += 1)
+        if (allocations[index].targetId.isNotEmpty) index,
+    ];
     return AppSurfaceCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,17 +76,29 @@ class MaterialAllocationCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: kAppSpace8),
-          for (var index = 0; index < allocations.length; index += 1) ...[
-            MaterialAllocationRow(
-              title: _materialName(allocations[index].targetId),
-              subtitle: null,
-              copies: allocations[index].quantity,
-              onRemove: allocations.length > 1
-                  ? () => onSetAllocations([...allocations]..removeAt(index))
-                  : null,
-            ),
-            if (index != allocations.length - 1) const SizedBox(height: kAppSpace12),
+          if (visibleIndices.isNotEmpty) ...[
+            const SizedBox(height: kAppSpace8),
+            for (
+              var visibleIndex = 0;
+              visibleIndex < visibleIndices.length;
+              visibleIndex += 1
+            ) ...[
+              MaterialAllocationRow(
+                title: _materialName(
+                  allocations[visibleIndices[visibleIndex]].targetId,
+                ),
+                subtitle: null,
+                copies: allocations[visibleIndices[visibleIndex]].quantity,
+                onRemove: visibleIndices.length > 1
+                    ? () => onSetAllocations(
+                        [...allocations]
+                          ..removeAt(visibleIndices[visibleIndex]),
+                      )
+                    : null,
+              ),
+              if (visibleIndex != visibleIndices.length - 1)
+                const SizedBox(height: kAppSpace12),
+            ],
           ],
           const SizedBox(height: kAppSpace12),
           AppSecondaryButton(

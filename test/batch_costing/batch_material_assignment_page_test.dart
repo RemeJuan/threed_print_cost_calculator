@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_p
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allocation_row.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -82,6 +83,64 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('PLA Red'), findsOneWidget);
+  });
+
+  testWidgets('per-item cards hide placeholder and show selected rows', (
+    tester,
+  ) async {
+    final notifier = _FakeBatchCostingNotifier(items);
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchMaterialAssignmentPage)),
+    )!;
+    await tester.tap(
+      find.descendant(
+        of: find.byType(SegmentedButton<BatchMaterialAssignmentMode>),
+        matching: find.text(l10n.batchCostingMaterialAssignmentPerItemMode),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MaterialAllocationRow), findsNothing);
+    expect(find.text('×1'), findsNothing);
+
+    notifier.setItemMaterialId('item-1', 'm1');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MaterialAllocationRow), findsNWidgets(1));
+    expect(find.text('PLA Red'), findsOneWidget);
+    expect(find.text('×2'), findsOneWidget);
+  });
+
+  testWidgets('split material cards show multiple removable rows', (
+    tester,
+  ) async {
+    final notifier = _FakeBatchCostingNotifier(items);
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+    await tester.pumpAndSettle();
+
+    notifier.setMaterialAssignmentMode(BatchMaterialAssignmentMode.perItem);
+    notifier.setItemMaterialAllocations('item-1', [
+      const BatchAssignmentAllocation(targetId: 'm1', quantity: 1),
+      const BatchAssignmentAllocation(targetId: 'm2', quantity: 1),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MaterialAllocationRow), findsNWidgets(2));
+    expect(find.text('PLA Red'), findsOneWidget);
+    expect(find.text('PLA Blue'), findsOneWidget);
+    expect(find.text('×1'), findsNWidgets(2));
+    expect(find.byIcon(Icons.remove_circle_outline), findsNWidgets(2));
   });
 
   testWidgets('stock warning appears and continue still works', (tester) async {

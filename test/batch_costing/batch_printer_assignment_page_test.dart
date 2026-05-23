@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignm
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allocation_row.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -86,6 +87,72 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Printer 1'), findsOneWidget);
+  });
+
+  testWidgets('per-item cards hide placeholder and show selected rows', (
+    tester,
+  ) async {
+    final notifier = _FakeBatchCostingNotifier(items);
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      printersStreamProvider.overrideWith(
+        (ref) => Stream.value([printer('p1', 'Printer 1')]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPrinterAssignmentPage)),
+    )!;
+    await tester.tap(
+      find.descendant(
+        of: find.byType(SegmentedButton<BatchPrinterAssignmentMode>),
+        matching: find.text(l10n.batchCostingPrinterAssignmentPerItemMode),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MaterialAllocationRow), findsNothing);
+    expect(find.text('×1'), findsNothing);
+
+    notifier.setItemPrinterId('item-1', 'p1');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MaterialAllocationRow), findsNWidgets(1));
+    expect(find.text('Printer 1'), findsOneWidget);
+    expect(find.text('×3'), findsOneWidget);
+  });
+
+  testWidgets('split printer cards show multiple removable rows', (
+    tester,
+  ) async {
+    final notifier = _FakeBatchCostingNotifier(items);
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      printersStreamProvider.overrideWith(
+        (ref) => Stream.value([
+          printer('p1', 'Printer 1'),
+          printer('p2', 'Printer 2'),
+        ]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+    await tester.pumpAndSettle();
+
+    notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.perItem);
+    notifier.setItemPrinterAllocations('item-1', [
+      const BatchAssignmentAllocation(targetId: 'p1', quantity: 1),
+      const BatchAssignmentAllocation(targetId: 'p2', quantity: 2),
+    ]);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MaterialAllocationRow), findsNWidgets(2));
+    expect(find.text('Printer 1'), findsOneWidget);
+    expect(find.text('Printer 2'), findsOneWidget);
+    expect(find.text('×1'), findsOneWidget);
+    expect(find.text('×2'), findsOneWidget);
+    expect(find.byIcon(Icons.remove_circle_outline), findsNWidgets(2));
   });
 }
 

@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_anchor_
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_assignment_page_shell.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searchable_selector.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_split_copies_dialog.dart';
+import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allocation_row.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -126,8 +127,6 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                             item: item,
                             allocations: allocations,
                             printers: printers,
-                            printerLabel:
-                                l10n.batchCostingAssignmentPrinterLabel,
                             onSetAllocations: (updated) => ref
                                 .read(batchCostingProvider.notifier)
                                 .setItemPrinterAllocations(item.id, updated),
@@ -238,14 +237,12 @@ class _PrinterAllocationCard extends StatelessWidget {
     required this.allocations,
     required this.printers,
     required this.onSetAllocations,
-    required this.printerLabel,
   });
 
   final BatchCostingItem item;
   final List<BatchAssignmentAllocation> allocations;
   final List<PrinterModel> printers;
   final void Function(List<BatchAssignmentAllocation>) onSetAllocations;
-  final String printerLabel;
 
   Future<void> _openSplitCopiesDialog(BuildContext context) async {
     final result = await showDialog<List<BatchAssignmentAllocation>>(
@@ -264,6 +261,10 @@ class _PrinterAllocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final visibleIndices = <int>[
+      for (var index = 0; index < allocations.length; index += 1)
+        if (allocations[index].targetId.isNotEmpty) index,
+    ];
     return AppSurfaceCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -282,9 +283,30 @@ class _PrinterAllocationCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: kAppSpace8),
-          Text(printerLabel),
-          const SizedBox(height: kAppSpace8),
+          if (visibleIndices.isNotEmpty) ...[
+            const SizedBox(height: kAppSpace8),
+            for (
+              var visibleIndex = 0;
+              visibleIndex < visibleIndices.length;
+              visibleIndex += 1
+            ) ...[
+              MaterialAllocationRow(
+                title: _printerName(
+                  allocations[visibleIndices[visibleIndex]].targetId,
+                ),
+                subtitle: null,
+                copies: allocations[visibleIndices[visibleIndex]].quantity,
+                onRemove: visibleIndices.length > 1
+                    ? () => onSetAllocations(
+                        [...allocations]
+                          ..removeAt(visibleIndices[visibleIndex]),
+                      )
+                    : null,
+              ),
+              if (visibleIndex != visibleIndices.length - 1)
+                const SizedBox(height: kAppSpace12),
+            ],
+          ],
           AppSecondaryButton(
             onPressed: () => _openSplitCopiesDialog(context),
             icon: const Icon(Icons.tune),
@@ -293,5 +315,12 @@ class _PrinterAllocationCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _printerName(String targetId) {
+    for (final printer in printers) {
+      if (printer.id == targetId) return printer.name;
+    }
+    return targetId;
   }
 }
