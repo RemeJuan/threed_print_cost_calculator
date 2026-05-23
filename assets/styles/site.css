@@ -1,15 +1,18 @@
 :root {
-  --color-bg: #0d0d17;
-  --color-bg-soft: #1a1c2b;
-  --color-card: #07091a;
-  --color-border: rgba(255, 255, 255, 0.18);
-  --color-text: #ffffff;
-  --color-text-muted: rgba(255, 255, 255, 0.68);
-  --color-accent: #5499fe;
+  --app-background: #010710;
+  --shell-background: #040C1A;
+  --card-background: #0A1625;
+  --shell-border: #0F1929;
+  --result-surface: #131B31;
+  --light-blue: #5499FE;
+  --off-white: #E6E9F0;
+  --muted-blue-grey: #929CB0;
+  --dark-blue: #1A1C2B;
+  --deep-blue: #0D0D17;
+
   --max-width: 1100px;
   --radius-lg: 20px;
   --radius-md: 14px;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   font-feature-settings: 'liga' 1, 'calt' 1;
@@ -17,6 +20,17 @@
 
 @supports (font-variation-settings: normal) {
   :root { font-family: InterVariable, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+}
+
+/* Legacy variable aliases — update usage to new names over time */
+* {
+  --color-bg: var(--app-background);
+  --color-bg-soft: var(--shell-background);
+  --color-card: var(--card-background);
+  --color-border: var(--shell-border);
+  --color-text: var(--off-white);
+  --color-text-muted: var(--muted-blue-grey);
+  --color-accent: var(--light-blue);
 }
 
 * {
@@ -32,8 +46,8 @@ body {
   color: var(--color-text);
   line-height: 1.5;
   background:
-    radial-gradient(circle at top right, rgba(84, 153, 254, 0.2), transparent 40%),
-    linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 100%);
+    radial-gradient(circle at top left, rgba(84, 153, 254, 0.12), transparent 40%),
+    linear-gradient(135deg, var(--app-background) 0%, var(--shell-background) 40%, var(--shell-border) 100%);
 }
 
 a {
@@ -49,9 +63,8 @@ img {
   position: sticky;
   top: 0;
   z-index: 20;
-  backdrop-filter: blur(12px);
-  background: rgba(13, 13, 23, 0.75);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--shell-background);
+  border-bottom: 1px solid var(--shell-border);
 }
 
 .nav {
@@ -98,10 +111,10 @@ img {
   gap: 0.25rem;
   width: 44px;
   height: 44px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: 10px;
   padding: 0.45rem;
-  background: rgba(7, 9, 26, 0.9);
+  background: var(--card-background);
   cursor: pointer;
 }
 
@@ -118,9 +131,9 @@ img {
 
 .mobile-drawer a {
   text-decoration: none;
-  background: rgba(7, 9, 26, 0.95);
+  background: var(--card-background);
   color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: 10px;
   padding: 0.65rem 0.8rem;
 }
@@ -145,7 +158,7 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1.1fr 0.5fr;
   gap: 2rem;
   align-items: center;
   padding: 3.5rem 0 2rem;
@@ -208,16 +221,16 @@ main {
 }
 
 .hero-card {
-  background: linear-gradient(180deg, rgba(26, 28, 43, 0.95) 0%, rgba(7, 9, 26, 0.95) 100%);
+  background: var(--shell-background);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--shell-border);
+  box-shadow: 0 0 40px rgba(84, 153, 254, 0.06);
   padding: 1rem;
+  width: min(100%, 320px);
 }
 
 .hero-card img {
   border-radius: 14px;
-  width: min(100%, 320px);
   margin: 0 auto;
 }
 
@@ -260,9 +273,9 @@ main {
 }
 
 .card {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: var(--radius-md);
-  background: rgba(7, 9, 26, 0.85);
+  background: var(--shell-background);
   padding: 1rem;
 }
 
@@ -307,7 +320,7 @@ main {
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   padding: 0.35rem 0.7rem;
   font-size: 0.8rem;
   font-weight: 700;
@@ -354,8 +367,8 @@ main {
   margin: 0;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  background: var(--color-card);
+  border: 1px solid var(--shell-border);
+  background: var(--card-background);
 }
 
 .screenshots img {
@@ -371,11 +384,11 @@ main {
 }
 
 .faq details {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: 12px;
   padding: 0.8rem 1rem;
   margin-bottom: 0.75rem;
-  background: rgba(7, 9, 26, 0.75);
+  background: var(--shell-background);
 }
 
 .faq summary {
@@ -385,10 +398,10 @@ main {
 
 .cta {
   margin-top: 3rem;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: var(--radius-lg);
   padding: 1.3rem;
-  background: linear-gradient(130deg, rgba(84, 153, 254, 0.25), rgba(7, 9, 26, 0.95));
+  background: var(--shell-background);
 }
 
 .cta-note {
@@ -398,7 +411,7 @@ main {
 
 .footer {
   margin-top: 3rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--shell-border);
   padding-top: 1.2rem;
   color: var(--color-text-muted);
   font-size: 0.92rem;
@@ -489,9 +502,9 @@ main {
 }
 
 .markdown-content {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: var(--radius-md);
-  background: rgba(7, 9, 26, 0.75);
+  background: var(--card-background);
   padding: 1rem 1.2rem;
 }
 
@@ -510,7 +523,7 @@ main {
 
 .markdown-content code {
   background: rgba(84, 153, 254, 0.12);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--shell-border);
   border-radius: 6px;
   padding: 0.1rem 0.35rem;
 }
