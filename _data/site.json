@@ -20,6 +20,11 @@
       "label": "Mastodon",
       "href": "https://mastodon.social/@printcostcalc",
       "rel": "me noopener noreferrer"
+    },
+    {
+      "label": "Threads",
+      "href": "https://www.threads.net/@3dprintcostcalculator",
+      "rel": "noopener noreferrer"
     }
   ],
   "copyright": "© 2026 3D Print Cost Calculator"
