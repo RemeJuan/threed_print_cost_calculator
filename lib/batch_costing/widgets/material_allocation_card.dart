@@ -96,8 +96,6 @@ class MaterialAllocationCard extends StatelessWidget {
                       )
                     : null,
               ),
-              if (visibleIndex != visibleIndices.length - 1)
-                const SizedBox(height: kAppSpace12),
             ],
           ],
           const SizedBox(height: kAppSpace12),
