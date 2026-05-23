@@ -1,7 +1,7 @@
 {
   "name": "3D Print Cost Calculator",
   "description": "Calculate the true cost of your 3D prints with filament, electricity, failure risk, labour, and overhead.",
-  "logoWebp": "assets/logo/play_store_feature.webp",
+  "logoWebp": "assets/logo/app_icon.webp",
   "supportEmail": "3d@printcostcalc.app",
   "appStoreUrl": "https://apps.apple.com/us/app/3d-printer-cost-calculator/id6444106268",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=com.threed_print_calculator",
