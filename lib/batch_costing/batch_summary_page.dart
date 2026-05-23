@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_flow_reset.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_quote_save_service.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary_calculator.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
@@ -411,8 +412,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     final confirmed = await showStartNewBatchDialog(context);
     if (!confirmed) return;
     if (!context.mounted) return;
-    ref.read(batchCostingProvider.notifier).reset();
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    await resetBatchFlow(context, ref);
   }
 
   String _lineTotalWithQuantity(
