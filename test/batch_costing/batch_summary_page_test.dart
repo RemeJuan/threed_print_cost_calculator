@@ -1,11 +1,20 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_material_assignment_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import '../helpers/helpers.dart';
 
@@ -63,6 +72,138 @@ void main() {
     expect(find.text('Share'), findsNothing);
     expect(find.text('History'), findsNothing);
   });
+
+  testWidgets('start new batch clears gcode stack and returns home', (
+    tester,
+  ) async {
+    const openBatchLabel = 'Open batch';
+
+    await tester.pumpApp(const _BatchFlowHomeHarness(), [
+      batchCostingProvider.overrideWith(() => _SummaryBatchCostingNotifier()),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    await tester.tap(find.text(openBatchLabel));
+    await tester.pumpAndSettle();
+
+    unawaited(
+      Navigator.of(tester.element(find.byType(BatchCostingPage))).push(
+        MaterialPageRoute<void>(builder: (_) => const BatchGCodeImportPage()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    unawaited(
+      Navigator.of(tester.element(find.byType(BatchGCodeImportPage))).push(
+        MaterialPageRoute<void>(
+          builder: (_) => const BatchPrinterAssignmentPage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    unawaited(
+      Navigator.of(
+        tester.element(find.byType(BatchPrinterAssignmentPage)),
+      ).push(
+        MaterialPageRoute<void>(
+          builder: (_) => const BatchMaterialAssignmentPage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    unawaited(
+      Navigator.of(
+        tester.element(find.byType(BatchMaterialAssignmentPage)),
+      ).push(
+        MaterialPageRoute<void>(builder: (_) => const BatchPricingScopePage()),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    unawaited(
+      Navigator.of(
+        tester.element(find.byType(BatchPricingScopePage)),
+      ).push(MaterialPageRoute<void>(builder: (_) => const BatchSummaryPage())),
+    );
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchSummaryPage)),
+    )!;
+
+    expect(
+      find.byType(BatchGCodeImportPage, skipOffstage: false),
+      findsOneWidget,
+    );
+    expect(
+      find.byType(BatchPrinterAssignmentPage, skipOffstage: false),
+      findsOneWidget,
+    );
+    expect(
+      find.byType(BatchMaterialAssignmentPage, skipOffstage: false),
+      findsOneWidget,
+    );
+    expect(
+      find.byType(BatchPricingScopePage, skipOffstage: false),
+      findsOneWidget,
+    );
+    expect(find.byType(BatchSummaryPage, skipOffstage: false), findsOneWidget);
+
+    await tester.scrollUntilVisible(find.byType(AppSecondaryButton), 200);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(AppSecondaryButton).last);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(AppPrimaryButton).last);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byType(BatchGCodeImportPage, skipOffstage: false),
+      findsNothing,
+    );
+    expect(
+      find.byType(BatchPrinterAssignmentPage, skipOffstage: false),
+      findsNothing,
+    );
+    expect(
+      find.byType(BatchMaterialAssignmentPage, skipOffstage: false),
+      findsNothing,
+    );
+    expect(
+      find.byType(BatchPricingScopePage, skipOffstage: false),
+      findsNothing,
+    );
+    expect(find.byType(BatchSummaryPage, skipOffstage: false), findsNothing);
+    expect(find.byType(BatchCostingPage), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    expect(find.text(openBatchLabel), findsOneWidget);
+    expect(find.byType(BatchCostingPage), findsNothing);
+    expect(find.byType(BatchSummaryPage), findsNothing);
+  });
+}
+
+class _BatchFlowHomeHarness extends StatelessWidget {
+  const _BatchFlowHomeHarness();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()),
+          );
+        },
+        child: const Text('Open batch'),
+      ),
+    );
+  }
 }
 
 class _EmptyBatchCostingNotifier extends BatchCostingNotifier {

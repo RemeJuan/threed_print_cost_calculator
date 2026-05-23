@@ -45,6 +45,52 @@ void main() {
     expect(find.text('Benchy'), findsNothing);
   });
 
+  testWidgets('start new batch resets stack and returns home', (tester) async {
+    const openBatchLabel = 'Open batch';
+
+    final item = BatchCostingItem.manual(
+      id: 'item-1',
+      displayName: 'Benchy',
+      quantity: 2,
+      printWeightG: 34.5,
+      printDuration: const Duration(hours: 1, minutes: 20),
+      sourceFileName: 'benchy.gcode',
+    );
+
+    await tester.pumpApp(const _BatchFlowHomeHarness(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier([item]),
+      ),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    await tester.tap(find.text(openBatchLabel));
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    expect(find.text('Benchy'), findsOneWidget);
+
+    await tester.tap(find.text(l10n.batchCostingSummaryStartNewBatchButton));
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.text(l10n.batchCostingSummaryStartNewBatchButton).last,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
+    expect(find.byType(BatchCostingPage), findsOneWidget);
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
+
+    expect(find.text(openBatchLabel), findsOneWidget);
+    expect(find.byType(BatchCostingPage), findsNothing);
+  });
+
   testWidgets('adds edits and removes manual items', (tester) async {
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(
@@ -343,6 +389,24 @@ void main() {
 
     expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
   });
+}
+
+class _BatchFlowHomeHarness extends StatelessWidget {
+  const _BatchFlowHomeHarness();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const BatchCostingPage()),
+          );
+        },
+        child: const Text('Open batch'),
+      ),
+    );
+  }
 }
 
 class _FakeBatchCostingNotifier extends BatchCostingNotifier {
