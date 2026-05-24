@@ -3,9 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_flow_reset.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_pricing_formatter.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_quote_save_service.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary_calculator.dart';
-import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -117,7 +117,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               _pricingRow(
                 context,
                 label: l10n.failureRiskLabel,
-                value: _pricingSummary(
+                value: formatPricingSummary(
                   summary.failureRisk.value,
                   summary.failureRisk.scope,
                   summary.totalQuantity,
@@ -131,7 +131,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               _pricingRow(
                 context,
                 label: l10n.pricingMarkupPercentLabel,
-                value: _pricingSummary(
+                value: formatPricingSummary(
                   summary.markupPercent.value,
                   summary.markupPercent.scope,
                   summary.totalQuantity,
@@ -145,7 +145,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               _pricingRow(
                 context,
                 label: l10n.labourRateLabel,
-                value: _pricingSummary(
+                value: formatPricingSummary(
                   summary.labourRate.value,
                   summary.labourRate.scope,
                   summary.totalQuantity,
@@ -157,7 +157,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               _pricingRow(
                 context,
                 label: l10n.additionalCostLabel,
-                value: _pricingSummary(
+                value: formatPricingSummary(
                   state.pricing.additionalCostAmount.value,
                   state.pricing.additionalCostAmount.scope,
                   summary.totalQuantity,
@@ -356,56 +356,6 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
 
   Widget _summaryRow(BuildContext context, String label, String value) {
     return _pricingRow(context, label: label, value: value);
-  }
-
-  String _pricingSummary(
-    String value,
-    BatchPricingScope scope,
-    int totalQuantity,
-    AppLocalizations l10n,
-    GeneralSettingsModel currencySettings, {
-    bool isPercent = false,
-    num monetaryImpact = 0,
-  }) {
-    if (value.isEmpty) return '';
-    final parsed = double.tryParse(value.replaceAll(',', '.')) ?? 0;
-
-    if (isPercent) {
-      final formattedValue = '$value%';
-      final formattedImpact = formatCurrencyValue(
-        monetaryImpact,
-        currencySymbol: currencySettings.currencySymbol,
-        currencyPosition: currencySettings.currencyPosition,
-        currencySpacing: currencySettings.currencySpacing,
-      );
-      if (scope == BatchPricingScope.batch) {
-        return '$formattedValue → $formattedImpact';
-      }
-      return l10n.batchCostingSummaryPricingItemScopeFormat(
-        formattedImpact,
-        formattedValue,
-      );
-    }
-
-    final formattedValue = formatCurrencyValue(
-      parsed,
-      currencySymbol: currencySettings.currencySymbol,
-      currencyPosition: currencySettings.currencyPosition,
-      currencySpacing: currencySettings.currencySpacing,
-    );
-    if (scope == BatchPricingScope.batch) return formattedValue;
-
-    final lineTotalValue = parsed * totalQuantity;
-    final formattedLineTotal = formatCurrencyValue(
-      lineTotalValue,
-      currencySymbol: currencySettings.currencySymbol,
-      currencyPosition: currencySettings.currencyPosition,
-      currencySpacing: currencySettings.currencySpacing,
-    );
-    return l10n.batchCostingSummaryPricingItemScopeFormat(
-      formattedLineTotal,
-      formattedValue,
-    );
   }
 
   Future<void> _showStartNewBatchDialog(BuildContext context) async {

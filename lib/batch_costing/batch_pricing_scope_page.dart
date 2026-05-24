@@ -25,6 +25,28 @@ class BatchPricingScopePage extends ConsumerStatefulWidget {
       _BatchPricingScopePageState();
 }
 
+class _PricingField {
+  _PricingField({
+    required this.label,
+    required this.controller,
+    required this.focusNode,
+    required this.value,
+    required this.scope,
+    required this.onValueChanged,
+    required this.onScopeChanged,
+    required this.validator,
+  });
+
+  final String label;
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final String value;
+  final BatchPricingScope scope;
+  final ValueChanged<String> onValueChanged;
+  final ValueChanged<BatchPricingScope> onScopeChanged;
+  final FormFieldValidator<String> validator;
+}
+
 class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _failureRiskController;
@@ -62,14 +84,22 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
 
   @override
   void dispose() {
-    _failureRiskController.dispose();
-    _markupPercentController.dispose();
-    _labourRateController.dispose();
-    _additionalCostController.dispose();
-    _failureRiskFocus.dispose();
-    _markupPercentFocus.dispose();
-    _labourRateFocus.dispose();
-    _additionalCostFocus.dispose();
+    for (final c in [
+      _failureRiskController,
+      _markupPercentController,
+      _labourRateController,
+      _additionalCostController,
+    ]) {
+      c.dispose();
+    }
+    for (final f in [
+      _failureRiskFocus,
+      _markupPercentFocus,
+      _labourRateFocus,
+      _additionalCostFocus,
+    ]) {
+      f.dispose();
+    }
     super.dispose();
   }
 
@@ -106,6 +136,49 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
 
+    final fields = <_PricingField>[
+      _PricingField(
+        label: l10n.failureRiskLabel,
+        controller: _failureRiskController,
+        focusNode: _failureRiskFocus,
+        value: state.pricing.failureRisk.value,
+        scope: state.pricing.failureRisk.scope,
+        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setFailureRisk(v),
+        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setFailureRiskScope(s),
+        validator: _percentValidator(l10n),
+      ),
+      _PricingField(
+        label: l10n.pricingMarkupPercentLabel,
+        controller: _markupPercentController,
+        focusNode: _markupPercentFocus,
+        value: state.pricing.markupPercent.value,
+        scope: state.pricing.markupPercent.scope,
+        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setMarkupPercent(v),
+        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setMarkupPercentScope(s),
+        validator: _percentValidator(l10n),
+      ),
+      _PricingField(
+        label: l10n.labourRateLabel,
+        controller: _labourRateController,
+        focusNode: _labourRateFocus,
+        value: state.pricing.labourRate.value,
+        scope: state.pricing.labourRate.scope,
+        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setLabourRate(v),
+        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setLabourRateScope(s),
+        validator: _amountValidator(l10n),
+      ),
+      _PricingField(
+        label: l10n.additionalCostLabel,
+        controller: _additionalCostController,
+        focusNode: _additionalCostFocus,
+        value: state.pricing.additionalCostAmount.value,
+        scope: state.pricing.additionalCostAmount.scope,
+        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setAdditionalCostAmount(v),
+        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setAdditionalCostAmountScope(s),
+        validator: _amountValidator(l10n),
+      ),
+    ];
+
     return Scaffold(
       appBar: AppScreenHeader(
         title: l10n.batchCostingPricingScopeAppBarTitle,
@@ -128,78 +201,20 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        _pricingFieldCard(
-                          context: context,
-                          label: l10n.failureRiskLabel,
-                          controller: _failureRiskController,
-                          focusNode: _failureRiskFocus,
-                          value: state.pricing.failureRisk.value,
-                          scope: state.pricing.failureRisk.scope,
-                          onValueChanged: (value) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setFailureRisk(value),
-                          onScopeChanged: (scope) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setFailureRiskScope(scope),
-                          validator: _percentValidator(l10n),
-                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
-                          scopeBatchLabel:
-                              l10n.batchCostingPricingScopeBatchMode,
-                        ),
-                        _pricingFieldCard(
-                          context: context,
-                          label: l10n.pricingMarkupPercentLabel,
-                          controller: _markupPercentController,
-                          focusNode: _markupPercentFocus,
-                          value: state.pricing.markupPercent.value,
-                          scope: state.pricing.markupPercent.scope,
-                          onValueChanged: (value) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setMarkupPercent(value),
-                          onScopeChanged: (scope) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setMarkupPercentScope(scope),
-                          validator: _percentValidator(l10n),
-                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
-                          scopeBatchLabel:
-                              l10n.batchCostingPricingScopeBatchMode,
-                        ),
-                        _pricingFieldCard(
-                          context: context,
-                          label: l10n.labourRateLabel,
-                          controller: _labourRateController,
-                          focusNode: _labourRateFocus,
-                          value: state.pricing.labourRate.value,
-                          scope: state.pricing.labourRate.scope,
-                          onValueChanged: (value) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setLabourRate(value),
-                          onScopeChanged: (scope) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setLabourRateScope(scope),
-                          validator: _amountValidator(l10n),
-                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
-                          scopeBatchLabel:
-                              l10n.batchCostingPricingScopeBatchMode,
-                        ),
-                        _pricingFieldCard(
-                          context: context,
-                          label: l10n.additionalCostLabel,
-                          controller: _additionalCostController,
-                          focusNode: _additionalCostFocus,
-                          value: state.pricing.additionalCostAmount.value,
-                          scope: state.pricing.additionalCostAmount.scope,
-                          onValueChanged: (value) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setAdditionalCostAmount(value),
-                          onScopeChanged: (scope) => ref
-                              .read(batchCostingProvider.notifier)
-                              .setAdditionalCostAmountScope(scope),
-                          validator: _amountValidator(l10n),
-                          scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
-                          scopeBatchLabel:
-                              l10n.batchCostingPricingScopeBatchMode,
-                        ),
+                        for (final f in fields)
+                          _pricingFieldCard(
+                            context: context,
+                            label: f.label,
+                            controller: f.controller,
+                            focusNode: f.focusNode,
+                            value: f.value,
+                            scope: f.scope,
+                            onValueChanged: f.onValueChanged,
+                            onScopeChanged: f.onScopeChanged,
+                            validator: f.validator,
+                            scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
+                            scopeBatchLabel: l10n.batchCostingPricingScopeBatchMode,
+                          ),
                       ],
                     ),
                   ),
@@ -320,25 +335,18 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     final pricing = ref.read(batchCostingProvider).pricing;
+    String scopeLabel(BatchPricingFieldState f) =>
+        f.scope == BatchPricingScope.item ? 'item' : 'batch';
     AppAnalytics.safeLog(
       () => AppAnalytics.batchPricingCompleted(
         hasRisk: pricing.failureRisk.value.isNotEmpty,
         hasMarkup: pricing.markupPercent.value.isNotEmpty,
         hasLabour: pricing.labourRate.value.isNotEmpty,
         hasAdditionalCost: pricing.additionalCostAmount.value.isNotEmpty,
-        riskScope: pricing.failureRisk.scope == BatchPricingScope.item
-            ? 'item'
-            : 'batch',
-        markupScope: pricing.markupPercent.scope == BatchPricingScope.item
-            ? 'item'
-            : 'batch',
-        labourScope: pricing.labourRate.scope == BatchPricingScope.item
-            ? 'item'
-            : 'batch',
-        additionalCostScope:
-            pricing.additionalCostAmount.scope == BatchPricingScope.item
-            ? 'item'
-            : 'batch',
+        riskScope: scopeLabel(pricing.failureRisk),
+        markupScope: scopeLabel(pricing.markupPercent),
+        labourScope: scopeLabel(pricing.labourRate),
+        additionalCostScope: scopeLabel(pricing.additionalCostAmount),
       ),
     );
 
