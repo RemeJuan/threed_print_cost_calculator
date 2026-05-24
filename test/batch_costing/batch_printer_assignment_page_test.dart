@@ -116,7 +116,10 @@ void main() {
     expect(find.byType(MaterialAllocationRow), findsNothing);
     expect(find.text('×1'), findsNothing);
 
-    notifier.setItemPrinterId('item-1', 'p1');
+    notifier.setItemPrinterAllocations(
+      'item-1',
+      [const BatchAssignmentAllocation(targetId: 'p1', quantity: 1)],
+    );
     await tester.pumpAndSettle();
 
     expect(find.byType(MaterialAllocationRow), findsNWidgets(1));

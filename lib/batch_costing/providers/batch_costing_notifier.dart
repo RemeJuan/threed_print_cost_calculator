@@ -47,29 +47,6 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     );
   }
 
-  void setItemPrinterId(String itemId, String? printerId) {
-    final updatedIds = Map<String, String>.from(state.itemPrinterIds);
-    if (printerId == null) {
-      updatedIds.remove(itemId);
-    } else {
-      updatedIds[itemId] = printerId;
-    }
-
-    state = state.copyWith(
-      itemPrinterIds: updatedIds,
-      itemPrinterAllocations: _replaceSingleAllocation(
-        state.itemPrinterAllocations,
-        itemId,
-        printerId == null
-            ? null
-            : BatchAssignmentAllocation(
-                targetId: printerId,
-                quantity: _itemQuantity(itemId),
-              ),
-      ),
-    );
-  }
-
   void setItemPrinterAllocations(
     String itemId,
     List<BatchAssignmentAllocation> allocations,
@@ -90,26 +67,6 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
         normalized,
       ),
     );
-  }
-
-  void addItemPrinterAllocation(String itemId) {
-    final current =
-        state.itemPrinterAllocations[itemId] ??
-        const <BatchAssignmentAllocation>[];
-    setItemPrinterAllocations(itemId, [
-      ...current,
-      const BatchAssignmentAllocation(targetId: '', quantity: 1),
-    ]);
-  }
-
-  void removeItemPrinterAllocation(String itemId, int index) {
-    final current = List<BatchAssignmentAllocation>.from(
-      state.itemPrinterAllocations[itemId] ??
-          const <BatchAssignmentAllocation>[],
-    );
-    if (index < 0 || index >= current.length) return;
-    current.removeAt(index);
-    setItemPrinterAllocations(itemId, current);
   }
 
   void setMaterialAssignmentMode(BatchMaterialAssignmentMode mode) {
@@ -161,28 +118,6 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     );
   }
 
-  void setItemMaterialId(String itemId, String? materialId) {
-    state = state.copyWith(
-      items: [
-        for (final current in state.items)
-          if (current.id == itemId)
-            current.copyWith(materialId: materialId)
-          else
-            current,
-      ],
-      itemMaterialAllocations: _replaceSingleAllocation(
-        state.itemMaterialAllocations,
-        itemId,
-        materialId == null
-            ? null
-            : BatchAssignmentAllocation(
-                targetId: materialId,
-                quantity: _itemQuantity(itemId),
-              ),
-      ),
-    );
-  }
-
   void setItemMaterialAllocations(
     String itemId,
     List<BatchAssignmentAllocation> allocations,
@@ -194,26 +129,6 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
         _normalizeAllocations(itemId, allocations),
       ),
     );
-  }
-
-  void addItemMaterialAllocation(String itemId) {
-    final current =
-        state.itemMaterialAllocations[itemId] ??
-        const <BatchAssignmentAllocation>[];
-    setItemMaterialAllocations(itemId, [
-      ...current,
-      const BatchAssignmentAllocation(targetId: '', quantity: 1),
-    ]);
-  }
-
-  void removeItemMaterialAllocation(String itemId, int index) {
-    final current = List<BatchAssignmentAllocation>.from(
-      state.itemMaterialAllocations[itemId] ??
-          const <BatchAssignmentAllocation>[],
-    );
-    if (index < 0 || index >= current.length) return;
-    current.removeAt(index);
-    setItemMaterialAllocations(itemId, current);
   }
 
   void setFailureRisk(String value) {
@@ -382,22 +297,6 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
 
   int _itemQuantity(String itemId) =>
       state.items.firstWhere((item) => item.id == itemId).quantity;
-
-  Map<String, List<BatchAssignmentAllocation>> _replaceSingleAllocation(
-    Map<String, List<BatchAssignmentAllocation>> allocations,
-    String itemId,
-    BatchAssignmentAllocation? allocation,
-  ) {
-    final updated = Map<String, List<BatchAssignmentAllocation>>.from(
-      allocations,
-    );
-    if (allocation == null) {
-      updated.remove(itemId);
-    } else {
-      updated[itemId] = [allocation];
-    }
-    return updated;
-  }
 
   Map<String, List<BatchAssignmentAllocation>> _updateAllocations(
     Map<String, List<BatchAssignmentAllocation>> allocations,
