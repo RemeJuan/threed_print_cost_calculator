@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
-import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_gcode_import_helpers.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_import_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
-import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -35,38 +34,8 @@ class BatchGCodeImportHandler {
   void markMounted() => _mounted = true;
   void markUnmounted() => _mounted = false;
 
-  static BatchCostingItem? findItemById(
-    List<BatchCostingItem> items,
-    String? id,
-  ) {
-    if (id == null) return null;
-    for (final item in items) {
-      if (item.id == id) return item;
-    }
-    return null;
-  }
-
-  static bool isDuplicate(
-    GCodePickedFile file,
-    BatchSingleImport? singleImport,
-    List<BatchImportRow> rows,
-  ) {
-    if (singleImport != null) {
-      if (file.path != null && singleImport.file.path != null) {
-        if (file.path == singleImport.file.path) return true;
-      }
-      if (file.name == singleImport.file.name) return true;
-    }
-    return rows.any((row) {
-      if (file.path != null && row.file.path != null) {
-        return file.path == row.file.path;
-      }
-      return file.name == row.file.name;
-    });
-  }
-
   void applyDetails(BatchImportRow row, void Function(VoidCallback) setState) {
-    final parsed = _parseOverrideDetails(
+    final parsed = parseImportOverrideDetails(
       existingWeight: null,
       existingDuration: null,
       missingWeight: row.missingWeight,
@@ -93,7 +62,7 @@ class BatchGCodeImportHandler {
     BatchSingleImport singleImport,
     void Function(VoidCallback) setState,
   ) {
-    final parsed = _parseOverrideDetails(
+    final parsed = parseImportOverrideDetails(
       existingWeight: singleImport.result.filamentWeightG,
       existingDuration: singleImport.result.estimatedDuration,
       missingWeight: singleImport.missingWeight,
@@ -109,32 +78,6 @@ class BatchGCodeImportHandler {
       singleImport.overrideWeightG = parsed.weight;
       singleImport.overrideDuration = parsed.duration;
     });
-  }
-
-  static _OverrideDetails? _parseOverrideDetails({
-    required double? existingWeight,
-    required Duration? existingDuration,
-    required bool missingWeight,
-    required String weightText,
-    required bool missingDuration,
-    required String durationText,
-  }) {
-    double? weight = existingWeight;
-    Duration? duration = existingDuration;
-
-    if (missingWeight) {
-      final parsed = double.tryParse(weightText);
-      if (parsed == null || parsed <= 0) return null;
-      weight = parsed;
-    }
-
-    if (missingDuration) {
-      final parsed = int.tryParse(durationText);
-      if (parsed == null || parsed <= 0) return null;
-      duration = Duration(minutes: parsed);
-    }
-
-    return _OverrideDetails(weight: weight, duration: duration);
   }
 
   void removeSingleImport(
@@ -154,38 +97,15 @@ class BatchGCodeImportHandler {
   ) {
     if (!singleImport.canContinue) return;
 
-    final importResult =
-        (singleImport.overrideWeightG != null ||
-            singleImport.overrideDuration != null)
-        ? GCodeImportResult(
-            slicer: singleImport.result.slicer,
-            estimatedDuration:
-                singleImport.overrideDuration ??
-                singleImport.result.estimatedDuration,
-            filamentLengthMm: singleImport.result.filamentLengthMm,
-            filamentWeightG:
-                singleImport.overrideWeightG ??
-                singleImport.result.filamentWeightG,
-            layerHeightMm: singleImport.result.layerHeightMm,
-            previewMetadata: singleImport.result.previewMetadata,
-            previewImageBytes: singleImport.result.previewImageBytes,
-            warnings: singleImport.result.warnings,
-            rawExtractedValues: singleImport.result.rawExtractedValues,
-            hasSafePreview: singleImport.result.hasSafePreview,
-          )
-        : singleImport.result;
+    final importResult = buildImportResult(singleImport);
 
     ref
         .read(batchCostingProvider.notifier)
         .addItem(
-          BatchCostingItem.fromGCodeImport(
+          buildCostingItem(
             id: singleImport.batchItemId,
-            displayName: singleImport.file.name,
-            quantity: 1,
-            importResult: importResult,
-            sourceFileName: singleImport.file.name,
-            sourcePath: singleImport.file.path,
-            sourceFileSizeBytes: singleImport.file.size,
+            file: singleImport.file,
+            result: importResult,
           ),
         );
 
@@ -235,7 +155,7 @@ class BatchGCodeImportHandler {
       final newFiles = <GCodePickedFile>[];
       var dupCount = 0;
       for (final file in files) {
-        if (isDuplicate(file, pageState.singleImport, pageState.rows)) {
+        if (isDuplicateFile(file, pageState.singleImport, pageState.rows)) {
           dupCount++;
         } else {
           newFiles.add(file);
@@ -339,14 +259,10 @@ class BatchGCodeImportHandler {
         }
 
         notifier.addItem(
-          BatchCostingItem.fromGCodeImport(
+          buildCostingItem(
             id: batchId,
-            displayName: file.name,
-            quantity: 1,
-            importResult: result,
-            sourceFileName: file.name,
-            sourcePath: file.path,
-            sourceFileSizeBytes: file.size,
+            file: file,
+            result: result,
           ),
         );
 
@@ -403,10 +319,4 @@ class BatchGCodeImportHandler {
       );
     }
   }
-}
-
-class _OverrideDetails {
-  const _OverrideDetails({required this.weight, required this.duration});
-  final double? weight;
-  final Duration? duration;
 }
