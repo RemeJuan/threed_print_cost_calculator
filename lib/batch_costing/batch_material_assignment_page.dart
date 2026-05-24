@@ -1,8 +1,8 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_assignment_flow.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
@@ -13,7 +13,6 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/material_allo
 import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
@@ -193,74 +192,37 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
   List<BatchAssignmentAllocation> _materialAllocationsFor(
     BatchCostingState state,
     BatchCostingItem item,
-  ) {
-    final allocations = state.itemMaterialAllocations[item.id];
-    if (allocations != null && allocations.isNotEmpty) return allocations;
-
-    final materialId = item.materialId ?? state.batchMaterialId;
-    if (materialId == null) {
-      return [const BatchAssignmentAllocation(targetId: '', quantity: 1)];
-    }
-
-    return [
-      BatchAssignmentAllocation(targetId: materialId, quantity: item.quantity),
-    ];
-  }
+  ) =>
+      batchAllocationsFor(
+        state: state,
+        item: item,
+        itemAllocations: (s) => s.itemMaterialAllocations,
+        itemFallback: (i) => i.materialId,
+        batchId: (s) => s.batchMaterialId,
+      );
 
   bool _nextEnabled(
     BatchCostingState state,
     List<MaterialModel> sortedMaterials,
-  ) {
-    if (sortedMaterials.isEmpty) return false;
-    if (state.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide) {
-      return state.batchMaterialId != null;
-    }
-    return state.items.isNotEmpty;
-  }
-
-  void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) {
-    final missing = state.items.where((item) {
-      final allocations =
-          state.itemMaterialAllocations[item.id] ??
-          const <BatchAssignmentAllocation>[];
-      return state.materialAssignmentMode ==
-              BatchMaterialAssignmentMode.batchWide
-          ? state.batchMaterialId == null
-          : allocations.isEmpty ||
-                allocations.any((allocation) => allocation.targetId.isEmpty);
-    });
-    if (missing.isNotEmpty) {
-      BotToast.showText(
-        text: AppLocalizations.of(
-          context,
-        )!.batchCostingMaterialAssignmentRequiredError,
+  ) =>
+      batchNextEnabled(
+        state: state,
+        hasData: sortedMaterials.isNotEmpty,
+        isBatchWide: (s) => s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
+        batchId: (s) => s.batchMaterialId,
       );
-      return;
-    }
 
-    final mode =
-        state.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide
-        ? 'batch'
-        : 'split';
-    final hasSplit =
-        state.materialAssignmentMode == BatchMaterialAssignmentMode.perItem &&
-        state.items.any((item) {
-          final allocs = state.itemMaterialAllocations[item.id];
-          if (allocs == null || allocs.length <= 1) return false;
-          return allocs.map((a) => a.targetId).toSet().length > 1;
-        });
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchAssignmentCompleted(
-        type: 'material',
-        mode: mode,
-        hasSplitAllocations: hasSplit,
-      ),
-    );
-
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const BatchPricingScopePage()),
-    );
-  }
+  void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) =>
+      batchContinueFlow(
+        context: context,
+        state: state,
+        isBatchWide: (s) => s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
+        itemAllocations: (s) => s.itemMaterialAllocations,
+        batchId: (s) => s.batchMaterialId,
+        errorText: (l) => l.batchCostingMaterialAssignmentRequiredError,
+        analyticsType: 'material',
+        nextPage: const BatchPricingScopePage(),
+      );
 
   double _totalRequiredWeight(BatchCostingState state) {
     return state.items.fold<double>(
