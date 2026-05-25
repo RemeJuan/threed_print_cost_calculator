@@ -98,6 +98,10 @@ platform :ios do
       src = File.join(metadata_dir, locale)
       next unless Dir.exist?(src)
       FileUtils.cp_r(src, File.join(push_dir, locale))
+      # Remove name.txt from locale dirs — ASC auto-inherits from default locale.
+      # Pushing it triggers name-conflict errors for locales added after release.
+      name_file = File.join(push_dir, locale, "name.txt")
+      FileUtils.rm(name_file) if File.exist?(name_file)
     end
     # Copy top-level files shared across all locales
     Dir.glob(File.join(metadata_dir, "*.txt")).each do |f|
