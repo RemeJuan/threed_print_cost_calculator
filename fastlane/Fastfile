@@ -76,10 +76,10 @@ platform :ios do
   desc "Push metadata to App Store Connect (no binary, no screenshots)"
   lane :metadata_push do |options|
     check_ios_creds
-    ios_push_locales = %w[en-GB de-DE]
+    ios_push_locales = %w[de-DE]
     check_no_untranslated(
       File.expand_path("metadata/ios", __dir__),
-      ios_push_locales,
+      %w[en-GB de-DE],
       %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt support_url.txt]
     )
     key = api_key
@@ -87,6 +87,14 @@ platform :ios do
     push_dir = File.expand_path("metadata/ios_push", __dir__)
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
+    # en-GB is the default ASC locale — copy files to push_dir root
+    en_gb_src = File.join(metadata_dir, "en-GB")
+    if Dir.exist?(en_gb_src)
+      Dir.glob(File.join(en_gb_src, "*")).each do |f|
+        FileUtils.cp(f, File.join(push_dir, File.basename(f)))
+      end
+    end
+    # Copy non-default locale subdirectories
     ios_push_locales.each do |locale|
       src = File.join(metadata_dir, locale)
       next unless Dir.exist?(src)
