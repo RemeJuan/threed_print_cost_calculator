@@ -25,6 +25,26 @@ class MaterialsProvider extends Notifier<MaterialState> {
   MaterialsRepository get _materialsRepository =>
       ref.read(materialsRepositoryProvider);
 
+  FieldValidationError? validateName(String? value) {
+    return validateRequiredText(value);
+  }
+
+  FieldValidationError? validateColor(String? value) {
+    return validateRequiredText(value);
+  }
+
+  FieldValidationError? validateWeight(String? value) {
+    return validatePositiveNumber(value);
+  }
+
+  FieldValidationError? validateCost(String? value) {
+    return validatePositiveNumber(value);
+  }
+
+  FieldValidationError? validateRemainingWeight(String? value) {
+    return validateOptionalNonNegativeNumber(value);
+  }
+
   void reset() {
     state = MaterialState();
   }
@@ -129,7 +149,7 @@ class MaterialsProvider extends Notifier<MaterialState> {
   }
 
   Future<Object?> submit(String? dbRef) async {
-    if (!_isValidForSubmit) {
+    if (!isValidForSubmit) {
       return null;
     }
 
@@ -183,13 +203,12 @@ class MaterialsProvider extends Notifier<MaterialState> {
     return key;
   }
 
-  bool get _isValidForSubmit {
-    return validateRequiredText(state.name.value) == null &&
-        validateRequiredText(state.color.value) == null &&
-        validatePositiveNumber(state.weightText) == null &&
-        validatePositiveNumber(state.costText) == null &&
+  bool get isValidForSubmit {
+    return validateName(state.name.value) == null &&
+        validateColor(state.color.value) == null &&
+        validateWeight(state.weightText) == null &&
+        validateCost(state.costText) == null &&
         (!state.autoDeductEnabled ||
-            validateOptionalNonNegativeNumber(state.remainingWeightText) ==
-                null);
+            validateRemainingWeight(state.remainingWeightText) == null);
   }
 }

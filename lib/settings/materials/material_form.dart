@@ -66,28 +66,29 @@ class MaterialForm extends HookConsumerWidget {
     }
 
     String? requiredTextValidator(String? value) {
-      return localizedValidationMessage(l10n, validateRequiredText(value));
+      return localizedValidationMessage(l10n, notifier.validateName(value));
+    }
+
+    String? colorValidator(String? value) {
+      return localizedValidationMessage(l10n, notifier.validateColor(value));
     }
 
     String? positiveNumberValidator(String? value) {
-      return localizedValidationMessage(l10n, validatePositiveNumber(value));
+      return localizedValidationMessage(l10n, notifier.validateWeight(value));
+    }
+
+    String? costValidator(String? value) {
+      return localizedValidationMessage(l10n, notifier.validateCost(value));
     }
 
     String? optionalNonNegativeValidator(String? value) {
       return localizedValidationMessage(
         l10n,
-        validateOptionalNonNegativeNumber(value),
+        notifier.validateRemainingWeight(value),
       );
     }
 
-    final isFormValid =
-        validateRequiredText(state.name.value) == null &&
-        validateRequiredText(state.color.value) == null &&
-        validatePositiveNumber(state.weightText) == null &&
-        validatePositiveNumber(state.costText) == null &&
-        (!state.autoDeductEnabled ||
-            validateOptionalNonNegativeNumber(state.remainingWeightText) ==
-                null);
+    final isFormValid = notifier.isValidForSubmit;
 
     return Dialog(
       child: SingleChildScrollView(
@@ -132,7 +133,7 @@ class MaterialForm extends HookConsumerWidget {
                   externalText: state.color.value,
                   focusNode: colorFocus,
                   keyboardType: TextInputType.text,
-                  validator: requiredTextValidator,
+                  validator: colorValidator,
                   autovalidateMode: hasSubmitted.value
                       ? AutovalidateMode.onUserInteraction
                       : AutovalidateMode.disabled,
@@ -185,7 +186,7 @@ class MaterialForm extends HookConsumerWidget {
                   ),
                   inputFormatters: localizedDecimalInputFormatters,
                   inputNormalizer: normalizeLeadingZeroNumericInput,
-                  validator: positiveNumberValidator,
+                  validator: costValidator,
                   autovalidateMode: hasSubmitted.value
                       ? AutovalidateMode.onUserInteraction
                       : AutovalidateMode.disabled,
