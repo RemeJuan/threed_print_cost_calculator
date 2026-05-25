@@ -1,0 +1,9 @@
+Batch costing is here for Pro users:
+
+* Import multiple G-code files into one batch
+* Assign printers and materials per item
+* Set quantities and add manual line items
+* Review batch totals with monetary impact
+* Save completed quotes to history
+* Use searchable selectors for faster printer and material assignment
+* Override imported G-code values when needed

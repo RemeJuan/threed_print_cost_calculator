@@ -1,0 +1,9 @@
+Le calcul par lot est arrivé pour les utilisateurs Pro :
+
+* Importez plusieurs fichiers G-code dans un seul lot
+* Attribuez une imprimante et un matériau à chaque élément
+* Définissez les quantités et ajoutez des lignes manuelles
+* Consultez les totaux du lot avec leur impact financier
+* Enregistrez les devis finalisés dans l'historique
+* Utilisez des sélecteurs avec recherche pour attribuer plus vite imprimantes et matériaux
+* Remplacez les valeurs G-code importées si nécessaire

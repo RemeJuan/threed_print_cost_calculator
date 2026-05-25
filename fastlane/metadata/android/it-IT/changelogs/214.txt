@@ -1,0 +1,9 @@
+Il calcolo batch è arrivato per gli utenti Pro:
+
+* Importa più file G-code in un unico batch
+* Assegna stampanti e materiali per ogni elemento
+* Imposta le quantità e aggiungi voci manuali
+* Controlla i totali del batch con il relativo impatto economico
+* Salva i preventivi completati nella cronologia
+* Usa selettori con ricerca per assegnare più velocemente stampanti e materiali
+* Sovrascrivi i valori G-code importati quando necessario

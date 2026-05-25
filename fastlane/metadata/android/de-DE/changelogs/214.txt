@@ -1,0 +1,9 @@
+Batch-Kalkulation ist da – für Pro-Nutzer:
+
+* Mehrere G-Code-Dateien in einen Batch importieren
+* Drucker und Materialien pro Element zuweisen
+* Mengen festlegen und manuelle Positionen hinzufügen
+* Batch-Gesamtsummen mit finanzieller Auswirkung prüfen
+* Abgeschlossene Angebote im Verlauf speichern
+* Durchsuchbare Auswahlen für schnellere Drucker- und Materialzuweisung nutzen
+* Importierte G-Code-Werte bei Bedarf überschreiben

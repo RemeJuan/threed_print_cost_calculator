@@ -1,0 +1,9 @@
+O cálculo em lote chegou para usuários Pro:
+
+* Importe vários arquivos G-code em um único lote
+* Atribua impressoras e materiais por item
+* Defina quantidades e adicione itens manuais
+* Revise os totais do lote com impacto monetário
+* Salve orçamentos concluídos no histórico
+* Use seletores com busca para atribuir impressoras e materiais mais rápido
+* Substitua valores importados do G-code quando necessário
