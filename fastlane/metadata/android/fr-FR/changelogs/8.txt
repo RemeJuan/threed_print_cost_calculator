@@ -1,0 +1,5 @@
+Nouveau modèle de tarification avec marge, frais de configuration et options d'arrondi pour des devis plus flexibles
+Ajout de notes de coûts supplémentaires directement dans les résultats du calculateur
+Amélioration des exportations avec un écran d'options d'export dédié
+Correction de plusieurs problèmes de stabilité et de réactivité sur Android
+Correction d'un problème d'installation Android introduit dans 2.9.4

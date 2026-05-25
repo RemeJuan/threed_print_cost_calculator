@@ -1,0 +1,5 @@
+Novo modelo de preços com margem, taxas de configuração e opções de arredondamento para orçamentos mais flexíveis
+Notas de custo adicionais adicionadas diretamente nos resultados da calculadora
+Exportações aprimoradas com uma tela dedicada de opções de exportação
+Corrigidos vários problemas de estabilidade e responsividade no Android
+Corrigido um problema de instalação do Android introduzido na versão 2.9.4
