@@ -1,0 +1,49 @@
+Know Your Margins Before You Print
+
+Many makers only calculate filament cost. That ignores electricity, printer wattage, failure risk, labour time, wear-related overhead, setup fees, and markup.
+
+3D Print Cost Calculator gives you a structured way to calculate the true cost of any print before you quote a price.
+
+For hobbyists, makers, side hustles, and small print businesses.
+
+Free Features
+
+• Filament cost calculation
+• Electricity cost (kWh) integration
+• Printer power usage modelling
+• Material stock tracking with automatic updates
+• Fully offline and privacy-first
+
+Premium Features
+
+For makers who sell prints or want deeper cost control:
+
+• Client-ready pricing
+• Markup, setup fees, and rounding options
+• Currency formatting
+• Multi-material print support
+• Batch costing for multiple prints
+• G-code import for faster setup
+• Failure risk modelling
+• Labour cost and processing time
+• Save and review print history
+• Detailed per-job cost breakdown
+• Manage multiple printer profiles
+• Export individual jobs or full history (CSV)
+• Advanced configuration options
+
+Export your data for bookkeeping, pricing analysis, or client quotes.
+
+Privacy First
+
+No accounts
+No cloud sync
+No tracking
+
+All data stays on your device.
+
+Designed to stay simple on the surface while remaining accurate underneath.
+
+Used by makers and small print businesses worldwide since 2021.
+
+EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

@@ -1,0 +1,6 @@
+app_identifier "com.threed-print-calculator" # iOS bundle ID
+
+for_lane :android do
+  app_identifier "com.threed_print_calculator"
+  package_name "com.threed_print_calculator"
+end

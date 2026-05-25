@@ -1,0 +1,43 @@
+3D Print Cost Calculator helps makers and small 3D print businesses calculate accurate print pricing using filament, electricity, labour, printer power usage, failure risk, setup fees, and markup.
+
+Most makers only count filament cost. Real print pricing also includes electricity, machine time, wear, failed prints, labour, and setup overhead.
+
+Price prints accurately and protect your margins.
+
+For hobbyists, makers, and small print businesses.
+
+Free Features
+
+• Filament cost calculation
+• Electricity cost per kWh
+• Printer power usage modelling
+• Material stock tracking with automatic updates
+• Fully offline and privacy-first
+
+Premium Features
+
+• Client-ready pricing
+• Markup, setup fees, and rounding options
+• Currency formatting
+• G-code import for faster setup
+• Multi-material print support
+• Batch costing for multiple prints
+• Failure risk modelling
+• Labour and processing time
+• Save and review print history
+• Detailed per-job cost breakdown
+• Multiple printer profiles
+• Export individual jobs or full history (CSV)
+• Advanced configuration
+
+Export your data for bookkeeping, pricing analysis, or client quotes.
+
+Privacy First:
+No accounts
+No cloud sync
+No tracking
+All data stays on your device
+
+Built with a deterministic cost engine to give consistent, repeatable results.
+
+Used by makers and small print businesses worldwide since 2021.

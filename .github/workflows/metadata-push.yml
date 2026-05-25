@@ -1,0 +1,50 @@
+name: Push Store Metadata
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Target platform"
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - ios
+          - android
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Validate metadata files
+        run: ./scripts/validate_metadata.sh
+
+  push:
+    needs: validate
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install Fastlane
+        run: bundle install
+      - name: Push iOS metadata
+        if: inputs.platform == 'all' || inputs.platform == 'ios'
+        run: bundle exec fastlane ios metadata_push
+        env:
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.ASC_KEY_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+      - name: Push Android metadata
+        if: inputs.platform == 'all' || inputs.platform == 'android'
+        run: bundle exec fastlane android metadata_push
+        env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}

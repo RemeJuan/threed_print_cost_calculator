@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+export PATH="/opt/homebrew/bin:$PATH"
+
+fvm dart format . && fvm flutter analyze

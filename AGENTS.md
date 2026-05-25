@@ -5,11 +5,19 @@
 - Format: `fvm dart format .`
 - Analyze: `fvm flutter analyze`
 - Tests: `make flutter_test`
+- Husky install: `fvm dart run husky install` (run after clone)
 - Single test file: `fvm flutter test path/to_test.dart`
 - Coverage: `./scripts/coverage.sh` (`lcov` required)
 - Codegen: `make flutter_generate`
 - Patrol release-gate E2E: `PATROL_FLUTTER_COMMAND="fvm flutter" patrol test --device emulator-5554 --no-uninstall`
 - Optional legacy integration sweep: `fvm flutter test integration_test`
+- Store metadata translation: `/metadata-translate` (opencode project command)
+
+## Git hooks (Husky)
+- Pre-commit: `fvm dart format . && fvm flutter analyze` (auto-fixes formatting, blocks on analysis warnings)
+- Pre-push: `make flutter_test` (full test suite)
+- Bypass: `git commit --no-verify` or `git push --no-verify`
+- To add a hook: `fvm dart run husky add .husky/<hook-name> "<command>"`
 
 ## Verify order
 - Default: `fvm flutter analyze` -> `make flutter_test`
@@ -50,12 +58,16 @@
 - Sample or preview data may stay hardcoded when it is clearly demo content rather than product UI copy.
 - Prefer passing localized strings into pure helpers rather than reading localisation state inside them.
 
-## File Layout
-- One widget per file. Keep each widget in its own Dart file, including helper sheets/dialogs/teaser states.
-- If a file grows a second widget, split it before merging.
-- Shared hidden test-tool widgets/services belong under `lib/shared/test_tools/`, not `lib/testing/`.
+## Store metadata (App Store / Play Store)
+- English source files live in `fastlane/metadata/ios/en-US/` and `fastlane/metadata/android/en-US/`
+- iOS push locale: `fastlane/metadata/ios/en-GB/` (mirrors en-US for push compatibility)
+- Android changelog files exist only in `en-US/changelogs/` initially — non-English locale changelogs are created during translation sync
+- Run `/metadata-translate` to sync non-English translations from English source (no store push)
+- Run `make metadata_push_ios` / `make metadata_push_android` to push to stores
+- Use `make metadata_validate` to check for missing/untranslated files
+- See `docs/store-localisation.md` for full workflow
 
-## Workflow notes
+## File Layout
 - Before broad exploration, read `docs/navigation.md`.
 - Treat the repository root as the only default filesystem context. Use repo-relative paths for all `Read`, `Grep`, `Glob`, `List`, and search operations.
 - The repo may be displayed as `~/Projects/threed_print_cost_calculator` while tools may expand it to `/Users/remelehane/Projects/threed_print_cost_calculator`; treat those as the same repo and still use only relative paths such as `lib/l10n/`, never the expanded absolute path.

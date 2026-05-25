@@ -54,6 +54,7 @@ dev_dependencies:
     sdk: flutter
   mocktail: 1.0.4
   flutter_lints: 6.0.0
+  husky: 0.1.7
   build_runner: 2.10.4
   freezed: 3.2.3
   flutter_launcher_icons: ^0.14.4

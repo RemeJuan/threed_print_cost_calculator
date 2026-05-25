@@ -1,0 +1,5 @@
+New pricing model with markup, setup fees, and rounding options for more flexible quoting
+Added additional cost notes directly in calculator results
+Improved history exports with a dedicated export options screen
+Fixed several Android stability and responsiveness issues
+Fixed an Android install issue introduced in 2.9.4

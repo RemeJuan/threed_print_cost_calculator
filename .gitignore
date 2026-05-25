@@ -139,3 +139,10 @@ service-account-key.json
 
 # Obsidian workspace (per-developer state)
 /docs/.obsidian/workspace.json
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/
+fastlane/test_output/
+**/fastlane/.env

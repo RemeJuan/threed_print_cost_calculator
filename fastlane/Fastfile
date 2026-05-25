@@ -1,0 +1,230 @@
+default_platform :ios
+
+################################################################
+# Helper: validate required env vars are set
+################################################################
+def check_ios_creds
+  required = %w[APP_STORE_CONNECT_ISSUER_ID APP_STORE_CONNECT_KEY_IDENTIFIER APP_STORE_CONNECT_PRIVATE_KEY]
+  missing = required.select { |v| ENV[v].nil? || ENV[v].empty? }
+  UI.user_error!("Missing iOS credentials: #{missing.join(', ')}") unless missing.empty?
+  UI.success "iOS credentials: OK"
+end
+
+def check_android_creds
+  UI.user_error!("Missing SUPPLY_JSON_KEY_DATA") if ENV["SUPPLY_JSON_KEY_DATA"].nil? || ENV["SUPPLY_JSON_KEY_DATA"].empty?
+  require "json"
+  data = JSON.parse(ENV["SUPPLY_JSON_KEY_DATA"])
+  UI.success "Android credentials: OK (project: #{data['project_id']})"
+rescue JSON::ParserError => e
+  UI.user_error!("SUPPLY_JSON_KEY_DATA is not valid JSON: #{e.message}")
+end
+
+platform :ios do
+  ################################################################
+  # Build API key from env vars for deliver
+  ################################################################
+  def api_key
+    app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_KEY_IDENTIFIER"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_PRIVATE_KEY"],
+      is_key_content_base64: false
+    )
+  end
+
+  ################################################################
+  # Check iOS credentials without touching App Store Connect
+  ################################################################
+  desc "Verify iOS credentials are valid and present"
+  lane :metadata_check do
+    check_ios_creds
+    api_key
+    UI.success "iOS credentials OK — try ios metadata_pull for a connectivity test"
+  end
+
+  ################################################################
+  # Pull current metadata from App Store Connect via CLI
+  ################################################################
+  desc "Pull iOS metadata from App Store Connect"
+  lane :metadata_pull do
+    check_ios_creds
+    api_key_path = File.expand_path("../.asc_api_key.json", __dir__)
+    api_key_data = {
+      key_id: ENV["APP_STORE_CONNECT_KEY_IDENTIFIER"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key: ENV["APP_STORE_CONNECT_PRIVATE_KEY"],
+      in_house: false
+    }
+    metadata_dir = File.expand_path("metadata/ios", __dir__)
+    File.write(api_key_path, JSON.generate(api_key_data))
+    sh("bundle", "exec", "fastlane", "deliver", "download_metadata",
+       "--force",
+       "--metadata_path", metadata_dir,
+       "--api_key_path", api_key_path)
+    File.delete(api_key_path)
+    UI.success "iOS metadata downloaded"
+  end
+
+  ################################################################
+  # Push local metadata changes to App Store Connect
+  #
+  # Only pushes locales that exist on ASC (en-GB, de-DE).
+  # en-US is a git reference copy, not an ASC locale — excluded.
+  # Untranslated locales (pt-BR, es-ES, etc.) are excluded until
+  # translations are ready and locales are created on ASC manually.
+  ################################################################
+  desc "Push metadata to App Store Connect (no binary, no screenshots)"
+  lane :metadata_push do |options|
+    check_ios_creds
+    ios_push_locales = %w[en-GB de-DE]
+    check_no_untranslated(
+      File.expand_path("metadata/ios", __dir__),
+      ios_push_locales,
+      %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt support_url.txt]
+    )
+    key = api_key
+    metadata_dir = File.expand_path("metadata/ios", __dir__)
+    push_dir = File.expand_path("metadata/ios_push", __dir__)
+    FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
+    FileUtils.mkdir_p(push_dir)
+    ios_push_locales.each do |locale|
+      src = File.join(metadata_dir, locale)
+      next unless Dir.exist?(src)
+      FileUtils.cp_r(src, File.join(push_dir, locale))
+    end
+    # Copy top-level files shared across all locales
+    Dir.glob(File.join(metadata_dir, "*.txt")).each do |f|
+      FileUtils.cp(f, File.join(push_dir, File.basename(f)))
+    end
+    begin
+      deliver(
+        api_key: key,
+        skip_metadata: false,
+        skip_binary_upload: true,
+        skip_screenshots: true,
+        force: true,
+        submit_for_review: false,
+        automatic_release: false,
+        phased_release: false,
+        reject_if_possible: false,
+        overwrite_screenshots: false,
+        metadata_path: push_dir,
+        ignore_language_directory_validation: true,
+        run_precheck_before_submit: false
+      )
+    ensure
+      FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
+    end
+  end
+end
+
+platform :android do
+  ################################################################
+  # Check Android credentials and connectivity
+  ################################################################
+  desc "Verify Android credentials and Google Play connectivity"
+  lane :metadata_check do
+    check_android_creds
+    UI.message "Checking Play Console connectivity (validate_only)..."
+    supply(
+      package_name: "com.threed_print_calculator",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true,
+      metadata_path: "fastlane/metadata/android",
+      validate_only: true
+    )
+    UI.success "Android credentials and connectivity OK"
+  end
+
+  ################################################################
+  # Pull current metadata from Google Play to local files
+  #
+  # NOTE: `supply` does not support download. Use the Google Play
+  # Console web UI to export/store listings manually when needed.
+  # This lane exists as a no-op placeholder for future tooling.
+  # See: https://github.com/fastlane/fastlane/tree/master/supply
+  ################################################################
+  desc "Pull Android metadata from Google Play Console"
+  lane :metadata_pull do
+    check_android_creds
+    UI.important "supply has no download mode — this is a no-op"
+    UI.important "Export listing from Google Play Console web UI manually"
+    UI.important "Manage > App presence > Store listing, then copy content"
+    UI.message "Android pull: no action taken"
+  end
+
+  ################################################################
+  # Push local metadata changes to Google Play
+  ################################################################
+  desc "Push metadata to Google Play Console (no APK)"
+  lane :metadata_push do |options|
+    check_android_creds
+    check_no_untranslated(
+      File.expand_path("metadata/android", __dir__),
+      %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
+      %w[title.txt short_description.txt full_description.txt]
+    )
+    supply(
+      package_name: "com.threed_print_calculator",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true,
+      metadata_path: "fastlane/metadata/android"
+    )
+  end
+end
+
+################################################################
+# Helpers
+################################################################
+
+# Check for TODO TRANSLATE markers in locale metadata files.
+# Exits lane if any are found.
+def check_no_untranslated(metadata_dir, locales, files)
+  issues = []
+  locales.each do |locale|
+    files.each do |f|
+      path = File.join(metadata_dir, locale, f)
+      if !File.exist?(path)
+        issues << "MISSING: #{path}"
+      elsif File.read(path).include?("TODO TRANSLATE:")
+        issues << "UNTRANSLATED: #{path}"
+      end
+    end
+  end
+  unless issues.empty?
+    issues.each { |msg| UI.error(msg) }
+    UI.user_error!("Untranslated metadata found — fix TODO TRANSLATE markers before pushing")
+  end
+  UI.success "All metadata present and translated"
+end
+
+################################################################
+# Shared lanes
+################################################################
+desc "Pull metadata from both App Store Connect and Google Play"
+lane :metadata_pull_all do
+  sh("bundle", "exec", "fastlane", "ios", "metadata_pull")
+  sh("bundle", "exec", "fastlane", "android", "metadata_pull")
+end
+
+desc "Check credentials and connectivity for both stores"
+lane :metadata_check_all do
+  sh("bundle", "exec", "fastlane", "ios", "metadata_check")
+  sh("bundle", "exec", "fastlane", "android", "metadata_check")
+end
+
+desc "Push metadata to both stores"
+lane :metadata_push_all do
+  sh("bundle", "exec", "fastlane", "ios", "metadata_push")
+  sh("bundle", "exec", "fastlane", "android", "metadata_push")
+end
+
+
