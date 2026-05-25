@@ -1,0 +1,64 @@
+locale: de-DE
+screenshots:
+  - asset: batch_quotes
+    heading:
+      - text: "Mehrere Drucke"
+        style: accent
+      - text: " kalkulieren"
+        style: primary
+
+  - asset: calculator_free
+    heading:
+      - text: "Berechne"
+        style: accent
+      - text: " deine Kosten"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Berücksichtige"
+        style: accent
+      - text: " Fehlerrisiko"
+        style: primary
+
+  - asset: gcode_import
+    heading:
+      - text: "G-Code"
+        style: accent
+      - text: " importieren"
+        style: primary
+
+  - asset: history_export
+    heading:
+      - text: "Verlauf"
+        style: accent
+      - text: " als CSV exportieren"
+        style: primary
+
+  - asset: materials
+    heading:
+      - line:
+          - text: "Materialien verwalten"
+            style: accent
+      - line:
+          - text: "und kalkulieren"
+            style: primary
+
+  - asset: settings_free
+    heading:
+      - text: "Lege"
+        style: accent
+      - text: " deine Kosten fest"
+        style: primary
+
+  - asset: settings_pro
+    heading:
+      - line:
+          - text: "Keine Konten."
+            style: primary
+      - line:
+          - text: "Keine Cloud."
+            style: accent
+      - line:
+          - text: "Funktioniert einfach."
+            style: primary

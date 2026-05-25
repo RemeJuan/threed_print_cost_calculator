@@ -1,0 +1,64 @@
+locale: it
+screenshots:
+  - asset: batch_quotes
+    heading:
+      - text: "Preventivi"
+        style: accent
+      - text: " multipli"
+        style: primary
+
+  - asset: calculator_free
+    heading:
+      - text: "Conosci"
+        style: accent
+      - text: " i tuoi costi reali"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Includi"
+        style: accent
+      - text: " il rischio di errore"
+        style: primary
+
+  - asset: gcode_import
+    heading:
+      - text: "Importa"
+        style: accent
+      - text: " G-Code"
+        style: primary
+
+  - asset: history_export
+    heading:
+      - text: "Esporta cronologia"
+        style: accent
+      - text: " come CSV"
+        style: primary
+
+  - asset: materials
+    heading:
+      - line:
+          - text: "Gestisci e"
+            style: accent
+      - line:
+          - text: "calcola materiali"
+            style: primary
+
+  - asset: settings_free
+    heading:
+      - text: "Imposta"
+        style: accent
+      - text: " i tuoi costi"
+        style: primary
+
+  - asset: settings_pro
+    heading:
+      - line:
+          - text: "Niente account."
+            style: primary
+      - line:
+          - text: "Niente cloud."
+            style: accent
+      - line:
+          - text: "Funziona e basta."
+            style: primary

@@ -24,6 +24,23 @@ flutter_generate:
 metadata_pull:
 	./scripts/metadata_pull.sh
 
+### Store screenshots ###
+
+SCREENSHOTS_VENV = /tmp/screenshots_venv
+
+generate_screenshots:
+	[ -d $(SCREENSHOTS_VENV) ] || python3 -m venv $(SCREENSHOTS_VENV)
+	$(SCREENSHOTS_VENV)/bin/pip install -q -r scripts/requirements_screenshots.txt
+	$(SCREENSHOTS_VENV)/bin/python3 scripts/generate_screenshots.py --formats all
+
+generate_screenshots_ios:
+	$(SCREENSHOTS_VENV)/bin/python3 scripts/generate_screenshots.py --formats ios
+
+generate_screenshots_android:
+	$(SCREENSHOTS_VENV)/bin/python3 scripts/generate_screenshots.py --formats android
+
+### Store metadata management ###
+
 metadata_check_ios:
 	bundle exec fastlane ios metadata_check
 

@@ -143,6 +143,6 @@ service-account-key.json
 # Fastlane
 fastlane/report.xml
 fastlane/Preview.html
-fastlane/screenshots/
+fastlane/screenshots/output/
 fastlane/test_output/
 **/fastlane/.env

@@ -1,0 +1,64 @@
+locale: pt-BR
+screenshots:
+  - asset: batch_quotes
+    heading:
+      - text: "Orçamento"
+        style: accent
+      - text: " múltiplo"
+        style: primary
+
+  - asset: calculator_free
+    heading:
+      - text: "Conheça"
+        style: accent
+      - text: " seus custos reais"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Inclua"
+        style: accent
+      - text: " risco de falha"
+        style: primary
+
+  - asset: gcode_import
+    heading:
+      - text: "Importar"
+        style: accent
+      - text: " G-Code"
+        style: primary
+
+  - asset: history_export
+    heading:
+      - text: "Exportar histórico"
+        style: accent
+      - text: " como CSV"
+        style: primary
+
+  - asset: materials
+    heading:
+      - line:
+          - text: "Gerencie e"
+            style: accent
+      - line:
+          - text: "calcule materiais"
+            style: primary
+
+  - asset: settings_free
+    heading:
+      - text: "Defina"
+        style: accent
+      - text: " seus custos"
+        style: primary
+
+  - asset: settings_pro
+    heading:
+      - line:
+          - text: "Sem contas."
+            style: primary
+      - line:
+          - text: "Sem nuvem."
+            style: accent
+      - line:
+          - text: "Simples assim."
+            style: primary

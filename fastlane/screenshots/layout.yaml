@@ -1,0 +1,232 @@
+---
+# Per-format per-asset layout metadata for screenshot text overlays.
+# Each asset defines a fixed text box. Text wraps inside the box and
+# fit_mode: shrink_to_fit reduces font size when the content exceeds the box.
+formats:
+  ios:
+    assets: &ios_assets
+      batch_quotes:
+        source: batch_quotes.jpg
+        x: 185
+        y: 179
+        max_width: 910
+        max_height: 260
+        font_size: 104
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      calculator_free:
+        source: calculator_free.jpg
+        x: 161
+        y: 160
+        max_width: 960
+        max_height: 260
+        font_size: 106
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      calculator_pro:
+        source: calculator_pro.jpg
+        x: 225
+        y: 160
+        max_width: 830
+        max_height: 260
+        font_size: 104
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      gcode_import:
+        source: gcode_import.jpg
+        x: 319
+        y: 160
+        max_width: 638
+        max_height: 260
+        font_size: 106
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      history_export:
+        source: history_export.jpg
+        x: 164
+        y: 158
+        max_width: 930
+        max_height: 260
+        font_size: 106
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      materials:
+        source: materials.jpg
+        x: 120
+        y: 107
+        max_width: 1045
+        max_height: 270
+        font_size: 96
+        min_font_size: 64
+        line_height: 148
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      settings_free:
+        source: settings_free.jpg
+        x: 322
+        y: 160
+        max_width: 640
+        max_height: 260
+        font_size: 104
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      settings_pro:
+        source: settings_pro.jpg
+        x: 307
+        y: 28
+        max_width: 660
+        max_height: 360
+        font_size: 96
+        min_font_size: 60
+        line_height: 146
+        max_lines: 3
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+  android:
+    assets:
+      batch_quotes:
+        source: batch_quotes.jpg
+        x: 185
+        y: 179
+        max_width: 910
+        max_height: 260
+        font_size: 104
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      calculator_free:
+        source: calculator_free.jpg
+        x: 161
+        y: 160
+        max_width: 960
+        max_height: 260
+        font_size: 106
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      calculator_pro:
+        source: calculator_pro.jpg
+        x: 225
+        y: 160
+        max_width: 830
+        max_height: 260
+        font_size: 104
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      gcode_import:
+        source: gcode_import.jpg
+        x: 319
+        y: 160
+        max_width: 638
+        max_height: 260
+        font_size: 106
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      history_export:
+        source: history_export.jpg
+        x: 164
+        y: 158
+        max_width: 930
+        max_height: 260
+        font_size: 106
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      materials:
+        source: materials.jpg
+        x: 120
+        y: 107
+        max_width: 1045
+        max_height: 270
+        font_size: 96
+        min_font_size: 64
+        line_height: 148
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      settings_free:
+        source: settings_free.jpg
+        x: 322
+        y: 160
+        max_width: 640
+        max_height: 260
+        font_size: 104
+        min_font_size: 68
+        line_height: 116
+        max_lines: 2
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit
+
+      settings_pro:
+        source: settings_pro.jpg
+        x: 307
+        y: 28
+        max_width: 660
+        max_height: 360
+        font_size: 96
+        min_font_size: 60
+        line_height: 146
+        max_lines: 3
+        align: center
+        wrap: true
+        fit_mode: shrink_to_fit

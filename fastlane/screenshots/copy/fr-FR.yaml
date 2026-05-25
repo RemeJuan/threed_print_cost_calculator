@@ -1,0 +1,64 @@
+locale: fr-FR
+screenshots:
+  - asset: batch_quotes
+    heading:
+      - text: "Devis"
+        style: accent
+      - text: " plusieurs impressions"
+        style: primary
+
+  - asset: calculator_free
+    heading:
+      - text: "Connaissez"
+        style: accent
+      - text: " vos vrais coûts"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Incluez"
+        style: accent
+      - text: " le risque d'échec"
+        style: primary
+
+  - asset: gcode_import
+    heading:
+      - text: "Importer"
+        style: accent
+      - text: " le G-Code"
+        style: primary
+
+  - asset: history_export
+    heading:
+      - text: "Exporter l'historique"
+        style: accent
+      - text: " en CSV"
+        style: primary
+
+  - asset: materials
+    heading:
+      - line:
+          - text: "Gérez et"
+            style: accent
+      - line:
+          - text: "calculez vos matériaux"
+            style: primary
+
+  - asset: settings_free
+    heading:
+      - text: "Définissez"
+        style: accent
+      - text: " vos coûts"
+        style: primary
+
+  - asset: settings_pro
+    heading:
+      - line:
+          - text: "Pas de comptes."
+            style: primary
+      - line:
+          - text: "Pas de cloud."
+            style: accent
+      - line:
+          - text: "Tout simplement."
+            style: primary
