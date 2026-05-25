@@ -1,5 +1,8 @@
 default_platform :ios
 
+require "fileutils"
+require "tmpdir"
+
 ################################################################
 # Helper: validate required env vars are set
 ################################################################
@@ -17,6 +20,94 @@ def check_android_creds
   UI.success "Android credentials: OK (project: #{data['project_id']})"
 rescue JSON::ParserError => e
   UI.user_error!("SUPPLY_JSON_KEY_DATA is not valid JSON: #{e.message}")
+end
+
+def screenshots_output_dir
+  File.expand_path("screenshots/output", __dir__)
+end
+
+def screenshot_upload_order
+  order_path = File.expand_path("screenshots/upload_order.txt", __dir__)
+  File.readlines(order_path, chomp: true).map(&:strip).reject(&:empty?)
+end
+
+def ios_screenshots_dir
+  File.join(screenshots_output_dir, "ios")
+end
+
+def stage_ios_screenshots_upload
+  source_dir = ios_screenshots_dir
+  UI.user_error!("Missing iOS screenshots output: #{source_dir}") unless Dir.exist?(source_dir)
+
+  staging_dir = Dir.mktmpdir("ios-screenshots-upload-")
+  locale_map = {
+    "en-US" => "en-GB"
+  }
+
+  Dir.children(source_dir).sort.each do |locale|
+    locale_src = File.join(source_dir, locale)
+    next unless File.directory?(locale_src)
+
+    app_store_locale = locale_map.fetch(locale, locale)
+    locale_dst = File.join(staging_dir, app_store_locale)
+    FileUtils.mkdir_p(locale_dst)
+
+    by_asset = Dir.glob(File.join(locale_src, "*.png")).each_with_object({}) do |path, memo|
+      memo[File.basename(path, ".png")] = path
+    end
+
+    ordered_paths = screenshot_upload_order.filter_map { |asset| by_asset[asset] }
+    remaining_paths = by_asset.values - ordered_paths
+
+    (ordered_paths + remaining_paths.sort).each_with_index do |path, idx|
+      dst_name = format("%02d_%s", idx + 1, File.basename(path))
+      FileUtils.cp(path, File.join(locale_dst, dst_name))
+    end
+  end
+
+  staging_dir
+end
+
+def android_screenshots_dir
+  File.join(screenshots_output_dir, "android")
+end
+
+def stage_android_screenshots_upload
+  source_dir = android_screenshots_dir
+  UI.user_error!("Missing Android screenshots output: #{source_dir}") unless Dir.exist?(source_dir)
+
+  staging_dir = Dir.mktmpdir("android-screenshots-upload-")
+  locales = Dir.children(source_dir).sort.select { |entry| File.directory?(File.join(source_dir, entry)) }
+  screenshot_types = %w[phoneScreenshots sevenInchScreenshots tenInchScreenshots]
+  locale_map = {
+    "it" => "it-IT"
+  }
+
+  locales.each do |locale|
+    play_locale = locale_map.fetch(locale, locale)
+    locale_src = File.join(source_dir, locale)
+    locale_dst = File.join(staging_dir, play_locale, "images")
+    FileUtils.mkdir_p(locale_dst)
+
+    by_asset = Dir.glob(File.join(locale_src, "*.png")).each_with_object({}) do |path, memo|
+      memo[File.basename(path, ".png")] = path
+    end
+
+    ordered_paths = screenshot_upload_order.filter_map { |asset| by_asset[asset] }
+    remaining_paths = by_asset.values - ordered_paths
+    ordered_upload_paths = ordered_paths + remaining_paths.sort
+
+    screenshot_types.each do |type|
+      type_dir = File.join(locale_dst, type)
+      FileUtils.mkdir_p(type_dir)
+      ordered_upload_paths.each_with_index do |path, idx|
+        dst_name = format("%02d_%s", idx + 1, File.basename(path))
+        FileUtils.cp(path, File.join(type_dir, dst_name))
+      end
+    end
+  end
+
+  staging_dir
 end
 
 platform :ios do
@@ -128,6 +219,31 @@ platform :ios do
       FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     end
   end
+
+  ################################################################
+  # Push screenshots only to App Store Connect
+  ################################################################
+  desc "Push screenshots to App Store Connect (no metadata, no binary)"
+  lane :screenshot_push do
+    check_ios_creds
+    screenshots_path = stage_ios_screenshots_upload
+
+    deliver(
+      api_key: api_key,
+      skip_metadata: true,
+      skip_binary_upload: true,
+      skip_screenshots: false,
+      force: true,
+      submit_for_review: false,
+      automatic_release: false,
+      phased_release: false,
+      reject_if_possible: false,
+      overwrite_screenshots: true,
+      screenshots_path: screenshots_path,
+      ignore_language_directory_validation: true,
+      run_precheck_before_submit: false
+    )
+  end
 end
 
 platform :android do
@@ -191,6 +307,30 @@ platform :android do
       metadata_path: "fastlane/metadata/android"
     )
   end
+
+  ################################################################
+  # Push screenshots only to Google Play
+  ################################################################
+  desc "Push screenshots to Google Play Console (no metadata, no APK)"
+  lane :screenshot_push do
+    check_android_creds
+    staging_dir = stage_android_screenshots_upload
+
+    begin
+      supply(
+        package_name: "com.threed_print_calculator",
+        skip_upload_apk: true,
+        skip_upload_aab: true,
+        skip_upload_metadata: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: false,
+        skip_upload_changelogs: true,
+        metadata_path: staging_dir
+      )
+    ensure
+      FileUtils.rm_rf(staging_dir) if Dir.exist?(staging_dir)
+    end
+  end
 end
 
 ################################################################
@@ -239,4 +379,8 @@ lane :metadata_push_all do
   sh("bundle", "exec", "fastlane", "android", "metadata_push")
 end
 
-
+desc "Push screenshots to both stores"
+lane :screenshot_push_all do
+  sh("bundle", "exec", "fastlane", "ios", "screenshot_push")
+  sh("bundle", "exec", "fastlane", "android", "screenshot_push")
+end

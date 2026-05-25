@@ -59,6 +59,15 @@ metadata_push_android:
 metadata_push_all:
 	bundle exec fastlane metadata_push_all
 
+screenshots_push_ios:
+	./scripts/screenshots_push_ios.sh
+
+screenshots_push_android:
+	./scripts/screenshots_push_android.sh
+
+screenshots_push_all:
+	bundle exec fastlane screenshot_push_all
+
 metadata_validate:
 	./scripts/validate_metadata.sh
 

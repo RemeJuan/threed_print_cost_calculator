@@ -167,6 +167,32 @@ Or use scripts directly:
 - No submission for review (iOS)
 - Track: Android pushes to `beta` by default (configurable via `METADATA_TRACK`)
 
+### Push screenshots
+
+Screenshots are uploaded separately from metadata so translation deploys stay metadata-only.
+
+```bash
+make screenshots_push_ios
+make screenshots_push_android
+make screenshots_push_all
+```
+
+Or use scripts directly:
+
+```bash
+./scripts/screenshots_push_ios.sh
+./scripts/screenshots_push_android.sh
+```
+
+**What gets pushed:**
+- iOS: screenshots from `fastlane/screenshots/output/ios/`
+- Android: screenshots from `fastlane/screenshots/output/android/`, staged into Play screenshot folders for phone, seven-inch, and ten-inch listings
+
+**What does not happen:**
+- No metadata upload
+- No binary upload
+- No submission for review
+
 ---
 
 ## Rollback
@@ -256,6 +282,180 @@ To enable CI, add these secrets to your GitHub repository:
 | `APP_STORE_CONNECT_KEY_IDENTIFIER` | `deliver` (iOS) | Yes |
 | `APP_STORE_CONNECT_PRIVATE_KEY` | `deliver` (iOS) | Yes |
 | `SUPPLY_JSON_KEY_DATA` | `supply` (Android) | Yes |
+
+---
+
+## Screenshot generation
+
+Localised store screenshots are generated from fixed app screenshots (JPG) with template-driven heading text overlays.
+
+### Principles
+
+- Base images are final app screenshots, **not modified in place**
+- Only the marketing heading text at the top of each image is overlaid
+- Phone UI, Pro badges, gradients, and all other visual elements remain untouched
+- Explicit per-format, per-asset layout metadata (`layout.yaml`) defines `x`, `y`, `max_width`, `font_size`, `line_height`, `align`, `wrap`, and `fit_mode`
+- No auto-wrapping, OCR, or layout inference — fixed coordinates only
+
+### File layout
+
+```
+fastlane/screenshots/
+  layout.yaml           # Per-format per-asset heading coordinates & font sizes
+  base/
+    ios/                # iOS screenshots (1284×2778)
+      batch_quotes.jpg
+      calculator_free.jpg
+      calculator_pro.jpg
+      gcode_import.jpg
+      history_export.jpg
+      materials.jpg
+      settings_free.jpg
+      settings_pro.jpg
+    android/            # Android screenshots (same filenames, native ratio)
+      ...
+  copy/                 # Per-locale heading text (segment arrays)
+    en-US.yaml
+    de-DE.yaml
+    ...
+  output/               # Generated PNG — gitignored
+    6.5/
+      en-US/
+        batch_quotes.png
+        calculator_free.png
+        ...
+        name.txt
+      de-DE/
+        ...
+```
+
+### Layout metadata (`layout.yaml`)
+
+Each asset defines explicit layout fields at the base resolution:
+
+```yaml
+formats:
+  "6.5":
+    assets:
+      batch_quotes:
+        source: batch_quotes.jpg
+        x: 188
+        y: 195
+        max_width: 865
+        font_size: 50
+        line_height: 60
+        align: center
+        wrap: false
+        fit_mode: shrink_to_fit
+
+      settings_pro:
+        source: settings_pro.jpg
+        x: 324
+        y: 83
+        max_width: 633
+        font_size: 65
+        line_height: 85
+        align: center
+        wrap: false
+        fit_mode: shrink_to_fit
+```
+
+### Copy format (YAML)
+
+Each locale file uses multi-segment headings for two-tone primary/accent styling:
+
+```yaml
+locale: en-US
+name: "3D Print Cost Calculator"      # optional iOS name.txt; omitted → not generated
+screenshots:
+  - asset: batch_quotes
+    heading:
+      - text: "Quote"
+        style: accent
+      - text: " Multiple Prints"
+        style: primary
+
+  - asset: settings_pro
+    heading:
+      - line:                           # multi-line heading
+          - text: "No Accounts."
+            style: accent
+      - line:
+          - text: "No Cloud."
+            style: primary
+      - line:
+          - text: "Just Works."
+            style: accent
+```
+
+- `heading` is an array of segments. Use `line:` entries only when the copy should be multi-line.
+- Each segment has `text` (string) and `style` (`primary` = #FFFFFF, `accent` = #5499FE)
+- `name` is optional — only locales with `name` get `name.txt` (iOS only)
+
+### Workflow
+
+1. Add/replace base JPGs under `fastlane/screenshots/base/ios/` or `base/android/`
+2. Update heading box coordinates in `fastlane/screenshots/layout.yaml`
+3. Edit locale YAML files under `fastlane/screenshots/copy/`
+4. Run the generator:
+
+```bash
+make generate_screenshots       # all platforms + all locales
+make generate_screenshots_ios   # iOS only
+make generate_screenshots_android  # Android only
+```
+
+Or directly:
+
+```bash
+python3 scripts/generate_screenshots.py --formats ios --locale en-US
+```
+
+The script:
+- reads base JPGs without modifying them
+- renders heading segments at fixed per-asset coordinates using Inter Bold at configured font size
+- applies `shrink_to_fit` only when a translated line exceeds its `max_width`
+- writes locale-specific output folders as PNG (required by stores)
+
+### Options
+
+| Flag | Description |
+|------|-------------|
+| `--locale LOCALE` | Generate only one locale (e.g. `--locale de-DE`) |
+| `--formats LIST` | Comma-separated formats: `6.5`, `5.5`, `android-phone`, `android-tablet-7`, `android-tablet-10`, `WxH`, `ios`, `android`, `all` (default: `6.5`) |
+| `--skip-missing` | Skip missing base images instead of failing |
+| `--font PATH` | Heading font (default: `assets/fonts/inter/Inter-Bold.ttf`) |
+
+### Error behaviour
+
+- Missing locale copy → exits with `ERROR: Missing copy for locales: ...`
+- Missing `screenshots` key or malformed segments → exits with a descriptive message
+- Asset ID not found in layout → exits with a descriptive message
+- Base image not found → exits (or skips with `--skip-missing`)
+
+### Adding a new locale
+
+1. Create `fastlane/screenshots/copy/<locale>.yaml` with `asset` → `heading` entries for each screenshot
+2. Run `make generate_screenshots` or `python3 scripts/generate_screenshots.py --formats all`
+
+### Updating heading positions
+
+If the base screenshots change dimensions or heading design, update the format-specific asset coordinates in `layout.yaml`:
+
+1. Open each new base screenshot in an image editor
+2. Note the heading area's `x`, `y`, `max_width`, `line_height`, and `align` in pixels
+3. Update the format-specific asset values in `layout.yaml`
+4. Adjust `font_size` or `fit_mode` if text no longer fits comfortably
+
+### Prerequisites
+
+Python 3 with Pillow and PyYAML:
+
+```bash
+pip install -r scripts/requirements_screenshots.txt
+```
+
+The `make` target handles dependency setup automatically via a virtualenv.
 
 ---
 

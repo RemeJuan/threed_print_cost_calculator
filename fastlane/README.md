@@ -37,6 +37,14 @@ Check credentials and connectivity for both stores
 
 Push metadata to both stores
 
+### screenshot_push_all
+
+```sh
+[bundle exec] fastlane screenshot_push_all
+```
+
+Push screenshots to both stores
+
 ----
 
 
@@ -66,6 +74,14 @@ Pull iOS metadata from App Store Connect
 
 Push metadata to App Store Connect (no binary, no screenshots)
 
+### ios screenshot_push
+
+```sh
+[bundle exec] fastlane ios screenshot_push
+```
+
+Push screenshots to App Store Connect (no metadata, no binary)
+
 ----
 
 
@@ -94,6 +110,14 @@ Pull Android metadata from Google Play Console
 ```
 
 Push metadata to Google Play Console (no APK)
+
+### android screenshot_push
+
+```sh
+[bundle exec] fastlane android screenshot_push
+```
+
+Push screenshots to Google Play Console (no metadata, no APK)
 
 ----
 
