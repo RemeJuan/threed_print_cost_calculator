@@ -68,7 +68,8 @@ platform :ios do
   ################################################################
   # Push local metadata changes to App Store Connect
   #
-  # en-US is the default ASC locale for this app — copied to push root.
+  # en-GB is the default ASC locale — its content comes from en-US files
+  # (no separate en-GB folder; content is identical).
   # de-DE is pushed as a locale subdirectory.
   # Other locales are excluded until added to ASC via web UI.
   ################################################################
@@ -86,10 +87,10 @@ platform :ios do
     push_dir = File.expand_path("metadata/ios_push", __dir__)
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
-    # en-US is the default ASC locale — copy files to push_dir root
-    default_src = File.join(metadata_dir, "en-US")
-    if Dir.exist?(default_src)
-      Dir.glob(File.join(default_src, "*")).each do |f|
+    # en-GB is the default ASC locale — source from en-US (no separate folder)
+    en_gb_src = File.join(metadata_dir, "en-US")
+    if Dir.exist?(en_gb_src)
+      Dir.glob(File.join(en_gb_src, "*")).each do |f|
         FileUtils.cp(f, File.join(push_dir, File.basename(f)))
       end
     end
