@@ -70,16 +70,15 @@ platform :ios do
   #
   # en-GB is the default ASC locale — its content comes from en-US files
   # (no separate en-GB folder; content is identical).
-  # de-DE is pushed as a locale subdirectory.
-  # Other locales are excluded until added to ASC via web UI.
+  # All 6 non-default locales pushed as subdirectories.
   ################################################################
   desc "Push metadata to App Store Connect (no binary, no screenshots)"
   lane :metadata_push do |options|
     check_ios_creds
-    ios_push_locales = %w[de-DE]
+    ios_push_locales = %w[de-DE pt-BR es-ES fr-FR it ja]
     check_no_untranslated(
       File.expand_path("metadata/ios", __dir__),
-      %w[en-US de-DE],
+      %w[en-US de-DE pt-BR es-ES fr-FR it ja],
       %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt support_url.txt]
     )
     key = api_key
