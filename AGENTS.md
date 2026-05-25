@@ -60,7 +60,7 @@
 
 ## Store metadata (App Store / Play Store)
 - English source files live in `fastlane/metadata/ios/en-US/` and `fastlane/metadata/android/en-US/`
-- iOS push locale: `fastlane/metadata/ios/en-GB/` (mirrors en-US for push compatibility)
+- iOS push locale: `fastlane/metadata/ios/en-US/`
 - Android changelog files exist only in `en-US/changelogs/` initially — non-English locale changelogs are created during translation sync
 - Run `/metadata-translate` to sync non-English translations from English source (no store push)
 - Run `make metadata_push_ios` / `make metadata_push_android` to push to stores

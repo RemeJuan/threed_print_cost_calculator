@@ -18,7 +18,7 @@ Use the English metadata files as the source of truth, update the non-English lo
 Use these English trees as source:
 
 - iOS reference copy: `fastlane/metadata/ios/en-US/`
-- iOS push-compatible English locale: `fastlane/metadata/ios/en-GB/`
+- iOS push-compatible English locale: `fastlane/metadata/ios/en-US/`
 - Android reference copy: `fastlane/metadata/android/en-US/`
 
 ## Target locales

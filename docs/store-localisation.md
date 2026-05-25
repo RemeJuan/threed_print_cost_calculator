@@ -118,7 +118,7 @@ Use the project command:
 
 What it does:
 
-- reads English source metadata from `fastlane/metadata/ios/en-US/`, `fastlane/metadata/ios/en-GB/`, and `fastlane/metadata/android/en-US/`
+- reads English source metadata from `fastlane/metadata/ios/en-US/` and `fastlane/metadata/android/en-US/`
 - updates non-English locale files in `fastlane/metadata/` — including `name.txt`, `subtitle.txt`, `description.txt`, `keywords.txt`, `release_notes.txt` (iOS) and `title.txt`, `short_description.txt`, `full_description.txt`, `changelogs/*.txt` (Android)
 - for Android changelogs: English source directory is the only source of truth — new version-code files exist only in `en-US/changelogs/` first, the command creates matching translated files per locale
 - runs `./scripts/validate_metadata.sh`
