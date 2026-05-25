@@ -21,9 +21,7 @@ class BatchAnchorSelector extends StatelessWidget {
     return DropdownButtonFormField<String>(
       initialValue: entries.any((e) => e.value == value) ? value : null,
       hint: Text(hintText),
-      decoration: InputDecoration(
-        labelText: labelText,
-      ),
+      decoration: InputDecoration(labelText: labelText),
       selectedItemBuilder: (context) =>
           entries.map((entry) => Text(entry.label)).toList(),
       items: entries

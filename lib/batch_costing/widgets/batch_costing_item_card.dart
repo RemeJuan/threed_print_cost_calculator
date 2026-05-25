@@ -32,7 +32,8 @@ class BatchCostingItemCard extends ConsumerStatefulWidget {
   final VoidCallback onEdit;
 
   @override
-  ConsumerState<BatchCostingItemCard> createState() => _BatchCostingItemCardState();
+  ConsumerState<BatchCostingItemCard> createState() =>
+      _BatchCostingItemCardState();
 }
 
 class _BatchCostingItemCardState extends ConsumerState<BatchCostingItemCard> {
@@ -88,8 +89,8 @@ class _BatchCostingItemCardState extends ConsumerState<BatchCostingItemCard> {
                             l10n.batchCostingReviewWeightRequired,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                           ),
                   ),
                   _itemDetailRow(
@@ -104,8 +105,8 @@ class _BatchCostingItemCardState extends ConsumerState<BatchCostingItemCard> {
                             l10n.batchCostingReviewDurationRequired,
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                           ),
                   ),
                 ],
@@ -142,7 +143,8 @@ class _BatchCostingItemCardState extends ConsumerState<BatchCostingItemCard> {
                       () {
                         if (!context.mounted) return;
                         BotToast.showText(
-                          text: l10n.batchCostingAssignmentQuantityChangedMessage,
+                          text:
+                              l10n.batchCostingAssignmentQuantityChangedMessage,
                         );
                       },
                     );

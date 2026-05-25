@@ -143,8 +143,10 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         focusNode: _failureRiskFocus,
         value: state.pricing.failureRisk.value,
         scope: state.pricing.failureRisk.scope,
-        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setFailureRisk(v),
-        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setFailureRiskScope(s),
+        onValueChanged: (v) =>
+            ref.read(batchCostingProvider.notifier).setFailureRisk(v),
+        onScopeChanged: (s) =>
+            ref.read(batchCostingProvider.notifier).setFailureRiskScope(s),
         validator: _percentValidator(l10n),
       ),
       _PricingField(
@@ -153,8 +155,10 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         focusNode: _markupPercentFocus,
         value: state.pricing.markupPercent.value,
         scope: state.pricing.markupPercent.scope,
-        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setMarkupPercent(v),
-        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setMarkupPercentScope(s),
+        onValueChanged: (v) =>
+            ref.read(batchCostingProvider.notifier).setMarkupPercent(v),
+        onScopeChanged: (s) =>
+            ref.read(batchCostingProvider.notifier).setMarkupPercentScope(s),
         validator: _percentValidator(l10n),
       ),
       _PricingField(
@@ -163,8 +167,10 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         focusNode: _labourRateFocus,
         value: state.pricing.labourRate.value,
         scope: state.pricing.labourRate.scope,
-        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setLabourRate(v),
-        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setLabourRateScope(s),
+        onValueChanged: (v) =>
+            ref.read(batchCostingProvider.notifier).setLabourRate(v),
+        onScopeChanged: (s) =>
+            ref.read(batchCostingProvider.notifier).setLabourRateScope(s),
         validator: _amountValidator(l10n),
       ),
       _PricingField(
@@ -173,8 +179,11 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         focusNode: _additionalCostFocus,
         value: state.pricing.additionalCostAmount.value,
         scope: state.pricing.additionalCostAmount.scope,
-        onValueChanged: (v) => ref.read(batchCostingProvider.notifier).setAdditionalCostAmount(v),
-        onScopeChanged: (s) => ref.read(batchCostingProvider.notifier).setAdditionalCostAmountScope(s),
+        onValueChanged: (v) =>
+            ref.read(batchCostingProvider.notifier).setAdditionalCostAmount(v),
+        onScopeChanged: (s) => ref
+            .read(batchCostingProvider.notifier)
+            .setAdditionalCostAmountScope(s),
         validator: _amountValidator(l10n),
       ),
     ];
@@ -212,8 +221,10 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                             onValueChanged: f.onValueChanged,
                             onScopeChanged: f.onScopeChanged,
                             validator: f.validator,
-                            scopeItemLabel: l10n.batchCostingPricingScopeItemMode,
-                            scopeBatchLabel: l10n.batchCostingPricingScopeBatchMode,
+                            scopeItemLabel:
+                                l10n.batchCostingPricingScopeItemMode,
+                            scopeBatchLabel:
+                                l10n.batchCostingPricingScopeBatchMode,
                           ),
                       ],
                     ),

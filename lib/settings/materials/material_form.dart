@@ -251,9 +251,7 @@ class MaterialForm extends HookConsumerWidget {
                   focusNode: notesFocus,
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
-                  decoration: InputDecoration(
-                    labelText: l10n.notesLabel,
-                  ),
+                  decoration: InputDecoration(labelText: l10n.notesLabel),
                   onChanged: notifier.updateNotes,
                 ),
 

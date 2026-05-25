@@ -90,9 +90,9 @@ class Materials extends HookConsumerWidget {
                                     ),
                                     data.color,
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                   if (data.autoDeductEnabled)
                                     Text(
@@ -101,9 +101,9 @@ class Materials extends HookConsumerWidget {
                                       ),
                                       '${l10n.remainingLabel} ${formatWeight(data.remainingWeight)}${l10n.gramsSuffix}',
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                     ),
                                 ],
                               ),

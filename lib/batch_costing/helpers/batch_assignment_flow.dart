@@ -9,7 +9,10 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 List<BatchAssignmentAllocation> batchAllocationsFor({
   required BatchCostingState state,
   required BatchCostingItem item,
-  required Map<String, List<BatchAssignmentAllocation>> Function(BatchCostingState) itemAllocations,
+  required Map<String, List<BatchAssignmentAllocation>> Function(
+    BatchCostingState,
+  )
+  itemAllocations,
   required String? Function(BatchCostingItem) itemFallback,
   required String? Function(BatchCostingState) batchId,
 }) {
@@ -39,14 +42,18 @@ void batchContinueFlow({
   required BuildContext context,
   required BatchCostingState state,
   required bool Function(BatchCostingState) isBatchWide,
-  required Map<String, List<BatchAssignmentAllocation>> Function(BatchCostingState) itemAllocations,
+  required Map<String, List<BatchAssignmentAllocation>> Function(
+    BatchCostingState,
+  )
+  itemAllocations,
   required String? Function(BatchCostingState) batchId,
   required String Function(AppLocalizations) errorText,
   required String analyticsType,
   required Widget nextPage,
 }) {
   final missing = state.items.where((item) {
-    final allocations = itemAllocations(state)[item.id] ?? const <BatchAssignmentAllocation>[];
+    final allocations =
+        itemAllocations(state)[item.id] ?? const <BatchAssignmentAllocation>[];
     return isBatchWide(state)
         ? batchId(state) == null
         : allocations.isEmpty || allocations.any((a) => a.targetId.isEmpty);
@@ -57,11 +64,13 @@ void batchContinueFlow({
   }
 
   final mode = isBatchWide(state) ? 'batch' : 'split';
-  final hasSplit = !isBatchWide(state) && state.items.any((item) {
-    final allocs = itemAllocations(state)[item.id];
-    if (allocs == null || allocs.length <= 1) return false;
-    return allocs.map((a) => a.targetId).toSet().length > 1;
-  });
+  final hasSplit =
+      !isBatchWide(state) &&
+      state.items.any((item) {
+        final allocs = itemAllocations(state)[item.id];
+        if (allocs == null || allocs.length <= 1) return false;
+        return allocs.map((a) => a.targetId).toSet().length > 1;
+      });
 
   AppAnalytics.safeLog(
     () => AppAnalytics.batchAssignmentCompleted(

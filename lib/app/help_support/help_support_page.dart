@@ -43,7 +43,12 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
       appBar: AppScreenHeader(title: l10n.needHelpTitle),
       body: ListView(
         key: const ValueKey<String>('helpSupport.page'),
-        padding: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace16, kAppSpace16, 24),
+        padding: const EdgeInsets.fromLTRB(
+          kAppSpace16,
+          kAppSpace16,
+          kAppSpace16,
+          24,
+        ),
         children: [
           HelpSupportSectionHeader(title: l10n.helpSupportSupportTitle),
           const SizedBox(height: kAppSpace12),

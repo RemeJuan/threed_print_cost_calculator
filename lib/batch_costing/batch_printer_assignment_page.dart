@@ -159,33 +159,35 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
   List<BatchAssignmentAllocation> _printerAllocationsFor(
     BatchCostingState state,
     BatchCostingItem item,
-  ) =>
-      batchAllocationsFor(
-        state: state,
-        item: item,
-        itemAllocations: (s) => s.itemPrinterAllocations,
-        itemFallback: (i) => state.itemPrinterIds[i.id],
-        batchId: (s) => s.batchPrinterId,
-      );
+  ) => batchAllocationsFor(
+    state: state,
+    item: item,
+    itemAllocations: (s) => s.itemPrinterAllocations,
+    itemFallback: (i) => state.itemPrinterIds[i.id],
+    batchId: (s) => s.batchPrinterId,
+  );
 
   bool _nextEnabled(BatchCostingState state) => batchNextEnabled(
     state: state,
     hasData: true,
-    isBatchWide: (s) => s.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide,
+    isBatchWide: (s) =>
+        s.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide,
     batchId: (s) => s.batchPrinterId,
   );
 
-  void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) =>
-      batchContinueFlow(
-        context: context,
-        state: state,
-        isBatchWide: (s) => s.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide,
-        itemAllocations: (s) => s.itemPrinterAllocations,
-        batchId: (s) => s.batchPrinterId,
-        errorText: (l) => l.batchCostingPrinterAssignmentRequiredError,
-        analyticsType: 'printer',
-        nextPage: const BatchMaterialAssignmentPage(),
-      );
+  void _continue(
+    BuildContext context,
+    WidgetRef ref,
+    BatchCostingState state,
+  ) => batchContinueFlow(
+    context: context,
+    state: state,
+    isBatchWide: (s) =>
+        s.printerAssignmentMode == BatchPrinterAssignmentMode.batchWide,
+    itemAllocations: (s) => s.itemPrinterAllocations,
+    batchId: (s) => s.batchPrinterId,
+    errorText: (l) => l.batchCostingPrinterAssignmentRequiredError,
+    analyticsType: 'printer',
+    nextPage: const BatchMaterialAssignmentPage(),
+  );
 }
-
-

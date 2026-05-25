@@ -112,10 +112,10 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                           final item = items[index];
                           return BatchCostingItemCard(
                             item: item,
-                            quantityController:
-                                _quantityControllers[item.id]!,
-                            initiallyExpanded:
-                                _expandedItemIds.contains(item.id),
+                            quantityController: _quantityControllers[item.id]!,
+                            initiallyExpanded: _expandedItemIds.contains(
+                              item.id,
+                            ),
                             onExpansionChanged: (expanded) {
                               setState(() {
                                 if (expanded) {

@@ -348,17 +348,18 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                   subtitle: hasErrors
                       ? Text(
                           row.errors.join(', '),
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: STATUS_ERROR.withValues(alpha: 0.7),
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: STATUS_ERROR.withValues(alpha: 0.7),
+                              ),
                         )
                       : Text(
                           '${row.brand.isNotEmpty ? '${row.brand} · ' : ''}'
                           '${row.materialType.isNotEmpty ? '${row.materialType} · ' : ''}'
                           '${formatCurrencyValue(row.cost, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing)}',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: TEXT_TERTIARY,
-                          ),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
                         ),
                   trailing: hasErrors
                       ? const Icon(Icons.error_outline, color: STATUS_ERROR)

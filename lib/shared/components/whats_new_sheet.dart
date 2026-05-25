@@ -111,10 +111,13 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
                       const SizedBox(width: kAppSpace4),
                       Text(
                         l10n.newAnnouncementBadgeLabel,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimaryContainer,
+                            ),
                       ),
                     ],
                   ),

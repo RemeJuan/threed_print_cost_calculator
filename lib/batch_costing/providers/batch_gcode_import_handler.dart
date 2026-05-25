@@ -259,11 +259,7 @@ class BatchGCodeImportHandler {
         }
 
         notifier.addItem(
-          buildCostingItem(
-            id: batchId,
-            file: file,
-            result: result,
-          ),
+          buildCostingItem(id: batchId, file: file, result: result),
         );
 
         AppAnalytics.safeLog(

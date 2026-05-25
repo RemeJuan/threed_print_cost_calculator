@@ -129,10 +129,6 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(BatchSummaryPage)),
-    )!;
-
     expect(
       find.byType(BatchGCodeImportPage, skipOffstage: false),
       findsOneWidget,

@@ -112,11 +112,8 @@ class SuggestionTypeahead extends HookWidget {
                           ),
                           child: Text(
                             item,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodyMedium?.copyWith(
-                              color: TEXT_SECONDARY,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: TEXT_SECONDARY),
                           ),
                         ),
                       );

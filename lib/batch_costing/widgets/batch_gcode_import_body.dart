@@ -93,7 +93,8 @@ class BatchGcodeImportBody extends ConsumerWidget {
                 ? const SizedBox.shrink()
                 : ListView.separated(
                     itemCount: rows.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: kAppSpace8),
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: kAppSpace8),
                     itemBuilder: (context, index) => BatchImportFileRow(
                       row: rows[index],
                       item: itemForRow(rows[index]),

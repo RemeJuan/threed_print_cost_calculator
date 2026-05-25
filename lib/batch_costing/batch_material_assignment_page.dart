@@ -123,7 +123,9 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                                   )
                                   case final warning?)
                                 Padding(
-                                  padding: const EdgeInsets.only(top: kAppSpace8),
+                                  padding: const EdgeInsets.only(
+                                    top: kAppSpace8,
+                                  ),
                                   child: WarningBox(text: warning),
                                 ),
                             ],
@@ -192,37 +194,40 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
   List<BatchAssignmentAllocation> _materialAllocationsFor(
     BatchCostingState state,
     BatchCostingItem item,
-  ) =>
-      batchAllocationsFor(
-        state: state,
-        item: item,
-        itemAllocations: (s) => s.itemMaterialAllocations,
-        itemFallback: (i) => i.materialId,
-        batchId: (s) => s.batchMaterialId,
-      );
+  ) => batchAllocationsFor(
+    state: state,
+    item: item,
+    itemAllocations: (s) => s.itemMaterialAllocations,
+    itemFallback: (i) => i.materialId,
+    batchId: (s) => s.batchMaterialId,
+  );
 
   bool _nextEnabled(
     BatchCostingState state,
     List<MaterialModel> sortedMaterials,
-  ) =>
-      batchNextEnabled(
-        state: state,
-        hasData: sortedMaterials.isNotEmpty,
-        isBatchWide: (s) => s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
-        batchId: (s) => s.batchMaterialId,
-      );
+  ) => batchNextEnabled(
+    state: state,
+    hasData: sortedMaterials.isNotEmpty,
+    isBatchWide: (s) =>
+        s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
+    batchId: (s) => s.batchMaterialId,
+  );
 
-  void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) =>
-      batchContinueFlow(
-        context: context,
-        state: state,
-        isBatchWide: (s) => s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
-        itemAllocations: (s) => s.itemMaterialAllocations,
-        batchId: (s) => s.batchMaterialId,
-        errorText: (l) => l.batchCostingMaterialAssignmentRequiredError,
-        analyticsType: 'material',
-        nextPage: const BatchPricingScopePage(),
-      );
+  void _continue(
+    BuildContext context,
+    WidgetRef ref,
+    BatchCostingState state,
+  ) => batchContinueFlow(
+    context: context,
+    state: state,
+    isBatchWide: (s) =>
+        s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
+    itemAllocations: (s) => s.itemMaterialAllocations,
+    batchId: (s) => s.batchMaterialId,
+    errorText: (l) => l.batchCostingMaterialAssignmentRequiredError,
+    analyticsType: 'material',
+    nextPage: const BatchPricingScopePage(),
+  );
 
   double _totalRequiredWeight(BatchCostingState state) {
     return state.items.fold<double>(

@@ -69,9 +69,9 @@ class BatchSingleImportView extends StatelessWidget {
                   const SizedBox(height: kAppSpace16),
                   Text(
                     l10n.batchGcodeImportNeedsDetailsLabel,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: STATUS_WARNING,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium?.copyWith(color: STATUS_WARNING),
                   ),
                   MissingDetailsForm(
                     l10n: l10n,

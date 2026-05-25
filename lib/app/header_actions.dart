@@ -27,10 +27,7 @@ class HeaderActions extends ConsumerWidget {
                   ),
                 );
               },
-              icon: const Icon(
-                Icons.upload_file_outlined,
-                color: ICON_MUTED,
-              ),
+              icon: const Icon(Icons.upload_file_outlined, color: ICON_MUTED),
             )
           : IconButton(
               onPressed: () async {

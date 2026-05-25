@@ -14,8 +14,11 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
 
       notifier.addItem(item);
@@ -39,25 +42,33 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 3,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 3,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.perItem);
-      notifier.setItemPrinterAllocations(
-        'item-1',
-        [const BatchAssignmentAllocation(targetId: 'p1', quantity: 3)],
-      );
+      notifier.setItemPrinterAllocations('item-1', [
+        const BatchAssignmentAllocation(targetId: 'p1', quantity: 3),
+      ]);
 
       expect(
-        container.read(batchCostingProvider).itemPrinterAllocations.containsKey('item-1'),
+        container
+            .read(batchCostingProvider)
+            .itemPrinterAllocations
+            .containsKey('item-1'),
         isTrue,
       );
 
       final cleared = notifier.updateItem(item.copyWith(quantity: 5));
       expect(cleared, isTrue);
       expect(
-        container.read(batchCostingProvider).itemPrinterAllocations.containsKey('item-1'),
+        container
+            .read(batchCostingProvider)
+            .itemPrinterAllocations
+            .containsKey('item-1'),
         isFalse,
       );
     });
@@ -68,8 +79,11 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 3,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 3,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setBatchPrinterId('p1');
@@ -77,7 +91,11 @@ void main() {
       final cleared = notifier.updateItem(item.copyWith(quantity: 5));
       expect(cleared, isFalse);
       expect(
-        container.read(batchCostingProvider).itemPrinterAllocations['item-1']!.single.quantity,
+        container
+            .read(batchCostingProvider)
+            .itemPrinterAllocations['item-1']!
+            .single
+            .quantity,
         5,
       );
     });
@@ -88,18 +106,19 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
-      notifier.setItemPrinterAllocations(
-        'item-1',
-        [const BatchAssignmentAllocation(targetId: 'p1', quantity: 1)],
-      );
-      notifier.setItemMaterialAllocations(
-        'item-1',
-        [const BatchAssignmentAllocation(targetId: 'm1', quantity: 1)],
-      );
+      notifier.setItemPrinterAllocations('item-1', [
+        const BatchAssignmentAllocation(targetId: 'p1', quantity: 1),
+      ]);
+      notifier.setItemMaterialAllocations('item-1', [
+        const BatchAssignmentAllocation(targetId: 'm1', quantity: 1),
+      ]);
 
       notifier.removeItem('item-1');
       final state = container.read(batchCostingProvider);
@@ -117,8 +136,11 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.batchWide);
@@ -136,8 +158,11 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setBatchPrinterId('p1');
@@ -154,19 +179,24 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.perItem);
-      notifier.setItemPrinterAllocations(
-        'item-1',
-        [const BatchAssignmentAllocation(targetId: 'printer-2', quantity: 1)],
-      );
+      notifier.setItemPrinterAllocations('item-1', [
+        const BatchAssignmentAllocation(targetId: 'printer-2', quantity: 1),
+      ]);
 
       final state = container.read(batchCostingProvider);
       expect(state.itemPrinterIds['item-1'], 'printer-2');
-      expect(state.itemPrinterAllocations['item-1']!.single.targetId, 'printer-2');
+      expect(
+        state.itemPrinterAllocations['item-1']!.single.targetId,
+        'printer-2',
+      );
     });
 
     test('normalizes printer allocations to item quantity', () {
@@ -175,18 +205,24 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 5,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 5,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setPrinterAssignmentMode(BatchPrinterAssignmentMode.perItem);
-      notifier.setItemPrinterAllocations(
-        'item-1',
-        [const BatchAssignmentAllocation(targetId: 'p1', quantity: 1)],
-      );
+      notifier.setItemPrinterAllocations('item-1', [
+        const BatchAssignmentAllocation(targetId: 'p1', quantity: 1),
+      ]);
 
       expect(
-        container.read(batchCostingProvider).itemPrinterAllocations['item-1']!.single.quantity,
+        container
+            .read(batchCostingProvider)
+            .itemPrinterAllocations['item-1']!
+            .single
+            .quantity,
         5,
       );
     });
@@ -199,15 +235,21 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 2,
-        printWeightG: 20, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 2,
+        printWeightG: 20,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setMaterialAssignmentMode(BatchMaterialAssignmentMode.batchWide);
       notifier.setBatchMaterialId('m1');
 
       final state = container.read(batchCostingProvider);
-      expect(state.materialAssignmentMode, BatchMaterialAssignmentMode.batchWide);
+      expect(
+        state.materialAssignmentMode,
+        BatchMaterialAssignmentMode.batchWide,
+      );
       expect(state.batchMaterialId, 'm1');
       expect(state.items.first.materialId, 'm1');
       expect(state.itemMaterialAllocations['item-1']!.single.targetId, 'm1');
@@ -219,8 +261,11 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setBatchMaterialId('m1');
@@ -237,12 +282,18 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final a = BatchCostingItem.manual(
-        id: 'a', displayName: 'A', quantity: 1,
-        printWeightG: 10, printDuration: const Duration(minutes: 10),
+        id: 'a',
+        displayName: 'A',
+        quantity: 1,
+        printWeightG: 10,
+        printDuration: const Duration(minutes: 10),
       );
       final b = BatchCostingItem.manual(
-        id: 'b', displayName: 'B', quantity: 1,
-        printWeightG: 10, printDuration: const Duration(minutes: 10),
+        id: 'b',
+        displayName: 'B',
+        quantity: 1,
+        printWeightG: 10,
+        printDuration: const Duration(minutes: 10),
       );
       notifier.addItem(a);
       notifier.addItem(b);
@@ -250,7 +301,10 @@ void main() {
       notifier.setMaterialAssignmentMode(BatchMaterialAssignmentMode.perItem);
 
       expect(
-        container.read(batchCostingProvider).items.every((i) => i.materialId == 'm1'),
+        container
+            .read(batchCostingProvider)
+            .items
+            .every((i) => i.materialId == 'm1'),
         isTrue,
       );
     });
@@ -261,18 +315,24 @@ void main() {
       final notifier = container.read(batchCostingProvider.notifier);
 
       final item = BatchCostingItem.manual(
-        id: 'item-1', displayName: 'Benchy', quantity: 1,
-        printWeightG: 15, printDuration: const Duration(minutes: 30),
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 1,
+        printWeightG: 15,
+        printDuration: const Duration(minutes: 30),
       );
       notifier.addItem(item);
       notifier.setMaterialAssignmentMode(BatchMaterialAssignmentMode.perItem);
-      notifier.setItemMaterialAllocations(
-        'item-1',
-        [const BatchAssignmentAllocation(targetId: 'm2', quantity: 1)],
-      );
+      notifier.setItemMaterialAllocations('item-1', [
+        const BatchAssignmentAllocation(targetId: 'm2', quantity: 1),
+      ]);
 
       expect(
-        container.read(batchCostingProvider).itemMaterialAllocations['item-1']!.single.targetId,
+        container
+            .read(batchCostingProvider)
+            .itemMaterialAllocations['item-1']!
+            .single
+            .targetId,
         'm2',
       );
     });

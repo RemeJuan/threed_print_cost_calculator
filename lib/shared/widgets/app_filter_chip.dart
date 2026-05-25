@@ -22,20 +22,14 @@ class AppFilterChip extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
     final chip = Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: kAppSpace12,
-        vertical: 6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: kAppSpace12, vertical: 6),
       decoration: BoxDecoration(
         border: Border.all(
           color: selected ? LIGHT_BLUE.withValues(alpha: 0.5) : SHELL_BORDER,
         ),
         borderRadius: BorderRadius.circular(kAppPillRadius),
       ),
-      child: Text(
-        label,
-        style: textStyle,
-      ),
+      child: Text(label, style: textStyle),
     );
 
     if (onTap == null) return chip;

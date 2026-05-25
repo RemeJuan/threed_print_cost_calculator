@@ -48,9 +48,7 @@ class MaterialsPage extends HookConsumerWidget {
               onChanged: (v) {
                 ref.read(materialsSearchQueryProvider.notifier).state = v;
               },
-              textFieldKey: const ValueKey<String>(
-                'materials.search.input',
-              ),
+              textFieldKey: const ValueKey<String>('materials.search.input'),
               clearButtonKey: const ValueKey<String>(
                 'materials.search.clear.button',
               ),
@@ -79,9 +77,9 @@ class MaterialsPage extends HookConsumerWidget {
                     Expanded(
                       child: Text(
                         l10n.materialsSwipeHint,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: LIGHT_BLUE,
-                        ),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.copyWith(color: LIGHT_BLUE),
                       ),
                     ),
                     GestureDetector(

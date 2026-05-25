@@ -524,8 +524,9 @@ class WorkCostsSettings extends HookConsumerWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           '${l10n.currencyPreviewLabel}: ${_formatPreview(data)}',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: TEXT_TERTIARY),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
                         ),
                       ),
                     ),

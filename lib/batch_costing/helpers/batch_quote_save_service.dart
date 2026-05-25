@@ -188,9 +188,7 @@ class _BatchQuoteNameDialogState extends State<_BatchQuoteNameDialog> {
         AppPrimaryButton(
           onPressed: () {
             final name = _controller.text.trim();
-            Navigator.of(context).pop(
-              name.isEmpty ? widget.hintText : name,
-            );
+            Navigator.of(context).pop(name.isEmpty ? widget.hintText : name);
           },
           label: widget.saveLabel,
         ),

@@ -60,10 +60,7 @@ class _BatchSearchableSelectorState extends State<BatchSearchableSelector> {
                 selectedTileColor: LIGHT_BLUE.withValues(alpha: 0.12),
                 title: Text(entry.label),
                 trailing: isSelected
-                    ? Icon(
-                        Icons.check,
-                        color: LIGHT_BLUE,
-                      )
+                    ? Icon(Icons.check, color: LIGHT_BLUE)
                     : null,
                 onTap: () => widget.onChanged(entry.value),
               );

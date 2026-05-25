@@ -33,7 +33,12 @@ class HelpSupportSupportCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace16, kAppSpace16, kAppSpace12),
+            padding: const EdgeInsets.fromLTRB(
+              kAppSpace16,
+              kAppSpace16,
+              kAppSpace16,
+              kAppSpace12,
+            ),
             child: Text(
               l10n.helpSupportSupportIntro,
               style: theme.textTheme.bodyMedium,

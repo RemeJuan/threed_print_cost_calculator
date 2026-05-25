@@ -5,13 +5,9 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_import_state.dart';
 import 'package:threed_print_cost_calculator/gcode_import/model/gcode_import_file.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
-import 'package:threed_print_cost_calculator/gcode_import/model/gcode_import_result_models.dart';
 
-GCodePickedFile _file(String name, {String? path}) => GCodePickedFile(
-  name: name,
-  path: path ?? '/dev/null/$name',
-  size: 100,
-);
+GCodePickedFile _file(String name, {String? path}) =>
+    GCodePickedFile(name: name, path: path ?? '/dev/null/$name', size: 100);
 
 GCodeImportResult _result({
   double? weightG,
@@ -120,12 +116,18 @@ void main() {
     test('finds item by id', () {
       final List<BatchCostingItem> items = [
         BatchCostingItem.manual(
-          id: 'a', displayName: 'A', quantity: 1,
-          printWeightG: 10, printDuration: const Duration(minutes: 10),
+          id: 'a',
+          displayName: 'A',
+          quantity: 1,
+          printWeightG: 10,
+          printDuration: const Duration(minutes: 10),
         ),
         BatchCostingItem.manual(
-          id: 'b', displayName: 'B', quantity: 1,
-          printWeightG: 20, printDuration: const Duration(minutes: 20),
+          id: 'b',
+          displayName: 'B',
+          quantity: 1,
+          printWeightG: 20,
+          printDuration: const Duration(minutes: 20),
         ),
       ];
       expect(findItemById(items, 'a')?.displayName, 'A');
@@ -147,8 +149,11 @@ void main() {
     test('detects duplicate by path in single import', () {
       final file = _file('a.gcode', path: '/path/a.gcode');
       final single = BatchSingleImport(
-        file: file, batchItemId: '1', result: _result(),
-        missingWeight: false, missingDuration: false,
+        file: file,
+        batchItemId: '1',
+        result: _result(),
+        missingWeight: false,
+        missingDuration: false,
       );
       expect(isDuplicateFile(file, single, []), isTrue);
     });
@@ -157,8 +162,11 @@ void main() {
       final file = _file('a.gcode', path: '/path/a.gcode');
       final existing = _file('a.gcode', path: '/other/a.gcode');
       final single = BatchSingleImport(
-        file: existing, batchItemId: '1', result: _result(),
-        missingWeight: false, missingDuration: false,
+        file: existing,
+        batchItemId: '1',
+        result: _result(),
+        missingWeight: false,
+        missingDuration: false,
       );
       expect(isDuplicateFile(file, single, []), isTrue);
     });
@@ -179,21 +187,35 @@ void main() {
 
   group('buildImportResult', () {
     test('returns original result when no overrides', () {
-      final result = _result(weightG: 15.0, duration: const Duration(minutes: 30));
+      final result = _result(
+        weightG: 15.0,
+        duration: const Duration(minutes: 30),
+      );
       final single = BatchSingleImport(
-        file: _file('a.gcode'), batchItemId: '1', result: result,
-        missingWeight: false, missingDuration: false,
+        file: _file('a.gcode'),
+        batchItemId: '1',
+        result: result,
+        missingWeight: false,
+        missingDuration: false,
       );
       expect(buildImportResult(single), same(result));
     });
 
     test('merges override weight and duration', () {
-      final result = _result(weightG: 15.0, duration: const Duration(minutes: 30));
-      final single = BatchSingleImport(
-        file: _file('a.gcode'), batchItemId: '1', result: result,
-        missingWeight: false, missingDuration: false,
-      )..overrideWeightG = 20.0
-       ..overrideDuration = const Duration(minutes: 45);
+      final result = _result(
+        weightG: 15.0,
+        duration: const Duration(minutes: 30),
+      );
+      final single =
+          BatchSingleImport(
+              file: _file('a.gcode'),
+              batchItemId: '1',
+              result: result,
+              missingWeight: false,
+              missingDuration: false,
+            )
+            ..overrideWeightG = 20.0
+            ..overrideDuration = const Duration(minutes: 45);
       final built = buildImportResult(single);
       expect(built.filamentWeightG, 20.0);
       expect(built.estimatedDuration, const Duration(minutes: 45));
@@ -203,7 +225,10 @@ void main() {
 
   group('buildCostingItem', () {
     test('creates BatchCostingItem from import result', () {
-      final result = _result(weightG: 15.0, duration: const Duration(minutes: 30));
+      final result = _result(
+        weightG: 15.0,
+        duration: const Duration(minutes: 30),
+      );
       final file = _file('test.gcode', path: '/path/test.gcode');
       final item = buildCostingItem(id: 'item-1', file: file, result: result);
 

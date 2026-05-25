@@ -24,7 +24,12 @@ class BatchGCodeImportDetailsSheet extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace16, kAppSpace16, 24),
+        padding: const EdgeInsets.fromLTRB(
+          kAppSpace16,
+          kAppSpace16,
+          kAppSpace16,
+          24,
+        ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

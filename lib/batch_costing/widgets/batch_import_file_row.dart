@@ -42,7 +42,12 @@ class BatchImportFileRow extends StatelessWidget {
         );
       case ImportStatus.needsDetails:
         return AppSurfaceCard(
-          padding: const EdgeInsets.fromLTRB(kAppSpace16, 0, kAppSpace16, kAppSpace16),
+          padding: const EdgeInsets.fromLTRB(
+            kAppSpace16,
+            0,
+            kAppSpace16,
+            kAppSpace16,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -79,9 +84,9 @@ class BatchImportFileRow extends StatelessWidget {
               const SizedBox(height: kAppSpace8),
               Text(
                 l10n.batchGcodeImportNeedsDetailsLabel,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: STATUS_WARNING,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(color: STATUS_WARNING),
               ),
               MissingDetailsForm(
                 l10n: l10n,

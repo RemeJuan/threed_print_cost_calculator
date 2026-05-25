@@ -28,8 +28,9 @@ class HistoryToolbar extends StatelessWidget {
               showClearButton: true,
               onChanged: (_) {},
               textFieldKey: const ValueKey<String>('history.search.input'),
-              clearButtonKey:
-                  const ValueKey<String>('history.search.clear.button'),
+              clearButtonKey: const ValueKey<String>(
+                'history.search.clear.button',
+              ),
             ),
           ),
           const SizedBox(width: kAppSpace8),

@@ -29,10 +29,7 @@ class StockStatusBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: baseColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(kAppBadgeRadius),
-        border: Border.all(
-          color: baseColor.withValues(alpha: 0.4),
-          width: 1,
-        ),
+        border: Border.all(color: baseColor.withValues(alpha: 0.4), width: 1),
       ),
       child: Text(
         label,

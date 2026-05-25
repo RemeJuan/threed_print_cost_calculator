@@ -162,8 +162,9 @@ class MaterialCard extends ConsumerWidget {
                     children: [
                       Text(
                         material.name,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(color: TEXT_PRIMARY),
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.copyWith(color: TEXT_PRIMARY),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -218,9 +219,9 @@ class _MergedInfoLine extends StatelessWidget {
 
     return Text(
       parts.join(' · '),
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-        color: TEXT_TERTIARY,
-      ),
+      style: Theme.of(
+        context,
+      ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
     );
   }
 }

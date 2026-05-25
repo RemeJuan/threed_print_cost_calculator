@@ -28,9 +28,7 @@ class HelpSupportAboutSection extends StatelessWidget {
                       l10n.helpSupportTrustNoTracking,
                       l10n.helpSupportTrustLocalData,
                     ]
-                    .map(
-                      (label) => AppFilterChip(label: label),
-                    )
+                    .map((label) => AppFilterChip(label: label))
                     .toList(growable: false),
           ),
         ),

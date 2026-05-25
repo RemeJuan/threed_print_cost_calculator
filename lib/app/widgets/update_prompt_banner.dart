@@ -51,7 +51,12 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
         : l10n.updatePromptBodyUnknown;
 
     return Card(
-      margin: const EdgeInsets.fromLTRB(kAppSpace16, kAppSpace12, kAppSpace16, 0),
+      margin: const EdgeInsets.fromLTRB(
+        kAppSpace16,
+        kAppSpace12,
+        kAppSpace16,
+        0,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(kAppSpace16),
         child: Column(

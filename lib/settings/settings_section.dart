@@ -35,7 +35,10 @@ class SettingsSection extends StatelessWidget {
                   child: title,
                 ),
               ),
-              if (action != null) ...[const SizedBox(width: kAppSpace8), action!],
+              if (action != null) ...[
+                const SizedBox(width: kAppSpace8),
+                action!,
+              ],
             ],
           ),
           const SizedBox(height: kAppSpace16),
