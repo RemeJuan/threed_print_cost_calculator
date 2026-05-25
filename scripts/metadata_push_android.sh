@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.." || exit 1
 
-echo "==> Dry-run: showing what will change..."
+echo "==> Metadata diff (files to be pushed):"
 git diff --stat -- fastlane/metadata/android/
 
 echo ""
