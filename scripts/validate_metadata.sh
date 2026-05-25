@@ -38,7 +38,7 @@ check_locale() {
 echo "=== Validating iOS metadata ==="
 for locale in en-US de-DE pt-BR es-ES fr-FR it ja; do
   check_locale "$IOS_DIR" "$locale" \
-    name.txt subtitle.txt description.txt keywords.txt release_notes.txt support_url.txt
+    name.txt subtitle.txt description.txt keywords.txt release_notes.txt
 done
 
 echo ""

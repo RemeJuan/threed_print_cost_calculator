@@ -42,13 +42,16 @@ For each locale, update these translated text files when present:
 - `keywords.txt`
 - `release_notes.txt`
 
-Keep non-language infrastructure values stable unless English changed and the locale should intentionally mirror it:
+Do **not** generate or touch these non-localizable files:
 
 - `support_url.txt`
 - `marketing_url.txt`
 - `privacy_url.txt`
+- `apple_tv_privacy_policy.txt`
+- `promotional_text.txt`
 
-Do not invent locale-specific URLs.
+These files exist only in the default locale dir (`en-US`) as single-copy shared values.
+They are removed from non-English locale directories — do not recreate them there.
 
 ### Android
 

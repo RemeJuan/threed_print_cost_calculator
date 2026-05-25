@@ -79,7 +79,7 @@ platform :ios do
     check_no_untranslated(
       File.expand_path("metadata/ios", __dir__),
       %w[en-US de-DE pt-BR es-ES fr-FR it ja],
-      %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt support_url.txt]
+      %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt]
     )
     key = api_key
     metadata_dir = File.expand_path("metadata/ios", __dir__)
@@ -100,6 +100,7 @@ platform :ios do
       FileUtils.cp_r(src, File.join(push_dir, locale))
       # Remove name.txt from locale dirs — ASC auto-inherits from default locale.
       # Pushing it triggers name-conflict errors for locales added after release.
+      # URL/privacy/promotional files are also excluded (non-localizable ASC fields).
       name_file = File.join(push_dir, locale, "name.txt")
       FileUtils.rm(name_file) if File.exist?(name_file)
     end
