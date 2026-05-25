@@ -1,0 +1,6 @@
+* O custeio em lote agora está disponível para usuários Pro, facilitando o orçamento de várias impressões juntas
+* Importe vários arquivos G-code, atribua impressoras e materiais por item, defina quantidades e adicione linhas manuais
+* Revise os totais do lote com impacto monetário mais claro nos resumos de preço e no histórico salvo
+* Pesquise impressoras e materiais mais rápido ao atribuir itens do lote
+* Substitua valores importados do G-code quando necessário
+* Custos adicionais agora aparecem diretamente ao lado das outras linhas de preço

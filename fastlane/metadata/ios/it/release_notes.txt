@@ -1,0 +1,6 @@
+* Il calcolo in batch è ora disponibile per gli utenti Pro e rende più semplice preventivare più stampe insieme
+* Importa più file G-code, assegna stampanti e materiali per elemento, imposta le quantità e aggiungi righe manuali
+* Controlla i totali del batch con un impatto economico più chiaro nei riepiloghi prezzi e nella cronologia salvata
+* Cerca più velocemente stampanti e materiali durante l'assegnazione degli elementi del batch
+* Sostituisci i valori importati dal G-code quando necessario
+* I costi aggiuntivi ora compaiono direttamente accanto alle altre righe di prezzo

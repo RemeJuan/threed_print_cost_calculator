@@ -1,0 +1,43 @@
+3D Print Cost Calculator ajuda makers e pequenas empresas de impressão 3D a calcular preços precisos usando filamento, eletricidade, mão de obra, consumo de energia da impressora, risco de falha, taxas de configuração e margem.
+
+A maioria dos makers só conta o custo do filamento. O preço real também inclui eletricidade, tempo de máquina, desgaste, impressões com falha, mão de obra e preparação.
+
+Defina preços com precisão e proteja suas margens.
+
+Para hobistas, makers e pequenas empresas de impressão 3D.
+
+Recursos gratuitos
+
+• Cálculo do custo do filamento
+• Custo de eletricidade por kWh
+• Modelagem do consumo de energia da impressora
+• Rastreamento de estoque de material com atualizações automáticas
+• Totalmente offline e com privacidade em primeiro lugar
+
+Recursos Premium
+
+• Preços prontos para o cliente
+• Margem, taxas de configuração e opções de arredondamento
+• Formatação de moeda
+• Importação de G-code para configuração mais rápida
+• Suporte a impressão multimaterial
+• Custeio em lote para várias impressões
+• Modelagem de risco de falha
+• Tempo de mão de obra e processamento
+• Salvar e revisar o histórico de impressão
+• Detalhamento de custos por trabalho
+• Vários perfis de impressora
+• Exportar trabalhos individuais ou o histórico completo (CSV)
+• Configuração avançada
+
+Exporte seus dados para contabilidade, análise de preços ou orçamentos para clientes.
+
+Privacidade em primeiro lugar:
+Sem contas
+Sem sincronização na nuvem
+Sem rastreamento
+Todos os dados permanecem no seu dispositivo
+
+Construído com um mecanismo de custos determinístico para resultados consistentes e repetíveis.
+
+Usado por makers e pequenas empresas de impressão 3D em todo o mundo desde 2021.

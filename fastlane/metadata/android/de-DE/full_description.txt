@@ -1,0 +1,43 @@
+3D Print Cost Calculator hilft Makern und kleinen 3D-Druck-Unternehmen, Druckpreise präzise zu berechnen, basierend auf Filament, Strom, Arbeitszeit, Druckerleistung, Ausfallrisiko, Einrichtungsgebühren und Aufschlag.
+
+Die meisten Maker berücksichtigen nur die Filamentkosten. Zur realen Preisfindung gehören auch Strom, Maschinenzeit, Verschleiss, Fehldrucke, Arbeitszeit und Einrichtungsaufwand.
+
+Bepreisen Sie Drucke exakt und schützen Sie Ihre Margen.
+
+Für Hobbyisten, Maker und kleine 3D-Druck-Unternehmen.
+
+Kostenlose Funktionen
+
+• Filamentkostenberechnung
+• Stromkosten pro kWh
+• Modellierung des Drucker-Stromverbrauchs
+• Materialbestandsverfolgung mit automatischen Aktualisierungen
+• Vollständig offline und datenschutzfreundlich
+
+Premium-Funktionen
+
+• Kundenfertige Preisgestaltung
+• Aufschlag, Einrichtungsgebühren und Rundungsoptionen
+• Währungsformatierung
+• G-Code-Import für schnellere Einrichtung
+• Unterstützung für Multimaterial-Drucke
+• Stapelkalkulation für mehrere Drucke
+• Modellierung des Ausfallrisikos
+• Arbeitskosten und Bearbeitungszeit
+• Druckverlauf speichern und prüfen
+• Detaillierte Kostenaufschlüsselung pro Auftrag
+• Mehrere Druckerprofile
+• Einzelne Aufträge oder den gesamten Verlauf exportieren (CSV)
+• Erweiterte Konfiguration
+
+Exportieren Sie Ihre Daten für Buchhaltung, Preisanalysen oder Kundenangebote.
+
+Datenschutz zuerst:
+Keine Konten
+Keine Cloud-Synchronisierung
+Kein Tracking
+Alle Daten bleiben auf Ihrem Gerät
+
+Mit einer deterministischen Kosten-Engine für konsistente, wiederholbare Ergebnisse.
+
+Seit 2021 weltweit im Einsatz bei Makern und kleinen 3D-Druck-Unternehmen.

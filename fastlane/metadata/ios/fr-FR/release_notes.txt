@@ -1,0 +1,6 @@
+* Le calcul par lot est maintenant disponible pour les utilisateurs Pro, ce qui facilite le chiffrage de plusieurs impressions ensemble
+* Importez plusieurs fichiers G-code, attribuez imprimantes et matériaux par élément, définissez les quantités et ajoutez des lignes manuelles
+* Consultez les totaux de lot avec un impact monétaire plus clair dans les résumés de prix et l'historique enregistré
+* Recherchez plus vite imprimantes et matériaux lors de l'attribution des éléments du lot
+* Remplacez les valeurs importées du G-code lorsque nécessaire
+* Les coûts supplémentaires apparaissent maintenant directement à côté des autres lignes de prix

@@ -1,0 +1,6 @@
+* El cálculo por lotes ya está disponible para usuarios Pro y facilita presupuestar varias impresiones juntas
+* Importe varios archivos G-code, asigne impresoras y materiales por elemento, defina cantidades y añada líneas manuales
+* Revise los totales del lote con un impacto monetario más claro en los resúmenes de precios y el historial guardado
+* Busque impresoras y materiales más rápido al asignar elementos del lote
+* Sustituya valores importados de G-code cuando sea necesario
+* Los costes adicionales ahora aparecen directamente junto a las demás líneas de precio
