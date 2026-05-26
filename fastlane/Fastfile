@@ -221,6 +221,57 @@ platform :ios do
   end
 
   ################################################################
+  # Push release notes only to App Store Connect
+  #
+  # Useful for patch releases where description/keywords/subtitle stay
+  # unchanged and only What's New text needs updating.
+  ################################################################
+  desc "Push iOS release notes only to App Store Connect (no binary, no screenshots)"
+  lane :release_notes_push do
+    check_ios_creds
+    ios_push_locales = %w[de-DE pt-BR es-ES fr-FR it ja]
+    key = api_key
+    metadata_dir = File.expand_path("metadata/ios", __dir__)
+    push_dir = File.expand_path("metadata/ios_release_notes_push", __dir__)
+    FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
+    FileUtils.mkdir_p(push_dir)
+
+    # en-GB is the default ASC locale — source from en-US release notes
+    en_us_release_notes = File.join(metadata_dir, "en-US", "release_notes.txt")
+    UI.user_error!("Missing #{en_us_release_notes}") unless File.exist?(en_us_release_notes)
+    FileUtils.cp(en_us_release_notes, File.join(push_dir, "release_notes.txt"))
+
+    ios_push_locales.each do |locale|
+      src = File.join(metadata_dir, locale, "release_notes.txt")
+      next unless File.exist?(src)
+
+      locale_dir = File.join(push_dir, locale)
+      FileUtils.mkdir_p(locale_dir)
+      FileUtils.cp(src, File.join(locale_dir, "release_notes.txt"))
+    end
+
+    begin
+      deliver(
+        api_key: key,
+        skip_metadata: false,
+        skip_binary_upload: true,
+        skip_screenshots: true,
+        force: true,
+        submit_for_review: false,
+        automatic_release: false,
+        phased_release: false,
+        reject_if_possible: false,
+        overwrite_screenshots: false,
+        metadata_path: push_dir,
+        ignore_language_directory_validation: true,
+        run_precheck_before_submit: false
+      )
+    ensure
+      FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
+    end
+  end
+
+  ################################################################
   # Push screenshots only to App Store Connect
   ################################################################
   desc "Push screenshots to App Store Connect (no metadata, no binary)"
@@ -303,7 +354,50 @@ platform :android do
       skip_upload_metadata: false,
       skip_upload_images: true,
       skip_upload_screenshots: true,
-      skip_upload_changelogs: true,
+      skip_upload_changelogs: false,
+      metadata_path: "fastlane/metadata/android"
+    )
+  end
+
+  ################################################################
+  # Push changelogs only to Google Play
+  #
+  # Useful for patch releases where listing copy stays unchanged and
+  # only What's New text needs updating for an existing version code.
+  ################################################################
+  desc "Push Android changelogs only to Google Play Console (no APK)"
+  lane :changelog_push do |options|
+    check_android_creds
+    track = options[:track] || ENV["METADATA_TRACK"] || "open_testing"
+    track = "beta" if %w[open_testing open-testing open testing].include?(track.to_s.downcase.tr(" ", "_"))
+    version_code = options[:version_code] || ENV["VERSION_CODE"]
+
+    if version_code.to_s.strip.empty?
+      version_codes = google_play_track_version_codes(
+        package_name: "com.threed_print_calculator",
+        track: track
+      )
+      version_code = version_codes.compact.max
+    end
+
+    UI.user_error!("version_code is required") if version_code.to_s.strip.empty?
+
+    check_no_untranslated(
+      File.expand_path("metadata/android", __dir__),
+      %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
+      %w[changelogs/default.txt]
+    )
+
+    supply(
+      package_name: "com.threed_print_calculator",
+      track: track,
+      version_code: version_code,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: false,
       metadata_path: "fastlane/metadata/android"
     )
   end

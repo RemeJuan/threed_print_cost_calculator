@@ -74,6 +74,14 @@ Pull iOS metadata from App Store Connect
 
 Push metadata to App Store Connect (no binary, no screenshots)
 
+### ios release_notes_push
+
+```sh
+[bundle exec] fastlane ios release_notes_push
+```
+
+Push iOS release notes only to App Store Connect (no binary, no screenshots)
+
 ### ios screenshot_push
 
 ```sh
@@ -110,6 +118,14 @@ Pull Android metadata from Google Play Console
 ```
 
 Push metadata to Google Play Console (no APK)
+
+### android changelog_push
+
+```sh
+[bundle exec] fastlane android changelog_push
+```
+
+Push Android changelogs only to Google Play Console (no APK)
 
 ### android screenshot_push
 

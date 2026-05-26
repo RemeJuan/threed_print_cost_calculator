@@ -53,8 +53,14 @@ metadata_check_all:
 metadata_push_ios:
 	./scripts/metadata_push_ios.sh
 
+metadata_push_ios_changelog:
+	./scripts/metadata_push_ios_changelog.sh
+
 metadata_push_android:
 	./scripts/metadata_push_android.sh
+
+metadata_push_android_changelog:
+	./scripts/metadata_push_android_changelog.sh $(TRACK)
 
 metadata_push_all:
 	bundle exec fastlane metadata_push_all
