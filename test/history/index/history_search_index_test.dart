@@ -152,4 +152,39 @@ void main() {
       isTrue,
     );
   });
+
+  test('substring expansion is bounded per token length', () async {
+    // Use distinct chars to trigger worst-case N*(N+1)/2 expansion
+    // 20-char token → 20*21/2 = 210 substrings (not de-duped)
+    final name = 'abcdefghijklmnopqrstuvwxyz123456'; // 32 distinct chars
+    final key = await store.add(db, {
+      'name': name,
+      'printer': 'short',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+
+    final indexStore = stringMapStoreFactory.store('history_search_index');
+    final allEntries = await indexStore.find(db);
+
+    final recordEntries = allEntries.where(
+      (entry) =>
+          (entry.value['keys'] as List?)
+              ?.map((k) => k.toString())
+              .contains(key.toString()) ==
+          true,
+    );
+
+    // 32-char token → 32*33/2 = 528 name substrings
+    // "short" → 5*6/2 = 15 printer substrings
+    // Total: 543 (some may merge with pre-existing entries)
+    expect(recordEntries.length, equals(528 + 15));
+
+    // Search with single char prefix still works
+    final results = await helpers.getKeysMatchingQuery('a');
+    expect(results, contains(key));
+  });
 }
