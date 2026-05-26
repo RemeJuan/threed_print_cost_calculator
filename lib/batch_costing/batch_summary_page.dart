@@ -251,7 +251,9 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 AppPrimaryButton(
-                  onPressed: () => saveBatchQuote(context, ref, state, summary),
+                  onPressed: () => ref
+                      .read(batchQuoteSaveServiceProvider)
+                      .saveBatchQuote(context, state, summary),
                   label: l10n.batchCostingSummarySaveButton,
                 ),
                 const SizedBox(height: 12),
