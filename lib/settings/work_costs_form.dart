@@ -4,11 +4,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'dart:async';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
+import 'package:threed_print_cost_calculator/settings/services/work_costs_persistence_service.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
@@ -31,9 +30,8 @@ class WorkCostsSettings extends HookConsumerWidget {
     final setupFeeController = useTextEditingController();
     final currencySymbolController = useTextEditingController();
 
+    final persistenceService = ref.read(workCostsPersistenceServiceProvider);
     final settingsRepository = ref.read(settingsRepositoryProvider);
-    final settingsService = ref.read(settingsServiceProvider);
-    final logger = ref.read(appLoggerProvider);
 
     final failureDebounce = useRef<Timer?>(null);
     final labourDebounce = useRef<Timer?>(null);
@@ -68,19 +66,11 @@ class WorkCostsSettings extends HookConsumerWidget {
       failureDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
-        try {
-          await settingsService.update(
-            (settings) => settings.copyWith(failureRisk: parsed.toString()),
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist failure risk',
-            context: {'setting': 'failureRisk'},
-            error: e,
-            stackTrace: st,
-          );
-        }
+        persistenceService.saveSetting(
+          updateWith: (settings) =>
+              settings.copyWith(failureRisk: parsed.toString()),
+          settingName: 'failureRisk',
+        );
       });
     }
 
@@ -89,19 +79,11 @@ class WorkCostsSettings extends HookConsumerWidget {
       labourDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
-        try {
-          await settingsService.update(
-            (settings) => settings.copyWith(labourRate: parsed.toString()),
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist labour rate',
-            context: {'setting': 'labourRate'},
-            error: e,
-            stackTrace: st,
-          );
-        }
+        persistenceService.saveSetting(
+          updateWith: (settings) =>
+              settings.copyWith(labourRate: parsed.toString()),
+          settingName: 'labourRate',
+        );
       });
     }
 
@@ -110,19 +92,11 @@ class WorkCostsSettings extends HookConsumerWidget {
       wearDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
-        try {
-          await settingsService.update(
-            (settings) => settings.copyWith(wearAndTear: parsed.toString()),
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist wear and tear',
-            context: {'setting': 'wearAndTear'},
-            error: e,
-            stackTrace: st,
-          );
-        }
+        persistenceService.saveSetting(
+          updateWith: (settings) =>
+              settings.copyWith(wearAndTear: parsed.toString()),
+          settingName: 'wearAndTear',
+        );
       });
     }
 
@@ -131,20 +105,11 @@ class WorkCostsSettings extends HookConsumerWidget {
       markupDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
-        try {
-          await settingsService.update(
-            (settings) =>
-                settings.copyWith(pricingMarkupPercent: parsed.toString()),
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist markup percent',
-            context: {'setting': 'pricingMarkupPercent'},
-            error: e,
-            stackTrace: st,
-          );
-        }
+        persistenceService.saveSetting(
+          updateWith: (settings) =>
+              settings.copyWith(pricingMarkupPercent: parsed.toString()),
+          settingName: 'pricingMarkupPercent',
+        );
       });
     }
 
@@ -153,38 +118,21 @@ class WorkCostsSettings extends HookConsumerWidget {
       setupFeeDebounce.value = Timer(debounce400ms, () async {
         final parsed = tryParseLocalizedNum(value);
         if (parsed == null) return;
-        try {
-          await settingsService.update(
-            (settings) => settings.copyWith(pricingSetupFee: parsed.toString()),
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist setup fee',
-            context: {'setting': 'pricingSetupFee'},
-            error: e,
-            stackTrace: st,
-          );
-        }
+        persistenceService.saveSetting(
+          updateWith: (settings) =>
+              settings.copyWith(pricingSetupFee: parsed.toString()),
+          settingName: 'pricingSetupFee',
+        );
       });
     }
 
     void persistCurrencySymbol(String value) {
       currencySymbolDebounce.value?.cancel();
       currencySymbolDebounce.value = Timer(debounce400ms, () async {
-        try {
-          await settingsService.update(
-            (settings) => settings.copyWith(currencySymbol: value),
-          );
-        } catch (e, st) {
-          logger.error(
-            AppLogCategory.ui,
-            'Failed to persist currency symbol',
-            context: {'setting': 'currencySymbol'},
-            error: e,
-            stackTrace: st,
-          );
-        }
+        persistenceService.saveSetting(
+          updateWith: (settings) => settings.copyWith(currencySymbol: value),
+          settingName: 'currencySymbol',
+        );
       });
     }
 
@@ -408,21 +356,12 @@ class WorkCostsSettings extends HookConsumerWidget {
                         ],
                         onChanged: (value) async {
                           if (value == null) return;
-                          try {
-                            await settingsService.update(
-                              (settings) =>
-                                  settings.copyWith(pricingRoundingMode: value),
-                            );
-                            firePricingSettingsChanged(data);
-                          } catch (e, st) {
-                            logger.error(
-                              AppLogCategory.ui,
-                              'Failed to persist rounding mode',
-                              context: {'setting': 'pricingRoundingMode'},
-                              error: e,
-                              stackTrace: st,
-                            );
-                          }
+                          await persistenceService.saveSetting(
+                            updateWith: (settings) =>
+                                settings.copyWith(pricingRoundingMode: value),
+                            settingName: 'pricingRoundingMode',
+                          );
+                          firePricingSettingsChanged(data);
                         },
                       ),
                     ),
@@ -468,20 +407,11 @@ class WorkCostsSettings extends HookConsumerWidget {
                         ],
                         onChanged: (value) async {
                           if (value == null) return;
-                          try {
-                            await settingsService.update(
-                              (settings) =>
-                                  settings.copyWith(currencyPosition: value),
-                            );
-                          } catch (e, st) {
-                            logger.error(
-                              AppLogCategory.ui,
-                              'Failed to persist currency position',
-                              context: {'setting': 'currencyPosition'},
-                              error: e,
-                              stackTrace: st,
-                            );
-                          }
+                          await persistenceService.saveSetting(
+                            updateWith: (settings) =>
+                                settings.copyWith(currencyPosition: value),
+                            settingName: 'currencyPosition',
+                          );
                         },
                       ),
                     ),
@@ -501,20 +431,11 @@ class WorkCostsSettings extends HookConsumerWidget {
                         title: Text(l10n.currencySpacingLabel),
                         value: data.currencySpacing,
                         onChanged: (value) async {
-                          try {
-                            await settingsService.update(
-                              (settings) =>
-                                  settings.copyWith(currencySpacing: value),
-                            );
-                          } catch (e, st) {
-                            logger.error(
-                              AppLogCategory.ui,
-                              'Failed to persist currency spacing',
-                              context: {'setting': 'currencySpacing'},
-                              error: e,
-                              stackTrace: st,
-                            );
-                          }
+                          await persistenceService.saveSetting(
+                            updateWith: (settings) =>
+                                settings.copyWith(currencySpacing: value),
+                            settingName: 'currencySpacing',
+                          );
                         },
                       ),
                     ),
