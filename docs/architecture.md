@@ -51,6 +51,16 @@
   - History tab visibility depends on premium-related promotion providers in `lib/shared/providers/pro_promotion_visibility.dart`.
 - Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, with feature-specific triggers in calculator/history/header/settings flows.
 
+## Structured logging approach
+
+- `AppLogger` (`lib/core/logging/app_logger.dart`) centralizes logging with levels (`debug`, `info`, `warn`, `error`), categories (`db`, `provider`, `ui`, `migration`, `billing`), optional context maps, and error/stackTrace fields.
+- Default sink is `DebugPrintAppLogSink`; tests can override via `appLogSinkProvider` to capture events.
+- Replaces bare `debugPrint` calls across the codebase. Currently adopted in:
+  - `HistoryPagedNotifier`, `HistorySearchIndexHelpers`, `PrinterIndexHelpers` — history index/migration paths
+  - `PremiumStateNotifier` — premium fetch error path
+  - `BatchQuoteSaveService` — batch quote save failure path
+  - `openUrl` (help support) and `openAppStoreForPlatform` (update checker) — URL launch failure fallback
+
 ## Localization rules
 
 - ARB source of truth: `lib/l10n/intl_*.arb`.
