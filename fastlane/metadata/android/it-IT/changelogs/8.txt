@@ -1,5 +1,0 @@
-Nuovo modello di prezzi con margine, commissioni di configurazione e opzioni di arrotondamento per preventivi più flessibili
-Aggiunte note sui costi aggiuntivi direttamente nei risultati della calcolatrice
-Esportazioni migliorate con una schermata dedicata alle opzioni di esportazione
-Risolti diversi problemi di stabilità e reattività su Android
-Risolto un problema di installazione Android introdotto in 2.9.4

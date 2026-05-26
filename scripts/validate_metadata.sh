@@ -45,7 +45,7 @@ echo ""
 echo "=== Validating Android metadata ==="
 for locale in en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP; do
   check_locale "$ANDROID_DIR" "$locale" \
-    title.txt short_description.txt full_description.txt
+    title.txt short_description.txt full_description.txt changelogs/default.txt
 done
 
 echo ""

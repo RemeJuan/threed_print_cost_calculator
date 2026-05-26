@@ -69,17 +69,14 @@ For each locale, update:
 - `title.txt`
 - `short_description.txt`
 - `full_description.txt`
-- `changelogs/<version-code>.txt`
+- `changelogs/default.txt`
 
-For Android release notes, treat `fastlane/metadata/android/en-US/changelogs/` as the only source-of-truth changelog directory.
+For Android release notes, treat `fastlane/metadata/android/en-US/changelogs/default.txt` as the source of truth.
 
-- Assume new version-code changelog files exist only in English first.
-- For every English `changelogs/<version-code>.txt`, ensure a matching translated `changelogs/<version-code>.txt` exists in every Android target locale after the run.
+- Update every Android locale's `changelogs/default.txt` from the latest English source.
 - Create missing locale changelog files unconditionally.
-- If the locale file already exists for that same version code, overwrite/update it from the current English source.
-- Do not expect non-English changelog files to exist ahead of time.
-- Never skip a changelog because another locale changelog already exists for an older or different version code.
-- Preserve old locale changelog files for older version codes unless the English source for that same version changed.
+- Overwrite existing locale `default.txt` files from the current English source.
+- Do not create or preserve version-code changelog files.
 
 ## Translation rules
 
@@ -95,7 +92,7 @@ For Android release notes, treat `fastlane/metadata/android/en-US/changelogs/` a
 6. Preserve file purpose and store constraints.
 7. Never leave `TODO TRANSLATE:` markers.
 8. Never push to store consoles.
-9. For Android changelogs, keep version codes identical across locales.
+9. For Android changelogs, keep the locale `default.txt` files aligned with English source.
 
 ## Hard limits and store constraints
 

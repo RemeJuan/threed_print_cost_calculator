@@ -111,3 +111,4 @@
 - `shorebird.yaml` stores Shorebird app configuration.
 - Current version source: `pubspec.yaml`.
 - Version bump helpers referenced in repo docs: `make bump_fix`, `make bump_feat`, `make bump_build`.
+- Android store release notes use `fastlane/metadata/android/<locale>/changelogs/default.txt` per locale, not per-version files.

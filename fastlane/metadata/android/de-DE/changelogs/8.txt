@@ -1,5 +1,0 @@
-Neues Preismodell mit Aufschlag, Einrichtungsgebühren und Rundungsoptionen für flexiblere Angebote
-Zusätzliche Kostennotizen direkt in den Rechnerergebnissen hinzugefügt
-Verbesserte Exporte mit einem dedizierten Exportoptionen-Bildschirm
-Mehrere Stabilitäts- und Reaktionsprobleme auf Android behoben
-Ein Android-Installationsproblem aus 2.9.4 behoben

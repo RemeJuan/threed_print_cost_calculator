@@ -52,7 +52,7 @@ fastlane/metadata/
 | `short_description.txt` | Short description (80 chars max) | Yes |
 | `full_description.txt` | Full description (4000 chars max) | Yes |
 | `video.txt` | YouTube promo video URL | No |
-| `changelogs/<version-code>.txt` | Release notes per version | Per version |
+| `changelogs/default.txt` | Release notes for the locale | Yes |
 
 ---
 
@@ -103,10 +103,12 @@ Run this once to bootstrap, then periodically to catch any changes made directly
 ### Update release notes
 
 1. Edit `fastlane/metadata/ios/<locale>/release_notes.txt` for iOS
-2. Create `fastlane/metadata/android/<locale>/changelogs/<new-version-code>.txt` for Android
-   - Version code matches the `+N` in pubspec.yaml (e.g. `2.11.0+8` → `8`)
-   - Previous version changelogs remain as history
-   - Changelog files exist only in the English source directory (`en-US/changelogs/`) initially. Non-English locale changelogs are created from English during translation sync.
+   - Feature releases: usually pair this with description/subtitle/keywords updates
+   - Patch releases: push only `release_notes.txt` with `make metadata_push_ios_changelog`
+2. Edit `fastlane/metadata/android/<locale>/changelogs/default.txt` for Android
+    - One default file per locale keeps the store copy simple
+    - English stays the source of truth; translation sync updates each locale's `default.txt`
+   - Patch releases: push only changelogs with `make metadata_push_android_changelog [TRACK=open_testing]`
 
 ### Generate translated metadata with opencode
 
@@ -120,7 +122,7 @@ What it does:
 
 - reads English source metadata from `fastlane/metadata/ios/en-US/` and `fastlane/metadata/android/en-US/`
 - updates non-English locale files in `fastlane/metadata/` — including `name.txt`, `subtitle.txt`, `description.txt`, `keywords.txt`, `release_notes.txt` (iOS) and `title.txt`, `short_description.txt`, `full_description.txt`, `changelogs/*.txt` (Android)
-- for Android changelogs: English source directory is the only source of truth — new version-code files exist only in `en-US/changelogs/` first, the command creates matching translated files per locale
+- for Android changelogs: English source directory is the only source of truth — update `en-US/changelogs/default.txt` and sync the same `default.txt` into every Android locale
 - runs `./scripts/validate_metadata.sh`
 - creates a git commit for translation changes only
 
@@ -148,24 +150,36 @@ make metadata_validate
 
 # Push to individual stores
 make metadata_push_ios
+make metadata_push_ios_changelog
 make metadata_push_android
+make metadata_push_android_changelog TRACK=open_testing
 ```
 
 Or use scripts directly:
 ```bash
 ./scripts/metadata_push_ios.sh
+./scripts/metadata_push_ios_changelog.sh
 ./scripts/metadata_push_android.sh
+./scripts/metadata_push_android_changelog.sh open_testing
 ```
 
 **What gets pushed:**
 - iOS: metadata only — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
-- Android: metadata only — no APK/AAB (`skip_upload_apk`, `skip_upload_aab`), no images (`skip_upload_images`)
+- iOS changelog lane: `release_notes.txt` only — description/subtitle/keywords and other metadata stay untouched
+- Android: metadata only — no APK/AAB (`skip_upload_apk`, `skip_upload_aab`), no images (`skip_upload_images`), includes changelogs
+- Android changelog lane: `changelogs/default.txt` only — title/short/full description and screenshots stay untouched
 
 **What does not happen:**
 - No binary upload
 - No screenshot upload
 - No submission for review (iOS)
 - Track: Android pushes to `beta` by default (configurable via `METADATA_TRACK`)
+
+**Android changelog-only caveat:**
+- Google Play changelog uploads need an existing release context
+- The lane auto-resolves the latest version code from `open_testing` by default
+- Override `TRACK` only if a different test track should be used
+- `default.txt` is used as the fallback changelog content for that version code
 
 ### Push screenshots
 
@@ -251,7 +265,7 @@ Refer to Apple's [list of supported locales](https://help.apple.com/app-store-co
 - `short_description.txt` is strict **80 characters**. Truncation happens server-side.
 - Google Play indexes `full_description.txt` for search. Include relevant keywords naturally.
 - HTML is supported in `full_description.txt` but keep it simple: `<b>`, `<i>`, `<li>`.
-- Changelogs are per-version-code files. Each version you upload needs its own `changelogs/<code>.txt`.
+- Changelogs use `changelogs/default.txt` per locale. Keep the current release note there and update it when the next release is ready.
 - Changed metadata can take 2–24 hours to appear in Play Store search results.
 - Google Play caches metadata. Use the "View as user" preview on the console to confirm changes.
 
@@ -465,4 +479,4 @@ The `make` target handles dependency setup automatically via a virtualenv.
 2. **Push metadata early.** You can update description/keywords between binary submissions.
 3. **Use `make metadata_validate` as a pre-commit hook** to catch untranslated or missing files.
 4. **Diff before push** — `make metadata_diff` catches accidental whitespace changes.
-5. **Android changelogs are per version.** Create the next changelog file (`<next-version-code>.txt`) immediately after each release so you don't forget what changed.
+5. **Android changelogs use `default.txt`.** Update the locale's default note when you prepare the next release.

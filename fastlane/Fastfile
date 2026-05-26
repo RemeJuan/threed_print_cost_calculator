@@ -294,7 +294,7 @@ platform :android do
     check_no_untranslated(
       File.expand_path("metadata/android", __dir__),
       %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
-      %w[title.txt short_description.txt full_description.txt]
+      %w[title.txt short_description.txt full_description.txt changelogs/default.txt]
     )
     supply(
       package_name: "com.threed_print_calculator",
