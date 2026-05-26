@@ -1163,6 +1163,9 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get csvNoValidRowsError => 'ไม่มีแถวที่ถูกต้องสำหรับนำเข้า';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total แถว: $valid ถูกต้อง, $invalid มีข้อผิดพลาด';
   }

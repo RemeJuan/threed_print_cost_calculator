@@ -585,6 +585,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "Keine gültigen Zeilen zum Importieren.",
   "csvPreviewSummary": "{total} Zeilen: {valid} gültig, {invalid} mit Fehlern",
   "@csvPreviewSummary": {
     "placeholders": {

@@ -7,23 +7,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_service.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
-
-const _csvHeader =
-    'name,brand,material_type,color,color_hex,spool_weight,'
-    'remaining_weight,spool_cost,notes';
-
-const _sampleRow1 = 'PLA Pro+,Sunlu,PLA,Black,,1000,950,24.99,';
-const _sampleRow2 = 'PETG Black,Overture,PETG,White,,1000,950,24.99,';
 
 class CsvImportPage extends ConsumerStatefulWidget {
   const CsvImportPage({super.key});
@@ -33,11 +26,11 @@ class CsvImportPage extends ConsumerStatefulWidget {
 }
 
 class _CsvImportPageState extends ConsumerState<CsvImportPage> {
-  List<_ImportRow> _rows = [];
+  List<ImportRow> _rows = [];
   bool _imported = false;
   AppLocalizations? _l10n;
 
-  String get _csvTemplate => '$_csvHeader\n$_sampleRow1\n$_sampleRow2';
+  String get _csvTemplate => '$csvHeader\n$sampleRow1\n$sampleRow2';
 
   Future<void> _downloadTemplate() async {
     File? tempFile;
@@ -75,176 +68,43 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     try {
       final content = await result.readAsString();
       AppAnalytics.safeLog(AppAnalytics.csvImportStarted);
-      _parseCsv(content);
+      final rows = parseCsvContent(content, _l10n!);
+      setState(() {
+        _rows = rows;
+        _imported = true;
+      });
     } catch (e) {
       if (!mounted) return;
       BotToast.showText(text: _l10n!.csvReadError);
     }
   }
 
-  void _parseCsv(String content) {
-    final lines = content
-        .split('\n')
-        .map((l) => l.trim())
-        .where((l) => l.isNotEmpty)
-        .toList();
-    if (lines.isEmpty) return;
-
-    final headers = _parseCsvLine(lines[0]);
-    final columnIndex = <String, int>{};
-    for (var i = 0; i < headers.length; i++) {
-      columnIndex[headers[i].toLowerCase().trim()] = i;
-    }
-
-    final rows = <_ImportRow>[];
-    for (var i = 1; i < lines.length; i++) {
-      final values = _parseCsvLine(lines[i]);
-      rows.add(_parseRow(values, columnIndex, i));
-    }
-
-    setState(() {
-      _rows = rows;
-      _imported = true;
-    });
-  }
-
-  _ImportRow _parseRow(
-    List<String> values,
-    Map<String, int> colIndex,
-    int lineNumber,
-  ) {
-    String val(String col) {
-      final idx = colIndex[col];
-      if (idx == null || idx >= values.length) return '';
-      return values[idx].trim();
-    }
-
-    final name = val('name');
-    final brand = val('brand');
-    final materialType = val('material_type');
-    final color = val('color');
-    final colorHex = val('color_hex');
-    final spoolWeightStr = val('spool_weight');
-    final remainingWeightStr = val('remaining_weight');
-    final costStr = val('spool_cost');
-    final notes = val('notes');
-
-    final errors = <String>[];
-    if (name.isEmpty) errors.add(_l10n!.csvNameRequiredError);
-    if (color.isEmpty) errors.add(_l10n!.csvColorRequiredError);
-
-    final spoolWeight = double.tryParse(spoolWeightStr) ?? 0;
-    if (spoolWeightStr.isEmpty) {
-      errors.add(_l10n!.csvSpoolWeightRequiredError);
-    } else if (spoolWeight <= 0) {
-      errors.add(_l10n!.csvSpoolWeightPositiveError);
-    }
-
-    final cost = double.tryParse(costStr) ?? 0;
-    if (costStr.isEmpty) {
-      errors.add(_l10n!.csvCostRequiredError);
-    } else if (cost <= 0) {
-      errors.add(_l10n!.csvCostPositiveError);
-    }
-
-    final remainingWeight = double.tryParse(remainingWeightStr) ?? spoolWeight;
-
-    return _ImportRow(
-      lineNumber: lineNumber,
-      name: name,
-      brand: brand,
-      materialType: materialType,
-      color: color,
-      colorHex: colorHex,
-      spoolWeight: spoolWeight,
-      remainingWeight: remainingWeight,
-      cost: cost,
-      notes: notes,
-      errors: errors,
-    );
-  }
-
-  List<String> _parseCsvLine(String line) {
-    final result = <String>[];
-    var current = StringBuffer();
-    var inQuotes = false;
-
-    for (var i = 0; i < line.length; i++) {
-      final char = line[i];
-      if (char == '"') {
-        if (inQuotes && i + 1 < line.length && line[i + 1] == '"') {
-          current.write('"');
-          i++;
-        } else {
-          inQuotes = !inQuotes;
-        }
-      } else if (char == ',' && !inQuotes) {
-        result.add(current.toString());
-        current = StringBuffer();
-      } else {
-        current.write(char);
-      }
-    }
-    result.add(current.toString());
-    return result;
-  }
-
   Future<void> _importValid() async {
-    final valid = _rows.where((r) => r.errors.isEmpty).toList();
-    final failed = _rows.length - valid.length;
-    if (valid.isEmpty) {
+    final validCount = _rows.where((r) => r.errors.isEmpty).length;
+    if (validCount == 0) {
       AppAnalytics.safeLog(
-        () =>
-            AppAnalytics.csvImportCompleted(rowsSuccess: 0, rowsFailed: failed),
+        () => AppAnalytics.csvImportCompleted(
+          rowsSuccess: 0,
+          rowsFailed: _rows.length,
+        ),
       );
+      BotToast.showText(text: _l10n!.csvNoValidRowsError);
       return;
     }
 
-    final navigator = Navigator.of(context);
-    final repo = ref.read(materialsRepositoryProvider);
-    var imported = 0;
-    final failedRows = <_ImportRow>[];
-
-    for (final row in valid) {
-      final material = MaterialModel(
-        id: '',
-        name: row.name,
-        cost: row.cost.toString(),
-        color: row.color,
-        weight: row.spoolWeight.toString(),
-        archived: false,
-        autoDeductEnabled:
-            row.remainingWeight > 0 && row.remainingWeight != row.spoolWeight,
-        originalWeight: row.spoolWeight,
-        remainingWeight: row.remainingWeight,
-        brand: row.brand,
-        materialType: row.materialType,
-        colorHex: row.colorHex,
-        notes: row.notes,
-      );
-      try {
-        await repo.saveMaterial(material);
-        imported++;
-      } catch (error, stackTrace) {
-        failedRows.add(row);
-        debugPrint(
-          'CSV import failed for row ${row.lineNumber} '
-          '(name: ${row.name}): $error',
-        );
-        debugPrint(stackTrace.toString());
-      }
-    }
+    final service = ref.read(csvImportServiceProvider);
+    final result = await service.importRows(_rows);
 
     AppAnalytics.safeLog(
       () => AppAnalytics.csvImportCompleted(
-        rowsSuccess: imported,
-        rowsFailed: failed + failedRows.length,
+        rowsSuccess: result.imported,
+        rowsFailed: result.preValidatedFailures + result.saveFailures.length,
       ),
     );
 
     if (!mounted) return;
-    BotToast.showText(text: _l10n!.csvImportSuccessMessage(imported));
-    navigator.pop();
+    BotToast.showText(text: _l10n!.csvImportSuccessMessage(result.imported));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -375,32 +235,4 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       ],
     );
   }
-}
-
-class _ImportRow {
-  final int lineNumber;
-  final String name;
-  final String brand;
-  final String materialType;
-  final String color;
-  final String colorHex;
-  final double spoolWeight;
-  final double remainingWeight;
-  final double cost;
-  final String notes;
-  final List<String> errors;
-
-  _ImportRow({
-    required this.lineNumber,
-    required this.name,
-    required this.brand,
-    required this.materialType,
-    required this.color,
-    required this.colorHex,
-    required this.spoolWeight,
-    required this.remainingWeight,
-    required this.cost,
-    required this.notes,
-    required this.errors,
-  });
 }

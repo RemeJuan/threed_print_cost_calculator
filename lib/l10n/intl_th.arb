@@ -586,6 +586,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "ไม่มีแถวที่ถูกต้องสำหรับนำเข้า",
   "csvPreviewSummary": "{total} แถว: {valid} ถูกต้อง, {invalid} มีข้อผิดพลาด",
   "@csvPreviewSummary": {
     "placeholders": {

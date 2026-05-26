@@ -585,6 +585,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "Nessuna riga valida da importare.",
   "csvPreviewSummary": "{total} righe: {valid} valide, {invalid} con errori",
   "@csvPreviewSummary": {
     "placeholders": {

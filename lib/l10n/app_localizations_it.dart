@@ -1195,6 +1195,9 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
+  String get csvNoValidRowsError => 'Nessuna riga valida da importare.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total righe: $valid valide, $invalid con errori';
   }

@@ -1174,6 +1174,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get csvNoValidRowsError => 'No valid rows to import.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total rows: $valid valid, $invalid with errors';
   }

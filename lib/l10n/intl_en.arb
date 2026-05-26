@@ -492,6 +492,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "No valid rows to import.",
   "csvPreviewSummary": "{total} rows: {valid} valid, {invalid} with errors",
   "@csvPreviewSummary": {
     "placeholders": {

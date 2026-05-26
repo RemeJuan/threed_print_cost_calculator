@@ -586,6 +586,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "Geen geldige rijen om te importeren.",
   "csvPreviewSummary": "{total} rijen: {valid} geldig, {invalid} met fouten",
   "@csvPreviewSummary": {
     "placeholders": {

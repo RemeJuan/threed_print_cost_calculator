@@ -1201,6 +1201,9 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get csvNoValidRowsError => 'Aucune ligne valide à importer.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total lignes: $valid valides, $invalid avec erreurs';
   }

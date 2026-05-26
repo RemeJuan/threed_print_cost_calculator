@@ -585,6 +585,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "Tidak ada baris valid untuk diimpor.",
   "csvPreviewSummary": "{total} baris: {valid} valid, {invalid} dengan error",
   "@csvPreviewSummary": {
     "placeholders": {

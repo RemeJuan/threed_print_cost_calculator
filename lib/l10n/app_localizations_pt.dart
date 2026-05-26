@@ -1190,6 +1190,9 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get csvNoValidRowsError => 'Nenhuma linha válida para importar.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total linhas: $valid válidas, $invalid com erros';
   }

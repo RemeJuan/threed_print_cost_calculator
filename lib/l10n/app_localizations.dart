@@ -2213,6 +2213,12 @@ abstract class AppLocalizations {
   /// **'{count, plural, one{Imported 1 material} other{Imported {count} materials}}'**
   String csvImportSuccessMessage(int count);
 
+  /// No description provided for @csvNoValidRowsError.
+  ///
+  /// In en, this message translates to:
+  /// **'No valid rows to import.'**
+  String get csvNoValidRowsError;
+
   /// No description provided for @csvPreviewSummary.
   ///
   /// In en, this message translates to:

@@ -586,6 +586,7 @@
       }
     }
   },
+  "csvNoValidRowsError": "インポートする有効な行がありません。",
   "csvPreviewSummary": "{total}行: {valid}件有効, {invalid}件エラー",
   "@csvPreviewSummary": {
     "placeholders": {
