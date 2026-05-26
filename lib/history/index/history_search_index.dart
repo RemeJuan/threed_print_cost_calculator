@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
@@ -51,15 +52,22 @@ Map<String, dynamic> withHistorySearchFields(Map<String, dynamic> data) {
 /// - record value: `{ 'keys': [<historyRecordKeyAsString>...] }`
 class HistorySearchIndexHelpers {
   final Database _database;
+  final AppLogger _logger;
 
-  HistorySearchIndexHelpers._(this._database);
+  HistorySearchIndexHelpers._(this._database, this._logger);
 
   factory HistorySearchIndexHelpers.fromRef(Ref ref) {
-    return HistorySearchIndexHelpers._(ref.read(databaseProvider));
+    return HistorySearchIndexHelpers._(
+      ref.read(databaseProvider),
+      ref.read(appLoggerProvider),
+    );
   }
 
   factory HistorySearchIndexHelpers.fromContainer(ProviderContainer container) {
-    return HistorySearchIndexHelpers._(container.read(databaseProvider));
+    return HistorySearchIndexHelpers._(
+      container.read(databaseProvider),
+      container.read(appLoggerProvider),
+    );
   }
 
   static const String _kSearchIndexStoreName = 'history_search_index';
@@ -114,7 +122,8 @@ class HistorySearchIndexHelpers {
     String context,
   ) {
     if (value is! Map) {
-      debugPrint(
+      _logger.warn(
+        AppLogCategory.db,
         'Skipping $context record ${key ?? '<unknown>'}: expected Map, got ${value.runtimeType}',
       );
       return null;

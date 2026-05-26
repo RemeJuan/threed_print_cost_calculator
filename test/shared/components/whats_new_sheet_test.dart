@@ -171,28 +171,30 @@ void main() {
     var dismissCount = 0;
 
     await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: Scaffold(
-          body: Builder(
-            builder: (context) {
-              return ElevatedButton(
-                onPressed: () {
-                  showWhatsNewSheet(
-                    context,
-                    announcement: announcement,
-                    onDismiss: () async {
-                      dismissCount += 1;
-                    },
-                    wnId: announcement.id,
-                    locale: 'en',
-                    isPremium: false,
-                  );
-                },
-                child: const Text('Open'),
-              );
-            },
+      ProviderScope(
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) {
+                return ElevatedButton(
+                  onPressed: () {
+                    showWhatsNewSheet(
+                      context,
+                      announcement: announcement,
+                      onDismiss: () async {
+                        dismissCount += 1;
+                      },
+                      wnId: announcement.id,
+                      locale: 'en',
+                      isPremium: false,
+                    );
+                  },
+                  child: const Text('Open'),
+                );
+              },
+            ),
           ),
         ),
       ),

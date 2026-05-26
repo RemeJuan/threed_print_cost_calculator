@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -29,6 +30,8 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   bool _wasUsingLocalOverride = false;
   bool _scheduledExpiredOverrideCleanup = false;
   int _fetchToken = 0;
+
+  AppLogger get _logger => ref.read(appLoggerProvider);
 
   @override
   PremiumState build() {
@@ -96,7 +99,13 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
       final premiumState = await gateway.fetchPremiumState();
       if (_disposed || fetchToken != _fetchToken) return;
       state = _applyOverride(premiumState);
-    } catch (_) {
+    } catch (e, st) {
+      _logger.warn(
+        AppLogCategory.provider,
+        'premium_state_notifier._loadInitialState failed',
+        error: e,
+        stackTrace: st,
+      );
       if (_disposed || fetchToken != _fetchToken) return;
       state = PremiumState(
         isPremium: _hasLocalOverride(),

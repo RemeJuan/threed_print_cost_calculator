@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
@@ -83,7 +84,9 @@ class _UpdatePromptBannerState extends ConsumerState<UpdatePromptBanner> {
                         source: info.source,
                       ),
                     );
-                    await openAppStoreForPlatform();
+                    await openAppStoreForPlatform(
+                      logger: ref.read(appLoggerProvider),
+                    );
                   },
                   label: l10n.updatePromptOpenStoreButton,
                 ),

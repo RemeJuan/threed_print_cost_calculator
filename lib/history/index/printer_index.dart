@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 
@@ -19,15 +19,22 @@ class PrinterIndexHelpers {
   // Internal untyped read function to avoid Riverpod generic type issues in
   // tests and builds. We cast results where needed.
   final dynamic Function(dynamic provider) _read;
+  final AppLogger _logger;
 
-  PrinterIndexHelpers._(this._read);
+  PrinterIndexHelpers._(this._read, this._logger);
 
   factory PrinterIndexHelpers.fromRef(Ref ref) {
-    return PrinterIndexHelpers._((provider) => ref.read(provider));
+    return PrinterIndexHelpers._(
+      (provider) => ref.read(provider),
+      ref.read(appLoggerProvider),
+    );
   }
 
   factory PrinterIndexHelpers.fromContainer(ProviderContainer container) {
-    return PrinterIndexHelpers._((provider) => container.read(provider));
+    return PrinterIndexHelpers._(
+      (provider) => container.read(provider),
+      container.read(appLoggerProvider),
+    );
   }
 
   Database get _db => _read(databaseProvider);
@@ -44,7 +51,8 @@ class PrinterIndexHelpers {
 
   Map<String, dynamic>? _recordValueMap(Object? value, Object? key) {
     if (value is! Map) {
-      debugPrint(
+      _logger.warn(
+        AppLogCategory.db,
         'Skipping printer index record ${key ?? '<unknown>'}: expected Map, got ${value.runtimeType}',
       );
       return null;

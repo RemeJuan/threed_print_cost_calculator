@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
-class HelpSupportFooter extends StatelessWidget {
+class HelpSupportFooter extends ConsumerWidget {
   const HelpSupportFooter({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final muted = theme.textTheme.bodySmall?.copyWith(
       color: theme.colorScheme.onSurfaceVariant,
     );
+    final logger = ref.read(appLoggerProvider);
 
     return Column(
       children: [
@@ -23,7 +26,7 @@ class HelpSupportFooter extends StatelessWidget {
               key: const ValueKey<String>('helpSupport.footer.website'),
               tooltip: l10n.helpSupportWebsiteLabel,
               icon: const Icon(Icons.public_outlined, size: 18),
-              onPressed: () => openUrl(helpSupportWebsiteUrl),
+              onPressed: () => openUrl(helpSupportWebsiteUrl, logger: logger),
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
@@ -33,7 +36,7 @@ class HelpSupportFooter extends StatelessWidget {
                 icon: HugeIcons.strokeRoundedNewTwitter,
                 size: 18,
               ),
-              onPressed: () => openUrl(helpSupportXUrl),
+              onPressed: () => openUrl(helpSupportXUrl, logger: logger),
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
@@ -43,7 +46,7 @@ class HelpSupportFooter extends StatelessWidget {
                 icon: HugeIcons.strokeRoundedInstagram,
                 size: 18,
               ),
-              onPressed: () => openUrl(helpSupportInstagramUrl),
+              onPressed: () => openUrl(helpSupportInstagramUrl, logger: logger),
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
@@ -53,7 +56,7 @@ class HelpSupportFooter extends StatelessWidget {
                 icon: HugeIcons.strokeRoundedThreads,
                 size: 18,
               ),
-              onPressed: () => openUrl(helpSupportThreadsUrl),
+              onPressed: () => openUrl(helpSupportThreadsUrl, logger: logger),
             ),
             const SizedBox(width: 8),
             IconButton.filledTonal(
@@ -63,7 +66,7 @@ class HelpSupportFooter extends StatelessWidget {
                 icon: HugeIcons.strokeRoundedMastodon,
                 size: 18,
               ),
-              onPressed: () => openUrl(helpSupportMastodonUrl),
+              onPressed: () => openUrl(helpSupportMastodonUrl, logger: logger),
             ),
           ],
         ),
@@ -73,7 +76,7 @@ class HelpSupportFooter extends StatelessWidget {
           children: [
             TextButton(
               key: const ValueKey<String>('helpSupport.footer.privacy'),
-              onPressed: () => openUrl(helpSupportPrivacyUrl),
+              onPressed: () => openUrl(helpSupportPrivacyUrl, logger: logger),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(48, 48),
@@ -83,7 +86,7 @@ class HelpSupportFooter extends StatelessWidget {
             Text(l10n.separator, style: muted),
             TextButton(
               key: const ValueKey<String>('helpSupport.footer.terms'),
-              onPressed: () => openUrl(helpSupportTermsUrl),
+              onPressed: () => openUrl(helpSupportTermsUrl, logger: logger),
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 minimumSize: const Size(48, 48),

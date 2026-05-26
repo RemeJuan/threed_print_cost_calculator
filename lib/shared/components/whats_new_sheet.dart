@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
@@ -196,7 +197,10 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
             Align(
               alignment: Alignment.center,
               child: TextButton(
-                onPressed: () => openUrl(helpSupportRoadmapUrl),
+                onPressed: () => openUrl(
+                  helpSupportRoadmapUrl,
+                  logger: ref.read(appLoggerProvider),
+                ),
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   minimumSize: Size.zero,

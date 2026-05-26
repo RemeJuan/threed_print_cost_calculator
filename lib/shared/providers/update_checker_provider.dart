@@ -9,6 +9,7 @@ import 'package:update_available/update_available.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'app_providers.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 
 const String _updateCooldownUntilKey = 'update_prompt_cooldown_until';
 
@@ -43,7 +44,7 @@ class UpdateCheckerState {
   bool get canShowPrompt => info?.shouldShow ?? false;
 }
 
-Future<bool> openAppStoreForPlatform() async {
+Future<bool> openAppStoreForPlatform({AppLogger? logger}) async {
   final url = switch (defaultTargetPlatform) {
     TargetPlatform.iOS => Uri.parse('https://apps.apple.com/app/id6444106268'),
     TargetPlatform.android => Uri.parse(
@@ -57,7 +58,11 @@ Future<bool> openAppStoreForPlatform() async {
   if (await launchUrl(url, mode: LaunchMode.platformDefault)) {
     return true;
   }
-  debugPrint('Unable to open app store for ${defaultTargetPlatform.name}.');
+  logger?.warn(
+    AppLogCategory.ui,
+    'Unable to open app store',
+    context: {'platform': defaultTargetPlatform.name},
+  );
   return false;
 }
 
