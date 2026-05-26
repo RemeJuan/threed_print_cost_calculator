@@ -129,18 +129,50 @@ void main() {
     expect(state.status, GCodeImportStatus.failure);
     expect(state.error, GCodeImportError.unsupportedType);
   });
+
+  test('handles service exception as readFailed', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _result,
+      shouldThrow: true,
+    );
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.status, GCodeImportStatus.failure);
+    expect(state.error, GCodeImportError.readFailed);
+  });
+
+  test('handles metadata-empty result as unsupportedFile', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _emptyResult,
+    );
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.status, GCodeImportStatus.failure);
+    expect(state.error, GCodeImportError.unsupportedFile);
+  });
 }
 
 ProviderContainer _container({
   required GCodePickedFile file,
   required GCodeImportResult serviceResult,
   int Function()? onImport,
+  bool shouldThrow = false,
 }) {
   return ProviderContainer(
     overrides: [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(file)),
       gcodeImportServiceProvider.overrideWithValue(
-        _FakeService(serviceResult, onImport: onImport),
+        _FakeService(
+          serviceResult,
+          onImport: onImport,
+          shouldThrow: shouldThrow,
+        ),
       ),
     ],
   );
@@ -193,14 +225,28 @@ class _FakePicker extends GCodeImportFilePicker {
   Future<List<GCodePickedFile>> pickMany() async => [file];
 }
 
+final _emptyResult = GCodeImportResult(
+  slicer: GCodeSlicer.unknown,
+  estimatedDuration: null,
+  filamentLengthMm: null,
+  filamentWeightG: null,
+  layerHeightMm: null,
+  previewMetadata: null,
+  previewImageBytes: null,
+  warnings: const [],
+  rawExtractedValues: const {},
+);
+
 class _FakeService extends GCodeImportService {
-  _FakeService(this.result, {this.onImport});
+  _FakeService(this.result, {this.onImport, this.shouldThrow = false});
 
   final GCodeImportResult result;
   final int Function()? onImport;
+  final bool shouldThrow;
 
   @override
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
+    if (shouldThrow) throw Exception('service error');
     onImport?.call();
     return result;
   }
