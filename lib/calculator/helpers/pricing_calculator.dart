@@ -3,22 +3,24 @@ import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dar
 class PricingCalculator {
   const PricingCalculator._();
 
+  static final BigInt _hundred = BigInt.from(100);
+  static final BigInt _fiveThousand = BigInt.from(5000);
+  static final BigInt _tenThousand = BigInt.from(10000);
+
   static PricingResult calculate({
     required num baseCost,
     required num markupPercent,
     required num setupFee,
     required PricingRoundingMode roundingMode,
   }) {
-    final normalizedBaseCost = _fromCents(_toCents(baseCost));
-    final normalizedMarkupPercent = _fromHundredths(
-      _toHundredths(markupPercent),
-    );
-    final normalizedSetupFee = _fromCents(_toCents(setupFee));
-    final baseCostCents = _toCents(normalizedBaseCost);
-    final markupPercentHundredths = _toHundredths(normalizedMarkupPercent);
-    final setupFeeCents = _toCents(normalizedSetupFee);
+    final baseCostCents = _toCents(baseCost);
+    final markupPercentHundredths = _toHundredths(markupPercent);
+    final setupFeeCents = _toCents(setupFee);
+    final normalizedBaseCost = _fromCents(baseCostCents);
+    final normalizedMarkupPercent = _fromHundredths(markupPercentHundredths);
+    final normalizedSetupFee = _fromCents(setupFeeCents);
 
-    if (baseCostCents < 0) {
+    if (baseCostCents.isNegative) {
       return PricingResult(
         baseCost: normalizedBaseCost,
         markupPercent: normalizedMarkupPercent,
@@ -32,7 +34,8 @@ class PricingCalculator {
     }
 
     final markupAmountCents =
-        (baseCostCents * markupPercentHundredths + 5000) ~/ 10000;
+        (baseCostCents * markupPercentHundredths + _fiveThousand) ~/
+        _tenThousand;
     final subtotalBeforeRoundingCents =
         baseCostCents + markupAmountCents + setupFeeCents;
     final finalPriceCents = _applyRoundingCents(
@@ -54,40 +57,47 @@ class PricingCalculator {
     );
   }
 
-  static int _applyRoundingCents(
-    int subtotalCents,
+  static BigInt _applyRoundingCents(
+    BigInt subtotalCents,
     PricingRoundingMode roundingMode,
   ) {
-    if (subtotalCents <= 0) return 0;
+    if (subtotalCents <= BigInt.zero) return BigInt.zero;
 
     switch (roundingMode) {
       case PricingRoundingMode.none:
         return subtotalCents;
       case PricingRoundingMode.wholeDollar:
-        return ((subtotalCents + 99) ~/ 100) * 100;
+        return ((subtotalCents + BigInt.from(99)) ~/ _hundred) * _hundred;
       case PricingRoundingMode.pointNinetyNine:
-        final wholeDollars = subtotalCents ~/ 100;
-        final candidate = wholeDollars * 100 + 99;
+        final wholeDollars = subtotalCents ~/ _hundred;
+        final candidate = wholeDollars * _hundred + BigInt.from(99);
         if (subtotalCents <= candidate) {
           return candidate;
         }
-        return (wholeDollars + 1) * 100 + 99;
+        return (wholeDollars + BigInt.one) * _hundred + BigInt.from(99);
     }
   }
 
-  static int _toCents(num value) {
-    if (!value.isFinite) return 0;
+  static BigInt _toCents(num value) {
+    if (!value.isFinite) return BigInt.zero;
 
     final text = value.toStringAsFixed(2);
     final negative = text.startsWith('-');
     final digits = text.replaceFirst('-', '').replaceAll('.', '');
-    final cents = int.parse(digits);
+    final cents = BigInt.parse(digits);
     return negative ? -cents : cents;
   }
 
-  static int _toHundredths(num value) => _toCents(value);
+  static BigInt _toHundredths(num value) => _toCents(value);
 
-  static num _fromCents(int cents) => cents / 100;
+  static num _fromCents(BigInt cents) => _fromScaled(cents);
 
-  static num _fromHundredths(int hundredths) => hundredths / 100;
+  static num _fromHundredths(BigInt hundredths) => _fromScaled(hundredths);
+
+  static num _fromScaled(BigInt value) {
+    final asDouble = value.toDouble();
+    if (asDouble.isFinite) return asDouble / 100;
+
+    return value.isNegative ? -double.maxFinite : double.maxFinite;
+  }
 }

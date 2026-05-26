@@ -112,5 +112,20 @@ void main() {
       expect(result.finalPrice, 0);
       expect(result.roundingAdjustment, 1);
     });
+
+    test('handles oversized inputs without overflowing', () {
+      final huge = double.parse('19369081277395030400');
+
+      final result = PricingCalculator.calculate(
+        baseCost: huge,
+        markupPercent: huge,
+        setupFee: huge,
+        roundingMode: PricingRoundingMode.pointNinetyNine,
+      );
+
+      expect(result.finalPrice.isFinite, isTrue);
+      expect(result.subtotalBeforeRounding.isFinite, isTrue);
+      expect(result.roundingMode, PricingRoundingMode.pointNinetyNine);
+    });
   });
 }
