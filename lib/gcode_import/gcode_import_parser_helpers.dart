@@ -31,7 +31,8 @@ Duration? parseDuration(String? raw) {
       return seconds > 0 ? Duration(seconds: seconds) : null;
     }
     final seconds = _parseNumber(raw);
-    return seconds == null ? null : Duration(seconds: seconds.round());
+    if (seconds == null || seconds.round() <= 0) return null;
+    return Duration(seconds: seconds.round());
   } catch (_) {
     return null;
   }
@@ -55,7 +56,7 @@ double? sumRawValue(String raw, {required String unit}) {
       values.add(_normalizeValue(value, unit, targetUnit));
     }
   } else {
-    values.addAll(_parseUnitList(raw, targetUnit));
+    values.addAll(_parseUnitList(raw, targetUnit, sourceUnit: unit));
   }
 
   if (values.isEmpty) return null;
@@ -120,7 +121,7 @@ double _parseNamedDurationPart(String text, String unit) {
   return _parseNumber(match?.group(1)) ?? 0;
 }
 
-List<double> _parseUnitList(String raw, String unit) {
+List<double> _parseUnitList(String raw, String targetUnit, {String? sourceUnit}) {
   final text = raw.toLowerCase();
   final matches = RegExp(
     r'(-?\d+(?:[\.,]\d+)?)\s*(mm|cm|m|g|kg)?',
@@ -129,8 +130,8 @@ List<double> _parseUnitList(String raw, String unit) {
   for (final match in matches) {
     final value = _parseNumber(match.group(1));
     if (value == null) continue;
-    final foundUnit = match.group(2);
-    out.add(_normalizeValue(value, foundUnit, unit));
+    final foundUnit = match.group(2) ?? sourceUnit;
+    out.add(_normalizeValue(value, foundUnit, targetUnit));
   }
   return out;
 }
