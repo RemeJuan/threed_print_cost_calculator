@@ -738,7 +738,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Muss 0 oder mehr sein';
 
   @override
-  String get lockedValuePlaceholder => 'Gesperrt';
+  String get lockedValuePlaceholder => 'Nur Premium';
 
   @override
   String get hideProPromotionsTitle => 'Pro-Aktionen ausblenden';
@@ -749,11 +749,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      'Du kannst auf Free bis zu 2 Drucker speichern. Upgrade auf Premium für unbegrenzte Drucker.';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      'Du kannst auf Free bis zu 5 Materialien speichern. Upgrade auf Premium für unbegrenzte Materialien.';
 
   @override
   String get historySearchHint => 'Nach Name oder Drucker suchen';
@@ -782,7 +782,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get historyUpsellDescription =>
-      'Erweiterte Bearbeitung und Exporte freischalten';
+      'Du kannst auf Free bis zu 7 gespeicherte Drucke behalten. Upgrade auf Premium für unbegrenzte Historie und Exporte.';
 
   @override
   String get historyNoMoreRecords => 'Keine weiteren Einträge';
@@ -815,10 +815,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Sieh dir an, wie der Verlauf funktioniert, bevor du ein Upgrade machst. Speichere abgeschlossene Schätzungen und exportiere sie jederzeit mit Pro.';
+      'Free-Nutzer können bis zu 7 gespeicherte Drucke behalten. Upgrade auf Premium für unbegrenzte Historie und Exporte.';
 
   @override
-  String get historyTeaserCta => 'Verlauf mit Pro speichern und exportieren';
+  String get historyTeaserCta =>
+      'Auf Premium upgraden für unbegrenzte Historie';
 
   @override
   String get historyExportPreviewEntry => 'CSV-Exportvorschau';
@@ -828,13 +829,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'Sieh dir an, wie dein Export aussieht. Download und Teilen sind mit Pro freigeschaltet.';
+      'Bulk-Historienexport ist eine Premium-Funktion. Download und Teilen sind mit Premium freigeschaltet.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Beispiel]';
 
   @override
-  String get historyExportPreviewAction => 'Mit Pro herunterladen / teilen';
+  String get historyExportPreviewAction => 'Mit Premium herunterladen / teilen';
 
   @override
   String get addMaterialButton => 'Material hinzufügen';
