@@ -11,6 +11,9 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_pick
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 
 class GCodeImportPageState {
   final List<BatchImportRow> rows = <BatchImportRow>[];
@@ -149,6 +152,16 @@ class BatchGCodeImportHandler {
 
       if (files.isEmpty) {
         setState(() => pageState.loading = false);
+        return;
+      }
+
+      final policy = ref.read(premiumAccessPolicyProvider);
+      if (files.length > 1 &&
+          !await requirePremium(
+            ref.read(paywallPresenterProvider),
+            policy.batchGcodeImport(),
+            purchaseSource: 'batch_gcode_import',
+          )) {
         return;
       }
 
