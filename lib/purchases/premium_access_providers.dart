@@ -1,10 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-
-const hideProPromotionsPreferenceKey = 'hideProPromotions';
 
 final premiumAccessPolicyProvider = Provider<PremiumAccessPolicy>((ref) {
   final isPremium = ref.watch(isPremiumProvider);
@@ -14,10 +12,6 @@ final premiumAccessPolicyProvider = Provider<PremiumAccessPolicy>((ref) {
     isPremium: isPremium,
     hideProPromotions: hideProPromotions,
   );
-});
-
-final premiumLocalStoreProvider = Provider<SharedPreferences>((ref) {
-  return ref.watch(sharedPreferencesProvider);
 });
 
 final hideProPromotionsProvider =
@@ -32,25 +26,13 @@ final shouldShowHideProPromotionsToggleProvider = Provider<bool>((ref) {
 class HideProPromotionsNotifier extends Notifier<bool> {
   @override
   bool build() {
-    final prefs = ref.read(sharedPreferencesProvider);
-    return prefs.getBool(hideProPromotionsPreferenceKey) ?? false;
+    final store = ref.read(premiumLocalStoreProvider);
+    return store.readSync(hideProPromotionsPreferenceKey) == 'true';
   }
 
   Future<void> setHideProPromotions(bool value) async {
     state = value;
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.setBool(hideProPromotionsPreferenceKey, value);
+    final store = ref.read(premiumLocalStoreProvider);
+    await store.write(hideProPromotionsPreferenceKey, value.toString());
   }
 }
-
-final shouldShowProPromotionProvider = Provider<bool>((ref) {
-  return ref.watch(premiumAccessPolicyProvider).shouldShowPromotions;
-});
-
-final shouldShowHistoryTabProvider = Provider<bool>((ref) {
-  return ref.watch(premiumAccessPolicyProvider).shouldShowHistoryTab;
-});
-
-final shouldShowHistoryTeaserProvider = Provider<bool>((ref) {
-  return ref.watch(premiumAccessPolicyProvider).shouldShowHistoryTeaser;
-});

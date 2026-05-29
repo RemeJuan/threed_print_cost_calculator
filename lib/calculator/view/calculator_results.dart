@@ -28,7 +28,7 @@ class CalculatorResults extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
     final isPremium = policy.isPremium;
-    final shouldShowProPromotion = ref.watch(shouldShowProPromotionProvider);
+    final shouldShowProPromotion = policy.shouldShowPromotions;
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
