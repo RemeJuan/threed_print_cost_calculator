@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -12,10 +13,6 @@ import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service
 import '../../test_support/fake_purchases_gateway.dart';
 
 void main() {
-  setUp(() {
-    SharedPreferences.setMockInitialValues({});
-  });
-
   test('fetch failure falls back to free state', () async {
     final container = ProviderContainer(
       overrides: [
@@ -120,12 +117,10 @@ void main() {
   test(
     'local premium override ignores gateway updates until removed',
     () async {
-      SharedPreferences.setMockInitialValues({
-        testPremiumOverrideEnabledOnPreferenceKey: formatTestPremiumOverrideDay(
-          DateTime.now(),
-        ),
+      final overrideValue = formatTestPremiumOverrideDay(DateTime.now());
+      final store = InMemoryPremiumLocalStore({
+        testPremiumOverrideEnabledOnPreferenceKey: overrideValue,
       });
-      final prefs = await SharedPreferences.getInstance();
       final gateway = FakePurchasesGateway(
         const PremiumState(
           isPremium: false,
@@ -136,7 +131,7 @@ void main() {
       final container = ProviderContainer(
         overrides: [
           purchasesGatewayProvider.overrideWithValue(gateway),
-          sharedPreferencesProvider.overrideWithValue(prefs),
+          premiumLocalStoreProvider.overrideWithValue(store),
         ],
       );
       addTearDown(container.dispose);
@@ -155,7 +150,7 @@ void main() {
       var state = container.read(premiumStateProvider);
       expect(state.isPremium, isTrue);
 
-      await prefs.remove(testPremiumOverrideEnabledOnPreferenceKey);
+      await store.delete(testPremiumOverrideEnabledOnPreferenceKey);
       container.read(appRefreshProvider.notifier).refresh();
       for (var i = 0; i < 10; i++) {
         await Future<void>.delayed(Duration.zero);

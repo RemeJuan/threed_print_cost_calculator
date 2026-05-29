@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -164,15 +165,16 @@ void main() {
   testWidgets('free user toggle restores persisted enabled state', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({'hideProPromotions': true});
+    final premiumLocalStore = InMemoryPremiumLocalStore({
+      hideProPromotionsPreferenceKey: 'true',
+    });
 
     final settingsRepo = _FakeSettingsRepository();
-    final prefs = await SharedPreferences.getInstance();
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
       appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ]);
+    ], premiumLocalStore);
     addTearDown(db.close);
     addTearDown(settingsRepo.dispose);
 
@@ -185,19 +187,18 @@ void main() {
       tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
       isTrue,
     );
-    expect(prefs.getBool('hideProPromotions'), isTrue);
+    expect(premiumLocalStore.readSync(hideProPromotionsPreferenceKey), 'true');
   });
 
   testWidgets('toggling promo visibility updates immediately', (tester) async {
-    SharedPreferences.setMockInitialValues({});
+    final premiumLocalStore = InMemoryPremiumLocalStore();
 
     final settingsRepo = _FakeSettingsRepository();
-    final prefs = await SharedPreferences.getInstance();
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
       appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ]);
+    ], premiumLocalStore);
     addTearDown(db.close);
     addTearDown(settingsRepo.dispose);
 
@@ -212,7 +213,7 @@ void main() {
       tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
       isTrue,
     );
-    expect(prefs.getBool('hideProPromotions'), isTrue);
+    expect(premiumLocalStore.readSync(hideProPromotionsPreferenceKey), 'true');
   });
 
   testWidgets(

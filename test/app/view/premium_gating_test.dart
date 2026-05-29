@@ -107,9 +107,7 @@ void main() {
   testWidgets(
     'history gate badge disappears when gateway emits premium upgrade',
     (tester) async {
-      SharedPreferences.setMockInitialValues({
-        'run_count': 0,
-      });
+      SharedPreferences.setMockInitialValues({'run_count': 0});
       final gateway = FakePurchasesGateway(
         const PremiumState(isPremium: false, isLoading: false, userId: 'free'),
       );

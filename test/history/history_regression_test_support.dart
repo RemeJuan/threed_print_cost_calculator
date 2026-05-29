@@ -24,6 +24,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
@@ -547,7 +548,9 @@ Future<Map<String, String>> pumpCalculatorResultsView(
 ) async {
   final db = await tester.pumpApp(CalculatorResults(results: results), [
     isPremiumProvider.overrideWithValue(true),
-    shouldShowProPromotionProvider.overrideWithValue(false),
+    premiumAccessPolicyProvider.overrideWithValue(
+      DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: true),
+    ),
     settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
   ]);
 

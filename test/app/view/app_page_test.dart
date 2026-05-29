@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
@@ -179,17 +181,13 @@ void main() {
     );
   });
 
-  testWidgets(
-    'free users can hide history promo badge and keep history tab',
-    (tester) async {
-      final calculatorNotifier = FakeCalculatorNotifier();
-      final freeGateway = FakePurchasesGateway(
-        const PremiumState(
-          isPremium: false,
-          isLoading: false,
-          userId: 'free-1',
-        ),
-      );
+  testWidgets('free users can hide history promo badge and keep history tab', (
+    tester,
+  ) async {
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final freeGateway = FakePurchasesGateway(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
 
     await pumpAppPage(tester, freeGateway, calculatorNotifier);
     await tester.pump();
@@ -213,17 +211,16 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
-      expect(
-        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-        findsOneWidget,
-      );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
 
-      expect(
-        find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-        findsNothing,
-      );
-    },
-  );
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+      findsNothing,
+    );
+  });
 
   testWidgets('premium changes update nav items from gateway updates', (
     tester,
@@ -366,7 +363,10 @@ void main() {
     await settleAppPage(tester);
 
     expect(find.byIcon(Icons.help_outline), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('nav.history.pro.badge')), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+      findsOneWidget,
+    );
     expect(find.byIcon(Icons.upload_file_outlined), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
@@ -475,14 +475,10 @@ void main() {
   testWidgets('history tab remains visible when promos are hidden', (
     tester,
   ) async {
-      final calculatorNotifier = FakeCalculatorNotifier();
-      final gateway = FakePurchasesGateway(
-        const PremiumState(
-          isPremium: false,
-          isLoading: false,
-          userId: 'free-1',
-        ),
-      );
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
 
     await pumpAppPage(tester, gateway, calculatorNotifier);
     await tester.pump();
@@ -508,30 +504,25 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
-      expect(
-        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-        findsWidgets,
-      );
-      expect(
-        tester
-            .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
-            .currentIndex,
-        2,
-      );
-    },
-  );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsWidgets,
+    );
+    expect(
+      tester
+          .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
+          .currentIndex,
+      2,
+    );
+  });
 
   testWidgets('free history starts in full mode and keeps export gated', (
     tester,
   ) async {
-      final calculatorNotifier = FakeCalculatorNotifier();
-      final gateway = FakePurchasesGateway(
-        const PremiumState(
-          isPremium: false,
-          isLoading: false,
-          userId: 'free-1',
-        ),
-      );
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
 
     await pumpAppPage(tester, gateway, calculatorNotifier);
     await tester.pump();
@@ -541,10 +532,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
     await tester.pump();
 
-      expect(
-        find.byKey(const ValueKey<String>('history.teaser.state')),
-        findsNothing,
-      );
+    expect(
+      find.byKey(const ValueKey<String>('history.teaser.state')),
+      findsNothing,
+    );
 
     gateway.emit(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
@@ -552,17 +543,19 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
-      expect(
-        find.byKey(const ValueKey<String>('history.teaser.state')),
-        findsNothing,
-      );
-      expect(find.byKey(const ValueKey<String>('history.export.button')), findsOneWidget);
-      expect(
-        find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-        findsNothing,
-      );
-    },
-  );
+    expect(
+      find.byKey(const ValueKey<String>('history.teaser.state')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.export.button')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+      findsNothing,
+    );
+  });
 
   testWidgets('re-enabling history promo keeps settings selected', (
     tester,
@@ -617,28 +610,35 @@ void main() {
   testWidgets('run count increments on resolved non-empty user ids only', (
     tester,
   ) async {
-    final sharedPreferences = await SharedPreferences.getInstance();
+    final premiumLocalStore = InMemoryPremiumLocalStore({
+      runCountPreferenceKey: '0',
+    });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: true),
     );
 
-    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await pumpAppPage(
+      tester,
+      gateway,
+      calculatorNotifier,
+      premiumLocalStore: premiumLocalStore,
+    );
     await tester.pumpAndSettle();
 
-    expect(sharedPreferences.getInt('run_count'), 0);
+    expect(premiumLocalStore.readSync(runCountPreferenceKey), '0');
 
     gateway.emit(
       const PremiumState(isPremium: false, isLoading: false, userId: 'user-1'),
     );
     await tester.pumpAndSettle();
-    expect(sharedPreferences.getInt('run_count'), 1);
+    expect(premiumLocalStore.readSync(runCountPreferenceKey), '1');
 
     gateway.emit(
       const PremiumState(isPremium: false, isLoading: false, userId: 'user-1'),
     );
     await tester.pumpAndSettle();
-    expect(sharedPreferences.getInt('run_count'), 1);
+    expect(premiumLocalStore.readSync(runCountPreferenceKey), '1');
   });
 
   testWidgets('startup calculator init and submit are wired', (tester) async {
