@@ -223,6 +223,7 @@
   "@exportButton": {
     "description": "Label for export action in history list"
   },
+  "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
   "historySearchHint": "Cari berdasarkan nama atau printer",
   "historyExportMenuTitle": "Ekspor cetakan",
   "historyExportRangeAll": "Semua",

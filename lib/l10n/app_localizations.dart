@@ -1439,6 +1439,12 @@ abstract class AppLocalizations {
   /// **'Hide upgrade banners and prompts'**
   String get hideProPromotionsSubtitle;
 
+  /// No description provided for @printerLimitReachedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium to add more printers.'**
+  String get printerLimitReachedMessage;
+
   /// No description provided for @historySearchHint.
   ///
   /// In en, this message translates to:

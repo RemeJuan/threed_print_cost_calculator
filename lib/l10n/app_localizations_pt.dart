@@ -750,6 +750,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Ocultar banners e prompts de atualização';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => 'Pesquisar por nome ou impressora';
 
   @override

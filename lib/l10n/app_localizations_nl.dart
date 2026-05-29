@@ -749,6 +749,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Upgrade-banners en prompts verbergen';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => 'Zoeken op naam of printer';
 
   @override

@@ -230,6 +230,7 @@
   "@exportButton": {
     "description": "Label for export action in history list"
   },
+  "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
   "historySearchHint": "Pesquisar por nome ou impressora",
   "historyExportMenuTitle": "Exportar impressões",
   "historyExportRangeAll": "Tudo",

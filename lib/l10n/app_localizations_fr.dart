@@ -755,6 +755,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Masquer les bannières et les invites de mise à niveau';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => 'Rechercher par nom ou imprimante';
 
   @override

@@ -740,6 +740,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get hideProPromotionsSubtitle => 'ซ่อนแบนเนอร์และข้อความอัปเกรด';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => 'ค้นหาตามชื่อหรือเครื่องพิมพ์';
 
   @override

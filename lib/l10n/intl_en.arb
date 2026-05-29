@@ -324,6 +324,7 @@
   "lockedValuePlaceholder": "Locked",
   "hideProPromotionsTitle": "Hide Pro promotions",
   "hideProPromotionsSubtitle": "Hide upgrade banners and prompts",
+  "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
   "historySearchHint": "Search by name or printer",
   "historyExportMenuTitle": "Export Prints",
   "historyExportRangeAll": "All",

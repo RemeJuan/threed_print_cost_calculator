@@ -748,6 +748,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Upgrade-Banner und Hinweise ausblenden';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => 'Nach Name oder Drucker suchen';
 
   @override

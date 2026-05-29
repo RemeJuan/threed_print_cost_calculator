@@ -736,6 +736,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Sembunyikan banner dan prompt upgrade';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => 'Cari berdasarkan nama atau printer';
 
   @override

@@ -728,6 +728,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hideProPromotionsSubtitle => 'アップグレードのバナーと案内を非表示';
 
   @override
+  String get printerLimitReachedMessage =>
+      'Upgrade to Premium to add more printers.';
+
+  @override
   String get historySearchHint => '名前やプリンターで検索';
 
   @override
