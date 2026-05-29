@@ -81,7 +81,7 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-      findsOneWidget,
+      findsNothing,
     );
   });
 
@@ -125,7 +125,7 @@ void main() {
       );
       expect(
         find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-        findsOneWidget,
+        findsNothing,
       );
 
       gateway.emit(

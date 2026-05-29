@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
-import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
@@ -83,12 +82,10 @@ List<AppPageShellTab> buildAppPageShellTabs({
         title: l10n.historyAppBarTitle,
         actions: const [],
         navigationItem: BottomNavigationBarItem(
-          icon: policy.shouldShowPromotions
-              ? const PromoHistoryTabIcon()
-              : const Icon(
-                  Icons.history,
-                  key: ValueKey<String>('nav.history.button'),
-                ),
+          icon: const Icon(
+            Icons.history,
+            key: ValueKey<String>('nav.history.button'),
+          ),
           label: l10n.historyNavLabel,
         ),
       ),
