@@ -3,7 +3,10 @@ enum PremiumFeature {
   printers,
   history,
   historyExport,
+  singleJobExport,
+  bulkHistoryExport,
   gcodeImport,
+  batchGcodeImport,
   batchCosting,
   batchExport,
   labourPricing,
@@ -69,8 +72,11 @@ abstract class PremiumAccessPolicy {
   FeatureAccess printers();
   FeatureAccess printersList();
   FeatureAccess historyView();
+  FeatureAccess singleJobExport();
+  FeatureAccess bulkHistoryExport();
   FeatureAccess historyExport();
   FeatureAccess gcodeImport();
+  FeatureAccess batchGcodeImport();
   FeatureAccess batchCosting();
   FeatureAccess batchExport();
   FeatureAccess labourPricing();
@@ -109,44 +115,55 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
   bool get shouldShowPromotions => !_isPremium && !_hideProPromotions;
 
   @override
-  bool get shouldShowHistoryTab => _isPremium || !_hideProPromotions;
+  bool get shouldShowHistoryTab => true;
 
   @override
-  bool get shouldShowHistoryTeaser => !_isPremium && shouldShowHistoryTab;
+  bool get shouldShowHistoryTeaser => false;
 
   @override
-  int? get materialLimit => null;
+  int? get materialLimit => _isPremium ? null : 5;
 
   @override
-  int? get printerLimit => null;
+  int? get printerLimit => _isPremium ? null : 2;
 
   @override
-  int? get historyLimit => null;
+  int? get historyLimit => _isPremium ? null : 7;
 
   @override
-  int? get batchItemLimit => null;
+  int? get batchItemLimit => _isPremium ? null : 3;
 
   @override
   FeatureAccess materialsLibrary() => _premiumFeature(PremiumFeature.materials);
 
   @override
-  FeatureAccess printers() => _premiumFeature(PremiumFeature.printers);
+  FeatureAccess printers() => _freeFeature(PremiumFeature.printers);
 
   @override
   FeatureAccess printersList() => _premiumFeature(PremiumFeature.printers);
 
   @override
-  FeatureAccess historyView() => _premiumFeature(PremiumFeature.history);
+  FeatureAccess historyView() => _freeFeature(PremiumFeature.history);
 
   @override
-  FeatureAccess historyExport() =>
-      _premiumFeature(PremiumFeature.historyExport);
+  FeatureAccess singleJobExport() =>
+      _freeFeature(PremiumFeature.singleJobExport);
 
   @override
-  FeatureAccess gcodeImport() => _premiumFeature(PremiumFeature.gcodeImport);
+  FeatureAccess bulkHistoryExport() =>
+      _premiumFeature(PremiumFeature.bulkHistoryExport);
 
   @override
-  FeatureAccess batchCosting() => _premiumFeature(PremiumFeature.batchCosting);
+  FeatureAccess historyExport() => bulkHistoryExport();
+
+  @override
+  FeatureAccess gcodeImport() => _freeFeature(PremiumFeature.gcodeImport);
+
+  @override
+  FeatureAccess batchGcodeImport() =>
+      _premiumFeature(PremiumFeature.batchGcodeImport);
+
+  @override
+  FeatureAccess batchCosting() => _freeFeature(PremiumFeature.batchCosting);
 
   @override
   FeatureAccess batchExport() => _premiumFeature(PremiumFeature.batchExport);
@@ -163,12 +180,10 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       _premiumFeature(PremiumFeature.advancedPricingConfig);
 
   @override
-  FeatureAccess multiMaterial() =>
-      _premiumFeature(PremiumFeature.multiMaterial);
+  FeatureAccess multiMaterial() => _freeFeature(PremiumFeature.multiMaterial);
 
   @override
-  FeatureAccess saveToHistory() =>
-      _premiumFeature(PremiumFeature.saveToHistory);
+  FeatureAccess saveToHistory() => _freeFeature(PremiumFeature.saveToHistory);
 
   @override
   FeatureAccess csvMaterialImport() =>
@@ -180,19 +195,41 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
 
   @override
   QuotaAccess canCreateMaterial(int currentCount) =>
-      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
+      _quotaAccess(currentCount, materialLimit);
 
   @override
   QuotaAccess canCreatePrinter(int currentCount) =>
-      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
+      _quotaAccess(currentCount, printerLimit);
 
   @override
   QuotaAccess canSaveHistoryItem(int currentCount) =>
-      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
+      _quotaAccess(currentCount, historyLimit);
 
   @override
   QuotaAccess canAddBatchItem(int currentCount) =>
-      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
+      _quotaAccess(currentCount, batchItemLimit);
+
+  FeatureAccess _freeFeature(PremiumFeature feature) {
+    return FeatureAccess(allowed: true, feature: feature);
+  }
+
+  QuotaAccess _quotaAccess(int currentCount, int? limit) {
+    if (limit == null) {
+      return QuotaAccess(
+        allowed: true,
+        limit: null,
+        currentCount: currentCount,
+      );
+    }
+
+    final allowed = currentCount < limit;
+    return QuotaAccess(
+      allowed: allowed,
+      limit: limit,
+      currentCount: currentCount,
+      denyReason: allowed ? null : AccessDenyReason.quotaExceeded,
+    );
+  }
 
   FeatureAccess _premiumFeature(PremiumFeature feature) {
     return FeatureAccess(
@@ -209,7 +246,10 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       PremiumFeature.printers => UpsellSurface.printerManagement,
       PremiumFeature.history => UpsellSurface.historyTab,
       PremiumFeature.historyExport => UpsellSurface.historyExport,
+      PremiumFeature.singleJobExport => UpsellSurface.historyExport,
+      PremiumFeature.bulkHistoryExport => UpsellSurface.historyExport,
       PremiumFeature.gcodeImport => UpsellSurface.gcodeImport,
+      PremiumFeature.batchGcodeImport => UpsellSurface.gcodeImport,
       PremiumFeature.batchCosting => UpsellSurface.batchCosting,
       PremiumFeature.batchExport => UpsellSurface.batchExport,
       PremiumFeature.labourPricing => UpsellSurface.labourPricing,
