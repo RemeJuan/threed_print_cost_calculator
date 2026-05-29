@@ -40,8 +40,10 @@ class SecurePremiumLocalStore implements PremiumLocalStore {
 }
 
 class CachedPremiumLocalStore implements PremiumLocalStore {
-  CachedPremiumLocalStore(this._storage, {PremiumLocalStoreErrorHandler? onError})
-    : _onError = onError;
+  CachedPremiumLocalStore(
+    this._storage, {
+    PremiumLocalStoreErrorHandler? onError,
+  }) : _onError = onError;
 
   final FlutterSecureStorage _storage;
   final PremiumLocalStoreErrorHandler? _onError;
