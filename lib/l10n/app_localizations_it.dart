@@ -743,7 +743,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Deve essere 0 o maggiore';
 
   @override
-  String get lockedValuePlaceholder => 'Bloccato';
+  String get lockedValuePlaceholder => 'Solo Premium';
 
   @override
   String get hideProPromotionsTitle => 'Nascondi promozioni Pro';
@@ -754,11 +754,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      'Puoi salvare fino a 2 stampanti su Free. Passa a Premium per stampanti illimitate.';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      'Puoi salvare fino a 5 materiali su Free. Passa a Premium per materiali illimitati.';
 
   @override
   String get historySearchHint => 'Cerca per nome o stampante';
@@ -787,7 +787,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get historyUpsellDescription =>
-      'Sblocca modifiche avanzate ed esportazioni';
+      'Puoi conservare fino a 7 stampe salvate su Free. Passa a Premium per cronologia ed esportazioni illimitate.';
 
   @override
   String get historyNoMoreRecords => 'Nessun altro record';
@@ -822,10 +822,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Scopri come funziona la cronologia prima di passare a Pro. Salva i preventivi completati ed esportali in qualsiasi momento con Pro.';
+      'Gli utenti Free possono conservare fino a 7 stampe salvate. Passa a Premium per cronologia ed esportazioni illimitate.';
 
   @override
-  String get historyTeaserCta => 'Salva ed esporta la cronologia con Pro';
+  String get historyTeaserCta => 'Passa a Premium per cronologia illimitata';
 
   @override
   String get historyExportPreviewEntry => 'Anteprima esportazione CSV';
@@ -835,13 +835,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'Vedi come apparirà la tua esportazione. Download e condivisione sono sbloccati con Pro.';
+      'L\'esportazione in blocco della cronologia è una funzione Premium. Download e condivisione si sbloccano con Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Esempio]';
 
   @override
-  String get historyExportPreviewAction => 'Scarica / Condividi con Pro';
+  String get historyExportPreviewAction => 'Scarica / Condividi con Premium';
 
   @override
   String get addMaterialButton => 'Aggiungi materiale';
