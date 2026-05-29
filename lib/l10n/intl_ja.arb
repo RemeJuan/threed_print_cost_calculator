@@ -456,7 +456,7 @@
     }
   },
   "materialFallback": "素材",
-  "lockedValuePlaceholder": "ロック中",
+  "lockedValuePlaceholder": "Premiumのみ",
   "hideProPromotionsTitle": "Proのプロモーションを非表示",
   "hideProPromotionsSubtitle": "アップグレードのバナーと案内を非表示",
   "historyTeaserTitle": "すべての印刷見積もりを1か所に保存",

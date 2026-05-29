@@ -719,7 +719,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get validationMustBeZeroOrMore => '0以上の値を入力してください';
 
   @override
-  String get lockedValuePlaceholder => 'ロック中';
+  String get lockedValuePlaceholder => 'Premiumのみ';
 
   @override
   String get hideProPromotionsTitle => 'Proのプロモーションを非表示';
