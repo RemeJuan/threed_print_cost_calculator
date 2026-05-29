@@ -587,6 +587,7 @@
     }
   },
   "csvNoValidRowsError": "Nenhuma linha válida para importar.",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} linhas: {valid} válidas, {invalid} com erros",
   "@csvPreviewSummary": {
     "placeholders": {

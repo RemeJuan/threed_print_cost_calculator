@@ -2,17 +2,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 class CsvImportResult {
   final int imported;
   final int preValidatedFailures;
   final List<ImportRow> saveFailures;
+  final bool quotaExceeded;
+  final int? quotaLimit;
 
   const CsvImportResult({
     required this.imported,
     required this.preValidatedFailures,
     required this.saveFailures,
+    this.quotaExceeded = false,
+    this.quotaLimit,
   });
 }
 
@@ -33,6 +38,19 @@ class CsvImportService {
 
     final repo = ref.read(materialsRepositoryProvider);
     final logger = ref.read(appLoggerProvider);
+    final policy = ref.read(premiumAccessPolicyProvider);
+    final currentCount = await repo.count();
+    final limit = policy.materialLimit;
+    if (limit != null && currentCount + valid.length > limit) {
+      return CsvImportResult(
+        imported: 0,
+        preValidatedFailures: preValidatedFailures,
+        saveFailures: [],
+        quotaExceeded: true,
+        quotaLimit: limit,
+      );
+    }
+
     var imported = 0;
     final failedRows = <ImportRow>[];
 

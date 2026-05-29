@@ -586,6 +586,7 @@
     }
   },
   "csvNoValidRowsError": "Tidak ada baris valid untuk diimpor.",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} baris: {valid} valid, {invalid} dengan error",
   "@csvPreviewSummary": {
     "placeholders": {

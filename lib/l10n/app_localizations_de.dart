@@ -1190,6 +1190,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get csvNoValidRowsError => 'Keine gültigen Zeilen zum Importieren.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total Zeilen: $valid gültig, $invalid mit Fehlern';
   }

@@ -5,6 +5,9 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_service.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 class _NoopLogSink extends AppLogSink {
@@ -12,6 +15,14 @@ class _NoopLogSink extends AppLogSink {
 
   @override
   void log(AppLogEvent event) {}
+}
+
+class _QuotaLimitedMaterialsPolicy extends DefaultPremiumAccessPolicy {
+  _QuotaLimitedMaterialsPolicy()
+    : super(isPremium: false, hideProPromotions: false);
+
+  @override
+  int? get materialLimit => 5;
 }
 
 void main() {
@@ -28,6 +39,9 @@ void main() {
         appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
         appLoggerConfigProvider.overrideWithValue(
           const AppLoggerConfig(minLevel: AppLogLevel.debug),
+        ),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
         ),
       ],
     );
@@ -178,6 +192,61 @@ void main() {
         final untracked = materials.firstWhere((m) => m.name == 'Untracked');
         expect(tracked.autoDeductEnabled, isTrue);
         expect(untracked.autoDeductEnabled, isFalse);
+      },
+    );
+  });
+
+  group('CsvImportService quota guard', () {
+    test(
+      'rejects the entire batch when it would exceed the material limit',
+      () async {
+        final quotaDb = await databaseFactoryMemory.openDatabase(
+          'csv_import_service_quota_${DateTime.now().microsecondsSinceEpoch}.db',
+        );
+        final quotaContainer = ProviderContainer(
+          overrides: [
+            databaseProvider.overrideWithValue(quotaDb),
+            appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+            appLoggerConfigProvider.overrideWithValue(
+              const AppLoggerConfig(minLevel: AppLogLevel.debug),
+            ),
+            premiumAccessPolicyProvider.overrideWithValue(
+              _QuotaLimitedMaterialsPolicy(),
+            ),
+          ],
+        );
+        addTearDown(quotaContainer.dispose);
+        addTearDown(() async => quotaDb.close());
+
+        final repo = quotaContainer.read(materialsRepositoryProvider);
+        for (var i = 0; i < 5; i++) {
+          await repo.saveMaterial(
+            MaterialModel(
+              id: '',
+              name: 'Seed $i',
+              cost: '10',
+              color: 'Black',
+              weight: '1000',
+              archived: false,
+              autoDeductEnabled: false,
+              originalWeight: 1000,
+              remainingWeight: 1000,
+            ),
+          );
+        }
+
+        final result = await quotaContainer
+            .read(csvImportServiceProvider)
+            .importRows([validRow('PETG', line: 1)]);
+
+        expect(result.imported, 0);
+        expect(result.preValidatedFailures, 0);
+        expect(result.saveFailures, isEmpty);
+        expect(result.quotaExceeded, isTrue);
+        expect(result.quotaLimit, 5);
+
+        final materials = await repo.getMaterials();
+        expect(materials, hasLength(5));
       },
     );
   });

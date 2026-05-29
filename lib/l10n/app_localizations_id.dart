@@ -1166,6 +1166,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvNoValidRowsError => 'Tidak ada baris valid untuk diimpor.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total baris: $valid valid, $invalid dengan error';
   }

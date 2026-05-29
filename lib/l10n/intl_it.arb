@@ -586,6 +586,7 @@
     }
   },
   "csvNoValidRowsError": "Nessuna riga valida da importare.",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} righe: {valid} valide, {invalid} con errori",
   "@csvPreviewSummary": {
     "placeholders": {

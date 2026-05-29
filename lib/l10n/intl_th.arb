@@ -587,6 +587,7 @@
     }
   },
   "csvNoValidRowsError": "ไม่มีแถวที่ถูกต้องสำหรับนำเข้า",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} แถว: {valid} ถูกต้อง, {invalid} มีข้อผิดพลาด",
   "@csvPreviewSummary": {
     "placeholders": {

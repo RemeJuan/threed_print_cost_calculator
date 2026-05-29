@@ -1151,6 +1151,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvNoValidRowsError => 'インポートする有効な行がありません。';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total行: $valid件有効, $invalid件エラー';
   }

@@ -1189,6 +1189,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get csvNoValidRowsError => 'Geen geldige rijen om te importeren.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total rijen: $valid geldig, $invalid met fouten';
   }

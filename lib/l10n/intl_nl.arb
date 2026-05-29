@@ -587,6 +587,7 @@
     }
   },
   "csvNoValidRowsError": "Geen geldige rijen om te importeren.",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} rijen: {valid} geldig, {invalid} met fouten",
   "@csvPreviewSummary": {
     "placeholders": {

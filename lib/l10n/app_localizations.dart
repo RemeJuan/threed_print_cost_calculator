@@ -2219,6 +2219,12 @@ abstract class AppLocalizations {
   /// **'No valid rows to import.'**
   String get csvNoValidRowsError;
 
+  /// No description provided for @csvImportQuotaExceededError.
+  ///
+  /// In en, this message translates to:
+  /// **'This import exceeds your material limit.'**
+  String get csvImportQuotaExceededError;
+
   /// No description provided for @csvPreviewSummary.
   ///
   /// In en, this message translates to:

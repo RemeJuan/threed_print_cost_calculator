@@ -585,6 +585,7 @@
     }
   },
   "csvNoValidRowsError": "No hay filas válidas para importar.",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} filas: {valid} válidas, {invalid} con errores",
   "@csvPreviewSummary": {
     "placeholders": {

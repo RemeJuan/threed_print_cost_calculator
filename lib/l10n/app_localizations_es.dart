@@ -1196,6 +1196,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get csvNoValidRowsError => 'No hay filas válidas para importar.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total filas: $valid válidas, $invalid con errores';
   }

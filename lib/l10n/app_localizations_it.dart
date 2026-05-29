@@ -1198,6 +1198,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get csvNoValidRowsError => 'Nessuna riga valida da importare.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total righe: $valid valide, $invalid con errori';
   }

@@ -1204,6 +1204,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get csvNoValidRowsError => 'Aucune ligne valide à importer.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total lignes: $valid valides, $invalid avec erreurs';
   }

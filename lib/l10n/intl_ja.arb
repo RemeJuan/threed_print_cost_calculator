@@ -587,6 +587,7 @@
     }
   },
   "csvNoValidRowsError": "インポートする有効な行がありません。",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total}行: {valid}件有効, {invalid}件エラー",
   "@csvPreviewSummary": {
     "placeholders": {
