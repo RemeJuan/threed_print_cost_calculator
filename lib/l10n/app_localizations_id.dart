@@ -726,7 +726,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Harus 0 atau lebih';
 
   @override
-  String get lockedValuePlaceholder => 'Terkunci';
+  String get lockedValuePlaceholder => 'Hanya Premium';
 
   @override
   String get hideProPromotionsTitle => 'Sembunyikan promosi Pro';
@@ -737,11 +737,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      'Anda dapat menyimpan hingga 2 printer di Free. Upgrade ke Premium untuk printer tanpa batas.';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      'Anda dapat menyimpan hingga 5 material di Free. Upgrade ke Premium untuk material tanpa batas.';
 
   @override
   String get historySearchHint => 'Cari berdasarkan nama atau printer';
@@ -769,7 +769,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get historyUpsellTitle => 'Gunakan kembali cetakan lama seketika';
 
   @override
-  String get historyUpsellDescription => 'Buka edit lanjutan dan ekspor';
+  String get historyUpsellDescription =>
+      'Anda dapat menyimpan hingga 7 cetakan di Free. Upgrade ke Premium untuk riwayat dan ekspor tanpa batas.';
 
   @override
   String get historyNoMoreRecords => 'Tidak ada data lagi';
@@ -801,10 +802,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Lihat cara kerja riwayat sebelum upgrade. Simpan estimasi yang selesai dan ekspor kapan saja dengan Pro.';
+      'Pengguna Free dapat menyimpan hingga 7 cetakan. Upgrade ke Premium untuk riwayat dan ekspor tanpa batas.';
 
   @override
-  String get historyTeaserCta => 'Simpan dan ekspor riwayat dengan Pro';
+  String get historyTeaserCta => 'Upgrade ke Premium untuk riwayat tanpa batas';
 
   @override
   String get historyExportPreviewEntry => 'Pratinjau ekspor CSV';
@@ -814,13 +815,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'Lihat seperti apa hasil ekspor Anda. Unduh dan bagikan dibuka dengan Pro.';
+      'Ekspor riwayat massal adalah fitur Premium. Unduh dan bagikan dibuka dengan Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Contoh]';
 
   @override
-  String get historyExportPreviewAction => 'Unduh / Bagikan dengan Pro';
+  String get historyExportPreviewAction => 'Unduh / Bagikan dengan Premium';
 
   @override
   String get addMaterialButton => 'Tambahkan bahan';
