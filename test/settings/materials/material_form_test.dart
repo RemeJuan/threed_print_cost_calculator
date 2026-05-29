@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -100,7 +102,12 @@ void main() {
         onResult: savedResult.add,
         builder: (_) => const MaterialForm(),
       ),
-      [materialsRepositoryProvider.overrideWithValue(repo)],
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 
@@ -276,7 +283,12 @@ void main() {
         onResult: (_) {},
         builder: (_) => const MaterialForm(),
       ),
-      [materialsRepositoryProvider.overrideWithValue(repo)],
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 
@@ -350,7 +362,12 @@ void main() {
         onResult: (value) => dialogResult = value,
         builder: (_) => const MaterialForm(),
       ),
-      [materialsRepositoryProvider.overrideWithValue(repo)],
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 
