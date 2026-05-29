@@ -154,7 +154,9 @@ void main() {
     );
     expect(addButton.onPressed, isNull);
     expect(
-      find.text('Upgrade to Premium to add more printers.'),
+      find.text(
+        'You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.',
+      ),
       findsOneWidget,
     );
   });

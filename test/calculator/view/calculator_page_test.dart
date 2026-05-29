@@ -36,7 +36,7 @@ void main() {
       expect(find.byType(CalculatorPage), findsOneWidget);
     });
 
-    testWidgets('hides batch costing entry when disabled', (tester) async {
+    testWidgets('shows batch costing entry for free users', (tester) async {
       final db = await tester.pumpApp(const CalculatorPage(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
       ]);
@@ -48,7 +48,7 @@ void main() {
         find.byKey(
           const ValueKey<String>('calculator.batch_costing.open.button'),
         ),
-        findsNothing,
+        findsOneWidget,
       );
     });
 

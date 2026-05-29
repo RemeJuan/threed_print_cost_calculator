@@ -316,13 +316,20 @@ void main() {
     );
 
     await tester.scrollUntilVisible(
-      find.text('Unlock advanced edits and exports'),
+      find.text(
+        'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.',
+      ),
       200,
       scrollable: find.byType(Scrollable).first,
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Unlock advanced edits and exports'), findsOneWidget);
+    expect(
+      find.text(
+        'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.',
+      ),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const ValueKey<String>('history.export.button')),
       findsNothing,
@@ -342,7 +349,10 @@ void main() {
       find.byKey(const ValueKey<String>('history.teaser.state')),
       findsOneWidget,
     );
-    expect(find.text('Save & export history with Pro'), findsOneWidget);
+    expect(
+      find.text('Upgrade to Premium for unlimited history'),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const ValueKey<String>('history.export.preview.entry')),
       findsOneWidget,
