@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
@@ -118,6 +120,12 @@ void main() {
         final seededContainer = ProviderContainer(
           overrides: [
             materialsRepositoryProvider.overrideWithValue(materialsRepository),
+            premiumAccessPolicyProvider.overrideWithValue(
+              DefaultPremiumAccessPolicy(
+                isPremium: true,
+                hideProPromotions: false,
+              ),
+            ),
           ],
         );
         addTearDown(seededContainer.dispose);
