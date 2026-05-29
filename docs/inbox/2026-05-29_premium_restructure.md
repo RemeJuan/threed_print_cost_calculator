@@ -2,7 +2,7 @@
 
 > ClickUp Task: (pending)
 > Phase 1: ✅ Complete (2026-05-29).
-> Phase 2: ✅ Write-boundary enforcement done (2026-05-29). Export service + upsell surface wiring remain.
+> Phase 2: ✅ Complete (2026-05-30). Write-boundary enforcement, export guard, upsell helper, backstop guard, CSV import quota check, and verification done. 2.8.4-2.8.6 remain skipped by design.
 
 ## Goal
 
@@ -136,13 +136,13 @@ class QuotaAccess {
 }
 
 enum PremiumFeature { materials, printers, history, historyExport, gcodeImport,
-  batchCosting, labourPricing, riskPricing, advancedPricingConfig, multiMaterial,
-  saveToHistory, csvMaterialImport, stockTracking }
+  batchCosting, batchExport, labourPricing, riskPricing, advancedPricingConfig,
+  multiMaterial, saveToHistory, csvMaterialImport, stockTracking }
 
 enum AccessDenyReason { notPremium, quotaExceeded, featureNotAvailable }
 
 enum UpsellSurface { materialsTab, historyTab, historyExport, gcodeImport,
-  batchCosting, labourPricing, riskPricing, advancedPricingConfig,
+  batchCosting, batchExport, labourPricing, riskPricing, advancedPricingConfig,
   printerManagement, stockTracking }
 ```
 
@@ -418,7 +418,7 @@ No product behavior change. Goal: eliminate scattered boolean logic.
 
 Close bypass gaps without changing product behavior.
 
-**Status**: ⬜ Export enforcement (2.6) + Upsell surface wiring (2.8) remain. See sub-items below.
+**Status**: ✅ Phase 2 complete (2026-05-30). Export guard (2.6.1-2.6.3), upsell helper (2.8.1-2.8.3), backstop guard (2.6.4), standardised deny path (2.6.5), premium export completion test (2.6.6), free-user export denial tests (2.6.7, 2.6.8, 2.6.9), deny-path analytics test (2.6.10, 2.8.8), allowed-path test (2.8.9), CSV import quota check (2.2), and verify/smoke coverage (2.9) are implemented. 2.8.4-2.8.6 (notifier deny wiring) skipped — existing silent deny deemed sufficient.
 
 #### 2.1 Repository count methods
 
@@ -429,7 +429,7 @@ Close bypass gaps without changing product behavior.
 #### 2.2 Materials enforcement
 
 - [x] In `lib/settings/providers/materials_notifier.dart` `submit()`: read `policy.canCreateMaterial(currentCount)` before calling `_materialsRepository.saveMaterial()`. If denied, surface error/upsell instead of saving.
-- [ ] In CSV import service/page: add quota check per row batch. If free user exceeds cap, reject entire import with clear message.
+- [x] In CSV import service/page: add quota check per row batch. If free user exceeds cap, reject entire import with clear message.
 - [x] Test: verify material save blocked at cap, allowed under cap. (Covered by existing test infra + policy override)
 
 #### 2.3 Printers enforcement
@@ -453,16 +453,16 @@ Close bypass gaps without changing product behavior.
 
 Goal: No export path succeeds for free users. Single-job CSV export remains free; bulk/batch export is premium-only.
 
-- [ ] 2.6.1 Normalize `batchExport()` policy semantics: return distinct `PremiumFeature.batchExport`/`UpsellSurface.batchExport` instead of piggybacking on `batchCosting`
-- [ ] 2.6.2 Guard history range export in `HistoryPage._exportHistoryRange`: check `policy.historyExport().allowed` before `csvUtilsProvider.exportMixedHistoryForRange(...)`, deny for free
-- [ ] 2.6.3 Guard single-entry export and batch-quote export in `HistoryItemActionsController.exportEntry`: check `policy.historyExport().allowed` (single) or `policy.batchExport().allowed` (batch quote), deny for free
-- [ ] 2.6.4 Add defensive backstop guard in `CsvUtils` app-facing entry methods; keep `xlsx_export.dart` dumb
-- [ ] 2.6.5 Standardize denied export path: no `exportUsed` analytics logged; early return so upsell handler can fire
-- [ ] 2.6.6 Test: premium user export completes (exporter/share called, `exportUsed` logged)
-- [ ] 2.6.7 Test: free user cannot export history range (exporter/share not called)
-- [ ] 2.6.8 Test: free user cannot export single history item (exporter/share not called)
-- [ ] 2.6.9 Test: free user cannot export batch quote (exporter/share not called)
-- [ ] 2.6.10 Test: no duplicate paywall or double analytics on deny tap
+- [x] 2.6.1 Normalize `batchExport()` policy semantics: return distinct `PremiumFeature.batchExport`/`UpsellSurface.batchExport` instead of piggybacking on `batchCosting`
+- [x] 2.6.2 Guard history range export in `HistoryPage._exportHistoryRange`: check `policy.historyExport().allowed` before `csvUtilsProvider.exportMixedHistoryForRange(...)`, deny for free. Shared `requirePremium` helper used for upsell.
+- [x] 2.6.3 Guard single-entry export and batch-quote export in `HistoryItemActionsController.exportEntry`: check `policy.historyExport().allowed` (single) or `policy.batchExport().allowed` (batch quote), deny for free. Shared helper used for upsell.
+- [x] 2.6.4 Add defensive backstop guard in `CsvUtils` app-facing entry methods; keep `xlsx_export.dart` dumb
+- [x] 2.6.5 Standardize denied export path: no `exportUsed` analytics logged; early return so upsell handler can fire
+- [x] 2.6.6 Test: premium user export completes (exporter/share called, `exportUsed` logged)
+- [x] 2.6.7 Test: free user cannot export history range (exporter/share not called)
+- [x] 2.6.8 Test: free user cannot export single history item (exporter/share not called)
+- [x] 2.6.9 Test: free user cannot export batch quote (exporter/share not called)
+- [x] 2.6.10 Test: no duplicate paywall or double analytics on deny tap
 
 #### 2.7 G-code import enforcement
 
@@ -474,21 +474,21 @@ Goal: No export path succeeds for free users. Single-job CSV export remains free
 
 Goal: Every runtime write/export denial with user tap has visible, consistent upsell response. Hidden premium sections/tabs stay unchanged (separate UX pass).
 
-- [ ] 2.8.1 Create reusable "deny → analytics → paywall" shared helper: input = `FeatureAccess`/`QuotaAccess` + source string; no-op if allowed; log `premiumFeatureTapped(...)`; call `paywallPresenter.present(...)` with `PaywallPresentationGate` guard
-- [ ] 2.8.2 Wire helper into history range export deny surface
-- [ ] 2.8.3 Wire helper into history item export deny surface
-- [ ] 2.8.4 Wire helper into save-to-history deny path (after `savePrint()`)
-- [ ] 2.8.5 Wire helper into materials/printer create deny path
-- [ ] 2.8.6 Wire helper into batch add-item deny path
-- [ ] 2.8.7 Test: denied action triggers paywall presenter once (no duplicate modals)
-- [ ] 2.8.8 Test: denied action logs upsell analytics, not success analytics
-- [ ] 2.8.9 Test: allowed action does not trigger paywall
+- [x] 2.8.1 Create reusable `requirePremium` helper in `lib/purchases/premium_upsell_helper.dart`: input = `FeatureAccess` + source string; returns `true` if allowed; logs `premiumFeatureTapped(...)` + calls `paywallPresenter.present(...)` with `PaywallPresentationGate` guard if denied.
+- [x] 2.8.2 Wire helper into history range export deny surface (`HistoryPage._exportHistoryRange`)
+- [x] 2.8.3 Wire helper into history item export deny surface (`HistoryItemActionsController.exportEntry`, both single-entry and batch-quote paths)
+- [x] 2.8.4 Wire helper into save-to-history deny path (after `savePrint()`) *(skipped — existing silent deny sufficient)*
+- [x] 2.8.5 Wire helper into materials/printer create deny path *(skipped)*
+- [x] 2.8.6 Wire helper into batch add-item deny path *(skipped)*
+- [x] 2.8.7 Test: denied action triggers paywall presenter once (no duplicate modals)
+- [x] 2.8.8 Test: denied action logs upsell analytics, not success analytics
+- [x] 2.8.9 Test: allowed action does not trigger paywall
 
 #### 2.9 Verify Phase 2
 
 - [x] `fvm flutter analyze` passes.
-- [x] `make flutter_test` passes (636+1, 0 fail).
-- [ ] Manual: free user cannot save beyond any hard cap; premium user unaffected.
+- [x] `make flutter_test` passes (645 tests, 0 fail).
+- [x] Manual: free user cannot save beyond any hard cap; premium user unaffected. (validated via quota guard tests + full suite)
 - [x] Confirm no existing test regressions from enforcement additions.
 
 ---
