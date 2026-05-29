@@ -23,7 +23,6 @@ class AppPage extends HookConsumerWidget {
     final selectedTab = useState(AppPageTab.calculator);
     final tapNavigationTargetIndex = useState<int?>(null);
     final l10n = AppLocalizations.of(context)!;
-    final prefs = ref.read(sharedPreferencesProvider);
     final policy = ref.watch(premiumAccessPolicyProvider);
     final isPremium = policy.isPremium;
     final showHistoryTab = policy.shouldShowHistoryTab;
@@ -49,7 +48,7 @@ class AppPage extends HookConsumerWidget {
       announcementAsync: announcementAsync,
       isPremium: isPremium,
     );
-    useAppPageCancelFeedbackEffect(context: context, ref: ref, prefs: prefs);
+    useAppPageCancelFeedbackEffect(context: context, ref: ref);
 
     final pageController = usePageController(initialPage: 0);
 
