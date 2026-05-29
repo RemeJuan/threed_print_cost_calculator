@@ -740,7 +740,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Deve ser 0 ou mais';
 
   @override
-  String get lockedValuePlaceholder => 'Bloqueado';
+  String get lockedValuePlaceholder => 'Somente Premium';
 
   @override
   String get hideProPromotionsTitle => 'Ocultar promoções Pro';
@@ -751,11 +751,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      'Você pode salvar até 2 impressoras no Free. Faça upgrade para Premium para impressoras ilimitadas.';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      'Você pode salvar até 5 materiais no Free. Faça upgrade para Premium para materiais ilimitados.';
 
   @override
   String get historySearchHint => 'Pesquisar por nome ou impressora';
@@ -785,7 +785,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get historyUpsellDescription =>
-      'Desbloqueie edições avançadas e exportações';
+      'Você pode manter até 7 impressões salvas no Free. Faça upgrade para Premium para histórico e exportações ilimitados.';
 
   @override
   String get historyNoMoreRecords => 'Não há mais registros';
@@ -820,10 +820,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Veja como o histórico funciona antes de fazer upgrade. Salve estimativas concluídas e exporte-as a qualquer momento com o Pro.';
+      'Usuários Free podem manter até 7 impressões salvas. Faça upgrade para Premium para histórico e exportações ilimitados.';
 
   @override
-  String get historyTeaserCta => 'Salvar e exportar histórico com Pro';
+  String get historyTeaserCta =>
+      'Faça upgrade para Premium para histórico ilimitado';
 
   @override
   String get historyExportPreviewEntry => 'Prévia da exportação CSV';
@@ -833,13 +834,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'Veja como sua exportação ficará. Download e compartilhamento são desbloqueados com o Pro.';
+      'A exportação em massa do histórico é um recurso Premium. Baixar e compartilhar são desbloqueados com Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Amostra]';
 
   @override
-  String get historyExportPreviewAction => 'Baixar / Compartilhar com Pro';
+  String get historyExportPreviewAction => 'Baixar / Compartilhar com Premium';
 
   @override
   String get addMaterialButton => 'Adicionar';
