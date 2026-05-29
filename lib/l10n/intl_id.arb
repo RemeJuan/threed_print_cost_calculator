@@ -224,6 +224,7 @@
     "description": "Label for export action in history list"
   },
   "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
+  "materialLimitReachedMessage": "Upgrade to Premium to add more materials.",
   "historySearchHint": "Cari berdasarkan nama atau printer",
   "historyExportMenuTitle": "Ekspor cetakan",
   "historyExportRangeAll": "Semua",
@@ -611,7 +612,7 @@
   "batchCostingReviewSubtitle": "Tinjau item batch sebelum penugasan printer.",
   "batchCostingReviewAddManualItemButton": "Tambah item manual",
   "batchCostingReviewEmptyTitle": "Belum ada item batch",
-  "batchCostingReviewEmptyBody": "Tambahkan cetakan impor atau manual untuk melanjutkan.",
+  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
   "batchCostingReviewImportGcodeButton": "Impor file G-code",
   "batchGcodeImportTitle": "Impor G-code batch",
   "batchGcodeImportBody": "Pilih satu atau beberapa file G-code. Setiap file diurai sendiri.",

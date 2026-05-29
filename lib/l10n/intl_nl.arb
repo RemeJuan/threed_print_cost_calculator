@@ -232,6 +232,7 @@
     "description": "Label for export action in history list"
   },
   "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
+  "materialLimitReachedMessage": "Upgrade to Premium to add more materials.",
   "historySearchHint": "Zoeken op naam of printer",
   "historyExportMenuTitle": "Prints exporteren",
   "historyExportRangeAll": "Alles",
@@ -612,7 +613,7 @@
   "batchCostingReviewSubtitle": "Beoordeel batch-artikelen vóór printertoewijzing.",
   "batchCostingReviewAddManualItemButton": "Handmatig item toevoegen",
   "batchCostingReviewEmptyTitle": "Nog geen batch-artikelen",
-  "batchCostingReviewEmptyBody": "Voeg geïmporteerde of handmatige afdrukken toe om door te gaan.",
+  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
   "batchCostingReviewImportGcodeButton": "G-codebestanden importeren",
   "batchGcodeImportTitle": "Batch G-code importeren",
   "batchGcodeImportBody": "Kies een of meer G-codebestanden. Elk bestand wordt apart geparseerd.",

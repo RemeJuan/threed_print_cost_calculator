@@ -232,6 +232,7 @@
     "description": "Label for export action in history list"
   },
   "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
+  "materialLimitReachedMessage": "Upgrade to Premium to add more materials.",
   "historySearchHint": "名前やプリンターで検索",
   "historyExportMenuTitle": "印刷データを書き出す",
   "historyExportRangeAll": "すべて",
@@ -612,7 +613,7 @@
   "batchCostingReviewSubtitle": "プリンター割り当て前にバッチアイテムを確認します。",
   "batchCostingReviewAddManualItemButton": "手動アイテムを追加",
   "batchCostingReviewEmptyTitle": "まだバッチアイテムがありません",
-  "batchCostingReviewEmptyBody": "インポートまたは手動のプリントを追加して続行します。",
+  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
   "batchCostingReviewImportGcodeButton": "G-codeファイルをインポート",
   "batchGcodeImportTitle": "バッチG-codeのインポート",
   "batchGcodeImportBody": "1つ以上のG-codeファイルを選択します。各ファイルは個別に解析されます。",

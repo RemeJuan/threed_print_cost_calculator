@@ -225,6 +225,7 @@
     "description": "Label for export action in history list"
   },
   "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
+  "materialLimitReachedMessage": "Upgrade to Premium to add more materials.",
   "historySearchHint": "ค้นหาตามชื่อหรือเครื่องพิมพ์",
   "historyExportMenuTitle": "ส่งออกงานพิมพ์",
   "historyExportRangeAll": "ทั้งหมด",
@@ -612,7 +613,7 @@
   "batchCostingReviewSubtitle": "ตรวจสอบรายการชุดก่อนกำหนดเครื่องพิมพ์",
   "batchCostingReviewAddManualItemButton": "เพิ่มรายการด้วยตนเอง",
   "batchCostingReviewEmptyTitle": "ยังไม่มีรายการชุด",
-  "batchCostingReviewEmptyBody": "เพิ่มงานพิมพ์ที่นำเข้าหรือด้วยตนเองเพื่อดำเนินการต่อ",
+  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
   "batchCostingReviewImportGcodeButton": "นำเข้าไฟล์ G-code",
   "batchGcodeImportTitle": "นำเข้า G-code แบบชุด",
   "batchGcodeImportBody": "เลือกไฟล์ G-code หนึ่งไฟล์หรือหลายไฟล์ แต่ละไฟล์จะถูกแยกวิเคราะห์แยกกัน",

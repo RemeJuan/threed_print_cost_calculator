@@ -757,6 +757,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Upgrade to Premium to add more printers.';
 
   @override
+  String get materialLimitReachedMessage =>
+      'Upgrade to Premium to add more materials.';
+
+  @override
   String get historySearchHint => 'Cerca per nome o stampante';
 
   @override
@@ -1257,8 +1261,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'Nessun articolo batch ancora';
 
   @override
-  String get batchCostingReviewEmptyBody =>
-      'Aggiungi stampe importate o manuali per continuare.';
+  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'Importa file G-code';

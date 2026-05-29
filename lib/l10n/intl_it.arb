@@ -224,6 +224,7 @@
     "description": "Label for export action in history list"
   },
   "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
+  "materialLimitReachedMessage": "Upgrade to Premium to add more materials.",
   "historySearchHint": "Cerca per nome o stampante",
   "historyExportMenuTitle": "Esporta stampe",
   "historyExportRangeAll": "Tutto",
@@ -611,7 +612,7 @@
   "batchCostingReviewSubtitle": "Rivedi gli articoli batch prima dell'assegnazione stampante.",
   "batchCostingReviewAddManualItemButton": "Aggiungi articolo manuale",
   "batchCostingReviewEmptyTitle": "Nessun articolo batch ancora",
-  "batchCostingReviewEmptyBody": "Aggiungi stampe importate o manuali per continuare.",
+  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
   "batchCostingReviewImportGcodeButton": "Importa file G-code",
   "batchGcodeImportTitle": "Importa G-code batch",
   "batchGcodeImportBody": "Scegli uno o più file G-code. Ogni file viene analizzato separatamente.",

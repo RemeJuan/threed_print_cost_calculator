@@ -1445,6 +1445,12 @@ abstract class AppLocalizations {
   /// **'Upgrade to Premium to add more printers.'**
   String get printerLimitReachedMessage;
 
+  /// No description provided for @materialLimitReachedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium to add more materials.'**
+  String get materialLimitReachedMessage;
+
   /// No description provided for @historySearchHint.
   ///
   /// In en, this message translates to:
@@ -2324,7 +2330,7 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingReviewEmptyBody.
   ///
   /// In en, this message translates to:
-  /// **'Add imported or manual prints to continue.'**
+  /// **'Add manual prints to continue.'**
   String get batchCostingReviewEmptyBody;
 
   /// No description provided for @batchCostingReviewImportGcodeButton.
