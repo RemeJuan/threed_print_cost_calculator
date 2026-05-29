@@ -557,29 +557,29 @@ Deliberately change product behavior.
 
 #### 3.7 Update teaser/upsell surfaces
 
-- [ ] Audit every paywall/upsell trigger in codebase. Update messaging to reflect new split.
-- [ ] Calculator: replace premium "locked row" promos with quota-focused messaging.
-- [ ] History: teaser page should communicate free quota limit + premium value prop.
-- [ ] Settings: upsell for more printers/materials should mention specific limits.
-- [ ] Export: single upsell for all export features.
+- [x] Audit every paywall/upsell trigger in codebase. Update messaging to reflect new split.
+- [x] Calculator: replace premium "locked row" promos with quota-focused messaging.
+- [x] History: teaser page should communicate free quota limit + premium value prop.
+- [x] Settings: upsell for more printers/materials should mention specific limits.
+- [x] Export: single upsell for all export features.
 
 #### 3.8 Localization updates
 
-- [ ] Add new l10n strings to `lib/l10n/intl_en.arb` for:
+- [x] Add new l10n strings to `lib/l10n/intl_en.arb` for:
   - Quota-exceeded messages (per feature).
   - Upgrade prompts (per upsell surface).
   - Free tier limits display.
-- [ ] Regenerate: `fvm flutter gen-l10n`.
-- [ ] Update all supported locale ARBs with translations.
+- [x] Regenerate: `fvm flutter gen-l10n`.
+- [x] Update all supported locale ARBs with translations.
 
 #### 3.9 Verify Phase 3
 
-- [ ] `fvm flutter analyze` passes.
-- [ ] `make flutter_test` passes.
-- [ ] Manual: fresh free install shows correct limited UI; premium user unchanged.
-- [ ] Manual: free user hits each quota cleanly with appropriate messaging.
-- [ ] Manual: premium user can use all features as before.
-- [ ] Manual: upgrade from free to premium unlocks all features without restart.
+- [x] `fvm flutter analyze` passes.
+- [x] `make flutter_test` passes.
+- [x] Manual: fresh free install shows correct limited UI; premium user unchanged.
+- [x] Manual: free user hits each quota cleanly with appropriate messaging.
+- [x] Manual: premium user can use all features as before.
+- [x] Manual: upgrade from free to premium unlocks all features without restart.
 
 ---
 
