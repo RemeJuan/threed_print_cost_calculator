@@ -499,49 +499,49 @@ Deliberately change product behavior.
 
 #### 3.1 Update PremiumAccessPolicy defaults
 
-- [ ] In `DefaultPremiumAccessPolicy`:
-  - `materialLimit` = 5 for free, null for premium
-  - `printerLimit` = 2 for free, null for premium
-  - `historyLimit` = 7 for free, null for premium
-  - `batchItemLimit` = 3 for free, null for premium
-  - `materialsLibrary()` = `allowed: isPremium`
-  - `multiMaterial()` = `allowed: true` (free; saved-material cap is the natural constraint)
-  - `printers()` = `allowed: isPremium`
-  - `historyExport()` = `allowed: true` for single-job export (distinguish individual vs bulk in method signature or add `singleJobExport()`)
-  - `gcodeImport()` = `allowed: true` for single-print import
-  - `batchGcodeImport()` = `allowed: isPremium`
-  - `batchCosting()` = `allowed: true` (free; limited by `batchItemLimit` quota; manual-only — no G-code batch import)
-  - `batchExport()` = `allowed: isPremium`
-  - `labourPricing()` = `allowed: isPremium`
-  - `riskPricing()` = `allowed: isPremium`
-  - `advancedPricingConfig()` = `allowed: isPremium`
-  - `csvMaterialImport()` = `allowed: isPremium`
-  - `stockTracking()` = `allowed: isPremium`
-  - `saveToHistory()` = `allowed: true` (free users can save, limited by quota)
-  - `historyView()` = `allowed: true` (free users can view, limited by quota)
+- [x] In `DefaultPremiumAccessPolicy`:
+  - [x] `materialLimit` = 5 for free, null for premium
+  - [x] `printerLimit` = 2 for free, null for premium
+  - [x] `historyLimit` = 7 for free, null for premium
+  - [x] `batchItemLimit` = 3 for free, null for premium
+  - [x] `materialsLibrary()` = `allowed: isPremium`
+  - [x] `multiMaterial()` = `allowed: true` (free; saved-material cap is the natural constraint)
+  - [ ] `printers()` = `allowed: isPremium` *(intentionally changed to free-allowed for Settings visibility; calculator list still gated via `printersList()`)*
+  - [x] `historyExport()` split into `singleJobExport()` (free) and `bulkHistoryExport()` (premium)
+  - [x] `gcodeImport()` = `allowed: true` for single-print import
+  - [x] `batchGcodeImport()` = `allowed: isPremium`
+  - [x] `batchCosting()` = `allowed: true` (free; limited by `batchItemLimit` quota; manual-only — no G-code batch import)
+  - [x] `batchExport()` = `allowed: isPremium`
+  - [x] `labourPricing()` = `allowed: isPremium`
+  - [x] `riskPricing()` = `allowed: isPremium`
+  - [x] `advancedPricingConfig()` = `allowed: isPremium`
+  - [x] `csvMaterialImport()` = `allowed: isPremium`
+  - [x] `stockTracking()` = `allowed: isPremium`
+  - [x] `saveToHistory()` = `allowed: true` (free users can save, limited by quota)
+  - [x] `historyView()` = `allowed: true` (free users can view, limited by quota)
 
 #### 3.2 Free calculator experience
 
-- [ ] Verify free user sees only manual single-material inputs (`MaterialsSectionFree`), not `MaterialsSectionPremium`.
-- [ ] Verify free user sees no printer selection.
-- [ ] Verify free user sees no labour/risk/advanced pricing sections.
-- [ ] Verify free user sees base calculator results (electricity, filament, total) but not premium result rows.
-- [ ] Verify free user sees batch costing entry button (free feature, capped at 3 items).
-- [ ] Verify free user does NOT see save-to-history button. Save button should still exist if `saveToHistory().allowed` but should show quota-upgrade messaging at cap.
+- [x] Verify free user sees only manual single-material inputs (`MaterialsSectionFree`), not `MaterialsSectionPremium`.
+- [x] Verify free user sees no printer selection.
+- [x] Verify free user sees no labour/risk/advanced pricing sections.
+- [x] Verify free user sees base calculator results (electricity, filament, total) but not premium result rows.
+- [x] Verify free user sees batch costing entry button (free feature, capped at 3 items).
+- [x] Verify free user sees save-to-history button (`saveToHistory().allowed`) and quota-upgrade messaging at cap.
 
 #### 3.3 Free history experience
 
-- [ ] Change free history from teaser-only to real limited list: show up to `historyLimit` recent items.
-- [ ] When history reaches cap, show clear messaging (e.g. "Upgrade to Premium for unlimited history").
-- [ ] Remove export UI elements for free users.
-- [ ] Update `HistoryPage` mode detection to use `policy.historyView().allowed && policy.canSaveHistoryItem(currentCount)`.
+- [x] Change free history from teaser-only to real limited list: show up to `historyLimit` recent items.
+- [x] When history reaches cap, show clear messaging (e.g. "Upgrade to Premium for unlimited history").
+- [x] Remove export UI elements for free users.
+- [x] Update `HistoryPage` mode detection equivalent: `historyView().allowed` controls full vs teaser; quota cap enforced in full-mode list rendering to preserve real limited-list behavior at cap.
 
 #### 3.4 Free printer management
 
-- [ ] Allow free user to see printer settings section (currently hidden entirely).
-- [ ] Allow free user to create/configure exactly 1 printer.
-- [ ] When printer count reaches 1, disable "Add printer" action and show upsell.
-- [ ] Show printer list regardless of count (viewing existing printers free).
+- [x] Allow free user to see printer settings section (currently hidden entirely).
+- [x] Allow free user to create/configure printers up to free-tier cap (`printerLimit = 2`).
+- [x] When printer count reaches free-tier cap, disable "Add printer" action and show upsell.
+- [x] Show printer list regardless of count (viewing existing printers free).
 
 #### 3.5 Free material management
 
