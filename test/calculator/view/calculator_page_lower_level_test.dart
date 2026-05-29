@@ -36,6 +36,7 @@ void main() {
   }) async {
     SharedPreferences.setMockInitialValues({'run_count': 0, ...prefs});
     await SharedPreferences.getInstance();
+    await SharedPreferences.getInstance();
 
     await tester.pumpApp(const CalculatorPage(), [
       calculatorProvider.overrideWith(() => calculatorNotifier),
@@ -120,5 +121,4 @@ void main() {
 
     expect(calculatorNotifier.resetCalls, 1);
   });
-
 }
