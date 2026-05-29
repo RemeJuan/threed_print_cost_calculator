@@ -545,15 +545,15 @@ Deliberately change product behavior.
 
 #### 3.5 Free material management
 
-- [ ] Free user has 5 material slots. Materials page currently premium-only — allow free user to access page but limit to 5 saved materials.
-- [ ] CSV import blocked for free (already covered by `csvMaterialImport()` enforcement in Phase 2).
+- [x] Free user has 5 material slots. Materials page currently premium-only — allow free user to access page but limit to 5 saved materials.
+- [x] CSV import blocked for free (already covered by `csvMaterialImport()` enforcement in Phase 2).
 
 #### 3.6 Remove free access to premium features
 
-- [ ] Keep single-print G-code import available for free users. Remove or block batch G-code import routing for free users.
-- [ ] Remove bulk/full history export actions for free users (single-job export remains free).
-- [ ] Remove batch export actions for free users.
-- [ ] Remove labour/risk/advanced pricing fields from free calculator sections.
+- [x] Keep single-print G-code import available for free users. Remove or block batch G-code import routing for free users.
+- [x] Remove bulk/full history export actions for free users (single-job export remains free).
+- [x] Remove batch export actions for free users.
+- [x] Remove labour/risk/advanced pricing fields from free calculator sections.
 
 #### 3.7 Update teaser/upsell surfaces
 
