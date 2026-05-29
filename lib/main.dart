@@ -15,9 +15,12 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_migration.dart';
 import 'package:threed_print_cost_calculator/startup.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,6 +47,14 @@ Future<void> main() async {
 
   await revenueCat();
   final prefs = await SharedPreferences.getInstance();
+  final premiumLocalStore = CachedPremiumLocalStore(
+    const FlutterSecureStorage(),
+  );
+  await premiumLocalStore.preload();
+  await migratePremiumLocalStore(
+    sharedPreferences: prefs,
+    premiumLocalStore: premiumLocalStore,
+  );
   final db = await DatabaseStorageImpl().openDb();
 
   // Run any startup migrations (index rebuild etc.)
@@ -68,6 +79,7 @@ Future<void> main() async {
     () => ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        premiumLocalStoreProvider.overrideWithValue(premiumLocalStore),
         databaseProvider.overrideWithValue(db),
       ],
       child: const App(),
