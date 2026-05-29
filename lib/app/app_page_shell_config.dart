@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
-import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
