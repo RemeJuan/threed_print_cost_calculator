@@ -5,6 +5,8 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_s
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -462,6 +464,63 @@ void main() {
 
       // The malicious formula should be prefixed with a single quote
       expect(csv, contains("'+cmd.exe"));
+    });
+  });
+
+  group('CsvUtils.backstopGuard', () {
+    late Database db;
+    late ProviderContainer container;
+    late CsvUtils csvUtils;
+    final store = stringMapStoreFactory.store('history');
+
+    setUp(() async {
+      final name = 'test_backstop_${DateTime.now().microsecondsSinceEpoch}.db';
+      db = await databaseFactoryMemory.openDatabase(name);
+      await store.delete(db);
+      container = ProviderContainer(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          premiumAccessPolicyProvider.overrideWithValue(
+            DefaultPremiumAccessPolicy(
+              isPremium: false,
+              hideProPromotions: false,
+            ),
+          ),
+        ],
+      );
+      csvUtils = container.read(csvUtilsProvider);
+    });
+
+    tearDown(() async {
+      await db.close();
+      container.dispose();
+    });
+
+    test(
+      'exportMixedHistoryForRange returns early when historyExport is denied',
+      () async {
+        await csvUtils.exportMixedHistoryForRange(
+          ExportRange.all,
+          shareText: 'test share',
+        );
+      },
+    );
+
+    test('exportBatchQuote returns early when batchExport is denied', () async {
+      final item = HistoryModel(
+        name: 'Test Batch',
+        totalCost: 10,
+        riskCost: 0,
+        filamentCost: 5,
+        electricityCost: 2,
+        labourCost: 3,
+        date: DateTime.now(),
+        printer: 'P1',
+        material: 'M1',
+        weight: 10,
+        timeHours: '01:00',
+      );
+      await csvUtils.exportBatchQuote(item, shareText: 'test share');
     });
   });
 }

@@ -4,6 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -42,6 +45,17 @@ class HistoryItemActionsController {
     AppLogger logger,
   ) async {
     final l10n = AppLocalizations.of(context)!;
+    final policy = ref.read(premiumAccessPolicyProvider);
+    final access = data.batchQuote
+        ? policy.batchExport()
+        : policy.historyExport();
+    if (!await requirePremium(
+      ref.read(paywallPresenterProvider),
+      access,
+      purchaseSource: 'history_export_entry',
+    )) {
+      return;
+    }
 
     try {
       if (data.batchQuote) {

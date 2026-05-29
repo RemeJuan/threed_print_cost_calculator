@@ -248,6 +248,7 @@ void main() {
         csvUtils = _FakeCsvUtils(ref);
         return csvUtils;
       }),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -263,6 +264,35 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(csvUtils.lastRange, ExportRange.last7Days);
+  });
+
+  testWidgets('free user sees paywall instead of exporting history range', (
+    tester,
+  ) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(hasMore: false),
+    );
+    final paywallPresenter = FakePaywallPresenter();
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('history.export.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Last 7 days'), findsOneWidget);
+
+    await tester.tap(find.text('Last 7 days'));
+    await tester.pumpAndSettle();
+
+    expect(paywallPresenter.calls, 1);
   });
 
   testWidgets('renders teaser state with premium entry CTAs', (tester) async {

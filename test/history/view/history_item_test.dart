@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
@@ -238,6 +239,7 @@ void main() {
 
     final db = await tester.pumpApp(
       HistoryItem(dbKey: 'history-1', data: _model(), exportCsv: exportCsv),
+      [isPremiumProvider.overrideWithValue(true)],
     );
     addTearDown(() => db.close());
 
@@ -275,7 +277,10 @@ void main() {
           throw StateError('boom');
         },
       ),
-      [appLogSinkProvider.overrideWithValue(sink)],
+      [
+        appLogSinkProvider.overrideWithValue(sink),
+        isPremiumProvider.overrideWithValue(true),
+      ],
     );
     addTearDown(() => db.close());
 

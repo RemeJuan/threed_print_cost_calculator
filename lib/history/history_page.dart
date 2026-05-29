@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/history/components/history_overflow
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
@@ -249,6 +250,15 @@ class HistoryPage extends HookConsumerWidget {
     AppLocalizations l10n,
     ExportRange range,
   ) async {
+    final policy = ref.read(premiumAccessPolicyProvider);
+    if (!await requirePremium(
+      ref.read(paywallPresenterProvider),
+      policy.historyExport(),
+      purchaseSource: 'history_export',
+    )) {
+      return;
+    }
+
     // Use mixed history export to handle both single-print and batch quotes
     await ref
         .read(csvUtilsProvider)
