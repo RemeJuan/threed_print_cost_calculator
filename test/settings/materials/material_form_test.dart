@@ -247,7 +247,12 @@ void main() {
         onResult: (_) {},
         builder: (_) => const MaterialForm(),
       ),
-      [materialsRepositoryProvider.overrideWithValue(repo)],
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 
@@ -320,7 +325,12 @@ void main() {
         onResult: (_) {},
         builder: (_) => const MaterialForm(),
       ),
-      [materialsRepositoryProvider.overrideWithValue(repo)],
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 
@@ -348,6 +358,35 @@ void main() {
           .controller!
           .text,
       '1000',
+    );
+  });
+
+  testWidgets('free tier disables track remaining filament', (tester) async {
+    final repo = FakeMaterialsRepository();
+    final db = await tester.pumpApp(
+      _MaterialDialogHost(
+        onResult: (_) {},
+        builder: (_) => const MaterialForm(),
+      ),
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+        ),
+      ],
+    );
+    addTearDown(db.close);
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey<String>('settings.materials.track_remaining.toggle')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('settings.materials.remaining_weight.input')),
+      findsNothing,
     );
   });
 
@@ -414,7 +453,12 @@ void main() {
         onResult: (_) {},
         builder: (_) => const MaterialForm(dbRef: 'material-1'),
       ),
-      [materialsRepositoryProvider.overrideWithValue(repo)],
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 
@@ -511,6 +555,9 @@ void main() {
 
     final db = await tester.pumpApp(const _MaterialFlowHost(), [
       materialsRepositoryProvider.overrideWithValue(repo),
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+      ),
     ]);
     addTearDown(db.close);
 
