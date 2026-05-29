@@ -19,8 +19,6 @@ import '../../../test_support/fake_purchases_gateway.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late SharedPreferences sharedPreferences;
-
   setUpAll(() async {
     await setupTest();
   });
@@ -37,7 +35,7 @@ void main() {
     Map<String, dynamic> prefs = const {},
   }) async {
     SharedPreferences.setMockInitialValues({'run_count': 0, ...prefs});
-    sharedPreferences = await SharedPreferences.getInstance();
+    await SharedPreferences.getInstance();
 
     await tester.pumpApp(const CalculatorPage(), [
       calculatorProvider.overrideWith(() => calculatorNotifier),
@@ -69,7 +67,7 @@ void main() {
     expect(find.byType(PrinterSelect), findsNothing);
     expect(
       find.byKey(const ValueKey<String>('calculator.save.open.button')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(calculatorNotifier.initCalls, greaterThan(0));
     expect(calculatorNotifier.submitCalls, greaterThan(0));
@@ -123,50 +121,4 @@ void main() {
     expect(calculatorNotifier.resetCalls, 1);
   });
 
-  testWidgets('loading users do not trigger paywall unexpectedly', (
-    tester,
-  ) async {
-    final calculatorNotifier = FakeCalculatorNotifier();
-    final gateway = FakePurchasesGateway(
-      const PremiumState(isPremium: false, isLoading: true),
-    );
-    final paywallPresenter = FakePaywallPresenter();
-
-    await pumpPage(
-      tester,
-      gateway,
-      calculatorNotifier,
-      paywallPresenter,
-      prefs: {'run_count': 10},
-    );
-    await tester.pumpAndSettle();
-
-    expect(paywallPresenter.calls, 0);
-  });
-
-  testWidgets('premium threshold triggers the paywall presenter', (
-    tester,
-  ) async {
-    final calculatorNotifier = FakeCalculatorNotifier();
-    final gateway = FakePurchasesGateway(
-      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
-    );
-    final paywallPresenter = FakePaywallPresenter();
-
-    await pumpPage(
-      tester,
-      gateway,
-      calculatorNotifier,
-      paywallPresenter,
-      prefs: {'run_count': 3},
-    );
-
-    await tester.pump();
-    await tester.pump(const Duration(seconds: 2));
-    await tester.pump();
-
-    expect(paywallPresenter.calls, 1);
-    expect(paywallPresenter.lastOfferingId, 'pro');
-    expect(sharedPreferences.getBool('paywall'), isTrue);
-  });
 }

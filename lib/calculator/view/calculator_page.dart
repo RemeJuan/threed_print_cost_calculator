@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -18,7 +16,6 @@ import 'components/history_load_warning_banner.dart';
 import 'components/job_pricing_overrides_section.dart';
 import 'components/materials_selection/materials_section.dart';
 import 'components/time_section.dart';
-import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 
 class CalculatorPage extends HookConsumerWidget {
@@ -27,58 +24,12 @@ class CalculatorPage extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final showSave = useState<bool>(false);
-    final prefs = ref.read(sharedPreferencesProvider);
-    final logger = ref.read(appLoggerProvider);
     final appRefreshTick = ref.watch(appRefreshProvider);
 
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
-    final isPremium = policy.isPremium;
-
-    // TODO(PHASE-5): remove legacy paywall effect — superseded by Phase 2/3 policy.
-    // Originally guarded on `!premiumState.isPremium` (likely inverted bug).
-    useEffect(() {
-      if (!isPremium) return null;
-
-      () async {
-        final paywall = prefs.getBool('paywall') ?? false;
-        final runCount = prefs.getInt('run_count') ?? 0;
-
-        if (runCount > 2 && !paywall) {
-          try {
-            AppAnalytics.safeLog(
-              () => AppAnalytics.premiumFeatureTapped(
-                'multi_printer',
-                isPro: isPremium,
-                source: 'premium_feature',
-              ),
-            );
-            await prefs.setBool('paywall', true);
-            await Future.delayed(const Duration(seconds: 2));
-            await ref
-                .read(paywallPresenterProvider)
-                .present(
-                  'pro',
-                  triggerFeature: 'multi_printer',
-                  purchaseSource: 'calculator',
-                  source: 'premium_feature',
-                  launchCount: runCount,
-                );
-          } catch (e) {
-            logger.warn(
-              AppLogCategory.billing,
-              'Paywall presentation failed',
-              context: {'trigger': 'multi_printer'},
-              error: e,
-            );
-          }
-        }
-      }();
-
-      return null;
-    }, [isPremium]);
 
     // Section-level inputs manage their own controllers and focus nodes to
     // avoid prop drilling. MaterialsSection will create its own controllers.
@@ -116,7 +67,7 @@ class CalculatorPage extends HookConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (policy.printers().allowed) const PrinterSelect(),
+                  if (policy.printersList().allowed) const PrinterSelect(),
                   const MaterialsSection(),
                   const SizedBox(height: kAppSpace8),
                   const TimeSection(),
