@@ -22,6 +22,8 @@ class PrintersRepository {
   StoreRef<Object?, Object?> get _store =>
       StoreRef<Object?, Object?>(DBName.printers.name);
 
+  Future<int> count() => _store.count(_db);
+
   Future<List<PrinterModel>> getPrinters() async {
     final snapshots = await _store.find(_db);
     return _mapSnapshots(snapshots);

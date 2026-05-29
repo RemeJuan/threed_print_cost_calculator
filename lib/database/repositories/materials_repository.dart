@@ -22,6 +22,8 @@ class MaterialsRepository {
   StoreRef<Object?, Object?> get _store =>
       StoreRef<Object?, Object?>(DBName.materials.name);
 
+  Future<int> count() => _store.count(_db);
+
   Future<List<MaterialModel>> getMaterials() async {
     final snapshots = await _store.find(
       _db,

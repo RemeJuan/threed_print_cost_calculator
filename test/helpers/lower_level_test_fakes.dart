@@ -138,6 +138,9 @@ class FakePrintersRepository implements PrintersRepository {
 
   @override
   Future<void> deletePrinter(String id) async {}
+
+  @override
+  Future<int> count() async => _printers.length;
 }
 
 class FakeMaterialsRepository implements MaterialsRepository {
@@ -172,6 +175,9 @@ class FakeMaterialsRepository implements MaterialsRepository {
 
   @override
   Future<void> deleteMaterial(String id) async {}
+
+  @override
+  Future<int> count() async => _materials.length;
 }
 
 class FakeCalculatorHelpers implements CalculatorHelpers {
