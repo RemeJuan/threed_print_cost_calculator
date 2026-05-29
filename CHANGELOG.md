@@ -1,3 +1,12 @@
+## [Unreleased]
+
+### Changed
+- Premium/quota-sensitive preferences moved to encrypted local storage with startup migration and test-friendly in-memory overrides.
+- Premium access decisions now flow through a central policy layer instead of scattered promotion providers.
+
+### Fixed
+- Removed legacy prefs-backed premium cleanup paths and dead premium provider wrappers.
+
 ## [2.11.0] - 2026-05-20
 
 ### Added

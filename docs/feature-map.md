@@ -140,15 +140,17 @@
 ## Purchases / premium
 
 - Main screens/widgets:
-  - `lib/app/app_page.dart` — app-shell listener for RevenueCat premium state, run-count tracking, cancellation feedback prompt trigger
+  - `lib/app/app_page.dart` — app-shell listener for RevenueCat premium state, cancellation feedback prompt trigger
   - `lib/purchases/cancel_feedback_sheet.dart` — dismissible bottom sheet for anonymous cancellation feedback reasons
 - Providers/state:
   - `lib/purchases/premium_state.dart`
   - `lib/purchases/premium_state_notifier.dart`
+  - `lib/purchases/premium_access_policy.dart`
+  - `lib/shared/providers/app_providers.dart` (`premiumLocalStoreProvider`)
   - `lib/purchases/cancel_feedback_service.dart`
 - Repositories/services:
   - `lib/purchases/purchases_gateway.dart` — RevenueCat SDK mapping into app premium state
-  - `lib/shared/services/app_usage_service.dart` — prefs-backed calculation count / G-code usage analytics helpers
+  - `lib/shared/services/app_usage_service.dart` — premium-store calculation count / G-code usage analytics helpers
   - `lib/database/repositories/history_repository.dart` — history count + G-code-import history lookup for analytics payloads
 - Analytics events:
   - `trial_cancel_feedback_submitted`
@@ -178,8 +180,9 @@
   - `lib/app/promo_history_tab_icon.dart`
 - Providers/state:
   - `lib/purchases/premium_state_notifier.dart` (`premiumStateProvider`, `isPremiumProvider`)
+  - `lib/purchases/premium_access_policy.dart`
   - `lib/purchases/premium_state.dart`
-  - `lib/shared/providers/pro_promotion_visibility.dart`
+  - `lib/shared/providers/app_providers.dart` (`premiumLocalStoreProvider`)
 - Repositories/services:
   - `lib/purchases/purchases_gateway.dart`
   - `lib/purchases/paywall_presenter.dart`
@@ -192,6 +195,8 @@
   - `patrol_test/premium_calculate_save_history_journey_test.dart`
 - Common search terms:
   - `premiumStateProvider`
+  - `premiumAccessPolicyProvider`
+  - `premiumLocalStoreProvider`
   - `isPremium`
   - `RevenueCatPurchasesGateway`
   - `paywall`

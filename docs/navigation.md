@@ -80,6 +80,8 @@ Edit source instead:
 - History screen: `lib/history/history_page.dart`
 - Settings screen: `lib/settings/settings_page.dart`
 - Premium state: `lib/purchases/premium_state_notifier.dart`
+- Premium policy: `lib/purchases/premium_access_policy.dart`
+- Premium local store: `lib/purchases/premium_local_store.dart`
 - G-code import flow: `lib/gcode_import/gcode_import_page.dart`
 - Analytics facade: `lib/core/analytics/app_analytics.dart`
 - Shared providers: `lib/shared/providers/app_providers.dart`
