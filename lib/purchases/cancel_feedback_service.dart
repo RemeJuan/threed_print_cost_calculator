@@ -3,18 +3,14 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
-
-const cancelFeedbackPromptShownStatePreferenceKey =
-    'cancel_feedback_prompt_shown_state';
-const cancelFeedbackPromptSubmittedStatePreferenceKey =
-    'cancel_feedback_prompt_submitted_state';
 
 final cancelFeedbackServiceProvider = Provider<CancelFeedbackService>(
   CancelFeedbackService.new,
@@ -25,7 +21,7 @@ class CancelFeedbackService {
 
   final Ref ref;
 
-  SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
+  PremiumLocalStore get _store => ref.read(premiumLocalStoreProvider);
   HistoryRepository get _historyRepository =>
       ref.read(historyRepositoryProvider);
   AppUsageService get _usageService => ref.read(appUsageServiceProvider);
@@ -34,10 +30,10 @@ class CancelFeedbackService {
     final stateKey = state.cancellationStateKey;
     if (stateKey == null) return false;
 
-    final shownState = _prefs.getString(
+    final shownState = _store.readSync(
       cancelFeedbackPromptShownStatePreferenceKey,
     );
-    final submittedState = _prefs.getString(
+    final submittedState = _store.readSync(
       cancelFeedbackPromptSubmittedStatePreferenceKey,
     );
 
@@ -48,10 +44,7 @@ class CancelFeedbackService {
     final stateKey = state.cancellationStateKey;
     if (stateKey == null) return;
 
-    await _prefs.setString(
-      cancelFeedbackPromptShownStatePreferenceKey,
-      stateKey,
-    );
+    await _store.write(cancelFeedbackPromptShownStatePreferenceKey, stateKey);
   }
 
   Future<void> submitFeedback({
@@ -72,7 +65,7 @@ class CancelFeedbackService {
 
     final stateKey = state.cancellationStateKey;
     if (stateKey != null) {
-      await _prefs.setString(
+      await _store.write(
         cancelFeedbackPromptSubmittedStatePreferenceKey,
         stateKey,
       );
