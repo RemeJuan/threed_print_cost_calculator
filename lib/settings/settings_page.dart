@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
@@ -16,7 +16,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final isPremium = ref.watch(isPremiumProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
 
     final style = Theme.of(
       context,
@@ -31,7 +31,7 @@ class SettingsPage extends ConsumerWidget {
           title: Text(l10n.generalHeader, style: style),
           child: const GeneralSettings(),
         ),
-        if (isPremium) ...[
+        if (policy.labourPricing().allowed || policy.riskPricing().allowed) ...[
           const SizedBox(height: kAppSpace16),
           SettingsSection(
             headerKey: const ValueKey<String>('settings.workCost.section'),
@@ -39,6 +39,8 @@ class SettingsPage extends ConsumerWidget {
             title: Text(l10n.workCostsLabel, style: style),
             child: const WorkCostsSettings(),
           ),
+        ],
+        if (policy.printers().allowed) ...[
           const SizedBox(height: kAppSpace16),
           SettingsSection(
             headerKey: const ValueKey<String>('settings.printers.section'),

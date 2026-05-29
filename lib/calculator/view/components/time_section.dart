@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 
 import 'duration_dialog.dart';
 
@@ -14,7 +14,7 @@ class TimeSection extends HookConsumerWidget {
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
-    final isPremium = ref.watch(isPremiumProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
     final printingTimeLabel = l10n.durationPickerLabel.replaceFirst(
       ' (hh:mm)',
       '',
@@ -58,7 +58,7 @@ class TimeSection extends HookConsumerWidget {
                     },
                   ),
                 ),
-                if (isPremium) ...[
+                if (policy.labourPricing().allowed) ...[
                   const SizedBox(width: 12),
                   Expanded(
                     child: _durationButton(

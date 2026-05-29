@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -18,13 +18,13 @@ class RatesSection extends HookConsumerWidget {
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
-    final isPremium = ref.watch(isPremiumProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
         : GeneralSettingsModel.initial();
 
-    if (!isPremium) {
+    if (!policy.riskPricing().allowed) {
       return const SizedBox.shrink();
     }
 

@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
@@ -30,11 +31,11 @@ class AppPageShellTab {
 List<AppPageShellTab> buildAppPageShellTabs({
   required BuildContext context,
   required AppLocalizations l10n,
-  required bool isPremium,
-  required bool showHistoryTab,
-  required bool showHistoryTeaser,
+  required PremiumAccessPolicy policy,
   required Future<void> Function() onHistoryLoaded,
 }) {
+  final isPremium = policy.isPremium;
+
   return [
     AppPageShellTab(
       tab: AppPageTab.calculator,
@@ -49,21 +50,24 @@ List<AppPageShellTab> buildAppPageShellTabs({
         label: l10n.calculatorNavLabel,
       ),
     ),
-    if (isPremium)
+    if (policy.materialsLibrary().allowed)
       AppPageShellTab(
         tab: AppPageTab.materials,
         page: const MaterialsPage(),
         title: l10n.materialsAppBarTitle,
         actions: [
-          IconButton(
-            tooltip: l10n.csvImportTitle,
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(builder: (_) => const CsvImportPage()),
-              );
-            },
-            icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
-          ),
+          if (policy.csvMaterialImport().allowed)
+            IconButton(
+              tooltip: l10n.csvImportTitle,
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const CsvImportPage(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
+            ),
         ],
         navigationItem: BottomNavigationBarItem(
           icon: const Icon(
@@ -73,11 +77,11 @@ List<AppPageShellTab> buildAppPageShellTabs({
           label: l10n.materialsNavLabel,
         ),
       ),
-    if (showHistoryTab)
+    if (policy.shouldShowHistoryTab)
       AppPageShellTab(
         tab: AppPageTab.history,
         page: HistoryPage(
-          mode: showHistoryTeaser
+          mode: policy.shouldShowHistoryTeaser
               ? HistoryPageMode.teaser
               : HistoryPageMode.full,
           onHistoryLoaded: onHistoryLoaded,

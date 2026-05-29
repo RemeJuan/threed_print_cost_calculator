@@ -6,11 +6,10 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -27,7 +26,8 @@ class CalculatorResults extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final isPremium = ref.watch(isPremiumProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final isPremium = policy.isPremium;
     final shouldShowProPromotion = ref.watch(shouldShowProPromotionProvider);
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
@@ -61,7 +61,7 @@ class CalculatorResults extends ConsumerWidget {
             currencySettings: currencySettings,
             key: const ValueKey<String>('calculator.result.filamentCost'),
           ),
-          if (isPremium) ...[
+          if (policy.riskPricing().allowed) ...[
             _itemRow(
               context,
               l10n.riskTotalPrefix,

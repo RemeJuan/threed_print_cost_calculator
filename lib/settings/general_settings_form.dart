@@ -9,7 +9,7 @@ import 'package:threed_print_cost_calculator/settings/services/settings_service.
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 

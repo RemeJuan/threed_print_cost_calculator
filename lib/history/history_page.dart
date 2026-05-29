@@ -8,7 +8,7 @@ import 'package:threed_print_cost_calculator/history/components/history_export_p
 import 'package:threed_print_cost_calculator/history/components/history_overflow_hint.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
@@ -42,18 +42,18 @@ class HistoryPage extends HookConsumerWidget {
     final paged = ref.watch(historyPagedProvider);
 
     if (mode == HistoryPageMode.teaser) {
-      final isPremium = ref.watch(isPremiumProvider);
+      final policy = ref.watch(premiumAccessPolicyProvider);
       return HistoryTeaser(
         onUpgradePressed: () => _showTeaserPaywall(
           context,
           ref: ref,
-          isPremium: isPremium,
+          isPremium: policy.isPremium,
           source: 'history_teaser_primary',
         ),
         onExportPreviewPressed: () => _showTeaserPreview(
           context,
           ref: ref,
-          isPremium: isPremium,
+          isPremium: policy.isPremium,
           source: 'history_teaser_secondary',
         ),
       );
