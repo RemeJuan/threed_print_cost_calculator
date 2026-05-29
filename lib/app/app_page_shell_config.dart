@@ -54,40 +54,34 @@ List<AppPageShellTab> buildAppPageShellTabs({
         label: l10n.calculatorNavLabel,
       ),
     ),
-    if (policy.materialsLibrary().allowed)
-      AppPageShellTab(
-        tab: AppPageTab.materials,
-        page: const MaterialsPage(),
-        title: l10n.materialsAppBarTitle,
-        actions: [
-          if (policy.csvMaterialImport().allowed)
-            IconButton(
-              tooltip: l10n.csvImportTitle,
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const CsvImportPage(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
-            ),
-        ],
-        navigationItem: BottomNavigationBarItem(
-          icon: const Icon(
-            Icons.inventory_2_outlined,
-            key: ValueKey<String>('nav.materials.button'),
+    AppPageShellTab(
+      tab: AppPageTab.materials,
+      page: const MaterialsPage(),
+      title: l10n.materialsAppBarTitle,
+      actions: [
+        if (policy.csvMaterialImport().allowed)
+          IconButton(
+            tooltip: l10n.csvImportTitle,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const CsvImportPage()),
+              );
+            },
+            icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
           ),
-          label: l10n.materialsNavLabel,
+      ],
+      navigationItem: BottomNavigationBarItem(
+        icon: const Icon(
+          Icons.inventory_2_outlined,
+          key: ValueKey<String>('nav.materials.button'),
         ),
+        label: l10n.materialsNavLabel,
       ),
+    ),
     if (policy.shouldShowHistoryTab)
       AppPageShellTab(
         tab: AppPageTab.history,
-        page: HistoryPage(
-          mode: historyMode,
-          onHistoryLoaded: onHistoryLoaded,
-        ),
+        page: HistoryPage(mode: historyMode, onHistoryLoaded: onHistoryLoaded),
         title: l10n.historyAppBarTitle,
         actions: const [],
         navigationItem: BottomNavigationBarItem(
