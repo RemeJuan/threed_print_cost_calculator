@@ -758,6 +758,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você pode salvar até 5 materiais no Free. Faça upgrade para Premium para materiais ilimitados.';
 
   @override
+  String get batchItemLimitReachedMessage =>
+      'Você pode adicionar até 3 itens em lote no Free. Faça upgrade para Premium para itens em lote ilimitados.';
+
+  @override
   String get historySearchHint => 'Pesquisar por nome ou impressora';
 
   @override
@@ -1203,7 +1207,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get csvImportQuotaExceededError =>
-      'This import exceeds your material limit.';
+      'Esta importação excede o seu limite de materiais.';
 
   @override
   String csvPreviewSummary(int total, int valid, int invalid) {
@@ -1255,7 +1259,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'Nenhum item de lote ainda';
 
   @override
-  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
+  String get batchCostingReviewEmptyBody =>
+      'Adicione impressões manuais para continuar.';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'Importar arquivos G-code';

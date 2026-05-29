@@ -231,8 +231,9 @@
   "@exportButton": {
     "description": "Label for export action in history list"
   },
-  "printerLimitReachedMessage": "Upgrade to Premium to add more printers.",
-  "materialLimitReachedMessage": "Upgrade to Premium to add more materials.",
+  "printerLimitReachedMessage": "無料プランではプリンターを2台まで保存できます。無制限にするにはPremiumにアップグレードしてください。",
+  "materialLimitReachedMessage": "無料プランでは材料を5件まで保存できます。無制限にするにはPremiumにアップグレードしてください。",
+  "batchItemLimitReachedMessage": "無料プランではバッチ項目を3件まで追加できます。無制限にするにはPremiumにアップグレードしてください。",
   "historySearchHint": "名前やプリンターで検索",
   "historyExportMenuTitle": "印刷データを書き出す",
   "historyExportRangeAll": "すべて",
@@ -589,7 +590,7 @@
     }
   },
   "csvNoValidRowsError": "インポートする有効な行がありません。",
-  "csvImportQuotaExceededError": "This import exceeds your material limit.",
+  "csvImportQuotaExceededError": "このインポートは材料数の上限を超えています。",
   "csvPreviewSummary": "{total}行: {valid}件有効, {invalid}件エラー",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -613,7 +614,7 @@
   "batchCostingReviewSubtitle": "プリンター割り当て前にバッチアイテムを確認します。",
   "batchCostingReviewAddManualItemButton": "手動アイテムを追加",
   "batchCostingReviewEmptyTitle": "まだバッチアイテムがありません",
-  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
+  "batchCostingReviewEmptyBody": "続行するには手動の印刷を追加してください。",
   "batchCostingReviewImportGcodeButton": "G-codeファイルをインポート",
   "batchGcodeImportTitle": "バッチG-codeのインポート",
   "batchGcodeImportBody": "1つ以上のG-codeファイルを選択します。各ファイルは個別に解析されます。",

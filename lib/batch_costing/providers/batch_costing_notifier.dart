@@ -212,12 +212,12 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     );
   }
 
-  void addItem(BatchCostingItem item) {
+  bool addItem(BatchCostingItem item) {
     final access = ref
         .read(premiumAccessPolicyProvider)
         .canAddBatchItem(state.items.length);
     if (!access.allowed) {
-      return;
+      return false;
     }
 
     if (state.items.any((current) => current.id == item.id)) {
@@ -225,6 +225,7 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     }
 
     state = state.copyWith(items: [...state.items, item]);
+    return true;
   }
 
   bool updateItem(BatchCostingItem item) {

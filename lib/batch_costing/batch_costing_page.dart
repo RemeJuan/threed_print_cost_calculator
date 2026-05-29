@@ -288,7 +288,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     final wasEmpty = ref.read(batchCostingProvider).items.isEmpty;
 
     final itemId = DateTime.now().microsecondsSinceEpoch.toString();
-    ref
+    final added = ref
         .read(batchCostingProvider.notifier)
         .addItem(
           BatchCostingItem.manual(
@@ -299,6 +299,11 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             printDuration: result.printDuration,
           ),
         );
+
+    if (!added) {
+      BotToast.showText(text: l10n.batchItemLimitReachedMessage);
+      return;
+    }
 
     if (wasEmpty) {
       AppAnalytics.safeLog(() => AppAnalytics.batchStarted(source: 'manual'));

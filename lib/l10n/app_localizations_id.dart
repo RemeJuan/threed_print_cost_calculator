@@ -744,6 +744,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Anda dapat menyimpan hingga 5 material di Free. Upgrade ke Premium untuk material tanpa batas.';
 
   @override
+  String get batchItemLimitReachedMessage =>
+      'Anda dapat menambahkan hingga 3 item batch di Free. Upgrade ke Premium untuk item batch tanpa batas.';
+
+  @override
   String get historySearchHint => 'Cari berdasarkan nama atau printer';
 
   @override
@@ -1176,7 +1180,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get csvImportQuotaExceededError =>
-      'This import exceeds your material limit.';
+      'Impor ini melebihi batas material Anda.';
 
   @override
   String csvPreviewSummary(int total, int valid, int invalid) {
@@ -1228,7 +1232,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'Belum ada item batch';
 
   @override
-  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
+  String get batchCostingReviewEmptyBody =>
+      'Tambahkan cetakan manual untuk melanjutkan.';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'Impor file G-code';

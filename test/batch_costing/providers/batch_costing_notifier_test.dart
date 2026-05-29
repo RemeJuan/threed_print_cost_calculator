@@ -18,6 +18,16 @@ ProviderContainer _createContainer() {
   );
 }
 
+ProviderContainer _createFreeContainer() {
+  return ProviderContainer(
+    overrides: [
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+      ),
+    ],
+  );
+}
+
 void main() {
   group('item CRUD', () {
     test('adds, updates, removes, and resets items', () {
@@ -33,7 +43,7 @@ void main() {
         printDuration: const Duration(minutes: 30),
       );
 
-      notifier.addItem(item);
+      expect(notifier.addItem(item), isTrue);
       expect(container.read(batchCostingProvider).items, [item]);
       expect(() => notifier.addItem(item), throwsArgumentError);
 
@@ -138,6 +148,41 @@ void main() {
       expect(state.itemPrinterAllocations, isEmpty);
       expect(state.itemPrinterIds, isEmpty);
       expect(state.itemMaterialAllocations, isEmpty);
+    });
+
+    test('free users cannot add more than batch item cap', () {
+      final container = _createFreeContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(batchCostingProvider.notifier);
+
+      for (var i = 1; i <= 3; i++) {
+        expect(
+          notifier.addItem(
+            BatchCostingItem.manual(
+              id: 'item-$i',
+              displayName: 'Item $i',
+              quantity: 1,
+              printWeightG: 10,
+              printDuration: const Duration(minutes: 10),
+            ),
+          ),
+          isTrue,
+        );
+      }
+
+      expect(
+        notifier.addItem(
+          BatchCostingItem.manual(
+            id: 'item-4',
+            displayName: 'Item 4',
+            quantity: 1,
+            printWeightG: 10,
+            printDuration: const Duration(minutes: 10),
+          ),
+        ),
+        isFalse,
+      );
+      expect(container.read(batchCostingProvider).items, hasLength(3));
     });
   });
 

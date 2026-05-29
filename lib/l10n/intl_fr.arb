@@ -233,6 +233,7 @@
   },
   "printerLimitReachedMessage": "Vous pouvez enregistrer jusqu'à 2 imprimantes sur Free. Passez à Premium pour des imprimantes illimitées.",
   "materialLimitReachedMessage": "Vous pouvez enregistrer jusqu'à 5 matériaux sur Free. Passez à Premium pour des matériaux illimités.",
+  "batchItemLimitReachedMessage": "Vous pouvez ajouter jusqu'à 3 éléments de lot sur Free. Passez à Premium pour des éléments de lot illimités.",
   "historySearchHint": "Rechercher par nom ou imprimante",
   "historyExportMenuTitle": "Exporter les impressions",
   "historyExportRangeAll": "Toutes",
@@ -590,7 +591,7 @@
     }
   },
   "csvNoValidRowsError": "Aucune ligne valide à importer.",
-  "csvImportQuotaExceededError": "This import exceeds your material limit.",
+  "csvImportQuotaExceededError": "Cette importation dépasse votre limite de matériaux.",
   "csvPreviewSummary": "{total} lignes: {valid} valides, {invalid} avec erreurs",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -614,7 +615,7 @@
   "batchCostingReviewSubtitle": "Vérifiez les articles du lot avant l'attribution de l'imprimante.",
   "batchCostingReviewAddManualItemButton": "Ajouter un article manuel",
   "batchCostingReviewEmptyTitle": "Aucun article de lot pour l'instant",
-  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
+  "batchCostingReviewEmptyBody": "Ajoutez des impressions manuelles pour continuer.",
   "batchCostingReviewImportGcodeButton": "Importer des fichiers G-code",
   "batchGcodeImportTitle": "Importer un lot de G-code",
   "batchGcodeImportBody": "Choisissez un ou plusieurs fichiers G-code. Chaque fichier est analysé séparément.",

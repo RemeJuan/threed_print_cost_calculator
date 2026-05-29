@@ -751,6 +751,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.';
 
   @override
+  String get batchItemLimitReachedMessage =>
+      'You can add up to 3 batch items on Free. Upgrade to Premium for unlimited batch items.';
+
+  @override
   String get historySearchHint => 'Search by name or printer';
 
   @override

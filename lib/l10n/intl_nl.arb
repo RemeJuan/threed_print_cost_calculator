@@ -233,6 +233,7 @@
   },
   "printerLimitReachedMessage": "Je kunt op Free maximaal 2 printers opslaan. Upgrade naar Premium voor onbeperkte printers.",
   "materialLimitReachedMessage": "Je kunt op Free maximaal 5 materialen opslaan. Upgrade naar Premium voor onbeperkte materialen.",
+  "batchItemLimitReachedMessage": "Je kunt op Free maximaal 3 batchitems toevoegen. Upgrade naar Premium voor onbeperkte batchitems.",
   "historySearchHint": "Zoeken op naam of printer",
   "historyExportMenuTitle": "Prints exporteren",
   "historyExportRangeAll": "Alles",
@@ -589,7 +590,7 @@
     }
   },
   "csvNoValidRowsError": "Geen geldige rijen om te importeren.",
-  "csvImportQuotaExceededError": "This import exceeds your material limit.",
+  "csvImportQuotaExceededError": "Deze import overschrijdt je materiaallimiet.",
   "csvPreviewSummary": "{total} rijen: {valid} geldig, {invalid} met fouten",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -613,7 +614,7 @@
   "batchCostingReviewSubtitle": "Beoordeel batch-artikelen vóór printertoewijzing.",
   "batchCostingReviewAddManualItemButton": "Handmatig item toevoegen",
   "batchCostingReviewEmptyTitle": "Nog geen batch-artikelen",
-  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
+  "batchCostingReviewEmptyBody": "Voeg handmatige prints toe om verder te gaan.",
   "batchCostingReviewImportGcodeButton": "G-codebestanden importeren",
   "batchGcodeImportTitle": "Batch G-code importeren",
   "batchGcodeImportBody": "Kies een of meer G-codebestanden. Elk bestand wordt apart geparseerd.",

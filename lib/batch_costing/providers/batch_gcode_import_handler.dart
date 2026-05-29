@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -99,10 +100,11 @@ class BatchGCodeImportHandler {
     BatchSingleImport singleImport,
   ) {
     if (!singleImport.canContinue) return;
+    final l10n = AppLocalizations.of(context)!;
 
     final importResult = buildImportResult(singleImport);
 
-    ref
+    final added = ref
         .read(batchCostingProvider.notifier)
         .addItem(
           buildCostingItem(
@@ -111,6 +113,11 @@ class BatchGCodeImportHandler {
             result: importResult,
           ),
         );
+
+    if (!added) {
+      BotToast.showText(text: l10n.batchItemLimitReachedMessage);
+      return;
+    }
 
     AppAnalytics.safeLog(
       () => AppAnalytics.batchStarted(source: 'gcode_single'),
@@ -271,9 +278,18 @@ class BatchGCodeImportHandler {
           continue;
         }
 
-        notifier.addItem(
+        final added = notifier.addItem(
           buildCostingItem(id: batchId, file: file, result: result),
         );
+
+        if (!added) {
+          failedCount++;
+          setState(() {
+            row!.status = ImportStatus.failed;
+            row.errorMessage = l10n.batchItemLimitReachedMessage;
+          });
+          continue;
+        }
 
         AppAnalytics.safeLog(
           () => AppAnalytics.batchItemAdded(source: 'gcode'),

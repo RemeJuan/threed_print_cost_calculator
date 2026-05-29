@@ -748,6 +748,10 @@ class AppLocalizationsTh extends AppLocalizations {
       'คุณบันทึกวัสดุได้สูงสุด 5 รายการใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด';
 
   @override
+  String get batchItemLimitReachedMessage =>
+      'คุณเพิ่มรายการแบตช์ได้สูงสุด 3 รายการใน Free อัปเกรดเป็น Premium เพื่อเพิ่มรายการแบตช์ได้ไม่จำกัด';
+
+  @override
   String get historySearchHint => 'ค้นหาตามชื่อหรือเครื่องพิมพ์';
 
   @override
@@ -1176,7 +1180,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get csvImportQuotaExceededError =>
-      'This import exceeds your material limit.';
+      'การนำเข้านี้เกินขีดจำกัดจำนวนวัสดุของคุณ';
 
   @override
   String csvPreviewSummary(int total, int valid, int invalid) {
@@ -1227,7 +1231,8 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'ยังไม่มีรายการชุด';
 
   @override
-  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
+  String get batchCostingReviewEmptyBody =>
+      'เพิ่มงานพิมพ์ด้วยตนเองเพื่อดำเนินการต่อ';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'นำเข้าไฟล์ G-code';

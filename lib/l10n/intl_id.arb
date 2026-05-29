@@ -225,6 +225,7 @@
   },
   "printerLimitReachedMessage": "Anda dapat menyimpan hingga 2 printer di Free. Upgrade ke Premium untuk printer tanpa batas.",
   "materialLimitReachedMessage": "Anda dapat menyimpan hingga 5 material di Free. Upgrade ke Premium untuk material tanpa batas.",
+  "batchItemLimitReachedMessage": "Anda dapat menambahkan hingga 3 item batch di Free. Upgrade ke Premium untuk item batch tanpa batas.",
   "historySearchHint": "Cari berdasarkan nama atau printer",
   "historyExportMenuTitle": "Ekspor cetakan",
   "historyExportRangeAll": "Semua",
@@ -588,7 +589,7 @@
     }
   },
   "csvNoValidRowsError": "Tidak ada baris valid untuk diimpor.",
-  "csvImportQuotaExceededError": "This import exceeds your material limit.",
+  "csvImportQuotaExceededError": "Impor ini melebihi batas material Anda.",
   "csvPreviewSummary": "{total} baris: {valid} valid, {invalid} dengan error",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -612,7 +613,7 @@
   "batchCostingReviewSubtitle": "Tinjau item batch sebelum penugasan printer.",
   "batchCostingReviewAddManualItemButton": "Tambah item manual",
   "batchCostingReviewEmptyTitle": "Belum ada item batch",
-  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
+  "batchCostingReviewEmptyBody": "Tambahkan cetakan manual untuk melanjutkan.",
   "batchCostingReviewImportGcodeButton": "Impor file G-code",
   "batchGcodeImportTitle": "Impor G-code batch",
   "batchGcodeImportBody": "Pilih satu atau beberapa file G-code. Setiap file diurai sendiri.",

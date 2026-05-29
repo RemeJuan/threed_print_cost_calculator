@@ -729,11 +729,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      '無料プランではプリンターを2台まで保存できます。無制限にするにはPremiumにアップグレードしてください。';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      '無料プランでは材料を5件まで保存できます。無制限にするにはPremiumにアップグレードしてください。';
+
+  @override
+  String get batchItemLimitReachedMessage =>
+      '無料プランではバッチ項目を3件まで追加できます。無制限にするにはPremiumにアップグレードしてください。';
 
   @override
   String get historySearchHint => '名前やプリンターで検索';
@@ -1159,8 +1163,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvNoValidRowsError => 'インポートする有効な行がありません。';
 
   @override
-  String get csvImportQuotaExceededError =>
-      'This import exceeds your material limit.';
+  String get csvImportQuotaExceededError => 'このインポートは材料数の上限を超えています。';
 
   @override
   String csvPreviewSummary(int total, int valid, int invalid) {
@@ -1210,7 +1213,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'まだバッチアイテムがありません';
 
   @override
-  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
+  String get batchCostingReviewEmptyBody => '続行するには手動の印刷を追加してください。';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'G-codeファイルをインポート';

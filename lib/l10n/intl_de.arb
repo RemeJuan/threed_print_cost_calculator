@@ -231,6 +231,7 @@
   },
   "printerLimitReachedMessage": "Du kannst auf Free bis zu 2 Drucker speichern. Upgrade auf Premium für unbegrenzte Drucker.",
   "materialLimitReachedMessage": "Du kannst auf Free bis zu 5 Materialien speichern. Upgrade auf Premium für unbegrenzte Materialien.",
+  "batchItemLimitReachedMessage": "Du kannst im Free-Tarif bis zu 3 Batch-Elemente hinzufügen. Upgrade auf Premium für unbegrenzte Batch-Elemente.",
   "historySearchHint": "Nach Name oder Drucker suchen",
   "historyExportMenuTitle": "Drucke exportieren",
   "historyExportRangeAll": "Alle",
@@ -588,7 +589,7 @@
     }
   },
   "csvNoValidRowsError": "Keine gültigen Zeilen zum Importieren.",
-  "csvImportQuotaExceededError": "This import exceeds your material limit.",
+  "csvImportQuotaExceededError": "Dieser Import überschreitet dein Materiallimit.",
   "csvPreviewSummary": "{total} Zeilen: {valid} gültig, {invalid} mit Fehlern",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -612,7 +613,7 @@
   "batchCostingReviewSubtitle": "Batch-Artikel vor Druckerzuweisung prüfen.",
   "batchCostingReviewAddManualItemButton": "Manuellen Artikel hinzufügen",
   "batchCostingReviewEmptyTitle": "Noch keine Batch-Artikel",
-  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
+  "batchCostingReviewEmptyBody": "Füge manuelle Drucke hinzu, um fortzufahren.",
   "batchCostingReviewImportGcodeButton": "G-code-Dateien importieren",
   "batchGcodeImportTitle": "Batch-G-code importieren",
   "batchGcodeImportBody": "Wähle eine oder mehrere G-code-Dateien. Jede Datei wird einzeln geparst.",

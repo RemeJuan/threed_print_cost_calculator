@@ -757,6 +757,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Je kunt op Free maximaal 5 materialen opslaan. Upgrade naar Premium voor onbeperkte materialen.';
 
   @override
+  String get batchItemLimitReachedMessage =>
+      'Je kunt op Free maximaal 3 batchitems toevoegen. Upgrade naar Premium voor onbeperkte batchitems.';
+
+  @override
   String get historySearchHint => 'Zoeken op naam of printer';
 
   @override
@@ -1199,7 +1203,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get csvImportQuotaExceededError =>
-      'This import exceeds your material limit.';
+      'Deze import overschrijdt je materiaallimiet.';
 
   @override
   String csvPreviewSummary(int total, int valid, int invalid) {
@@ -1253,7 +1257,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'Nog geen batch-artikelen';
 
   @override
-  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
+  String get batchCostingReviewEmptyBody =>
+      'Voeg handmatige prints toe om verder te gaan.';
 
   @override
   String get batchCostingReviewImportGcodeButton =>

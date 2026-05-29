@@ -427,6 +427,60 @@ void main() {
 
     expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
   });
+
+  testWidgets('free users at batch item cap see quota message', (tester) async {
+    final items = [
+      for (var i = 1; i <= 3; i++)
+        BatchCostingItem.manual(
+          id: 'item-$i',
+          displayName: 'Existing $i',
+          quantity: 1,
+          printWeightG: 10,
+          printDuration: const Duration(minutes: 10),
+        ),
+    ];
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(() => _FakeBatchCostingNotifier(items)),
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+      ),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchCostingReviewAddManualItemButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-name')),
+      'Blocked item',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-quantity')),
+      '1',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-weight')),
+      '10',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-hours')),
+      '0',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
+      '10',
+    );
+    await tester.tap(find.text(l10n.saveButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Blocked item'), findsNothing);
+    expect(find.text(l10n.batchItemLimitReachedMessage), findsOneWidget);
+  });
 }
 
 class _BatchFlowHomeHarness extends StatelessWidget {

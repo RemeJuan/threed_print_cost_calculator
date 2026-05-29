@@ -1451,6 +1451,12 @@ abstract class AppLocalizations {
   /// **'You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.'**
   String get materialLimitReachedMessage;
 
+  /// No description provided for @batchItemLimitReachedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add up to 3 batch items on Free. Upgrade to Premium for unlimited batch items.'**
+  String get batchItemLimitReachedMessage;
+
   /// No description provided for @historySearchHint.
   ///
   /// In en, this message translates to:

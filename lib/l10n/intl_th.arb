@@ -226,6 +226,7 @@
   },
   "printerLimitReachedMessage": "คุณบันทึกเครื่องพิมพ์ได้สูงสุด 2 เครื่องใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด",
   "materialLimitReachedMessage": "คุณบันทึกวัสดุได้สูงสุด 5 รายการใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด",
+  "batchItemLimitReachedMessage": "คุณเพิ่มรายการแบตช์ได้สูงสุด 3 รายการใน Free อัปเกรดเป็น Premium เพื่อเพิ่มรายการแบตช์ได้ไม่จำกัด",
   "historySearchHint": "ค้นหาตามชื่อหรือเครื่องพิมพ์",
   "historyExportMenuTitle": "ส่งออกงานพิมพ์",
   "historyExportRangeAll": "ทั้งหมด",
@@ -589,7 +590,7 @@
     }
   },
   "csvNoValidRowsError": "ไม่มีแถวที่ถูกต้องสำหรับนำเข้า",
-  "csvImportQuotaExceededError": "This import exceeds your material limit.",
+  "csvImportQuotaExceededError": "การนำเข้านี้เกินขีดจำกัดจำนวนวัสดุของคุณ",
   "csvPreviewSummary": "{total} แถว: {valid} ถูกต้อง, {invalid} มีข้อผิดพลาด",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -613,7 +614,7 @@
   "batchCostingReviewSubtitle": "ตรวจสอบรายการชุดก่อนกำหนดเครื่องพิมพ์",
   "batchCostingReviewAddManualItemButton": "เพิ่มรายการด้วยตนเอง",
   "batchCostingReviewEmptyTitle": "ยังไม่มีรายการชุด",
-  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
+  "batchCostingReviewEmptyBody": "เพิ่มงานพิมพ์ด้วยตนเองเพื่อดำเนินการต่อ",
   "batchCostingReviewImportGcodeButton": "นำเข้าไฟล์ G-code",
   "batchGcodeImportTitle": "นำเข้า G-code แบบชุด",
   "batchGcodeImportBody": "เลือกไฟล์ G-code หนึ่งไฟล์หรือหลายไฟล์ แต่ละไฟล์จะถูกแยกวิเคราะห์แยกกัน",
