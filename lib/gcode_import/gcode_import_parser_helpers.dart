@@ -121,7 +121,11 @@ double _parseNamedDurationPart(String text, String unit) {
   return _parseNumber(match?.group(1)) ?? 0;
 }
 
-List<double> _parseUnitList(String raw, String targetUnit, {String? sourceUnit}) {
+List<double> _parseUnitList(
+  String raw,
+  String targetUnit, {
+  String? sourceUnit,
+}) {
   final text = raw.toLowerCase();
   final matches = RegExp(
     r'(-?\d+(?:[\.,]\d+)?)\s*(mm|cm|m|g|kg)?',
