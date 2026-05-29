@@ -169,6 +169,17 @@ class MaterialsPage extends HookConsumerWidget {
                         },
                         onDuplicate: () async {
                           try {
+                            final duplicateAccess = policy.canCreateMaterial(
+                              allMaterials.length,
+                            );
+                            if (!duplicateAccess.allowed) {
+                              if (!context.mounted) return;
+                              BotToast.showText(
+                                text: l10n.materialLimitReachedMessage,
+                              );
+                              return;
+                            }
+
                             final existing = await materialsRepo
                                 .getMaterialById(material.id);
                             if (existing == null) return;

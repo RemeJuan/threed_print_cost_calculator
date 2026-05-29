@@ -28,9 +28,9 @@ class MaterialForm extends HookConsumerWidget {
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
         : GeneralSettingsModel.initial();
-    final stockTrackingAccess = ref.watch(
-      premiumAccessPolicyProvider,
-    ).stockTracking();
+    final stockTrackingAccess = ref
+        .watch(premiumAccessPolicyProvider)
+        .stockTracking();
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final hasSubmitted = useState(false);
 

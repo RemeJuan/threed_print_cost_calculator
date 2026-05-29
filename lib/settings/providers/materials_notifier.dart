@@ -154,7 +154,9 @@ class MaterialsProvider extends Notifier<MaterialState> {
       return null;
     }
 
-    final stockTrackingAccess = ref.read(premiumAccessPolicyProvider).stockTracking();
+    final stockTrackingAccess = ref
+        .read(premiumAccessPolicyProvider)
+        .stockTracking();
 
     if (dbRef == null) {
       final count = await _materialsRepository.count();
@@ -174,7 +176,9 @@ class MaterialsProvider extends Notifier<MaterialState> {
     final wasTrackingEnabled = existing?.autoDeductEnabled ?? false;
     final isTrackingEnabled = state.autoDeductEnabled;
 
-    if (!stockTrackingAccess.allowed && !wasTrackingEnabled && isTrackingEnabled) {
+    if (!stockTrackingAccess.allowed &&
+        !wasTrackingEnabled &&
+        isTrackingEnabled) {
       return null;
     }
 

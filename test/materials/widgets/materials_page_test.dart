@@ -159,6 +159,60 @@ void main() {
       expect(repo.getMaterialByIdCalls, ['1']);
       await tester.pump(const Duration(seconds: 3));
     });
+
+    testWidgets('free users at material cap cannot duplicate materials', (
+      tester,
+    ) async {
+      final material = MaterialModel(
+        id: '1',
+        name: 'PLA Pro',
+        cost: '24.99',
+        color: 'Black',
+        weight: '1000',
+        archived: false,
+      );
+      final materials = [
+        material,
+        for (var i = 2; i <= 5; i++)
+          MaterialModel(
+            id: '$i',
+            name: 'Material $i',
+            cost: '20.00',
+            color: 'Black',
+            weight: '1000',
+            archived: false,
+          ),
+      ];
+      final repo = FakeMaterialsRepository(watchResponses: [materials]);
+      repo.materialsById[material.id] = material;
+      final db = await tester.pumpApp(const MaterialsPage(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(
+            isPremium: false,
+            hideProPromotions: false,
+          ),
+        ),
+      ]);
+      addTearDown(db.close);
+
+      await tester.pumpAndSettle();
+      await tester.drag(find.byType(Slidable).first, const Offset(-300, 0));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.content_copy));
+      await tester.pump();
+
+      expect(repo.savedMaterials, isEmpty);
+      expect(
+        find.text(
+          lookupAppLocalizations(
+            const Locale('en'),
+          ).materialLimitReachedMessage,
+        ),
+        findsOneWidget,
+      );
+      await tester.pump(const Duration(seconds: 3));
+    });
   });
 }
 

@@ -371,7 +371,10 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(
+            isPremium: false,
+            hideProPromotions: false,
+          ),
         ),
       ],
     );
@@ -381,11 +384,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.byKey(const ValueKey<String>('settings.materials.track_remaining.toggle')),
+      find.byKey(
+        const ValueKey<String>('settings.materials.track_remaining.toggle'),
+      ),
       findsNothing,
     );
     expect(
-      find.byKey(const ValueKey<String>('settings.materials.remaining_weight.input')),
+      find.byKey(
+        const ValueKey<String>('settings.materials.remaining_weight.input'),
+      ),
       findsNothing,
     );
   });
