@@ -734,7 +734,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Must be 0 or more';
 
   @override
-  String get lockedValuePlaceholder => 'Locked';
+  String get lockedValuePlaceholder => 'Premium only';
 
   @override
   String get hideProPromotionsTitle => 'Hide Pro promotions';
@@ -744,11 +744,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      'You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      'You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.';
 
   @override
   String get historySearchHint => 'Search by name or printer';
@@ -775,7 +775,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyUpsellTitle => 'Re-use past prints instantly';
 
   @override
-  String get historyUpsellDescription => 'Unlock advanced edits and exports';
+  String get historyUpsellDescription =>
+      'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.';
 
   @override
   String get historyNoMoreRecords => 'No more records';
@@ -806,10 +807,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Review how history works before upgrading. Save completed estimates and export them any time with Pro.';
+      'Free users can keep up to 7 saved prints. Upgrade to Premium for unlimited history and exports.';
 
   @override
-  String get historyTeaserCta => 'Save & export history with Pro';
+  String get historyTeaserCta => 'Upgrade to Premium for unlimited history';
 
   @override
   String get historyExportPreviewEntry => 'Preview sample CSV export';
@@ -819,13 +820,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'See how your export will look. Download and share are unlocked with Pro.';
+      'Bulk history export is a Premium feature. Download and share are unlocked with Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Sample]';
 
   @override
-  String get historyExportPreviewAction => 'Download / Share with Pro';
+  String get historyExportPreviewAction => 'Download / Share with Premium';
 
   @override
   String get addMaterialButton => 'Add';
