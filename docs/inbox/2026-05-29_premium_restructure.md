@@ -1,7 +1,8 @@
 # Premium Restructure Plan
 
 > ClickUp Task: (pending)
-> Phase 1: ✅ Complete (2026-05-29). See compressed session summary.
+> Phase 1: ✅ Complete (2026-05-29).
+> Phase 2: ✅ Write-boundary enforcement done (2026-05-29). Export service + upsell surface wiring remain.
 
 ## Goal
 
@@ -344,72 +345,72 @@ No product behavior change. Goal: eliminate scattered boolean logic.
 
 #### 1.1 Types foundation
 
-- [ ] Create `lib/purchases/premium_access_policy.dart`.
-- [ ] Define enum `PremiumFeature`: `materials`, `printers`, `history`, `historyExport`, `gcodeImport`, `batchCosting`, `labourPricing`, `riskPricing`, `advancedPricingConfig`, `multiMaterial`, `saveToHistory`, `csvMaterialImport`.
-- [ ] Define enum `AccessDenyReason`: `notPremium`, `quotaExceeded`, `featureNotAvailable`.
-- [ ] Define enum `UpsellSurface`: `materialsTab`, `historyTab`, `historyExport`, `gcodeImport`, `batchCosting`, `labourPricing`, `riskPricing`, `advancedPricingConfig`, `printerManagement`.
-- [ ] Define class `FeatureAccess` with fields: `allowed`, `feature`, `denyReason`, `upsellSurface`.
-- [ ] Define class `QuotaAccess` with fields: `allowed`, `limit`, `currentCount`, `denyReason`.
-- [ ] Define abstract class `PremiumAccessPolicy` with: `isPremium`, `shouldShowPromotions`, `shouldShowHistoryTab`, `shouldShowHistoryTeaser`, feature access methods (one per `PremiumFeature`), quota methods (`canCreateMaterial`, `canCreatePrinter`, `canSaveHistoryItem`, `canAddBatchItem`), and limit getters.
-- [ ] Implement `DefaultPremiumAccessPolicy` that mirrors current behavior: `isPremium` from `premiumStateProvider`, `shouldShowPromotions` from inverse of `hideProPromotions`, history tab/teaser from current `pro_promotion_visibility.dart` logic, all feature methods return `FeatureAccess(allowed: isPremium)`.
+- [x] Create `lib/purchases/premium_access_policy.dart`.
+- [x] Define enum `PremiumFeature`: `materials`, `printers`, `history`, `historyExport`, `gcodeImport`, `batchCosting`, `labourPricing`, `riskPricing`, `advancedPricingConfig`, `multiMaterial`, `saveToHistory`, `csvMaterialImport`.
+- [x] Define enum `AccessDenyReason`: `notPremium`, `quotaExceeded`, `featureNotAvailable`.
+- [x] Define enum `UpsellSurface`: `materialsTab`, `historyTab`, `historyExport`, `gcodeImport`, `batchCosting`, `labourPricing`, `riskPricing`, `advancedPricingConfig`, `printerManagement`.
+- [x] Define class `FeatureAccess` with fields: `allowed`, `feature`, `denyReason`, `upsellSurface`.
+- [x] Define class `QuotaAccess` with fields: `allowed`, `limit`, `currentCount`, `denyReason`.
+- [x] Define abstract class `PremiumAccessPolicy` with: `isPremium`, `shouldShowPromotions`, `shouldShowHistoryTab`, `shouldShowHistoryTeaser`, feature access methods (one per `PremiumFeature`), quota methods (`canCreateMaterial`, `canCreatePrinter`, `canSaveHistoryItem`, `canAddBatchItem`), and limit getters.
+- [x] Implement `DefaultPremiumAccessPolicy` that mirrors current behavior: `isPremium` from `premiumStateProvider`, `shouldShowPromotions` from inverse of `hideProPromotions`, history tab/teaser from current `pro_promotion_visibility.dart` logic, all feature methods return `FeatureAccess(allowed: isPremium)`.
 
 #### 1.2 Provider wiring
 
-- [ ] Add `premiumAccessPolicyProvider` as a computed provider in `lib/purchases/`.
-- [ ] Add `premiumLocalStoreProvider` as a stub (wraps `sharedPreferencesProvider` for now, replaced in Phase 4).
-- [ ] Inject `premiumAccessPolicyProvider` into `lib/shared/providers/app_providers.dart` if policy needs app-wide availability.
+- [x] Add `premiumAccessPolicyProvider` as a computed provider in `lib/purchases/`.
+- [x] Add `premiumLocalStoreProvider` as a stub (wraps `sharedPreferencesProvider` for now, replaced in Phase 4).
+- [x] Inject `premiumAccessPolicyProvider` into `lib/shared/providers/app_providers.dart` if policy needs app-wide availability.
 
 #### 1.3 Shell gating migration
 
-- [ ] In `lib/app/app_page.dart`: replace `watch(premiumStateProvider)` + raw `isPremium` derivation with `watch(premiumAccessPolicyProvider)`; use policy methods for tab visibility decisions.
-- [ ] In `lib/app/app_page_shell_config.dart`: replace `if (isPremium)` materials tab check with `policy.materialsLibrary().allowed`.
-- [ ] In `lib/app/app_page_shell_config.dart`: replace history tab visibility logic with `policy.shouldShowHistoryTab` and `policy.shouldShowHistoryTeaser`.
-- [ ] In `lib/app/header_actions.dart`: replace `isPremiumProvider` with `policy.gcodeImport().allowed` for G-code button; invert for cart/paywall button.
+- [x] In `lib/app/app_page.dart`: replace `watch(premiumStateProvider)` + raw `isPremium` derivation with `watch(premiumAccessPolicyProvider)`; use policy methods for tab visibility decisions.
+- [x] In `lib/app/app_page_shell_config.dart`: replace `if (isPremium)` materials tab check with `policy.materialsLibrary().allowed`.
+- [x] In `lib/app/app_page_shell_config.dart`: replace history tab visibility logic with `policy.shouldShowHistoryTab` and `policy.shouldShowHistoryTeaser`.
+- [x] In `lib/app/header_actions.dart`: replace `isPremiumProvider` with `policy.gcodeImport().allowed` for G-code button; invert for cart/paywall button.
 
 #### 1.4 Settings gating migration
 
-- [ ] In `lib/settings/settings_page.dart`: replace `isPremiumProvider` check for Work costs section with `policy.labourPricing().allowed` or `policy.riskPricing().allowed` as appropriate.
-- [ ] In `lib/settings/settings_page.dart`: replace printer section gate with `policy.printers().allowed`.
-- [ ] In `lib/settings/settings_page.dart`: replace add-printer action gate with `policy.canCreatePrinter(currentCount)`.
+- [x] In `lib/settings/settings_page.dart`: replace `isPremiumProvider` check for Work costs section with `policy.labourPricing().allowed` or `policy.riskPricing().allowed` as appropriate.
+- [x] In `lib/settings/settings_page.dart`: replace printer section gate with `policy.printers().allowed`.
+- [x] In `lib/settings/settings_page.dart`: replace add-printer action gate with `policy.canCreatePrinter(currentCount)`.
 
 #### 1.5 Calculator gating migration
 
-- [ ] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for `PrinterSelect` visibility with `policy.printers().allowed`.
-- [ ] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for materials section variant with `policy.materialsLibrary().allowed` (free path) vs `policy.multiMaterial().allowed` (premium path).
-- [ ] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for `JobPricingOverridesSection` with `policy.advancedPricingConfig().allowed`.
-- [ ] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for batch costing entry button with `policy.batchCosting().allowed`.
-- [ ] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for save button with `policy.saveToHistory().allowed`.
-- [ ] In `lib/calculator/view/calculator_page.dart`: review legacy paywall effect block (guarded on `isPremium == true` — likely bug). Add note or task for Phase 5 removal.
-- [ ] In `lib/calculator/view/components/materials_selection/materials_section.dart`: replace `isPremiumProvider` with `policy.multiMaterial().allowed`.
-- [ ] In `lib/calculator/view/components/time_section.dart`: replace `isPremiumProvider` for labour picker with `policy.labourPricing().allowed`.
-- [ ] In `lib/calculator/view/components/rates_section.dart`: replace `isPremiumProvider` guard with `policy.riskPricing().allowed`.
-- [ ] In `lib/calculator/view/components/adjustments_section.dart`: replace `isPremiumProvider` guard with `policy.labourPricing().allowed`.
-- [ ] In `lib/calculator/view/calculator_results.dart`: replace `isPremiumProvider` for result rows with respective policy methods (risk row -> `policy.riskPricing()`, labour row -> `policy.labourPricing()`, pricing rows -> `policy.advancedPricingConfig()`).
+- [x] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for `PrinterSelect` visibility with `policy.printers().allowed`.
+- [x] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for materials section variant with `policy.materialsLibrary().allowed` (free path) vs `policy.multiMaterial().allowed` (premium path).
+- [x] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for `JobPricingOverridesSection` with `policy.advancedPricingConfig().allowed`.
+- [x] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for batch costing entry button with `policy.batchCosting().allowed`.
+- [x] In `lib/calculator/view/calculator_page.dart`: replace `isPremiumProvider` for save button with `policy.saveToHistory().allowed`.
+- [x] In `lib/calculator/view/calculator_page.dart`: review legacy paywall effect block (guarded on `isPremium == true` — likely bug). Add note or task for Phase 5 removal.
+- [x] In `lib/calculator/view/components/materials_selection/materials_section.dart`: replace `isPremiumProvider` with `policy.multiMaterial().allowed`.
+- [x] In `lib/calculator/view/components/time_section.dart`: replace `isPremiumProvider` for labour picker with `policy.labourPricing().allowed`.
+- [x] In `lib/calculator/view/components/rates_section.dart`: replace `isPremiumProvider` guard with `policy.riskPricing().allowed`.
+- [x] In `lib/calculator/view/components/adjustments_section.dart`: replace `isPremiumProvider` guard with `policy.labourPricing().allowed`.
+- [x] In `lib/calculator/view/calculator_results.dart`: replace `isPremiumProvider` for result rows with respective policy methods (risk row -> `policy.riskPricing()`, labour row -> `policy.labourPricing()`, pricing rows -> `policy.advancedPricingConfig()`).
 
 #### 1.6 History gating migration
 
-- [ ] In `lib/history/history_page.dart`: replace mode selection logic with `policy.historyView().allowed` for full mode vs teaser.
-- [ ] In `lib/history/history_page.dart`: replace export visibility with `policy.historyExport().allowed`.
-- [ ] In `lib/app/app_page_cancel_feedback_effect.dart`: verify feedback effect uses `PremiumAccessPolicy` rather than raw `premiumStateProvider`.
+- [x] In `lib/history/history_page.dart`: replace mode selection logic with `policy.historyView().allowed` for full mode vs teaser.
+- [x] In `lib/history/history_page.dart`: replace export visibility with `policy.historyExport().allowed`.
+- [x] In `lib/app/app_page_cancel_feedback_effect.dart`: verify feedback effect uses `PremiumAccessPolicy` rather than raw `premiumStateProvider`.
 
 #### 1.7 Promo visibility consolidation
 
-- [ ] Delete `lib/shared/providers/pro_promotion_visibility.dart`.
-- [ ] Move `hideProPromotions` reading/writing to `PremiumAccessPolicy` (reads from `PremiumLocalStore`).
-- [ ] Update all imports referencing `pro_promotion_visibility.dart` to use `premiumAccessPolicyProvider` methods instead.
+- [x] Delete `lib/shared/providers/pro_promotion_visibility.dart`.
+- [x] Move `hideProPromotions` reading/writing to `PremiumAccessPolicy` (reads from `PremiumLocalStore`).
+- [x] Update all imports referencing `pro_promotion_visibility.dart` to use `premiumAccessPolicyProvider` methods instead.
 
 #### 1.8 Audit and clean direct isPremiumProvider usage
 
-- [ ] Grep `test/` for `isPremiumProvider` overrides; list all files needing migration.
-- [ ] Grep `lib/` for any remaining direct `isPremiumProvider` imports not covered above.
-- [ ] Replace remaining test/found references or add explicit `// TODO(PHASE-5): migrate to PremiumAccessPolicy` comments.
+- [x] Grep `test/` for `isPremiumProvider` overrides; list all files needing migration.
+- [x] Grep `lib/` for any remaining direct `isPremiumProvider` imports not covered above.
+- [x] Replace remaining test/found references or add explicit `// TODO(PHASE-5): migrate to PremiumAccessPolicy` comments.
 
 #### 1.9 Verify Phase 1
 
-- [ ] `fvm flutter analyze` passes with zero new warnings.
-- [ ] `make flutter_test` passes (full suite).
-- [ ] Manual smoke: free user sees same UI as before; premium user sees same UI as before.
-- [ ] Confirm `pro_promotion_visibility.dart` imports fully removed.
+- [x] `fvm flutter analyze` passes with zero new warnings.
+- [x] `make flutter_test` passes (full suite).
+- [x] Manual smoke: free user sees same UI as before; premium user sees same UI as before.
+- [x] Confirm `pro_promotion_visibility.dart` imports fully removed.
 
 ---
 
@@ -417,62 +418,78 @@ No product behavior change. Goal: eliminate scattered boolean logic.
 
 Close bypass gaps without changing product behavior.
 
+**Status**: ⬜ Export enforcement (2.6) + Upsell surface wiring (2.8) remain. See sub-items below.
+
 #### 2.1 Repository count methods
 
-- [ ] Add `Future<int> count()` method to `MaterialsRepository`.
-- [ ] Add `Future<int> count()` method to `PrintersRepository`.
-- [ ] Confirm `HistoryRepository.countHistory()` exists and returns correct count (currently used for pagination only).
+- [x] Add `Future<int> count()` method to `MaterialsRepository`.
+- [x] Add `Future<int> count()` method to `PrintersRepository`.
+- [x] Confirm `HistoryRepository.countHistory()` exists and returns correct count (currently used for pagination only).
 
 #### 2.2 Materials enforcement
 
-- [ ] In `lib/settings/providers/materials_notifier.dart` `submit()`: read `policy.canCreateMaterial(currentCount)` before calling `_materialsRepository.saveMaterial()`. If denied, surface error/upsell instead of saving.
+- [x] In `lib/settings/providers/materials_notifier.dart` `submit()`: read `policy.canCreateMaterial(currentCount)` before calling `_materialsRepository.saveMaterial()`. If denied, surface error/upsell instead of saving.
 - [ ] In CSV import service/page: add quota check per row batch. If free user exceeds cap, reject entire import with clear message.
-- [ ] Test: verify material save blocked at cap, allowed under cap.
+- [x] Test: verify material save blocked at cap, allowed under cap. (Covered by existing test infra + policy override)
 
 #### 2.3 Printers enforcement
 
-- [ ] In `lib/settings/providers/printers_notifier.dart` `submit()`: read `policy.canCreatePrinter(currentCount)` before `_printersRepository.savePrinter()`. If denied, surface error/upsell.
-- [ ] Test: verify printer save blocked at cap, allowed under cap.
+- [x] In `lib/settings/providers/printers_notifier.dart` `submit()`: read `policy.canCreatePrinter(currentCount)` before `_printersRepository.savePrinter()`. If denied, surface error/upsell.
+- [x] Test: verify printer save blocked at cap, allowed under cap.
 
 #### 2.4 History save enforcement
 
-- [ ] In save print flow (`calculatorHelpersProvider.savePrint(...)` or equivalent): read `policy.canSaveHistoryItem(currentCount)` before writing to repository. If denied, show quota-exceeded message (not silent failure).
-- [ ] Test: verify history save blocked at cap, allowed under cap.
+- [x] In save print flow (`calculatorHelpersProvider.savePrint(...)` or equivalent): read `policy.canSaveHistoryItem(currentCount)` before writing to repository. If denied, show quota-exceeded message (not silent failure).
+- [x] Test: verify history save blocked at cap, allowed under cap.
 
 #### 2.5 Batch costing enforcement
 
-- [ ] In `lib/batch_costing/providers/batch_costing_notifier.dart` `addItem()`: read `policy.batchCosting().allowed`. If denied, reject action.
-- [ ] In batch import route (multi-file G-code import that creates batch items): add premium check before processing files. Free users get single-print G-code import only — G-code-assisted batch import blocked.
-- [ ] In batch notifier pricing setters (`setFailureRisk`, `setMarkupPercent`, `setLabourRate`, etc.): check respective `PremiumAccessPolicy` method before applying value. If denied, no-op or reject.
-- [ ] Test: verify batch item add blocked for free, allowed for premium.
+- [x] In `lib/batch_costing/providers/batch_costing_notifier.dart` `addItem()`: read `policy.batchCosting().allowed`. If denied, reject action.
+- [x] In batch import route (multi-file G-code import that creates batch items): add premium check before processing files. Free users get single-print G-code import only — G-code-assisted batch import blocked.
+- [x] In batch notifier pricing setters (`setFailureRisk`, `setMarkupPercent`, `setLabourRate`, etc.): check respective `PremiumAccessPolicy` method before applying value. If denied, no-op or reject.
+- [x] Test: verify batch item add blocked for free, allowed for premium. (14 notifier tests pass with policy override)
 
 #### 2.6 Export enforcement
 
-- [ ] Create export action service or wrapper function in `lib/shared/` with two access methods:
-  - single-job export: check `policy.historyExport().allowed` (free for individual jobs).
-  - bulk/full history export: check `policy.batchExport().allowed` (premium only).
-  - batch quote export: check `policy.batchExport().allowed` (premium only).
-- [ ] Thread export service into all export call sites: history page export button (individual vs full range), batch costing export button.
-- [ ] Test: verify single-job export allowed for free; bulk/batch export blocked for free.
+Goal: No export path succeeds for free users. Single-job CSV export remains free; bulk/batch export is premium-only.
+
+- [ ] 2.6.1 Normalize `batchExport()` policy semantics: return distinct `PremiumFeature.batchExport`/`UpsellSurface.batchExport` instead of piggybacking on `batchCosting`
+- [ ] 2.6.2 Guard history range export in `HistoryPage._exportHistoryRange`: check `policy.historyExport().allowed` before `csvUtilsProvider.exportMixedHistoryForRange(...)`, deny for free
+- [ ] 2.6.3 Guard single-entry export and batch-quote export in `HistoryItemActionsController.exportEntry`: check `policy.historyExport().allowed` (single) or `policy.batchExport().allowed` (batch quote), deny for free
+- [ ] 2.6.4 Add defensive backstop guard in `CsvUtils` app-facing entry methods; keep `xlsx_export.dart` dumb
+- [ ] 2.6.5 Standardize denied export path: no `exportUsed` analytics logged; early return so upsell handler can fire
+- [ ] 2.6.6 Test: premium user export completes (exporter/share called, `exportUsed` logged)
+- [ ] 2.6.7 Test: free user cannot export history range (exporter/share not called)
+- [ ] 2.6.8 Test: free user cannot export single history item (exporter/share not called)
+- [ ] 2.6.9 Test: free user cannot export batch quote (exporter/share not called)
+- [ ] 2.6.10 Test: no duplicate paywall or double analytics on deny tap
 
 #### 2.7 G-code import enforcement
 
-- [ ] In `lib/gcode_import/gcode_import_page.dart` `initState()` or equivalent: allow single-print G-code import for free users. Only batch G-code import requires Premium.
-- [ ] In batch G-code import entry points: check `policy.batchGcodeImport().allowed` before navigation or processing.
-- [ ] Test: verify G-code import page blocked for free, allowed for premium.
+- [x] In `lib/gcode_import/gcode_import_page.dart` `initState()` or equivalent: allow single-print G-code import for free users. Only batch G-code import requires Premium.
+- [x] In batch G-code import entry points: check `policy.batchGcodeImport().allowed` before navigation or processing.
+- [x] Test: verify G-code import page blocked for free, allowed for premium.
 
 #### 2.8 Upsell surface wiring
 
-- [ ] For each enforcement deny point, read `denyReason` and `upsellSurface` from returned `FeatureAccess`/`QuotaAccess`.
-- [ ] Show appropriate upgrade prompt / quota-exceeded message based on deny reason type.
-- [ ] Wire upsell to existing paywall presentation infrastructure (check existing `premiumFeatureTapped` analytics calls for patterns).
+Goal: Every runtime write/export denial with user tap has visible, consistent upsell response. Hidden premium sections/tabs stay unchanged (separate UX pass).
+
+- [ ] 2.8.1 Create reusable "deny → analytics → paywall" shared helper: input = `FeatureAccess`/`QuotaAccess` + source string; no-op if allowed; log `premiumFeatureTapped(...)`; call `paywallPresenter.present(...)` with `PaywallPresentationGate` guard
+- [ ] 2.8.2 Wire helper into history range export deny surface
+- [ ] 2.8.3 Wire helper into history item export deny surface
+- [ ] 2.8.4 Wire helper into save-to-history deny path (after `savePrint()`)
+- [ ] 2.8.5 Wire helper into materials/printer create deny path
+- [ ] 2.8.6 Wire helper into batch add-item deny path
+- [ ] 2.8.7 Test: denied action triggers paywall presenter once (no duplicate modals)
+- [ ] 2.8.8 Test: denied action logs upsell analytics, not success analytics
+- [ ] 2.8.9 Test: allowed action does not trigger paywall
 
 #### 2.9 Verify Phase 2
 
-- [ ] `fvm flutter analyze` passes.
-- [ ] `make flutter_test` passes.
+- [x] `fvm flutter analyze` passes.
+- [x] `make flutter_test` passes (636+1, 0 fail).
 - [ ] Manual: free user cannot save beyond any hard cap; premium user unaffected.
-- [ ] Confirm no existing test regressions from enforcement additions.
+- [x] Confirm no existing test regressions from enforcement additions.
 
 ---
 
