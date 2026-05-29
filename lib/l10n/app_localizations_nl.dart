@@ -739,7 +739,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Moet 0 of hoger zijn';
 
   @override
-  String get lockedValuePlaceholder => 'Vergrendeld';
+  String get lockedValuePlaceholder => 'Alleen Premium';
 
   @override
   String get hideProPromotionsTitle => 'Pro-promoties verbergen';
@@ -750,11 +750,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get printerLimitReachedMessage =>
-      'Upgrade to Premium to add more printers.';
+      'Je kunt op Free maximaal 2 printers opslaan. Upgrade naar Premium voor onbeperkte printers.';
 
   @override
   String get materialLimitReachedMessage =>
-      'Upgrade to Premium to add more materials.';
+      'Je kunt op Free maximaal 5 materialen opslaan. Upgrade naar Premium voor onbeperkte materialen.';
 
   @override
   String get historySearchHint => 'Zoeken op naam of printer';
@@ -783,7 +783,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get historyUpsellDescription =>
-      'Ontgrendel geavanceerde bewerkingen en exports';
+      'Je kunt op Free maximaal 7 opgeslagen prints bewaren. Upgrade naar Premium voor onbeperkte geschiedenis en exports.';
 
   @override
   String get historyNoMoreRecords => 'Geen verdere records';
@@ -815,10 +815,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Bekijk hoe geschiedenis werkt voordat je upgradet. Bewaar voltooide schattingen en exporteer ze altijd met Pro.';
+      'Free-gebruikers kunnen maximaal 7 opgeslagen prints bewaren. Upgrade naar Premium voor onbeperkte geschiedenis en exports.';
 
   @override
-  String get historyTeaserCta => 'Bewaar en exporteer geschiedenis met Pro';
+  String get historyTeaserCta =>
+      'Upgrade naar Premium voor onbeperkte geschiedenis';
 
   @override
   String get historyExportPreviewEntry => 'Voorbeeld van CSV-export';
@@ -828,13 +829,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'Bekijk hoe je export eruitziet. Downloaden en delen zijn ontgrendeld met Pro.';
+      'Bulk-export van geschiedenis is een Premium-functie. Downloaden en delen worden ontgrendeld met Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Voorbeeld]';
 
   @override
-  String get historyExportPreviewAction => 'Downloaden / delen met Pro';
+  String get historyExportPreviewAction => 'Downloaden / Delen met Premium';
 
   @override
   String get addMaterialButton => 'Materiaal toevoegen';
