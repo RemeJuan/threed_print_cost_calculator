@@ -34,8 +34,6 @@ List<AppPageShellTab> buildAppPageShellTabs({
   required PremiumAccessPolicy policy,
   required Future<void> Function() onHistoryLoaded,
 }) {
-  final isPremium = policy.isPremium;
-  final showHistoryPromo = !isPremium && policy.shouldShowPromotions;
   final historyMode = policy.historyView().allowed
       ? HistoryPageMode.full
       : HistoryPageMode.teaser;
@@ -85,12 +83,10 @@ List<AppPageShellTab> buildAppPageShellTabs({
         title: l10n.historyAppBarTitle,
         actions: const [],
         navigationItem: BottomNavigationBarItem(
-          icon: (isPremium || !showHistoryPromo)
-              ? const Icon(
-                  Icons.history,
-                  key: ValueKey<String>('nav.history.button'),
-                )
-              : const PromoHistoryTabIcon(),
+          icon: const Icon(
+            Icons.history,
+            key: ValueKey<String>('nav.history.button'),
+          ),
           label: l10n.historyNavLabel,
         ),
       ),
