@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 
 final batchCostingProvider =
     NotifierProvider<BatchCostingNotifier, BatchCostingState>(
@@ -132,6 +133,9 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setFailureRisk(String value) {
+    if (!ref.read(premiumAccessPolicyProvider).riskPricing().allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         failureRisk: state.pricing.failureRisk.copyWith(value: value),
@@ -148,6 +152,9 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setMarkupPercent(String value) {
+    if (!ref.read(premiumAccessPolicyProvider).advancedPricingConfig().allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         markupPercent: state.pricing.markupPercent.copyWith(value: value),
@@ -164,6 +171,9 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setLabourRate(String value) {
+    if (!ref.read(premiumAccessPolicyProvider).labourPricing().allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         labourRate: state.pricing.labourRate.copyWith(value: value),
@@ -200,6 +210,13 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void addItem(BatchCostingItem item) {
+    final access = ref.read(premiumAccessPolicyProvider).canAddBatchItem(
+      state.items.length,
+    );
+    if (!access.allowed) {
+      return;
+    }
+
     if (state.items.any((current) => current.id == item.id)) {
       throw ArgumentError.value(item.id, 'item.id', 'must be unique');
     }
