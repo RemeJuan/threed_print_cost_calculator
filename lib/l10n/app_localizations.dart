@@ -1424,7 +1424,7 @@ abstract class AppLocalizations {
   /// No description provided for @lockedValuePlaceholder.
   ///
   /// In en, this message translates to:
-  /// **'Locked'**
+  /// **'Premium only'**
   String get lockedValuePlaceholder;
 
   /// No description provided for @hideProPromotionsTitle.
@@ -1442,13 +1442,13 @@ abstract class AppLocalizations {
   /// No description provided for @printerLimitReachedMessage.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to Premium to add more printers.'**
+  /// **'You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.'**
   String get printerLimitReachedMessage;
 
   /// No description provided for @materialLimitReachedMessage.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to Premium to add more materials.'**
+  /// **'You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.'**
   String get materialLimitReachedMessage;
 
   /// No description provided for @historySearchHint.
@@ -1502,7 +1502,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyUpsellDescription.
   ///
   /// In en, this message translates to:
-  /// **'Unlock advanced edits and exports'**
+  /// **'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.'**
   String get historyUpsellDescription;
 
   /// No description provided for @historyNoMoreRecords.
@@ -1556,13 +1556,13 @@ abstract class AppLocalizations {
   /// No description provided for @historyTeaserDescription.
   ///
   /// In en, this message translates to:
-  /// **'Review how history works before upgrading. Save completed estimates and export them any time with Pro.'**
+  /// **'Free users can keep up to 7 saved prints. Upgrade to Premium for unlimited history and exports.'**
   String get historyTeaserDescription;
 
   /// No description provided for @historyTeaserCta.
   ///
   /// In en, this message translates to:
-  /// **'Save & export history with Pro'**
+  /// **'Upgrade to Premium for unlimited history'**
   String get historyTeaserCta;
 
   /// No description provided for @historyExportPreviewEntry.
@@ -1580,7 +1580,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyExportPreviewDescription.
   ///
   /// In en, this message translates to:
-  /// **'See how your export will look. Download and share are unlocked with Pro.'**
+  /// **'Bulk history export is a Premium feature. Download and share are unlocked with Premium.'**
   String get historyExportPreviewDescription;
 
   /// No description provided for @historyExportPreviewSampleLabel.
@@ -1592,7 +1592,7 @@ abstract class AppLocalizations {
   /// No description provided for @historyExportPreviewAction.
   ///
   /// In en, this message translates to:
-  /// **'Download / Share with Pro'**
+  /// **'Download / Share with Premium'**
   String get historyExportPreviewAction;
 
   /// No description provided for @addMaterialButton.
