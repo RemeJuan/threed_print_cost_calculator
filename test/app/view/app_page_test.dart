@@ -363,7 +363,10 @@ void main() {
     await settleAppPage(tester);
 
     expect(find.byIcon(Icons.help_outline), findsOneWidget);
-    expect(find.byKey(const ValueKey<String>('nav.history.pro.badge')), findsNothing);
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+      findsNothing,
+    );
     expect(find.byIcon(Icons.upload_file_outlined), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
