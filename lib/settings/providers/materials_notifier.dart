@@ -154,6 +154,8 @@ class MaterialsProvider extends Notifier<MaterialState> {
       return null;
     }
 
+    final stockTrackingAccess = ref.read(premiumAccessPolicyProvider).stockTracking();
+
     if (dbRef == null) {
       final count = await _materialsRepository.count();
       final access = ref
@@ -171,6 +173,11 @@ class MaterialsProvider extends Notifier<MaterialState> {
     final parsedWeight = parseLocalizedNum(state.weightText)!;
     final wasTrackingEnabled = existing?.autoDeductEnabled ?? false;
     final isTrackingEnabled = state.autoDeductEnabled;
+
+    if (!stockTrackingAccess.allowed && !wasTrackingEnabled && isTrackingEnabled) {
+      return null;
+    }
+
     final parsedRemainingWeight = state.autoDeductEnabled
         ? (state.remainingWeightText.trim().isEmpty
               ? parsedWeight

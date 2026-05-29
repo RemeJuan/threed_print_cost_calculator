@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/materials/brand_typeahead.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_type_typeahead.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -27,6 +28,9 @@ class MaterialForm extends HookConsumerWidget {
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
         : GeneralSettingsModel.initial();
+    final stockTrackingAccess = ref.watch(
+      premiumAccessPolicyProvider,
+    ).stockTracking();
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final hasSubmitted = useState(false);
 
@@ -209,15 +213,16 @@ class MaterialForm extends HookConsumerWidget {
                   onChanged: (v) => notifier.updateCost(v),
                 ),
 
-                SwitchListTile.adaptive(
-                  key: const ValueKey<String>(
-                    'settings.materials.track_remaining.toggle',
+                if (stockTrackingAccess.allowed)
+                  SwitchListTile.adaptive(
+                    key: const ValueKey<String>(
+                      'settings.materials.track_remaining.toggle',
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(l10n.trackRemainingFilamentLabel),
+                    value: state.autoDeductEnabled,
+                    onChanged: notifier.updateAutoDeductEnabled,
                   ),
-                  contentPadding: EdgeInsets.zero,
-                  title: Text(l10n.trackRemainingFilamentLabel),
-                  value: state.autoDeductEnabled,
-                  onChanged: notifier.updateAutoDeductEnabled,
-                ),
 
                 if (state.autoDeductEnabled)
                   FocusSafeTextField(
