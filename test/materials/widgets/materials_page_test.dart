@@ -4,6 +4,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
@@ -85,6 +87,49 @@ void main() {
         find.text(lookupAppLocalizations(const Locale('en')).materialNameLabel),
         findsOneWidget,
       );
+    });
+
+    testWidgets('free users at material cap see upsell and disabled add', (
+      tester,
+    ) async {
+      final materials = List.generate(
+        5,
+        (i) => MaterialModel(
+          id: '${i + 1}',
+          name: 'Material ${i + 1}',
+          cost: '20.00',
+          color: 'Black',
+          weight: '1000',
+          archived: false,
+        ),
+      );
+      final repo = FakeMaterialsRepository(watchResponses: [materials]);
+      final db = await tester.pumpApp(const MaterialsPage(), [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(
+            isPremium: false,
+            hideProPromotions: false,
+          ),
+        ),
+      ]);
+      addTearDown(db.close);
+
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(
+          lookupAppLocalizations(
+            const Locale('en'),
+          ).materialLimitReachedMessage,
+        ),
+        findsOneWidget,
+      );
+
+      final fab = tester.widget<FloatingActionButton>(
+        find.byType(FloatingActionButton),
+      );
+      expect(fab.onPressed, isNull);
     });
 
     testWidgets('duplicate action loads source material from repository', (
