@@ -8,9 +8,11 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_pick
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import '../helpers/helpers.dart';
+import '../helpers/lower_level_test_fakes.dart';
 
 void main() {
   setUpAll(setupTest);
@@ -114,6 +116,32 @@ void main() {
       findsOneWidget,
     );
     expect(find.text(l10n.batchGcodeImportContinueButton), findsNothing);
+  });
+
+  testWidgets('free users cannot start multi-file batch import', (
+    tester,
+  ) async {
+    final files = [_file('one.gcode'), _file('two.gcode')];
+    final paywallPresenter = FakePaywallPresenter();
+
+    await tester.pumpApp(const BatchGCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchGCodeImportPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchGcodeImportPickButton));
+    await tester.pumpAndSettle();
+
+    expect(paywallPresenter.calls, 1);
+    expect(find.text('one.gcode'), findsNothing);
+    expect(find.text('two.gcode'), findsNothing);
+    expect(find.byType(BatchCostingPage), findsNothing);
   });
 
   testWidgets('imports files with missing weight and shows needs-details', (

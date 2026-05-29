@@ -5,8 +5,12 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import '../helpers/helpers.dart';
+import '../helpers/lower_level_test_fakes.dart';
 
 void main() {
   setUpAll(setupTest);
@@ -43,6 +47,40 @@ void main() {
 
     expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
     expect(find.text('Benchy'), findsNothing);
+  });
+
+  testWidgets('free users do not see batch gcode import button', (
+    tester,
+  ) async {
+    final paywallPresenter = FakePaywallPresenter();
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
+      ),
+      isPremiumProvider.overrideWithValue(false),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+      ),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    expect(find.text(l10n.batchCostingReviewEmptyBody), findsOneWidget);
+    expect(
+      find.text('${l10n.batchCostingReviewImportGcodeButton} (Premium)'),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.text('${l10n.batchCostingReviewImportGcodeButton} (Premium)'),
+    );
+    await tester.pumpAndSettle();
+
+    expect(paywallPresenter.calls, 1);
   });
 
   testWidgets('start new batch resets stack and returns home', (tester) async {
