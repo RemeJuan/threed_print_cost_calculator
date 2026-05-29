@@ -41,9 +41,9 @@ class HistoryPage extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final appRefreshTick = ref.watch(appRefreshProvider);
     final paged = ref.watch(historyPagedProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
 
     if (mode == HistoryPageMode.teaser) {
-      final policy = ref.watch(premiumAccessPolicyProvider);
       return HistoryTeaser(
         onUpgradePressed: () => _showTeaserPaywall(
           context,
@@ -59,6 +59,14 @@ class HistoryPage extends HookConsumerWidget {
         ),
       );
     }
+
+    final historyLimit = policy.historyLimit;
+    final isHistoryLimited = !policy.isPremium && historyLimit != null;
+    final hasReachedHistoryLimit =
+        isHistoryLimited && paged.items.length >= historyLimit;
+    final visibleItems = isHistoryLimited
+        ? paged.items.take(historyLimit).toList(growable: false)
+        : paged.items;
 
     final prefs = ref.read(sharedPreferencesProvider);
     final controller = useTextEditingController(text: paged.query);
@@ -141,7 +149,7 @@ class HistoryPage extends HookConsumerWidget {
         if (current >= (max - threshold)) {
           final notifier = ref.read(historyPagedProvider.notifier);
           final state = ref.read(historyPagedProvider);
-          if (!state.isLoading && state.hasMore) {
+          if (!state.isLoading && state.hasMore && !hasReachedHistoryLimit) {
             notifier.loadMore();
           }
         }
@@ -176,7 +184,9 @@ class HistoryPage extends HookConsumerWidget {
               SliverToBoxAdapter(
                 child: HistorySearchBar(
                   controller: controller,
-                  onExportPressed: () => _showExportOptions(context, ref),
+                  onExportPressed: policy.bulkHistoryExport().allowed
+                      ? () => _showExportOptions(context, ref)
+                      : null,
                 ),
               ),
               SliverToBoxAdapter(
@@ -197,7 +207,7 @@ class HistoryPage extends HookConsumerWidget {
                 )
               else
                 HistoryListView(
-                  items: paged.items,
+                  items: visibleItems,
                   onHistoryLoaded: onHistoryLoaded,
                   onOverflowMenuOpened: () async {
                     await markOverflowMenuOpened();
@@ -213,7 +223,12 @@ class HistoryPage extends HookConsumerWidget {
                           padding: EdgeInsets.symmetric(vertical: 12.0),
                           child: CircularProgressIndicator(),
                         ),
-                      if (!paged.hasMore)
+                      if (hasReachedHistoryLimit)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Text(l10n.historyUpsellDescription),
+                        )
+                      else if (!paged.hasMore)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
                           child: Text(l10n.historyNoMoreRecords),
@@ -253,7 +268,7 @@ class HistoryPage extends HookConsumerWidget {
     final policy = ref.read(premiumAccessPolicyProvider);
     if (!await requirePremium(
       ref.read(paywallPresenterProvider),
-      policy.historyExport(),
+      policy.bulkHistoryExport(),
       purchaseSource: 'history_export',
     )) {
       return;

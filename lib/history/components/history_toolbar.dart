@@ -5,12 +5,12 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_search_bar.dart'
 
 class HistoryToolbar extends StatelessWidget {
   final TextEditingController controller;
-  final VoidCallback onExportPressed;
+  final VoidCallback? onExportPressed;
 
   const HistoryToolbar({
     super.key,
     required this.controller,
-    required this.onExportPressed,
+    this.onExportPressed,
   });
 
   @override
@@ -33,13 +33,15 @@ class HistoryToolbar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: kAppSpace8),
-          IconButton(
-            key: const ValueKey<String>('history.export.button'),
-            icon: const Icon(Icons.upload_file),
-            tooltip: l10n.exportButton,
-            onPressed: onExportPressed,
-          ),
+          if (onExportPressed != null) ...[
+            const SizedBox(width: kAppSpace8),
+            IconButton(
+              key: const ValueKey<String>('history.export.button'),
+              icon: const Icon(Icons.upload_file),
+              tooltip: l10n.exportButton,
+              onPressed: onExportPressed,
+            ),
+          ],
         ],
       ),
     );

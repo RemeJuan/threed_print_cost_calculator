@@ -231,7 +231,7 @@ class CsvUtils {
     required String shareText,
   }) async {
     final policy = ref.read(premiumAccessPolicyProvider);
-    if (!policy.historyExport().allowed) return;
+    if (!policy.bulkHistoryExport().allowed) return;
 
     final items = await queryHistory(range);
     final path = await generateMixedHistoryXlsx(items);

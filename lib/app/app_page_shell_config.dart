@@ -35,6 +35,10 @@ List<AppPageShellTab> buildAppPageShellTabs({
   required Future<void> Function() onHistoryLoaded,
 }) {
   final isPremium = policy.isPremium;
+  final showHistoryPromo = !isPremium && policy.shouldShowPromotions;
+  final historyMode = policy.historyView().allowed
+      ? HistoryPageMode.full
+      : HistoryPageMode.teaser;
 
   return [
     AppPageShellTab(
@@ -81,15 +85,13 @@ List<AppPageShellTab> buildAppPageShellTabs({
       AppPageShellTab(
         tab: AppPageTab.history,
         page: HistoryPage(
-          mode: policy.shouldShowHistoryTeaser
-              ? HistoryPageMode.teaser
-              : HistoryPageMode.full,
+          mode: historyMode,
           onHistoryLoaded: onHistoryLoaded,
         ),
         title: l10n.historyAppBarTitle,
         actions: const [],
         navigationItem: BottomNavigationBarItem(
-          icon: isPremium
+          icon: (isPremium || !showHistoryPromo)
               ? const Icon(
                   Icons.history,
                   key: ValueKey<String>('nav.history.button'),

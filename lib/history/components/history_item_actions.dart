@@ -48,7 +48,7 @@ class HistoryItemActionsController {
     final policy = ref.read(premiumAccessPolicyProvider);
     final access = data.batchQuote
         ? policy.batchExport()
-        : policy.historyExport();
+        : policy.singleJobExport();
     if (!await requirePremium(
       ref.read(paywallPresenterProvider),
       access,
@@ -164,6 +164,10 @@ class HistoryItemActions extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final logger = ref.read(appLoggerProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final canExport = data.batchQuote
+        ? policy.batchExport().allowed
+        : policy.singleJobExport().allowed;
     final controller = HistoryItemActionsController(
       dbKey: dbKey,
       data: data,
@@ -209,16 +213,17 @@ class HistoryItemActions extends ConsumerWidget {
               ],
             ),
           ),
-        PopupMenuItem<_HistoryItemAction>(
-          value: _HistoryItemAction.export,
-          child: Row(
-            children: [
-              const Icon(Icons.ios_share, size: 20),
-              const SizedBox(width: 12),
-              Flexible(child: Text(l10n.exportButton)),
-            ],
+        if (canExport)
+          PopupMenuItem<_HistoryItemAction>(
+            value: _HistoryItemAction.export,
+            child: Row(
+              children: [
+                const Icon(Icons.ios_share, size: 20),
+                const SizedBox(width: 12),
+                Flexible(child: Text(l10n.exportButton)),
+              ],
+            ),
           ),
-        ),
         PopupMenuItem<_HistoryItemAction>(
           value: _HistoryItemAction.delete,
           child: Row(

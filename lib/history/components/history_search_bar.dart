@@ -4,12 +4,12 @@ import 'package:threed_print_cost_calculator/history/components/history_toolbar.
 class HistorySearchBar extends StatelessWidget {
   const HistorySearchBar({
     required this.controller,
-    required this.onExportPressed,
+    this.onExportPressed,
     super.key,
   });
 
   final TextEditingController controller;
-  final VoidCallback onExportPressed;
+  final VoidCallback? onExportPressed;
 
   @override
   Widget build(BuildContext context) {

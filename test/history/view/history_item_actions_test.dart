@@ -15,7 +15,7 @@ void main() {
     await setupTest();
   });
 
-  testWidgets('free user sees paywall when exporting non-batch item', (
+  testWidgets('free user exports non-batch item without paywall', (
     tester,
   ) async {
     final paywallPresenter = FakePaywallPresenter();
@@ -60,11 +60,11 @@ void main() {
     await tester.tap(find.text('Export'));
     await tester.pumpAndSettle();
 
-    expect(paywallPresenter.calls, 1);
-    expect(exportCsvCalled, false);
+    expect(paywallPresenter.calls, 0);
+    expect(exportCsvCalled, true);
   });
 
-  testWidgets('free user sees paywall when exporting batch quote', (
+  testWidgets('free user does not see export action for batch quote', (
     tester,
   ) async {
     final paywallPresenter = FakePaywallPresenter();
@@ -106,13 +106,13 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const ValueKey<String>('test.batch.export.menu')));
+    await tester.tap(
+      find.byKey(const ValueKey<String>('test.batch.export.menu')),
+    );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Export'));
-    await tester.pumpAndSettle();
-
-    expect(paywallPresenter.calls, 1);
+    expect(find.text('Export'), findsNothing);
+    expect(paywallPresenter.calls, 0);
     expect(exportCsvCalled, false);
   });
 }

@@ -266,33 +266,67 @@ void main() {
     expect(csvUtils.lastRange, ExportRange.last7Days);
   });
 
-  testWidgets('free user sees paywall instead of exporting history range', (
-    tester,
-  ) async {
+  testWidgets('free user does not see history export action', (tester) async {
     final notifier = _FakeHistoryPagedNotifier(
       HistoryPagedState.initial().copyWith(hasMore: false),
     );
-    final paywallPresenter = FakePaywallPresenter();
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
-      paywallPresenterProvider.overrideWithValue(paywallPresenter),
       isPremiumProvider.overrideWithValue(false),
     ]);
 
     await tester.pumpAndSettle();
 
-    await tester.tap(
+    expect(
       find.byKey(const ValueKey<String>('history.export.button')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('free history list is capped at 7 records', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: [
+          _entry('1', 'Item 1', DateTime.utc(2024, 1, 8)),
+          _entry('2', 'Item 2', DateTime.utc(2024, 1, 7)),
+          _entry('3', 'Item 3', DateTime.utc(2024, 1, 6)),
+          _entry('4', 'Item 4', DateTime.utc(2024, 1, 5)),
+          _entry('5', 'Item 5', DateTime.utc(2024, 1, 4)),
+          _entry('6', 'Item 6', DateTime.utc(2024, 1, 3)),
+          _entry('7', 'Item 7', DateTime.utc(2024, 1, 2)),
+          _entry('8', 'Item 8', DateTime.utc(2024, 1, 1)),
+        ],
+        hasMore: true,
+      ),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Item 1'), findsOneWidget);
+    expect(find.text('Item 8'), findsNothing);
+    expect(
+      find.byKey(const ValueKey<String>('history.item.Item 8.menu')),
+      findsNothing,
+    );
+
+    await tester.scrollUntilVisible(
+      find.text('Unlock advanced edits and exports'),
+      200,
+      scrollable: find.byType(Scrollable).first,
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Last 7 days'), findsOneWidget);
-
-    await tester.tap(find.text('Last 7 days'));
-    await tester.pumpAndSettle();
-
-    expect(paywallPresenter.calls, 1);
+    expect(find.text('Unlock advanced edits and exports'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('history.export.button')),
+      findsNothing,
+    );
   });
 
   testWidgets('renders teaser state with premium entry CTAs', (tester) async {
@@ -352,6 +386,7 @@ void main() {
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
