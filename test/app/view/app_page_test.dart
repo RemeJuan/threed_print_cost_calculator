@@ -49,7 +49,7 @@ void main() {
     seedAppPagePrefs(runCount: 0);
   });
 
-  testWidgets('shows free nav without history', (tester) async {
+  testWidgets('shows free nav with history', (tester) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
       'hideProPromotions': true,
@@ -65,7 +65,7 @@ void main() {
 
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).calculatorNavLabel),
@@ -180,7 +180,7 @@ void main() {
   });
 
   testWidgets(
-    'free users can hide history promo and premium users always see history',
+    'free users can hide history promo badge and keep history tab',
     (tester) async {
       final calculatorNotifier = FakeCalculatorNotifier();
       final freeGateway = FakePurchasesGateway(
@@ -215,15 +215,11 @@ void main() {
 
       expect(
         find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-        findsNothing,
+        findsOneWidget,
       );
 
       expect(
         find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-        findsNothing,
-      );
-      expect(
-        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
         findsNothing,
       );
     },
@@ -246,7 +242,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
+      findsOneWidget,
     );
 
     gateway.emit(
@@ -266,7 +262,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
+      findsOneWidget,
     );
     await tester.pump(const Duration(seconds: 3));
   });
@@ -370,16 +366,16 @@ void main() {
     await settleAppPage(tester);
 
     expect(find.byIcon(Icons.help_outline), findsOneWidget);
-    expect(find.byIcon(Icons.shopping_cart), findsOneWidget);
-    expect(find.byIcon(Icons.upload_file_outlined), findsNothing);
+    expect(find.byKey(const ValueKey<String>('nav.history.pro.badge')), findsOneWidget);
+    expect(find.byIcon(Icons.upload_file_outlined), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
     await settleAppPage(tester);
 
-    expect(find.byIcon(Icons.shopping_cart), findsNothing);
+    expect(find.byIcon(Icons.upload_file_outlined), findsNothing);
   });
 
-  testWidgets('selected index clamps when history tab disappears', (
+  testWidgets('selected index stays stable across entitlement changes', (
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({
@@ -417,11 +413,11 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      1,
+      2,
     );
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
+      findsOneWidget,
     );
   });
 
@@ -476,9 +472,9 @@ void main() {
     );
   });
 
-  testWidgets(
-    'history selection falls back to calculator when tab disappears',
-    (tester) async {
+  testWidgets('history tab remains visible when promos are hidden', (
+    tester,
+  ) async {
       final calculatorNotifier = FakeCalculatorNotifier();
       final gateway = FakePurchasesGateway(
         const PremiumState(
@@ -516,20 +512,20 @@ void main() {
 
       expect(
         find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-        findsNothing,
+        findsWidgets,
       );
       expect(
         tester
             .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
             .currentIndex,
-        0,
+        1,
       );
     },
   );
 
-  testWidgets(
-    'upgrading from teaser history unlocks full history immediately',
-    (tester) async {
+  testWidgets('free history starts in full mode and keeps export gated', (
+    tester,
+  ) async {
       final calculatorNotifier = FakeCalculatorNotifier();
       final gateway = FakePurchasesGateway(
         const PremiumState(
@@ -551,7 +547,7 @@ void main() {
 
       expect(
         find.byKey(const ValueKey<String>('history.teaser.state')),
-        findsOneWidget,
+        findsNothing,
       );
 
       gateway.emit(
@@ -564,10 +560,7 @@ void main() {
         find.byKey(const ValueKey<String>('history.teaser.state')),
         findsNothing,
       );
-      expect(
-        find.byKey(const ValueKey<String>('history.export.button')),
-        findsOneWidget,
-      );
+      expect(find.byKey(const ValueKey<String>('history.export.button')), findsOneWidget);
       expect(
         find.byKey(const ValueKey<String>('nav.history.pro.badge')),
         findsNothing,
@@ -600,7 +593,7 @@ void main() {
       tester
           .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
           .currentIndex,
-      1,
+      2,
     );
     final container = ProviderScope.containerOf(
       tester.element(find.byType(BottomNavigationBar)),
@@ -682,7 +675,7 @@ void main() {
 
     expect(
       find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
+      findsOneWidget,
     );
 
     await tester.tap(find.byIcon(Icons.help_outline));
