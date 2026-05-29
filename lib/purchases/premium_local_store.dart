@@ -1,5 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+typedef PremiumLocalStoreErrorHandler =
+    void Function(Object error, StackTrace stackTrace);
+
 abstract class PremiumLocalStore {
   String? readSync(String key);
 
@@ -37,15 +40,22 @@ class SecurePremiumLocalStore implements PremiumLocalStore {
 }
 
 class CachedPremiumLocalStore implements PremiumLocalStore {
-  CachedPremiumLocalStore(this._storage);
+  CachedPremiumLocalStore(this._storage, {PremiumLocalStoreErrorHandler? onError})
+    : _onError = onError;
 
   final FlutterSecureStorage _storage;
+  final PremiumLocalStoreErrorHandler? _onError;
   final Map<String, String> _cache = {};
 
   Future<void> preload() async {
-    _cache
-      ..clear()
-      ..addAll(await _storage.readAll());
+    try {
+      final values = await _storage.readAll();
+      _cache
+        ..clear()
+        ..addAll(values);
+    } catch (error, stackTrace) {
+      _onError?.call(error, stackTrace);
+    }
   }
 
   @override
@@ -57,13 +67,21 @@ class CachedPremiumLocalStore implements PremiumLocalStore {
   @override
   Future<void> write(String key, String value) async {
     _cache[key] = value;
-    await _storage.write(key: key, value: value);
+    try {
+      await _storage.write(key: key, value: value);
+    } catch (error, stackTrace) {
+      _onError?.call(error, stackTrace);
+    }
   }
 
   @override
   Future<void> delete(String key) async {
     _cache.remove(key);
-    await _storage.delete(key: key);
+    try {
+      await _storage.delete(key: key);
+    } catch (error, stackTrace) {
+      _onError?.call(error, stackTrace);
+    }
   }
 
   @override

@@ -49,6 +49,16 @@ Future<void> main() async {
   final prefs = await SharedPreferences.getInstance();
   final premiumLocalStore = CachedPremiumLocalStore(
     const FlutterSecureStorage(),
+    onError: (error, stackTrace) {
+      FlutterError.reportError(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stackTrace,
+          library: 'premium_local_store',
+          context: ErrorDescription('while reading secure premium local store'),
+        ),
+      );
+    },
   );
   await premiumLocalStore.preload();
   await migratePremiumLocalStore(
