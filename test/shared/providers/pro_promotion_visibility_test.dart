@@ -3,7 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

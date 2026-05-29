@@ -10,7 +10,7 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_results.
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
