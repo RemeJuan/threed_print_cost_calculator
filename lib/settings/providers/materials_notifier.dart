@@ -156,7 +156,9 @@ class MaterialsProvider extends Notifier<MaterialState> {
 
     if (dbRef == null) {
       final count = await _materialsRepository.count();
-      final access = ref.read(premiumAccessPolicyProvider).canCreateMaterial(count);
+      final access = ref
+          .read(premiumAccessPolicyProvider)
+          .canCreateMaterial(count);
       if (!access.allowed) {
         return null;
       }

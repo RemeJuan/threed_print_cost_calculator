@@ -152,7 +152,10 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setMarkupPercent(String value) {
-    if (!ref.read(premiumAccessPolicyProvider).advancedPricingConfig().allowed) {
+    if (!ref
+        .read(premiumAccessPolicyProvider)
+        .advancedPricingConfig()
+        .allowed) {
       return;
     }
     state = state.copyWith(
@@ -210,9 +213,9 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void addItem(BatchCostingItem item) {
-    final access = ref.read(premiumAccessPolicyProvider).canAddBatchItem(
-      state.items.length,
-    );
+    final access = ref
+        .read(premiumAccessPolicyProvider)
+        .canAddBatchItem(state.items.length);
     if (!access.allowed) {
       return;
     }

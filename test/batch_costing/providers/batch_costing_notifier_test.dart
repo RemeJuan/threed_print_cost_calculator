@@ -9,11 +9,13 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dar
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 
 ProviderContainer _createContainer() {
-  return ProviderContainer(overrides: [
-    premiumAccessPolicyProvider.overrideWithValue(
-      DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
-    ),
-  ]);
+  return ProviderContainer(
+    overrides: [
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+      ),
+    ],
+  );
 }
 
 void main() {

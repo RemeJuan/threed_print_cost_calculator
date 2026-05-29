@@ -62,7 +62,9 @@ class PrintersNotifier extends Notifier<PrinterState> {
 
     if (dbRef == null) {
       final count = await _printersRepository.count();
-      final access = ref.read(premiumAccessPolicyProvider).canCreatePrinter(count);
+      final access = ref
+          .read(premiumAccessPolicyProvider)
+          .canCreatePrinter(count);
       if (!access.allowed) {
         return false;
       }
