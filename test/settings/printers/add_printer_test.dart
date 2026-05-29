@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import '../settings_test_fakes.dart';
@@ -47,7 +49,12 @@ void main() {
     final repo = FakePrintersRepository();
     final db = await tester.pumpApp(
       _PrinterDialogHost(builder: (_) => const AddPrinter()),
-      [printersRepositoryProvider.overrideWithValue(repo)],
+      [
+        printersRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        ),
+      ],
     );
     addTearDown(db.close);
 

@@ -1,17 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import '../settings_test_fakes.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
+
+  Future<SharedPreferences> prefs() => SharedPreferences.getInstance();
+
   test('rejects invalid printer payloads before persistence', () async {
     final printersRepository = FakePrintersRepository();
     final container = ProviderContainer(
       overrides: [
         printersRepositoryProvider.overrideWithValue(printersRepository),
+        sharedPreferencesProvider.overrideWithValue(await prefs()),
+        isPremiumProvider.overrideWithValue(true),
       ],
     );
     addTearDown(container.dispose);
@@ -32,6 +42,8 @@ void main() {
     final container = ProviderContainer(
       overrides: [
         printersRepositoryProvider.overrideWithValue(printersRepository),
+        sharedPreferencesProvider.overrideWithValue(await prefs()),
+        isPremiumProvider.overrideWithValue(true),
       ],
     );
     addTearDown(container.dispose);
