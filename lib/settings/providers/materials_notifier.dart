@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
@@ -151,6 +152,14 @@ class MaterialsProvider extends Notifier<MaterialState> {
   Future<Object?> submit(String? dbRef) async {
     if (!isValidForSubmit) {
       return null;
+    }
+
+    if (dbRef == null) {
+      final count = await _materialsRepository.count();
+      final access = ref.read(premiumAccessPolicyProvider).canCreateMaterial(count);
+      if (!access.allowed) {
+        return null;
+      }
     }
 
     final existing = dbRef == null
