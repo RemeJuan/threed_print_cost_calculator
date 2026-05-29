@@ -54,7 +54,7 @@
 ## Materials
 
 - Main screens/widgets:
-  - `lib/materials/widgets/materials_page.dart` — premium tab, shared search bar, search/filter, swipe actions, delete/duplicate wiring
+  - `lib/materials/widgets/materials_page.dart` — premium tab, shared search bar, search/filter, swipe actions, delete/duplicate wiring; duplicate respects free-tier material cap
   - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
   - `lib/materials/csv_import/csv_import_page.dart`
@@ -64,7 +64,7 @@
   - **Tap**: opens MaterialForm for editing (primary action)
   - **Swipe left**: reveals Edit, Duplicate, Delete actions
     - **Edit**: opens MaterialForm for editing
-    - **Duplicate**: copies all material fields, appends localized "Duplicate" suffix to name, saves as new material, shows success snackbar
+    - **Duplicate**: copies all material fields, appends localized "Duplicate" suffix to name, saves as new material, shows success snackbar; blocked for free users already at the material cap
     - **Delete**: shows confirmation dialog; on confirm, removes material, clears stale calculator state if it was in use, shows success snackbar
   - One-time inline dismissible banner on first visit introduces swipe actions
   - Settings materials list (non-premium) uses `SettingsSlidableItem` with edit/delete swipe actions
@@ -86,7 +86,7 @@
   - `lib/materials/model/stock_status.dart`
 - Tests:
   - `test/materials/widgets/material_card_test.dart` — swipe reveals actions, edit/duplicate/delete callbacks, confirmation dialog
-  - `test/materials/widgets/materials_page_test.dart` — empty state, list rendering, FAB, duplicate wiring
+  - `test/materials/widgets/materials_page_test.dart` — empty state, list rendering, FAB, duplicate wiring, free-tier duplicate cap enforcement
   - `test/calculator/provider/material_selection_recalculation_test.dart` — clearUsagesForDeletedMaterial weight recompute and stale-defaults cleanup
   - `test/settings/materials/`
   - `test/settings/providers/materials_notifier_test.dart`
@@ -206,7 +206,7 @@
 ## Batch costing
 
 - Main screens/widgets:
-  - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals
+  - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals; manual add shows quota feedback instead of silently dropping capped free-tier items
   - `lib/batch_costing/batch_gcode_import_page.dart` — shell page for multi-file / single-file G-code import flow (447 LOC)
   - `lib/batch_costing/widgets/batch_gcode_import_body.dart` — body widget rendering file rows, single-import view, action buttons
   - `lib/batch_costing/widgets/batch_single_import_view.dart` — single-file import card with metadata + inline missing details form

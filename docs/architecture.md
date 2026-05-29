@@ -46,7 +46,7 @@
 - Premium state source of truth lives in `lib/purchases/premium_state_notifier.dart`.
 - `premiumStateProvider` subscribes to `RevenueCatPurchasesGateway.watchPremiumState()` and fetches initial state through `fetchPremiumState()`.
 - `PremiumAccessPolicy` centralizes promo visibility and feature/quota access decisions; `premiumAccessPolicyProvider` is the UI/service gate.
-- `premiumLocalStoreProvider` exposes encrypted local storage for premium/quota-sensitive keys.
+- `premiumLocalStoreProvider` exposes encrypted local storage for premium/quota-sensitive keys. Secure-store preload/write/delete failures are reported through Flutter error reporting but should not abort app startup.
 - Local test override path exists in `PremiumStateNotifier` using `PremiumLocalStore` and `lib/shared/test_tools/test_data_service.dart`.
 - App shell gating happens in `lib/app/app_page.dart`:
   - Materials tab only renders when `isPremium`.
