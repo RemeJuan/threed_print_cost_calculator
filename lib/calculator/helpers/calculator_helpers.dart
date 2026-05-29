@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 
 final calculatorHelpersProvider = Provider<CalculatorHelpers>(
   CalculatorHelpers.new,
@@ -69,6 +70,13 @@ class CalculatorHelpers {
     required String errorMessage,
     required String successMessage,
   }) async {
+    final count = await ref.read(historyRepositoryProvider).countHistory();
+    final access = ref.read(premiumAccessPolicyProvider).canSaveHistoryItem(count);
+    if (!access.allowed) {
+      BotToast.showText(text: errorMessage);
+      return;
+    }
+
     try {
       await ref.read(historyRepositoryProvider).saveHistory(value);
     } catch (e) {
