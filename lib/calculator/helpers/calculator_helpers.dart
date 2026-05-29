@@ -6,7 +6,10 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 
 final calculatorHelpersProvider = Provider<CalculatorHelpers>(
   CalculatorHelpers.new,
@@ -71,9 +74,19 @@ class CalculatorHelpers {
     required String successMessage,
   }) async {
     final count = await ref.read(historyRepositoryProvider).countHistory();
-    final access = ref.read(premiumAccessPolicyProvider).canSaveHistoryItem(count);
+    final access = ref
+        .read(premiumAccessPolicyProvider)
+        .canSaveHistoryItem(count);
     if (!access.allowed) {
-      BotToast.showText(text: errorMessage);
+      await requirePremium(
+        ref.read(paywallPresenterProvider),
+        FeatureAccess(
+          allowed: access.allowed,
+          feature: PremiumFeature.saveToHistory,
+          denyReason: access.denyReason,
+        ),
+        purchaseSource: 'save_history',
+      );
       return;
     }
 
