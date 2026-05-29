@@ -5,6 +5,7 @@ enum PremiumFeature {
   historyExport,
   gcodeImport,
   batchCosting,
+  batchExport,
   labourPricing,
   riskPricing,
   advancedPricingConfig,
@@ -22,6 +23,7 @@ enum UpsellSurface {
   historyExport,
   gcodeImport,
   batchCosting,
+  batchExport,
   labourPricing,
   riskPricing,
   advancedPricingConfig,
@@ -94,8 +96,8 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
   DefaultPremiumAccessPolicy({
     required bool isPremium,
     required bool hideProPromotions,
-  })  : _isPremium = isPremium,
-        _hideProPromotions = hideProPromotions;
+  }) : _isPremium = isPremium,
+       _hideProPromotions = hideProPromotions;
 
   final bool _isPremium;
   final bool _hideProPromotions;
@@ -144,11 +146,10 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
   FeatureAccess gcodeImport() => _premiumFeature(PremiumFeature.gcodeImport);
 
   @override
-  FeatureAccess batchCosting() =>
-      _premiumFeature(PremiumFeature.batchCosting);
+  FeatureAccess batchCosting() => _premiumFeature(PremiumFeature.batchCosting);
 
   @override
-  FeatureAccess batchExport() => _premiumFeature(PremiumFeature.batchCosting);
+  FeatureAccess batchExport() => _premiumFeature(PremiumFeature.batchExport);
 
   @override
   FeatureAccess labourPricing() =>
@@ -178,32 +179,20 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       _premiumFeature(PremiumFeature.stockTracking);
 
   @override
-  QuotaAccess canCreateMaterial(int currentCount) => QuotaAccess(
-    allowed: _isPremium,
-    limit: null,
-    currentCount: currentCount,
-  );
+  QuotaAccess canCreateMaterial(int currentCount) =>
+      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
 
   @override
-  QuotaAccess canCreatePrinter(int currentCount) => QuotaAccess(
-    allowed: _isPremium,
-    limit: null,
-    currentCount: currentCount,
-  );
+  QuotaAccess canCreatePrinter(int currentCount) =>
+      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
 
   @override
-  QuotaAccess canSaveHistoryItem(int currentCount) => QuotaAccess(
-    allowed: _isPremium,
-    limit: null,
-    currentCount: currentCount,
-  );
+  QuotaAccess canSaveHistoryItem(int currentCount) =>
+      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
 
   @override
-  QuotaAccess canAddBatchItem(int currentCount) => QuotaAccess(
-    allowed: _isPremium,
-    limit: null,
-    currentCount: currentCount,
-  );
+  QuotaAccess canAddBatchItem(int currentCount) =>
+      QuotaAccess(allowed: _isPremium, limit: null, currentCount: currentCount);
 
   FeatureAccess _premiumFeature(PremiumFeature feature) {
     return FeatureAccess(
@@ -222,6 +211,7 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       PremiumFeature.historyExport => UpsellSurface.historyExport,
       PremiumFeature.gcodeImport => UpsellSurface.gcodeImport,
       PremiumFeature.batchCosting => UpsellSurface.batchCosting,
+      PremiumFeature.batchExport => UpsellSurface.batchExport,
       PremiumFeature.labourPricing => UpsellSurface.labourPricing,
       PremiumFeature.riskPricing => UpsellSurface.riskPricing,
       PremiumFeature.advancedPricingConfig =>
