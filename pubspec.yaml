@@ -45,6 +45,7 @@ dependencies:
   update_available: 3.2.1
   hugeicons: ^1.1.7
   excel: ^4.0.6
+  flutter_secure_storage: ^10.3.1
 
 dev_dependencies:
   bloc_test: 10.0.0
