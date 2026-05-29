@@ -191,27 +191,27 @@ void main() {
         ),
       );
 
-      await pumpAppPage(tester, freeGateway, calculatorNotifier);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
+    await pumpAppPage(tester, freeGateway, calculatorNotifier);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
-      expect(
-        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-        findsOneWidget,
-      );
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+      findsOneWidget,
+    );
 
-      final container = ProviderScope.containerOf(
-        tester.element(find.byType(BottomNavigationBar)),
-      );
-      await container
-          .read(hideProPromotionsProvider.notifier)
-          .setHideProPromotions(true);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(BottomNavigationBar)),
+    );
+    await container
+        .read(hideProPromotionsProvider.notifier)
+        .setHideProPromotions(true);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
       expect(
         find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
@@ -484,31 +484,29 @@ void main() {
         ),
       );
 
-      await pumpAppPage(tester, gateway, calculatorNotifier);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
-      await tester.tap(
-        find.byKey(const ValueKey<String>('nav.history.button')),
-      );
-      await tester.pump(const Duration(milliseconds: 600));
-      await tester.pump();
+    await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pump();
 
-      expect(
-        tester
-            .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
-            .currentIndex,
-        1,
-      );
+    expect(
+      tester
+          .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
+          .currentIndex,
+      1,
+    );
 
-      final container = ProviderScope.containerOf(
-        tester.element(find.byType(BottomNavigationBar)),
-      );
-      await container
-          .read(hideProPromotionsProvider.notifier)
-          .setHideProPromotions(true);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(BottomNavigationBar)),
+    );
+    await container
+        .read(hideProPromotionsProvider.notifier)
+        .setHideProPromotions(true);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
       expect(
         find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
@@ -535,26 +533,24 @@ void main() {
         ),
       );
 
-      await pumpAppPage(tester, gateway, calculatorNotifier);
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
-      await tester.tap(
-        find.byKey(const ValueKey<String>('nav.history.button')),
-      );
-      await tester.pump(const Duration(milliseconds: 600));
-      await tester.pump();
+    await tester.tap(find.byKey(const ValueKey<String>('nav.history.button')));
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pump();
 
       expect(
         find.byKey(const ValueKey<String>('history.teaser.state')),
         findsNothing,
       );
 
-      gateway.emit(
-        const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
-      );
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 600));
+    gateway.emit(
+      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
 
       expect(
         find.byKey(const ValueKey<String>('history.teaser.state')),
