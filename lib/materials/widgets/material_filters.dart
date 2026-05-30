@@ -15,7 +15,10 @@ class MaterialFilters extends ConsumerWidget {
     final types = ref.watch(materialTypesProvider).toList()..sort();
     final selectedType = ref.watch(materialsTypeFilterProvider);
     final selectedStock = ref.watch(materialsStockFilterProvider);
-    final stockTrackingAllowed = ref.watch(premiumAccessPolicyProvider).stockTracking().allowed;
+    final stockTrackingAllowed = ref
+        .watch(premiumAccessPolicyProvider)
+        .stockTracking()
+        .allowed;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

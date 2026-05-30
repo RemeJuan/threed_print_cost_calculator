@@ -31,7 +31,10 @@ class MaterialCard extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
-    final stockTrackingAllowed = ref.watch(premiumAccessPolicyProvider).stockTracking().allowed;
+    final stockTrackingAllowed = ref
+        .watch(premiumAccessPolicyProvider)
+        .stockTracking()
+        .allowed;
 
     final swatchColor = colorFromMaterial(
       MaterialColorInput(
