@@ -383,6 +383,19 @@ class AppAnalytics {
     );
   }
 
+  static Future<void> restoreCompleted({
+    String source = 'custom_paywall',
+    String defaultEntryPoint = 'manual',
+  }) {
+    return log(
+      'restore_completed',
+      params: {
+        'source': source,
+        'entry_point': _entryPointValue(defaultValue: defaultEntryPoint),
+      },
+    );
+  }
+
   /// Locked premium feature tapped
   static Future<void> premiumFeatureTapped(
     String feature, {

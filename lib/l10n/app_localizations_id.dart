@@ -1576,102 +1576,228 @@ class AppLocalizationsId extends AppLocalizations {
   String get previewCustomPaywallButton => 'Preview custom paywall';
 
   @override
-  String get paywallTitle => 'Upgrade to Premium';
+  String get paywallTitle => 'Buka Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'Material tanpa batas, printer tanpa batas, ekspor batch, harga lanjutan';
 
   @override
   String get paywallSubtitle =>
-      'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.';
-
-  @override
-  String get paywallComparisonHeader => 'Everything you get';
-
-  @override
-  String get paywallPackagesHeader => 'Choose your plan';
+      'Buka semua fitur dengan pembelian satu kali atau langganan. Tanpa akun, tanpa pelacakan, hanya data Anda di perangkat Anda.';
 
   @override
   String get paywallOfferingError =>
-      'Could not load packages. Check your connection and try again.';
+      'Tidak dapat memuat paket. Periksa koneksi Anda dan coba lagi.';
 
   @override
-  String get paywallCta => 'Unlock Premium';
+  String get paywallCta => 'Buka Premium';
 
   @override
-  String get paywallRestore => 'Restore Purchases';
+  String get paywallRestore => 'Pulihkan Pembelian';
 
   @override
-  String get paywallFeatureMaterialsTitle => 'Unlimited materials';
+  String get paywallRowPrintersLabel => 'Printer';
+
+  @override
+  String get paywallRowMaterialsLabel => 'Material';
+
+  @override
+  String get paywallRowHistoryLabel => 'Simpanan riwayat';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'Penetapan biaya batch';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'Harga lanjutan';
+
+  @override
+  String get paywallRowExportToolsLabel => 'Alat ekspor';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'Pelacakan stok';
+
+  @override
+  String get paywallValueUnlimited => 'Tanpa batas';
+
+  @override
+  String get paywallValueYes => 'Ya';
+
+  @override
+  String get paywallValueNo => 'Tidak';
+
+  @override
+  String get paywallValueBasic => 'Dasar';
+
+  @override
+  String get paywallValueFull => 'Penuh';
+
+  @override
+  String get paywallValueSingleJob => 'Satu pekerjaan';
+
+  @override
+  String get paywallValueFullSuite => 'Paket lengkap';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'Hingga $limit model';
+  }
+
+  @override
+  String get paywallBestValue => 'Nilai terbaik';
+
+  @override
+  String get paywallPlanMonthly => 'Bulanan';
+
+  @override
+  String get paywallPlanQuarterly => 'Triwulanan';
+
+  @override
+  String get paywallPlanAnnual => 'Tahunan';
+
+  @override
+  String get paywallPlanLifetime => 'Seumur hidup';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / bulan';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 bulan';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / tahun';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price sekali';
+  }
+
+  @override
+  String get paywallPlanTrial => 'Uji coba gratis 7 hari';
+
+  @override
+  String get paywallPlanCancelAnytime => 'Batalkan kapan saja';
+
+  @override
+  String get paywallPlanOwnForever => 'Miliki Premium selamanya';
+
+  @override
+  String get paywallTrustLine => 'Utamakan offline • Tanpa akun';
+
+  @override
+  String get paywallCtaAnnualTrial => 'Mulai uji coba gratis 7 hari';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'Upgrade seharga $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'Buka Premium seharga $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'Upgrade seharga $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return '$limit penyimpanan';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'Material tanpa batas';
 
   @override
   String get paywallFeatureMaterialsDesc =>
-      'Save and manage unlimited filament spools and materials.';
+      'Simpan dan kelola spool filamen dan material tanpa batas.';
 
   @override
-  String get paywallFeaturePrintersTitle => 'Unlimited printers';
+  String get paywallFeaturePrintersTitle => 'Printer tanpa batas';
 
   @override
   String get paywallFeaturePrintersDesc =>
-      'Create and manage unlimited printer profiles.';
+      'Buat dan kelola profil printer tanpa batas.';
 
   @override
-  String get paywallFeatureHistoryExportTitle => 'History export';
+  String get paywallFeatureHistoryExportTitle => 'Ekspor riwayat';
 
   @override
   String get paywallFeatureHistoryExportDesc =>
-      'Export individual history entries to CSV.';
+      'Ekspor entri riwayat individual ke CSV.';
 
   @override
-  String get paywallFeatureBulkHistoryExportTitle => 'Bulk history export';
+  String get paywallFeatureBulkHistoryExportTitle => 'Ekspor riwayat massal';
 
   @override
   String get paywallFeatureBulkHistoryExportDesc =>
-      'Export all history at once to CSV.';
+      'Ekspor semua riwayat sekaligus ke CSV.';
 
   @override
-  String get paywallFeatureBatchGcodeImportTitle => 'Batch G-code import';
+  String get paywallFeatureBatchGcodeImportTitle => 'Impor G-code batch';
 
   @override
   String get paywallFeatureBatchGcodeImportDesc =>
-      'Import multiple G-code files at once for batch costing.';
+      'Impor beberapa file G-code sekaligus untuk penetapan biaya batch.';
 
   @override
-  String get paywallFeatureBatchExportTitle => 'Batch export';
+  String get paywallFeatureBatchExportTitle => 'Ekspor batch';
 
   @override
   String get paywallFeatureBatchExportDesc =>
-      'Export batch quotes and summaries.';
+      'Ekspor penawaran batch dan ringkasan.';
 
   @override
-  String get paywallFeatureLabourPricingTitle => 'Labour pricing';
+  String get paywallFeatureLabourPricingTitle => 'Harga tenaga kerja';
 
   @override
   String get paywallFeatureLabourPricingDesc =>
-      'Add hourly labour rates to cost calculations.';
+      'Tambahkan tarif tenaga kerja per jam ke perhitungan biaya.';
 
   @override
-  String get paywallFeatureRiskPricingTitle => 'Risk pricing';
+  String get paywallFeatureRiskPricingTitle => 'Harga risiko';
 
   @override
   String get paywallFeatureRiskPricingDesc =>
-      'Factor failure risk into pricing automatically.';
+      'Masukkan risiko kegagalan ke harga secara otomatis.';
 
   @override
-  String get paywallFeatureAdvancedPricingConfigTitle => 'Advanced pricing';
+  String get paywallFeatureAdvancedPricingConfigTitle => 'Harga lanjutan';
 
   @override
   String get paywallFeatureAdvancedPricingConfigDesc =>
-      'Configure markup, setup fees, and rounding.';
+      'Atur markup, biaya penyiapan, dan pembulatan.';
 
   @override
-  String get paywallFeatureCsvMaterialImportTitle => 'CSV material import';
+  String get paywallFeatureCsvMaterialImportTitle => 'Impor material CSV';
 
   @override
   String get paywallFeatureCsvMaterialImportDesc =>
-      'Import materials in bulk from CSV files.';
+      'Impor material secara massal dari file CSV.';
 
   @override
-  String get paywallFeatureStockTrackingTitle => 'Stock tracking';
+  String get paywallFeatureStockTrackingTitle => 'Pelacakan stok';
 
   @override
   String get paywallFeatureStockTrackingDesc =>
-      'Track filament stock and get low-stock alerts.';
+      'Lacak stok filamen dan dapatkan peringatan stok rendah.';
+
+  @override
+  String get paywallRestoreSuccess => 'Pembelian berhasil dipulihkan.';
+
+  @override
+  String get paywallRestoreError =>
+      'Gagal memulihkan pembelian. Silakan coba lagi nanti.';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'Saat ini tidak ada paket langganan yang tersedia. Silakan coba lagi nanti.';
 }

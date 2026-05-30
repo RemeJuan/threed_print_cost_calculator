@@ -21,6 +21,7 @@ import 'package:threed_print_cost_calculator/settings/providers/materials_notifi
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
 
 import 'package:threed_print_cost_calculator/purchases/cancel_feedback_sheet.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_screen.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/enable_premium_code_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_confirmation_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -129,6 +130,12 @@ class _SettingsVersionTapTargetState
         break;
       case TestDataAction.showWhatsNew:
         await _showWhatsNewDialog(container: container);
+        break;
+      case TestDataAction.previewCustomPaywall:
+        if (!mounted) return;
+        await Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const PaywallScreen()));
         break;
     }
   }

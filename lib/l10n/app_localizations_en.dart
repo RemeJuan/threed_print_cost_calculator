@@ -1586,27 +1586,142 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previewCustomPaywallButton => 'Preview custom paywall';
 
   @override
-  String get paywallTitle => 'Upgrade to Premium';
+  String get paywallTitle => 'Unlock Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'Unlimited materials, unlimited printers, batch export, advanced pricing';
 
   @override
   String get paywallSubtitle =>
-      'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.';
-
-  @override
-  String get paywallComparisonHeader => 'Everything you get';
-
-  @override
-  String get paywallPackagesHeader => 'Choose your plan';
+      'Scale your print quoting with unlimited capacity, business pricing, and inventory control.';
 
   @override
   String get paywallOfferingError =>
       'Could not load packages. Check your connection and try again.';
 
   @override
-  String get paywallCta => 'Unlock Premium';
+  String get paywallCta => 'Upgrade to Premium';
 
   @override
   String get paywallRestore => 'Restore Purchases';
+
+  @override
+  String get paywallRowPrintersLabel => 'Printers';
+
+  @override
+  String get paywallRowMaterialsLabel => 'Materials';
+
+  @override
+  String get paywallRowHistoryLabel => 'History saves';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'Batch costing';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'Advanced pricing';
+
+  @override
+  String get paywallRowExportToolsLabel => 'Export tools';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'Inventory tracking';
+
+  @override
+  String get paywallValueUnlimited => 'Unlimited';
+
+  @override
+  String get paywallValueYes => 'Yes';
+
+  @override
+  String get paywallValueNo => 'No';
+
+  @override
+  String get paywallValueBasic => 'Basic';
+
+  @override
+  String get paywallValueFull => 'Full';
+
+  @override
+  String get paywallValueSingleJob => 'Single job';
+
+  @override
+  String get paywallValueFullSuite => 'Full suite';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'Up to $limit models';
+  }
+
+  @override
+  String get paywallBestValue => 'Best value';
+
+  @override
+  String get paywallPlanMonthly => 'Monthly';
+
+  @override
+  String get paywallPlanQuarterly => 'Quarterly';
+
+  @override
+  String get paywallPlanAnnual => 'Annual';
+
+  @override
+  String get paywallPlanLifetime => 'Lifetime';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / month';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 months';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / year';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price once';
+  }
+
+  @override
+  String get paywallPlanTrial => '7-day free trial';
+
+  @override
+  String get paywallPlanCancelAnytime => 'Cancel anytime';
+
+  @override
+  String get paywallPlanOwnForever => 'Own Premium forever';
+
+  @override
+  String get paywallTrustLine => 'Offline first • No account required';
+
+  @override
+  String get paywallCtaAnnualTrial => 'Start 7-Day Free Trial';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'Upgrade for $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'Unlock Premium for $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'Upgrade for $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return '$limit saves';
+  }
 
   @override
   String get paywallFeatureMaterialsTitle => 'Unlimited materials';
@@ -1684,4 +1799,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get paywallFeatureStockTrackingDesc =>
       'Track filament stock and get low-stock alerts.';
+
+  @override
+  String get paywallRestoreSuccess => 'Purchases restored successfully.';
+
+  @override
+  String get paywallRestoreError =>
+      'Failed to restore purchases. Please try again later.';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'No subscription plans are currently available. Please try again later.';
 }

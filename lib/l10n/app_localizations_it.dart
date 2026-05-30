@@ -1612,102 +1612,230 @@ class AppLocalizationsIt extends AppLocalizations {
   String get previewCustomPaywallButton => 'Preview custom paywall';
 
   @override
-  String get paywallTitle => 'Upgrade to Premium';
+  String get paywallTitle => 'Sblocca Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'Materiali illimitati, stampanti illimitate, esportazione batch, prezzi avanzati';
 
   @override
   String get paywallSubtitle =>
-      'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.';
-
-  @override
-  String get paywallComparisonHeader => 'Everything you get';
-
-  @override
-  String get paywallPackagesHeader => 'Choose your plan';
+      'Sblocca tutte le funzionalità con un acquisto una tantum o un abbonamento. Nessun account, nessun tracciamento, solo i tuoi dati sul tuo dispositivo.';
 
   @override
   String get paywallOfferingError =>
-      'Could not load packages. Check your connection and try again.';
+      'Impossibile caricare i pacchetti. Controlla la connessione e riprova.';
 
   @override
-  String get paywallCta => 'Unlock Premium';
+  String get paywallCta => 'Sblocca Premium';
 
   @override
-  String get paywallRestore => 'Restore Purchases';
+  String get paywallRestore => 'Ripristina acquisti';
 
   @override
-  String get paywallFeatureMaterialsTitle => 'Unlimited materials';
+  String get paywallRowPrintersLabel => 'Stampanti';
+
+  @override
+  String get paywallRowMaterialsLabel => 'Materiali';
+
+  @override
+  String get paywallRowHistoryLabel => 'Salvataggi cronologia';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'Calcolo batch';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'Prezzi avanzati';
+
+  @override
+  String get paywallRowExportToolsLabel => 'Strumenti di esportazione';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'Tracciamento inventario';
+
+  @override
+  String get paywallValueUnlimited => 'Illimitati';
+
+  @override
+  String get paywallValueYes => 'Sì';
+
+  @override
+  String get paywallValueNo => 'No';
+
+  @override
+  String get paywallValueBasic => 'Base';
+
+  @override
+  String get paywallValueFull => 'Completo';
+
+  @override
+  String get paywallValueSingleJob => 'Lavoro singolo';
+
+  @override
+  String get paywallValueFullSuite => 'Suite completa';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'Fino a $limit modelli';
+  }
+
+  @override
+  String get paywallBestValue => 'Miglior valore';
+
+  @override
+  String get paywallPlanMonthly => 'Mensile';
+
+  @override
+  String get paywallPlanQuarterly => 'Trimestrale';
+
+  @override
+  String get paywallPlanAnnual => 'Annuale';
+
+  @override
+  String get paywallPlanLifetime => 'A vita';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / mese';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 mesi';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / anno';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price una volta';
+  }
+
+  @override
+  String get paywallPlanTrial => 'Prova gratuita di 7 giorni';
+
+  @override
+  String get paywallPlanCancelAnytime => 'Annulla in qualsiasi momento';
+
+  @override
+  String get paywallPlanOwnForever => 'Premium per sempre';
+
+  @override
+  String get paywallTrustLine => 'Prima offline • Nessun account richiesto';
+
+  @override
+  String get paywallCtaAnnualTrial => 'Inizia la prova gratuita di 7 giorni';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'Aggiorna per $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'Sblocca Premium per $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'Aggiorna per $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return '$limit salvataggi';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'Materiali illimitati';
 
   @override
   String get paywallFeatureMaterialsDesc =>
-      'Save and manage unlimited filament spools and materials.';
+      'Salva e gestisci bobine di filamento e materiali illimitati.';
 
   @override
-  String get paywallFeaturePrintersTitle => 'Unlimited printers';
+  String get paywallFeaturePrintersTitle => 'Stampanti illimitate';
 
   @override
   String get paywallFeaturePrintersDesc =>
-      'Create and manage unlimited printer profiles.';
+      'Crea e gestisci profili stampante illimitati.';
 
   @override
-  String get paywallFeatureHistoryExportTitle => 'History export';
+  String get paywallFeatureHistoryExportTitle => 'Esportazione cronologia';
 
   @override
   String get paywallFeatureHistoryExportDesc =>
-      'Export individual history entries to CSV.';
+      'Esporta singole voci della cronologia in CSV.';
 
   @override
-  String get paywallFeatureBulkHistoryExportTitle => 'Bulk history export';
+  String get paywallFeatureBulkHistoryExportTitle =>
+      'Esportazione massiva della cronologia';
 
   @override
   String get paywallFeatureBulkHistoryExportDesc =>
-      'Export all history at once to CSV.';
+      'Esporta tutta la cronologia in una volta in CSV.';
 
   @override
-  String get paywallFeatureBatchGcodeImportTitle => 'Batch G-code import';
+  String get paywallFeatureBatchGcodeImportTitle => 'Importazione batch G-code';
 
   @override
   String get paywallFeatureBatchGcodeImportDesc =>
-      'Import multiple G-code files at once for batch costing.';
+      'Importa più file G-code in una volta per il calcolo batch.';
 
   @override
-  String get paywallFeatureBatchExportTitle => 'Batch export';
+  String get paywallFeatureBatchExportTitle => 'Esportazione batch';
 
   @override
   String get paywallFeatureBatchExportDesc =>
-      'Export batch quotes and summaries.';
+      'Esporta preventivi batch e riepiloghi.';
 
   @override
-  String get paywallFeatureLabourPricingTitle => 'Labour pricing';
+  String get paywallFeatureLabourPricingTitle => 'Prezzi della manodopera';
 
   @override
   String get paywallFeatureLabourPricingDesc =>
-      'Add hourly labour rates to cost calculations.';
+      'Aggiungi tariffe orarie di manodopera ai calcoli dei costi.';
 
   @override
-  String get paywallFeatureRiskPricingTitle => 'Risk pricing';
+  String get paywallFeatureRiskPricingTitle => 'Prezzi del rischio';
 
   @override
   String get paywallFeatureRiskPricingDesc =>
-      'Factor failure risk into pricing automatically.';
+      'Includi automaticamente il rischio di errore nei prezzi.';
 
   @override
-  String get paywallFeatureAdvancedPricingConfigTitle => 'Advanced pricing';
+  String get paywallFeatureAdvancedPricingConfigTitle => 'Prezzi avanzati';
 
   @override
   String get paywallFeatureAdvancedPricingConfigDesc =>
-      'Configure markup, setup fees, and rounding.';
+      'Configura ricarico, costi di configurazione e arrotondamento.';
 
   @override
-  String get paywallFeatureCsvMaterialImportTitle => 'CSV material import';
+  String get paywallFeatureCsvMaterialImportTitle =>
+      'Importazione materiali CSV';
 
   @override
   String get paywallFeatureCsvMaterialImportDesc =>
-      'Import materials in bulk from CSV files.';
+      'Importa materiali in blocco da file CSV.';
 
   @override
-  String get paywallFeatureStockTrackingTitle => 'Stock tracking';
+  String get paywallFeatureStockTrackingTitle => 'Tracciamento scorte';
 
   @override
   String get paywallFeatureStockTrackingDesc =>
-      'Track filament stock and get low-stock alerts.';
+      'Tieni traccia delle scorte di filamento e ricevi avvisi di scorta bassa.';
+
+  @override
+  String get paywallRestoreSuccess => 'Acquisti ripristinati con successo.';
+
+  @override
+  String get paywallRestoreError =>
+      'Impossibile ripristinare gli acquisti. Riprova più tardi.';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'Al momento non sono disponibili piani di abbonamento. Riprova più tardi.';
 }

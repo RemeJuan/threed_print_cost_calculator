@@ -1541,102 +1541,215 @@ class AppLocalizationsJa extends AppLocalizations {
   String get previewCustomPaywallButton => 'Preview custom paywall';
 
   @override
-  String get paywallTitle => 'Upgrade to Premium';
+  String get paywallTitle => 'Premiumをアンロック';
+
+  @override
+  String get paywallPitchLine => '素材無制限、プリンター無制限、バッチエクスポート、高度な価格設定';
 
   @override
   String get paywallSubtitle =>
-      'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.';
+      '1回限りの購入またはサブスクリプションで、すべての機能をアンロック。アカウント不要、追跡なし、データは端末内だけ。';
 
   @override
-  String get paywallComparisonHeader => 'Everything you get';
+  String get paywallOfferingError => 'パッケージを読み込めませんでした。接続を確認して、もう一度お試しください。';
 
   @override
-  String get paywallPackagesHeader => 'Choose your plan';
+  String get paywallCta => 'Premiumをアンロック';
 
   @override
-  String get paywallOfferingError =>
-      'Could not load packages. Check your connection and try again.';
+  String get paywallRestore => '購入を復元';
 
   @override
-  String get paywallCta => 'Unlock Premium';
+  String get paywallRowPrintersLabel => 'プリンター';
 
   @override
-  String get paywallRestore => 'Restore Purchases';
+  String get paywallRowMaterialsLabel => '素材';
 
   @override
-  String get paywallFeatureMaterialsTitle => 'Unlimited materials';
+  String get paywallRowHistoryLabel => '履歴保存';
 
   @override
-  String get paywallFeatureMaterialsDesc =>
-      'Save and manage unlimited filament spools and materials.';
+  String get paywallRowBatchCostingLabel => 'バッチコスト計算';
 
   @override
-  String get paywallFeaturePrintersTitle => 'Unlimited printers';
+  String get paywallRowAdvancedPricingLabel => '高度な価格設定';
 
   @override
-  String get paywallFeaturePrintersDesc =>
-      'Create and manage unlimited printer profiles.';
+  String get paywallRowExportToolsLabel => 'エクスポート機能';
 
   @override
-  String get paywallFeatureHistoryExportTitle => 'History export';
+  String get paywallRowInventoryTrackingLabel => '在庫追跡';
 
   @override
-  String get paywallFeatureHistoryExportDesc =>
-      'Export individual history entries to CSV.';
+  String get paywallValueUnlimited => '無制限';
 
   @override
-  String get paywallFeatureBulkHistoryExportTitle => 'Bulk history export';
+  String get paywallValueYes => 'はい';
 
   @override
-  String get paywallFeatureBulkHistoryExportDesc =>
-      'Export all history at once to CSV.';
+  String get paywallValueNo => 'いいえ';
 
   @override
-  String get paywallFeatureBatchGcodeImportTitle => 'Batch G-code import';
+  String get paywallValueBasic => '基本';
+
+  @override
+  String get paywallValueFull => '完全';
+
+  @override
+  String get paywallValueSingleJob => '単一ジョブ';
+
+  @override
+  String get paywallValueFullSuite => 'フルスイート';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return '$limitモデルまで';
+  }
+
+  @override
+  String get paywallBestValue => '最もお得';
+
+  @override
+  String get paywallPlanMonthly => '月額';
+
+  @override
+  String get paywallPlanQuarterly => '四半期';
+
+  @override
+  String get paywallPlanAnnual => '年額';
+
+  @override
+  String get paywallPlanLifetime => '永久';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / 月';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3か月';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / 年';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price 買い切り';
+  }
+
+  @override
+  String get paywallPlanTrial => '7日間無料トライアル';
+
+  @override
+  String get paywallPlanCancelAnytime => 'いつでも解約可能';
+
+  @override
+  String get paywallPlanOwnForever => 'Premiumをずっと利用';
+
+  @override
+  String get paywallTrustLine => 'オフライン優先 • アカウント不要';
+
+  @override
+  String get paywallCtaAnnualTrial => '7日間の無料トライアルを開始';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return '$priceでアップグレード';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return '$priceでPremiumをアンロック';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return '$priceでアップグレード';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return '$limit件保存';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => '素材無制限';
+
+  @override
+  String get paywallFeatureMaterialsDesc => '無制限のフィラメントスプールと素材を保存・管理できます。';
+
+  @override
+  String get paywallFeaturePrintersTitle => 'プリンター無制限';
+
+  @override
+  String get paywallFeaturePrintersDesc => '無制限のプリンタープロファイルを作成・管理できます。';
+
+  @override
+  String get paywallFeatureHistoryExportTitle => '履歴エクスポート';
+
+  @override
+  String get paywallFeatureHistoryExportDesc => '個別の履歴項目をCSVにエクスポートできます。';
+
+  @override
+  String get paywallFeatureBulkHistoryExportTitle => '一括履歴エクスポート';
+
+  @override
+  String get paywallFeatureBulkHistoryExportDesc => 'すべての履歴を一度にCSVへエクスポートできます。';
+
+  @override
+  String get paywallFeatureBatchGcodeImportTitle => 'バッチG-codeインポート';
 
   @override
   String get paywallFeatureBatchGcodeImportDesc =>
-      'Import multiple G-code files at once for batch costing.';
+      '複数のG-codeファイルを一度にインポートして、バッチコスト計算に使えます。';
 
   @override
-  String get paywallFeatureBatchExportTitle => 'Batch export';
+  String get paywallFeatureBatchExportTitle => 'バッチエクスポート';
 
   @override
-  String get paywallFeatureBatchExportDesc =>
-      'Export batch quotes and summaries.';
+  String get paywallFeatureBatchExportDesc => 'バッチ見積もりと概要をエクスポートできます。';
 
   @override
-  String get paywallFeatureLabourPricingTitle => 'Labour pricing';
+  String get paywallFeatureLabourPricingTitle => '人件費価格設定';
 
   @override
-  String get paywallFeatureLabourPricingDesc =>
-      'Add hourly labour rates to cost calculations.';
+  String get paywallFeatureLabourPricingDesc => '時間あたりの人件費をコスト計算に追加できます。';
 
   @override
-  String get paywallFeatureRiskPricingTitle => 'Risk pricing';
+  String get paywallFeatureRiskPricingTitle => 'リスク価格設定';
 
   @override
-  String get paywallFeatureRiskPricingDesc =>
-      'Factor failure risk into pricing automatically.';
+  String get paywallFeatureRiskPricingDesc => '失敗リスクを価格設定に自動で反映します。';
 
   @override
-  String get paywallFeatureAdvancedPricingConfigTitle => 'Advanced pricing';
+  String get paywallFeatureAdvancedPricingConfigTitle => '高度な価格設定';
 
   @override
-  String get paywallFeatureAdvancedPricingConfigDesc =>
-      'Configure markup, setup fees, and rounding.';
+  String get paywallFeatureAdvancedPricingConfigDesc => '上乗せ率、設定料、端数処理を設定できます。';
 
   @override
-  String get paywallFeatureCsvMaterialImportTitle => 'CSV material import';
+  String get paywallFeatureCsvMaterialImportTitle => 'CSV素材インポート';
 
   @override
-  String get paywallFeatureCsvMaterialImportDesc =>
-      'Import materials in bulk from CSV files.';
+  String get paywallFeatureCsvMaterialImportDesc => 'CSVファイルから素材を一括インポートできます。';
 
   @override
-  String get paywallFeatureStockTrackingTitle => 'Stock tracking';
+  String get paywallFeatureStockTrackingTitle => '在庫追跡';
 
   @override
-  String get paywallFeatureStockTrackingDesc =>
-      'Track filament stock and get low-stock alerts.';
+  String get paywallFeatureStockTrackingDesc => 'フィラメント在庫を追跡し、在庫低下アラートを受け取れます。';
+
+  @override
+  String get paywallRestoreSuccess => '購入を正常に復元しました。';
+
+  @override
+  String get paywallRestoreError => '購入を復元できませんでした。後でもう一度お試しください。';
+
+  @override
+  String get paywallEmptyOfferings =>
+      '現在利用できるサブスクリプションプランはありません。後でもう一度お試しください。';
 }

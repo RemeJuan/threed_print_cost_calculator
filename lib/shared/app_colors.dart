@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // Core brand colors retained from the original palette.
 const DARK_BLUE = Color(0xFF1A1C2B);
 const DEEP_BLUE = Color(0xFF0D0D17);
-const LIGHT_BLUE = Color(0xFF5499FE);
+const LIGHT_BLUE = Color(0xFF4485F1);
 
 // UI refresh surface system.
 const APP_BACKGROUND = Color(0xFF010710);

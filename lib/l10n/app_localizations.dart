@@ -2954,26 +2954,20 @@ abstract class AppLocalizations {
   /// No description provided for @paywallTitle.
   ///
   /// In en, this message translates to:
-  /// **'Upgrade to Premium'**
+  /// **'Unlock Premium'**
   String get paywallTitle;
+
+  /// No description provided for @paywallPitchLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited materials, unlimited printers, batch export, advanced pricing'**
+  String get paywallPitchLine;
 
   /// No description provided for @paywallSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.'**
+  /// **'Scale your print quoting with unlimited capacity, business pricing, and inventory control.'**
   String get paywallSubtitle;
-
-  /// No description provided for @paywallComparisonHeader.
-  ///
-  /// In en, this message translates to:
-  /// **'Everything you get'**
-  String get paywallComparisonHeader;
-
-  /// No description provided for @paywallPackagesHeader.
-  ///
-  /// In en, this message translates to:
-  /// **'Choose your plan'**
-  String get paywallPackagesHeader;
 
   /// No description provided for @paywallOfferingError.
   ///
@@ -2984,7 +2978,7 @@ abstract class AppLocalizations {
   /// No description provided for @paywallCta.
   ///
   /// In en, this message translates to:
-  /// **'Unlock Premium'**
+  /// **'Upgrade to Premium'**
   String get paywallCta;
 
   /// No description provided for @paywallRestore.
@@ -2992,6 +2986,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Restore Purchases'**
   String get paywallRestore;
+
+  /// No description provided for @paywallRowPrintersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Printers'**
+  String get paywallRowPrintersLabel;
+
+  /// No description provided for @paywallRowMaterialsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials'**
+  String get paywallRowMaterialsLabel;
+
+  /// No description provided for @paywallRowHistoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'History saves'**
+  String get paywallRowHistoryLabel;
+
+  /// No description provided for @paywallRowBatchCostingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch costing'**
+  String get paywallRowBatchCostingLabel;
+
+  /// No description provided for @paywallRowAdvancedPricingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced pricing'**
+  String get paywallRowAdvancedPricingLabel;
+
+  /// No description provided for @paywallRowExportToolsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Export tools'**
+  String get paywallRowExportToolsLabel;
+
+  /// No description provided for @paywallRowInventoryTrackingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory tracking'**
+  String get paywallRowInventoryTrackingLabel;
+
+  /// No description provided for @paywallValueUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get paywallValueUnlimited;
+
+  /// No description provided for @paywallValueYes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get paywallValueYes;
+
+  /// No description provided for @paywallValueNo.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get paywallValueNo;
+
+  /// No description provided for @paywallValueBasic.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic'**
+  String get paywallValueBasic;
+
+  /// No description provided for @paywallValueFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full'**
+  String get paywallValueFull;
+
+  /// No description provided for @paywallValueSingleJob.
+  ///
+  /// In en, this message translates to:
+  /// **'Single job'**
+  String get paywallValueSingleJob;
+
+  /// No description provided for @paywallValueFullSuite.
+  ///
+  /// In en, this message translates to:
+  /// **'Full suite'**
+  String get paywallValueFullSuite;
+
+  /// No description provided for @paywallValueUpToModels.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to {limit} models'**
+  String paywallValueUpToModels(Object limit);
+
+  /// No description provided for @paywallBestValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Best value'**
+  String get paywallBestValue;
+
+  /// No description provided for @paywallPlanMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get paywallPlanMonthly;
+
+  /// No description provided for @paywallPlanQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly'**
+  String get paywallPlanQuarterly;
+
+  /// No description provided for @paywallPlanAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get paywallPlanAnnual;
+
+  /// No description provided for @paywallPlanLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'Lifetime'**
+  String get paywallPlanLifetime;
+
+  /// No description provided for @paywallPlanPriceMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / month'**
+  String paywallPlanPriceMonthly(Object price);
+
+  /// No description provided for @paywallPlanPriceQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / 3 months'**
+  String paywallPlanPriceQuarterly(Object price);
+
+  /// No description provided for @paywallPlanPriceAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / year'**
+  String paywallPlanPriceAnnual(Object price);
+
+  /// No description provided for @paywallPlanPriceLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} once'**
+  String paywallPlanPriceLifetime(Object price);
+
+  /// No description provided for @paywallPlanTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day free trial'**
+  String get paywallPlanTrial;
+
+  /// No description provided for @paywallPlanCancelAnytime.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel anytime'**
+  String get paywallPlanCancelAnytime;
+
+  /// No description provided for @paywallPlanOwnForever.
+  ///
+  /// In en, this message translates to:
+  /// **'Own Premium forever'**
+  String get paywallPlanOwnForever;
+
+  /// No description provided for @paywallTrustLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline first • No account required'**
+  String get paywallTrustLine;
+
+  /// No description provided for @paywallCtaAnnualTrial.
+  ///
+  /// In en, this message translates to:
+  /// **'Start 7-Day Free Trial'**
+  String get paywallCtaAnnualTrial;
+
+  /// No description provided for @paywallCtaQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade for {price}'**
+  String paywallCtaQuarterly(Object price);
+
+  /// No description provided for @paywallCtaLifetime.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Premium for {price}'**
+  String paywallCtaLifetime(Object price);
+
+  /// No description provided for @paywallCtaGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade for {price}'**
+  String paywallCtaGeneric(Object price);
+
+  /// No description provided for @paywallValueSaves.
+  ///
+  /// In en, this message translates to:
+  /// **'{limit} saves'**
+  String paywallValueSaves(Object limit);
 
   /// No description provided for @paywallFeatureMaterialsTitle.
   ///
@@ -3124,6 +3316,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Track filament stock and get low-stock alerts.'**
   String get paywallFeatureStockTrackingDesc;
+
+  /// Shown when restore purchases completes successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases restored successfully.'**
+  String get paywallRestoreSuccess;
+
+  /// Shown when restore purchases fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to restore purchases. Please try again later.'**
+  String get paywallRestoreError;
+
+  /// Shown when no subscription packages are available
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription plans are currently available. Please try again later.'**
+  String get paywallEmptyOfferings;
 }
 
 class _AppLocalizationsDelegate

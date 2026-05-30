@@ -20,6 +20,34 @@ enum PremiumFeature {
 
 enum AccessDenyReason { notPremium, quotaExceeded, featureNotAvailable }
 
+enum CellType { text, count, saves, upTo }
+
+class ComparisonCell {
+  const ComparisonCell({this.textKey, this.limit, required this.type});
+
+  final String? textKey;
+  final int? limit;
+  final CellType type;
+}
+
+class PaywallComparisonRow {
+  const PaywallComparisonRow({
+    required this.id,
+    required this.labelKey,
+    required this.freeCell,
+    required this.premiumCell,
+    this.emphasis = false,
+    required this.order,
+  });
+
+  final String id;
+  final String labelKey;
+  final ComparisonCell freeCell;
+  final ComparisonCell premiumCell;
+  final bool emphasis;
+  final int order;
+}
+
 enum UpsellSurface {
   materialsTab,
   historyTab,
@@ -96,6 +124,10 @@ abstract class PremiumAccessPolicy {
   int? get printerLimit;
   int? get historyLimit;
   int? get batchItemLimit;
+
+  List<PremiumFeature> get paywallFeatures;
+
+  List<PaywallComparisonRow> get paywallComparisonRows;
 }
 
 class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
@@ -131,6 +163,83 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
 
   @override
   int? get batchItemLimit => _isPremium ? null : 3;
+
+  @override
+  List<PremiumFeature> get paywallFeatures => _paywallPremiumFeatures;
+
+  static const String _unlimitedKey = 'paywallValueUnlimited';
+  static const String _noKey = 'paywallValueNo';
+  static const String _yesKey = 'paywallValueYes';
+  static const String _basicKey = 'paywallValueBasic';
+  static const String _fullKey = 'paywallValueFull';
+  static const String _singleJobKey = 'paywallValueSingleJob';
+  static const String _fullSuiteKey = 'paywallValueFullSuite';
+
+  @override
+  List<PaywallComparisonRow> get paywallComparisonRows => [
+    PaywallComparisonRow(
+      id: 'materials',
+      labelKey: 'paywallRowMaterialsLabel',
+      freeCell: ComparisonCell(type: CellType.count, limit: materialLimit ?? 5),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _unlimitedKey),
+      emphasis: true,
+      order: 1,
+    ),
+    PaywallComparisonRow(
+      id: 'printers',
+      labelKey: 'paywallRowPrintersLabel',
+      freeCell: ComparisonCell(type: CellType.count, limit: printerLimit ?? 2),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _unlimitedKey),
+      order: 2,
+    ),
+    PaywallComparisonRow(
+      id: 'history',
+      labelKey: 'paywallRowHistoryLabel',
+      freeCell: ComparisonCell(type: CellType.saves, limit: historyLimit ?? 7),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _unlimitedKey),
+      emphasis: true,
+      order: 3,
+    ),
+    PaywallComparisonRow(
+      id: 'batchCosting',
+      labelKey: 'paywallRowBatchCostingLabel',
+      freeCell: ComparisonCell(type: CellType.upTo, limit: batchItemLimit ?? 3),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _unlimitedKey),
+      emphasis: true,
+      order: 4,
+    ),
+    PaywallComparisonRow(
+      id: 'advancedPricing',
+      labelKey: 'paywallRowAdvancedPricingLabel',
+      freeCell: ComparisonCell(type: CellType.text, textKey: _basicKey),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _fullKey),
+      order: 5,
+    ),
+    PaywallComparisonRow(
+      id: 'exportTools',
+      labelKey: 'paywallRowExportToolsLabel',
+      freeCell: ComparisonCell(type: CellType.text, textKey: _singleJobKey),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _fullSuiteKey),
+      order: 6,
+    ),
+    PaywallComparisonRow(
+      id: 'inventoryTracking',
+      labelKey: 'paywallRowInventoryTrackingLabel',
+      freeCell: ComparisonCell(type: CellType.text, textKey: _noKey),
+      premiumCell: ComparisonCell(type: CellType.text, textKey: _yesKey),
+      order: 7,
+    ),
+  ];
+
+  static const List<PremiumFeature> _paywallPremiumFeatures = [
+    PremiumFeature.materials,
+    PremiumFeature.printers,
+    PremiumFeature.advancedPricingConfig,
+    PremiumFeature.historyExport,
+    PremiumFeature.bulkHistoryExport,
+    PremiumFeature.batchExport,
+    PremiumFeature.stockTracking,
+  ];
 
   @override
   FeatureAccess materialsLibrary() => _premiumFeature(PremiumFeature.materials);

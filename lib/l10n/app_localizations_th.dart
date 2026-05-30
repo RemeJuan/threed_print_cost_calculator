@@ -1570,102 +1570,227 @@ class AppLocalizationsTh extends AppLocalizations {
   String get previewCustomPaywallButton => 'Preview custom paywall';
 
   @override
-  String get paywallTitle => 'Upgrade to Premium';
+  String get paywallTitle => 'ปลดล็อก Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'วัสดุไม่จำกัด เครื่องพิมพ์ไม่จำกัด ส่งออกแบบแบตช์ ราคาขั้นสูง';
 
   @override
   String get paywallSubtitle =>
-      'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.';
-
-  @override
-  String get paywallComparisonHeader => 'Everything you get';
-
-  @override
-  String get paywallPackagesHeader => 'Choose your plan';
+      'ปลดล็อกทุกฟีเจอร์ด้วยการซื้อครั้งเดียวหรือสมัครสมาชิก ไม่มีบัญชี ไม่มีการติดตาม มีแค่ข้อมูลของคุณบนอุปกรณ์ของคุณ';
 
   @override
   String get paywallOfferingError =>
-      'Could not load packages. Check your connection and try again.';
+      'ไม่สามารถโหลดแพ็กเกจได้ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง';
 
   @override
-  String get paywallCta => 'Unlock Premium';
+  String get paywallCta => 'ปลดล็อก Premium';
 
   @override
-  String get paywallRestore => 'Restore Purchases';
+  String get paywallRestore => 'กู้คืนการซื้อ';
 
   @override
-  String get paywallFeatureMaterialsTitle => 'Unlimited materials';
+  String get paywallRowPrintersLabel => 'เครื่องพิมพ์';
+
+  @override
+  String get paywallRowMaterialsLabel => 'วัสดุ';
+
+  @override
+  String get paywallRowHistoryLabel => 'การบันทึกประวัติ';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'การคิดต้นทุนแบบแบตช์';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'ราคาขั้นสูง';
+
+  @override
+  String get paywallRowExportToolsLabel => 'เครื่องมือส่งออก';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'การติดตามสต็อก';
+
+  @override
+  String get paywallValueUnlimited => 'ไม่จำกัด';
+
+  @override
+  String get paywallValueYes => 'ใช่';
+
+  @override
+  String get paywallValueNo => 'ไม่';
+
+  @override
+  String get paywallValueBasic => 'พื้นฐาน';
+
+  @override
+  String get paywallValueFull => 'เต็มรูปแบบ';
+
+  @override
+  String get paywallValueSingleJob => 'งานเดียว';
+
+  @override
+  String get paywallValueFullSuite => 'ชุดเต็มรูปแบบ';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'สูงสุด $limit โมเดล';
+  }
+
+  @override
+  String get paywallBestValue => 'คุ้มค่าที่สุด';
+
+  @override
+  String get paywallPlanMonthly => 'รายเดือน';
+
+  @override
+  String get paywallPlanQuarterly => 'รายไตรมาส';
+
+  @override
+  String get paywallPlanAnnual => 'รายปี';
+
+  @override
+  String get paywallPlanLifetime => 'ตลอดชีพ';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / เดือน';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 เดือน';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / ปี';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price ครั้งเดียว';
+  }
+
+  @override
+  String get paywallPlanTrial => 'ทดลองใช้ฟรี 7 วัน';
+
+  @override
+  String get paywallPlanCancelAnytime => 'ยกเลิกได้ทุกเมื่อ';
+
+  @override
+  String get paywallPlanOwnForever => 'เป็นเจ้าของ Premium ตลอดไป';
+
+  @override
+  String get paywallTrustLine => 'ใช้งานออฟไลน์ก่อน • ไม่ต้องมีบัญชี';
+
+  @override
+  String get paywallCtaAnnualTrial => 'เริ่มทดลองใช้ฟรี 7 วัน';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'อัปเกรดในราคา $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'ปลดล็อก Premium ในราคา $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'อัปเกรดในราคา $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return 'บันทึกได้ $limit รายการ';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'วัสดุไม่จำกัด';
 
   @override
   String get paywallFeatureMaterialsDesc =>
-      'Save and manage unlimited filament spools and materials.';
+      'บันทึกและจัดการม้วนฟิลาเมนต์และวัสดุได้ไม่จำกัด';
 
   @override
-  String get paywallFeaturePrintersTitle => 'Unlimited printers';
+  String get paywallFeaturePrintersTitle => 'เครื่องพิมพ์ไม่จำกัด';
 
   @override
   String get paywallFeaturePrintersDesc =>
-      'Create and manage unlimited printer profiles.';
+      'สร้างและจัดการโปรไฟล์เครื่องพิมพ์ได้ไม่จำกัด';
 
   @override
-  String get paywallFeatureHistoryExportTitle => 'History export';
+  String get paywallFeatureHistoryExportTitle => 'ส่งออกประวัติ';
 
   @override
   String get paywallFeatureHistoryExportDesc =>
-      'Export individual history entries to CSV.';
+      'ส่งออกรายการประวัติแต่ละรายการเป็น CSV';
 
   @override
-  String get paywallFeatureBulkHistoryExportTitle => 'Bulk history export';
+  String get paywallFeatureBulkHistoryExportTitle => 'ส่งออกประวัติแบบชุด';
 
   @override
   String get paywallFeatureBulkHistoryExportDesc =>
-      'Export all history at once to CSV.';
+      'ส่งออกประวัติทั้งหมดเป็น CSV ในครั้งเดียว';
 
   @override
-  String get paywallFeatureBatchGcodeImportTitle => 'Batch G-code import';
+  String get paywallFeatureBatchGcodeImportTitle => 'นำเข้า G-code แบบแบตช์';
 
   @override
   String get paywallFeatureBatchGcodeImportDesc =>
-      'Import multiple G-code files at once for batch costing.';
+      'นำเข้าไฟล์ G-code หลายไฟล์พร้อมกันสำหรับการคิดต้นทุนแบบแบตช์';
 
   @override
-  String get paywallFeatureBatchExportTitle => 'Batch export';
+  String get paywallFeatureBatchExportTitle => 'ส่งออกแบบแบตช์';
 
   @override
-  String get paywallFeatureBatchExportDesc =>
-      'Export batch quotes and summaries.';
+  String get paywallFeatureBatchExportDesc => 'ส่งออกใบเสนอราคาและสรุปแบบแบตช์';
 
   @override
-  String get paywallFeatureLabourPricingTitle => 'Labour pricing';
+  String get paywallFeatureLabourPricingTitle => 'การตั้งราคาแรงงาน';
 
   @override
   String get paywallFeatureLabourPricingDesc =>
-      'Add hourly labour rates to cost calculations.';
+      'เพิ่มอัตราค่าแรงรายชั่วโมงลงในการคำนวณต้นทุน';
 
   @override
-  String get paywallFeatureRiskPricingTitle => 'Risk pricing';
+  String get paywallFeatureRiskPricingTitle => 'การตั้งราคาความเสี่ยง';
 
   @override
   String get paywallFeatureRiskPricingDesc =>
-      'Factor failure risk into pricing automatically.';
+      'รวมความเสี่ยงจากความล้มเหลวไว้ในการตั้งราคาโดยอัตโนมัติ';
 
   @override
-  String get paywallFeatureAdvancedPricingConfigTitle => 'Advanced pricing';
+  String get paywallFeatureAdvancedPricingConfigTitle => 'ราคาขั้นสูง';
 
   @override
   String get paywallFeatureAdvancedPricingConfigDesc =>
-      'Configure markup, setup fees, and rounding.';
+      'กำหนดส่วนเพิ่ม ค่าตั้งค่า และการปัดเศษ';
 
   @override
-  String get paywallFeatureCsvMaterialImportTitle => 'CSV material import';
+  String get paywallFeatureCsvMaterialImportTitle => 'นำเข้าวัสดุจาก CSV';
 
   @override
   String get paywallFeatureCsvMaterialImportDesc =>
-      'Import materials in bulk from CSV files.';
+      'นำเข้าวัสดุจำนวนมากจากไฟล์ CSV';
 
   @override
-  String get paywallFeatureStockTrackingTitle => 'Stock tracking';
+  String get paywallFeatureStockTrackingTitle => 'ติดตามสต็อก';
 
   @override
   String get paywallFeatureStockTrackingDesc =>
-      'Track filament stock and get low-stock alerts.';
+      'ติดตามสต็อกฟิลาเมนต์และรับการแจ้งเตือนเมื่อสต็อกต่ำ';
+
+  @override
+  String get paywallRestoreSuccess => 'กู้คืนการซื้อสำเร็จแล้ว';
+
+  @override
+  String get paywallRestoreError =>
+      'กู้คืนการซื้อไม่สำเร็จ โปรดลองอีกครั้งภายหลัง';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'ขณะนี้ยังไม่มีแพ็กเกจสมัครสมาชิก โปรดลองอีกครั้งในภายหลัง';
 }

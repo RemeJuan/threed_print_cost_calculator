@@ -645,13 +645,73 @@
   "@previewCustomPaywallButton": {
     "description": "Button in test data tools to preview the new custom paywall screen"
   },
-  "paywallTitle": "Upgrade to Premium",
-  "paywallSubtitle": "Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.",
-  "paywallComparisonHeader": "Everything you get",
-  "paywallPackagesHeader": "Choose your plan",
+  "paywallTitle": "Unlock Premium",
+  "paywallPitchLine": "Unlimited materials, unlimited printers, batch export, advanced pricing",
+  "paywallSubtitle": "Scale your print quoting with unlimited capacity, business pricing, and inventory control.",
   "paywallOfferingError": "Could not load packages. Check your connection and try again.",
-  "paywallCta": "Unlock Premium",
+  "paywallCta": "Upgrade to Premium",
   "paywallRestore": "Restore Purchases",
+  "paywallRowPrintersLabel": "Printers",
+  "paywallRowMaterialsLabel": "Materials",
+  "paywallRowHistoryLabel": "History saves",
+  "paywallRowBatchCostingLabel": "Batch costing",
+  "paywallRowAdvancedPricingLabel": "Advanced pricing",
+  "paywallRowExportToolsLabel": "Export tools",
+  "paywallRowInventoryTrackingLabel": "Inventory tracking",
+  "paywallValueUnlimited": "Unlimited",
+  "paywallValueYes": "Yes",
+  "paywallValueNo": "No",
+  "paywallValueBasic": "Basic",
+  "paywallValueFull": "Full",
+  "paywallValueSingleJob": "Single job",
+  "paywallValueFullSuite": "Full suite",
+  "paywallValueUpToModels": "Up to {limit} models",
+  "paywallBestValue": "Best value",
+  "paywallPlanMonthly": "Monthly",
+  "paywallPlanQuarterly": "Quarterly",
+  "paywallPlanAnnual": "Annual",
+  "paywallPlanLifetime": "Lifetime",
+  "paywallPlanPriceMonthly": "{price} / month",
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanPriceQuarterly": "{price} / 3 months",
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanPriceAnnual": "{price} / year",
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanPriceLifetime": "{price} once",
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanTrial": "7-day free trial",
+  "paywallPlanCancelAnytime": "Cancel anytime",
+  "paywallPlanOwnForever": "Own Premium forever",
+  "paywallTrustLine": "Offline first • No account required",
+  "paywallCtaAnnualTrial": "Start 7-Day Free Trial",
+  "paywallCtaQuarterly": "Upgrade for {price}",
+  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "paywallCtaLifetime": "Unlock Premium for {price}",
+  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "paywallCtaGeneric": "Upgrade for {price}",
+  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "paywallValueSaves": "{limit} saves",
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "Unlimited materials",
   "paywallFeatureMaterialsDesc": "Save and manage unlimited filament spools and materials.",
   "paywallFeaturePrintersTitle": "Unlimited printers",
@@ -673,5 +733,17 @@
   "paywallFeatureCsvMaterialImportTitle": "CSV material import",
   "paywallFeatureCsvMaterialImportDesc": "Import materials in bulk from CSV files.",
   "paywallFeatureStockTrackingTitle": "Stock tracking",
-  "paywallFeatureStockTrackingDesc": "Track filament stock and get low-stock alerts."
+  "paywallFeatureStockTrackingDesc": "Track filament stock and get low-stock alerts.",
+  "paywallRestoreSuccess": "Purchases restored successfully.",
+  "@paywallRestoreSuccess": {
+    "description": "Shown when restore purchases completes successfully"
+  },
+  "paywallRestoreError": "Failed to restore purchases. Please try again later.",
+  "@paywallRestoreError": {
+    "description": "Shown when restore purchases fails"
+  },
+  "paywallEmptyOfferings": "No subscription plans are currently available. Please try again later.",
+  "@paywallEmptyOfferings": {
+    "description": "Shown when no subscription packages are available"
+  }
 }
