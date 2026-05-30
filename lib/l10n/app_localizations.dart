@@ -2942,7 +2942,7 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingEntryButton.
   ///
   /// In en, this message translates to:
-  /// **'Start batch costing'**
+  /// **'Start Batch Costing'**
   String get batchCostingEntryButton;
 
   /// No description provided for @paywallTitle.
