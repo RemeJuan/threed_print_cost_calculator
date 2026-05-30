@@ -251,9 +251,16 @@ class FakePremiumPurchaseGateway implements PremiumPurchaseGateway {
   final bool? shouldThrowOnPurchase;
   final bool? shouldThrowOnRestore;
   int getCurrentOfferingCalls = 0;
+  int getOfferingCalls = 0;
   int purchasePackageCalls = 0;
   int restorePurchasesCalls = 0;
   Package? lastPurchasedPackage;
+
+  @override
+  Future<Offering?> getOffering(String offeringId) async {
+    getOfferingCalls += 1;
+    return currentOffering;
+  }
 
   @override
   Future<Offering?> getCurrentOffering() async {

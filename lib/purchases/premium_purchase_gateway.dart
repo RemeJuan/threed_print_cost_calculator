@@ -2,6 +2,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 abstract class PremiumPurchaseGateway {
+  Future<Offering?> getOffering(String offeringId);
   Future<Offering?> getCurrentOffering();
   Future<void> purchasePackage(Package package);
   Future<void> restorePurchases();
@@ -9,6 +10,12 @@ abstract class PremiumPurchaseGateway {
 
 class RevenueCatPremiumPurchaseGateway implements PremiumPurchaseGateway {
   const RevenueCatPremiumPurchaseGateway();
+
+  @override
+  Future<Offering?> getOffering(String offeringId) async {
+    final offerings = await Purchases.getOfferings();
+    return offerings.all[offeringId] ?? offerings.current;
+  }
 
   @override
   Future<Offering?> getCurrentOffering() async {

@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/app/app_page.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class App extends ConsumerWidget {
@@ -25,6 +26,7 @@ class App extends ConsumerWidget {
         ),
         builder: BotToastInit(),
         debugShowCheckedModeBanner: false,
+        navigatorKey: appNavigatorKey,
         navigatorObservers: [BotToastNavigatorObserver()],
         theme: theme(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,

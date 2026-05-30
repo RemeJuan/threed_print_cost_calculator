@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_screen.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 abstract class PaywallPresenter {
   Future<void> present(
@@ -47,26 +48,24 @@ class _RevenueCatPaywallPresenter implements PaywallPresenter {
   }) async {
     await PaywallPresentationGate.show(() async {
       try {
-        AppAnalytics.safeLog(
-          () => AppAnalytics.paywallShown(
-            triggerFeature,
-            defaultEntryPoint: defaultEntryPoint,
-            source: source,
-            launchCount: launchCount,
+        final navigator = appNavigatorKey.currentState;
+        if (navigator == null) {
+          throw StateError('Navigator not ready');
+        }
+
+        await navigator.push<void>(
+          MaterialPageRoute(
+            builder: (_) => PaywallScreen(
+              offeringId: offeringId,
+              triggerFeature: triggerFeature,
+              purchaseSource: purchaseSource,
+              defaultEntryPoint: defaultEntryPoint,
+              source: source,
+              launchCount: launchCount,
+            ),
+            fullscreenDialog: true,
           ),
         );
-
-        await RevenueCatUI.presentPaywallIfNeeded(offeringId);
-
-        final customerInfo = await Purchases.getCustomerInfo();
-        if (customerInfo.entitlements.active.isNotEmpty) {
-          AppAnalytics.safeLog(
-            () => AppAnalytics.purchaseCompleted(
-              purchaseSource,
-              defaultEntryPoint: defaultEntryPoint,
-            ),
-          );
-        }
       } catch (e, st) {
         AppAnalytics.safeLog(
           () => AppAnalytics.log(

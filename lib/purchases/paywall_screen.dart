@@ -14,7 +14,22 @@ import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class PaywallScreen extends ConsumerStatefulWidget {
-  const PaywallScreen({super.key});
+  const PaywallScreen({
+    super.key,
+    this.offeringId = 'pro',
+    this.triggerFeature = 'custom_paywall_preview',
+    this.purchaseSource = 'custom_paywall_preview',
+    this.defaultEntryPoint = 'admin_preview',
+    this.source = 'custom_paywall_preview',
+    this.launchCount,
+  });
+
+  final String offeringId;
+  final String triggerFeature;
+  final String purchaseSource;
+  final String defaultEntryPoint;
+  final String source;
+  final int? launchCount;
 
   @override
   ConsumerState<PaywallScreen> createState() => _PaywallScreenState();
@@ -32,9 +47,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     super.initState();
     AppAnalytics.safeLog(
       () => AppAnalytics.paywallShown(
-        'custom_paywall_preview',
-        source: 'custom_paywall_preview',
-        defaultEntryPoint: 'admin_preview',
+        widget.triggerFeature,
+        source: widget.source,
+        defaultEntryPoint: widget.defaultEntryPoint,
+        launchCount: widget.launchCount,
       ),
     );
     _loadOfferings();
@@ -43,7 +59,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   Future<void> _loadOfferings() async {
     try {
       final gateway = ref.read(premiumPurchaseGatewayProvider);
-      final current = await gateway.getCurrentOffering();
+      final current = await gateway.getOffering(widget.offeringId);
       if (!mounted) return;
       setState(() {
         _currentOffering = current;
@@ -68,8 +84,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       if (!mounted) return;
       AppAnalytics.safeLog(
         () => AppAnalytics.purchaseCompleted(
-          'custom_paywall_preview',
-          defaultEntryPoint: 'admin_preview',
+          widget.purchaseSource,
+          defaultEntryPoint: widget.defaultEntryPoint,
         ),
       );
       Navigator.of(context).pop();
@@ -92,8 +108,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       if (!mounted) return;
       AppAnalytics.safeLog(
         () => AppAnalytics.restoreCompleted(
-          source: 'custom_paywall_preview',
-          defaultEntryPoint: 'admin_preview',
+          source: widget.source,
+          defaultEntryPoint: widget.defaultEntryPoint,
         ),
       );
       ScaffoldMessenger.of(context).showSnackBar(
