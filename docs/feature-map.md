@@ -174,34 +174,36 @@
 ## Premium / RevenueCat
 
 - Main screens/widgets:
-  - `lib/calculator/view/subscriptions.dart`
-  - `lib/history/components/history_upsell_banner.dart`
+  - `lib/purchases/paywall_screen.dart` — custom paywall with comparison table, plan selector, purchase/restore flows
+  - `lib/purchases/paywall_plan_selector.dart` — RevenueCat package cards with best-value chip
+  - `lib/purchases/paywall_comparison_table.dart` — policy-driven free vs premium comparison table
+  - `lib/purchases/premium_purchase_gateway.dart` — RevenueCat abstraction for offerings, purchase, restore
   - `lib/app/header_actions.dart`
-  - `lib/app/promo_history_tab_icon.dart`
 - Providers/state:
   - `lib/purchases/premium_state_notifier.dart` (`premiumStateProvider`, `isPremiumProvider`)
-  - `lib/purchases/premium_access_policy.dart`
+  - `lib/purchases/premium_access_policy.dart` (`premiumAccessPolicyProvider`)
   - `lib/purchases/premium_state.dart`
-  - `lib/shared/providers/app_providers.dart` (`premiumLocalStoreProvider`)
+  - `lib/shared/providers/app_providers.dart` (`premiumLocalStoreProvider`, `appNavigatorKey`)
+  - `lib/purchases/premium_purchase_gateway.dart` (`premiumPurchaseGatewayProvider`)
 - Repositories/services:
   - `lib/purchases/purchases_gateway.dart`
   - `lib/purchases/paywall_presenter.dart`
-- Models:
-  - `lib/purchases/premium_state.dart`
 - Tests:
   - `test/purchases/`
   - `test_support/fake_purchases_gateway.dart`
   - `integration_test/premium_*.dart`
   - `patrol_test/premium_calculate_save_history_journey_test.dart`
 - Common search terms:
-  - `premiumStateProvider`
   - `premiumAccessPolicyProvider`
-  - `premiumLocalStoreProvider`
-  - `isPremium`
+  - `premiumPurchaseGatewayProvider`
+  - `appNavigatorKey`
+  - `PaywallScreen`
+  - `PremiumPurchaseGateway`
+  - `paywall_comparison_table`
+  - `paywall_plan_selector`
+  - `premiumStateProvider`
   - `RevenueCatPurchasesGateway`
-  - `paywall`
   - `Purchases.configure`
-  - `history_teaser`
 
 ## Batch costing
 

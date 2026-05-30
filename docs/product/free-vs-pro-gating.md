@@ -1,16 +1,18 @@
 # Free vs Pro gating
 
 ## Context
-- Conversion was weak and feature boundaries were unclear in earlier gating behavior.
+- Free is now a useful default tier with quota limits (5 materials, 2 printers, 7 history saves, up to 3 items per batch quote).
+- Premium unlocks unlimited capacity, business pricing, stock tracking, and advanced workflows.
 
 ## Decisions
-- Added history teaser state for free users.
-- Added locked UI indicators.
-- Added optional setting to hide upsell surfaces.
+- Free users get active limited access to materials, history, and batch costing (not teasers or demos).
+- Locked UI indicators show upgrade value for premium-only features.
+- Optional setting to hide upsell surfaces.
 
 ## Tradeoffs
 - Softer monetization strategy.
 - Improved trust and reduced aggressive friction.
+- Free tier provides genuine utility, reducing immediate purchase pressure.
 
 ## Rejected Ideas
 - Aggressive paywalls.
@@ -19,25 +21,23 @@
 
 ## Implementation Notes
 - RevenueCat status is surfaced through provider state.
-- Gating logic is centralized in the paywall presenter, but entry-point behavior still differs by surface.
+- Gating logic is centralized in `PremiumAccessPolicy` (`premiumAccessPolicyProvider`); the paywall presenter only opens the paywall screen.
+- Custom app-owned `PaywallScreen` replaces the hosted RevenueCat paywall as the default user-facing upsell path.
+- The paywall presenter pushes `PaywallScreen` through `appNavigatorKey` (defined in `app_providers.dart`).
 
 ## Premium Entry Points
 
 | Entry point | Current behavior | Attribution |
 |------------|------------------|-------------|
-| Header icon | Premium users open G-code import; free users see the pro paywall/cart path | `source=header` |
-| Calculator promo | Auto paywall after a run-count threshold | `source=premium_feature` |
-| History teaser primary CTA | Direct paywall from teaser | `source=history_teaser_primary` |
-| History teaser secondary CTA | Preview sheet, then paywall | `source=history_teaser_secondary` |
-| History upsell/banner | Direct paywall from history surfaces | `source=premium_feature`, `purchaseSource=history` |
+| Header icon | Free users see purchase CTA; premium users see G-code import | `source=header` |
+| Premium feature tap | `requirePremium()` gates via `PremiumAccessPolicy`, opens paywall | `source=premium_feature` |
+| History export | Upsell via `requirePremium()` for bulk/range export beyond free limits | `source=history_export` |
+| Settings locked sections | Analytics on tap; paywall only from premium-gated action flow | `source=settings` |
 | What's New unlock CTA | Paywall after announcement CTA | `source=whats_new` |
-| Settings locked sections | Analytics only; no paywall sheet launch | `source=settings` |
 
 ## Known Issues
 - Messaging clarity may still be inconsistent across entry points.
-- History teaser paths intentionally differ between primary CTA and preview/download CTA.
 
 ## TODOs
-- Redesign paywall presentation.
 - Improve messaging clarity and consistency.
 - Decide whether settings lock tap should also open paywall or remain analytics-only.

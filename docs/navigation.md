@@ -83,5 +83,10 @@ Edit source instead:
 - Premium policy: `lib/purchases/premium_access_policy.dart`
 - Premium local store: `lib/purchases/premium_local_store.dart`
 - G-code import flow: `lib/gcode_import/gcode_import_page.dart`
+- Paywall screen: `lib/purchases/paywall_screen.dart`
+- Premium purchase gateway: `lib/purchases/premium_purchase_gateway.dart`
+- Paywall comparison table: `lib/purchases/paywall_comparison_table.dart`
+- Paywall plan selector: `lib/purchases/paywall_plan_selector.dart`
+- App navigator key: `lib/shared/providers/app_providers.dart` (`appNavigatorKey`)
 - Analytics facade: `lib/core/analytics/app_analytics.dart`
 - Shared providers: `lib/shared/providers/app_providers.dart`

@@ -17,9 +17,9 @@
 
 ## Bootstrap sequence
 
-- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, Crashlytics, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, and Sembast DB.
+- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, Crashlytics, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, and Sembast DB.
 - Startup migrations from `lib/startup.dart` run after those services are ready and before the root Riverpod `ProviderScope` is applied.
-- That order matters for downstream code: SharedPreferences-backed test overrides, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
+- That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
 
 ## Data persistence approach
 
@@ -49,9 +49,9 @@
 - `premiumLocalStoreProvider` exposes encrypted local storage for premium/quota-sensitive keys. Secure-store preload/write/delete failures are reported through Flutter error reporting but should not abort app startup.
 - Local test override path exists in `PremiumStateNotifier` using `PremiumLocalStore` and `lib/shared/test_tools/test_data_service.dart`.
 - App shell gating happens in `lib/app/app_page.dart`:
-  - Materials tab only renders when `isPremium`.
-  - History tab visibility depends on `PremiumAccessPolicy`.
-- Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, with feature-specific triggers in calculator/history/header/settings flows.
+  - Materials tab opens for all users; free tier enforcement happens through policy quota limits.
+  - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
+- Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
 
 ## Structured logging approach
 
