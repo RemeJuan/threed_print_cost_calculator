@@ -68,9 +68,9 @@ class CachedPremiumLocalStore implements PremiumLocalStore {
 
   @override
   Future<void> write(String key, String value) async {
-    _cache[key] = value;
     try {
       await _storage.write(key: key, value: value);
+      _cache[key] = value;
     } catch (error, stackTrace) {
       _onError?.call(error, stackTrace);
     }
@@ -78,9 +78,9 @@ class CachedPremiumLocalStore implements PremiumLocalStore {
 
   @override
   Future<void> delete(String key) async {
-    _cache.remove(key);
     try {
       await _storage.delete(key: key);
+      _cache.remove(key);
     } catch (error, stackTrace) {
       _onError?.call(error, stackTrace);
     }

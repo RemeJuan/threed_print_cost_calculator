@@ -45,6 +45,12 @@ Future<void> main() async {
     providerApple: AppleAppAttestProvider(),
   );
 
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   await revenueCat();
   final prefs = await SharedPreferences.getInstance();
   final premiumLocalStore = CachedPremiumLocalStore(
@@ -69,12 +75,6 @@ Future<void> main() async {
 
   // Run any startup migrations (index rebuild etc.)
   await startupMigration(db);
-
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
 
   if (Platform.isIOS) {
     final deviceCheck = DeviceCheck.instance;
