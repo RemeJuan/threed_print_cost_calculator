@@ -134,7 +134,7 @@ class AppInlineButton extends StatelessWidget {
     required this.label,
     this.foregroundColor,
     this.padding = const EdgeInsets.symmetric(horizontal: 8),
-    this.minHeight = 36,
+    this.minHeight = 48,
     this.maxLines = 1,
     this.overflow = TextOverflow.ellipsis,
     this.textAlign,
