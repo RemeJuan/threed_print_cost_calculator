@@ -11,6 +11,12 @@ class MaterialFilters extends ConsumerWidget {
 
   @override
   Widget build(context, ref) {
+    ref.listen(premiumAccessPolicyProvider, (prev, next) {
+      if (prev != null && prev.stockTracking().allowed && !next.stockTracking().allowed) {
+        ref.read(materialsStockFilterProvider.notifier).state = null;
+      }
+    });
+
     final l10n = AppLocalizations.of(context)!;
     final types = ref.watch(materialTypesProvider).toList()..sort();
     final selectedType = ref.watch(materialsTypeFilterProvider);
