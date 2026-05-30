@@ -715,7 +715,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} elk → {lineTotal} totaal",
   "batchCostingAssignmentPrinterLabel": "Printer",
   "batchCostingEntryButton": "Batchofferte starten",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Premium ontgrendelen",
   "paywallPitchLine": "Onbeperkte materialen, onbeperkte printers, batch-export, geavanceerde prijzen",
   "paywallSubtitle": "Ontgrendel alle functies met een eenmalige aankoop of abonnement. Geen accounts, geen tracking, alleen jouw gegevens op je apparaat.",

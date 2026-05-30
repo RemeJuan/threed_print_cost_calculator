@@ -90,7 +90,7 @@ class TestDataToolsDialog extends StatelessWidget {
                   'settings.testData.previewCustomPaywall.button',
                 ),
                 onPressed: () => onAction(TestDataAction.previewCustomPaywall),
-                child: Text(l10n.previewCustomPaywallButton),
+                child: const Text('Preview custom paywall'),
               ),
             ],
           ),

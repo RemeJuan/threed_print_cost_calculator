@@ -715,7 +715,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit}ずつ → 合計{lineTotal}",
   "batchCostingAssignmentPrinterLabel": "プリンター",
   "batchCostingEntryButton": "バッチ見積もりを開始",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Premiumをアンロック",
   "paywallPitchLine": "素材無制限、プリンター無制限、バッチエクスポート、高度な価格設定",
   "paywallSubtitle": "1回限りの購入またはサブスクリプションで、すべての機能をアンロック。アカウント不要、追跡なし、データは端末内だけ。",

@@ -430,8 +430,7 @@ void main() {
     addTearDown(() => db.close());
     await tester.pumpAndSettle();
 
-    final l10n = lookupAppLocalizations(const Locale('en'));
-    expect(find.text(l10n.previewCustomPaywallButton), findsOneWidget);
+    expect(find.text('Preview custom paywall'), findsOneWidget);
   });
 
   testWidgets('previewCustomPaywall button triggers action', (tester) async {

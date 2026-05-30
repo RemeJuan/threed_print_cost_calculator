@@ -710,7 +710,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} cada → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Impressora",
   "batchCostingEntryButton": "Iniciar orçamento em lote",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Desbloquear Premium",
   "paywallPitchLine": "Materiais ilimitados, impressoras ilimitadas, exportação em lote, preços avançados",
   "paywallSubtitle": "Desbloqueie todas as funcionalidades com uma compra única ou subscrição. Sem contas, sem rastreamento, apenas os seus dados no seu dispositivo.",

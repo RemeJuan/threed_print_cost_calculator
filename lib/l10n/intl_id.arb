@@ -714,7 +714,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} per → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Printer",
   "batchCostingEntryButton": "Mulai penawaran batch",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Buka Premium",
   "paywallPitchLine": "Material tanpa batas, printer tanpa batas, ekspor batch, harga lanjutan",
   "paywallSubtitle": "Buka semua fitur dengan pembelian satu kali atau langganan. Tanpa akun, tanpa pelacakan, hanya data Anda di perangkat Anda.",

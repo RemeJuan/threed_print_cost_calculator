@@ -1583,9 +1583,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchCostingEntryButton => 'Start batch costing';
 
   @override
-  String get previewCustomPaywallButton => 'Preview custom paywall';
-
-  @override
   String get paywallTitle => 'Unlock Premium';
 
   @override

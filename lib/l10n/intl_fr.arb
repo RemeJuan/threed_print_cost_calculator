@@ -716,7 +716,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} chacun → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Imprimante",
   "batchCostingEntryButton": "Démarrer un devis par lot",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Débloquez Premium",
   "paywallPitchLine": "Matériaux illimités, imprimantes illimitées, export par lot, tarification avancée",
   "paywallSubtitle": "Débloquez toutes les fonctionnalités avec un achat unique ou un abonnement. Pas de compte, pas de suivi, uniquement vos données sur votre appareil.",

@@ -2945,12 +2945,6 @@ abstract class AppLocalizations {
   /// **'Start batch costing'**
   String get batchCostingEntryButton;
 
-  /// Button in test data tools to preview the new custom paywall screen
-  ///
-  /// In en, this message translates to:
-  /// **'Preview custom paywall'**
-  String get previewCustomPaywallButton;
-
   /// No description provided for @paywallTitle.
   ///
   /// In en, this message translates to:

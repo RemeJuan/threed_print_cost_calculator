@@ -641,10 +641,7 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Printer",
   "batchCostingEntryButton": "Start batch costing",
-  "previewCustomPaywallButton": "Preview custom paywall",
-  "@previewCustomPaywallButton": {
-    "description": "Button in test data tools to preview the new custom paywall screen"
-  },
+
   "paywallTitle": "Unlock Premium",
   "paywallPitchLine": "Unlimited materials, unlimited printers, batch export, advanced pricing",
   "paywallSubtitle": "Scale your print quoting with unlimited capacity, business pricing, and inventory control.",

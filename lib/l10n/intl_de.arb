@@ -714,7 +714,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} pro → {lineTotal} gesamt",
   "batchCostingAssignmentPrinterLabel": "Drucker",
   "batchCostingEntryButton": "Batch-Angebot starten",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Premium freischalten",
   "paywallPitchLine": "Unbegrenzte Materialien, unbegrenzte Drucker, Batch-Export, erweiterte Preisgestaltung",
   "paywallSubtitle": "Schalten Sie alle Funktionen mit einem Einmalkauf oder Abonnement frei. Keine Konten, kein Tracking, nur Ihre Daten auf Ihrem Gerät.",

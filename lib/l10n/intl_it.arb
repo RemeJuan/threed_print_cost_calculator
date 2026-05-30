@@ -714,7 +714,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} ciascuno → {lineTotal} totale",
   "batchCostingAssignmentPrinterLabel": "Stampante",
   "batchCostingEntryButton": "Avvia preventivo batch",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "Sblocca Premium",
   "paywallPitchLine": "Materiali illimitati, stampanti illimitate, esportazione batch, prezzi avanzati",
   "paywallSubtitle": "Sblocca tutte le funzionalità con un acquisto una tantum o un abbonamento. Nessun account, nessun tracciamento, solo i tuoi dati sul tuo dispositivo.",

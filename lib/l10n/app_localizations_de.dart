@@ -1602,9 +1602,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get batchCostingEntryButton => 'Batch-Angebot starten';
 
   @override
-  String get previewCustomPaywallButton => 'Preview custom paywall';
-
-  @override
   String get paywallTitle => 'Premium freischalten';
 
   @override

@@ -1573,9 +1573,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get batchCostingEntryButton => 'Mulai penawaran batch';
 
   @override
-  String get previewCustomPaywallButton => 'Preview custom paywall';
-
-  @override
   String get paywallTitle => 'Buka Premium';
 
   @override

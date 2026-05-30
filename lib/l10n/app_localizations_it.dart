@@ -1609,9 +1609,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchCostingEntryButton => 'Avvia preventivo batch';
 
   @override
-  String get previewCustomPaywallButton => 'Preview custom paywall';
-
-  @override
   String get paywallTitle => 'Sblocca Premium';
 
   @override

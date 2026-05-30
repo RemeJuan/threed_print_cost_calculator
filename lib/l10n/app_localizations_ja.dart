@@ -1538,9 +1538,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingEntryButton => 'バッチ見積もりを開始';
 
   @override
-  String get previewCustomPaywallButton => 'Preview custom paywall';
-
-  @override
   String get paywallTitle => 'Premiumをアンロック';
 
   @override

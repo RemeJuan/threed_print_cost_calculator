@@ -1567,9 +1567,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingEntryButton => 'เริ่มใบเสนอราคาแบบชุด';
 
   @override
-  String get previewCustomPaywallButton => 'Preview custom paywall';
-
-  @override
   String get paywallTitle => 'ปลดล็อก Premium';
 
   @override

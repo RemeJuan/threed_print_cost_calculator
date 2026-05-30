@@ -715,7 +715,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} ต่อชิ้น → {lineTotal} รวม",
   "batchCostingAssignmentPrinterLabel": "เครื่องพิมพ์",
   "batchCostingEntryButton": "เริ่มใบเสนอราคาแบบชุด",
-  "previewCustomPaywallButton": "Preview custom paywall",
   "paywallTitle": "ปลดล็อก Premium",
   "paywallPitchLine": "วัสดุไม่จำกัด เครื่องพิมพ์ไม่จำกัด ส่งออกแบบแบตช์ ราคาขั้นสูง",
   "paywallSubtitle": "ปลดล็อกทุกฟีเจอร์ด้วยการซื้อครั้งเดียวหรือสมัครสมาชิก ไม่มีบัญชี ไม่มีการติดตาม มีแค่ข้อมูลของคุณบนอุปกรณ์ของคุณ",
