@@ -42,7 +42,7 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Preserve useful state while users move around the batch flow
 - Allow completed batch quotes to be saved to history
 - Keep the existing calculator screen focused on single-print costing
-- Keep all batch UI hidden unless the batch costing feature flag is enabled
+- Batch costing is available to all users: free tier allows manual entries (up to 3 items per batch), premium unlocks unlimited items and batch G-code import
 
 ## Scope
 
@@ -64,7 +64,7 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Item-level breakdown and batch total summary
 - Saving named batch quotes to history
 - Batch history display for saved quotes
-- Feature gating through the existing version-code/admin/debug flow
+- Access control through `PremiumAccessPolicy` (free: 3 items per batch, manual only; premium: unlimited items + G-code import)
 
 ### Out of Scope for V1
 
@@ -79,29 +79,14 @@ The workflow should default to simple batch-wide choices, then let users opt int
 - Multi-user collaboration
 - Backend/cloud/account/sync work
 
-## Feature Gate
+## Access Model
 
-Batch costing must be hidden unless `batchCostingEnabled` is true.
+Batch costing is available to all users with different limits:
 
-Implementation: `batchCostingEnabledProvider` (in `lib/shared/providers/batch_costing_visibility.dart`) is a dual-gate requiring both `isPremium` AND a SharedPreferences boolean (`batchCostingEnabled` key, defaults `false`).
+- **Free tier**: unlimited batch quotes, up to 3 items per batch, manual entry only
+- **Premium tier**: unlimited items per batch, batch G-code import (single and multi-file)
 
-Expected behaviour:
-
-- Default state: disabled
-- Disabled: no batch costing UI is visible to normal users
-- Enabled: developer/test users can access the batch flow
-- Existing calculator and normal G-code import flows must continue to work when disabled
-- Incomplete or batch-only screens must never be reachable by normal users
-
-Hard gate rule:
-
-- Every visible batch-costing entry, action, route, label, button, card, chip, banner, empty state, and affordance must be gated
-- Each batch page includes a guard: `if (!ref.watch(batchCostingEnabledProvider)) return const SizedBox.shrink();`
-- Entry point in `calculator_page.dart` is gated by `batchCostingEnabledProvider`
-- Do not rely on route gating alone if the entry point remains visible
-- Do not rely on hiding entry points alone if a route is still reachable through normal navigation
-- Do not leave disabled batch UI visible when the flag is off
-- Hidden developer/test toggles may exist, but normal users must see zero batch-related UI when disabled
+Free users who reach the 3-item limit see a quota feedback message instead of being blocked silently.
 
 ## Entry Points
 
@@ -114,7 +99,7 @@ Manual and G-code are separate entry points because they start from different us
 
 Implemented entry points:
 
-- Calculator screen button -> `BatchCostingPage` when `batchCostingEnabledProvider` is true
+- Calculator screen button -> `BatchCostingPage` (free quota limits apply)
 - Existing `GCodeImportPage` keeps the normal single-file apply path for quantity 1 and switches into batch import mode only when multiple files are selected
 - Batch review screen can add more manual items or open the batch G-code import page to add more files into the same in-memory batch session
 
@@ -529,11 +514,11 @@ Rules:
 
 Use this checklist against the actual app build. Run both disabled and enabled states.
 
-### Feature gate
+### Access model
 
-- [ ] Feature disabled: no visible batch UI on calculator, normal G-code import, or batch-only routes reached through normal navigation
-- [ ] Feature enabled: calculator batch entry button is reachable for premium users with the debug/admin flag enabled
-- [ ] Feature enabled: batch pages render real UI instead of empty placeholders
+- [ ] Free users can start and save batch quotes (up to 3 items per batch)
+- [ ] Premium users can add unlimited items and use batch G-code import
+- [ ] Free users see quota feedback when adding items beyond the limit
 
 ### Entry and review
 
