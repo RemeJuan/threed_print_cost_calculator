@@ -78,7 +78,7 @@ class CalculatorHelpers {
         .read(premiumAccessPolicyProvider)
         .canSaveHistoryItem(count);
     if (!access.allowed) {
-      await requirePremium(
+      final upgraded = await requirePremium(
         ref.read(paywallPresenterProvider),
         FeatureAccess(
           allowed: access.allowed,
@@ -86,8 +86,15 @@ class CalculatorHelpers {
           denyReason: access.denyReason,
         ),
         purchaseSource: 'save_history',
+        recheck: () async {
+          final c = await ref.read(historyRepositoryProvider).countHistory();
+          return ref
+              .read(premiumAccessPolicyProvider)
+              .canSaveHistoryItem(c)
+              .allowed;
+        },
       );
-      return;
+      if (!upgraded) return;
     }
 
     try {

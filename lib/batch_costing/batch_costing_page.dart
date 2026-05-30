@@ -315,12 +315,15 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
   Future<void> _openBatchGcodeImport(BuildContext context) async {
     final policy = ref.read(premiumAccessPolicyProvider);
     if (!policy.batchGcodeImport().allowed) {
-      await requirePremium(
+      final upgraded = await requirePremium(
         ref.read(paywallPresenterProvider),
         policy.batchGcodeImport(),
         purchaseSource: 'batch_gcode_import',
+        recheck: () => Future.value(
+          ref.read(premiumAccessPolicyProvider).batchGcodeImport().allowed,
+        ),
       );
-      return;
+      if (!upgraded) return;
     }
 
     if (!context.mounted) return;

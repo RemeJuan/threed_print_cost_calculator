@@ -168,6 +168,9 @@ class BatchGCodeImportHandler {
             ref.read(paywallPresenterProvider),
             policy.batchGcodeImport(),
             purchaseSource: 'batch_gcode_import',
+            recheck: () => Future.value(
+              ref.read(premiumAccessPolicyProvider).batchGcodeImport().allowed,
+            ),
           )) {
         return;
       }

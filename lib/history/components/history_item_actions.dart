@@ -53,6 +53,14 @@ class HistoryItemActionsController {
       ref.read(paywallPresenterProvider),
       access,
       purchaseSource: 'history_export_entry',
+      recheck: () {
+        final p = ref.read(premiumAccessPolicyProvider);
+        return Future.value(
+          data.batchQuote
+              ? p.batchExport().allowed
+              : p.singleJobExport().allowed,
+        );
+      },
     )) {
       return;
     }

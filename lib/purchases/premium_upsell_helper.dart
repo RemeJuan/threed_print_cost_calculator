@@ -6,6 +6,7 @@ Future<bool> requirePremium(
   PaywallPresenter paywallPresenter,
   FeatureAccess access, {
   required String purchaseSource,
+  Future<bool> Function()? recheck,
 }) async {
   if (access.allowed) return true;
 
@@ -23,6 +24,10 @@ Future<bool> requirePremium(
     purchaseSource: purchaseSource,
     source: purchaseSource,
   );
+
+  if (recheck != null) {
+    return recheck();
+  }
 
   return false;
 }

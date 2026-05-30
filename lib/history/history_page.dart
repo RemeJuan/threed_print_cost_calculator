@@ -270,6 +270,9 @@ class HistoryPage extends HookConsumerWidget {
       ref.read(paywallPresenterProvider),
       policy.bulkHistoryExport(),
       purchaseSource: 'history_export',
+      recheck: () => Future.value(
+        ref.read(premiumAccessPolicyProvider).bulkHistoryExport().allowed,
+      ),
     )) {
       return;
     }
