@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
 
-Widget _wrap(Widget w) {
+Widget _wrap(Widget w, [List<Override> overrides = const []]) {
   return ProviderScope(
+    overrides: overrides,
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
@@ -216,6 +219,7 @@ void main() {
             onDelete: () {},
             onDuplicate: () {},
           ),
+          [isPremiumProvider.overrideWithValue(true)],
         ),
       );
       await tester.pumpAndSettle();
@@ -240,6 +244,7 @@ void main() {
             onDelete: () {},
             onDuplicate: () {},
           ),
+          [isPremiumProvider.overrideWithValue(true)],
         ),
       );
       await tester.pumpAndSettle();
@@ -264,6 +269,7 @@ void main() {
             onDelete: () {},
             onDuplicate: () {},
           ),
+          [isPremiumProvider.overrideWithValue(true)],
         ),
       );
       await tester.pumpAndSettle();
