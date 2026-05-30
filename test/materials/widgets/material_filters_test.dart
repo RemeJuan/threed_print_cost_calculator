@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_filters.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
@@ -20,6 +21,7 @@ void main() {
       final repo = FakeMaterialsRepository();
       final db = await tester.pumpApp(const MaterialFilters(), [
         materialsRepositoryProvider.overrideWithValue(repo),
+        isPremiumProvider.overrideWithValue(true),
       ]);
       await tester.pumpAndSettle();
       addTearDown(db.close);
