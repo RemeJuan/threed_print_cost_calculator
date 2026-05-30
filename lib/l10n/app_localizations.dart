@@ -2942,8 +2942,188 @@ abstract class AppLocalizations {
   /// No description provided for @batchCostingEntryButton.
   ///
   /// In en, this message translates to:
-  /// **'Start batch quote'**
+  /// **'Start batch costing'**
   String get batchCostingEntryButton;
+
+  /// Button in test data tools to preview the new custom paywall screen
+  ///
+  /// In en, this message translates to:
+  /// **'Preview custom paywall'**
+  String get previewCustomPaywallButton;
+
+  /// No description provided for @paywallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get paywallTitle;
+
+  /// No description provided for @paywallSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.'**
+  String get paywallSubtitle;
+
+  /// No description provided for @paywallComparisonHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything you get'**
+  String get paywallComparisonHeader;
+
+  /// No description provided for @paywallPackagesHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your plan'**
+  String get paywallPackagesHeader;
+
+  /// No description provided for @paywallOfferingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load packages. Check your connection and try again.'**
+  String get paywallOfferingError;
+
+  /// No description provided for @paywallCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Premium'**
+  String get paywallCta;
+
+  /// No description provided for @paywallRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get paywallRestore;
+
+  /// No description provided for @paywallFeatureMaterialsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited materials'**
+  String get paywallFeatureMaterialsTitle;
+
+  /// No description provided for @paywallFeatureMaterialsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save and manage unlimited filament spools and materials.'**
+  String get paywallFeatureMaterialsDesc;
+
+  /// No description provided for @paywallFeaturePrintersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited printers'**
+  String get paywallFeaturePrintersTitle;
+
+  /// No description provided for @paywallFeaturePrintersDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Create and manage unlimited printer profiles.'**
+  String get paywallFeaturePrintersDesc;
+
+  /// No description provided for @paywallFeatureHistoryExportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'History export'**
+  String get paywallFeatureHistoryExportTitle;
+
+  /// No description provided for @paywallFeatureHistoryExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Export individual history entries to CSV.'**
+  String get paywallFeatureHistoryExportDesc;
+
+  /// No description provided for @paywallFeatureBulkHistoryExportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk history export'**
+  String get paywallFeatureBulkHistoryExportTitle;
+
+  /// No description provided for @paywallFeatureBulkHistoryExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Export all history at once to CSV.'**
+  String get paywallFeatureBulkHistoryExportDesc;
+
+  /// No description provided for @paywallFeatureBatchGcodeImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch G-code import'**
+  String get paywallFeatureBatchGcodeImportTitle;
+
+  /// No description provided for @paywallFeatureBatchGcodeImportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Import multiple G-code files at once for batch costing.'**
+  String get paywallFeatureBatchGcodeImportDesc;
+
+  /// No description provided for @paywallFeatureBatchExportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch export'**
+  String get paywallFeatureBatchExportTitle;
+
+  /// No description provided for @paywallFeatureBatchExportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Export batch quotes and summaries.'**
+  String get paywallFeatureBatchExportDesc;
+
+  /// No description provided for @paywallFeatureLabourPricingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour pricing'**
+  String get paywallFeatureLabourPricingTitle;
+
+  /// No description provided for @paywallFeatureLabourPricingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Add hourly labour rates to cost calculations.'**
+  String get paywallFeatureLabourPricingDesc;
+
+  /// No description provided for @paywallFeatureRiskPricingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Risk pricing'**
+  String get paywallFeatureRiskPricingTitle;
+
+  /// No description provided for @paywallFeatureRiskPricingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Factor failure risk into pricing automatically.'**
+  String get paywallFeatureRiskPricingDesc;
+
+  /// No description provided for @paywallFeatureAdvancedPricingConfigTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced pricing'**
+  String get paywallFeatureAdvancedPricingConfigTitle;
+
+  /// No description provided for @paywallFeatureAdvancedPricingConfigDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure markup, setup fees, and rounding.'**
+  String get paywallFeatureAdvancedPricingConfigDesc;
+
+  /// No description provided for @paywallFeatureCsvMaterialImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'CSV material import'**
+  String get paywallFeatureCsvMaterialImportTitle;
+
+  /// No description provided for @paywallFeatureCsvMaterialImportDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Import materials in bulk from CSV files.'**
+  String get paywallFeatureCsvMaterialImportDesc;
+
+  /// No description provided for @paywallFeatureStockTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock tracking'**
+  String get paywallFeatureStockTrackingTitle;
+
+  /// No description provided for @paywallFeatureStockTrackingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Track filament stock and get low-stock alerts.'**
+  String get paywallFeatureStockTrackingDesc;
 }
 
 class _AppLocalizationsDelegate

@@ -1571,4 +1571,107 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingEntryButton => 'Mulai penawaran batch';
+
+  @override
+  String get previewCustomPaywallButton => 'Preview custom paywall';
+
+  @override
+  String get paywallTitle => 'Upgrade to Premium';
+
+  @override
+  String get paywallSubtitle =>
+      'Unlock all features with a one-time purchase or subscription. No accounts, no tracking, just your data on your device.';
+
+  @override
+  String get paywallComparisonHeader => 'Everything you get';
+
+  @override
+  String get paywallPackagesHeader => 'Choose your plan';
+
+  @override
+  String get paywallOfferingError =>
+      'Could not load packages. Check your connection and try again.';
+
+  @override
+  String get paywallCta => 'Unlock Premium';
+
+  @override
+  String get paywallRestore => 'Restore Purchases';
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'Unlimited materials';
+
+  @override
+  String get paywallFeatureMaterialsDesc =>
+      'Save and manage unlimited filament spools and materials.';
+
+  @override
+  String get paywallFeaturePrintersTitle => 'Unlimited printers';
+
+  @override
+  String get paywallFeaturePrintersDesc =>
+      'Create and manage unlimited printer profiles.';
+
+  @override
+  String get paywallFeatureHistoryExportTitle => 'History export';
+
+  @override
+  String get paywallFeatureHistoryExportDesc =>
+      'Export individual history entries to CSV.';
+
+  @override
+  String get paywallFeatureBulkHistoryExportTitle => 'Bulk history export';
+
+  @override
+  String get paywallFeatureBulkHistoryExportDesc =>
+      'Export all history at once to CSV.';
+
+  @override
+  String get paywallFeatureBatchGcodeImportTitle => 'Batch G-code import';
+
+  @override
+  String get paywallFeatureBatchGcodeImportDesc =>
+      'Import multiple G-code files at once for batch costing.';
+
+  @override
+  String get paywallFeatureBatchExportTitle => 'Batch export';
+
+  @override
+  String get paywallFeatureBatchExportDesc =>
+      'Export batch quotes and summaries.';
+
+  @override
+  String get paywallFeatureLabourPricingTitle => 'Labour pricing';
+
+  @override
+  String get paywallFeatureLabourPricingDesc =>
+      'Add hourly labour rates to cost calculations.';
+
+  @override
+  String get paywallFeatureRiskPricingTitle => 'Risk pricing';
+
+  @override
+  String get paywallFeatureRiskPricingDesc =>
+      'Factor failure risk into pricing automatically.';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigTitle => 'Advanced pricing';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigDesc =>
+      'Configure markup, setup fees, and rounding.';
+
+  @override
+  String get paywallFeatureCsvMaterialImportTitle => 'CSV material import';
+
+  @override
+  String get paywallFeatureCsvMaterialImportDesc =>
+      'Import materials in bulk from CSV files.';
+
+  @override
+  String get paywallFeatureStockTrackingTitle => 'Stock tracking';
+
+  @override
+  String get paywallFeatureStockTrackingDesc =>
+      'Track filament stock and get low-stock alerts.';
 }

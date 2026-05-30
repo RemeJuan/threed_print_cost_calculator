@@ -63,7 +63,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      expect(find.text('Start batch quote'), findsOneWidget);
+      expect(find.text('Start batch costing'), findsOneWidget);
 
       await tester.tap(
         find.byKey(
