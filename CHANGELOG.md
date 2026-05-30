@@ -2,7 +2,9 @@
 
 ### Added
 - Custom in-app paywall screen with live RevenueCat offerings, feature comparison table from premium policy metadata, purchase and restore flows.
-- Hidden admin preview entry for custom paywall (Test Data Tools → Preview Custom Paywall).
+
+### Changed
+- Custom in-app paywall now fronts all normal premium upsell flows, replacing the hosted RevenueCat paywall as the default user-facing path.
 
 ## [2.11.0] - 2026-05-20
 
