@@ -94,7 +94,7 @@ class CalculatorPage extends HookConsumerWidget {
                     ),
                   );
                 },
-                icon: const Icon(Icons.view_list_outlined),
+                icon: const Icon(Icons.inventory_2_outlined),
                 label: l10n.batchCostingEntryButton,
               ),
               const SizedBox(height: kAppSpace12),
