@@ -30,7 +30,7 @@ class _NoopSeedLoader extends SeedLoader {
   _NoopSeedLoader() : super(bundle: _NoopAssetBundle());
 
   @override
-  Future<SeedDataBundle> load() async {
+  Future<SeedDataBundle> load({String subdirectory = ''}) async {
     throw UnimplementedError();
   }
 }

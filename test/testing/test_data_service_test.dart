@@ -15,7 +15,7 @@ class _FakeSeedLoader extends SeedLoader {
   final SeedDataBundle bundle;
 
   @override
-  Future<SeedDataBundle> load() async => bundle;
+  Future<SeedDataBundle> load({String subdirectory = ''}) async => bundle;
 }
 
 SeedDataBundle _bundle() {

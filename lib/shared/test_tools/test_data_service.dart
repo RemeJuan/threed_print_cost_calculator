@@ -71,7 +71,7 @@ class TestDataService {
 
   Future<TestDataOperationResult> seed() async {
     try {
-      final bundle = await loader.load();
+      final bundle = await loader.load(subdirectory: 'free');
       await _db.transaction((txn) async {
         await _clearDbInTransaction(txn);
         await _writeSeedData(txn, bundle);
@@ -113,8 +113,15 @@ class TestDataService {
 
   Future<TestDataOperationResult> enablePremiumAndSeed() async {
     try {
-      final result = await seed();
-      if (!result.success) return result;
+      final bundle = await loader.load(subdirectory: 'premium');
+      await _db.transaction((txn) async {
+        await _clearDbInTransaction(txn);
+        await _writeSeedData(txn, bundle);
+      });
+
+      await _prefs.clear();
+      await _clearPremiumLocalStore();
+      await _writeSeedPreferences(bundle.sharedPreferences);
 
       await _premiumLocalStore.write(
         testPremiumOverrideEnabledOnPreferenceKey,

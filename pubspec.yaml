@@ -82,7 +82,9 @@ flutter:
           weight: 700
   assets:
     - shorebird.yaml
-    - assets/test_data/
+    - assets/test_data/settings.json
+    - assets/test_data/free/
+    - assets/test_data/premium/
     - assets/whats_new.json
 
 cider:
