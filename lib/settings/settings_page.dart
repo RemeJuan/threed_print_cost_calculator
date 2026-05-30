@@ -21,10 +21,12 @@ class SettingsPage extends ConsumerWidget {
     final printersAsync = ref.watch(printersStreamProvider);
     final printerCount = printersAsync.maybeWhen(
       data: (printers) => printers.length,
-      orElse: () => 0,
+      orElse: () => null,
     );
-    final canAddPrinter = policy.canCreatePrinter(printerCount).allowed;
-    final showPrinterLimitMessage = !policy.isPremium && !canAddPrinter;
+    final canAddPrinter =
+        printerCount != null && policy.canCreatePrinter(printerCount).allowed;
+    final showPrinterLimitMessage =
+        printerCount != null && !policy.isPremium && !canAddPrinter;
 
     final style = Theme.of(
       context,

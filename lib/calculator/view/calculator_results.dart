@@ -61,7 +61,7 @@ class CalculatorResults extends ConsumerWidget {
             currencySettings: currencySettings,
             key: const ValueKey<String>('calculator.result.filamentCost'),
           ),
-          if (policy.riskPricing().allowed) ...[
+          if (policy.riskPricing().allowed)
             _itemRow(
               context,
               l10n.riskTotalPrefix,
@@ -69,6 +69,7 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.riskCost'),
             ),
+          if (policy.labourPricing().allowed)
             _itemRow(
               context,
               l10n.labourCostPrefix,
@@ -80,15 +81,15 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.labourCost'),
             ),
-            if (additionalCostAmount > 0)
-              _itemRow(
-                context,
-                l10n.additionalCostLabel,
-                additionalCostAmount,
-                currencySettings: currencySettings,
-                key: const ValueKey<String>('calculator.result.additionalCost'),
-              ),
-          ] else if (shouldShowProPromotion) ...[
+          if (additionalCostAmount > 0)
+            _itemRow(
+              context,
+              l10n.additionalCostLabel,
+              additionalCostAmount,
+              currencySettings: currencySettings,
+              key: const ValueKey<String>('calculator.result.additionalCost'),
+            ),
+          if (!policy.riskPricing().allowed && shouldShowProPromotion) ...[
             _lockedPromoRow(
               context,
               l10n.wearAndTearLabel,
@@ -103,6 +104,8 @@ class CalculatorResults extends ConsumerWidget {
               l10n.lockedValuePlaceholder,
               key: const ValueKey<String>('calculator.result.locked.riskCost'),
             ),
+          ],
+          if (!policy.labourPricing().allowed && shouldShowProPromotion)
             _lockedPromoRow(
               context,
               l10n.labourCostPrefix,
@@ -111,7 +114,6 @@ class CalculatorResults extends ConsumerWidget {
                 'calculator.result.locked.labourCost',
               ),
             ),
-          ],
           const Divider(),
           _summaryRow(
             context,

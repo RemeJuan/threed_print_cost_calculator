@@ -153,7 +153,8 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       _premiumFeature(PremiumFeature.bulkHistoryExport);
 
   @override
-  FeatureAccess historyExport() => bulkHistoryExport();
+  FeatureAccess historyExport() =>
+      _premiumFeature(PremiumFeature.historyExport);
 
   @override
   FeatureAccess gcodeImport() => _freeFeature(PremiumFeature.gcodeImport);

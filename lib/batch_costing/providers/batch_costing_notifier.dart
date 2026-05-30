@@ -144,6 +144,9 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setFailureRiskScope(BatchPricingScope scope) {
+    if (!ref.read(premiumAccessPolicyProvider).riskPricing().allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         failureRisk: state.pricing.failureRisk.copyWith(scope: scope),
@@ -166,6 +169,12 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setMarkupPercentScope(BatchPricingScope scope) {
+    if (!ref
+        .read(premiumAccessPolicyProvider)
+        .advancedPricingConfig()
+        .allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         markupPercent: state.pricing.markupPercent.copyWith(scope: scope),
@@ -185,6 +194,9 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setLabourRateScope(BatchPricingScope scope) {
+    if (!ref.read(premiumAccessPolicyProvider).labourPricing().allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         labourRate: state.pricing.labourRate.copyWith(scope: scope),

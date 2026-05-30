@@ -213,7 +213,7 @@ class MaterialForm extends HookConsumerWidget {
                   onChanged: (v) => notifier.updateCost(v),
                 ),
 
-                if (stockTrackingAccess.allowed)
+                if (stockTrackingAccess.allowed || state.autoDeductEnabled)
                   SwitchListTile.adaptive(
                     key: const ValueKey<String>(
                       'settings.materials.track_remaining.toggle',
