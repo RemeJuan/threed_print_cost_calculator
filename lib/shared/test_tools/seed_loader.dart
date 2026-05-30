@@ -28,9 +28,7 @@ class SeedLoader {
         ? 'assets/test_data'
         : 'assets/test_data/$subdirectory';
     final settings = _decodeMap(
-      subdirectory.isEmpty
-          ? await _load('assets/test_data/settings.json')
-          : await _load('$prefix/settings.json'),
+      await _load('$prefix/settings.json'),
     );
     return SeedDataBundle(
       generalSettings: _requiredMap(
