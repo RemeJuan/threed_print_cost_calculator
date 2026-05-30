@@ -43,14 +43,14 @@
 - Widget tests should use `test/helpers/helpers.dart`; it installs mock SharedPreferences, in-memory Sembast, no-op analytics, and `AppLocalizations.localizationsDelegates`.
 - Integration tests should use `integration_test/helpers/integration_test_harness.dart`; it seeds in-memory DB/prefs and fake purchases for free vs premium flows.
 - Startup/migration behavior has dedicated coverage in `test/main_migration_test.dart`; keep migration order stable when touching bootstrap/database startup.
-- Hidden in-app test overlays may use BotToast, but visible dialogs should stay in the project’s standard `AlertDialog`/Material style.
+- Hidden in-app test overlays may use BotToast, but visible dialogs should stay in the project's standard `AlertDialog`/Material style.
 
 ## Localisation
 - Never leave user-facing copy hardcoded when the existing l10n system should be used.
 - Source of truth for app strings: `lib/l10n/intl_*.arb`
 - After any ARB change, run: `fvm flutter gen-l10n`
 - Never manually edit generated localisation files.
-- Use the project’s existing generated localisation access pattern consistently. Do not introduce a second localisation API in new code.
+- Use the project's existing generated localisation access pattern consistently. Do not introduce a second localisation API in new code.
 - If adding a new key, update the English ARB first, regenerate, then update all supported locale ARBs.
 - Update all supported locales when adding or changing keys. Reuse existing wording patterns. Use placeholders instead of string concatenation.
 - Audit every changed widget, dialog, banner, snackbar, and empty state for hardcoded user-facing text before merge.
