@@ -43,6 +43,8 @@ class MaterialCard extends ConsumerWidget {
       ),
     );
 
+    final stockStatus = calculateStockStatus(material);
+
     Widget buildActionContent(IconData icon, String label, Color color) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
@@ -180,8 +182,8 @@ class MaterialCard extends ConsumerWidget {
                 if (stockTrackingAllowed) ...[
                   const SizedBox(width: kAppSpace8),
                   StockStatusBadge(
-                    status: calculateStockStatus(material),
-                    label: switch (calculateStockStatus(material)) {
+                    status: stockStatus,
+                    label: switch (stockStatus) {
                       StockStatus.outOfStock => l10n.stockBadgeOut,
                       StockStatus.lowStock => l10n.stockBadgeLow,
                       StockStatus.inStock => l10n.stockBadgeInStock,
