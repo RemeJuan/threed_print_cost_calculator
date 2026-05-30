@@ -719,7 +719,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get validationMustBeZeroOrMore => '0以上の値を入力してください';
 
   @override
-  String get lockedValuePlaceholder => 'Premiumのみ';
+  String get lockedValuePlaceholder => 'プレミアムのみ';
 
   @override
   String get hideProPromotionsTitle => 'Proのプロモーションを非表示';
@@ -1217,6 +1217,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get batchCostingReviewImportGcodeButton => 'G-codeファイルをインポート';
+
+  @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'G-codeファイルをインポート (プレミアム)';
 
   @override
   String get batchGcodeImportTitle => 'バッチG-codeのインポート';

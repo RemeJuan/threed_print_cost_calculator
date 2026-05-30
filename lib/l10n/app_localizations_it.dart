@@ -1272,6 +1272,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get batchCostingReviewImportGcodeButton => 'Importa file G-code';
 
   @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'Importa file G-code (Premium)';
+
+  @override
   String get batchGcodeImportTitle => 'Importa G-code batch';
 
   @override

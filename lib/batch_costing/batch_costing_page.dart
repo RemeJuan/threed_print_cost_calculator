@@ -58,7 +58,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     final batchImportAllowed = policy.batchGcodeImport().allowed;
     final batchImportLabel = batchImportAllowed
         ? l10n.batchCostingReviewImportGcodeButton
-        : '${l10n.batchCostingReviewImportGcodeButton} (Premium)';
+        : l10n.batchCostingReviewImportGcodeButtonPremium;
 
     _syncExpandedState(items);
 

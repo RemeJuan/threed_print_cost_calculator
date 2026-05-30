@@ -615,6 +615,7 @@
   "batchCostingReviewEmptyTitle": "Belum ada item batch",
   "batchCostingReviewEmptyBody": "Tambahkan cetakan manual untuk melanjutkan.",
   "batchCostingReviewImportGcodeButton": "Impor file G-code",
+  "batchCostingReviewImportGcodeButtonPremium": "Impor file G-code (Premium)",
   "batchGcodeImportTitle": "Impor G-code batch",
   "batchGcodeImportBody": "Pilih satu atau beberapa file G-code. Setiap file diurai sendiri.",
   "batchGcodeImportPickButton": "Pilih file",

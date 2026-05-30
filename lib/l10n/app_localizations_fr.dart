@@ -1280,6 +1280,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Importer des fichiers G-code';
 
   @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'Importer des fichiers G-code (Premium)';
+
+  @override
   String get batchGcodeImportTitle => 'Importer un lot de G-code';
 
   @override

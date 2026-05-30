@@ -149,7 +149,7 @@ class HistoryPage extends HookConsumerWidget {
         if (current >= (max - threshold)) {
           final notifier = ref.read(historyPagedProvider.notifier);
           final state = ref.read(historyPagedProvider);
-          if (!state.isLoading && state.hasMore && !hasReachedHistoryLimit) {
+          if (!state.isLoading && state.hasMore) {
             notifier.loadMore();
           }
         }
@@ -157,7 +157,7 @@ class HistoryPage extends HookConsumerWidget {
 
       scrollController.addListener(scrollListener);
       return () => scrollController.removeListener(scrollListener);
-    }, [scrollController]);
+    }, [scrollController, hasReachedHistoryLimit]);
 
     return Scaffold(
       body: Builder(

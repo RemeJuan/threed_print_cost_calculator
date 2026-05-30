@@ -615,6 +615,7 @@
   "batchCostingReviewEmptyTitle": "Nessun articolo batch ancora",
   "batchCostingReviewEmptyBody": "Aggiungi stampe manuali per continuare.",
   "batchCostingReviewImportGcodeButton": "Importa file G-code",
+  "batchCostingReviewImportGcodeButtonPremium": "Importa file G-code (Premium)",
   "batchGcodeImportTitle": "Importa G-code batch",
   "batchGcodeImportBody": "Scegli uno o più file G-code. Ogni file viene analizzato separatamente.",
   "batchGcodeImportPickButton": "Scegli file",

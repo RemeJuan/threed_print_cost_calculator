@@ -1265,6 +1265,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'G-codebestanden importeren';
 
   @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'G-codebestanden importeren (Premium)';
+
+  @override
   String get batchGcodeImportTitle => 'Batch G-code importeren';
 
   @override

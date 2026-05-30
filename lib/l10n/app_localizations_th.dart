@@ -1238,6 +1238,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get batchCostingReviewImportGcodeButton => 'นำเข้าไฟล์ G-code';
 
   @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'นำเข้าไฟล์ G-code (พรีเมียม)';
+
+  @override
   String get batchGcodeImportTitle => 'นำเข้า G-code แบบชุด';
 
   @override

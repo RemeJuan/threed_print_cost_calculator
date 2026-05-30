@@ -616,6 +616,7 @@
   "batchCostingReviewEmptyTitle": "ยังไม่มีรายการชุด",
   "batchCostingReviewEmptyBody": "เพิ่มงานพิมพ์ด้วยตนเองเพื่อดำเนินการต่อ",
   "batchCostingReviewImportGcodeButton": "นำเข้าไฟล์ G-code",
+  "batchCostingReviewImportGcodeButtonPremium": "นำเข้าไฟล์ G-code (พรีเมียม)",
   "batchGcodeImportTitle": "นำเข้า G-code แบบชุด",
   "batchGcodeImportBody": "เลือกไฟล์ G-code หนึ่งไฟล์หรือหลายไฟล์ แต่ละไฟล์จะถูกแยกวิเคราะห์แยกกัน",
   "batchGcodeImportPickButton": "เลือกไฟล์",

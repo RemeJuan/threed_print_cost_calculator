@@ -2345,6 +2345,12 @@ abstract class AppLocalizations {
   /// **'Import G-code files'**
   String get batchCostingReviewImportGcodeButton;
 
+  /// No description provided for @batchCostingReviewImportGcodeButtonPremium.
+  ///
+  /// In en, this message translates to:
+  /// **'Import G-code files (Premium)'**
+  String get batchCostingReviewImportGcodeButtonPremium;
+
   /// No description provided for @batchGcodeImportTitle.
   ///
   /// In en, this message translates to:

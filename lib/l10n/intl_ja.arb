@@ -457,7 +457,7 @@
     }
   },
   "materialFallback": "素材",
-  "lockedValuePlaceholder": "Premiumのみ",
+  "lockedValuePlaceholder": "プレミアムのみ",
   "hideProPromotionsTitle": "Proのプロモーションを非表示",
   "hideProPromotionsSubtitle": "アップグレードのバナーと案内を非表示",
   "historyTeaserTitle": "すべての印刷見積もりを1か所に保存",
@@ -616,6 +616,7 @@
   "batchCostingReviewEmptyTitle": "まだバッチアイテムがありません",
   "batchCostingReviewEmptyBody": "続行するには手動の印刷を追加してください。",
   "batchCostingReviewImportGcodeButton": "G-codeファイルをインポート",
+  "batchCostingReviewImportGcodeButtonPremium": "G-codeファイルをインポート (プレミアム)",
   "batchGcodeImportTitle": "バッチG-codeのインポート",
   "batchGcodeImportBody": "1つ以上のG-codeファイルを選択します。各ファイルは個別に解析されます。",
   "batchGcodeImportPickButton": "ファイルを選択",

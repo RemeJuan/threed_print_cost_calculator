@@ -616,6 +616,7 @@
   "batchCostingReviewEmptyTitle": "Nog geen batch-artikelen",
   "batchCostingReviewEmptyBody": "Voeg handmatige prints toe om verder te gaan.",
   "batchCostingReviewImportGcodeButton": "G-codebestanden importeren",
+  "batchCostingReviewImportGcodeButtonPremium": "G-codebestanden importeren (Premium)",
   "batchGcodeImportTitle": "Batch G-code importeren",
   "batchGcodeImportBody": "Kies een of meer G-codebestanden. Elk bestand wordt apart geparseerd.",
   "batchGcodeImportPickButton": "Bestanden kiezen",

@@ -617,6 +617,7 @@
   "batchCostingReviewEmptyTitle": "Aucun article de lot pour l'instant",
   "batchCostingReviewEmptyBody": "Ajoutez des impressions manuelles pour continuer.",
   "batchCostingReviewImportGcodeButton": "Importer des fichiers G-code",
+  "batchCostingReviewImportGcodeButtonPremium": "Importer des fichiers G-code (Premium)",
   "batchGcodeImportTitle": "Importer un lot de G-code",
   "batchGcodeImportBody": "Choisissez un ou plusieurs fichiers G-code. Chaque fichier est analysé séparément.",
   "batchGcodeImportPickButton": "Choisir des fichiers",
