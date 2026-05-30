@@ -26,9 +26,9 @@
 ## Feature directories
 
 - `lib/calculator/`: calculator form, results, history load, imported value application.
-- `lib/materials/`: premium materials browser, filters, CSV import UI.
-- `lib/history/`: premium history list, search, teaser/full states, export UI.
-- `lib/purchases/`: RevenueCat gateway, premium state, paywall presentation.
+- `lib/materials/`: materials browser (free with quota limits), filters, CSV import UI, stock tracking.
+- `lib/history/`: history list (free with 7-save limit), search, export UI.
+- `lib/purchases/`: RevenueCat gateway, custom paywall screen, premium gateway, paywall presenter, premium policy/state.
 - `lib/gcode_import/`: file picking, parsing, import flow, feedback reporting.
 - `lib/settings/`: general settings, work costs, printer forms, material forms.
 - `lib/database/`: Sembast storage abstraction, repositories, record mapping.

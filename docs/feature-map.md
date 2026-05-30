@@ -54,7 +54,7 @@
 ## Materials
 
 - Main screens/widgets:
-  - `lib/materials/widgets/materials_page.dart` — premium tab, shared search bar, search/filter, swipe actions, delete/duplicate wiring; duplicate respects free-tier material cap
+  - `lib/materials/widgets/materials_page.dart` — materials browser tab (free access with quota limits), shared search bar, search/filter, swipe actions, delete/duplicate wiring; duplicate respects free-tier material cap
   - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
   - `lib/materials/csv_import/csv_import_page.dart`
@@ -338,7 +338,7 @@
 - Layout behavior:
   - Sections always visible (no accordion/collapse/chevrons)
   - Order: General → Pricing & Work Costs → Printers (matches usage frequency)
-  - Premium-gated sections/actions are controlled by `isPremium`; General settings remain available
+  - Premium-gated sections/actions are controlled by `premiumAccessPolicyProvider` (policy-led); General settings remain available
   - Printer list is content-sized `Column` (no fixed-height `ListView`)
 - Providers/state:
   - `lib/settings/providers/printers_notifier.dart` (`printersProvider`)
