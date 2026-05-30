@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_filter_chip.dart';
 
 class MaterialFilters extends ConsumerWidget {
@@ -14,6 +15,7 @@ class MaterialFilters extends ConsumerWidget {
     final types = ref.watch(materialTypesProvider).toList()..sort();
     final selectedType = ref.watch(materialsTypeFilterProvider);
     final selectedStock = ref.watch(materialsStockFilterProvider);
+    final stockTrackingAllowed = ref.watch(premiumAccessPolicyProvider).stockTracking().allowed;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,32 +31,33 @@ class MaterialFilters extends ConsumerWidget {
                   selectedType == type ? null : type;
             },
           ),
-        _FilterSection(
-          chips: [
-            (
-              label: l10n.materialsFilterInStock,
-              selected: selectedStock == StockStatus.inStock,
-            ),
-            (
-              label: l10n.materialsFilterLowStock,
-              selected: selectedStock == StockStatus.lowStock,
-            ),
-            (
-              label: l10n.materialsFilterOutOfStock,
-              selected: selectedStock == StockStatus.outOfStock,
-            ),
-          ],
-          onSelected: (index) {
-            final status = switch (index) {
-              0 => StockStatus.inStock,
-              1 => StockStatus.lowStock,
-              2 => StockStatus.outOfStock,
-              _ => null,
-            };
-            ref.read(materialsStockFilterProvider.notifier).state =
-                selectedStock == status ? null : status;
-          },
-        ),
+        if (stockTrackingAllowed)
+          _FilterSection(
+            chips: [
+              (
+                label: l10n.materialsFilterInStock,
+                selected: selectedStock == StockStatus.inStock,
+              ),
+              (
+                label: l10n.materialsFilterLowStock,
+                selected: selectedStock == StockStatus.lowStock,
+              ),
+              (
+                label: l10n.materialsFilterOutOfStock,
+                selected: selectedStock == StockStatus.outOfStock,
+              ),
+            ],
+            onSelected: (index) {
+              final status = switch (index) {
+                0 => StockStatus.inStock,
+                1 => StockStatus.lowStock,
+                2 => StockStatus.outOfStock,
+                _ => null,
+              };
+              ref.read(materialsStockFilterProvider.notifier).state =
+                  selectedStock == status ? null : status;
+            },
+          ),
       ],
     );
   }
