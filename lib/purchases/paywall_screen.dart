@@ -112,11 +112,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
           defaultEntryPoint: widget.defaultEntryPoint,
         ),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.paywallRestoreSuccess),
-        ),
-      );
+      if (!mounted) return;
+      Navigator.of(context).pop();
     } catch (e, st) {
       ref
           .read(appLoggerProvider)

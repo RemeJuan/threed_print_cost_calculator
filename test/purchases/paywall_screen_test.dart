@@ -493,7 +493,7 @@ void main() {
     expect(find.text(l10n.purchaseError), findsOneWidget);
   });
 
-  testWidgets('restore success shows snackbar', (tester) async {
+  testWidgets('restore success dismisses paywall', (tester) async {
     await pumpPaywall(tester);
 
     final l10n = lookupAppLocalizations(const Locale('en'));
@@ -501,7 +501,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
 
-    expect(find.text(l10n.paywallRestoreSuccess), findsOneWidget);
+    expect(find.text(l10n.paywallTitle), findsNothing);
   });
 
   testWidgets('restore error shows snackbar', (tester) async {
