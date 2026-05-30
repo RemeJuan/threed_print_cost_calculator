@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/color_utils.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
@@ -30,7 +31,7 @@ class MaterialCard extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
-    final status = calculateStockStatus(material);
+    final stockTrackingAllowed = ref.watch(premiumAccessPolicyProvider).stockTracking().allowed;
 
     final swatchColor = colorFromMaterial(
       MaterialColorInput(
@@ -173,16 +174,18 @@ class MaterialCard extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: kAppSpace8),
-                StockStatusBadge(
-                  status: status,
-                  label: switch (status) {
-                    StockStatus.outOfStock => l10n.stockBadgeOut,
-                    StockStatus.lowStock => l10n.stockBadgeLow,
-                    StockStatus.inStock => l10n.stockBadgeInStock,
-                    StockStatus.noTracking => l10n.stockBadgeNoTracking,
-                  },
-                ),
+                if (stockTrackingAllowed) ...[
+                  const SizedBox(width: kAppSpace8),
+                  StockStatusBadge(
+                    status: calculateStockStatus(material),
+                    label: switch (calculateStockStatus(material)) {
+                      StockStatus.outOfStock => l10n.stockBadgeOut,
+                      StockStatus.lowStock => l10n.stockBadgeLow,
+                      StockStatus.inStock => l10n.stockBadgeInStock,
+                      StockStatus.noTracking => l10n.stockBadgeNoTracking,
+                    },
+                  ),
+                ],
               ],
             ),
           ),
