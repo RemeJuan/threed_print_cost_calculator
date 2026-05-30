@@ -45,9 +45,7 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [
-          premiumPurchaseGatewayProvider.overrideWithValue(gateway),
-        ],
+        overrides: [premiumPurchaseGatewayProvider.overrideWithValue(gateway)],
         child: MaterialApp(
           locale: const Locale('en'),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
