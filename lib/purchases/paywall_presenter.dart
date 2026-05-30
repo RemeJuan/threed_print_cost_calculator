@@ -16,7 +16,7 @@ abstract class PaywallPresenter {
 }
 
 final paywallPresenterProvider = Provider<PaywallPresenter>((ref) {
-  return const _RevenueCatPaywallPresenter();
+  return const _AppPaywallPresenter();
 });
 
 class PaywallPresentationGate {
@@ -34,8 +34,8 @@ class PaywallPresentationGate {
   }
 }
 
-class _RevenueCatPaywallPresenter implements PaywallPresenter {
-  const _RevenueCatPaywallPresenter();
+class _AppPaywallPresenter implements PaywallPresenter {
+  const _AppPaywallPresenter();
 
   @override
   Future<void> present(
