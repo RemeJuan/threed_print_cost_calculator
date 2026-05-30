@@ -1,10 +1,10 @@
 # Custom Paywall Phase 1 Plan
 
 Status: **Completed** (2026-05-30)
-Scope: Phase 1 preview only
-Rollout: No
-Production default paywall: Unchanged RevenueCat hosted paywall
-Preview entry: Hidden admin tools only
+Scope: Phase 1 preview only; later phases rolled custom paywall into production
+Rollout: Yes (post-Phase-1 production release)
+Production default paywall: App-owned PaywallScreen via appNavigatorKey (see docs/architecture.md)
+Preview entry: Hidden admin tools only (repurposed for design iteration)
 
 ## Goal
 

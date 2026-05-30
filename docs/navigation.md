@@ -8,7 +8,7 @@
 - `patrol_test/`: Patrol release-gate E2E journeys.
 - `test_support/`: shared test doubles used outside `test/`.
 - `docs/`: product, architecture, developer, and feature docs.
-- `assets/test_data/`: deterministic seed data for in-app test tools (`SeedLoader`). JSON files: `settings.json`, `printers.json`, `materials.json`, `history.json`. Loaded via `lib/shared/test_tools/seed_loader.dart` and `test_data_service.dart`. History items may include `batchQuote`, `batchQuoteItems`, and `batchQuoteSummary` for batch costing. Settings supports `pricingMarkupPercent`, `pricingSetupFee`, `pricingRoundingMode` (`"none"`, `".00"`, `".99"`), `currencySymbol`, `currencyPosition`, `currencySpacing`.
+- `assets/test_data/`: deterministic seed data for in-app test tools (`SeedLoader`). Root JSON files (`settings.json`, `printers.json`, `materials.json`, `history.json`) contain premium-shaped data. Free-tier fixtures live in `assets/test_data/free/` with stock-tracking and premium pricing fields stripped. Loaded via `lib/shared/test_tools/seed_loader.dart` and `test_data_service.dart`.
 - `android/`, `ios/`, `web/`: platform shells.
 - `.github/workflows/`: GitHub Actions workflows.
 - `codemagic.yaml`: Codemagic + Shorebird release and patch workflows.
