@@ -6,9 +6,6 @@
       "cost": "24.99",
       "color": "Red",
       "weight": "1000",
-      "autoDeductEnabled": true,
-      "originalWeight": 1000,
-      "remainingWeight": 800,
       "brand": "Bambu",
       "materialType": "PLA",
       "colorHex": ""
@@ -19,9 +16,6 @@
       "cost": "24.99",
       "color": "Black",
       "weight": "1000",
-      "autoDeductEnabled": true,
-      "originalWeight": 1000,
-      "remainingWeight": 150,
       "brand": "Bambu",
       "materialType": "PLA",
       "colorHex": ""
@@ -32,9 +26,6 @@
       "cost": "22.50",
       "color": "White",
       "weight": "1000",
-      "autoDeductEnabled": true,
-      "originalWeight": 1000,
-      "remainingWeight": 0,
       "brand": "eSun",
       "materialType": "PETG",
       "colorHex": ""
@@ -45,9 +36,6 @@
       "cost": "28.75",
       "color": "Midnight Blue",
       "weight": "1000",
-      "autoDeductEnabled": true,
-      "originalWeight": 1000,
-      "remainingWeight": 850,
       "brand": "eSun",
       "materialType": "ABS",
       "colorHex": ""
@@ -58,9 +46,6 @@
       "cost": "26.00",
       "color": "Silk Gold",
       "weight": "800",
-      "autoDeductEnabled": true,
-      "originalWeight": 800,
-      "remainingWeight": 100,
       "brand": "Polymaker",
       "materialType": "PLA",
       "colorHex": ""
