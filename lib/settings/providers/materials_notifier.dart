@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
@@ -153,6 +154,20 @@ class MaterialsProvider extends Notifier<MaterialState> {
       return null;
     }
 
+    final stockTrackingAccess = ref
+        .read(premiumAccessPolicyProvider)
+        .stockTracking();
+
+    if (dbRef == null) {
+      final count = await _materialsRepository.count();
+      final access = ref
+          .read(premiumAccessPolicyProvider)
+          .canCreateMaterial(count);
+      if (!access.allowed) {
+        return null;
+      }
+    }
+
     final existing = dbRef == null
         ? null
         : await _materialsRepository.getMaterialById(dbRef);
@@ -160,6 +175,13 @@ class MaterialsProvider extends Notifier<MaterialState> {
     final parsedWeight = parseLocalizedNum(state.weightText)!;
     final wasTrackingEnabled = existing?.autoDeductEnabled ?? false;
     final isTrackingEnabled = state.autoDeductEnabled;
+
+    if (!stockTrackingAccess.allowed &&
+        !wasTrackingEnabled &&
+        isTrackingEnabled) {
+      return null;
+    }
+
     final parsedRemainingWeight = state.autoDeductEnabled
         ? (state.remainingWeightText.trim().isEmpty
               ? parsedWeight

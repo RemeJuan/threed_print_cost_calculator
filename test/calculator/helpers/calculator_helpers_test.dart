@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
@@ -9,12 +10,17 @@ import 'package:threed_print_cost_calculator/database/repositories/history_repos
 import 'package:threed_print_cost_calculator/database/services/material_stock_service.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 class _RecordingHistoryRepository extends HistoryRepository {
   _RecordingHistoryRepository(super.ref, {this.shouldThrow = false});
 
   final bool shouldThrow;
   final List<HistoryModel> saved = [];
+
+  @override
+  Future<int> countHistory() async => 0;
 
   @override
   Future<Object?> saveHistory(HistoryModel model) async {
@@ -95,6 +101,7 @@ Future<void> _pumpToastApp(
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
 
   late ProviderContainer container;
 
@@ -230,6 +237,7 @@ void main() {
   testWidgets('savePrint skips stock deduction when history save fails', (
     tester,
   ) async {
+    final prefs = await SharedPreferences.getInstance();
     late _RecordingHistoryRepository historyRepository;
     _RecordingMaterialStockService? stockService;
     final overrideContainer = ProviderContainer(
@@ -246,6 +254,8 @@ void main() {
           stockService = service;
           return service;
         }),
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        isPremiumProvider.overrideWithValue(true),
       ],
     );
     addTearDown(overrideContainer.dispose);
@@ -275,6 +285,7 @@ void main() {
       final logSink = _RecordingLogSink();
       late _RecordingHistoryRepository historyRepository;
       late _RecordingMaterialStockService stockService;
+      final prefs = await SharedPreferences.getInstance();
       final overrideContainer = ProviderContainer(
         overrides: [
           historyRepositoryProvider.overrideWith((ref) {
@@ -292,6 +303,8 @@ void main() {
           appLoggerConfigProvider.overrideWithValue(
             const AppLoggerConfig(minLevel: AppLogLevel.debug),
           ),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          isPremiumProvider.overrideWithValue(true),
         ],
       );
       addTearDown(overrideContainer.dispose);

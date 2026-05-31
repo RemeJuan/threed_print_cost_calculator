@@ -11,9 +11,8 @@ import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 class AppPage extends HookConsumerWidget {
@@ -24,12 +23,9 @@ class AppPage extends HookConsumerWidget {
     final selectedTab = useState(AppPageTab.calculator);
     final tapNavigationTargetIndex = useState<int?>(null);
     final l10n = AppLocalizations.of(context)!;
-    final prefs = ref.read(sharedPreferencesProvider);
-    final premiumState = ref.watch(premiumStateProvider);
-    final isPremium = premiumState.isPremium;
-    final showHistoryTab = ref.watch(shouldShowHistoryTabProvider);
-    final showHistoryTeaser = ref.watch(shouldShowHistoryTeaserProvider);
-
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final isPremium = policy.isPremium;
+    final showHistoryTab = policy.shouldShowHistoryTab;
     useEffect(() {
       registerAppProviderContainer(
         ProviderScope.containerOf(context, listen: false),
@@ -52,7 +48,7 @@ class AppPage extends HookConsumerWidget {
       announcementAsync: announcementAsync,
       isPremium: isPremium,
     );
-    useAppPageCancelFeedbackEffect(context: context, ref: ref, prefs: prefs);
+    useAppPageCancelFeedbackEffect(context: context, ref: ref);
 
     final pageController = usePageController(initialPage: 0);
 
@@ -73,9 +69,7 @@ class AppPage extends HookConsumerWidget {
     final shellTabs = buildAppPageShellTabs(
       context: context,
       l10n: l10n,
-      isPremium: isPremium,
-      showHistoryTab: showHistoryTab,
-      showHistoryTeaser: showHistoryTeaser,
+      policy: policy,
       onHistoryLoaded: () async {
         tapNavigationTargetIndex.value = 0;
         selectedTab.value = AppPageTab.calculator;

@@ -1,0 +1,13 @@
+{
+  "generalSettings": {
+    "electricityCost": "0.18",
+    "wattage": "120",
+    "activePrinter": "prusa_mk4",
+    "selectedMaterial": "pla_white"
+  },
+  "sharedPreferences": {
+    "hideProPromotions": false,
+    "run_count": 0,
+    "paywall": false
+  }
+}

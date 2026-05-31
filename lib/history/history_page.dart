@@ -8,7 +8,8 @@ import 'package:threed_print_cost_calculator/history/components/history_export_p
 import 'package:threed_print_cost_calculator/history/components/history_overflow_hint.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'provider/history_paged_notifier.dart';
@@ -40,24 +41,32 @@ class HistoryPage extends HookConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final appRefreshTick = ref.watch(appRefreshProvider);
     final paged = ref.watch(historyPagedProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
 
     if (mode == HistoryPageMode.teaser) {
-      final isPremium = ref.watch(isPremiumProvider);
       return HistoryTeaser(
         onUpgradePressed: () => _showTeaserPaywall(
           context,
           ref: ref,
-          isPremium: isPremium,
+          isPremium: policy.isPremium,
           source: 'history_teaser_primary',
         ),
         onExportPreviewPressed: () => _showTeaserPreview(
           context,
           ref: ref,
-          isPremium: isPremium,
+          isPremium: policy.isPremium,
           source: 'history_teaser_secondary',
         ),
       );
     }
+
+    final historyLimit = policy.historyLimit;
+    final isHistoryLimited = !policy.isPremium && historyLimit != null;
+    final hasReachedHistoryLimit =
+        isHistoryLimited && paged.items.length >= historyLimit;
+    final visibleItems = isHistoryLimited
+        ? paged.items.take(historyLimit).toList(growable: false)
+        : paged.items;
 
     final prefs = ref.read(sharedPreferencesProvider);
     final controller = useTextEditingController(text: paged.query);
@@ -148,7 +157,7 @@ class HistoryPage extends HookConsumerWidget {
 
       scrollController.addListener(scrollListener);
       return () => scrollController.removeListener(scrollListener);
-    }, [scrollController]);
+    }, [scrollController, hasReachedHistoryLimit]);
 
     return Scaffold(
       body: Builder(
@@ -175,7 +184,9 @@ class HistoryPage extends HookConsumerWidget {
               SliverToBoxAdapter(
                 child: HistorySearchBar(
                   controller: controller,
-                  onExportPressed: () => _showExportOptions(context, ref),
+                  onExportPressed: policy.bulkHistoryExport().allowed
+                      ? () => _showExportOptions(context, ref)
+                      : null,
                 ),
               ),
               SliverToBoxAdapter(
@@ -196,7 +207,7 @@ class HistoryPage extends HookConsumerWidget {
                 )
               else
                 HistoryListView(
-                  items: paged.items,
+                  items: visibleItems,
                   onHistoryLoaded: onHistoryLoaded,
                   onOverflowMenuOpened: () async {
                     await markOverflowMenuOpened();
@@ -212,7 +223,12 @@ class HistoryPage extends HookConsumerWidget {
                           padding: EdgeInsets.symmetric(vertical: 12.0),
                           child: CircularProgressIndicator(),
                         ),
-                      if (!paged.hasMore)
+                      if (hasReachedHistoryLimit)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Text(l10n.historyUpsellDescription),
+                        )
+                      else if (!paged.hasMore)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12.0),
                           child: Text(l10n.historyNoMoreRecords),
@@ -249,6 +265,18 @@ class HistoryPage extends HookConsumerWidget {
     AppLocalizations l10n,
     ExportRange range,
   ) async {
+    final policy = ref.read(premiumAccessPolicyProvider);
+    if (!await requirePremium(
+      ref.read(paywallPresenterProvider),
+      policy.bulkHistoryExport(),
+      purchaseSource: 'history_export',
+      recheck: () => Future.value(
+        ref.read(premiumAccessPolicyProvider).bulkHistoryExport().allowed,
+      ),
+    )) {
+      return;
+    }
+
     // Use mixed history export to handle both single-print and batch quotes
     await ref
         .read(csvUtilsProvider)

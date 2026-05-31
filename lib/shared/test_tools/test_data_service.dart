@@ -8,12 +8,11 @@ import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
-
-const testPremiumOverrideEnabledOnPreferenceKey =
-    'testPremiumOverrideEnabledOn';
 
 String formatTestPremiumOverrideDay(DateTime now) {
   return '${now.year.toString().padLeft(4, '0')}'
@@ -53,16 +52,33 @@ class TestDataService {
   AppLogger get _logger => ref.read(appLoggerProvider);
   Database get _db => ref.read(databaseProvider);
   SharedPreferences get _prefs => ref.read(sharedPreferencesProvider);
+  PremiumLocalStore get _premiumLocalStore =>
+      ref.read(premiumLocalStoreProvider);
+
+  bool _isPremiumSeedKey(String key) {
+    return switch (key) {
+      hideProPromotionsPreferenceKey => true,
+      testPremiumOverrideEnabledOnPreferenceKey => true,
+      calculationCountPreferenceKey => true,
+      hasUsedGcodeImportPreferenceKey => true,
+      cancelFeedbackPromptShownStatePreferenceKey => true,
+      cancelFeedbackPromptSubmittedStatePreferenceKey => true,
+      runCountPreferenceKey => true,
+      paywallPreferenceKey => true,
+      _ => false,
+    };
+  }
 
   Future<TestDataOperationResult> seed() async {
     try {
-      final bundle = await loader.load();
+      final bundle = await loader.load(subdirectory: 'free');
       await _db.transaction((txn) async {
         await _clearDbInTransaction(txn);
         await _writeSeedData(txn, bundle);
       });
 
       await _prefs.clear();
+      await _clearPremiumLocalStore();
       await _writeSeedPreferences(bundle.sharedPreferences);
       return const TestDataOperationResult.success();
     } catch (error, stackTrace) {
@@ -82,6 +98,7 @@ class TestDataService {
         await _clearDbInTransaction(txn);
       });
       await _prefs.clear();
+      await _clearPremiumLocalStore();
       return const TestDataOperationResult.success();
     } catch (error, stackTrace) {
       _logger.error(
@@ -96,10 +113,17 @@ class TestDataService {
 
   Future<TestDataOperationResult> enablePremiumAndSeed() async {
     try {
-      final result = await seed();
-      if (!result.success) return result;
+      final bundle = await loader.load(subdirectory: 'premium');
+      await _db.transaction((txn) async {
+        await _clearDbInTransaction(txn);
+        await _writeSeedData(txn, bundle);
+      });
 
-      await _prefs.setString(
+      await _prefs.clear();
+      await _clearPremiumLocalStore();
+      await _writeSeedPreferences(bundle.sharedPreferences);
+
+      await _premiumLocalStore.write(
         testPremiumOverrideEnabledOnPreferenceKey,
         formatTestPremiumOverrideDay(DateTime.now()),
       );
@@ -187,19 +211,41 @@ class TestDataService {
       final value = entry.value;
 
       if (value is bool) {
-        await _prefs.setBool(key, value);
+        if (_isPremiumSeedKey(key)) {
+          await _premiumLocalStore.write(key, value.toString());
+        } else {
+          await _prefs.setBool(key, value);
+          await _premiumLocalStore.write(key, value.toString());
+        }
       } else if (value is int) {
-        await _prefs.setInt(key, value);
+        if (_isPremiumSeedKey(key)) {
+          await _premiumLocalStore.write(key, value.toString());
+        } else {
+          await _prefs.setInt(key, value);
+          await _premiumLocalStore.write(key, value.toString());
+        }
       } else if (value is double) {
         await _prefs.setDouble(key, value);
       } else if (value is String) {
-        await _prefs.setString(key, value);
+        if (_isPremiumSeedKey(key)) {
+          await _premiumLocalStore.write(key, value);
+        } else {
+          await _prefs.setString(key, value);
+          await _premiumLocalStore.write(key, value);
+        }
       } else if (value is List) {
         await _prefs.setStringList(
           key,
           value.map((entry) => entry.toString()).toList(),
         );
       }
+    }
+  }
+
+  Future<void> _clearPremiumLocalStore() async {
+    final values = await _premiumLocalStore.readAll();
+    for (final key in values.keys) {
+      await _premiumLocalStore.delete(key);
     }
   }
 }

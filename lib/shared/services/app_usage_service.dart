@@ -1,9 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-
-const calculationCountPreferenceKey = 'calculation_count';
-const hasUsedGcodeImportPreferenceKey = 'has_used_gcode_import';
 
 final appUsageServiceProvider = Provider<AppUsageService>(AppUsageService.new);
 
@@ -12,36 +10,39 @@ class AppUsageService {
 
   final Ref ref;
 
-  SharedPreferences? get _prefs {
+  PremiumLocalStore? get _store {
     try {
-      return ref.read(sharedPreferencesProvider);
+      return ref.read(premiumLocalStoreProvider);
     } catch (_) {
       return null;
     }
   }
 
   int get calculationCount =>
-      _prefs?.getInt(calculationCountPreferenceKey) ?? 0;
+      int.tryParse(_store?.readSync(calculationCountPreferenceKey) ?? '') ?? 0;
 
   bool get hasUsedGcodeImport =>
-      _prefs?.getBool(hasUsedGcodeImportPreferenceKey) ?? false;
+      _store?.readSync(hasUsedGcodeImportPreferenceKey) == 'true';
 
   Future<void> recordCalculation() async {
-    final prefs = _prefs;
-    if (prefs == null) {
+    final store = _store;
+    if (store == null) {
       return;
     }
 
-    await prefs.setInt(calculationCountPreferenceKey, calculationCount + 1);
+    await store.write(
+      calculationCountPreferenceKey,
+      (calculationCount + 1).toString(),
+    );
   }
 
   Future<void> markGcodeImportUsed() async {
-    final prefs = _prefs;
-    if (prefs == null) {
+    final store = _store;
+    if (store == null) {
       return;
     }
 
-    await prefs.setBool(hasUsedGcodeImportPreferenceKey, true);
+    await store.write(hasUsedGcodeImportPreferenceKey, 'true');
   }
 
   static String calculationCountBucket(int count) {

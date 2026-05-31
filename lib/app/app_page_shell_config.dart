@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
-import 'package:threed_print_cost_calculator/app/promo_history_tab_icon.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
@@ -30,11 +30,13 @@ class AppPageShellTab {
 List<AppPageShellTab> buildAppPageShellTabs({
   required BuildContext context,
   required AppLocalizations l10n,
-  required bool isPremium,
-  required bool showHistoryTab,
-  required bool showHistoryTeaser,
+  required PremiumAccessPolicy policy,
   required Future<void> Function() onHistoryLoaded,
 }) {
+  final historyMode = policy.historyView().allowed
+      ? HistoryPageMode.full
+      : HistoryPageMode.teaser;
+
   return [
     AppPageShellTab(
       tab: AppPageTab.calculator,
@@ -49,12 +51,12 @@ List<AppPageShellTab> buildAppPageShellTabs({
         label: l10n.calculatorNavLabel,
       ),
     ),
-    if (isPremium)
-      AppPageShellTab(
-        tab: AppPageTab.materials,
-        page: const MaterialsPage(),
-        title: l10n.materialsAppBarTitle,
-        actions: [
+    AppPageShellTab(
+      tab: AppPageTab.materials,
+      page: const MaterialsPage(),
+      title: l10n.materialsAppBarTitle,
+      actions: [
+        if (policy.csvMaterialImport().allowed)
           IconButton(
             tooltip: l10n.csvImportTitle,
             onPressed: () {
@@ -64,33 +66,26 @@ List<AppPageShellTab> buildAppPageShellTabs({
             },
             icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
           ),
-        ],
-        navigationItem: BottomNavigationBarItem(
-          icon: const Icon(
-            Icons.inventory_2_outlined,
-            key: ValueKey<String>('nav.materials.button'),
-          ),
-          label: l10n.materialsNavLabel,
+      ],
+      navigationItem: BottomNavigationBarItem(
+        icon: const Icon(
+          Icons.inventory_2_outlined,
+          key: ValueKey<String>('nav.materials.button'),
         ),
+        label: l10n.materialsNavLabel,
       ),
-    if (showHistoryTab)
+    ),
+    if (policy.shouldShowHistoryTab)
       AppPageShellTab(
         tab: AppPageTab.history,
-        page: HistoryPage(
-          mode: showHistoryTeaser
-              ? HistoryPageMode.teaser
-              : HistoryPageMode.full,
-          onHistoryLoaded: onHistoryLoaded,
-        ),
+        page: HistoryPage(mode: historyMode, onHistoryLoaded: onHistoryLoaded),
         title: l10n.historyAppBarTitle,
         actions: const [],
         navigationItem: BottomNavigationBarItem(
-          icon: isPremium
-              ? const Icon(
-                  Icons.history,
-                  key: ValueKey<String>('nav.history.button'),
-                )
-              : const PromoHistoryTabIcon(),
+          icon: const Icon(
+            Icons.history,
+            key: ValueKey<String>('nav.history.button'),
+          ),
           label: l10n.historyNavLabel,
         ),
       ),

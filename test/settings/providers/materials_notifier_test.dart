@@ -1,10 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import '../settings_test_fakes.dart';
 
@@ -20,6 +25,9 @@ class _FakeAnalytics implements AnalyticsService {
 }
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
+
   group('MaterialsProvider localized parsing', () {
     late ProviderContainer container;
     late MaterialsProvider notifier;
@@ -112,6 +120,12 @@ void main() {
         final seededContainer = ProviderContainer(
           overrides: [
             materialsRepositoryProvider.overrideWithValue(materialsRepository),
+            premiumAccessPolicyProvider.overrideWithValue(
+              DefaultPremiumAccessPolicy(
+                isPremium: true,
+                hideProPromotions: false,
+              ),
+            ),
           ],
         );
         addTearDown(seededContainer.dispose);
@@ -154,9 +168,12 @@ void main() {
       'editing weight then enabling tracking in same session uses edited spool weight',
       () async {
         final materialsRepository = FakeMaterialsRepository();
+        final seededPrefs = await SharedPreferences.getInstance();
         final seededContainer = ProviderContainer(
           overrides: [
             materialsRepositoryProvider.overrideWithValue(materialsRepository),
+            sharedPreferencesProvider.overrideWithValue(seededPrefs),
+            isPremiumProvider.overrideWithValue(true),
           ],
         );
         addTearDown(seededContainer.dispose);
@@ -195,9 +212,12 @@ void main() {
           useExplicitSaveResult: true,
           saveResult: 'material-1',
         );
+        final analyticsPrefs = await SharedPreferences.getInstance();
         final analyticsContainer = ProviderContainer(
           overrides: [
             materialsRepositoryProvider.overrideWithValue(materialsRepository),
+            sharedPreferencesProvider.overrideWithValue(analyticsPrefs),
+            isPremiumProvider.overrideWithValue(true),
           ],
         );
         addTearDown(analyticsContainer.dispose);

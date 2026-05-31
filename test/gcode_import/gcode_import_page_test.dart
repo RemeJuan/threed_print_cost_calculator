@@ -293,6 +293,30 @@ void main() {
     expect(find.text('two.gcode'), findsOneWidget);
     expect(find.byType(BatchGCodeImportPage), findsOneWidget);
   });
+
+  testWidgets('free users are blocked from batch G-code import', (
+    tester,
+  ) async {
+    final files = [_pickedFile('one.gcode'), _pickedFile('two.gcode')];
+    final picker = _TrackingPicker(files);
+
+    await tester.pumpApp(const GCodeImportPage(), [
+      gcodeImportFilePickerProvider.overrideWithValue(picker),
+      gcodeImportServiceProvider.overrideWithValue(_FakeService(_batchResult)),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('gcode_import.select_file.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(picker.pickCalls, 1);
+    expect(picker.pickManyCalls, 0);
+    expect(find.byType(BatchGCodeImportPage), findsNothing);
+    expect(find.text('one.gcode'), findsNothing);
+    expect(find.text('two.gcode'), findsNothing);
+  });
 }
 
 class _TestNavigatorObserver extends NavigatorObserver {
@@ -326,6 +350,26 @@ class _FakePicker extends GCodeImportFilePicker {
 
   @override
   Future<List<GCodePickedFile>> pickMany() async => files;
+}
+
+class _TrackingPicker extends GCodeImportFilePicker {
+  _TrackingPicker(this.files);
+
+  final List<GCodePickedFile> files;
+  int pickCalls = 0;
+  int pickManyCalls = 0;
+
+  @override
+  Future<GCodePickedFile?> pick() async {
+    pickCalls += 1;
+    return files.isEmpty ? null : files.first;
+  }
+
+  @override
+  Future<List<GCodePickedFile>> pickMany() async {
+    pickManyCalls += 1;
+    return files;
+  }
 }
 
 class _FakeService extends GCodeImportService {

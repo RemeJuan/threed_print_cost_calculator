@@ -321,9 +321,12 @@
   "validationEnterValidNumber": "Enter a valid number",
   "validationMustBeGreaterThanZero": "Must be greater than 0",
   "validationMustBeZeroOrMore": "Must be 0 or more",
-  "lockedValuePlaceholder": "Locked",
+  "lockedValuePlaceholder": "Premium only",
   "hideProPromotionsTitle": "Hide Pro promotions",
   "hideProPromotionsSubtitle": "Hide upgrade banners and prompts",
+  "printerLimitReachedMessage": "You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.",
+  "materialLimitReachedMessage": "You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.",
+  "batchItemLimitReachedMessage": "You can add up to 3 batch items on Free. Upgrade to Premium for unlimited batch items.",
   "historySearchHint": "Search by name or printer",
   "historyExportMenuTitle": "Export Prints",
   "historyExportRangeAll": "All",
@@ -332,7 +335,7 @@
   "historyEmptyTitle": "No saved prints yet",
   "historyEmptyDescription": "Re-use past prints in the calculator",
   "historyUpsellTitle": "Re-use past prints instantly",
-  "historyUpsellDescription": "Unlock advanced edits and exports",
+  "historyUpsellDescription": "You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.",
   "historyNoMoreRecords": "No more records",
   "historyOverflowHint": "More actions in ⋯",
   "historyLoadError": "Error loading history: {error}",
@@ -346,13 +349,13 @@
   "batchQuoteExportShareText": "3D Print Cost Batch Quote Export",
   "mixedHistoryExportShareText": "3D Print Cost History Export",
   "historyTeaserTitle": "Keep every print estimate in one place",
-  "historyTeaserDescription": "Review how history works before upgrading. Save completed estimates and export them any time with Pro.",
-  "historyTeaserCta": "Save & export history with Pro",
+  "historyTeaserDescription": "Free users can keep up to 7 saved prints. Upgrade to Premium for unlimited history and exports.",
+  "historyTeaserCta": "Upgrade to Premium for unlimited history",
   "historyExportPreviewEntry": "Preview sample CSV export",
   "historyExportPreviewTitle": "CSV preview",
-  "historyExportPreviewDescription": "See how your export will look. Download and share are unlocked with Pro.",
+  "historyExportPreviewDescription": "Bulk history export is a Premium feature. Download and share are unlocked with Premium.",
   "historyExportPreviewSampleLabel": "[Sample]",
-  "historyExportPreviewAction": "Download / Share with Pro",
+  "historyExportPreviewAction": "Download / Share with Premium",
   "addMaterialButton": "Add",
   "useSingleTotalWeightAction": "Use single total weight",
   "addAtLeastOneMaterial": "Add at least one material.",
@@ -493,6 +496,7 @@
     }
   },
   "csvNoValidRowsError": "No valid rows to import.",
+  "csvImportQuotaExceededError": "This import exceeds your material limit.",
   "csvPreviewSummary": "{total} rows: {valid} valid, {invalid} with errors",
   "@csvPreviewSummary": {
     "placeholders": {
@@ -536,8 +540,9 @@
   "batchCostingReviewSubtitle": "Review batch items before printer assignment.",
   "batchCostingReviewAddManualItemButton": "Add manual item",
   "batchCostingReviewEmptyTitle": "No batch items yet",
-  "batchCostingReviewEmptyBody": "Add imported or manual prints to continue.",
+  "batchCostingReviewEmptyBody": "Add manual prints to continue.",
   "batchCostingReviewImportGcodeButton": "Import G-code files",
+  "batchCostingReviewImportGcodeButtonPremium": "Import G-code files (Premium)",
   "batchGcodeImportTitle": "Import batch G-code",
   "batchGcodeImportBody": "Pick one or more G-code files. Each file is parsed on its own.",
   "batchGcodeImportPickButton": "Choose files",
@@ -635,5 +640,107 @@
   "batchCostingNewBatchDialogBody": "This will discard all current batch progress. Start a new batch?",
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Printer",
-  "batchCostingEntryButton": "Start batch quote"
+  "batchCostingEntryButton": "Start Batch Costing",
+
+  "paywallTitle": "Unlock Premium",
+  "paywallPitchLine": "Unlimited materials, unlimited printers, batch export, advanced pricing",
+  "paywallSubtitle": "Scale your print quoting with unlimited capacity, business pricing, and inventory control.",
+  "paywallOfferingError": "Could not load packages. Check your connection and try again.",
+  "paywallCta": "Upgrade to Premium",
+  "paywallRestore": "Restore Purchases",
+  "paywallRowPrintersLabel": "Printers",
+  "paywallRowMaterialsLabel": "Materials",
+  "paywallRowHistoryLabel": "History saves",
+  "paywallRowBatchCostingLabel": "Batch costing",
+  "paywallRowAdvancedPricingLabel": "Advanced pricing",
+  "paywallRowExportToolsLabel": "Export tools",
+  "paywallRowInventoryTrackingLabel": "Inventory tracking",
+  "paywallValueUnlimited": "Unlimited",
+  "paywallValueYes": "Yes",
+  "paywallValueNo": "No",
+  "paywallValueBasic": "Basic",
+  "paywallValueFull": "Full",
+  "paywallValueSingleJob": "Single job",
+  "paywallValueFullSuite": "Full suite",
+  "paywallValueUpToModels": "Up to {limit} models",
+  "paywallBestValue": "Best value",
+  "paywallPlanMonthly": "Monthly",
+  "paywallPlanQuarterly": "Quarterly",
+  "paywallPlanAnnual": "Annual",
+  "paywallPlanLifetime": "Lifetime",
+  "paywallPlanPriceMonthly": "{price} / month",
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanPriceQuarterly": "{price} / 3 months",
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanPriceAnnual": "{price} / year",
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanPriceLifetime": "{price} once",
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "paywallPlanTrial": "7-day free trial",
+  "paywallPlanCancelAnytime": "Cancel anytime",
+  "paywallPlanOwnForever": "Own Premium forever",
+  "paywallTrustLine": "Offline first • No account required",
+  "paywallCtaAnnualTrial": "Start 7-Day Free Trial",
+  "paywallCtaQuarterly": "Upgrade for {price}",
+  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "paywallCtaLifetime": "Unlock Premium for {price}",
+  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "paywallCtaGeneric": "Upgrade for {price}",
+  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "paywallValueSaves": "{limit} saves",
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "paywallFeatureMaterialsTitle": "Unlimited materials",
+  "paywallFeatureMaterialsDesc": "Save and manage unlimited filament spools and materials.",
+  "paywallFeaturePrintersTitle": "Unlimited printers",
+  "paywallFeaturePrintersDesc": "Create and manage unlimited printer profiles.",
+  "paywallFeatureHistoryExportTitle": "History export",
+  "paywallFeatureHistoryExportDesc": "Export individual history entries to CSV.",
+  "paywallFeatureBulkHistoryExportTitle": "Bulk history export",
+  "paywallFeatureBulkHistoryExportDesc": "Export all history at once to CSV.",
+  "paywallFeatureBatchGcodeImportTitle": "Batch G-code import",
+  "paywallFeatureBatchGcodeImportDesc": "Import multiple G-code files at once for batch costing.",
+  "paywallFeatureBatchExportTitle": "Batch export",
+  "paywallFeatureBatchExportDesc": "Export batch quotes and summaries.",
+  "paywallFeatureLabourPricingTitle": "Labour pricing",
+  "paywallFeatureLabourPricingDesc": "Add hourly labour rates to cost calculations.",
+  "paywallFeatureRiskPricingTitle": "Risk pricing",
+  "paywallFeatureRiskPricingDesc": "Factor failure risk into pricing automatically.",
+  "paywallFeatureAdvancedPricingConfigTitle": "Advanced pricing",
+  "paywallFeatureAdvancedPricingConfigDesc": "Configure markup, setup fees, and rounding.",
+  "paywallFeatureCsvMaterialImportTitle": "CSV material import",
+  "paywallFeatureCsvMaterialImportDesc": "Import materials in bulk from CSV files.",
+  "paywallFeatureStockTrackingTitle": "Stock tracking",
+  "paywallFeatureStockTrackingDesc": "Track filament stock and get low-stock alerts.",
+  "paywallRestoreSuccess": "Purchases restored successfully.",
+  "@paywallRestoreSuccess": {
+    "description": "Shown when restore purchases completes successfully"
+  },
+  "paywallRestoreError": "Failed to restore purchases. Please try again later.",
+  "@paywallRestoreError": {
+    "description": "Shown when restore purchases fails"
+  },
+  "paywallEmptyOfferings": "No subscription plans are currently available. Please try again later.",
+  "@paywallEmptyOfferings": {
+    "description": "Shown when no subscription packages are available"
+  }
 }

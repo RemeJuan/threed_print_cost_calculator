@@ -1,0 +1,54 @@
+{
+  "materials": [
+    {
+      "id": "bambu_pla_red",
+      "name": "Bambu PLA Red",
+      "cost": "24.99",
+      "color": "Red",
+      "weight": "1000",
+      "brand": "Bambu",
+      "materialType": "PLA",
+      "colorHex": ""
+    },
+    {
+      "id": "bambu_pla_black",
+      "name": "Bambu PLA Black",
+      "cost": "24.99",
+      "color": "Black",
+      "weight": "1000",
+      "brand": "Bambu",
+      "materialType": "PLA",
+      "colorHex": ""
+    },
+    {
+      "id": "esun_petg_white",
+      "name": "eSun PETG White",
+      "cost": "22.50",
+      "color": "White",
+      "weight": "1000",
+      "brand": "eSun",
+      "materialType": "PETG",
+      "colorHex": ""
+    },
+    {
+      "id": "esun_abs_midnight_blue",
+      "name": "eSun ABS Midnight Blue",
+      "cost": "28.75",
+      "color": "Midnight Blue",
+      "weight": "1000",
+      "brand": "eSun",
+      "materialType": "ABS",
+      "colorHex": ""
+    },
+    {
+      "id": "polymaker_pla_silk_gold",
+      "name": "Polymaker PLA Silk Gold",
+      "cost": "26.00",
+      "color": "Silk Gold",
+      "weight": "800",
+      "brand": "Polymaker",
+      "materialType": "PLA",
+      "colorHex": ""
+    }
+  ]
+}

@@ -23,8 +23,13 @@ class SeedLoader {
 
   final AssetBundle _bundle;
 
-  Future<SeedDataBundle> load() async {
-    final settings = _decodeMap(await _load('assets/test_data/settings.json'));
+  Future<SeedDataBundle> load({String subdirectory = ''}) async {
+    final prefix = subdirectory.isEmpty
+        ? 'assets/test_data'
+        : 'assets/test_data/$subdirectory';
+    final settings = _decodeMap(
+      await _load('$prefix/settings.json'),
+    );
     return SeedDataBundle(
       generalSettings: _requiredMap(
         settings['generalSettings'],
@@ -35,15 +40,15 @@ class SeedLoader {
         'settings.json',
       ),
       printers: _requiredList(
-        _decodeMap(await _load('assets/test_data/printers.json'))['printers'],
+        _decodeMap(await _load('$prefix/printers.json'))['printers'],
         'printers.json',
       ),
       materials: _requiredList(
-        _decodeMap(await _load('assets/test_data/materials.json'))['materials'],
+        _decodeMap(await _load('$prefix/materials.json'))['materials'],
         'materials.json',
       ),
       history: _requiredList(
-        _decodeMap(await _load('assets/test_data/history.json'))['history'],
+        _decodeMap(await _load('$prefix/history.json'))['history'],
         'history.json',
       ),
     );

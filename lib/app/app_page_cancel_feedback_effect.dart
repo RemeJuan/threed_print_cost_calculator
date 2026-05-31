@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/app/app_page_modal_sheet_guard.dart';
 import 'package:threed_print_cost_calculator/purchases/cancel_feedback_service.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/cancel_feedback_sheet.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void useAppPageCancelFeedbackEffect({
   required BuildContext context,
   required WidgetRef ref,
-  required SharedPreferences prefs,
 }) {
   final cancelFeedbackHandledStateKey = useRef<String?>(null);
+  final store = ref.read(premiumLocalStoreProvider);
 
   void reportCancelFeedbackEffectError(Object error, StackTrace stackTrace) {
     FlutterError.reportError(
@@ -36,8 +37,9 @@ void useAppPageCancelFeedbackEffect({
           previous?.isLoading != false || previous?.userId != next.userId;
 
       if (isFirstResolvedStateForUser) {
-        final runCount = prefs.getInt('run_count') ?? 0;
-        await prefs.setInt('run_count', runCount + 1);
+        final runCount =
+            int.tryParse(store.readSync(runCountPreferenceKey) ?? '') ?? 0;
+        await store.write(runCountPreferenceKey, (runCount + 1).toString());
       }
 
       if (cancellationStateKey == null ||

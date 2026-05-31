@@ -15,6 +15,7 @@ import 'package:shared_preferences_platform_interface/shared_preferences_async_p
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 
@@ -50,14 +51,22 @@ extension PumpApp on WidgetTester {
   Future<Database> pumpApp(
     Widget widget, [
     List<Override> overrides = const [],
+    PremiumLocalStore? premiumLocalStore,
     List<NavigatorObserver> observers = const [],
   ]) async {
     final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
     final db = await databaseFactoryMemory.openDatabase(name);
     final sharedPreferences = await SharedPreferences.getInstance();
+    final effectivePremiumLocalStore =
+        premiumLocalStore ??
+        InMemoryPremiumLocalStore({
+          for (final key in sharedPreferences.getKeys())
+            key: sharedPreferences.get(key)?.toString() ?? '',
+        });
     final effectiveOverrides = <Override>[
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
       ...overrides,
     ];
 
@@ -82,14 +91,22 @@ extension PumpApp on WidgetTester {
   Future<ProviderContainer> pumpAppWithContainer(
     Widget widget, {
     List<Override> overrides = const [],
+    PremiumLocalStore? premiumLocalStore,
     List<NavigatorObserver> observers = const [],
   }) async {
     final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
     final db = await databaseFactoryMemory.openDatabase(name);
     final sharedPreferences = await SharedPreferences.getInstance();
+    final effectivePremiumLocalStore =
+        premiumLocalStore ??
+        InMemoryPremiumLocalStore({
+          for (final key in sharedPreferences.getKeys())
+            key: sharedPreferences.get(key)?.toString() ?? '',
+        });
     final effectiveOverrides = <Override>[
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
       ...overrides,
     ];
 

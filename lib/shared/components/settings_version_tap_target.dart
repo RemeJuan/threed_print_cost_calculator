@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -18,9 +19,9 @@ import 'package:threed_print_cost_calculator/shared/providers/update_checker_pro
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 import 'package:threed_print_cost_calculator/settings/providers/materials_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/providers/printers_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
 import 'package:threed_print_cost_calculator/purchases/cancel_feedback_sheet.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_screen.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/enable_premium_code_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_confirmation_dialog.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -129,6 +130,12 @@ class _SettingsVersionTapTargetState
         break;
       case TestDataAction.showWhatsNew:
         await _showWhatsNewDialog(container: container);
+        break;
+      case TestDataAction.previewCustomPaywall:
+        if (!mounted) return;
+        await Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const PaywallScreen()));
         break;
     }
   }

@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+
+final appNavigatorKey = GlobalKey<NavigatorState>();
 
 ProviderContainer? appProviderContainer;
 
@@ -33,6 +37,10 @@ class AppRefreshNotifier extends Notifier<int> {
 
 final sharedPreferencesProvider = Provider<SharedPreferences>(
   (_) => throw UnimplementedError("SharedPreferences not implemented"),
+);
+
+final premiumLocalStoreProvider = Provider<PremiumLocalStore>(
+  (_) => InMemoryPremiumLocalStore(),
 );
 
 final databaseProvider = Provider<Database>(

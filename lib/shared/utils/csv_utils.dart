@@ -5,6 +5,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/xlsx_export.dart';
 
 String _quote(Object? value) {
@@ -229,6 +230,9 @@ class CsvUtils {
     ExportRange range, {
     required String shareText,
   }) async {
+    final policy = ref.read(premiumAccessPolicyProvider);
+    if (!policy.bulkHistoryExport().allowed) return;
+
     final items = await queryHistory(range);
     final path = await generateMixedHistoryXlsx(items);
     await shareXlsxFile(path, shareText);
@@ -239,6 +243,9 @@ class CsvUtils {
     HistoryModel item, {
     required String shareText,
   }) async {
+    final policy = ref.read(premiumAccessPolicyProvider);
+    if (!policy.batchExport().allowed) return;
+
     final path = await generateBatchQuoteXlsx(item);
     await shareXlsxFile(path, shareText);
   }

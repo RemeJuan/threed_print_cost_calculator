@@ -8,7 +8,7 @@
 - `patrol_test/`: Patrol release-gate E2E journeys.
 - `test_support/`: shared test doubles used outside `test/`.
 - `docs/`: product, architecture, developer, and feature docs.
-- `assets/test_data/`: deterministic seed data for in-app test tools (`SeedLoader`). JSON files: `settings.json`, `printers.json`, `materials.json`, `history.json`. Loaded via `lib/shared/test_tools/seed_loader.dart` and `test_data_service.dart`. History items may include `batchQuote`, `batchQuoteItems`, and `batchQuoteSummary` for batch costing. Settings supports `pricingMarkupPercent`, `pricingSetupFee`, `pricingRoundingMode` (`"none"`, `".00"`, `".99"`), `currencySymbol`, `currencyPosition`, `currencySpacing`.
+- `assets/test_data/`: deterministic seed data for in-app test tools (`SeedLoader`). Root JSON files (`settings.json`, `printers.json`, `materials.json`, `history.json`) contain premium-shaped data. Free-tier fixtures live in `assets/test_data/free/` with stock-tracking and premium pricing fields stripped. Loaded via `lib/shared/test_tools/seed_loader.dart` and `test_data_service.dart`.
 - `android/`, `ios/`, `web/`: platform shells.
 - `.github/workflows/`: GitHub Actions workflows.
 - `codemagic.yaml`: Codemagic + Shorebird release and patch workflows.
@@ -26,9 +26,9 @@
 ## Feature directories
 
 - `lib/calculator/`: calculator form, results, history load, imported value application.
-- `lib/materials/`: premium materials browser, filters, CSV import UI.
-- `lib/history/`: premium history list, search, teaser/full states, export UI.
-- `lib/purchases/`: RevenueCat gateway, premium state, paywall presentation.
+- `lib/materials/`: materials browser (free with quota limits), filters, CSV import UI, stock tracking.
+- `lib/history/`: history list (free with 7-save limit), search, export UI.
+- `lib/purchases/`: RevenueCat gateway, custom paywall screen, premium gateway, paywall presenter, premium policy/state.
 - `lib/gcode_import/`: file picking, parsing, import flow, feedback reporting.
 - `lib/settings/`: general settings, work costs, printer forms, material forms.
 - `lib/database/`: Sembast storage abstraction, repositories, record mapping.
@@ -80,6 +80,13 @@ Edit source instead:
 - History screen: `lib/history/history_page.dart`
 - Settings screen: `lib/settings/settings_page.dart`
 - Premium state: `lib/purchases/premium_state_notifier.dart`
+- Premium policy: `lib/purchases/premium_access_policy.dart`
+- Premium local store: `lib/purchases/premium_local_store.dart`
 - G-code import flow: `lib/gcode_import/gcode_import_page.dart`
+- Paywall screen: `lib/purchases/paywall_screen.dart`
+- Premium purchase gateway: `lib/purchases/premium_purchase_gateway.dart`
+- Paywall comparison table: `lib/purchases/paywall_comparison_table.dart`
+- Paywall plan selector: `lib/purchases/paywall_plan_selector.dart`
+- App navigator key: `lib/shared/providers/app_providers.dart` (`appNavigatorKey`)
 - Analytics facade: `lib/core/analytics/app_analytics.dart`
 - Shared providers: `lib/shared/providers/app_providers.dart`

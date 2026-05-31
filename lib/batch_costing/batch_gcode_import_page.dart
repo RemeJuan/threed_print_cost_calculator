@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_gcode_import_body.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_gcode_import_handler.dart';
@@ -82,6 +83,10 @@ class _BatchGCodeImportPageState extends ConsumerState<BatchGCodeImportPage> {
     if (_pageState.autoStarted) return;
     final initialFiles = widget.initialFiles;
     if (initialFiles == null || initialFiles.isEmpty) return;
+    if (initialFiles.length > 1 &&
+        !ref.read(premiumAccessPolicyProvider).batchGcodeImport().allowed) {
+      return;
+    }
     _pageState.autoStarted = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {

@@ -127,6 +127,54 @@ class AppTertiaryButton extends StatelessWidget {
   }
 }
 
+class AppInlineButton extends StatelessWidget {
+  const AppInlineButton({
+    super.key,
+    required this.onPressed,
+    required this.label,
+    this.foregroundColor,
+    this.padding = const EdgeInsets.symmetric(horizontal: 8),
+    this.minHeight = 48,
+    this.maxLines = 1,
+    this.overflow = TextOverflow.ellipsis,
+    this.textAlign,
+  });
+
+  final VoidCallback? onPressed;
+  final String label;
+  final Color? foregroundColor;
+  final EdgeInsetsGeometry padding;
+  final double minHeight;
+  final int maxLines;
+  final TextOverflow overflow;
+  final TextAlign? textAlign;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = foregroundColor ?? LIGHT_BLUE;
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: color,
+        disabledForegroundColor: color.withValues(alpha: 0.4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_kButtonRadius),
+        ),
+        padding: padding,
+        minimumSize: Size(0, minHeight),
+        textStyle: const TextStyle(fontWeight: FontWeight.w500),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+      child: Text(
+        label,
+        maxLines: maxLines,
+        overflow: overflow,
+        textAlign: textAlign,
+      ),
+    );
+  }
+}
+
 class _ButtonContent extends StatelessWidget {
   const _ButtonContent({
     required this.label,

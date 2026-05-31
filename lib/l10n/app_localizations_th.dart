@@ -731,13 +731,25 @@ class AppLocalizationsTh extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'ต้องเป็น 0 หรือมากกว่า';
 
   @override
-  String get lockedValuePlaceholder => 'ถูกล็อก';
+  String get lockedValuePlaceholder => 'Premium เท่านั้น';
 
   @override
   String get hideProPromotionsTitle => 'ซ่อนโปรโมชัน Pro';
 
   @override
   String get hideProPromotionsSubtitle => 'ซ่อนแบนเนอร์และข้อความอัปเกรด';
+
+  @override
+  String get printerLimitReachedMessage =>
+      'คุณบันทึกเครื่องพิมพ์ได้สูงสุด 2 เครื่องใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด';
+
+  @override
+  String get materialLimitReachedMessage =>
+      'คุณบันทึกวัสดุได้สูงสุด 5 รายการใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด';
+
+  @override
+  String get batchItemLimitReachedMessage =>
+      'คุณเพิ่มรายการแบตช์ได้สูงสุด 3 รายการใน Free อัปเกรดเป็น Premium เพื่อเพิ่มรายการแบตช์ได้ไม่จำกัด';
 
   @override
   String get historySearchHint => 'ค้นหาตามชื่อหรือเครื่องพิมพ์';
@@ -765,7 +777,8 @@ class AppLocalizationsTh extends AppLocalizations {
   String get historyUpsellTitle => 'นำงานพิมพ์ที่ผ่านมาไปใช้ซ้ำได้ทันที';
 
   @override
-  String get historyUpsellDescription => 'ปลดล็อกการแก้ไขขั้นสูงและการส่งออก';
+  String get historyUpsellDescription =>
+      'คุณเก็บงานพิมพ์ที่บันทึกไว้ได้สูงสุด 7 รายการใน Free อัปเกรดเป็น Premium เพื่อประวัติและการส่งออกแบบไม่จำกัด';
 
   @override
   String get historyNoMoreRecords => 'ไม่มีบันทึกเพิ่มเติม';
@@ -796,10 +809,10 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'ดูว่าประวัติทำงานอย่างไรก่อนอัปเกรด บันทึกค่าประมาณการที่เสร็จแล้วและส่งออกได้ทุกเมื่อด้วย Pro';
+      'ผู้ใช้ Free เก็บงานพิมพ์ที่บันทึกไว้ได้สูงสุด 7 รายการ อัปเกรดเป็น Premium เพื่อประวัติและการส่งออกแบบไม่จำกัด';
 
   @override
-  String get historyTeaserCta => 'บันทึกและส่งออกประวัติกับ Pro';
+  String get historyTeaserCta => 'อัปเกรดเป็น Premium เพื่อประวัติไม่จำกัด';
 
   @override
   String get historyExportPreviewEntry => 'ดูตัวอย่างการส่งออก CSV';
@@ -809,13 +822,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'ดูว่าการส่งออกของคุณจะเป็นอย่างไร การดาวน์โหลดและการแชร์ปลดล็อกด้วย Pro';
+      'การส่งออกประวัติแบบกลุ่มเป็นฟีเจอร์ Premium ดาวน์โหลดและแชร์ได้เมื่อใช้ Premium';
 
   @override
   String get historyExportPreviewSampleLabel => '[ตัวอย่าง]';
 
   @override
-  String get historyExportPreviewAction => 'ดาวน์โหลด / แชร์ด้วย Pro';
+  String get historyExportPreviewAction => 'ดาวน์โหลด / แชร์ด้วย Premium';
 
   @override
   String get addMaterialButton => 'เพิ่มวัสดุ';
@@ -1166,6 +1179,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvNoValidRowsError => 'ไม่มีแถวที่ถูกต้องสำหรับนำเข้า';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'การนำเข้านี้เกินขีดจำกัดจำนวนวัสดุของคุณ';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total แถว: $valid ถูกต้อง, $invalid มีข้อผิดพลาด';
   }
@@ -1215,10 +1232,14 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingReviewEmptyBody =>
-      'เพิ่มงานพิมพ์ที่นำเข้าหรือด้วยตนเองเพื่อดำเนินการต่อ';
+      'เพิ่มงานพิมพ์ด้วยตนเองเพื่อดำเนินการต่อ';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'นำเข้าไฟล์ G-code';
+
+  @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'นำเข้าไฟล์ G-code (พรีเมียม)';
 
   @override
   String get batchGcodeImportTitle => 'นำเข้า G-code แบบชุด';
@@ -1544,4 +1565,229 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get batchCostingEntryButton => 'เริ่มใบเสนอราคาแบบชุด';
+
+  @override
+  String get paywallTitle => 'ปลดล็อก Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'วัสดุไม่จำกัด เครื่องพิมพ์ไม่จำกัด ส่งออกแบบแบตช์ ราคาขั้นสูง';
+
+  @override
+  String get paywallSubtitle =>
+      'ปลดล็อกทุกฟีเจอร์ด้วยการซื้อครั้งเดียวหรือสมัครสมาชิก ไม่มีบัญชี ไม่มีการติดตาม มีแค่ข้อมูลของคุณบนอุปกรณ์ของคุณ';
+
+  @override
+  String get paywallOfferingError =>
+      'ไม่สามารถโหลดแพ็กเกจได้ ตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง';
+
+  @override
+  String get paywallCta => 'ปลดล็อก Premium';
+
+  @override
+  String get paywallRestore => 'กู้คืนการซื้อ';
+
+  @override
+  String get paywallRowPrintersLabel => 'เครื่องพิมพ์';
+
+  @override
+  String get paywallRowMaterialsLabel => 'วัสดุ';
+
+  @override
+  String get paywallRowHistoryLabel => 'การบันทึกประวัติ';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'การคิดต้นทุนแบบแบตช์';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'ราคาขั้นสูง';
+
+  @override
+  String get paywallRowExportToolsLabel => 'เครื่องมือส่งออก';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'การติดตามสต็อก';
+
+  @override
+  String get paywallValueUnlimited => 'ไม่จำกัด';
+
+  @override
+  String get paywallValueYes => 'ใช่';
+
+  @override
+  String get paywallValueNo => 'ไม่';
+
+  @override
+  String get paywallValueBasic => 'พื้นฐาน';
+
+  @override
+  String get paywallValueFull => 'เต็มรูปแบบ';
+
+  @override
+  String get paywallValueSingleJob => 'งานเดียว';
+
+  @override
+  String get paywallValueFullSuite => 'ชุดเต็มรูปแบบ';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'สูงสุด $limit โมเดล';
+  }
+
+  @override
+  String get paywallBestValue => 'คุ้มค่าที่สุด';
+
+  @override
+  String get paywallPlanMonthly => 'รายเดือน';
+
+  @override
+  String get paywallPlanQuarterly => 'รายไตรมาส';
+
+  @override
+  String get paywallPlanAnnual => 'รายปี';
+
+  @override
+  String get paywallPlanLifetime => 'ตลอดชีพ';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / เดือน';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 เดือน';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / ปี';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price ครั้งเดียว';
+  }
+
+  @override
+  String get paywallPlanTrial => 'ทดลองใช้ฟรี 7 วัน';
+
+  @override
+  String get paywallPlanCancelAnytime => 'ยกเลิกได้ทุกเมื่อ';
+
+  @override
+  String get paywallPlanOwnForever => 'เป็นเจ้าของ Premium ตลอดไป';
+
+  @override
+  String get paywallTrustLine => 'ใช้งานออฟไลน์ก่อน • ไม่ต้องมีบัญชี';
+
+  @override
+  String get paywallCtaAnnualTrial => 'เริ่มทดลองใช้ฟรี 7 วัน';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'อัปเกรดในราคา $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'ปลดล็อก Premium ในราคา $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'อัปเกรดในราคา $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return 'บันทึกได้ $limit รายการ';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'วัสดุไม่จำกัด';
+
+  @override
+  String get paywallFeatureMaterialsDesc =>
+      'บันทึกและจัดการม้วนฟิลาเมนต์และวัสดุได้ไม่จำกัด';
+
+  @override
+  String get paywallFeaturePrintersTitle => 'เครื่องพิมพ์ไม่จำกัด';
+
+  @override
+  String get paywallFeaturePrintersDesc =>
+      'สร้างและจัดการโปรไฟล์เครื่องพิมพ์ได้ไม่จำกัด';
+
+  @override
+  String get paywallFeatureHistoryExportTitle => 'ส่งออกประวัติ';
+
+  @override
+  String get paywallFeatureHistoryExportDesc =>
+      'ส่งออกรายการประวัติแต่ละรายการเป็น CSV';
+
+  @override
+  String get paywallFeatureBulkHistoryExportTitle => 'ส่งออกประวัติแบบชุด';
+
+  @override
+  String get paywallFeatureBulkHistoryExportDesc =>
+      'ส่งออกประวัติทั้งหมดเป็น CSV ในครั้งเดียว';
+
+  @override
+  String get paywallFeatureBatchGcodeImportTitle => 'นำเข้า G-code แบบแบตช์';
+
+  @override
+  String get paywallFeatureBatchGcodeImportDesc =>
+      'นำเข้าไฟล์ G-code หลายไฟล์พร้อมกันสำหรับการคิดต้นทุนแบบแบตช์';
+
+  @override
+  String get paywallFeatureBatchExportTitle => 'ส่งออกแบบแบตช์';
+
+  @override
+  String get paywallFeatureBatchExportDesc => 'ส่งออกใบเสนอราคาและสรุปแบบแบตช์';
+
+  @override
+  String get paywallFeatureLabourPricingTitle => 'การตั้งราคาแรงงาน';
+
+  @override
+  String get paywallFeatureLabourPricingDesc =>
+      'เพิ่มอัตราค่าแรงรายชั่วโมงลงในการคำนวณต้นทุน';
+
+  @override
+  String get paywallFeatureRiskPricingTitle => 'การตั้งราคาความเสี่ยง';
+
+  @override
+  String get paywallFeatureRiskPricingDesc =>
+      'รวมความเสี่ยงจากความล้มเหลวไว้ในการตั้งราคาโดยอัตโนมัติ';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigTitle => 'ราคาขั้นสูง';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigDesc =>
+      'กำหนดส่วนเพิ่ม ค่าตั้งค่า และการปัดเศษ';
+
+  @override
+  String get paywallFeatureCsvMaterialImportTitle => 'นำเข้าวัสดุจาก CSV';
+
+  @override
+  String get paywallFeatureCsvMaterialImportDesc =>
+      'นำเข้าวัสดุจำนวนมากจากไฟล์ CSV';
+
+  @override
+  String get paywallFeatureStockTrackingTitle => 'ติดตามสต็อก';
+
+  @override
+  String get paywallFeatureStockTrackingDesc =>
+      'ติดตามสต็อกฟิลาเมนต์และรับการแจ้งเตือนเมื่อสต็อกต่ำ';
+
+  @override
+  String get paywallRestoreSuccess => 'กู้คืนการซื้อสำเร็จแล้ว';
+
+  @override
+  String get paywallRestoreError =>
+      'กู้คืนการซื้อไม่สำเร็จ โปรดลองอีกครั้งภายหลัง';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'ขณะนี้ยังไม่มีแพ็กเกจสมัครสมาชิก โปรดลองอีกครั้งในภายหลัง';
 }

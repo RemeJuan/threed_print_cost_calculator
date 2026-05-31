@@ -3,10 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 
@@ -62,7 +65,9 @@ void main() {
     await setupTest();
   });
 
-  testWidgets('free users only see general settings content', (tester) async {
+  testWidgets('free users see general and printers settings content', (
+    tester,
+  ) async {
     final settingsRepo = _FakeSettingsRepository();
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
@@ -86,7 +91,7 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('settings.printers.section')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const ValueKey<String>('settings.materials.section')),
@@ -99,7 +104,7 @@ void main() {
     expect(_hideProPromotionsToggle(), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const ValueKey<String>('settings.materials.add.button')),
@@ -111,18 +116,65 @@ void main() {
     );
   });
 
-  testWidgets('free user toggle restores persisted enabled state', (
+  testWidgets('free users at printer limit see disabled add action', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({'hideProPromotions': true});
-
     final settingsRepo = _FakeSettingsRepository();
-    final prefs = await SharedPreferences.getInstance();
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
       appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      printersStreamProvider.overrideWith(
+        (ref) => Stream.value([
+          PrinterModel(
+            id: 'p1',
+            name: 'P1',
+            bedSize: '220 x 220',
+            wattage: '120',
+            archived: false,
+          ),
+          PrinterModel(
+            id: 'p2',
+            name: 'P2',
+            bedSize: '220 x 220',
+            wattage: '120',
+            archived: false,
+          ),
+        ]),
+      ),
     ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+
+    final addButton = tester.widget<IconButton>(
+      find.byKey(const ValueKey<String>('settings.printers.add.button')),
+    );
+    expect(addButton.onPressed, isNull);
+    expect(
+      find.text(
+        'You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.',
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('free user toggle restores persisted enabled state', (
+    tester,
+  ) async {
+    final premiumLocalStore = InMemoryPremiumLocalStore({
+      hideProPromotionsPreferenceKey: 'true',
+    });
+
+    final settingsRepo = _FakeSettingsRepository();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(false),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ], premiumLocalStore);
     addTearDown(db.close);
     addTearDown(settingsRepo.dispose);
 
@@ -135,19 +187,18 @@ void main() {
       tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
       isTrue,
     );
-    expect(prefs.getBool('hideProPromotions'), isTrue);
+    expect(premiumLocalStore.readSync(hideProPromotionsPreferenceKey), 'true');
   });
 
   testWidgets('toggling promo visibility updates immediately', (tester) async {
-    SharedPreferences.setMockInitialValues({});
+    final premiumLocalStore = InMemoryPremiumLocalStore();
 
     final settingsRepo = _FakeSettingsRepository();
-    final prefs = await SharedPreferences.getInstance();
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
       appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ]);
+    ], premiumLocalStore);
     addTearDown(db.close);
     addTearDown(settingsRepo.dispose);
 
@@ -162,7 +213,7 @@ void main() {
       tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
       isTrue,
     );
-    expect(prefs.getBool('hideProPromotions'), isTrue);
+    expect(premiumLocalStore.readSync(hideProPromotionsPreferenceKey), 'true');
   });
 
   testWidgets(

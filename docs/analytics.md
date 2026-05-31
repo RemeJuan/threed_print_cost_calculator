@@ -236,21 +236,27 @@
 
 - `paywall_viewed`
   - params: [`feature`, `entry_point`, `source`, `launch_count`]
-  - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
+  - triggered_from: [`lib/purchases/paywall_screen.dart`]
   - feature: Premium / RevenueCat
-  - notes: `AppAnalytics.paywallShown(...)` is a pure alias to this same event name; the presenter logs this before RevenueCat UI opens and the direct subscriptions sheet logs it in its own build path; `source` carries trigger path when supplied (`whats_new`, `premium_feature`, `header`, `history_teaser_primary`, `history_teaser_secondary`, `unknown`); `launch_count` comes from local run counter when available
+  - notes: `AppAnalytics.paywallShown(...)` is a pure alias; the custom `PaywallScreen` logs this in `initState` with metadata passed from the presenter (`source`, `triggerFeature`, `entryPoint`, `launchCount`); `source` carries trigger path (`whats_new`, `premium_feature`, `header`, `history`, `settings`, etc.)
 
 - `purchase_completed`
   - params: [`source`, `entry_point`]
-  - triggered_from: [`lib/purchases/paywall_presenter.dart`, `lib/calculator/view/subscriptions.dart`]
+  - triggered_from: [`lib/purchases/paywall_screen.dart`]
   - feature: Premium / RevenueCat
-  - notes: only local success tracked; emitted after RevenueCat entitlements show active in the presenter flow or after a successful direct purchase in the subscriptions sheet; sources currently `calculator`, `header`, `history`, `history_teaser_primary`, `history_teaser_secondary`, `whats_new`
+  - notes: only local success tracked; emitted by custom paywall after successful package purchase; sources currently `custom_paywall_preview` (admin preview) or `custom_paywall` (production flow)
 
 - `paywall_present_error`
   - params: [`error`, `stack`]
   - triggered_from: [`lib/purchases/paywall_presenter.dart`]
   - feature: Premium / RevenueCat
-  - notes: local error logging when RevenueCat paywall presentation throws
+  - notes: local error logging when custom paywall presentation throws (e.g. navigator unavailable)
+
+- `restore_completed`
+  - params: [`source`, `entry_point`]
+  - triggered_from: [`lib/purchases/paywall_screen.dart`]
+  - feature: Premium / RevenueCat
+  - notes: logged after successful restore from the custom paywall; `source` identifies trigger path (`custom_paywall_preview` for admin, `custom_paywall` for production); `entry_point` indicates entry surface
 
 ### Materials
 
@@ -370,7 +376,9 @@ Notes:
 - purchase started: no dedicated event found
 - purchase success: yes — `purchase_completed`
 - purchase failure/cancel: no dedicated event found
-- restore started/success/failure: no dedicated event found
+- restore started: no dedicated event found
+- restore success: partial — `restore_completed` logged on success (custom paywall)
+- restore failure: no dedicated event — custom paywall surfaces error via SnackBar and app logger, but no analytics event for failures
 - paywall entry attribution: yes — all paths pass `source`
 
 ## Known gaps
@@ -378,10 +386,10 @@ Notes:
 - No dedicated onboarding / first-run / app-launch event. `run_count` stored locally only.
 - No dedicated purchase-started event.
 - No dedicated purchase-cancelled or purchase-failed event. RevenueCat errors only logged locally.
-- No dedicated restore-purchases analytics.
+- _(fixed)_ `restore_completed` event added for restore success from custom paywall; restore failure still lacks a dedicated analytics event.
 - _(fixed)_ `gcode_parse_failed` now includes `failure_reason` to distinguish size rejection, unsupported content, parse errors, and read failures.
 - _(fixed)_ History upsell `premium_feature_tapped` now includes `source: history_upsell`.
-- Paywall routing is centralized in `lib/purchases/paywall_presenter.dart`; `subscriptions.dart` is the sheet implementation, not the only paywall entry.
+- Paywall routing is centralized in `lib/purchases/paywall_presenter.dart`, which pushes `PaywallScreen` through `appNavigatorKey`.
 - `paywall_shown` is not a distinct event from `paywall_viewed`; it is an alias in `AppAnalytics`.
 - `showSubscriptionsSheet` also logs `paywall_viewed`, so it can double-log if wrapped by presenter-driven flow.
 - History flow lacks load/delete analytics:

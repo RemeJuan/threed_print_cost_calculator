@@ -12,6 +12,9 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
@@ -51,6 +54,11 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     final l10n = AppLocalizations.of(context)!;
     final batchState = ref.watch(batchCostingProvider);
     final items = batchState.items;
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final batchImportAllowed = policy.batchGcodeImport().allowed;
+    final batchImportLabel = batchImportAllowed
+        ? l10n.batchCostingReviewImportGcodeButton
+        : l10n.batchCostingReviewImportGcodeButtonPremium;
 
     _syncExpandedState(items);
 
@@ -87,14 +95,13 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         icon: const Icon(Icons.add),
                       ),
                       const SizedBox(width: kAppSpace8),
-                      AppTertiaryButton(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const BatchGCodeImportPage(),
-                          ),
+                      Opacity(
+                        opacity: batchImportAllowed ? 1 : 0.55,
+                        child: AppTertiaryButton(
+                          onPressed: () => _openBatchGcodeImport(context),
+                          label: batchImportLabel,
+                          icon: const Icon(Icons.upload_file),
                         ),
-                        label: l10n.batchCostingReviewImportGcodeButton,
-                        icon: const Icon(Icons.upload_file),
                       ),
                     ],
                   ),
@@ -103,7 +110,12 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
               ],
               Expanded(
                 child: items.isEmpty
-                    ? _emptyState(context, l10n)
+                    ? _emptyState(
+                        context,
+                        l10n,
+                        batchImportAllowed,
+                        batchImportLabel,
+                      )
                     : ListView.separated(
                         itemCount: items.length,
                         separatorBuilder: (context, _) =>
@@ -190,7 +202,12 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     }
   }
 
-  Widget _emptyState(BuildContext context, AppLocalizations l10n) {
+  Widget _emptyState(
+    BuildContext context,
+    AppLocalizations l10n,
+    bool batchImportAllowed,
+    String batchImportLabel,
+  ) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -212,14 +229,13 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 24),
-          AppPrimaryButton(
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => const BatchGCodeImportPage(),
-              ),
+          Opacity(
+            opacity: batchImportAllowed ? 1 : 0.55,
+            child: AppPrimaryButton(
+              onPressed: () => _openBatchGcodeImport(context),
+              icon: const Icon(Icons.upload_file),
+              label: batchImportLabel,
             ),
-            icon: const Icon(Icons.upload_file),
-            label: l10n.batchCostingReviewImportGcodeButton,
           ),
           const SizedBox(height: 12),
           AppSecondaryButton(
@@ -272,7 +288,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
     final wasEmpty = ref.read(batchCostingProvider).items.isEmpty;
 
     final itemId = DateTime.now().microsecondsSinceEpoch.toString();
-    ref
+    final added = ref
         .read(batchCostingProvider.notifier)
         .addItem(
           BatchCostingItem.manual(
@@ -284,11 +300,36 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
           ),
         );
 
+    if (!added) {
+      BotToast.showText(text: l10n.batchItemLimitReachedMessage);
+      return;
+    }
+
     if (wasEmpty) {
       AppAnalytics.safeLog(() => AppAnalytics.batchStarted(source: 'manual'));
     }
 
     AppAnalytics.safeLog(() => AppAnalytics.batchItemAdded(source: 'manual'));
+  }
+
+  Future<void> _openBatchGcodeImport(BuildContext context) async {
+    final policy = ref.read(premiumAccessPolicyProvider);
+    if (!policy.batchGcodeImport().allowed) {
+      final upgraded = await requirePremium(
+        ref.read(paywallPresenterProvider),
+        policy.batchGcodeImport(),
+        purchaseSource: 'batch_gcode_import',
+        recheck: () => Future.value(
+          ref.read(premiumAccessPolicyProvider).batchGcodeImport().allowed,
+        ),
+      );
+      if (!upgraded) return;
+    }
+
+    if (!context.mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const BatchGCodeImportPage()),
+    );
   }
 
   Future<void> _editItem(BuildContext context, BatchCostingItem item) async {

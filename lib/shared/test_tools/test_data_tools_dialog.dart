@@ -10,6 +10,7 @@ enum TestDataAction {
   clearUpdateCooldown,
   previewCancelFeedback,
   showWhatsNew,
+  previewCustomPaywall,
 }
 
 class TestDataToolsDialog extends StatelessWidget {
@@ -83,6 +84,13 @@ class TestDataToolsDialog extends StatelessWidget {
                 ),
                 onPressed: () => onAction(TestDataAction.showWhatsNew),
                 child: Text(l10n.showWhatsNewButton),
+              ),
+              TextButton(
+                key: const ValueKey<String>(
+                  'settings.testData.previewCustomPaywall.button',
+                ),
+                onPressed: () => onAction(TestDataAction.previewCustomPaywall),
+                child: const Text('Preview custom paywall'),
               ),
             ],
           ),

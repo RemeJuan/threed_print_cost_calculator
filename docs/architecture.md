@@ -17,9 +17,9 @@
 
 ## Bootstrap sequence
 
-- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, Crashlytics, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, and Sembast DB.
+- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, Crashlytics, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, and Sembast DB.
 - Startup migrations from `lib/startup.dart` run after those services are ready and before the root Riverpod `ProviderScope` is applied.
-- That order matters for downstream code: SharedPreferences-backed test overrides, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
+- That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
 
 ## Data persistence approach
 
@@ -38,18 +38,20 @@
 - Settings persist in the Sembast main store via `lib/database/repositories/settings_repository.dart`.
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
 - Startup migrations run in `lib/startup.dart` before `runApp`; current startup work rebuilds printer/history indexes and migrates legacy history material data.
-- `SharedPreferences` stores lighter app flags and counters such as premium overrides and run counts.
+- `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
 
 ## Premium gating approach
 
 - RevenueCat configured in `lib/main.dart` through `Purchases.configure(...)` before app bootstrap.
 - Premium state source of truth lives in `lib/purchases/premium_state_notifier.dart`.
 - `premiumStateProvider` subscribes to `RevenueCatPurchasesGateway.watchPremiumState()` and fetches initial state through `fetchPremiumState()`.
-- Local test override path exists in `PremiumStateNotifier` using `SharedPreferences` and `lib/shared/test_tools/test_data_service.dart`.
+- `PremiumAccessPolicy` centralizes promo visibility and feature/quota access decisions; `premiumAccessPolicyProvider` is the UI/service gate.
+- `premiumLocalStoreProvider` exposes encrypted local storage for premium/quota-sensitive keys. Secure-store preload/write/delete failures are reported through Flutter error reporting but should not abort app startup.
+- Local test override path exists in `PremiumStateNotifier` using `PremiumLocalStore` and `lib/shared/test_tools/test_data_service.dart`.
 - App shell gating happens in `lib/app/app_page.dart`:
-  - Materials tab only renders when `isPremium`.
-  - History tab visibility depends on premium-related promotion providers in `lib/shared/providers/pro_promotion_visibility.dart`.
-- Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, with feature-specific triggers in calculator/history/header/settings flows.
+  - Materials tab opens for all users; free tier enforcement happens through policy quota limits.
+  - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
+- Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
 
 ## Structured logging approach
 

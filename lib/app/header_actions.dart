@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class HeaderActions extends ConsumerWidget {
@@ -12,12 +12,15 @@ class HeaderActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isPremium = ref.watch(isPremiumProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final isPremium = policy.isPremium;
     final l10n = AppLocalizations.of(context)!;
+
+    final gcodeAllowed = policy.gcodeImport().allowed;
 
     return Container(
       margin: const EdgeInsets.only(right: 16),
-      child: isPremium
+      child: gcodeAllowed
           ? IconButton(
               tooltip: l10n.importGcodePageTitle,
               onPressed: () {

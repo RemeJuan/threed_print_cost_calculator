@@ -7,8 +7,9 @@ import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 import '../../helpers/helpers.dart';
@@ -216,7 +217,9 @@ void main() {
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
-      shouldShowProPromotionProvider.overrideWithValue(false),
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: true),
+      ),
     ]);
 
     await tester.pumpAndSettle();
@@ -248,6 +251,7 @@ void main() {
         csvUtils = _FakeCsvUtils(ref);
         return csvUtils;
       }),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();
@@ -265,6 +269,76 @@ void main() {
     expect(csvUtils.lastRange, ExportRange.last7Days);
   });
 
+  testWidgets('free user does not see history export action', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(hasMore: false),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey<String>('history.export.button')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('free history list is capped at 7 records', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: [
+          _entry('1', 'Item 1', DateTime.utc(2024, 1, 8)),
+          _entry('2', 'Item 2', DateTime.utc(2024, 1, 7)),
+          _entry('3', 'Item 3', DateTime.utc(2024, 1, 6)),
+          _entry('4', 'Item 4', DateTime.utc(2024, 1, 5)),
+          _entry('5', 'Item 5', DateTime.utc(2024, 1, 4)),
+          _entry('6', 'Item 6', DateTime.utc(2024, 1, 3)),
+          _entry('7', 'Item 7', DateTime.utc(2024, 1, 2)),
+          _entry('8', 'Item 8', DateTime.utc(2024, 1, 1)),
+        ],
+        hasMore: true,
+      ),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Item 1'), findsOneWidget);
+    expect(find.text('Item 8'), findsNothing);
+    expect(
+      find.byKey(const ValueKey<String>('history.item.Item 8.menu')),
+      findsNothing,
+    );
+
+    await tester.scrollUntilVisible(
+      find.text(
+        'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.',
+      ),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(
+        'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.export.button')),
+      findsNothing,
+    );
+  });
+
   testWidgets('renders teaser state with premium entry CTAs', (tester) async {
     final paywallPresenter = FakePaywallPresenter();
 
@@ -278,7 +352,10 @@ void main() {
       find.byKey(const ValueKey<String>('history.teaser.state')),
       findsOneWidget,
     );
-    expect(find.text('Save & export history with Pro'), findsOneWidget);
+    expect(
+      find.text('Upgrade to Premium for unlimited history'),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const ValueKey<String>('history.export.preview.entry')),
       findsOneWidget,
@@ -322,6 +399,7 @@ void main() {
 
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
     ]);
 
     await tester.pumpAndSettle();

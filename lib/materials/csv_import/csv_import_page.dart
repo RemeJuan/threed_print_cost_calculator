@@ -7,10 +7,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_service.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
@@ -92,8 +94,24 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       return;
     }
 
+    final policy = ref.read(premiumAccessPolicyProvider);
+    final limit = policy.materialLimit;
+    if (limit != null) {
+      final currentCount = await ref.read(materialsRepositoryProvider).count();
+      if (currentCount + validCount > limit) {
+        BotToast.showText(text: _l10n!.csvImportQuotaExceededError);
+        return;
+      }
+    }
+
     final service = ref.read(csvImportServiceProvider);
     final result = await service.importRows(_rows);
+
+    if (result.quotaExceeded) {
+      if (!mounted) return;
+      BotToast.showText(text: _l10n!.csvImportQuotaExceededError);
+      return;
+    }
 
     AppAnalytics.safeLog(
       () => AppAnalytics.csvImportCompleted(

@@ -726,7 +726,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Harus 0 atau lebih';
 
   @override
-  String get lockedValuePlaceholder => 'Terkunci';
+  String get lockedValuePlaceholder => 'Hanya Premium';
 
   @override
   String get hideProPromotionsTitle => 'Sembunyikan promosi Pro';
@@ -734,6 +734,18 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get hideProPromotionsSubtitle =>
       'Sembunyikan banner dan prompt upgrade';
+
+  @override
+  String get printerLimitReachedMessage =>
+      'Anda dapat menyimpan hingga 2 printer di Free. Upgrade ke Premium untuk printer tanpa batas.';
+
+  @override
+  String get materialLimitReachedMessage =>
+      'Anda dapat menyimpan hingga 5 material di Free. Upgrade ke Premium untuk material tanpa batas.';
+
+  @override
+  String get batchItemLimitReachedMessage =>
+      'Anda dapat menambahkan hingga 3 item batch di Free. Upgrade ke Premium untuk item batch tanpa batas.';
 
   @override
   String get historySearchHint => 'Cari berdasarkan nama atau printer';
@@ -761,7 +773,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get historyUpsellTitle => 'Gunakan kembali cetakan lama seketika';
 
   @override
-  String get historyUpsellDescription => 'Buka edit lanjutan dan ekspor';
+  String get historyUpsellDescription =>
+      'Anda dapat menyimpan hingga 7 cetakan di Free. Upgrade ke Premium untuk riwayat dan ekspor tanpa batas.';
 
   @override
   String get historyNoMoreRecords => 'Tidak ada data lagi';
@@ -793,10 +806,10 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Lihat cara kerja riwayat sebelum upgrade. Simpan estimasi yang selesai dan ekspor kapan saja dengan Pro.';
+      'Pengguna Free dapat menyimpan hingga 7 cetakan. Upgrade ke Premium untuk riwayat dan ekspor tanpa batas.';
 
   @override
-  String get historyTeaserCta => 'Simpan dan ekspor riwayat dengan Pro';
+  String get historyTeaserCta => 'Upgrade ke Premium untuk riwayat tanpa batas';
 
   @override
   String get historyExportPreviewEntry => 'Pratinjau ekspor CSV';
@@ -806,13 +819,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'Lihat seperti apa hasil ekspor Anda. Unduh dan bagikan dibuka dengan Pro.';
+      'Ekspor riwayat massal adalah fitur Premium. Unduh dan bagikan dibuka dengan Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Contoh]';
 
   @override
-  String get historyExportPreviewAction => 'Unduh / Bagikan dengan Pro';
+  String get historyExportPreviewAction => 'Unduh / Bagikan dengan Premium';
 
   @override
   String get addMaterialButton => 'Tambahkan bahan';
@@ -1166,6 +1179,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvNoValidRowsError => 'Tidak ada baris valid untuk diimpor.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'Impor ini melebihi batas material Anda.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total baris: $valid valid, $invalid dengan error';
   }
@@ -1216,10 +1233,14 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingReviewEmptyBody =>
-      'Tambahkan cetakan impor atau manual untuk melanjutkan.';
+      'Tambahkan cetakan manual untuk melanjutkan.';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'Impor file G-code';
+
+  @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'Impor file G-code (Premium)';
 
   @override
   String get batchGcodeImportTitle => 'Impor G-code batch';
@@ -1550,4 +1571,230 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get batchCostingEntryButton => 'Mulai penawaran batch';
+
+  @override
+  String get paywallTitle => 'Buka Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'Material tanpa batas, printer tanpa batas, ekspor batch, harga lanjutan';
+
+  @override
+  String get paywallSubtitle =>
+      'Buka semua fitur dengan pembelian satu kali atau langganan. Tanpa akun, tanpa pelacakan, hanya data Anda di perangkat Anda.';
+
+  @override
+  String get paywallOfferingError =>
+      'Tidak dapat memuat paket. Periksa koneksi Anda dan coba lagi.';
+
+  @override
+  String get paywallCta => 'Buka Premium';
+
+  @override
+  String get paywallRestore => 'Pulihkan Pembelian';
+
+  @override
+  String get paywallRowPrintersLabel => 'Printer';
+
+  @override
+  String get paywallRowMaterialsLabel => 'Material';
+
+  @override
+  String get paywallRowHistoryLabel => 'Simpanan riwayat';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'Penetapan biaya batch';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'Harga lanjutan';
+
+  @override
+  String get paywallRowExportToolsLabel => 'Alat ekspor';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'Pelacakan stok';
+
+  @override
+  String get paywallValueUnlimited => 'Tanpa batas';
+
+  @override
+  String get paywallValueYes => 'Ya';
+
+  @override
+  String get paywallValueNo => 'Tidak';
+
+  @override
+  String get paywallValueBasic => 'Dasar';
+
+  @override
+  String get paywallValueFull => 'Penuh';
+
+  @override
+  String get paywallValueSingleJob => 'Satu pekerjaan';
+
+  @override
+  String get paywallValueFullSuite => 'Paket lengkap';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'Hingga $limit model';
+  }
+
+  @override
+  String get paywallBestValue => 'Nilai terbaik';
+
+  @override
+  String get paywallPlanMonthly => 'Bulanan';
+
+  @override
+  String get paywallPlanQuarterly => 'Triwulanan';
+
+  @override
+  String get paywallPlanAnnual => 'Tahunan';
+
+  @override
+  String get paywallPlanLifetime => 'Seumur hidup';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / bulan';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 bulan';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / tahun';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price sekali';
+  }
+
+  @override
+  String get paywallPlanTrial => 'Uji coba gratis 7 hari';
+
+  @override
+  String get paywallPlanCancelAnytime => 'Batalkan kapan saja';
+
+  @override
+  String get paywallPlanOwnForever => 'Miliki Premium selamanya';
+
+  @override
+  String get paywallTrustLine => 'Utamakan offline • Tanpa akun';
+
+  @override
+  String get paywallCtaAnnualTrial => 'Mulai uji coba gratis 7 hari';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'Upgrade seharga $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'Buka Premium seharga $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'Upgrade seharga $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return '$limit penyimpanan';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'Material tanpa batas';
+
+  @override
+  String get paywallFeatureMaterialsDesc =>
+      'Simpan dan kelola spool filamen dan material tanpa batas.';
+
+  @override
+  String get paywallFeaturePrintersTitle => 'Printer tanpa batas';
+
+  @override
+  String get paywallFeaturePrintersDesc =>
+      'Buat dan kelola profil printer tanpa batas.';
+
+  @override
+  String get paywallFeatureHistoryExportTitle => 'Ekspor riwayat';
+
+  @override
+  String get paywallFeatureHistoryExportDesc =>
+      'Ekspor entri riwayat individual ke CSV.';
+
+  @override
+  String get paywallFeatureBulkHistoryExportTitle => 'Ekspor riwayat massal';
+
+  @override
+  String get paywallFeatureBulkHistoryExportDesc =>
+      'Ekspor semua riwayat sekaligus ke CSV.';
+
+  @override
+  String get paywallFeatureBatchGcodeImportTitle => 'Impor G-code batch';
+
+  @override
+  String get paywallFeatureBatchGcodeImportDesc =>
+      'Impor beberapa file G-code sekaligus untuk penetapan biaya batch.';
+
+  @override
+  String get paywallFeatureBatchExportTitle => 'Ekspor batch';
+
+  @override
+  String get paywallFeatureBatchExportDesc =>
+      'Ekspor penawaran batch dan ringkasan.';
+
+  @override
+  String get paywallFeatureLabourPricingTitle => 'Harga tenaga kerja';
+
+  @override
+  String get paywallFeatureLabourPricingDesc =>
+      'Tambahkan tarif tenaga kerja per jam ke perhitungan biaya.';
+
+  @override
+  String get paywallFeatureRiskPricingTitle => 'Harga risiko';
+
+  @override
+  String get paywallFeatureRiskPricingDesc =>
+      'Masukkan risiko kegagalan ke harga secara otomatis.';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigTitle => 'Harga lanjutan';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigDesc =>
+      'Atur markup, biaya penyiapan, dan pembulatan.';
+
+  @override
+  String get paywallFeatureCsvMaterialImportTitle => 'Impor material CSV';
+
+  @override
+  String get paywallFeatureCsvMaterialImportDesc =>
+      'Impor material secara massal dari file CSV.';
+
+  @override
+  String get paywallFeatureStockTrackingTitle => 'Pelacakan stok';
+
+  @override
+  String get paywallFeatureStockTrackingDesc =>
+      'Lacak stok filamen dan dapatkan peringatan stok rendah.';
+
+  @override
+  String get paywallRestoreSuccess => 'Pembelian berhasil dipulihkan.';
+
+  @override
+  String get paywallRestoreError =>
+      'Gagal memulihkan pembelian. Silakan coba lagi nanti.';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'Saat ini tidak ada paket langganan yang tersedia. Silakan coba lagi nanti.';
 }

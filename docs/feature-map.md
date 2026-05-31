@@ -54,7 +54,7 @@
 ## Materials
 
 - Main screens/widgets:
-  - `lib/materials/widgets/materials_page.dart` — premium tab, shared search bar, search/filter, swipe actions, delete/duplicate wiring
+  - `lib/materials/widgets/materials_page.dart` — materials browser tab (free access with quota limits), shared search bar, search/filter, swipe actions, delete/duplicate wiring; duplicate respects free-tier material cap
   - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
   - `lib/materials/csv_import/csv_import_page.dart`
@@ -64,7 +64,7 @@
   - **Tap**: opens MaterialForm for editing (primary action)
   - **Swipe left**: reveals Edit, Duplicate, Delete actions
     - **Edit**: opens MaterialForm for editing
-    - **Duplicate**: copies all material fields, appends localized "Duplicate" suffix to name, saves as new material, shows success snackbar
+    - **Duplicate**: copies all material fields, appends localized "Duplicate" suffix to name, saves as new material, shows success snackbar; blocked for free users already at the material cap
     - **Delete**: shows confirmation dialog; on confirm, removes material, clears stale calculator state if it was in use, shows success snackbar
   - One-time inline dismissible banner on first visit introduces swipe actions
   - Settings materials list (non-premium) uses `SettingsSlidableItem` with edit/delete swipe actions
@@ -86,7 +86,7 @@
   - `lib/materials/model/stock_status.dart`
 - Tests:
   - `test/materials/widgets/material_card_test.dart` — swipe reveals actions, edit/duplicate/delete callbacks, confirmation dialog
-  - `test/materials/widgets/materials_page_test.dart` — empty state, list rendering, FAB, duplicate wiring
+  - `test/materials/widgets/materials_page_test.dart` — empty state, list rendering, FAB, duplicate wiring, free-tier duplicate cap enforcement
   - `test/calculator/provider/material_selection_recalculation_test.dart` — clearUsagesForDeletedMaterial weight recompute and stale-defaults cleanup
   - `test/settings/materials/`
   - `test/settings/providers/materials_notifier_test.dart`
@@ -140,15 +140,17 @@
 ## Purchases / premium
 
 - Main screens/widgets:
-  - `lib/app/app_page.dart` — app-shell listener for RevenueCat premium state, run-count tracking, cancellation feedback prompt trigger
+  - `lib/app/app_page.dart` — app-shell listener for RevenueCat premium state, cancellation feedback prompt trigger
   - `lib/purchases/cancel_feedback_sheet.dart` — dismissible bottom sheet for anonymous cancellation feedback reasons
 - Providers/state:
   - `lib/purchases/premium_state.dart`
   - `lib/purchases/premium_state_notifier.dart`
+  - `lib/purchases/premium_access_policy.dart`
+  - `lib/shared/providers/app_providers.dart` (`premiumLocalStoreProvider`)
   - `lib/purchases/cancel_feedback_service.dart`
 - Repositories/services:
   - `lib/purchases/purchases_gateway.dart` — RevenueCat SDK mapping into app premium state
-  - `lib/shared/services/app_usage_service.dart` — prefs-backed calculation count / G-code usage analytics helpers
+  - `lib/shared/services/app_usage_service.dart` — premium-store calculation count / G-code usage analytics helpers
   - `lib/database/repositories/history_repository.dart` — history count + G-code-import history lookup for analytics payloads
 - Analytics events:
   - `trial_cancel_feedback_submitted`
@@ -172,36 +174,41 @@
 ## Premium / RevenueCat
 
 - Main screens/widgets:
-  - `lib/calculator/view/subscriptions.dart`
-  - `lib/history/components/history_upsell_banner.dart`
+  - `lib/purchases/paywall_screen.dart` — custom paywall with comparison table, plan selector, purchase/restore flows
+  - `lib/purchases/paywall_plan_selector.dart` — RevenueCat package cards with best-value chip
+  - `lib/purchases/paywall_comparison_table.dart` — policy-driven free vs premium comparison table
+  - `lib/purchases/premium_purchase_gateway.dart` — RevenueCat abstraction for offerings, purchase, restore
   - `lib/app/header_actions.dart`
-  - `lib/app/promo_history_tab_icon.dart`
 - Providers/state:
   - `lib/purchases/premium_state_notifier.dart` (`premiumStateProvider`, `isPremiumProvider`)
+  - `lib/purchases/premium_access_policy.dart` (`premiumAccessPolicyProvider`)
   - `lib/purchases/premium_state.dart`
-  - `lib/shared/providers/pro_promotion_visibility.dart`
+  - `lib/shared/providers/app_providers.dart` (`premiumLocalStoreProvider`, `appNavigatorKey`)
+  - `lib/purchases/premium_purchase_gateway.dart` (`premiumPurchaseGatewayProvider`)
 - Repositories/services:
   - `lib/purchases/purchases_gateway.dart`
   - `lib/purchases/paywall_presenter.dart`
-- Models:
-  - `lib/purchases/premium_state.dart`
 - Tests:
   - `test/purchases/`
   - `test_support/fake_purchases_gateway.dart`
   - `integration_test/premium_*.dart`
   - `patrol_test/premium_calculate_save_history_journey_test.dart`
 - Common search terms:
+  - `premiumAccessPolicyProvider`
+  - `premiumPurchaseGatewayProvider`
+  - `appNavigatorKey`
+  - `PaywallScreen`
+  - `PremiumPurchaseGateway`
+  - `paywall_comparison_table`
+  - `paywall_plan_selector`
   - `premiumStateProvider`
-  - `isPremium`
   - `RevenueCatPurchasesGateway`
-  - `paywall`
   - `Purchases.configure`
-  - `history_teaser`
 
 ## Batch costing
 
 - Main screens/widgets:
-  - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals
+  - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals; manual add shows quota feedback instead of silently dropping capped free-tier items
   - `lib/batch_costing/batch_gcode_import_page.dart` — shell page for multi-file / single-file G-code import flow (447 LOC)
   - `lib/batch_costing/widgets/batch_gcode_import_body.dart` — body widget rendering file rows, single-import view, action buttons
   - `lib/batch_costing/widgets/batch_single_import_view.dart` — single-file import card with metadata + inline missing details form
@@ -331,7 +338,7 @@
 - Layout behavior:
   - Sections always visible (no accordion/collapse/chevrons)
   - Order: General → Pricing & Work Costs → Printers (matches usage frequency)
-  - Premium-gated sections/actions are controlled by `isPremium`; General settings remain available
+  - Premium-gated sections/actions are controlled by `premiumAccessPolicyProvider` (policy-led); General settings remain available
   - Printer list is content-sized `Column` (no fixed-height `ListView`)
 - Providers/state:
   - `lib/settings/providers/printers_notifier.dart` (`printersProvider`)

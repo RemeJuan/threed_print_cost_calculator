@@ -5,11 +5,33 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+
+ProviderContainer _createContainer() {
+  return ProviderContainer(
+    overrides: [
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+      ),
+    ],
+  );
+}
+
+ProviderContainer _createFreeContainer() {
+  return ProviderContainer(
+    overrides: [
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+      ),
+    ],
+  );
+}
 
 void main() {
   group('item CRUD', () {
     test('adds, updates, removes, and resets items', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -21,7 +43,7 @@ void main() {
         printDuration: const Duration(minutes: 30),
       );
 
-      notifier.addItem(item);
+      expect(notifier.addItem(item), isTrue);
       expect(container.read(batchCostingProvider).items, [item]);
       expect(() => notifier.addItem(item), throwsArgumentError);
 
@@ -37,7 +59,7 @@ void main() {
     });
 
     test('updateItem with quantity change clears per-item allocations', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -74,7 +96,7 @@ void main() {
     });
 
     test('updateItem with quantity change keeps batch-wide allocations', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -101,7 +123,7 @@ void main() {
     });
 
     test('removeItem cleans up allocation maps', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -127,11 +149,46 @@ void main() {
       expect(state.itemPrinterIds, isEmpty);
       expect(state.itemMaterialAllocations, isEmpty);
     });
+
+    test('free users cannot add more than batch item cap', () {
+      final container = _createFreeContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(batchCostingProvider.notifier);
+
+      for (var i = 1; i <= 3; i++) {
+        expect(
+          notifier.addItem(
+            BatchCostingItem.manual(
+              id: 'item-$i',
+              displayName: 'Item $i',
+              quantity: 1,
+              printWeightG: 10,
+              printDuration: const Duration(minutes: 10),
+            ),
+          ),
+          isTrue,
+        );
+      }
+
+      expect(
+        notifier.addItem(
+          BatchCostingItem.manual(
+            id: 'item-4',
+            displayName: 'Item 4',
+            quantity: 1,
+            printWeightG: 10,
+            printDuration: const Duration(minutes: 10),
+          ),
+        ),
+        isFalse,
+      );
+      expect(container.read(batchCostingProvider).items, hasLength(3));
+    });
   });
 
   group('printer assignment', () {
     test('stores batch-wide printer assignment', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -153,7 +210,7 @@ void main() {
     });
 
     test('clears batch printer id but keeps existing item-level maps', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -174,7 +231,7 @@ void main() {
     });
 
     test('stores per-item printer allocations', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -200,7 +257,7 @@ void main() {
     });
 
     test('normalizes printer allocations to item quantity', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -230,7 +287,7 @@ void main() {
 
   group('material assignment', () {
     test('stores batch-wide material assignment', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -256,7 +313,7 @@ void main() {
     });
 
     test('clears batch material id but keeps existing item data', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -277,7 +334,7 @@ void main() {
     });
 
     test('per-item material mode with existing batch id sets all items', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -310,7 +367,7 @@ void main() {
     });
 
     test('stores per-item material allocations', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -340,7 +397,7 @@ void main() {
 
   group('pricing', () {
     test('sets and clears pricing fields', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 
@@ -370,7 +427,7 @@ void main() {
     });
 
     test('pricing fields are independent', () {
-      final container = ProviderContainer();
+      final container = _createContainer();
       addTearDown(container.dispose);
       final notifier = container.read(batchCostingProvider.notifier);
 

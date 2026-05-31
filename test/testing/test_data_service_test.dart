@@ -3,6 +3,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
@@ -13,7 +15,7 @@ class _FakeSeedLoader extends SeedLoader {
   final SeedDataBundle bundle;
 
   @override
-  Future<SeedDataBundle> load() async => bundle;
+  Future<SeedDataBundle> load({String subdirectory = ''}) async => bundle;
 }
 
 SeedDataBundle _bundle() {
@@ -181,6 +183,9 @@ void main() {
       overrides: [
         databaseProvider.overrideWithValue(db),
         sharedPreferencesProvider.overrideWithValue(prefs),
+        premiumLocalStoreProvider.overrideWithValue(
+          InMemoryPremiumLocalStore(),
+        ),
         seedLoaderProvider.overrideWithValue(_FakeSeedLoader(_bundle())),
       ],
     );
@@ -213,7 +218,12 @@ void main() {
           .exists(db),
       isTrue,
     );
-    expect(prefs.getString(testPremiumOverrideEnabledOnPreferenceKey), isNull);
+    expect(
+      container
+          .read(premiumLocalStoreProvider)
+          .readSync(testPremiumOverrideEnabledOnPreferenceKey),
+      isNull,
+    );
   });
 
   test('re-running seed replaces existing data', () async {
@@ -267,7 +277,9 @@ void main() {
 
     expect(result.success, isTrue);
     expect(
-      prefs.getString(testPremiumOverrideEnabledOnPreferenceKey),
+      container
+          .read(premiumLocalStoreProvider)
+          .readSync(testPremiumOverrideEnabledOnPreferenceKey),
       formatTestPremiumOverrideDay(DateTime.now()),
     );
     expect(

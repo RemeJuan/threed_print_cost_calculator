@@ -5,8 +5,12 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import '../helpers/helpers.dart';
+import '../helpers/lower_level_test_fakes.dart';
 
 void main() {
   setUpAll(setupTest);
@@ -43,6 +47,40 @@ void main() {
 
     expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
     expect(find.text('Benchy'), findsNothing);
+  });
+
+  testWidgets('free users do not see batch gcode import button', (
+    tester,
+  ) async {
+    final paywallPresenter = FakePaywallPresenter();
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(
+        () => _FakeBatchCostingNotifier(const <BatchCostingItem>[]),
+      ),
+      isPremiumProvider.overrideWithValue(false),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+      ),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    expect(find.text(l10n.batchCostingReviewEmptyBody), findsOneWidget);
+    expect(
+      find.text('${l10n.batchCostingReviewImportGcodeButton} (Premium)'),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.text('${l10n.batchCostingReviewImportGcodeButton} (Premium)'),
+    );
+    await tester.pumpAndSettle();
+
+    expect(paywallPresenter.calls, 1);
   });
 
   testWidgets('start new batch resets stack and returns home', (tester) async {
@@ -388,6 +426,60 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.batchCostingReviewEmptyTitle), findsOneWidget);
+  });
+
+  testWidgets('free users at batch item cap see quota message', (tester) async {
+    final items = [
+      for (var i = 1; i <= 3; i++)
+        BatchCostingItem.manual(
+          id: 'item-$i',
+          displayName: 'Existing $i',
+          quantity: 1,
+          printWeightG: 10,
+          printDuration: const Duration(minutes: 10),
+        ),
+    ];
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(() => _FakeBatchCostingNotifier(items)),
+      premiumAccessPolicyProvider.overrideWithValue(
+        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+      ),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    await tester.tap(find.text(l10n.batchCostingReviewAddManualItemButton));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-name')),
+      'Blocked item',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-quantity')),
+      '1',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-weight')),
+      '10',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-hours')),
+      '0',
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
+      '10',
+    );
+    await tester.tap(find.text(l10n.saveButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Blocked item'), findsNothing);
+    expect(find.text(l10n.batchItemLimitReachedMessage), findsOneWidget);
   });
 }
 

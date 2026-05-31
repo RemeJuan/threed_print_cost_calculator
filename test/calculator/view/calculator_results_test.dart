@@ -8,9 +8,9 @@ import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
@@ -95,9 +95,11 @@ void main() {
     final db = await tester
         .pumpApp(CalculatorResults(results: results, pricing: pricingResult), [
           calculatorProvider.overrideWith(() => calculatorNotifier),
-          isPremiumProvider.overrideWithValue(isPremium),
-          shouldShowProPromotionProvider.overrideWithValue(
-            shouldShowProPromotion,
+          premiumAccessPolicyProvider.overrideWithValue(
+            DefaultPremiumAccessPolicy(
+              isPremium: isPremium,
+              hideProPromotions: !shouldShowProPromotion,
+            ),
           ),
         ]);
     addTearDown(() => db.close());
@@ -250,8 +252,12 @@ void main() {
       final db = await tester.pumpApp(
         CalculatorResults(results: labourOnlyResults, pricing: pricing),
         [
-          isPremiumProvider.overrideWithValue(true),
-          shouldShowProPromotionProvider.overrideWithValue(false),
+          premiumAccessPolicyProvider.overrideWithValue(
+            DefaultPremiumAccessPolicy(
+              isPremium: true,
+              hideProPromotions: true,
+            ),
+          ),
         ],
       );
       addTearDown(() => db.close());
@@ -269,8 +275,12 @@ void main() {
             pricing: pricing,
           ),
           [
-            isPremiumProvider.overrideWithValue(true),
-            shouldShowProPromotionProvider.overrideWithValue(false),
+            premiumAccessPolicyProvider.overrideWithValue(
+              DefaultPremiumAccessPolicy(
+                isPremium: true,
+                hideProPromotions: true,
+              ),
+            ),
           ],
         );
         addTearDown(() => db.close());
@@ -412,8 +422,12 @@ void main() {
     testWidgets('formats final price with currency settings', (tester) async {
       final db = await tester
           .pumpApp(CalculatorResults(results: results, pricing: pricing), [
-            isPremiumProvider.overrideWithValue(true),
-            shouldShowProPromotionProvider.overrideWithValue(false),
+            premiumAccessPolicyProvider.overrideWithValue(
+              DefaultPremiumAccessPolicy(
+                isPremium: true,
+                hideProPromotions: true,
+              ),
+            ),
             settingsRepositoryProvider.overrideWithValue(
               _FakeSettingsRepository(
                 const GeneralSettingsModel(
@@ -479,8 +493,12 @@ void main() {
         ),
         [
           calculatorProvider.overrideWith(() => calculatorNotifier),
-          isPremiumProvider.overrideWithValue(true),
-          shouldShowProPromotionProvider.overrideWithValue(false),
+          premiumAccessPolicyProvider.overrideWithValue(
+            DefaultPremiumAccessPolicy(
+              isPremium: true,
+              hideProPromotions: true,
+            ),
+          ),
         ],
       );
       addTearDown(() => db.close());

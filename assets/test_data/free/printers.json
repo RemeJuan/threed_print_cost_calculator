@@ -1,0 +1,16 @@
+{
+  "printers": [
+    {
+      "id": "prusa_mk4",
+      "name": "Prusa MK4",
+      "bedSize": "250 x 210 x 220",
+      "wattage": "120"
+    },
+    {
+      "id": "bambu_a1_mini",
+      "name": "Bambu A1 Mini",
+      "bedSize": "180 x 180 x 180",
+      "wattage": "60"
+    }
+  ]
+}

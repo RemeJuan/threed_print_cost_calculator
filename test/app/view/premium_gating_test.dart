@@ -25,29 +25,36 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('free state keeps premium history gate hidden', (tester) async {
-    SharedPreferences.setMockInitialValues({'hideProPromotions': true});
-    final db = await tester.pumpApp(const AppPage(), [
-      calculatorProvider.overrideWith(() => mockCalculatorProvider),
-      purchasesGatewayProvider.overrideWithValue(
-        FakePurchasesGateway(
-          const PremiumState(
-            isPremium: false,
-            isLoading: false,
-            userId: 'free',
+  testWidgets(
+    'free state keeps history gate visible without badge when promos hidden',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({'hideProPromotions': true});
+      final db = await tester.pumpApp(const AppPage(), [
+        calculatorProvider.overrideWith(() => mockCalculatorProvider),
+        purchasesGatewayProvider.overrideWithValue(
+          FakePurchasesGateway(
+            const PremiumState(
+              isPremium: false,
+              isLoading: false,
+              userId: 'free',
+            ),
           ),
         ),
-      ),
-    ]);
-    addTearDown(() => db.close());
+      ]);
+      addTearDown(() => db.close());
 
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    expect(
-      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
-    );
-  });
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+        findsNothing,
+      );
+    },
+  );
 
   testWidgets('free state shows teaser history gate when promos enabled', (
     tester,
@@ -74,7 +81,7 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-      findsOneWidget,
+      findsNothing,
     );
   });
 
@@ -97,37 +104,43 @@ void main() {
     );
   });
 
-  testWidgets('history gate appears when gateway emits premium upgrade', (
-    tester,
-  ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
-    final gateway = FakePurchasesGateway(
-      const PremiumState(isPremium: false, isLoading: false, userId: 'free'),
-    );
+  testWidgets(
+    'history gate badge disappears when gateway emits premium upgrade',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({'run_count': 0});
+      final gateway = FakePurchasesGateway(
+        const PremiumState(isPremium: false, isLoading: false, userId: 'free'),
+      );
 
-    final db = await tester.pumpApp(const AppPage(), [
-      calculatorProvider.overrideWith(() => mockCalculatorProvider),
-      purchasesGatewayProvider.overrideWithValue(gateway),
-    ]);
-    addTearDown(() => db.close());
+      final db = await tester.pumpApp(const AppPage(), [
+        calculatorProvider.overrideWith(() => mockCalculatorProvider),
+        purchasesGatewayProvider.overrideWithValue(gateway),
+      ]);
+      addTearDown(() => db.close());
 
-    await tester.pumpAndSettle();
-    expect(
-      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsNothing,
-    );
+      await tester.pumpAndSettle();
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+        findsNothing,
+      );
 
-    gateway.emit(
-      const PremiumState(isPremium: true, isLoading: false, userId: 'pro'),
-    );
-    await tester.pumpAndSettle();
+      gateway.emit(
+        const PremiumState(isPremium: true, isLoading: false, userId: 'pro'),
+      );
+      await tester.pumpAndSettle();
 
-    expect(
-      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsOneWidget,
-    );
-  });
+      expect(
+        find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('nav.history.pro.badge')),
+        findsNothing,
+      );
+    },
+  );
 }

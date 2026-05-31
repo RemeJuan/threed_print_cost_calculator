@@ -30,7 +30,7 @@ class _NoopSeedLoader extends SeedLoader {
   _NoopSeedLoader() : super(bundle: _NoopAssetBundle());
 
   @override
-  Future<SeedDataBundle> load() async {
+  Future<SeedDataBundle> load({String subdirectory = ''}) async {
     throw UnimplementedError();
   }
 }
@@ -246,6 +246,38 @@ void main() {
       find.text(
         lookupAppLocalizations(const Locale('en')).cancelFeedbackPromptTitle,
       ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('can preview custom paywall from hidden tools', (tester) async {
+    final fakeCalculator = FakeCalculatorNotifier();
+    final fakeHistory = _FakeHistoryPagedNotifier();
+
+    final db = await tester.pumpApp(const SettingsVersionTapTarget(), [
+      calculatorProvider.overrideWith(() => fakeCalculator),
+      historyPagedProvider.overrideWith(() => fakeHistory),
+      testDataServiceProvider.overrideWith((ref) => _FakeTestDataService(ref)),
+    ]);
+    addTearDown(() => db.close());
+
+    await tester.pumpAndSettle();
+    await _openHiddenTools(tester);
+
+    await _revealHiddenToolButton(
+      tester,
+      'settings.testData.previewCustomPaywall.button',
+    );
+    await tester.tap(
+      find.byKey(
+        const ValueKey<String>('settings.testData.previewCustomPaywall.button'),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).paywallTitle),
       findsOneWidget,
     );
   });

@@ -9,10 +9,11 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
-import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/helpers.dart';
@@ -37,7 +38,7 @@ void seedAppPagePrefs({
   bool hasUsedGcodeImport = false,
 }) {
   SharedPreferences.setMockInitialValues({
-    'run_count': runCount,
+    runCountPreferenceKey: runCount,
     calculationCountPreferenceKey: calculationCount,
     hasUsedGcodeImportPreferenceKey: hasUsedGcodeImport,
     if (hideProPromotions) 'hideProPromotions': true,
@@ -48,6 +49,7 @@ Future<Database> pumpAppPage(
   WidgetTester tester,
   FakePurchasesGateway gateway,
   FakeCalculatorNotifier calculatorNotifier, {
+  PremiumLocalStore? premiumLocalStore,
   List<Override> overrides = const [],
   bool useDefaultAnnouncementOverride = true,
 }) async {
@@ -61,7 +63,7 @@ Future<Database> pumpAppPage(
     if (useDefaultAnnouncementOverride)
       currentAnnouncementProvider.overrideWith((ref) async => null),
     ...overrides,
-  ]);
+  ], premiumLocalStore);
   addTearDown(db.close);
   addTearDown(gateway.dispose);
   return db;

@@ -1,5 +1,6 @@
 import 'dart:developer' as developer;
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,6 +12,9 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_pick
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 
 class GCodeImportPageState {
   final List<BatchImportRow> rows = <BatchImportRow>[];
@@ -96,10 +100,11 @@ class BatchGCodeImportHandler {
     BatchSingleImport singleImport,
   ) {
     if (!singleImport.canContinue) return;
+    final l10n = AppLocalizations.of(context)!;
 
     final importResult = buildImportResult(singleImport);
 
-    ref
+    final added = ref
         .read(batchCostingProvider.notifier)
         .addItem(
           buildCostingItem(
@@ -108,6 +113,11 @@ class BatchGCodeImportHandler {
             result: importResult,
           ),
         );
+
+    if (!added) {
+      BotToast.showText(text: l10n.batchItemLimitReachedMessage);
+      return;
+    }
 
     AppAnalytics.safeLog(
       () => AppAnalytics.batchStarted(source: 'gcode_single'),
@@ -149,6 +159,19 @@ class BatchGCodeImportHandler {
 
       if (files.isEmpty) {
         setState(() => pageState.loading = false);
+        return;
+      }
+
+      final policy = ref.read(premiumAccessPolicyProvider);
+      if (files.length > 1 &&
+          !await requirePremium(
+            ref.read(paywallPresenterProvider),
+            policy.batchGcodeImport(),
+            purchaseSource: 'batch_gcode_import',
+            recheck: () => Future.value(
+              ref.read(premiumAccessPolicyProvider).batchGcodeImport().allowed,
+            ),
+          )) {
         return;
       }
 
@@ -258,9 +281,18 @@ class BatchGCodeImportHandler {
           continue;
         }
 
-        notifier.addItem(
+        final added = notifier.addItem(
           buildCostingItem(id: batchId, file: file, result: result),
         );
+
+        if (!added) {
+          failedCount++;
+          setState(() {
+            row!.status = ImportStatus.failed;
+            row.errorMessage = l10n.batchItemLimitReachedMessage;
+          });
+          continue;
+        }
 
         AppAnalytics.safeLog(
           () => AppAnalytics.batchItemAdded(source: 'gcode'),

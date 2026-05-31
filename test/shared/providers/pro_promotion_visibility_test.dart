@@ -1,30 +1,28 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/shared/providers/pro_promotion_visibility.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
-    SharedPreferences.setMockInitialValues({});
-  });
-
-  Future<(ProviderContainer, SharedPreferences)> createContainer({
+  Future<(ProviderContainer, InMemoryPremiumLocalStore)> createContainer({
     required bool isPremium,
     Map<String, Object> initialValues = const {},
   }) async {
-    SharedPreferences.setMockInitialValues(initialValues);
-    final prefs = await SharedPreferences.getInstance();
+    final store = InMemoryPremiumLocalStore(
+      initialValues.map((key, value) => MapEntry(key, value.toString())),
+    );
     final container = ProviderContainer(
       overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
         isPremiumProvider.overrideWithValue(isPremium),
+        premiumLocalStoreProvider.overrideWithValue(store),
       ],
     );
-    return (container, prefs);
+    return (container, store);
   }
 
   test('defaults to showing pro promotions for free users', () async {
@@ -32,11 +30,14 @@ void main() {
     addTearDown(container.dispose);
 
     expect(container.read(hideProPromotionsProvider), isFalse);
-    expect(container.read(shouldShowProPromotionProvider), isTrue);
+    expect(
+      container.read(premiumAccessPolicyProvider).shouldShowPromotions,
+      isTrue,
+    );
   });
 
   test('updating the preference persists to shared preferences', () async {
-    final (container, prefs) = await createContainer(isPremium: false);
+    final (container, store) = await createContainer(isPremium: false);
     addTearDown(container.dispose);
 
     await container
@@ -44,7 +45,7 @@ void main() {
         .setHideProPromotions(true);
 
     expect(container.read(hideProPromotionsProvider), isTrue);
-    expect(prefs.getBool(hideProPromotionsPreferenceKey), isTrue);
+    expect(store.readSync(hideProPromotionsPreferenceKey), 'true');
   });
 
   test('derived helpers follow entitlement and preference state', () async {
@@ -64,14 +65,14 @@ void main() {
             hidePromos: false,
             shouldShowPromo: true,
             shouldShowHistoryTab: true,
-            shouldShowHistoryTeaser: true,
+            shouldShowHistoryTeaser: false,
             shouldShowToggle: true,
           ),
           (
             isPremium: false,
             hidePromos: true,
             shouldShowPromo: false,
-            shouldShowHistoryTab: false,
+            shouldShowHistoryTab: true,
             shouldShowHistoryTeaser: false,
             shouldShowToggle: true,
           ),
@@ -100,15 +101,10 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      expect(container.read(shouldShowProPromotionProvider), c.shouldShowPromo);
-      expect(
-        container.read(shouldShowHistoryTabProvider),
-        c.shouldShowHistoryTab,
-      );
-      expect(
-        container.read(shouldShowHistoryTeaserProvider),
-        c.shouldShowHistoryTeaser,
-      );
+      final policy = container.read(premiumAccessPolicyProvider);
+      expect(policy.shouldShowPromotions, c.shouldShowPromo);
+      expect(policy.shouldShowHistoryTab, c.shouldShowHistoryTab);
+      expect(policy.shouldShowHistoryTeaser, c.shouldShowHistoryTeaser);
       expect(
         container.read(shouldShowHideProPromotionsToggleProvider),
         c.shouldShowToggle,

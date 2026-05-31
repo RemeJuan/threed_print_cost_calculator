@@ -734,13 +734,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get validationMustBeZeroOrMore => 'Must be 0 or more';
 
   @override
-  String get lockedValuePlaceholder => 'Locked';
+  String get lockedValuePlaceholder => 'Premium only';
 
   @override
   String get hideProPromotionsTitle => 'Hide Pro promotions';
 
   @override
   String get hideProPromotionsSubtitle => 'Hide upgrade banners and prompts';
+
+  @override
+  String get printerLimitReachedMessage =>
+      'You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.';
+
+  @override
+  String get materialLimitReachedMessage =>
+      'You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.';
+
+  @override
+  String get batchItemLimitReachedMessage =>
+      'You can add up to 3 batch items on Free. Upgrade to Premium for unlimited batch items.';
 
   @override
   String get historySearchHint => 'Search by name or printer';
@@ -767,7 +779,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyUpsellTitle => 'Re-use past prints instantly';
 
   @override
-  String get historyUpsellDescription => 'Unlock advanced edits and exports';
+  String get historyUpsellDescription =>
+      'You can keep up to 7 saved prints on Free. Upgrade to Premium for unlimited history and exports.';
 
   @override
   String get historyNoMoreRecords => 'No more records';
@@ -798,10 +811,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyTeaserDescription =>
-      'Review how history works before upgrading. Save completed estimates and export them any time with Pro.';
+      'Free users can keep up to 7 saved prints. Upgrade to Premium for unlimited history and exports.';
 
   @override
-  String get historyTeaserCta => 'Save & export history with Pro';
+  String get historyTeaserCta => 'Upgrade to Premium for unlimited history';
 
   @override
   String get historyExportPreviewEntry => 'Preview sample CSV export';
@@ -811,13 +824,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyExportPreviewDescription =>
-      'See how your export will look. Download and share are unlocked with Pro.';
+      'Bulk history export is a Premium feature. Download and share are unlocked with Premium.';
 
   @override
   String get historyExportPreviewSampleLabel => '[Sample]';
 
   @override
-  String get historyExportPreviewAction => 'Download / Share with Pro';
+  String get historyExportPreviewAction => 'Download / Share with Premium';
 
   @override
   String get addMaterialButton => 'Add';
@@ -1177,6 +1190,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get csvNoValidRowsError => 'No valid rows to import.';
 
   @override
+  String get csvImportQuotaExceededError =>
+      'This import exceeds your material limit.';
+
+  @override
   String csvPreviewSummary(int total, int valid, int invalid) {
     return '$total rows: $valid valid, $invalid with errors';
   }
@@ -1226,11 +1243,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchCostingReviewEmptyTitle => 'No batch items yet';
 
   @override
-  String get batchCostingReviewEmptyBody =>
-      'Add imported or manual prints to continue.';
+  String get batchCostingReviewEmptyBody => 'Add manual prints to continue.';
 
   @override
   String get batchCostingReviewImportGcodeButton => 'Import G-code files';
+
+  @override
+  String get batchCostingReviewImportGcodeButtonPremium =>
+      'Import G-code files (Premium)';
 
   @override
   String get batchGcodeImportTitle => 'Import batch G-code';
@@ -1560,5 +1580,231 @@ class AppLocalizationsEn extends AppLocalizations {
   String get batchCostingAssignmentPrinterLabel => 'Printer';
 
   @override
-  String get batchCostingEntryButton => 'Start batch quote';
+  String get batchCostingEntryButton => 'Start Batch Costing';
+
+  @override
+  String get paywallTitle => 'Unlock Premium';
+
+  @override
+  String get paywallPitchLine =>
+      'Unlimited materials, unlimited printers, batch export, advanced pricing';
+
+  @override
+  String get paywallSubtitle =>
+      'Scale your print quoting with unlimited capacity, business pricing, and inventory control.';
+
+  @override
+  String get paywallOfferingError =>
+      'Could not load packages. Check your connection and try again.';
+
+  @override
+  String get paywallCta => 'Upgrade to Premium';
+
+  @override
+  String get paywallRestore => 'Restore Purchases';
+
+  @override
+  String get paywallRowPrintersLabel => 'Printers';
+
+  @override
+  String get paywallRowMaterialsLabel => 'Materials';
+
+  @override
+  String get paywallRowHistoryLabel => 'History saves';
+
+  @override
+  String get paywallRowBatchCostingLabel => 'Batch costing';
+
+  @override
+  String get paywallRowAdvancedPricingLabel => 'Advanced pricing';
+
+  @override
+  String get paywallRowExportToolsLabel => 'Export tools';
+
+  @override
+  String get paywallRowInventoryTrackingLabel => 'Inventory tracking';
+
+  @override
+  String get paywallValueUnlimited => 'Unlimited';
+
+  @override
+  String get paywallValueYes => 'Yes';
+
+  @override
+  String get paywallValueNo => 'No';
+
+  @override
+  String get paywallValueBasic => 'Basic';
+
+  @override
+  String get paywallValueFull => 'Full';
+
+  @override
+  String get paywallValueSingleJob => 'Single job';
+
+  @override
+  String get paywallValueFullSuite => 'Full suite';
+
+  @override
+  String paywallValueUpToModels(Object limit) {
+    return 'Up to $limit models';
+  }
+
+  @override
+  String get paywallBestValue => 'Best value';
+
+  @override
+  String get paywallPlanMonthly => 'Monthly';
+
+  @override
+  String get paywallPlanQuarterly => 'Quarterly';
+
+  @override
+  String get paywallPlanAnnual => 'Annual';
+
+  @override
+  String get paywallPlanLifetime => 'Lifetime';
+
+  @override
+  String paywallPlanPriceMonthly(Object price) {
+    return '$price / month';
+  }
+
+  @override
+  String paywallPlanPriceQuarterly(Object price) {
+    return '$price / 3 months';
+  }
+
+  @override
+  String paywallPlanPriceAnnual(Object price) {
+    return '$price / year';
+  }
+
+  @override
+  String paywallPlanPriceLifetime(Object price) {
+    return '$price once';
+  }
+
+  @override
+  String get paywallPlanTrial => '7-day free trial';
+
+  @override
+  String get paywallPlanCancelAnytime => 'Cancel anytime';
+
+  @override
+  String get paywallPlanOwnForever => 'Own Premium forever';
+
+  @override
+  String get paywallTrustLine => 'Offline first • No account required';
+
+  @override
+  String get paywallCtaAnnualTrial => 'Start 7-Day Free Trial';
+
+  @override
+  String paywallCtaQuarterly(Object price) {
+    return 'Upgrade for $price';
+  }
+
+  @override
+  String paywallCtaLifetime(Object price) {
+    return 'Unlock Premium for $price';
+  }
+
+  @override
+  String paywallCtaGeneric(Object price) {
+    return 'Upgrade for $price';
+  }
+
+  @override
+  String paywallValueSaves(Object limit) {
+    return '$limit saves';
+  }
+
+  @override
+  String get paywallFeatureMaterialsTitle => 'Unlimited materials';
+
+  @override
+  String get paywallFeatureMaterialsDesc =>
+      'Save and manage unlimited filament spools and materials.';
+
+  @override
+  String get paywallFeaturePrintersTitle => 'Unlimited printers';
+
+  @override
+  String get paywallFeaturePrintersDesc =>
+      'Create and manage unlimited printer profiles.';
+
+  @override
+  String get paywallFeatureHistoryExportTitle => 'History export';
+
+  @override
+  String get paywallFeatureHistoryExportDesc =>
+      'Export individual history entries to CSV.';
+
+  @override
+  String get paywallFeatureBulkHistoryExportTitle => 'Bulk history export';
+
+  @override
+  String get paywallFeatureBulkHistoryExportDesc =>
+      'Export all history at once to CSV.';
+
+  @override
+  String get paywallFeatureBatchGcodeImportTitle => 'Batch G-code import';
+
+  @override
+  String get paywallFeatureBatchGcodeImportDesc =>
+      'Import multiple G-code files at once for batch costing.';
+
+  @override
+  String get paywallFeatureBatchExportTitle => 'Batch export';
+
+  @override
+  String get paywallFeatureBatchExportDesc =>
+      'Export batch quotes and summaries.';
+
+  @override
+  String get paywallFeatureLabourPricingTitle => 'Labour pricing';
+
+  @override
+  String get paywallFeatureLabourPricingDesc =>
+      'Add hourly labour rates to cost calculations.';
+
+  @override
+  String get paywallFeatureRiskPricingTitle => 'Risk pricing';
+
+  @override
+  String get paywallFeatureRiskPricingDesc =>
+      'Factor failure risk into pricing automatically.';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigTitle => 'Advanced pricing';
+
+  @override
+  String get paywallFeatureAdvancedPricingConfigDesc =>
+      'Configure markup, setup fees, and rounding.';
+
+  @override
+  String get paywallFeatureCsvMaterialImportTitle => 'CSV material import';
+
+  @override
+  String get paywallFeatureCsvMaterialImportDesc =>
+      'Import materials in bulk from CSV files.';
+
+  @override
+  String get paywallFeatureStockTrackingTitle => 'Stock tracking';
+
+  @override
+  String get paywallFeatureStockTrackingDesc =>
+      'Track filament stock and get low-stock alerts.';
+
+  @override
+  String get paywallRestoreSuccess => 'Purchases restored successfully.';
+
+  @override
+  String get paywallRestoreError =>
+      'Failed to restore purchases. Please try again later.';
+
+  @override
+  String get paywallEmptyOfferings =>
+      'No subscription plans are currently available. Please try again later.';
 }

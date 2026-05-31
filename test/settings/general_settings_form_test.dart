@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
@@ -304,12 +305,12 @@ void main() {
 
     testWidgets('persists the hide Pro promotions toggle', (tester) async {
       final repo = _FakeSettingsRepository();
-      final prefs = await SharedPreferences.getInstance();
+      final premiumLocalStore = InMemoryPremiumLocalStore();
       final db = await tester.pumpApp(const GeneralSettings(), [
         settingsRepositoryProvider.overrideWithValue(repo),
         appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
         isPremiumProvider.overrideWithValue(false),
-      ]);
+      ], premiumLocalStore);
       addTearDown(db.close);
       addTearDown(repo.dispose);
 
@@ -324,7 +325,10 @@ void main() {
       await tester.tap(toggle);
       await tester.pump();
 
-      expect(prefs.getBool('hideProPromotions'), isTrue);
+      expect(
+        premiumLocalStore.readSync(hideProPromotionsPreferenceKey),
+        'true',
+      );
     });
 
     testWidgets('hides the toggle for premium users', (tester) async {

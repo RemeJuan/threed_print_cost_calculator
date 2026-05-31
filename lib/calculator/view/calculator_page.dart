@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
@@ -18,7 +16,6 @@ import 'components/history_load_warning_banner.dart';
 import 'components/job_pricing_overrides_section.dart';
 import 'components/materials_selection/materials_section.dart';
 import 'components/time_section.dart';
-import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 
 class CalculatorPage extends HookConsumerWidget {
@@ -27,56 +24,12 @@ class CalculatorPage extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final showSave = useState<bool>(false);
-    final prefs = ref.read(sharedPreferencesProvider);
-    final logger = ref.read(appLoggerProvider);
     final appRefreshTick = ref.watch(appRefreshProvider);
 
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
-    final premiumState = ref.watch(premiumStateProvider);
-    final isPremium = premiumState.isPremium;
-
-    useEffect(() {
-      if (premiumState.isLoading || !premiumState.isPremium) return null;
-
-      Future<void>(() async {
-        final paywall = prefs.getBool('paywall') ?? false;
-        final runCount = prefs.getInt('run_count') ?? 0;
-
-        if (runCount > 2 && !paywall) {
-          try {
-            AppAnalytics.safeLog(
-              () => AppAnalytics.premiumFeatureTapped(
-                'multi_printer',
-                isPro: isPremium,
-                source: 'premium_feature',
-              ),
-            );
-            await prefs.setBool('paywall', true);
-            await Future.delayed(const Duration(seconds: 2));
-            await ref
-                .read(paywallPresenterProvider)
-                .present(
-                  'pro',
-                  triggerFeature: 'multi_printer',
-                  purchaseSource: 'calculator',
-                  source: 'premium_feature',
-                  launchCount: runCount,
-                );
-          } catch (e) {
-            logger.warn(
-              AppLogCategory.billing,
-              'Paywall presentation failed',
-              context: {'trigger': 'multi_printer'},
-              error: e,
-            );
-          }
-        }
-      });
-
-      return null;
-    }, [premiumState.isLoading, premiumState.isPremium]);
+    final policy = ref.watch(premiumAccessPolicyProvider);
 
     // Section-level inputs manage their own controllers and focus nodes to
     // avoid prop drilling. MaterialsSection will create its own controllers.
@@ -114,7 +67,7 @@ class CalculatorPage extends HookConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (isPremium) const PrinterSelect(),
+                  if (policy.printersList().allowed) const PrinterSelect(),
                   const MaterialsSection(),
                   const SizedBox(height: kAppSpace8),
                   const TimeSection(),
@@ -122,14 +75,14 @@ class CalculatorPage extends HookConsumerWidget {
                 ],
               ),
             ),
-            if (isPremium)
+            if (policy.advancedPricingConfig().allowed)
               AppSurfaceCard(
                 padding: const EdgeInsets.symmetric(horizontal: kAppSpace12),
                 child: const JobPricingOverridesSection(),
               ),
             CalculatorResults(results: state.results, pricing: state.pricing),
             const SizedBox(height: kAppSpace8),
-            if (isPremium) ...[
+            if (policy.batchCosting().allowed) ...[
               AppSecondaryButton(
                 key: const ValueKey<String>(
                   'calculator.batch_costing.open.button',
@@ -141,7 +94,7 @@ class CalculatorPage extends HookConsumerWidget {
                     ),
                   );
                 },
-                icon: const Icon(Icons.view_list_outlined),
+                icon: const Icon(Icons.inventory_2_outlined),
                 label: l10n.batchCostingEntryButton,
               ),
               const SizedBox(height: kAppSpace12),
@@ -180,7 +133,7 @@ class CalculatorPage extends HookConsumerWidget {
                     label: l10n.resetButtonLabel,
                   ),
                 ),
-                if (isPremium && !showSave.value) ...[
+                if (policy.saveToHistory().allowed && !showSave.value) ...[
                   const SizedBox(width: 12),
                   Expanded(
                     child: AppPrimaryButton(

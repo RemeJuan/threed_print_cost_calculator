@@ -8,6 +8,8 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_filters.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
@@ -21,6 +23,11 @@ class MaterialsPage extends HookConsumerWidget {
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
     final materials = ref.watch(filteredMaterialsProvider);
+    final allMaterials = ref
+        .watch(materialsStreamProvider)
+        .maybeWhen(data: (items) => items, orElse: () => <MaterialModel>[]);
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final materialAccess = policy.canCreateMaterial(allMaterials.length);
     final searchController = useTextEditingController();
     final materialsRepo = ref.read(materialsRepositoryProvider);
 
@@ -96,6 +103,16 @@ class MaterialsPage extends HookConsumerWidget {
             ),
           const MaterialFilters(),
           const SizedBox(height: 8),
+          if (!materialAccess.allowed)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Text(
+                l10n.materialLimitReachedMessage,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
+              ),
+            ),
           Expanded(
             child: materials.isEmpty
                 ? Center(
@@ -152,6 +169,17 @@ class MaterialsPage extends HookConsumerWidget {
                         },
                         onDuplicate: () async {
                           try {
+                            final duplicateAccess = policy.canCreateMaterial(
+                              allMaterials.length,
+                            );
+                            if (!duplicateAccess.allowed) {
+                              if (!context.mounted) return;
+                              BotToast.showText(
+                                text: l10n.materialLimitReachedMessage,
+                              );
+                              return;
+                            }
+
                             final existing = await materialsRepo
                                 .getMaterialById(material.id);
                             if (existing == null) return;
@@ -180,13 +208,15 @@ class MaterialsPage extends HookConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'add_material',
-        backgroundColor: LIGHT_BLUE,
-        onPressed: () {
-          showDialog<void>(
-            context: context,
-            builder: (_) => const MaterialForm(),
-          );
-        },
+        backgroundColor: materialAccess.allowed ? LIGHT_BLUE : TEXT_TERTIARY,
+        onPressed: materialAccess.allowed
+            ? () {
+                showDialog<void>(
+                  context: context,
+                  builder: (_) => const MaterialForm(),
+                );
+              }
+            : null,
         child: const Icon(Icons.add, color: TEXT_INVERSE),
       ),
     );

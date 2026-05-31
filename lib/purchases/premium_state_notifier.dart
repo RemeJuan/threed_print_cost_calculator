@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
 
@@ -32,6 +33,13 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   int _fetchToken = 0;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
+  PremiumLocalStore? get _store {
+    try {
+      return ref.read(premiumLocalStoreProvider);
+    } catch (_) {
+      return null;
+    }
+  }
 
   @override
   PremiumState build() {
@@ -116,12 +124,10 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   }
 
   bool _hasLocalOverride() {
-    final prefs = _maybePrefs();
-    if (prefs == null) return false;
+    final store = _store;
+    if (store == null) return false;
 
-    final enabledOn = prefs.getString(
-      testPremiumOverrideEnabledOnPreferenceKey,
-    );
+    final enabledOn = store.readSync(testPremiumOverrideEnabledOnPreferenceKey);
 
     if (enabledOn == null) return false;
 
@@ -144,9 +150,9 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
         if (service != null) {
           await service.purge();
         } else {
-          final prefs = _maybePrefs();
-          if (prefs != null) {
-            await prefs.remove(testPremiumOverrideEnabledOnPreferenceKey);
+          final store = _store;
+          if (store != null) {
+            await store.delete(testPremiumOverrideEnabledOnPreferenceKey);
           }
         }
         shouldRefresh = !_disposed;
@@ -162,14 +168,6 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   TestDataService? _maybeTestDataService() {
     try {
       return ref.read(testDataServiceProvider);
-    } catch (_) {
-      return null;
-    }
-  }
-
-  SharedPreferences? _maybePrefs() {
-    try {
-      return ref.read(sharedPreferencesProvider);
     } catch (_) {
       return null;
     }

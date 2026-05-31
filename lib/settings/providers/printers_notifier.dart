@@ -1,4 +1,5 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/components/string_input.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
@@ -57,6 +58,16 @@ class PrintersNotifier extends Notifier<PrinterState> {
   Future<bool> submit(String? dbRef) async {
     if (!isValidForSubmit) {
       return false;
+    }
+
+    if (dbRef == null) {
+      final count = await _printersRepository.count();
+      final access = ref
+          .read(premiumAccessPolicyProvider)
+          .canCreatePrinter(count);
+      if (!access.allowed) {
+        return false;
+      }
     }
 
     final printer = PrinterModel(

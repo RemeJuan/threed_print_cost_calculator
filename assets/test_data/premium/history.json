@@ -1,0 +1,164 @@
+{
+  "history": [
+    {
+      "id": "history_calibration_cube",
+      "name": "Calibration Cube",
+      "totalCost": 1.85,
+      "riskCost": 0.09,
+      "filamentCost": 1.25,
+      "electricityCost": 0.07,
+      "labourCost": 0.44,
+      "date": "2026-04-04T10:15:00.000Z",
+      "printer": "Prusa MK4",
+      "material": "PLA White",
+      "weight": 18,
+      "materialUsages": [
+        {
+          "materialId": "pla_white",
+          "materialName": "PLA White",
+          "costPerKg": 24.9,
+          "weightGrams": 18
+        }
+      ],
+      "timeHours": "00:24"
+    },
+    {
+      "id": "history_tool_holder",
+      "name": "Tool Holder",
+      "totalCost": 5.72,
+      "riskCost": 0.29,
+      "filamentCost": 3.84,
+      "electricityCost": 0.18,
+      "labourCost": 1.41,
+      "date": "2026-04-10T14:30:00.000Z",
+      "printer": "Bambu A1 Mini",
+      "material": "PETG Black",
+      "weight": 74,
+      "materialUsages": [
+        {
+          "materialId": "petg_black",
+          "materialName": "PETG Black",
+          "costPerKg": 29.5,
+          "weightGrams": 74
+        }
+      ],
+      "timeHours": "01:40"
+    },
+    {
+      "id": "history_multicolor_spool",
+      "name": "Multicolor Spool Mount",
+      "totalCost": 9.46,
+      "riskCost": 0.42,
+      "filamentCost": 6.71,
+      "electricityCost": 0.22,
+      "labourCost": 2.11,
+      "date": "2026-04-14T09:05:00.000Z",
+      "printer": "Voron V0.2",
+      "material": "PLA White + ABS Red",
+      "weight": 132,
+      "materialUsages": [
+        {
+          "materialId": "pla_white",
+          "materialName": "PLA White",
+          "costPerKg": 24.9,
+          "weightGrams": 92
+        },
+        {
+          "materialId": "abs_red",
+          "materialName": "ABS Red",
+          "costPerKg": 31.2,
+          "weightGrams": 40
+        }
+      ],
+      "timeHours": "02:15"
+    },
+    {
+      "id": "history_corporate_gift_set",
+      "name": "Corporate Gift Set",
+      "totalCost": 198.20,
+      "riskCost": 3.15,
+      "filamentCost": 13.44,
+      "electricityCost": 0.41,
+      "labourCost": 141.00,
+      "additionalCostAmount": 5.0,
+      "date": "2026-04-18T16:00:00.000Z",
+      "printer": "Bambu X1 Carbon",
+      "material": "Mixed",
+      "weight": 540,
+      "materialUsages": [],
+      "timeHours": "08:45",
+      "batchQuote": true,
+      "batchQuoteItems": [
+        {
+          "id": "item-keychain-001",
+          "name": "Branded Keychain",
+          "quantity": 25,
+          "printerId": "bambu_x1c",
+          "materialId": "pla_white",
+          "pricingProfileId": null,
+          "totalWeightG": 125,
+          "totalPrintDurationMinutes": 150,
+          "baseCost": 1.93,
+          "additionalCost": 0,
+          "finalTotal": 59.96,
+          "pricing": {
+            "markupPercent": 15,
+            "setupFee": 12.5,
+            "subtotalBeforeRounding": 59.96,
+            "roundingAdjustment": 0
+          }
+        },
+        {
+          "id": "item-phone-stand-002",
+          "name": "Phone Stand",
+          "quantity": 10,
+          "printerId": "bambu_x1c",
+          "materialId": "petg_black",
+          "pricingProfileId": null,
+          "totalWeightG": 350,
+          "totalPrintDurationMinutes": 320,
+          "baseCost": 10.66,
+          "additionalCost": 5.0,
+          "finalTotal": 138.24,
+          "pricing": {
+            "markupPercent": 15,
+            "setupFee": 12.5,
+            "subtotalBeforeRounding": 138.24,
+            "roundingAdjustment": 0
+          }
+        }
+      ],
+      "batchQuoteSummary": {
+        "itemCount": 2,
+        "totalQuantity": 35,
+        "totalWeightG": 540,
+        "totalPrintDurationMinutes": 525,
+        "finalTotal": 198.20,
+        "printerAssignmentMode": "single",
+        "materialAssignmentMode": "per_item",
+        "batchPrinterId": "bambu_x1c",
+        "batchMaterialId": null,
+        "pricing": {
+          "failureRisk": {
+            "value": "4.5",
+            "scope": "batch",
+            "monetaryImpact": 3.15
+          },
+          "markupPercent": {
+            "value": "15",
+            "scope": "batch",
+            "monetaryImpact": 25.85
+          },
+          "labourRate": {
+            "value": "18",
+            "scope": "batch"
+          },
+          "additionalCostAmount": {
+            "value": "5",
+            "scope": "batch"
+          }
+        }
+      }
+    }
+  ]
+}

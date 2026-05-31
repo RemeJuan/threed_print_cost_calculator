@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -11,6 +12,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -138,6 +140,9 @@ class FakePrintersRepository implements PrintersRepository {
 
   @override
   Future<void> deletePrinter(String id) async {}
+
+  @override
+  Future<int> count() async => _printers.length;
 }
 
 class FakeMaterialsRepository implements MaterialsRepository {
@@ -172,6 +177,9 @@ class FakeMaterialsRepository implements MaterialsRepository {
 
   @override
   Future<void> deleteMaterial(String id) async {}
+
+  @override
+  Future<int> count() async => _materials.length;
 }
 
 class FakeCalculatorHelpers implements CalculatorHelpers {
@@ -229,5 +237,51 @@ class FakePaywallPresenter implements PaywallPresenter {
     lastSource = source;
     lastDefaultEntryPoint = defaultEntryPoint;
     lastLaunchCount = launchCount;
+  }
+}
+
+class FakePremiumPurchaseGateway implements PremiumPurchaseGateway {
+  FakePremiumPurchaseGateway({
+    this.currentOffering,
+    this.shouldThrowOnPurchase,
+    this.shouldThrowOnRestore,
+  });
+
+  final Offering? currentOffering;
+  final bool? shouldThrowOnPurchase;
+  final bool? shouldThrowOnRestore;
+  int getCurrentOfferingCalls = 0;
+  int getOfferingCalls = 0;
+  int purchasePackageCalls = 0;
+  int restorePurchasesCalls = 0;
+  Package? lastPurchasedPackage;
+
+  @override
+  Future<Offering?> getOffering(String offeringId) async {
+    getOfferingCalls += 1;
+    return currentOffering;
+  }
+
+  @override
+  Future<Offering?> getCurrentOffering() async {
+    getCurrentOfferingCalls += 1;
+    return currentOffering;
+  }
+
+  @override
+  Future<void> purchasePackage(Package package) async {
+    purchasePackageCalls += 1;
+    lastPurchasedPackage = package;
+    if (shouldThrowOnPurchase == true) {
+      throw Exception('Purchase failed');
+    }
+  }
+
+  @override
+  Future<void> restorePurchases() async {
+    restorePurchasesCalls += 1;
+    if (shouldThrowOnRestore == true) {
+      throw Exception('Restore failed');
+    }
   }
 }

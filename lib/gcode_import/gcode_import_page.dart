@@ -11,6 +11,7 @@ import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_f
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_header.dart';
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_summary_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
@@ -134,16 +135,24 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
   }
 
   Future<void> _pickFiles(GCodeImportController controller) async {
-    final files = await ref.read(gcodeImportFilePickerProvider).pickMany();
-    if (!mounted || files.isEmpty) return;
-    if (files.length > 1) {
-      setState(() {
-        _multiMode = true;
-        _multiFiles = files;
-      });
+    final policy = ref.read(premiumAccessPolicyProvider);
+    if (policy.batchGcodeImport().allowed) {
+      final files = await ref.read(gcodeImportFilePickerProvider).pickMany();
+      if (!mounted || files.isEmpty) return;
+      if (files.length > 1) {
+        setState(() {
+          _multiMode = true;
+          _multiFiles = files;
+        });
+        return;
+      }
+      await controller.parsePickedFile(files.single);
       return;
     }
-    await controller.parsePickedFile(files.single);
+
+    final file = await ref.read(gcodeImportFilePickerProvider).pick();
+    if (!mounted || file == null) return;
+    await controller.parsePickedFile(file);
   }
 
   String _errorMessage(AppLocalizations l10n, GCodeImportError error) {

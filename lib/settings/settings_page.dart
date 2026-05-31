@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
@@ -16,7 +17,16 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final isPremium = ref.watch(isPremiumProvider);
+    final policy = ref.watch(premiumAccessPolicyProvider);
+    final printersAsync = ref.watch(printersStreamProvider);
+    final printerCount = printersAsync.maybeWhen(
+      data: (printers) => printers.length,
+      orElse: () => null,
+    );
+    final canAddPrinter =
+        printerCount != null && policy.canCreatePrinter(printerCount).allowed;
+    final showPrinterLimitMessage =
+        printerCount != null && !policy.isPremium && !canAddPrinter;
 
     final style = Theme.of(
       context,
@@ -31,7 +41,7 @@ class SettingsPage extends ConsumerWidget {
           title: Text(l10n.generalHeader, style: style),
           child: const GeneralSettings(),
         ),
-        if (isPremium) ...[
+        if (policy.labourPricing().allowed || policy.riskPricing().allowed) ...[
           const SizedBox(height: kAppSpace16),
           SettingsSection(
             headerKey: const ValueKey<String>('settings.workCost.section'),
@@ -39,6 +49,8 @@ class SettingsPage extends ConsumerWidget {
             title: Text(l10n.workCostsLabel, style: style),
             child: const WorkCostsSettings(),
           ),
+        ],
+        if (policy.printers().allowed) ...[
           const SizedBox(height: kAppSpace16),
           SettingsSection(
             headerKey: const ValueKey<String>('settings.printers.section'),
@@ -49,20 +61,40 @@ class SettingsPage extends ConsumerWidget {
               const AddPrinter(),
               const Icon(Icons.add),
               const ValueKey<String>('settings.printers.add.button'),
+              enabled: canAddPrinter,
             ),
-            child: const Printers(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Printers(),
+                if (showPrinterLimitMessage)
+                  Padding(
+                    padding: const EdgeInsets.only(top: kAppSpace8),
+                    child: Text(l10n.printerLimitReachedMessage),
+                  ),
+              ],
+            ),
           ),
         ],
       ],
     );
   }
 
-  Widget _action(BuildContext context, Widget widget, Widget icon, Key key) {
+  Widget _action(
+    BuildContext context,
+    Widget widget,
+    Widget icon,
+    Key key, {
+    bool enabled = true,
+  }) {
     return IconButton(
       key: key,
-      onPressed: () async {
-        await showDialog<void>(context: context, builder: (_) => widget);
-      },
+      onPressed: !enabled
+          ? null
+          : () async {
+              await showDialog<void>(context: context, builder: (_) => widget);
+            },
       icon: icon,
     );
   }
