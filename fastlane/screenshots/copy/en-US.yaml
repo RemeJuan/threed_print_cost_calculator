@@ -24,9 +24,9 @@ screenshots:
 
   - asset: batch_quotes
     heading:
-      - text: "Quote"
+      - text: "Batch"
         style: accent
-      - text: " Multiple Prints"
+      - text: " Costing"
         style: primary
 
   - asset: gcode_import
@@ -38,11 +38,9 @@ screenshots:
 
   - asset: materials
     heading:
-      - line:
-          - text: "Track, Manage, and Price"
+      - text: "Manage"
         style: accent
-      - line:
-          - text: "Materials"
+      - text: " Materials"
         style: primary
 
   - asset: history_export
