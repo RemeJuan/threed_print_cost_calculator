@@ -45,10 +45,13 @@ final filteredMaterialsProvider = Provider<List<MaterialModel>>((ref) {
   final materials = _materialsOrEmpty(ref);
   final query = ref.watch(materialsSearchQueryProvider).toLowerCase().trim();
   final typeFilter = ref.watch(materialsTypeFilterProvider);
-  final stockTrackingAllowed =
-      ref.watch(premiumAccessPolicyProvider).stockTracking().allowed;
-  final stockFilter =
-      stockTrackingAllowed ? ref.watch(materialsStockFilterProvider) : null;
+  final stockTrackingAllowed = ref
+      .watch(premiumAccessPolicyProvider)
+      .stockTracking()
+      .allowed;
+  final stockFilter = stockTrackingAllowed
+      ? ref.watch(materialsStockFilterProvider)
+      : null;
 
   final result = materials.where((m) {
     if (query.isNotEmpty) {

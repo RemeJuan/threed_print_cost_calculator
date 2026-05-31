@@ -12,7 +12,9 @@ class MaterialFilters extends ConsumerWidget {
   @override
   Widget build(context, ref) {
     ref.listen(premiumAccessPolicyProvider, (prev, next) {
-      if (prev != null && prev.stockTracking().allowed && !next.stockTracking().allowed) {
+      if (prev != null &&
+          prev.stockTracking().allowed &&
+          !next.stockTracking().allowed) {
         ref.read(materialsStockFilterProvider.notifier).state = null;
       }
     });
