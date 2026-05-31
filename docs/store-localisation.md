@@ -2,6 +2,8 @@
 
 Metadata management for App Store Connect and Google Play, powered by [Fastlane](https://fastlane.tools).
 
+**Character limits, screenshot guidelines, and content rules:** `docs/app_store_metadata_rules.md`
+
 ## Overview
 
 All store metadata lives in `fastlane/metadata/` as plain text files tracked in git. No SaaS tools required.

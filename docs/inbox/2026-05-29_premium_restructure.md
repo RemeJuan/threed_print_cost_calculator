@@ -800,7 +800,7 @@ Update after implementation:
 - [ ] `docs/inbox/2026-05-29_premium_restructure.md`: promote to stable doc if stabilized.
 - [ ] `docs/decisions/`: ADR for central premium policy; ADR for secure storage rationale; ADR for downgrade/no-delete policy.
 - [ ] `CHANGELOG.md`: user-facing changes per phase.
-- [ ] App store metadata updates if free tier messaging changes.
+- [ ] App store metadata updates if free tier messaging changes (see `docs/app_store_metadata_rules.md` for limits).
 - [ ] Final: wiki-wide docs sweep so repo docs and operational docs match.
 
 ---

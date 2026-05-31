@@ -96,7 +96,7 @@ For Android release notes, treat `fastlane/metadata/android/en-US/changelogs/def
 
 ## Hard limits and store constraints
 
-Respect these limits while translating:
+Respect these limits while translating (canonical source: `docs/app_store_metadata_rules.md`):
 
 - iOS `name.txt`: 30 chars max
 - iOS `subtitle.txt`: 30 chars max
@@ -107,6 +107,8 @@ Respect these limits while translating:
 - Android changelogs should stay concise and store-safe for release notes
 
 If a direct translation is too long, rewrite it naturally to fit.
+
+See `docs/app_store_metadata_rules.md` for screenshot caption limits, localization expansion guidance, and the full metadata update checklist.
 
 ## Required workflow
 
