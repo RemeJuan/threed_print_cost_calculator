@@ -1,43 +1,60 @@
-3D Print Cost Calculator helps makers and small 3D print businesses calculate accurate print pricing using filament, electricity, labour, printer power usage, failure risk, setup fees, and markup.
+3D Print Cost Calculator helps makers and small print businesses calculate the real cost of every print before they quote, sell, or start a job.
 
-Most makers only count filament cost. Real print pricing also includes electricity, machine time, wear, failed prints, labour, and setup overhead.
+Most makers only calculate filament cost. Real print costs also include electricity, printer power usage, failed prints, labour, setup time, and business overhead.
 
-Price prints accurately and protect your margins.
+Use it to cost prints with confidence, protect your margins, and keep pricing consistent.
 
-For hobbyists, makers, and small print businesses.
+Built for hobbyists, makers, side hustles, and small print businesses.
 
-Free Features
+Free features
 
-• Filament cost calculation
-• Electricity cost per kWh
-• Printer power usage modelling
-• Material stock tracking with automatic updates
-• Fully offline and privacy-first
+• Core print costing
+• Electricity costing
+• Multi-material costing
+• Single-print G-code import
+• Up to 5 saved materials (manual management)
+• Up to 2 printer profiles
+• Up to 7 history entries
+• Individual job export
+• Manual batch costing for up to 3 items
+• Offline-first operation
 
-Premium Features
+Calculate real jobs, save core data, review recent work, and cost small batches without an account or subscription.
 
-• Client-ready pricing
-• Markup, setup fees, and rounding options
-• Currency formatting
-• G-code import for faster setup
-• Multi-material print support
-• Batch costing for multiple prints
-• Failure risk modelling
-• Labour and processing time
-• Save and review print history
-• Detailed per-job cost breakdown
-• Multiple printer profiles
-• Export individual jobs or full history (CSV)
+Premium features
+
+Premium is for higher volume work, faster workflows, and business pricing tools.
+
+Unlock:
+
+• Unlimited materials
+• Unlimited printer profiles
+• Unlimited history
+• Full and bulk export
+• Batch G-code import
+• Faster batch setup from G-code files
+• Unlimited batch costing
+• Labour pricing
+• Failure risk cost modelling
+• Markup support
+• Setup fees
+• Rounding rules
+• Detailed cost breakdowns
+• Material import
+• Filament inventory and remaining spool tracking
 • Advanced configuration
 
-Export your data for bookkeeping, pricing analysis, or client quotes.
+Why makers use it
 
-Privacy First:
+• Solve the real pricing problem, not only filament math
+• Quote more consistently across repeat jobs
+• Handle both simple jobs and more advanced business workflows
+• Keep your data on your device
+• Work without accounts, cloud lock-in, or forced sync
+
+Privacy-first
+
 No accounts
-No cloud sync
-No tracking
-All data stays on your device
-
-Built with a deterministic cost engine to give consistent, repeatable results.
-
-Used by makers and small print businesses worldwide since 2021.
+No cloud dependency
+No tracking requirement
+Your app data stays on your device
