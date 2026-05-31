@@ -1,9 +1,7 @@
-Batch-Kalkulation ist da – für Pro-Nutzer:
+Kostenlose Version erweitert.
 
-* Mehrere G-Code-Dateien in einen Batch importieren
-* Drucker und Materialien pro Element zuweisen
-* Mengen festlegen und manuelle Positionen hinzufügen
-* Batch-Gesamtsummen mit finanzieller Auswirkung prüfen
-* Abgeschlossene Angebote im Verlauf speichern
-* Durchsuchbare Auswahlen für schnellere Drucker- und Materialzuweisung nutzen
-* Importierte G-Code-Werte bei Bedarf überschreiben
+* Multimaterial-Kalkulation ist jetzt für alle Nutzer verfügbar
+* G-Code-Import für einzelne Drucke ist jetzt in Kostenlos enthalten
+* Speichern Sie in Kostenlos bis zu 5 Materialien, 2 Druckerprofile und 7 Verlaufseinträge
+* Manuelle Stapelkalkulation ist für bis zu 3 Positionen pro Stapel verfügbar
+* Premium konzentriert sich jetzt auf erweiterte Preiswerkzeuge, Stapel-Workflows, Inventarverfolgung, Exporte und unbegrenzte Nutzung

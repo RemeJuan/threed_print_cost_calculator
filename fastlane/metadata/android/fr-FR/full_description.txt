@@ -1,43 +1,60 @@
-3D Print Cost Calculator aide les makers et les petites entreprises d'impression 3D à calculer des prix précis à partir du filament, de l'électricité, de la main-d'oeuvre, de la consommation électrique de l'imprimante, du risque d'échec, des frais de configuration et de la marge.
+3D Print Cost Calculator aide les makers et les petites entreprises d'impression 3D à calculer le coût réel de chaque impression avant d'établir un devis, de vendre ou de lancer un travail.
 
-La plupart des makers ne comptent que le coût du filament. La tarification réelle inclut aussi l'électricité, le temps machine, l'usure, les impressions ratées, la main-d'oeuvre et la préparation.
+La plupart des makers ne calculent que le coût du filament. Les vrais coûts d'impression incluent aussi l'électricité, la consommation de l'imprimante, les impressions ratées, la main-d'oeuvre, le temps de préparation et les frais généraux.
 
-Tarifez vos impressions avec précision et protégez vos marges.
+Utilisez l'app pour chiffrer vos impressions avec confiance, protéger vos marges et garder une tarification cohérente.
 
-Pour les passionnés, les makers et les petites entreprises d'impression 3D.
+Conçu pour les passionnés, les makers, les activités complémentaires et les petites entreprises d'impression 3D.
 
 Fonctionnalités gratuites
 
-• Calcul du coût du filament
-• Coût de l'électricité par kWh
-• Modélisation de la consommation électrique de l'imprimante
-• Suivi des stocks de matériaux avec mises à jour automatiques
-• Entièrement hors ligne et respectueux de la vie privée
+• Calcul de base du coût d'impression
+• Calcul du coût de l'électricité
+• Calcul multi-matériaux
+• Import de G-code pour une impression unique
+• Jusqu'à 5 matériaux enregistrés (gestion manuelle)
+• Jusqu'à 2 profils d'imprimante
+• Jusqu'à 7 entrées dans l'historique
+• Export de tâches individuelles
+• Calcul manuel par lot pour jusqu'à 3 éléments
+• Fonctionnement offline-first
+
+Calculez de vrais travaux, enregistrez les données clés, revoyez les tâches récentes et gérez de petits lots sans compte ni abonnement.
 
 Fonctionnalités Premium
 
-• Tarification prête pour le client
-• Marge, frais de configuration et options d'arrondi
-• Formatage des devises
-• Import de G-code pour une configuration plus rapide
-• Prise en charge de l'impression multi-matériaux
-• Calcul par lot pour plusieurs impressions
+Premium est conçu pour plus de volume, des flux plus rapides et des outils de tarification métier.
+
+Débloquez :
+
+• Matériaux illimités
+• Profils d'imprimante illimités
+• Historique illimité
+• Export complet et export en masse
+• Import de G-code par lot
+• Configuration de lots plus rapide à partir de fichiers G-code
+• Calcul par lot illimité
+• Calcul de la main-d'oeuvre
 • Modélisation du risque d'échec
-• Coût de la main-d'oeuvre et temps de traitement
-• Sauvegarde et consultation de l'historique des impressions
-• Répartition détaillée des coûts par tâche
-• Plusieurs profils d'imprimante
-• Export de tâches individuelles ou de l'historique complet (CSV)
+• Gestion de la marge
+• Frais de configuration
+• Règles d'arrondi
+• Répartition détaillée des coûts
+• Import de matériaux
+• Inventaire du filament et suivi de la bobine restante
 • Configuration avancée
 
-Exportez vos données pour la comptabilité, l'analyse des prix ou les devis clients.
+Pourquoi les makers l'utilisent
 
-Confidentialité avant tout :
+• Résout le vrai problème de tarification, pas seulement le calcul du filament
+• Aide à établir des devis plus cohérents sur les travaux récurrents
+• Convient autant aux tâches simples qu'aux flux métier plus avancés
+• Vos données restent sur votre appareil
+• Fonctionne sans compte, sans verrouillage cloud ni synchronisation forcée
+
+Confidentialité avant tout
+
 Pas de compte
-Pas de synchronisation cloud
-Pas de suivi
-Toutes les données restent sur votre appareil
-
-Conçu avec un moteur de coûts déterministe pour des résultats cohérents et reproductibles.
-
-Utilisé par des makers et de petites entreprises d'impression 3D dans le monde entier depuis 2021.
+Pas de dépendance au cloud
+Pas de suivi obligatoire
+Les données de l'app restent sur votre appareil

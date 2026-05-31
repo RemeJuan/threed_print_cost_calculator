@@ -1,9 +1,7 @@
-O cálculo em lote chegou para usuários Pro:
+Plano gratuito ampliado.
 
-* Importe vários arquivos G-code em um único lote
-* Atribua impressoras e materiais por item
-* Defina quantidades e adicione itens manuais
-* Revise os totais do lote com impacto monetário
-* Salve orçamentos concluídos no histórico
-* Use seletores com busca para atribuir impressoras e materiais mais rápido
-* Substitua valores importados do G-code quando necessário
+* O custeio multimaterial agora está disponível para todos os usuários
+* A importação de G-code para uma única impressão agora faz parte do plano gratuito
+* Salve até 5 materiais, 2 perfis de impressora e 7 entradas no histórico no plano gratuito
+* O custeio manual em lote está disponível para até 3 itens por lote
+* O Premium agora foca em ferramentas avançadas de precificação, fluxos em lote, controle de inventário, exportações e uso ilimitado

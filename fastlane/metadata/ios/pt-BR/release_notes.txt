@@ -1,6 +1,7 @@
-* O custeio em lote agora está disponível para usuários Pro, facilitando o orçamento de várias impressões juntas
-* Importe vários arquivos G-code, atribua impressoras e materiais por item, defina quantidades e adicione linhas manuais
-* Revise os totais do lote com impacto monetário mais claro nos resumos de preço e no histórico salvo
-* Pesquise impressoras e materiais mais rápido ao atribuir itens do lote
-* Substitua valores importados do G-code quando necessário
-* Custos adicionais agora aparecem diretamente ao lado das outras linhas de preço
+Plano gratuito ampliado.
+
+• O custeio multimaterial agora está disponível para todos os usuários
+• A importação de G-code para uma única impressão agora faz parte do plano gratuito
+• Salve até 5 materiais, 2 perfis de impressora e 7 entradas no histórico no plano gratuito
+• O custeio manual em lote está disponível para até 3 itens por lote
+• O Premium agora foca em ferramentas avançadas de precificação, fluxos em lote, controle de inventário, exportações e uso ilimitado

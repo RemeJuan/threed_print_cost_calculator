@@ -1,6 +1,7 @@
-* Stapelkalkulation ist jetzt für Pro-Nutzer verfügbar und erleichtert Angebote für mehrere Drucke
-* Importieren Sie mehrere G-Code-Dateien, weisen Sie Drucker und Materialien pro Element zu, legen Sie Mengen fest und fügen Sie manuelle Positionen hinzu
-* Prüfen Sie Stapelsummen mit klarerer Preiswirkung in Preiszusammenfassungen und im gespeicherten Verlauf
-* Durchsuchen Sie Drucker- und Materialauswahlen schneller beim Zuweisen von Stapelpositionen
-* Überschreiben Sie importierte G-Code-Werte bei Bedarf
-* Zusatzkosten erscheinen jetzt direkt neben anderen Preiszeilen
+Kostenlose Version erweitert.
+
+• Multimaterial-Kalkulation ist jetzt für alle Nutzer verfügbar
+• G-Code-Import für einzelne Drucke ist jetzt in Kostenlos enthalten
+• Speichern Sie in Kostenlos bis zu 5 Materialien, 2 Druckerprofile und 7 Verlaufseinträge
+• Manuelle Stapelkalkulation ist für bis zu 3 Positionen pro Stapel verfügbar
+• Premium konzentriert sich jetzt auf erweiterte Preiswerkzeuge, Stapel-Workflows, Inventarverfolgung, Exporte und unbegrenzte Nutzung

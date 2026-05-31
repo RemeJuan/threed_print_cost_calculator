@@ -1,9 +1,7 @@
-Il calcolo batch è arrivato per gli utenti Pro:
+Piano gratuito ampliato.
 
-* Importa più file G-code in un unico batch
-* Assegna stampanti e materiali per ogni elemento
-* Imposta le quantità e aggiungi voci manuali
-* Controlla i totali del batch con il relativo impatto economico
-* Salva i preventivi completati nella cronologia
-* Usa selettori con ricerca per assegnare più velocemente stampanti e materiali
-* Sovrascrivi i valori G-code importati quando necessario
+* Il calcolo multimateriale è ora disponibile per tutti gli utenti
+* L'importazione G-code per una singola stampa è ora inclusa in Gratuito
+* Salva fino a 5 materiali, 2 profili stampante e 7 voci nella cronologia in Gratuito
+* Il calcolo manuale in batch è disponibile fino a 3 elementi per batch
+* Premium ora si concentra su strumenti avanzati di prezzo, flussi batch, monitoraggio dell'inventario, esportazioni e uso illimitato

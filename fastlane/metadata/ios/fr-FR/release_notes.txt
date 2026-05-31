@@ -1,6 +1,7 @@
-* Le calcul par lot est maintenant disponible pour les utilisateurs Pro, ce qui facilite le chiffrage de plusieurs impressions ensemble
-* Importez plusieurs fichiers G-code, attribuez imprimantes et matériaux par élément, définissez les quantités et ajoutez des lignes manuelles
-* Consultez les totaux de lot avec un impact monétaire plus clair dans les résumés de prix et l'historique enregistré
-* Recherchez plus vite imprimantes et matériaux lors de l'attribution des éléments du lot
-* Remplacez les valeurs importées du G-code lorsque nécessaire
-* Les coûts supplémentaires apparaissent maintenant directement à côté des autres lignes de prix
+Plan gratuit élargi.
+
+• Le calcul multi-matériaux est maintenant disponible pour tous les utilisateurs
+• L'import de G-code pour une impression unique est maintenant inclus dans Gratuit
+• Enregistrez jusqu'à 5 matériaux, 2 profils d'imprimante et 7 entrées d'historique avec Gratuit
+• Le calcul manuel par lot est disponible pour jusqu'à 3 éléments par lot
+• Premium se concentre désormais sur les outils de tarification avancés, les flux par lot, le suivi d'inventaire, les exports et l'utilisation illimitée

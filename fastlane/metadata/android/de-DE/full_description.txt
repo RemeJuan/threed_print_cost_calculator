@@ -1,43 +1,60 @@
-3D Print Cost Calculator hilft Makern und kleinen 3D-Druck-Unternehmen, Druckpreise präzise zu berechnen, basierend auf Filament, Strom, Arbeitszeit, Druckerleistung, Ausfallrisiko, Einrichtungsgebühren und Aufschlag.
+3D Print Cost Calculator hilft Makern und kleinen Druckbetrieben, die echten Kosten jedes Drucks zu berechnen, bevor sie ein Angebot schreiben, etwas verkaufen oder einen Auftrag starten.
 
-Die meisten Maker berücksichtigen nur die Filamentkosten. Zur realen Preisfindung gehören auch Strom, Maschinenzeit, Verschleiss, Fehldrucke, Arbeitszeit und Einrichtungsaufwand.
+Die meisten Maker berechnen nur die Filamentkosten. Zu den echten Druckkosten gehören aber auch Strom, Druckerleistung, Fehldrucke, Arbeitszeit, Einrichtungszeit und Gemeinkosten.
 
-Bepreisen Sie Drucke exakt und schützen Sie Ihre Margen.
+Nutzen Sie die App, um Drucke sicher zu kalkulieren, Ihre Marge zu schützen und Preise konsistent zu halten.
 
-Für Hobbyisten, Maker und kleine 3D-Druck-Unternehmen.
+Für Hobbyisten, Maker, Nebenerwerbe und kleine 3D-Druck-Unternehmen.
 
 Kostenlose Funktionen
 
-• Filamentkostenberechnung
-• Stromkosten pro kWh
-• Modellierung des Drucker-Stromverbrauchs
-• Materialbestandsverfolgung mit automatischen Aktualisierungen
-• Vollständig offline und datenschutzfreundlich
+• Grundlegende Druckkostenberechnung
+• Stromkostenberechnung
+• Multimaterial-Kalkulation
+• G-Code-Import für einzelne Drucke
+• Bis zu 5 gespeicherte Materialien (manuelle Verwaltung)
+• Bis zu 2 Druckerprofile
+• Bis zu 7 Verlaufseinträge
+• Export einzelner Aufträge
+• Manuelle Stapelkalkulation für bis zu 3 Positionen
+• Offline-first-Betrieb
+
+Kalkulieren Sie echte Aufträge, speichern Sie Kerndaten, prüfen Sie letzte Arbeiten und berechnen Sie kleine Stapel ohne Konto oder Abo.
 
 Premium-Funktionen
 
-• Kundenfertige Preisgestaltung
-• Aufschlag, Einrichtungsgebühren und Rundungsoptionen
-• Währungsformatierung
-• G-Code-Import für schnellere Einrichtung
-• Unterstützung für Multimaterial-Drucke
-• Stapelkalkulation für mehrere Drucke
-• Modellierung des Ausfallrisikos
-• Arbeitskosten und Bearbeitungszeit
-• Druckverlauf speichern und prüfen
-• Detaillierte Kostenaufschlüsselung pro Auftrag
-• Mehrere Druckerprofile
-• Einzelne Aufträge oder den gesamten Verlauf exportieren (CSV)
+Premium ist für höheres Volumen, schnellere Abläufe und Werkzeuge für Geschäftspreise gedacht.
+
+Freischalten:
+
+• Unbegrenzte Materialien
+• Unbegrenzte Druckerprofile
+• Unbegrenzter Verlauf
+• Vollständiger Export und Bulk-Export
+• Stapelweiser G-Code-Import
+• Schnellere Stapelerstellung aus G-Code-Dateien
+• Unbegrenzte Stapelkalkulation
+• Arbeitskostenberechnung
+• Modellierung des Fehldruckrisikos
+• Aufschlagsunterstützung
+• Einrichtungsgebühren
+• Rundungsregeln
+• Detaillierte Kostenaufschlüsselungen
+• Materialimport
+• Filamentinventar und Restspulenverfolgung
 • Erweiterte Konfiguration
 
-Exportieren Sie Ihre Daten für Buchhaltung, Preisanalysen oder Kundenangebote.
+Warum Maker die App nutzen
 
-Datenschutz zuerst:
+• Sie löst das echte Preisproblem, nicht nur Filament-Rechenaufgaben
+• Sie sorgt für konsistentere Angebote bei Wiederholaufträgen
+• Sie deckt einfache Aufträge ebenso ab wie anspruchsvollere Geschäftsabläufe
+• Ihre Daten bleiben auf Ihrem Gerät
+• Sie arbeiten ohne Konto, Cloud-Zwang oder erzwungene Synchronisierung
+
+Datenschutz zuerst
+
 Keine Konten
-Keine Cloud-Synchronisierung
-Kein Tracking
-Alle Daten bleiben auf Ihrem Gerät
-
-Mit einer deterministischen Kosten-Engine für konsistente, wiederholbare Ergebnisse.
-
-Seit 2021 weltweit im Einsatz bei Makern und kleinen 3D-Druck-Unternehmen.
+Keine Cloud-Abhängigkeit
+Kein Tracking erforderlich
+Ihre App-Daten bleiben auf Ihrem Gerät
