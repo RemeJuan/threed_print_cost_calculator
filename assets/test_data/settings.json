@@ -2,6 +2,7 @@
   "generalSettings": {
     "electricityCost": "0.18",
     "wattage": "120",
+    "averageWattage": "",
     "activePrinter": "prusa_mk4",
     "selectedMaterial": "pla_white",
     "wearAndTear": "1.25",

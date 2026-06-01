@@ -23,6 +23,7 @@ SeedDataBundle _bundle() {
     generalSettings: {
       'electricityCost': '0.18',
       'wattage': '120',
+      'averageWattage': '',
       'activePrinter': 'prusa_mk4',
       'selectedMaterial': 'pla_white',
       'wearAndTear': '1.25',
@@ -40,18 +41,21 @@ SeedDataBundle _bundle() {
         'name': 'Prusa MK4',
         'bedSize': '250 x 210 x 220',
         'wattage': '120',
+        'averageWattage': '80',
       },
       {
         'id': 'bambu_a1_mini',
         'name': 'Bambu A1 Mini',
         'bedSize': '180 x 180 x 180',
         'wattage': '60',
+        'averageWattage': '',
       },
       {
         'id': 'voron_v0',
         'name': 'Voron V0.2',
         'bedSize': '120 x 120 x 120',
         'wattage': '80',
+        'averageWattage': '60',
       },
     ],
     materials: [
