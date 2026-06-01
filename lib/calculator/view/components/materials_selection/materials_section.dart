@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/calculator/view/components/material
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_list.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_providers.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/materials_selection/materials_section_helpers.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 
 class MaterialsSection extends HookConsumerWidget {
   const MaterialsSection({super.key});
@@ -80,68 +81,65 @@ class MaterialsSection extends HookConsumerWidget {
         ..submitDebounced();
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          MaterialsHeader(
-            count: state.materialUsages.length,
-            totalWeight: totalWeight,
-            expanded: expanded.value,
-            onAdd: onAddPressed,
-            onToggle: () => expanded.value = !expanded.value,
-          ),
-          if (!expanded.value) ...[
-            const SizedBox(height: 8),
-            Divider(
-              height: 1,
-              thickness: 1,
-              color: Theme.of(context).dividerColor.withAlpha(120),
-            ),
-          ],
-          AnimatedCrossFade(
-            firstChild: const SizedBox.shrink(),
-            secondChild: Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: MaterialsList(
-                      usages: state.materialUsages,
-                      materialsById: materialsById,
-                      onPick: onRowPick,
-                      onWeightChanged: onRowWeightChanged,
-                      onRemove: onRowRemove,
-                      onSpoolWeightChanged: onRowSpoolWeightChanged,
-                      onSpoolCostChanged: onRowSpoolCostChanged,
-                      currencySymbol: currencySettings.currencySymbol,
-                      currencyPosition: currencySettings.currencyPosition,
-                      currencySpacing: currencySettings.currencySpacing,
-                    ),
-                  ),
-                  if (expanded.value) ...[
-                    const SizedBox(height: 8),
-                    Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: Theme.of(context).dividerColor.withAlpha(120),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-            crossFadeState: expanded.value
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-            duration: const Duration(milliseconds: 200),
-            firstCurve: Curves.easeInOut,
-            secondCurve: Curves.easeInOut,
-            sizeCurve: Curves.easeInOut,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        MaterialsHeader(
+          count: state.materialUsages.length,
+          totalWeight: totalWeight,
+          expanded: expanded.value,
+          onAdd: onAddPressed,
+          onToggle: () => expanded.value = !expanded.value,
+        ),
+        if (!expanded.value) ...[
+            const SizedBox(height: kAppSpace8),
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: Theme.of(context).dividerColor.withAlpha(120),
           ),
         ],
-      ),
+        AnimatedCrossFade(
+          firstChild: const SizedBox.shrink(),
+          secondChild: Padding(
+            padding: const EdgeInsets.only(bottom: kAppSpace4),
+            child: Column(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(left: kAppSpace12),
+                  child: MaterialsList(
+                    usages: state.materialUsages,
+                    materialsById: materialsById,
+                    onPick: onRowPick,
+                    onWeightChanged: onRowWeightChanged,
+                    onRemove: onRowRemove,
+                    onSpoolWeightChanged: onRowSpoolWeightChanged,
+                    onSpoolCostChanged: onRowSpoolCostChanged,
+                    currencySymbol: currencySettings.currencySymbol,
+                    currencyPosition: currencySettings.currencyPosition,
+                    currencySpacing: currencySettings.currencySpacing,
+                  ),
+                ),
+                if (expanded.value) ...[
+                  const SizedBox(height: kAppSpace8),
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: Theme.of(context).dividerColor.withAlpha(120),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          crossFadeState: expanded.value
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+          duration: const Duration(milliseconds: 200),
+          firstCurve: Curves.easeInOut,
+          secondCurve: Curves.easeInOut,
+          sizeCurve: Curves.easeInOut,
+        ),
+      ],
     );
   }
 }
