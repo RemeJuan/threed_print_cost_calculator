@@ -241,7 +241,7 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
   ];
 
   @override
-  FeatureAccess materialsLibrary() => _premiumFeature(PremiumFeature.materials);
+  FeatureAccess materialsLibrary() => _freeFeature(PremiumFeature.materials);
 
   @override
   FeatureAccess printers() => _freeFeature(PremiumFeature.printers);

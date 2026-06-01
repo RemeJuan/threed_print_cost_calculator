@@ -17,6 +17,7 @@ void main() {
 
     test('allows free features', () {
       expect(policy.multiMaterial().allowed, isTrue);
+      expect(policy.materialsLibrary().allowed, isTrue);
       expect(policy.printers().allowed, isTrue);
       expect(policy.historyView().allowed, isTrue);
       expect(policy.gcodeImport().allowed, isTrue);
@@ -25,7 +26,6 @@ void main() {
     });
 
     test('keeps premium-only features gated', () {
-      expect(policy.materialsLibrary().allowed, isFalse);
       expect(policy.csvMaterialImport().allowed, isFalse);
       expect(policy.batchExport().allowed, isFalse);
       expect(policy.bulkHistoryExport().allowed, isFalse);
