@@ -67,7 +67,7 @@ class CalculatorPage extends HookConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (policy.printersList().allowed) const PrinterSelect(),
+                  if (policy.printers().allowed) const PrinterSelect(),
                   const MaterialsSection(),
                   const SizedBox(height: kAppSpace8),
                   const TimeSection(),

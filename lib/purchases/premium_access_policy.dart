@@ -98,7 +98,6 @@ abstract class PremiumAccessPolicy {
 
   FeatureAccess materialsLibrary();
   FeatureAccess printers();
-  FeatureAccess printersList();
   FeatureAccess historyView();
   FeatureAccess singleJobExport();
   FeatureAccess bulkHistoryExport();
@@ -246,9 +245,6 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
 
   @override
   FeatureAccess printers() => _freeFeature(PremiumFeature.printers);
-
-  @override
-  FeatureAccess printersList() => _premiumFeature(PremiumFeature.printers);
 
   @override
   FeatureAccess historyView() => _freeFeature(PremiumFeature.history);

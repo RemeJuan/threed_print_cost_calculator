@@ -93,7 +93,7 @@ abstract class PremiumAccessPolicy {
 
   FeatureAccess materialsLibrary();
   FeatureAccess printers();
-  FeatureAccess printersList();
+
   FeatureAccess historyView();
   FeatureAccess historyExport();
   FeatureAccess gcodeImport();
@@ -507,7 +507,7 @@ Deliberately change product behavior.
   - [x] `batchItemLimit` = 3 for free, null for premium
   - [x] `materialsLibrary()` = `allowed: isPremium`
   - [x] `multiMaterial()` = `allowed: true` (free; saved-material cap is the natural constraint)
-  - [ ] `printers()` = `allowed: isPremium` *(intentionally changed to free-allowed for Settings visibility; calculator list still gated via `printersList()`)*
+  - [x] `printers()` = `allowed: true` (free; single gate controls both settings and calculator printer selection. `printersList()` was removed — no separate calculator-list gate exists)
   - [x] `historyExport()` split into `singleJobExport()` (free) and `bulkHistoryExport()` (premium)
   - [x] `gcodeImport()` = `allowed: true` for single-print import
   - [x] `batchGcodeImport()` = `allowed: isPremium`
@@ -524,7 +524,7 @@ Deliberately change product behavior.
 #### 3.2 Free calculator experience
 
 - [x] Verify free user sees only manual single-material inputs (`MaterialsSectionFree`), not `MaterialsSectionPremium`.
-- [x] Verify free user sees no printer selection.
+- [x] Verify free user sees printer selection when printers exist (capped at 2 via quota).
 - [x] Verify free user sees no labour/risk/advanced pricing sections.
 - [x] Verify free user sees base calculator results (electricity, filament, total) but not premium result rows.
 - [x] Verify free user sees batch costing entry button (free feature, capped at 3 items).
