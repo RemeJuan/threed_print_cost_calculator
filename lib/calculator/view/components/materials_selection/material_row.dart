@@ -3,220 +3,137 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
-import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
-import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
-import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
-import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
+import 'saved_material_row.dart';
+import 'unsaved_material_row.dart';
 
-/// Single material row used inside the materials list.
-///
-/// This widget is intentionally dumb: it accepts callbacks for actions and
-/// does not own any business logic.
-class MaterialRow extends StatefulWidget {
+class MaterialRow extends StatelessWidget {
   const MaterialRow({
     required this.index,
     required this.usage,
     required this.material,
+    this.isUnsaved = false,
     required this.onPick,
     required this.onWeightChanged,
     required this.onRemove,
+    this.onSpoolWeightChanged,
+    this.onSpoolCostChanged,
+    this.currencySymbol = '',
+    this.currencyPosition = 'before',
+    this.currencySpacing = false,
     super.key,
   });
 
   final int index;
   final MaterialUsageInput usage;
   final MaterialModel? material;
+  final bool isUnsaved;
   final VoidCallback onPick;
   final ValueChanged<int> onWeightChanged;
   final VoidCallback onRemove;
-
-  @override
-  State<MaterialRow> createState() => _MaterialRowState();
-}
-
-class _MaterialRowState extends State<MaterialRow> {
-  late final TextEditingController _weightController;
-  late final FocusNode _weightFocusNode;
-
-  String get _weightText =>
-      widget.usage.weightGrams == 0 ? '' : widget.usage.weightGrams.toString();
-
-  @override
-  void initState() {
-    super.initState();
-    _weightController = TextEditingController(text: _weightText);
-    _weightFocusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _weightController.dispose();
-    _weightFocusNode.dispose();
-    super.dispose();
-  }
+  final ValueChanged<num>? onSpoolWeightChanged;
+  final ValueChanged<num>? onSpoolCostChanged;
+  final String currencySymbol;
+  final String currencyPosition;
+  final bool currencySpacing;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final colorString = widget.material?.color ?? '';
-    final remainingWeight = widget.material?.remainingWeight ?? 0;
-    final id = widget.usage.materialId.trim();
-    final rowKey = id.isNotEmpty ? id : '__row_${widget.index}';
+    final id = usage.materialId.trim();
+    final rowKey = id.isNotEmpty ? id : '__row_$index';
+    final isDeletable = id.isNotEmpty;
 
-    final isMaterialUnassigned =
-        widget.usage.materialName.isEmpty ||
-        widget.usage.materialName == kUnassignedLabel;
-
-    Widget rowContent = Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: InkWell(
-            key: ValueKey<String>(
-              'calculator.materials.item.${widget.index}.pick.button',
-            ),
-            onTap: widget.onPick,
-            child: Row(
-              children: [
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        key: ValueKey<String>(
-                          'calculator.materials.item.${widget.index}.name',
-                        ),
-                        isMaterialUnassigned
-                            ? l10n.selectMaterialHint
-                            : widget.usage.materialName,
-                        style: isMaterialUnassigned
-                            ? Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).hintColor,
-                              )
-                            : Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      if (widget.material?.autoDeductEnabled == true)
-                        Text(
-                          key: ValueKey<String>(
-                            'calculator.materials.item.${widget.index}.remaining',
-                          ),
-                          '${l10n.remainingLabel} ${formatWeight(remainingWeight)}${l10n.gramsSuffix}',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                    ],
-                  ),
-                ),
-                if (colorString.isNotEmpty) ...[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Text(
-                      '($colorString)',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          flex: 2,
-          child: FocusSafeTextField(
-            key: ValueKey<String>(
-              'calculator.materials.item.${widget.index}.weight.input',
-            ),
-            controller: _weightController,
-            focusNode: _weightFocusNode,
-            externalText: _weightText,
-            keyboardType: TextInputType.number,
-            inputNormalizer: (value) =>
-                normalizeLeadingZeroNumericInput(value, allowDecimal: false),
-            decoration: InputDecoration(suffixText: l10n.gramsSuffix),
-            onChanged: (value) {
-              final parsedVal = parseLocalizedInt(value);
-              widget.onWeightChanged(parsedVal);
-            },
-          ),
-        ),
-      ],
-    );
+    final rowContent = isUnsaved
+        ? UnsavedMaterialRow(
+            index: index,
+            usage: usage,
+            onWeightChanged: onWeightChanged,
+            onSpoolWeightChanged: onSpoolWeightChanged ?? (_) {},
+            onSpoolCostChanged: onSpoolCostChanged ?? (_) {},
+            currencySymbol: currencySymbol,
+            currencyPosition: currencyPosition,
+            currencySpacing: currencySpacing,
+          )
+        : SavedMaterialRow(
+            index: index,
+            usage: usage,
+            material: material,
+            onPick: onPick,
+            onWeightChanged: onWeightChanged,
+          );
 
     final keyedRow = KeyedSubtree(key: ValueKey(rowKey), child: rowContent);
 
-    final idTrim = widget.usage.materialId.trim();
-    // Deletable when a material id is present. Allow empty lists and do not
-    // special-case a literal 'none'.
-    final isDeletable = idTrim.isNotEmpty;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
+      child: isDeletable ? _buildSwipableRow(context, keyedRow, l10n) : keyedRow,
+    );
+  }
 
-    Widget rowWithSwipe(Widget child) {
-      return Slidable(
-        key: ValueKey('material_slidable_${widget.index}'),
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          extentRatio: 0.3,
-          children: [
-            const SizedBox(width: kAppSpace12),
-            CustomSlidableAction(
-              flex: 1,
-              onPressed: (ctx) async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder: (dialogContext) => AlertDialog(
-                    title: Text(l10n.deleteDialogTitle),
-                    content: Text(l10n.deleteDialogContent),
-                    actions: [
-                      AppTertiaryButton(
-                        onPressed: () => Navigator.pop(dialogContext, false),
-                        label: l10n.cancelButton,
-                      ),
-                      AppTertiaryButton(
-                        onPressed: () => Navigator.pop(dialogContext, true),
-                        label: l10n.deleteButton,
-                      ),
-                    ],
-                  ),
-                );
-                if (confirm != true) return;
-                widget.onRemove();
-              },
-              backgroundColor: STATUS_ERROR,
-              foregroundColor: TEXT_INVERSE,
-              padding: EdgeInsets.zero,
-              borderRadius: BorderRadius.circular(kAppSurfaceRadius),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.delete, size: 20, color: TEXT_INVERSE),
-                    const SizedBox(height: kAppSpace4),
-                    Text(
-                      l10n.deleteButton,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: TEXT_INVERSE,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+  Widget _buildSwipableRow(
+    BuildContext context,
+    Widget child,
+    AppLocalizations l10n,
+  ) {
+    return Slidable(
+      key: ValueKey('material_slidable_$index'),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        extentRatio: 0.3,
+        children: [
+          const SizedBox(width: kAppSpace12),
+          CustomSlidableAction(
+            flex: 1,
+            onPressed: (ctx) async {
+              final confirm = await showDialog<bool>(
+                context: context,
+                builder: (dialogContext) => AlertDialog(
+                  title: Text(l10n.deleteDialogTitle),
+                  content: Text(l10n.deleteDialogContent),
+                  actions: [
+                    AppTertiaryButton(
+                      onPressed: () => Navigator.pop(dialogContext, false),
+                      label: l10n.cancelButton,
+                    ),
+                    AppTertiaryButton(
+                      onPressed: () => Navigator.pop(dialogContext, true),
+                      label: l10n.deleteButton,
                     ),
                   ],
                 ),
+              );
+              if (confirm != true) return;
+              onRemove();
+            },
+            backgroundColor: STATUS_ERROR,
+            foregroundColor: TEXT_INVERSE,
+            padding: EdgeInsets.zero,
+            borderRadius: BorderRadius.circular(kAppSurfaceRadius),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.delete, size: 20, color: TEXT_INVERSE),
+                  const SizedBox(height: kAppSpace4),
+                  Text(
+                    l10n.deleteButton,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: TEXT_INVERSE,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-        child: child,
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
-      child: isDeletable ? rowWithSwipe(keyedRow) : keyedRow,
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }
