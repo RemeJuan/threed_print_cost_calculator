@@ -371,9 +371,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(
-            isPremium: false,
-          ),
+          DefaultPremiumAccessPolicy(isPremium: false),
         ),
       ],
     );

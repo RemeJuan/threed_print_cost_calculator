@@ -53,7 +53,8 @@ class _SavedMaterialRowState extends State<SavedMaterialRow> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isUnassigned = widget.usage.materialName.isEmpty ||
+    final isUnassigned =
+        widget.usage.materialName.isEmpty ||
         widget.usage.materialName == kUnassignedLabel;
 
     return Row(
@@ -80,10 +81,9 @@ class _SavedMaterialRowState extends State<SavedMaterialRow> {
                             ? l10n.selectMaterialHint
                             : widget.usage.materialName,
                         style: isUnassigned
-                            ? Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: Theme.of(context).hintColor)
+                            ? Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context).hintColor,
+                              )
                             : Theme.of(context).textTheme.bodyMedium,
                       ),
                       if (widget.material?.autoDeductEnabled == true)

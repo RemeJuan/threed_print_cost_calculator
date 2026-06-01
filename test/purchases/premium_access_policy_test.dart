@@ -3,9 +3,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dar
 
 void main() {
   group('DefaultPremiumAccessPolicy free tier', () {
-    final policy = DefaultPremiumAccessPolicy(
-      isPremium: false,
-    );
+    final policy = DefaultPremiumAccessPolicy(isPremium: false);
 
     test('uses free-tier limits', () {
       expect(policy.materialLimit, 5);
@@ -132,9 +130,7 @@ void main() {
   });
 
   group('DefaultPremiumAccessPolicy premium tier', () {
-    final policy = DefaultPremiumAccessPolicy(
-      isPremium: true,
-    );
+    final policy = DefaultPremiumAccessPolicy(isPremium: true);
 
     test('has no limits', () {
       expect(policy.materialLimit, isNull);

@@ -5,7 +5,5 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 final premiumAccessPolicyProvider = Provider<PremiumAccessPolicy>((ref) {
   final isPremium = ref.watch(isPremiumProvider);
 
-  return DefaultPremiumAccessPolicy(
-    isPremium: isPremium,
-  );
+  return DefaultPremiumAccessPolicy(isPremium: isPremium);
 });

@@ -107,9 +107,7 @@ void main() {
       final db = await tester.pumpApp(const MaterialsPage(), [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(
-            isPremium: false,
-          ),
+          DefaultPremiumAccessPolicy(isPremium: false),
         ),
       ]);
       addTearDown(db.close);
@@ -187,9 +185,7 @@ void main() {
       final db = await tester.pumpApp(const MaterialsPage(), [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(
-            isPremium: false,
-          ),
+          DefaultPremiumAccessPolicy(isPremium: false),
         ),
       ]);
       addTearDown(db.close);

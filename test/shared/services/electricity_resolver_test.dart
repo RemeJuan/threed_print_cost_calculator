@@ -151,7 +151,12 @@ void main() {
     const resolver = ElectricityResolver();
 
     test('uses avg when set', () {
-      final printer = _printer(id: 'p1', name: 'P1', wattage: '500', avg: '280');
+      final printer = _printer(
+        id: 'p1',
+        name: 'P1',
+        wattage: '500',
+        avg: '280',
+      );
       final result = resolver.resolveFromPrinter(printer);
       expect(result.wattage, 280);
       expect(result.source, WattageSource.average);

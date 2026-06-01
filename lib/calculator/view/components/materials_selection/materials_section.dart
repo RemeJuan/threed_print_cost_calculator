@@ -92,7 +92,7 @@ class MaterialsSection extends HookConsumerWidget {
           onToggle: () => expanded.value = !expanded.value,
         ),
         if (!expanded.value) ...[
-            const SizedBox(height: kAppSpace8),
+          const SizedBox(height: kAppSpace8),
           Divider(
             height: 1,
             thickness: 1,
@@ -106,7 +106,7 @@ class MaterialsSection extends HookConsumerWidget {
             child: Column(
               children: [
                 Padding(
-                    padding: const EdgeInsets.only(left: kAppSpace12),
+                  padding: const EdgeInsets.only(left: kAppSpace12),
                   child: MaterialsList(
                     usages: state.materialUsages,
                     materialsById: materialsById,

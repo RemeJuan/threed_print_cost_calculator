@@ -73,9 +73,9 @@ class SettingsPage extends ConsumerWidget {
                     padding: const EdgeInsets.only(top: kAppSpace8),
                     child: Text(
                       l10n.printerLimitReachedMessage,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: TEXT_TERTIARY,
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
                     ),
                   ),
               ],

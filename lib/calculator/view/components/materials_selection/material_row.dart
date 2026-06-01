@@ -69,7 +69,9 @@ class MaterialRow extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
-      child: isDeletable ? _buildSwipableRow(context, keyedRow, l10n) : keyedRow,
+      child: isDeletable
+          ? _buildSwipableRow(context, keyedRow, l10n)
+          : keyedRow,
     );
   }
 

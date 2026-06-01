@@ -25,7 +25,8 @@ Future<String?> showMaterialPicker(
   }
 
   final hasUnsaved = state.materialUsages.any((u) => u.isUnsaved);
-  final isEditingUnsaved = editingIndex != null &&
+  final isEditingUnsaved =
+      editingIndex != null &&
       editingIndex >= 0 &&
       editingIndex < state.materialUsages.length &&
       state.materialUsages[editingIndex].isUnsaved;
@@ -71,53 +72,58 @@ Future<String?> showMaterialPicker(
             Navigator.of(context).pop(material.id);
           },
           excludedIds: selectedIds,
-          onUnsavedSelected: shouldShowUnsaved ? () {
-            final nav = Navigator.of(context);
-            final id =
-                '${MaterialUsageInput.unsavedMaterialIdPrefix}${DateTime.now().microsecondsSinceEpoch}';
-            final existingWeight = editingIndex != null &&
-                    editingIndex >= 0 &&
-                    editingIndex < state.materialUsages.length
-                ? state.materialUsages[editingIndex].weightGrams
-                : 0;
+          onUnsavedSelected: shouldShowUnsaved
+              ? () {
+                  final nav = Navigator.of(context);
+                  final id =
+                      '${MaterialUsageInput.unsavedMaterialIdPrefix}${DateTime.now().microsecondsSinceEpoch}';
+                  final existingWeight =
+                      editingIndex != null &&
+                          editingIndex >= 0 &&
+                          editingIndex < state.materialUsages.length
+                      ? state.materialUsages[editingIndex].weightGrams
+                      : 0;
 
-            final existingSpoolWeight = editingIndex != null &&
-                    editingIndex >= 0 &&
-                    editingIndex < state.materialUsages.length
-                ? state.materialUsages[editingIndex].unsavedSpoolWeight
-                : 0;
+                  final existingSpoolWeight =
+                      editingIndex != null &&
+                          editingIndex >= 0 &&
+                          editingIndex < state.materialUsages.length
+                      ? state.materialUsages[editingIndex].unsavedSpoolWeight
+                      : 0;
 
-            final existingSpoolCost = editingIndex != null &&
-                    editingIndex >= 0 &&
-                    editingIndex < state.materialUsages.length
-                ? state.materialUsages[editingIndex].unsavedSpoolCost
-                : 0;
+                  final existingSpoolCost =
+                      editingIndex != null &&
+                          editingIndex >= 0 &&
+                          editingIndex < state.materialUsages.length
+                      ? state.materialUsages[editingIndex].unsavedSpoolCost
+                      : 0;
 
-            final existingCostPerKg = existingSpoolWeight > 0
-                ? (existingSpoolCost / existingSpoolWeight) * 1000
-                : 0;
+                  final existingCostPerKg = existingSpoolWeight > 0
+                      ? (existingSpoolCost / existingSpoolWeight) * 1000
+                      : 0;
 
-            final usage = MaterialUsageInput(
-              materialId: id,
-              materialName: '',
-              costPerKg: existingCostPerKg,
-              weightGrams: existingWeight,
-              unsavedSpoolWeight: existingSpoolWeight,
-              unsavedSpoolCost: existingSpoolCost,
-              isUnsaved: true,
-            );
+                  final usage = MaterialUsageInput(
+                    materialId: id,
+                    materialName: '',
+                    costPerKg: existingCostPerKg,
+                    weightGrams: existingWeight,
+                    unsavedSpoolWeight: existingSpoolWeight,
+                    unsavedSpoolCost: existingSpoolCost,
+                    isUnsaved: true,
+                  );
 
-            final notifier = ref.read(calculatorProvider.notifier);
-            if (editingIndex != null &&
-                editingIndex >= 0 &&
-                editingIndex < state.materialUsages.length) {
-              notifier.updateMaterialUsage(editingIndex, usage);
-            } else {
-              notifier.addMaterialUsage(usage);
-            }
-            notifier.submit();
-            nav.pop(usage.materialId);
-          } : null,
+                  final notifier = ref.read(calculatorProvider.notifier);
+                  if (editingIndex != null &&
+                      editingIndex >= 0 &&
+                      editingIndex < state.materialUsages.length) {
+                    notifier.updateMaterialUsage(editingIndex, usage);
+                  } else {
+                    notifier.addMaterialUsage(usage);
+                  }
+                  notifier.submit();
+                  nav.pop(usage.materialId);
+                }
+              : null,
         ),
       );
     },

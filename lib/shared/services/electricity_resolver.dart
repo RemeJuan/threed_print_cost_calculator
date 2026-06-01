@@ -73,16 +73,10 @@ class ElectricityResolver {
   WattageResolution _resolveFromSettings(GeneralSettingsModel settings) {
     final avg = tryParseLocalizedNum(settings.averageWattage);
     if (avg != null) {
-      return WattageResolution(
-        wattage: avg,
-        source: WattageSource.average,
-      );
+      return WattageResolution(wattage: avg, source: WattageSource.average);
     }
 
     final rated = tryParseLocalizedNum(settings.wattage);
-    return WattageResolution(
-      wattage: rated ?? 0,
-      source: WattageSource.rated,
-    );
+    return WattageResolution(wattage: rated ?? 0, source: WattageSource.rated);
   }
 }

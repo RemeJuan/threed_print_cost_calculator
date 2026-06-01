@@ -481,9 +481,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(db),
           premiumAccessPolicyProvider.overrideWithValue(
-            DefaultPremiumAccessPolicy(
-              isPremium: false,
-            ),
+            DefaultPremiumAccessPolicy(isPremium: false),
           ),
         ],
       );

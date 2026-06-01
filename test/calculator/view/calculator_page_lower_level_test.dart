@@ -54,7 +54,9 @@ void main() {
     ]);
   }
 
-  testWidgets('free users see printer picker when printers exist', (tester) async {
+  testWidgets('free users see printer picker when printers exist', (
+    tester,
+  ) async {
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),

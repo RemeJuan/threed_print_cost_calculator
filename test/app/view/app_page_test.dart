@@ -50,9 +50,7 @@ void main() {
   });
 
   testWidgets('shows free nav with history', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -216,9 +214,7 @@ void main() {
   testWidgets('premium changes update nav items from gateway updates', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -257,9 +253,7 @@ void main() {
   testWidgets('opening materials tab logs analytics once per open', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(premiumUser());
 
@@ -303,9 +297,7 @@ void main() {
   testWidgets('premium app bar icons match the source of truth', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(premiumUser());
 
@@ -340,9 +332,7 @@ void main() {
   });
 
   testWidgets('free app bar icons match the source of truth', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(freeUser());
 
@@ -365,9 +355,7 @@ void main() {
   testWidgets('selected index stays stable across entitlement changes', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
@@ -410,9 +398,7 @@ void main() {
   testWidgets('swiping between pages updates bottom navigation selection', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
@@ -539,9 +525,7 @@ void main() {
   testWidgets('re-enabling history promo keeps settings selected', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -629,9 +613,7 @@ void main() {
   testWidgets('help support page still exposes hidden tools tap target', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),

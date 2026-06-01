@@ -164,17 +164,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       }
 
       final materialId = result.selectedMaterialId;
-      await settingsService.update(
-        (current) {
-          var updated = current.copyWith(
-            activePrinter: result.activePrinterId,
-          );
-          if (materialId != null && materialId.isNotEmpty) {
-            updated = updated.copyWith(selectedMaterial: materialId);
-          }
-          return updated;
-        },
-      );
+      await settingsService.update((current) {
+        var updated = current.copyWith(activePrinter: result.activePrinterId);
+        if (materialId != null && materialId.isNotEmpty) {
+          updated = updated.copyWith(selectedMaterial: materialId);
+        }
+        return updated;
+      });
 
       state = result.state;
       return true;
@@ -212,12 +208,16 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     WattageResolution? resolution;
     if (printer != null) {
-      resolution = ref.read(electricityResolverProvider).resolveFromPrinter(printer);
+      resolution = ref
+          .read(electricityResolverProvider)
+          .resolveFromPrinter(printer);
     }
 
     state = state.copyWith(
       activePrinterId: printerId,
-      watt: NumberInput.dirty(value: resolution?.wattage ?? (state.watt.value ?? 0)),
+      watt: NumberInput.dirty(
+        value: resolution?.wattage ?? (state.watt.value ?? 0),
+      ),
       wattageSource: resolution?.source ?? WattageSource.rated,
     );
     submit();

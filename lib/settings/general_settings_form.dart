@@ -245,9 +245,9 @@ class GeneralSettings extends HookConsumerWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               l10n.wattageFaqHint,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: TEXT_TERTIARY,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
             ),
           ),
         ),

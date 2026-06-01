@@ -18,8 +18,7 @@ class _NoopLogSink extends AppLogSink {
 }
 
 class _QuotaLimitedMaterialsPolicy extends DefaultPremiumAccessPolicy {
-  _QuotaLimitedMaterialsPolicy()
-    : super(isPremium: false);
+  _QuotaLimitedMaterialsPolicy() : super(isPremium: false);
 
   @override
   int? get materialLimit => 5;

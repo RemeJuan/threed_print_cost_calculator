@@ -82,7 +82,6 @@ void main() {
   Future<void> pumpResults(
     WidgetTester tester, {
     required bool isPremium,
-    required bool shouldShowProPromotion,
     CalculationResult results = results,
     PricingResult pricingResult = pricing,
     num additionalCostAmount = 0,
@@ -96,9 +95,7 @@ void main() {
         .pumpApp(CalculatorResults(results: results, pricing: pricingResult), [
           calculatorProvider.overrideWith(() => calculatorNotifier),
           premiumAccessPolicyProvider.overrideWithValue(
-            DefaultPremiumAccessPolicy(
-              isPremium: isPremium,
-            ),
+            DefaultPremiumAccessPolicy(isPremium: isPremium),
           ),
         ]);
     addTearDown(() => db.close());
@@ -122,11 +119,7 @@ void main() {
       ];
 
       for (final c in matrix) {
-        await pumpResults(
-          tester,
-          isPremium: c.isPremium,
-          shouldShowProPromotion: c.shouldShow,
-        );
+        await pumpResults(tester, isPremium: c.isPremium);
 
         expect(
           find.byKey(
@@ -152,7 +145,7 @@ void main() {
     testWidgets('free user with promos enabled sees locked premium rows', (
       tester,
     ) async {
-      await pumpResults(tester, isPremium: false, shouldShowProPromotion: true);
+      await pumpResults(tester, isPremium: false);
 
       expect(
         find.byKey(
@@ -180,14 +173,8 @@ void main() {
       );
     });
 
-    testWidgets('free user sees locked rows', (
-      tester,
-    ) async {
-      await pumpResults(
-        tester,
-        isPremium: false,
-        shouldShowProPromotion: false,
-      );
+    testWidgets('free user sees locked rows', (tester) async {
+      await pumpResults(tester, isPremium: false);
 
       expect(
         find.byKey(
@@ -210,11 +197,7 @@ void main() {
     testWidgets(
       'premium user does not see locked promo rows even when promos enabled',
       (tester) async {
-        await pumpResults(
-          tester,
-          isPremium: true,
-          shouldShowProPromotion: true,
-        );
+        await pumpResults(tester, isPremium: true);
 
         expect(
           find.byKey(
@@ -252,9 +235,7 @@ void main() {
         CalculatorResults(results: labourOnlyResults, pricing: pricing),
         [
           premiumAccessPolicyProvider.overrideWithValue(
-            DefaultPremiumAccessPolicy(
-              isPremium: true,
-            ),
+            DefaultPremiumAccessPolicy(isPremium: true),
           ),
         ],
       );
@@ -274,9 +255,7 @@ void main() {
           ),
           [
             premiumAccessPolicyProvider.overrideWithValue(
-              DefaultPremiumAccessPolicy(
-                isPremium: true,
-              ),
+              DefaultPremiumAccessPolicy(isPremium: true),
             ),
           ],
         );
@@ -290,7 +269,7 @@ void main() {
     testWidgets('promo rendering does not change calculator totals', (
       tester,
     ) async {
-      await pumpResults(tester, isPremium: false, shouldShowProPromotion: true);
+      await pumpResults(tester, isPremium: false);
 
       expect(
         find.byKey(const ValueKey<String>('calculator.result.electricityCost')),
@@ -313,7 +292,6 @@ void main() {
       await pumpResults(
         tester,
         isPremium: true,
-        shouldShowProPromotion: false,
         results: resultsWithAdditionalCost,
         additionalCostAmount: 4.25,
       );
@@ -347,7 +325,6 @@ void main() {
       await pumpResults(
         tester,
         isPremium: true,
-        shouldShowProPromotion: false,
         results: resultsWithAdditionalCost,
         additionalCostAmount: 4.25,
       );
@@ -362,7 +339,6 @@ void main() {
       await pumpResults(
         tester,
         isPremium: true,
-        shouldShowProPromotion: false,
         results: resultsWithAdditionalCost,
         additionalCostAmount: 4.25,
       );
@@ -383,7 +359,6 @@ void main() {
       await pumpResults(
         tester,
         isPremium: true,
-        shouldShowProPromotion: false,
         results: resultsWithAdditionalCost,
         additionalCostAmount: 4.25,
       );
@@ -396,7 +371,7 @@ void main() {
     testWidgets('premium user sees pricing rows when pricing enabled', (
       tester,
     ) async {
-      await pumpResults(tester, isPremium: true, shouldShowProPromotion: false);
+      await pumpResults(tester, isPremium: true);
 
       expect(
         find.byKey(const ValueKey('calculator.result.markupAmount')),
@@ -420,9 +395,7 @@ void main() {
       final db = await tester
           .pumpApp(CalculatorResults(results: results, pricing: pricing), [
             premiumAccessPolicyProvider.overrideWithValue(
-              DefaultPremiumAccessPolicy(
-                isPremium: true,
-              ),
+              DefaultPremiumAccessPolicy(isPremium: true),
             ),
             settingsRepositoryProvider.overrideWithValue(
               _FakeSettingsRepository(
@@ -451,11 +424,7 @@ void main() {
     });
 
     testWidgets('free user does not see pricing output rows', (tester) async {
-      await pumpResults(
-        tester,
-        isPremium: false,
-        shouldShowProPromotion: false,
-      );
+      await pumpResults(tester, isPremium: false);
 
       expect(
         find.byKey(const ValueKey('calculator.result.markupAmount')),
@@ -490,9 +459,7 @@ void main() {
         [
           calculatorProvider.overrideWith(() => calculatorNotifier),
           premiumAccessPolicyProvider.overrideWithValue(
-            DefaultPremiumAccessPolicy(
-              isPremium: true,
-            ),
+            DefaultPremiumAccessPolicy(isPremium: true),
           ),
         ],
       );

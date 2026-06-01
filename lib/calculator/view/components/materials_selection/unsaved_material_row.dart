@@ -90,10 +90,9 @@ class _UnsavedMaterialRowState extends State<UnsavedMaterialRow> {
             'calculator.materials.item.${widget.index}.unsaved.header',
           ),
           l10n.unsavedMaterialHeader,
-          style: Theme.of(context)
-              .textTheme
-              .labelMedium
-              ?.copyWith(color: TEXT_SECONDARY),
+          style: Theme.of(
+            context,
+          ).textTheme.labelMedium?.copyWith(color: TEXT_SECONDARY),
         ),
         const SizedBox(height: kAppSpace8),
         Row(
@@ -141,14 +140,15 @@ class _UnsavedMaterialRowState extends State<UnsavedMaterialRow> {
                         isDense: true,
                         prefixText:
                             widget.currencySymbol.isNotEmpty &&
-                                    widget.currencyPosition == 'before'
-                                ? widget.currencySymbol +
-                                    (widget.currencySpacing ? ' ' : '')
-                                : null,
-                        suffixText: widget.currencyPosition == 'after' &&
+                                widget.currencyPosition == 'before'
+                            ? widget.currencySymbol +
+                                  (widget.currencySpacing ? ' ' : '')
+                            : null,
+                        suffixText:
+                            widget.currencyPosition == 'after' &&
                                 widget.currencySymbol.isNotEmpty
                             ? (widget.currencySpacing ? ' ' : '') +
-                                widget.currencySymbol
+                                  widget.currencySymbol
                             : null,
                       ),
                       onChanged: (value) {

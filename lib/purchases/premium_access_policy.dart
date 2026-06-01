@@ -130,9 +130,8 @@ abstract class PremiumAccessPolicy {
 }
 
 class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
-  DefaultPremiumAccessPolicy({
-    required bool isPremium,
-  }) : _isPremium = isPremium;
+  DefaultPremiumAccessPolicy({required bool isPremium})
+    : _isPremium = isPremium;
 
   final bool _isPremium;
 

@@ -29,7 +29,9 @@ abstract class MaterialUsageInput with _$MaterialUsageInput {
       costPerKg: cost,
       weightGrams: weight,
       isUnsaved: map['isUnsaved'] == true,
-      unsavedSpoolWeight: parseLocalizedNumOrFallback(map['unsavedSpoolWeight']),
+      unsavedSpoolWeight: parseLocalizedNumOrFallback(
+        map['unsavedSpoolWeight'],
+      ),
       unsavedSpoolCost: parseLocalizedNumOrFallback(map['unsavedSpoolCost']),
     );
   }

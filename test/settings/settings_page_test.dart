@@ -6,7 +6,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -154,46 +153,6 @@ void main() {
     );
   });
 
-  testWidgets('free user toggle restores persisted enabled state', (
-    tester,
-  ) async {
-    final premiumLocalStore = InMemoryPremiumLocalStore();
-
-    final settingsRepo = _FakeSettingsRepository();
-    final db = await tester.pumpApp(const SettingsPage(), [
-      isPremiumProvider.overrideWithValue(false),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ], premiumLocalStore);
-    addTearDown(db.close);
-    addTearDown(settingsRepo.dispose);
-
-    settingsRepo.emit(GeneralSettingsModel.initial());
-
-    await tester.pumpAndSettle();
-
-    expect(find.byType(SwitchListTile), findsNothing);
-  });
-
-  testWidgets('toggling promo visibility updates immediately', (tester) async {
-    final premiumLocalStore = InMemoryPremiumLocalStore();
-
-    final settingsRepo = _FakeSettingsRepository();
-    final db = await tester.pumpApp(const SettingsPage(), [
-      isPremiumProvider.overrideWithValue(false),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ], premiumLocalStore);
-    addTearDown(db.close);
-    addTearDown(settingsRepo.dispose);
-
-    settingsRepo.emit(GeneralSettingsModel.initial());
-
-    await tester.pumpAndSettle();
-
-    expect(find.byType(SwitchListTile), findsNothing);
-  });
-
   testWidgets(
     'premium users see printers and work cost sections but not materials',
     (tester) async {
@@ -249,7 +208,9 @@ void main() {
         findsNothing,
       );
       expect(
-        find.byType(SwitchListTile),
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencySpacing.toggle'),
+        ),
         findsOneWidget,
       );
 

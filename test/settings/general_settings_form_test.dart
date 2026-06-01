@@ -222,7 +222,10 @@ void main() {
       repo.emit(_settings(averageWattage: '140'));
       await tester.pump();
 
-      await tester.enterText(_field('settings.generalAverageWattage.input'), '');
+      await tester.enterText(
+        _field('settings.generalAverageWattage.input'),
+        '',
+      );
       await tester.pump(const Duration(milliseconds: 401));
       await tester.pump();
 
@@ -360,6 +363,5 @@ void main() {
         );
       },
     );
-
   });
 }

@@ -121,9 +121,7 @@ class AddPrinter extends HookConsumerWidget {
                   autovalidateMode: hasSubmitted.value
                       ? AutovalidateMode.onUserInteraction
                       : AutovalidateMode.disabled,
-                  decoration: InputDecoration(
-                    label: Text(l10n.wattageLabel),
-                  ),
+                  decoration: InputDecoration(label: Text(l10n.wattageLabel)),
                   onChanged: notifier.updateWattage,
                 ),
                 FocusSafeTextField(
@@ -151,9 +149,9 @@ class AddPrinter extends HookConsumerWidget {
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(
                     l10n.wattageFaqHint,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: TEXT_TERTIARY,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
                   ),
                 ),
                 const SizedBox(height: 16),
