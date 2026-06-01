@@ -37,11 +37,8 @@ class ElectricityResolver {
 
     PrinterModel? printer;
     if (activePrinterId != null && activePrinterId.isNotEmpty) {
-      try {
-        printer = printers.firstWhere(
-          (p) => p.id == activePrinterId,
-        );
-      } catch (_) {}
+      final match = printers.where((p) => p.id == activePrinterId);
+      printer = match.isNotEmpty ? match.first : null;
     }
 
     printer ??= printers.first;
