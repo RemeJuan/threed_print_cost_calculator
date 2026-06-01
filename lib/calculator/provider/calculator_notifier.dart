@@ -163,11 +163,17 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         return false;
       }
 
+      final materialId = result.selectedMaterialId;
       await settingsService.update(
-        (current) => current.copyWith(
-          activePrinter: result.activePrinterId,
-          selectedMaterial: result.selectedMaterialId ?? '',
-        ),
+        (current) {
+          var updated = current.copyWith(
+            activePrinter: result.activePrinterId,
+          );
+          if (materialId != null && materialId.isNotEmpty) {
+            updated = updated.copyWith(selectedMaterial: materialId);
+          }
+          return updated;
+        },
       );
 
       state = result.state;
@@ -279,6 +285,28 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       materialUsages: result.usages,
       printWeight: NumberInput.dirty(value: result.totalWeight),
       selectedMaterialId: _selectedMaterialIdFor(result.usages),
+    );
+  }
+
+  void updateUnsavedMaterialSpool(
+    int index, {
+    num? spoolWeight,
+    num? spoolCost,
+  }) {
+    if (index < 0 || index >= state.materialUsages.length) return;
+    final updated = ref
+        .read(calculatorMaterialsServiceProvider)
+        .updateUnsavedSpoolValues(
+          state.materialUsages[index],
+          spoolWeight: spoolWeight,
+          spoolCost: spoolCost,
+        );
+
+    final usages = [...state.materialUsages];
+    usages[index] = updated;
+    state = state.copyWith(
+      materialUsages: usages,
+      selectedMaterialId: _selectedMaterialIdFor(usages),
     );
   }
 

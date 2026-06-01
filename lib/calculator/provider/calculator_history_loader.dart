@@ -58,18 +58,24 @@ class CalculatorHistoryLoader {
               entry.model.filamentCost > 0);
 
       if (usage.materialId.trim().isNotEmpty) {
-        final material = await materialsRepository.getMaterialById(
-          usage.materialId,
-        );
-        if (material == null && fallbackMaterial != null) {
-          hasReplacement = true;
-          resolvedMaterial = fallbackMaterial;
-          resolvedUsage = usage.copyWith(
-            materialId: fallbackMaterial.id,
-            materialName: fallbackMaterial.name,
-          );
+        if (usage.materialId.startsWith(
+          MaterialUsageInput.unsavedMaterialIdPrefix,
+        )) {
+          resolvedMaterial = null;
         } else {
-          resolvedMaterial = material;
+          final material = await materialsRepository.getMaterialById(
+            usage.materialId,
+          );
+          if (material == null && fallbackMaterial != null) {
+            hasReplacement = true;
+            resolvedMaterial = fallbackMaterial;
+            resolvedUsage = usage.copyWith(
+              materialId: fallbackMaterial.id,
+              materialName: fallbackMaterial.name,
+            );
+          } else {
+            resolvedMaterial = material;
+          }
         }
       }
 
@@ -172,7 +178,10 @@ class CalculatorHistoryLoader {
     return CalculatorHistoryLoadResult(
       state: nextState,
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
-      selectedMaterialId: materialUsages.isNotEmpty
+      selectedMaterialId: materialUsages.isNotEmpty &&
+              !materialUsages.first.materialId.startsWith(
+                MaterialUsageInput.unsavedMaterialIdPrefix,
+              )
           ? materialUsages.first.materialId
           : null,
     );
