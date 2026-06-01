@@ -90,6 +90,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resultElectricityPrefix => 'Electricity';
 
   @override
+  String get resultElectricityRated => 'Electricity (Rated)';
+
+  @override
+  String get resultElectricityAverage => 'Electricity (Avg)';
+
+  @override
   String get resultFilamentPrefix => 'Filament';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bedSizeLabel => 'Bed Size *';
 
   @override
-  String get wattageLabel => 'Wattage *';
+  String get wattageLabel => 'Wattage (Rated) *';
+
+  @override
+  String get averageWattageLabel => 'Wattage (Avg)';
 
   @override
   String get materialNameLabel => 'Name *';

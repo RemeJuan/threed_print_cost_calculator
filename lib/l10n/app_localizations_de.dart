@@ -90,6 +90,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get resultElectricityPrefix => 'Gesamtkosten für Strom:';
 
   @override
+  String get resultElectricityRated => 'Strom (Nennwert)';
+
+  @override
+  String get resultElectricityAverage => 'Strom (Durchschnitt)';
+
+  @override
   String get resultFilamentPrefix => 'Gesamtkosten für Filament:';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bedSizeLabel => 'Druckbettgröße *';
 
   @override
-  String get wattageLabel => 'Leistung *';
+  String get wattageLabel => 'Leistung (Nennwert) *';
+
+  @override
+  String get averageWattageLabel => 'Leistung (Durchschnitt)';
 
   @override
   String get materialNameLabel => 'Materialname *';

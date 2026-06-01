@@ -90,6 +90,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get resultElectricityPrefix => 'ค่าไฟฟ้าทั้งหมด: ';
 
   @override
+  String get resultElectricityRated => 'ค่าไฟฟ้า (พิกัด)';
+
+  @override
+  String get resultElectricityAverage => 'ค่าไฟฟ้า (เฉลี่ย)';
+
+  @override
   String get resultFilamentPrefix => 'ต้นทุนรวมสำหรับเส้นใย: ';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get bedSizeLabel => 'ขนาดฐานพิมพ์ *';
 
   @override
-  String get wattageLabel => 'กำลังไฟ *';
+  String get wattageLabel => 'กำลังไฟ (พิกัด) *';
+
+  @override
+  String get averageWattageLabel => 'กำลังไฟ (เฉลี่ย)';
 
   @override
   String get materialNameLabel => 'ชื่อวัสดุ *';

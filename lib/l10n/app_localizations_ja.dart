@@ -90,6 +90,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resultElectricityPrefix => '電気代合計:';
 
   @override
+  String get resultElectricityRated => '電気 (定格)';
+
+  @override
+  String get resultElectricityAverage => '電気 (平均)';
+
+  @override
   String get resultFilamentPrefix => 'フィラメントの合計コスト:';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bedSizeLabel => 'ベッドサイズ *';
 
   @override
-  String get wattageLabel => '消費電力 *';
+  String get wattageLabel => '消費電力（定格）*';
+
+  @override
+  String get averageWattageLabel => '消費電力（平均）';
 
   @override
   String get materialNameLabel => '材料名 *';

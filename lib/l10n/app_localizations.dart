@@ -276,6 +276,18 @@ abstract class AppLocalizations {
   /// **'Electricity'**
   String get resultElectricityPrefix;
 
+  /// No description provided for @resultElectricityRated.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity (Rated)'**
+  String get resultElectricityRated;
+
+  /// No description provided for @resultElectricityAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity (Avg)'**
+  String get resultElectricityAverage;
+
   /// No description provided for @resultFilamentPrefix.
   ///
   /// In en, this message translates to:
@@ -351,8 +363,14 @@ abstract class AppLocalizations {
   /// No description provided for @wattageLabel.
   ///
   /// In en, this message translates to:
-  /// **'Wattage *'**
+  /// **'Wattage (Rated) *'**
   String get wattageLabel;
+
+  /// No description provided for @averageWattageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Wattage (Avg)'**
+  String get averageWattageLabel;
 
   /// No description provided for @materialNameLabel.
   ///

@@ -90,6 +90,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resultElectricityPrefix => 'Coût total de l\'électricité : ';
 
   @override
+  String get resultElectricityRated => 'Électricité (Nominale)';
+
+  @override
+  String get resultElectricityAverage => 'Électricité (Moyenne)';
+
+  @override
   String get resultFilamentPrefix => 'Coût total du filament : ';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bedSizeLabel => 'Taille du plateau *';
 
   @override
-  String get wattageLabel => 'Puissance *';
+  String get wattageLabel => 'Puissance (Nominale) *';
+
+  @override
+  String get averageWattageLabel => 'Puissance (Moyenne)';
 
   @override
   String get materialNameLabel => 'Nom du matériau *';
