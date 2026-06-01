@@ -3,6 +3,7 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 const _unsetCalculatorStateValue = Object();
 

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 part 'calculation_results_state.freezed.dart';
 

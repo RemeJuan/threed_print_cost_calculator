@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 class HistoryItemCostRows extends StatelessWidget {
   const HistoryItemCostRows({
