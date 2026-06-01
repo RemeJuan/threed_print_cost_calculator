@@ -90,7 +90,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get resultElectricityPrefix => 'Total biaya Listrik: ';
 
   @override
-  String get resultElectricityRated => 'Listrik (Tertulis)';
+  String get resultElectricityRated => 'Listrik (Nominal)';
 
   @override
   String get resultElectricityAverage => 'Listrik (Rata-rata)';
@@ -132,7 +132,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get bedSizeLabel => 'Ukuran bed *';
 
   @override
-  String get wattageLabel => 'Daya (Tertulis) *';
+  String get wattageLabel => 'Daya (Nominal) *';
 
   @override
   String get averageWattageLabel => 'Daya (Rata-rata)';
