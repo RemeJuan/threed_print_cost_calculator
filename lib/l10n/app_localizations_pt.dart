@@ -335,15 +335,15 @@ class AppLocalizationsPt extends AppLocalizations {
       'Uma taxa de configuração é um custo fixo por trabalho para calibração, preparação da máquina e administração. Ajuda impressões pequenas a cobrir despesas gerais.';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'Veja a FAQ para detalhes sobre watts';
 
   @override
   String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+      'Potência nominal vs. potência média - qual a diferença?';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      'A potência nominal é o máximo que a sua impressora pode puxar da tomada (impresso na placa de identificação). A potência média é o consumo típico durante uma impressão, idealmente medido com um medidor de tomada. Use a potência média para um custo de eletricidade preciso, ou a nominal como limite superior seguro.';
 
   @override
   String get helpSupportLinksTitle => 'Links';

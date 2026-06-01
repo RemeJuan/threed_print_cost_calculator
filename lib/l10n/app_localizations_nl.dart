@@ -335,15 +335,15 @@ class AppLocalizationsNl extends AppLocalizations {
       'Opstartkosten zijn vaste kosten per opdracht voor kalibratie, machine voorbereiding en administratie. Het helpt kleine prints overhead te dekken.';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'Zie de FAQ voor wattage-details';
 
   @override
   String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+      'Nominaal versus gemiddeld wattage - wat is het verschil?';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      'Het nominale wattage is het maximale vermogen dat je printer uit het stopcontact kan trekken (vermeld op het typeplaatje). Het gemiddelde wattage is het typische verbruik tijdens een print, idealiter gemeten met een plug-in meter. Gebruik het gemiddelde wattage voor een nauwkeurige elektriciteitskost, of het nominale wattage als veilige bovengrens.';
 
   @override
   String get helpSupportLinksTitle => 'Links';

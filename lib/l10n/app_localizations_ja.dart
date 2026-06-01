@@ -328,15 +328,14 @@ class AppLocalizationsJa extends AppLocalizations {
       'セットアップ料金は、キャリブレーション、マシン準備、管理のためのジョブごとの固定コストです。小さな印刷が諸経費をカバーするのに役立ちます。';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'FAQでワット数の詳細を見る';
 
   @override
-  String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+  String get helpSupportFaqWattageQuestion => '定格電力と平均電力の違いは何ですか？';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      '定格電力は、プリンターがコンセントから取り出せる最大電力です（銘板に記載）。平均電力は印刷中の典型的な消費電力で、できれば電力計付きプラグで測定します。電気代を正確に計算するには平均電力を、上限の目安には定格電力を使ってください。';
 
   @override
   String get helpSupportLinksTitle => 'リンク';

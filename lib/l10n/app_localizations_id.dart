@@ -335,15 +335,15 @@ class AppLocalizationsId extends AppLocalizations {
       'Biaya setup adalah biaya tetap per pekerjaan untuk kalibrasi, persiapan mesin, dan administrasi. Ini membantu cetakan kecil menutupi overhead.';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'Lihat FAQ untuk detail watt';
 
   @override
   String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+      'Daya tertera vs daya rata-rata - apa bedanya?';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      'Daya tertera adalah daya maksimum yang dapat ditarik printer dari stopkontak (tertera pada pelat nama). Daya rata-rata adalah daya tipikalnya saat mencetak, idealnya diukur dengan meter colokan. Gunakan Daya rata-rata untuk biaya listrik yang akurat, atau Daya tertera sebagai batas atas yang aman.';
 
   @override
   String get helpSupportLinksTitle => 'Tautan';

@@ -333,15 +333,15 @@ class AppLocalizationsTh extends AppLocalizations {
       'ค่าธรรมเนียมการตั้งค่าคือต้นทุนคงที่ต่อหนึ่งงานสำหรับการปรับเทียบ การเตรียมเครื่อง และการบริหาร ช่วยให้งานพิมพ์ขนาดเล็กสามารถครอบคลุมค่าใช้จ่ายทั่วไปได้';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'ดูรายละเอียดวัตต์ในคำถามที่พบบ่อย';
 
   @override
   String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+      'กำลังไฟตามพิกัดกับกำลังไฟเฉลี่ย ต่างกันอย่างไร?';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      'กำลังไฟตามพิกัดคือกำลังไฟสูงสุดที่เครื่องพิมพ์ของคุณดึงจากปลั๊กได้ (ระบุบนป้ายชื่อเครื่อง) ส่วนกำลังไฟเฉลี่ยคือการใช้พลังงานโดยทั่วไประหว่างการพิมพ์ ควรวัดด้วยมิเตอร์เสียบปลั๊ก ใช้กำลังไฟเฉลี่ยเพื่อคำนวณค่าไฟได้แม่นยำ หรือใช้กำลังไฟตามพิกัดเป็นขอบเขตสูงสุดที่ปลอดภัย';
 
   @override
   String get helpSupportLinksTitle => 'ลิงก์';

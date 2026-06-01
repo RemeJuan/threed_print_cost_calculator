@@ -340,15 +340,15 @@ class AppLocalizationsIt extends AppLocalizations {
       'Una tariffa di configurazione è un costo fisso per lavoro per calibrazione, preparazione macchina e amministrazione. Aiuta le stampe piccole a coprire le spese generali.';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'Vedi le FAQ per i dettagli sui watt';
 
   @override
   String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+      'Potenza nominale vs potenza media - qual e la differenza?';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      'La potenza nominale e la potenza massima che la tua stampante puo assorbire dalla presa (indicata sulla targhetta). La potenza media e il consumo tipico durante una stampa, idealmente misurato con un misuratore da presa. Usa la potenza media per un costo dell\'elettricita accurato, oppure la nominale come limite superiore sicuro.';
 
   @override
   String get helpSupportLinksTitle => 'Link';

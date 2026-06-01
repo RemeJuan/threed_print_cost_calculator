@@ -339,15 +339,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Un frais de configuration est un coût fixe par travail pour l\'étalonnage, la préparation de la machine et l\'administration. Il aide les petites impressions à couvrir les frais généraux.';
 
   @override
-  String get wattageFaqHint => 'See FAQ for wattage details';
+  String get wattageFaqHint => 'Voir la FAQ pour les details sur la puissance';
 
   @override
   String get helpSupportFaqWattageQuestion =>
-      'Rated vs Average wattage — what\'s the difference?';
+      'Puissance nominale vs puissance moyenne - quelle est la difference ?';
 
   @override
   String get helpSupportFaqWattageAnswer =>
-      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+      'La puissance nominale est la puissance maximale que votre imprimante peut tirer du secteur (indiquee sur la plaque signaletique). La puissance moyenne correspond a sa consommation typique pendant une impression, idealement mesuree avec un wattmetre branchable. Utilisez la puissance moyenne pour un cout d\'electricite precis, ou la puissance nominale comme limite superieure sure.';
 
   @override
   String get helpSupportLinksTitle => 'Liens';
