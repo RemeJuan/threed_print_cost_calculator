@@ -795,5 +795,10 @@
   "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}}
+  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "unsavedMaterialOptionLabel": "Matériau non enregistré",
+  "unsavedMaterialHeader": "Matériau personnalisé",
+  "customMaterialWeightLabel": "Poids",
+  "customMaterialCostLabel": "Coût",
+  "customMaterialUsedLabel": "Utilisé"
 }

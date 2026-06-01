@@ -794,5 +794,10 @@
   "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}}
+  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "unsavedMaterialOptionLabel": "วัสดุที่ยังไม่ได้บันทึก",
+  "unsavedMaterialHeader": "วัสดุที่กำหนดเอง",
+  "customMaterialWeightLabel": "น้ำหนัก",
+  "customMaterialCostLabel": "ต้นทุน",
+  "customMaterialUsedLabel": "ที่ใช้"
 }

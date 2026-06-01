@@ -837,6 +837,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get historyExportPreviewAction => 'Unduh / Bagikan dengan Premium';
 
   @override
+  String get unsavedMaterialOptionLabel => 'Material belum disimpan';
+
+  @override
+  String get unsavedMaterialHeader => 'Material Kustom';
+
+  @override
+  String get customMaterialWeightLabel => 'Berat';
+
+  @override
+  String get customMaterialCostLabel => 'Biaya';
+
+  @override
+  String get customMaterialUsedLabel => 'Terpakai';
+
+  @override
   String get addMaterialButton => 'Tambahkan bahan';
 
   @override

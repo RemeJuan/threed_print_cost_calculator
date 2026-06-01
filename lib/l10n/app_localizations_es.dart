@@ -858,6 +858,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get historyExportPreviewAction => 'Descargar / Compartir con Premium';
 
   @override
+  String get unsavedMaterialOptionLabel => 'Material no guardado';
+
+  @override
+  String get unsavedMaterialHeader => 'Material personalizado';
+
+  @override
+  String get customMaterialWeightLabel => 'Peso';
+
+  @override
+  String get customMaterialCostLabel => 'Costo';
+
+  @override
+  String get customMaterialUsedLabel => 'Usado';
+
+  @override
   String get addMaterialButton => 'Añadir material';
 
   @override

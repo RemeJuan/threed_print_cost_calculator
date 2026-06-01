@@ -840,6 +840,21 @@ class AppLocalizationsTh extends AppLocalizations {
   String get historyExportPreviewAction => 'ดาวน์โหลด / แชร์ด้วย Premium';
 
   @override
+  String get unsavedMaterialOptionLabel => 'วัสดุที่ยังไม่ได้บันทึก';
+
+  @override
+  String get unsavedMaterialHeader => 'วัสดุที่กำหนดเอง';
+
+  @override
+  String get customMaterialWeightLabel => 'น้ำหนัก';
+
+  @override
+  String get customMaterialCostLabel => 'ต้นทุน';
+
+  @override
+  String get customMaterialUsedLabel => 'ที่ใช้';
+
+  @override
   String get addMaterialButton => 'เพิ่มวัสดุ';
 
   @override

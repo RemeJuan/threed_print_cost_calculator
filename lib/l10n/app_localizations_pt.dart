@@ -856,6 +856,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get historyExportPreviewAction => 'Baixar / Compartilhar com Premium';
 
   @override
+  String get unsavedMaterialOptionLabel => 'Material não salvo';
+
+  @override
+  String get unsavedMaterialHeader => 'Material personalizado';
+
+  @override
+  String get customMaterialWeightLabel => 'Peso';
+
+  @override
+  String get customMaterialCostLabel => 'Custo';
+
+  @override
+  String get customMaterialUsedLabel => 'Usado';
+
+  @override
   String get addMaterialButton => 'Adicionar';
 
   @override

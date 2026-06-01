@@ -793,5 +793,10 @@
   "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}}
+  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "unsavedMaterialOptionLabel": "Material belum disimpan",
+  "unsavedMaterialHeader": "Material Kustom",
+  "customMaterialWeightLabel": "Berat",
+  "customMaterialCostLabel": "Biaya",
+  "customMaterialUsedLabel": "Terpakai"
 }

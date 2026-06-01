@@ -794,5 +794,10 @@
   "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}}
+  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "unsavedMaterialOptionLabel": "未保存の素材",
+  "unsavedMaterialHeader": "カスタム材料",
+  "customMaterialWeightLabel": "重量",
+  "customMaterialCostLabel": "コスト",
+  "customMaterialUsedLabel": "使用量"
 }

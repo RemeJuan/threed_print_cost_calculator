@@ -862,6 +862,21 @@ class AppLocalizationsFr extends AppLocalizations {
       'Télécharger / Partager avec Premium';
 
   @override
+  String get unsavedMaterialOptionLabel => 'Matériau non enregistré';
+
+  @override
+  String get unsavedMaterialHeader => 'Matériau personnalisé';
+
+  @override
+  String get customMaterialWeightLabel => 'Poids';
+
+  @override
+  String get customMaterialCostLabel => 'Coût';
+
+  @override
+  String get customMaterialUsedLabel => 'Utilisé';
+
+  @override
   String get addMaterialButton => 'Ajouter un matériau';
 
   @override

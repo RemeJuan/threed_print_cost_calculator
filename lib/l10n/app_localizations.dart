@@ -1619,6 +1619,36 @@ abstract class AppLocalizations {
   /// **'Download / Share with Premium'**
   String get historyExportPreviewAction;
 
+  /// No description provided for @unsavedMaterialOptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom material'**
+  String get unsavedMaterialOptionLabel;
+
+  /// No description provided for @unsavedMaterialHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Material'**
+  String get unsavedMaterialHeader;
+
+  /// No description provided for @customMaterialWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get customMaterialWeightLabel;
+
+  /// No description provided for @customMaterialCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get customMaterialCostLabel;
+
+  /// No description provided for @customMaterialUsedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get customMaterialUsedLabel;
+
   /// No description provided for @addMaterialButton.
   ///
   /// In en, this message translates to:

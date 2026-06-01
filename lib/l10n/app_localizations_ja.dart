@@ -826,6 +826,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get historyExportPreviewAction => 'Proでダウンロード / 共有';
 
   @override
+  String get unsavedMaterialOptionLabel => '未保存の素材';
+
+  @override
+  String get unsavedMaterialHeader => 'カスタム材料';
+
+  @override
+  String get customMaterialWeightLabel => '重量';
+
+  @override
+  String get customMaterialCostLabel => 'コスト';
+
+  @override
+  String get customMaterialUsedLabel => '使用量';
+
+  @override
   String get addMaterialButton => '素材を追加';
 
   @override
