@@ -38,12 +38,18 @@ class MaterialsList extends StatelessWidget {
         ? null
         : (usages.length > 4 ? maxHeight : null);
 
-    final sortedIndices = List.generate(usages.length, (i) => i);
-    sortedIndices.sort((a, b) {
-      if (usages[a].isUnsaved && !usages[b].isUnsaved) return 1;
-      if (!usages[a].isUnsaved && usages[b].isUnsaved) return -1;
-      return 0;
-    });
+    final sortedIndices = <int>[];
+    for (var i = 0; i < usages.length; i++) {
+      if (usages[i].isUnsaved) {
+        sortedIndices.add(i);
+      }
+    }
+    for (var i = 0; i < usages.length; i++) {
+      if (!usages[i].isUnsaved) {
+        sortedIndices.add(i);
+      }
+    }
+
 
     return ConstrainedBox(
       constraints: BoxConstraints(

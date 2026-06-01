@@ -99,16 +99,19 @@ class MaterialPicker extends HookConsumerWidget {
                         final costPerKg = weight <= 0
                             ? 0
                             : (cost / weight) * 1000;
+                        final isSentinel = item.id == _unsavedSentinelId;
                         return ListTile(
                           key: ValueKey<String>(
                             'calculator.materialPicker.item.${item.name}',
                           ),
                           title: Text(item.name),
-                          subtitle: Text(
-                            '${item.color} \u2022 ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
-                          ),
+                          subtitle: isSentinel
+                              ? null
+                              : Text(
+                                  '${item.color} \u2022 ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
+                                ),
                           onTap: () {
-                            if (item.id == _unsavedSentinelId) {
+                            if (isSentinel) {
                               onUnsavedSelected!();
                             } else {
                               onSelected(item);

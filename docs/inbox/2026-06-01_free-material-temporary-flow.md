@@ -303,7 +303,7 @@ If downgrade happens while a calculation already contains a temporary material:
 
 ### Widget tests
 
-- picker shows `Temporary Material` for free users
+- picker shows `Unsaved Material` for free users
 - picker still offers temporary path when saved-material cap reached
 - picker allows immediate temporary flow when no saved materials exist
 - picker hides/disables second temporary-material path after one exists
