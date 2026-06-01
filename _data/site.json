@@ -1,6 +1,6 @@
 {
   "name": "3D Print Cost Calculator",
-  "description": "Calculate the true cost of your 3D prints with filament, electricity, failure risk, labour, and overhead.",
+  "description": "Calculate true 3D print cost with filament, electricity, multi-material support, manual batch costing, and single-print G-code import. Offline-first, no account required.",
   "logoWebp": "assets/logo/app_icon.webp",
   "supportEmail": "3d@printcostcalc.app",
   "appStoreUrl": "https://apps.apple.com/us/app/3d-printer-cost-calculator/id6444106268",
