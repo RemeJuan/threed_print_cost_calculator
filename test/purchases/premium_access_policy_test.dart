@@ -18,7 +18,6 @@ void main() {
     test('allows free features', () {
       expect(policy.multiMaterial().allowed, isTrue);
       expect(policy.printers().allowed, isTrue);
-      expect(policy.printersList().allowed, isFalse);
       expect(policy.historyView().allowed, isTrue);
       expect(policy.gcodeImport().allowed, isTrue);
       expect(policy.batchCosting().allowed, isTrue);

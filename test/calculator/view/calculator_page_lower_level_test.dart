@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
@@ -33,6 +36,7 @@ void main() {
     FakeCalculatorNotifier calculatorNotifier,
     FakePaywallPresenter paywallPresenter, {
     Map<String, dynamic> prefs = const {},
+    List<Override> additionalOverrides = const [],
   }) async {
     SharedPreferences.setMockInitialValues({'run_count': 0, ...prefs});
     await SharedPreferences.getInstance();
@@ -46,10 +50,11 @@ void main() {
       materialsStreamProvider.overrideWith(
         (ref) => Stream.value(const <MaterialModel>[]),
       ),
+      ...additionalOverrides,
     ]);
   }
 
-  testWidgets('free users do not see premium controls', (tester) async {
+  testWidgets('free users see printer picker when printers exist', (tester) async {
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -62,10 +67,23 @@ void main() {
       calculatorNotifier,
       paywallPresenter,
       prefs: {'run_count': 10},
+      additionalOverrides: [
+        printersStreamProvider.overrideWith(
+          (ref) => Stream.value([
+            PrinterModel(
+              id: 'p1',
+              name: 'P1',
+              bedSize: '220x220',
+              wattage: '120',
+              archived: false,
+            ),
+          ]),
+        ),
+      ],
     );
     await tester.pumpAndSettle();
 
-    expect(find.byType(PrinterSelect), findsNothing);
+    expect(find.byType(PrinterSelect), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('calculator.save.open.button')),
       findsOneWidget,
