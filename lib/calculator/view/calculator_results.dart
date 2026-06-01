@@ -29,7 +29,6 @@ class CalculatorResults extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
     final isPremium = policy.isPremium;
-    final shouldShowProPromotion = policy.shouldShowPromotions;
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
@@ -92,7 +91,7 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.additionalCost'),
             ),
-          if (!policy.riskPricing().allowed && shouldShowProPromotion) ...[
+          if (!policy.riskPricing().allowed) ...[
             _lockedPromoRow(
               context,
               l10n.wearAndTearLabel,
@@ -108,7 +107,7 @@ class CalculatorResults extends ConsumerWidget {
               key: const ValueKey<String>('calculator.result.locked.riskCost'),
             ),
           ],
-          if (!policy.labourPricing().allowed && shouldShowProPromotion)
+          if (!policy.labourPricing().allowed)
             _lockedPromoRow(
               context,
               l10n.labourCostPrefix,

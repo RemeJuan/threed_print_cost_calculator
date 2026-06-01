@@ -123,7 +123,6 @@ void main() {
             premiumAccessPolicyProvider.overrideWithValue(
               DefaultPremiumAccessPolicy(
                 isPremium: true,
-                hideProPromotions: false,
               ),
             ),
           ],

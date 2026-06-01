@@ -31,7 +31,6 @@ SeedDataBundle _bundle() {
       'labourRate': '18',
     },
     sharedPreferences: {
-      'hideProPromotions': false,
       'run_count': 0,
       'paywall': false,
     },

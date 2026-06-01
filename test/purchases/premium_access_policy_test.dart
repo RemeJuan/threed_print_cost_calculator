@@ -5,7 +5,6 @@ void main() {
   group('DefaultPremiumAccessPolicy free tier', () {
     final policy = DefaultPremiumAccessPolicy(
       isPremium: false,
-      hideProPromotions: false,
     );
 
     test('uses free-tier limits', () {
@@ -135,7 +134,6 @@ void main() {
   group('DefaultPremiumAccessPolicy premium tier', () {
     final policy = DefaultPremiumAccessPolicy(
       isPremium: true,
-      hideProPromotions: false,
     );
 
     test('has no limits', () {

@@ -472,8 +472,6 @@
   "historyExportPreviewSampleLabel": "[Muestra]",
   "historyExportPreviewAction": "Descargar / Compartir con Premium",
   "lockedValuePlaceholder": "Solo Premium",
-  "hideProPromotionsTitle": "Ocultar promociones Pro",
-  "hideProPromotionsSubtitle": "Ocultar banners y avisos de actualización",
   "durationPickerLabel": "Tiempo de impresión (hh:mm)",
   "importGcodeButton": "Importar G-code (Relleno auto)",
   "importGcodePageTitle": "Importar G-code (Beta)",

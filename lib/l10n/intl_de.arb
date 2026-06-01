@@ -473,8 +473,6 @@
   "historyExportPreviewSampleLabel": "[Beispiel]",
   "historyExportPreviewAction": "Mit Premium herunterladen / teilen",
   "lockedValuePlaceholder": "Nur Premium",
-  "hideProPromotionsTitle": "Pro-Aktionen ausblenden",
-  "hideProPromotionsSubtitle": "Upgrade-Banner und Hinweise ausblenden",
   "durationPickerLabel": "Printing time (hh:mm)",
   "importGcodeButton": "G-code importieren (Autoausfüllen)",
   "importGcodePageTitle": "G-code importieren (Beta)",

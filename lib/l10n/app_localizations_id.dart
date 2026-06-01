@@ -749,13 +749,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get lockedValuePlaceholder => 'Hanya Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Sembunyikan promosi Pro';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Sembunyikan banner dan prompt upgrade';
-
-  @override
   String get printerLimitReachedMessage =>
       'Anda dapat menyimpan hingga 2 printer di Free. Upgrade ke Premium untuk printer tanpa batas.';
 

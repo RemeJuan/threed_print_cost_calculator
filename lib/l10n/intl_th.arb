@@ -474,8 +474,6 @@
   "historyExportPreviewSampleLabel": "[ตัวอย่าง]",
   "historyExportPreviewAction": "ดาวน์โหลด / แชร์ด้วย Premium",
   "lockedValuePlaceholder": "Premium เท่านั้น",
-  "hideProPromotionsTitle": "ซ่อนโปรโมชัน Pro",
-  "hideProPromotionsSubtitle": "ซ่อนแบนเนอร์และข้อความอัปเกรด",
   "durationPickerLabel": "เวลาในการพิมพ์ (hh:mm)",
   "importGcodeButton": "นำเข้า G-code (เติมอัตโนมัติ)",
   "importGcodePageTitle": "นำเข้า G-code (เบต้า)",

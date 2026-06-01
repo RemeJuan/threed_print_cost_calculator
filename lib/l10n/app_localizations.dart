@@ -1463,18 +1463,6 @@ abstract class AppLocalizations {
   /// **'Premium only'**
   String get lockedValuePlaceholder;
 
-  /// No description provided for @hideProPromotionsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide Pro promotions'**
-  String get hideProPromotionsTitle;
-
-  /// No description provided for @hideProPromotionsSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide upgrade banners and prompts'**
-  String get hideProPromotionsSubtitle;
-
   /// No description provided for @printerLimitReachedMessage.
   ///
   /// In en, this message translates to:

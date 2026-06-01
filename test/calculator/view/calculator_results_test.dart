@@ -98,7 +98,6 @@ void main() {
           premiumAccessPolicyProvider.overrideWithValue(
             DefaultPremiumAccessPolicy(
               isPremium: isPremium,
-              hideProPromotions: !shouldShowProPromotion,
             ),
           ),
         ]);
@@ -255,7 +254,6 @@ void main() {
           premiumAccessPolicyProvider.overrideWithValue(
             DefaultPremiumAccessPolicy(
               isPremium: true,
-              hideProPromotions: true,
             ),
           ),
         ],
@@ -278,7 +276,6 @@ void main() {
             premiumAccessPolicyProvider.overrideWithValue(
               DefaultPremiumAccessPolicy(
                 isPremium: true,
-                hideProPromotions: true,
               ),
             ),
           ],
@@ -425,7 +422,6 @@ void main() {
             premiumAccessPolicyProvider.overrideWithValue(
               DefaultPremiumAccessPolicy(
                 isPremium: true,
-                hideProPromotions: true,
               ),
             ),
             settingsRepositoryProvider.overrideWithValue(
@@ -496,7 +492,6 @@ void main() {
           premiumAccessPolicyProvider.overrideWithValue(
             DefaultPremiumAccessPolicy(
               isPremium: true,
-              hideProPromotions: true,
             ),
           ),
         ],

@@ -28,7 +28,7 @@ void main() {
   testWidgets(
     'free state keeps history gate visible without badge when promos hidden',
     (tester) async {
-      SharedPreferences.setMockInitialValues({'hideProPromotions': true});
+      SharedPreferences.setMockInitialValues({});
       final db = await tester.pumpApp(const AppPage(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
         purchasesGatewayProvider.overrideWithValue(

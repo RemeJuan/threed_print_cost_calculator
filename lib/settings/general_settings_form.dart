@@ -19,17 +19,10 @@ class GeneralSettings extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
-    final shouldShowHideProPromotionsToggle = ref.watch(
-      shouldShowHideProPromotionsToggleProvider,
-    );
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
         : GeneralSettingsModel.initial();
-    final hideProPromotions = ref.watch(hideProPromotionsProvider);
-    final hideProPromotionsNotifier = ref.read(
-      hideProPromotionsProvider.notifier,
-    );
 
     // Hook-managed controllers and focus nodes must be called at the top-level of build
     final electricityController = useTextEditingController();

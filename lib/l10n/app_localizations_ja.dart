@@ -742,12 +742,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get lockedValuePlaceholder => 'プレミアムのみ';
 
   @override
-  String get hideProPromotionsTitle => 'Proのプロモーションを非表示';
-
-  @override
-  String get hideProPromotionsSubtitle => 'アップグレードのバナーと案内を非表示';
-
-  @override
   String get printerLimitReachedMessage =>
       '無料プランではプリンターを2台まで保存できます。無制限にするにはPremiumにアップグレードしてください。';
 

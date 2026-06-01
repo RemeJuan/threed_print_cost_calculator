@@ -105,7 +105,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -250,7 +250,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -291,7 +291,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -328,7 +328,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -373,7 +373,6 @@ void main() {
         premiumAccessPolicyProvider.overrideWithValue(
           DefaultPremiumAccessPolicy(
             isPremium: false,
-            hideProPromotions: false,
           ),
         ),
       ],
@@ -411,7 +410,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -463,7 +462,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -563,7 +562,7 @@ void main() {
     final db = await tester.pumpApp(const _MaterialFlowHost(), [
       materialsRepositoryProvider.overrideWithValue(repo),
       premiumAccessPolicyProvider.overrideWithValue(
-        DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        DefaultPremiumAccessPolicy(isPremium: true),
       ),
     ]);
     addTearDown(db.close);

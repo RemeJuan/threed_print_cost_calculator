@@ -330,8 +330,6 @@
   "validationMustBeGreaterThanZero": "Must be greater than 0",
   "validationMustBeZeroOrMore": "Must be 0 or more",
   "lockedValuePlaceholder": "Premium only",
-  "hideProPromotionsTitle": "Hide Pro promotions",
-  "hideProPromotionsSubtitle": "Hide upgrade banners and prompts",
   "printerLimitReachedMessage": "You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.",
   "materialLimitReachedMessage": "You can save up to 5 materials on Free. Upgrade to Premium for unlimited materials.",
   "batchItemLimitReachedMessage": "You can add up to 3 batch items on Free. Upgrade to Premium for unlimited batch items.",

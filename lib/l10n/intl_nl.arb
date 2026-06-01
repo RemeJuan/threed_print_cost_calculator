@@ -474,8 +474,6 @@
   "historyExportPreviewSampleLabel": "[Voorbeeld]",
   "historyExportPreviewAction": "Downloaden / Delen met Premium",
   "lockedValuePlaceholder": "Alleen Premium",
-  "hideProPromotionsTitle": "Pro-promoties verbergen",
-  "hideProPromotionsSubtitle": "Upgrade-banners en prompts verbergen",
   "durationPickerLabel": "Afdruktijd (uu:mm)",
   "importGcodeButton": "G-code importeren (Auto-invullen)",
   "importGcodePageTitle": "G-code importeren (Beta)",

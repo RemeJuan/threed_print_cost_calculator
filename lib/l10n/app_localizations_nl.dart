@@ -762,13 +762,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get lockedValuePlaceholder => 'Alleen Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Pro-promoties verbergen';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Upgrade-banners en prompts verbergen';
-
-  @override
   String get printerLimitReachedMessage =>
       'Je kunt op Free maximaal 2 printers opslaan. Upgrade naar Premium voor onbeperkte printers.';
 

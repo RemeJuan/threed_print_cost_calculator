@@ -1,0 +1,22 @@
+{
+  "generalSettings": {
+    "electricityCost": "0.18",
+    "wattage": "120",
+    "averageWattage": "",
+    "activePrinter": "prusa_mk4",
+    "selectedMaterial": "pla_white",
+    "wearAndTear": "1.25",
+    "failureRisk": "4.5",
+    "labourRate": "18",
+    "pricingMarkupPercent": "15",
+    "pricingSetupFee": "12.5",
+    "pricingRoundingMode": ".99",
+    "currencySymbol": "£",
+    "currencyPosition": "before",
+    "currencySpacing": false
+  },
+  "sharedPreferences": {
+    "run_count": 0,
+    "paywall": false
+  }
+}

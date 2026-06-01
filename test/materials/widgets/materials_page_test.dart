@@ -109,7 +109,6 @@ void main() {
         premiumAccessPolicyProvider.overrideWithValue(
           DefaultPremiumAccessPolicy(
             isPremium: false,
-            hideProPromotions: false,
           ),
         ),
       ]);
@@ -190,7 +189,6 @@ void main() {
         premiumAccessPolicyProvider.overrideWithValue(
           DefaultPremiumAccessPolicy(
             isPremium: false,
-            hideProPromotions: false,
           ),
         ),
       ]);

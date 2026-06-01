@@ -247,7 +247,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );
@@ -294,7 +294,7 @@ void main() {
       [
         materialsRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );

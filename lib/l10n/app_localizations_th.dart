@@ -754,12 +754,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get lockedValuePlaceholder => 'Premium เท่านั้น';
 
   @override
-  String get hideProPromotionsTitle => 'ซ่อนโปรโมชัน Pro';
-
-  @override
-  String get hideProPromotionsSubtitle => 'ซ่อนแบนเนอร์และข้อความอัปเกรด';
-
-  @override
   String get printerLimitReachedMessage =>
       'คุณบันทึกเครื่องพิมพ์ได้สูงสุด 2 เครื่องใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด';
 

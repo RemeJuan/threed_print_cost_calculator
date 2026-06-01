@@ -218,7 +218,7 @@ void main() {
     await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
       historyPagedProvider.overrideWith(() => notifier),
       premiumAccessPolicyProvider.overrideWithValue(
-        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: true),
+        DefaultPremiumAccessPolicy(isPremium: false),
       ),
     ]);
 

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -11,7 +10,6 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart'
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/lower_level_test_fakes.dart';
@@ -54,7 +52,6 @@ void main() {
   testWidgets('shows free nav with history', (tester) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
@@ -202,12 +199,6 @@ void main() {
       findsNothing,
     );
 
-    final container = ProviderScope.containerOf(
-      tester.element(find.byType(BottomNavigationBar)),
-    );
-    await container
-        .read(hideProPromotionsProvider.notifier)
-        .setHideProPromotions(true);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
@@ -227,7 +218,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
@@ -269,7 +259,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(premiumUser());
@@ -316,7 +305,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(premiumUser());
@@ -354,7 +342,6 @@ void main() {
   testWidgets('free app bar icons match the source of truth', (tester) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': false,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(freeUser());
@@ -380,7 +367,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
@@ -426,7 +412,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
@@ -495,12 +480,6 @@ void main() {
       2,
     );
 
-    final container = ProviderScope.containerOf(
-      tester.element(find.byType(BottomNavigationBar)),
-    );
-    await container
-        .read(hideProPromotionsProvider.notifier)
-        .setHideProPromotions(true);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
@@ -562,7 +541,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
@@ -584,12 +562,6 @@ void main() {
           .currentIndex,
       3,
     );
-    final container = ProviderScope.containerOf(
-      tester.element(find.byType(BottomNavigationBar)),
-    );
-    await container
-        .read(hideProPromotionsProvider.notifier)
-        .setHideProPromotions(false);
     await tester.pump();
     await tester.pump();
     await tester.pump();
@@ -659,7 +631,6 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({
       'run_count': 0,
-      'hideProPromotions': true,
     });
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(

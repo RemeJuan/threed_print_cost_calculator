@@ -473,8 +473,6 @@
   "historyExportPreviewSampleLabel": "[Contoh]",
   "historyExportPreviewAction": "Unduh / Bagikan dengan Premium",
   "lockedValuePlaceholder": "Hanya Premium",
-  "hideProPromotionsTitle": "Sembunyikan promosi Pro",
-  "hideProPromotionsSubtitle": "Sembunyikan banner dan prompt upgrade",
   "durationPickerLabel": "Waktu pencetakan (hh:mm)",
   "importGcodeButton": "Impor G-code (Isi otomatis)",
   "importGcodePageTitle": "Impor G-code (Beta)",

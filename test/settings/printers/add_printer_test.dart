@@ -52,7 +52,7 @@ void main() {
       [
         printersRepositoryProvider.overrideWithValue(repo),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );

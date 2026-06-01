@@ -766,13 +766,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get lockedValuePlaceholder => 'Solo Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Nascondi promozioni Pro';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Nascondi banner e richieste di aggiornamento';
-
-  @override
   String get printerLimitReachedMessage =>
       'Puoi salvare fino a 2 stampanti su Free. Passa a Premium per stampanti illimitate.';
 

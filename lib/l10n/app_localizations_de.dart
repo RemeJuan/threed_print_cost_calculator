@@ -761,13 +761,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get lockedValuePlaceholder => 'Nur Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Pro-Aktionen ausblenden';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Upgrade-Banner und Hinweise ausblenden';
-
-  @override
   String get printerLimitReachedMessage =>
       'Du kannst auf Free bis zu 2 Drucker speichern. Upgrade auf Premium für unbegrenzte Drucker.';
 
