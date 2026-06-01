@@ -116,7 +116,7 @@ void main() {
     ) async {
       final matrix = <({bool isPremium, bool shouldShow, bool locked})>[
         (isPremium: false, shouldShow: true, locked: true),
-        (isPremium: false, shouldShow: false, locked: false),
+        (isPremium: false, shouldShow: false, locked: true),
         (isPremium: true, shouldShow: true, locked: false),
         (isPremium: true, shouldShow: false, locked: false),
       ];
@@ -180,7 +180,7 @@ void main() {
       );
     });
 
-    testWidgets('free user with promos hidden does not see locked rows', (
+    testWidgets('free user sees locked rows', (
       tester,
     ) async {
       await pumpResults(
@@ -193,17 +193,17 @@ void main() {
         find.byKey(
           const ValueKey<String>('calculator.result.locked.wearAndTear'),
         ),
-        findsNothing,
+        findsOneWidget,
       );
       expect(
         find.byKey(const ValueKey<String>('calculator.result.locked.riskCost')),
-        findsNothing,
+        findsOneWidget,
       );
       expect(
         find.byKey(
           const ValueKey<String>('calculator.result.locked.labourCost'),
         ),
-        findsNothing,
+        findsOneWidget,
       );
     });
 
