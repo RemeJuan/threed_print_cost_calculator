@@ -35,6 +35,11 @@ class AddPrinter extends HookConsumerWidget {
     final wattController = useTextEditingController(text: state.wattage.value);
     final wattFocus = useFocusNode();
 
+    final avgWattController = useTextEditingController(
+      text: state.averageWattage.value,
+    );
+    final avgWattFocus = useFocusNode();
+
     if (loadSnapshot.connectionState != ConnectionState.done) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -45,6 +50,13 @@ class AddPrinter extends HookConsumerWidget {
 
     String? positiveNumberValidator(String? value) {
       return localizedValidationMessage(l10n, notifier.validateWattage(value));
+    }
+
+    String? averageWattageValidator(String? value) {
+      return localizedValidationMessage(
+        l10n,
+        notifier.validateAverageWattage(value),
+      );
     }
 
     String? bedSizeValidator(String? value) {
@@ -110,6 +122,27 @@ class AddPrinter extends HookConsumerWidget {
                       : AutovalidateMode.disabled,
                   decoration: InputDecoration(labelText: l10n.wattageLabel),
                   onChanged: notifier.updateWattage,
+                ),
+                FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.printers.averageWattage.input',
+                  ),
+                  controller: avgWattController,
+                  externalText: state.averageWattage.value,
+                  focusNode: avgWattFocus,
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  inputFormatters: localizedDecimalInputFormatters,
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  validator: averageWattageValidator,
+                  autovalidateMode: hasSubmitted.value
+                      ? AutovalidateMode.onUserInteraction
+                      : AutovalidateMode.disabled,
+                  decoration: InputDecoration(
+                    labelText: l10n.averageWattageLabel,
+                  ),
+                  onChanged: notifier.updateAverageWattage,
                 ),
                 const SizedBox(height: 16),
                 AppPrimaryButton(
