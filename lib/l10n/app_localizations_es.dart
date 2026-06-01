@@ -338,6 +338,17 @@ class AppLocalizationsEs extends AppLocalizations {
       'Una tarifa de configuración es un coste fijo por trabajo para calibración, preparación de máquina y administración. Ayuda a que impresiones pequeñas cubran gastos generales.';
 
   @override
+  String get wattageFaqHint => 'See FAQ for wattage details';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Rated vs Average wattage — what\'s the difference?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+
+  @override
   String get helpSupportLinksTitle => 'Enlaces';
 
   @override

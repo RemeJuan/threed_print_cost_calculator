@@ -337,6 +337,17 @@ class AppLocalizationsDe extends AppLocalizations {
       'Eine Einrichtungsgebühr ist ein fester Kostenbetrag pro Auftrag für Kalibrierung, Maschinenvorbereitung und Verwaltung. Sie hilft bei kleinen Drucken, Gemeinkosten zu decken.';
 
   @override
+  String get wattageFaqHint => 'See FAQ for wattage details';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Rated vs Average wattage — what\'s the difference?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+
+  @override
   String get helpSupportLinksTitle => 'Links';
 
   @override

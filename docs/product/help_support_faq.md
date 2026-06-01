@@ -23,6 +23,9 @@ Enter the *total spool weight* (e.g. 1kg, 750g). The app calculates per-gram cos
 **Why does electricity matter?**
 Long prints and high-wattage printers can significantly impact cost. Ignoring this leads to underpricing.
 
+**Rated vs Average wattage — what's the difference?**
+Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.
+
 **How is failure risk calculated?**  
 Risk % is applied only to *base print costs* (filament + electricity). It models expected loss from failed prints.
 

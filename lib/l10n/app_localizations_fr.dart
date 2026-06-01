@@ -339,6 +339,17 @@ class AppLocalizationsFr extends AppLocalizations {
       'Un frais de configuration est un coût fixe par travail pour l\'étalonnage, la préparation de la machine et l\'administration. Il aide les petites impressions à couvrir les frais généraux.';
 
   @override
+  String get wattageFaqHint => 'See FAQ for wattage details';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Rated vs Average wattage — what\'s the difference?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+
+  @override
   String get helpSupportLinksTitle => 'Liens';
 
   @override

@@ -720,6 +720,24 @@ abstract class AppLocalizations {
   /// **'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.'**
   String get helpSupportFaqSetupAnswer;
 
+  /// No description provided for @wattageFaqHint.
+  ///
+  /// In en, this message translates to:
+  /// **'See FAQ for wattage details'**
+  String get wattageFaqHint;
+
+  /// No description provided for @helpSupportFaqWattageQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated vs Average wattage — what\'s the difference?'**
+  String get helpSupportFaqWattageQuestion;
+
+  /// No description provided for @helpSupportFaqWattageAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.'**
+  String get helpSupportFaqWattageAnswer;
+
   /// No description provided for @helpSupportLinksTitle.
   ///
   /// In en, this message translates to:

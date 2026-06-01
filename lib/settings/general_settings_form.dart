@@ -7,9 +7,9 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/debounce_constants.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 
@@ -216,7 +216,7 @@ class GeneralSettings extends HookConsumerWidget {
                 keyboardType: TextInputType.number,
                 inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(
-                  labelText: l10n.wattageLabel,
+                  label: Text(l10n.wattageLabel),
                   suffixText: l10n.watt,
                 ),
                 onChanged: (value) async {
@@ -236,7 +236,7 @@ class GeneralSettings extends HookConsumerWidget {
                 keyboardType: TextInputType.number,
                 inputNormalizer: normalizeLeadingZeroNumericInput,
                 decoration: InputDecoration(
-                  labelText: l10n.averageWattageLabel,
+                  label: Text(l10n.averageWattageLabel),
                   suffixText: l10n.watt,
                 ),
                 onChanged: (value) async {
@@ -246,20 +246,18 @@ class GeneralSettings extends HookConsumerWidget {
             ),
           ],
         ),
-        if (shouldShowHideProPromotionsToggle) ...[
-          const SizedBox(height: 8),
-          SwitchListTile.adaptive(
-            key: const ValueKey<String>('settings.hideProPromotions.toggle'),
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            title: Text(l10n.hideProPromotionsTitle),
-            subtitle: Text(l10n.hideProPromotionsSubtitle),
-            value: hideProPromotions,
-            onChanged: (value) {
-              unawaited(hideProPromotionsNotifier.setHideProPromotions(value));
-            },
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              l10n.wattageFaqHint,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: TEXT_TERTIARY,
+              ),
+            ),
           ),
-        ],
+        ),
       ],
     );
   }

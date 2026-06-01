@@ -333,6 +333,17 @@ class AppLocalizationsTh extends AppLocalizations {
       'ค่าธรรมเนียมการตั้งค่าคือต้นทุนคงที่ต่อหนึ่งงานสำหรับการปรับเทียบ การเตรียมเครื่อง และการบริหาร ช่วยให้งานพิมพ์ขนาดเล็กสามารถครอบคลุมค่าใช้จ่ายทั่วไปได้';
 
   @override
+  String get wattageFaqHint => 'See FAQ for wattage details';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Rated vs Average wattage — what\'s the difference?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
+
+  @override
   String get helpSupportLinksTitle => 'ลิงก์';
 
   @override

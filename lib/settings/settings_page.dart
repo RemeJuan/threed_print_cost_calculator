@@ -71,7 +71,12 @@ class SettingsPage extends ConsumerWidget {
                 if (showPrinterLimitMessage)
                   Padding(
                     padding: const EdgeInsets.only(top: kAppSpace8),
-                    child: Text(l10n.printerLimitReachedMessage),
+                    child: Text(
+                      l10n.printerLimitReachedMessage,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: TEXT_TERTIARY,
+                      ),
+                    ),
                   ),
               ],
             ),

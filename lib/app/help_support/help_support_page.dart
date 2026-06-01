@@ -102,6 +102,10 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
         answer: l10n.helpSupportFaqElectricityAnswer,
       ),
       HelpSupportFaqEntry(
+        question: l10n.helpSupportFaqWattageQuestion,
+        answer: l10n.helpSupportFaqWattageAnswer,
+      ),
+      HelpSupportFaqEntry(
         question: l10n.helpSupportFaqRiskQuestion,
         answer: l10n.helpSupportFaqRiskAnswer,
       ),
