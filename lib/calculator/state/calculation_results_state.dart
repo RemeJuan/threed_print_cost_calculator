@@ -10,6 +10,7 @@ abstract class CalculationResult with _$CalculationResult {
     required num risk,
     required num labour,
     required num total,
+    @Default(WattageSource.rated) WattageSource electricitySource,
   }) = _CalculationResult;
 
   factory CalculationResult.empty() {

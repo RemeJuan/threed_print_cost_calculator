@@ -10,6 +10,7 @@ class CalculatorState with FormzMixin {
   final String activePrinterId;
   final String selectedMaterialId;
   final NumberInput watt;
+  final WattageSource wattageSource;
   final NumberInput kwCost;
   final NumberInput printWeight;
   final List<MaterialUsageInput> materialUsages;
@@ -45,6 +46,7 @@ class CalculatorState with FormzMixin {
     this.activePrinterId = '',
     this.selectedMaterialId = '',
     this.watt = const NumberInput.pure(),
+    this.wattageSource = WattageSource.rated,
     this.kwCost = const NumberInput.pure(),
     this.printWeight = const NumberInput.pure(),
     List<MaterialUsageInput>? materialUsages,
@@ -89,6 +91,7 @@ class CalculatorState with FormzMixin {
     String? activePrinterId,
     String? selectedMaterialId,
     NumberInput? watt,
+    WattageSource? wattageSource,
     NumberInput? kwCost,
     NumberInput? printWeight,
     List<MaterialUsageInput>? materialUsages,
@@ -124,6 +127,7 @@ class CalculatorState with FormzMixin {
       activePrinterId: activePrinterId ?? this.activePrinterId,
       selectedMaterialId: selectedMaterialId ?? this.selectedMaterialId,
       watt: watt ?? this.watt,
+      wattageSource: wattageSource ?? this.wattageSource,
       kwCost: kwCost ?? this.kwCost,
       printWeight: printWeight ?? this.printWeight,
       materialUsages: List.unmodifiable(materialUsages ?? this.materialUsages),
