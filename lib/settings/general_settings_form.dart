@@ -36,15 +36,19 @@ class GeneralSettings extends HookConsumerWidget {
     final electricityFocus = useFocusNode();
     final wattController = useTextEditingController();
     final wattFocus = useFocusNode();
+    final avgWattController = useTextEditingController();
+    final avgWattFocus = useFocusNode();
 
     final electricityDebounceRef = useRef<Timer?>(null);
     final wattDebounceRef = useRef<Timer?>(null);
+    final avgWattDebounceRef = useRef<Timer?>(null);
 
     // Ensure debounce timers are cancelled when widget is disposed
     useEffect(() {
       return () {
         electricityDebounceRef.value?.cancel();
         wattDebounceRef.value?.cancel();
+        avgWattDebounceRef.value?.cancel();
       };
     }, []);
 
@@ -99,6 +103,49 @@ class GeneralSettings extends HookConsumerWidget {
       });
     }
 
+    Future<void> persistAverageWatt(String value) async {
+      avgWattDebounceRef.value?.cancel();
+
+      if (value.trim().isEmpty) {
+        avgWattDebounceRef.value = Timer(debounce400ms, () async {
+          try {
+            await settingsService.update(
+              (settings) => settings.copyWith(averageWattage: ''),
+            );
+          } catch (e, st) {
+            logger.error(
+              AppLogCategory.ui,
+              'Failed to clear average wattage',
+              context: {'setting': 'averageWattage'},
+              error: e,
+              stackTrace: st,
+            );
+          }
+        });
+        return;
+      }
+
+      final parsed = tryParseLocalizedInt(value);
+      if (parsed == null) return;
+
+      avgWattDebounceRef.value = Timer(debounce400ms, () async {
+        try {
+          await settingsService.update(
+            (settings) =>
+                settings.copyWith(averageWattage: parsed.toString()),
+          );
+        } catch (e, st) {
+          logger.error(
+            AppLogCategory.ui,
+            'Failed to persist average wattage',
+            context: {'setting': 'averageWattage'},
+            error: e,
+            stackTrace: st,
+          );
+        }
+      });
+    }
+
     // Use a hook to subscribe to the database record stream at top-level
     final snapshot = useStream<GeneralSettingsModel>(
       settingsRepository.watchSettings(),
@@ -125,60 +172,87 @@ class GeneralSettings extends HookConsumerWidget {
       if (!wattFocus.hasFocus) {
         wattController.text = data.wattage.toString();
       }
+      if (!avgWattFocus.hasFocus) {
+        avgWattController.text = data.averageWattage.toString();
+      }
       return null;
-    }, [data.electricityCost, data.wattage]);
+    }, [data.electricityCost, data.wattage, data.averageWattage]);
 
     return Column(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: FocusSafeTextField(
-                key: const ValueKey<String>('settings.electricityCost.input'),
-                controller: electricityController,
-                externalText: data.electricityCost.toString(),
-                focusNode: electricityFocus,
-                keyboardType: TextInputType.number,
-                inputNormalizer: normalizeLeadingZeroNumericInput,
-                decoration: InputDecoration(
-                  labelText: l10n.electricityCostSettingsLabel,
-                  prefixText:
-                      currencySettings.currencySymbol.isNotEmpty &&
-                          currencySettings.currencyPosition == 'before'
-                      ? currencySettings.currencySymbol +
-                            (currencySettings.currencySpacing ? ' ' : '')
-                      : null,
-                  suffixText:
-                      currencySettings.currencyPosition == 'after' &&
-                          currencySettings.currencySymbol.isNotEmpty
-                      ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
-                      : l10n.kwh,
+          Row(
+            children: [
+              Expanded(
+                child: FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.electricityCost.input',
+                  ),
+                  controller: electricityController,
+                  externalText: data.electricityCost.toString(),
+                  focusNode: electricityFocus,
+                  keyboardType: TextInputType.number,
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  decoration: InputDecoration(
+                    labelText: l10n.electricityCostSettingsLabel,
+                    prefixText:
+                        currencySettings.currencySymbol.isNotEmpty &&
+                            currencySettings.currencyPosition == 'before'
+                        ? currencySettings.currencySymbol +
+                              (currencySettings.currencySpacing ? ' ' : '')
+                        : null,
+                    suffixText:
+                        currencySettings.currencyPosition == 'after' &&
+                            currencySettings.currencySymbol.isNotEmpty
+                        ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
+                        : l10n.kwh,
+                  ),
+                  onChanged: (value) async {
+                    await persistElectricity(value);
+                  },
                 ),
-                onChanged: (value) async {
-                  await persistElectricity(value);
-                },
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: FocusSafeTextField(
-                key: const ValueKey<String>('settings.generalWattage.input'),
-                controller: wattController,
-                externalText: data.wattage.toString(),
-                focusNode: wattFocus,
-                keyboardType: TextInputType.number,
-                inputNormalizer: normalizeLeadingZeroNumericInput,
-                decoration: InputDecoration(
-                  labelText: l10n.wattLabel,
-                  suffixText: l10n.watt,
+              const SizedBox(width: 16),
+              Expanded(
+                child: FocusSafeTextField(
+                  key: const ValueKey<String>(
+                    'settings.generalWattage.input',
+                  ),
+                  controller: wattController,
+                  externalText: data.wattage.toString(),
+                  focusNode: wattFocus,
+                  keyboardType: TextInputType.number,
+                  inputNormalizer: normalizeLeadingZeroNumericInput,
+                  decoration: InputDecoration(
+                    labelText: l10n.wattageLabel,
+                    suffixText: l10n.watt,
+                  ),
+                  onChanged: (value) async {
+                    await persistWatt(value);
+                  },
                 ),
-                onChanged: (value) async {
-                  await persistWatt(value);
-                },
               ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: FocusSafeTextField(
+              key: const ValueKey<String>(
+                'settings.generalAverageWattage.input',
+              ),
+              controller: avgWattController,
+              externalText: data.averageWattage.toString(),
+              focusNode: avgWattFocus,
+              keyboardType: TextInputType.number,
+              inputNormalizer: normalizeLeadingZeroNumericInput,
+              decoration: InputDecoration(
+                labelText: l10n.averageWattageLabel,
+                suffixText: l10n.watt,
+              ),
+              onChanged: (value) async {
+                await persistAverageWatt(value);
+              },
             ),
-          ],
-        ),
+          ),
         if (shouldShowHideProPromotionsToggle) ...[
           const SizedBox(height: 8),
           SwitchListTile.adaptive(
