@@ -15,10 +15,18 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 /// Reusable material picker widget. Uses the shared materials provider so it
 /// updates live without creating duplicate listeners.
 class MaterialPicker extends HookConsumerWidget {
-  const MaterialPicker({required this.onSelected, this.excludedIds, super.key});
+  const MaterialPicker({
+    required this.onSelected,
+    this.excludedIds,
+    this.onUnsavedSelected,
+    super.key,
+  });
 
   final ValueChanged<MaterialModel> onSelected;
   final Set<String>? excludedIds;
+  final VoidCallback? onUnsavedSelected;
+
+  static const _unsavedSentinelId = '__unsaved_picker_option__';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,57 +54,16 @@ class MaterialPicker extends HookConsumerWidget {
           return !excludedIds!.contains(id);
         }).toList();
 
-        if (filtered.isEmpty) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(kAppSpace16),
-                child: TextField(
-                  key: const ValueKey<String>(
-                    'calculator.materialPicker.search.input',
-                  ),
-                  decoration: InputDecoration(
-                    labelText: l10n.searchMaterialsHint,
-                    prefixIcon: const Icon(Icons.search),
-                  ),
-                  onChanged: (value) => query.value = value,
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(kAppSpace16),
-                    child: Text(l10n.addAtLeastOneMaterial),
-                  ),
-                ),
-              ),
-              // Add button is intentionally here so users can create new materials
-              // if none exist yet.
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kAppSpace16,
-                  vertical: kAppSpace8,
-                ),
-                child: AppSecondaryButton(
-                  key: const ValueKey<String>(
-                    'calculator.materialPicker.add.button',
-                  ),
-                  icon: const Icon(Icons.add),
-                  label: l10n.addMaterialButton,
-                  onPressed: () async {
-                    final created = await showDialog<MaterialModel?>(
-                      context: context,
-                      builder: (dialogContext) => const MaterialForm(),
-                    );
-
-                    if (created != null) {
-                      // Notify parent; parent decides whether to close the sheet
-                      onSelected(created);
-                    }
-                  },
-                ),
-              ),
-            ],
+        if (onUnsavedSelected != null) {
+          filtered.add(
+            MaterialModel(
+              id: _unsavedSentinelId,
+              name: l10n.unsavedMaterialOptionLabel,
+              cost: '0',
+              color: 'Unknown',
+              weight: '0',
+              archived: false,
+            ),
           );
         }
 
@@ -116,29 +83,41 @@ class MaterialPicker extends HookConsumerWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: filtered.length,
-                itemBuilder: (context, index) {
-                  final material = filtered[index];
-                  final weight = parseLocalizedNumOrFallback(material.weight);
-                  final cost = parseLocalizedNumOrFallback(material.cost);
-                  final costPerKg = weight <= 0 ? 0 : (cost / weight) * 1000;
-
-                  return ListTile(
-                    key: ValueKey<String>(
-                      'calculator.materialPicker.item.${material.name}',
+              child: filtered.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(kAppSpace16),
+                        child: Text(l10n.addAtLeastOneMaterial),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) {
+                        final item = filtered[index];
+                        final weight = parseLocalizedNumOrFallback(item.weight);
+                        final cost = parseLocalizedNumOrFallback(item.cost);
+                        final costPerKg = weight <= 0
+                            ? 0
+                            : (cost / weight) * 1000;
+                        return ListTile(
+                          key: ValueKey<String>(
+                            'calculator.materialPicker.item.${item.name}',
+                          ),
+                          title: Text(item.name),
+                          subtitle: Text(
+                            '${item.color} \u2022 ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
+                          ),
+                          onTap: () {
+                            if (item.id == _unsavedSentinelId) {
+                              onUnsavedSelected!();
+                            } else {
+                              onSelected(item);
+                            }
+                          },
+                        );
+                      },
                     ),
-                    title: Text(material.name),
-                    subtitle: Text(
-                      '${material.color} \u2022 ${l10n.materialCostPerKilogramLabel(formatCurrencyValue(costPerKg, currencySymbol: currencySettings.currencySymbol, currencyPosition: currencySettings.currencyPosition, currencySpacing: currencySettings.currencySpacing))}',
-                    ),
-                    onTap: () => onSelected(material),
-                  );
-                },
-              ),
             ),
-            // Add material button at the bottom so the user can create a new
-            // material even when the list already contains items.
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: kAppSpace16,
