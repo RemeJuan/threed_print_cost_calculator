@@ -145,6 +145,7 @@ class SaveForm extends HookConsumerWidget {
                     final model = HistoryModel(
                       name: name.value,
                       electricityCost: data.electricity,
+                      electricitySource: data.electricitySource.name,
                       filamentCost: data.filament,
                       totalCost: data.total,
                       riskCost: data.risk,
