@@ -73,12 +73,23 @@ class SaveForm extends HookConsumerWidget {
                         : materialsSum;
 
                     final usages = calcState.materialUsages
-                        .map((usage) => usage.toMap())
+                        .map((usage) {
+                          if (usage.isUnsaved &&
+                              usage.materialName.trim().isEmpty) {
+                            return usage.copyWith(
+                              materialName: l10n.unsavedMaterialOptionLabel,
+                            ).toMap();
+                          }
+                          return usage.toMap();
+                        })
                         .toList();
 
                     if (calcState.materialUsages.isNotEmpty) {
-                      final firstName =
-                          calcState.materialUsages.first.materialName;
+                      final firstUsage = calcState.materialUsages.first;
+                      final firstName = firstUsage.isUnsaved &&
+                              firstUsage.materialName.trim().isEmpty
+                          ? l10n.unsavedMaterialOptionLabel
+                          : firstUsage.materialName;
                       final count = calcState.materialUsages.length;
                       materialName = count > 1
                           ? '$firstName +${count - 1}'
