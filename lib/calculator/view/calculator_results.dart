@@ -50,7 +50,9 @@ class CalculatorResults extends ConsumerWidget {
         children: [
           _itemRow(
             context,
-            l10n.resultElectricityPrefix,
+            results.electricitySource == WattageSource.average
+                ? l10n.resultElectricityAverage
+                : l10n.resultElectricityRated,
             results.electricity,
             currencySettings: currencySettings,
             key: const ValueKey<String>('calculator.result.electricityCost'),

@@ -21,7 +21,9 @@ class HistoryItemCostRows extends StatelessWidget {
       children: [
         _costRow(
           context,
-          l10n.electricityCostLabel,
+          data.electricitySource == WattageSource.average.name
+              ? l10n.resultElectricityAverage
+              : l10n.resultElectricityRated,
           data.electricityCost,
           key: ValueKey<String>('$itemKeyPrefix.electricityCost'),
         ),
