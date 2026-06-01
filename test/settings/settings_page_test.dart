@@ -250,7 +250,7 @@ void main() {
       );
       expect(
         find.byType(SwitchListTile),
-        findsNothing,
+        findsOneWidget,
       );
 
       final printersTopLeft = tester.getTopLeft(
