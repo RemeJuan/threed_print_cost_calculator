@@ -4,7 +4,7 @@ O 3D Print Cost Calculator ajuda makers e pequenas empresas de impressão 3D a c
 
 Use para calcular trabalhos com consistência, proteger sua margem e ir mais rápido da estimativa ao preço.
 
-Para hobistas, makers, rendas extras e pequenas empresas de impressão 3D.
+Para hobbistas, makers, rendas extras e pequenas empresas de impressão 3D.
 
 O plano gratuito inclui:
 

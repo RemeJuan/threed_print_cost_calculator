@@ -1,6 +1,6 @@
 3D Print Cost Calculator aide les makers et les petites entreprises d'impression 3D à calculer le coût réel de chaque impression avant d'établir un devis, de vendre ou de lancer un travail.
 
-La plupart des makers ne calculent que le coût du filament. Les vrais coûts d'impression incluent aussi l'électricité, la consommation de l'imprimante, les impressions ratées, la main-d'oeuvre, le temps de préparation et les frais généraux.
+La plupart des makers ne calculent que le coût du filament. Les vrais coûts d'impression incluent aussi l'électricité, la consommation de l'imprimante, les impressions ratées, la main-d’œuvre, le temps de préparation et les frais généraux.
 
 Utilisez l'app pour chiffrer vos impressions avec confiance, protéger vos marges et garder une tarification cohérente.
 
@@ -34,7 +34,7 @@ Débloquez :
 • Import de G-code par lot
 • Configuration de lots plus rapide à partir de fichiers G-code
 • Calcul par lot illimité
-• Calcul de la main-d'oeuvre
+• Calcul de la main-d’œuvre
 • Modélisation du risque d'échec
 • Gestion de la marge
 • Frais de configuration
