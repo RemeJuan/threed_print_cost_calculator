@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorSettingsSyncProvider = Provider<CalculatorSettingsSync>(
@@ -29,7 +30,6 @@ class CalculatorSettingsSync {
     final preferencesRepository = ref.read(
       calculatorPreferencesRepositoryProvider,
     );
-    final printerKey = settings.activePrinter;
 
     final spoolWeightVal = await preferencesRepository.getStringValue(
       'spoolWeight',
@@ -38,23 +38,20 @@ class CalculatorSettingsSync {
       'spoolCost',
     );
 
-    var watt = tryParseLocalizedNum(settings.wattage);
-    if (printerKey.isNotEmpty) {
-      final printer = await ref
-          .read(printersRepositoryProvider)
-          .getPrinterById(printerKey);
-      if (printer != null) {
-        final parsedWatt = tryParseLocalizedNum(printer.wattage);
-        if (parsedWatt != null) {
-          watt = parsedWatt;
-        }
-      }
-    }
+    final printers = await ref.read(printersRepositoryProvider).getPrinters();
+    final resolution = ref.read(electricityResolverProvider).resolve(
+      printers: printers,
+      activePrinterId: settings.activePrinter,
+      settings: settings,
+    );
+    final watt = resolution.wattage;
+    final wattageSource = resolution.source;
 
     final nextState = CalculatorState(
       activePrinterId: settings.activePrinter,
       selectedMaterialId: settings.selectedMaterial,
       watt: NumberInput.dirty(value: watt),
+      wattageSource: wattageSource,
       kwCost: _settingsNumber(settings.electricityCost),
       spoolWeight: NumberInput.dirty(
         value: tryParseLocalizedNum(spoolWeightVal),

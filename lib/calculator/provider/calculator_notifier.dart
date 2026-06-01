@@ -22,6 +22,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorProvider =
@@ -203,11 +204,15 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         .read(printersRepositoryProvider)
         .getPrinterById(printerId);
 
+    WattageResolution? resolution;
+    if (printer != null) {
+      resolution = ref.read(electricityResolverProvider).resolveFromPrinter(printer);
+    }
+
     state = state.copyWith(
       activePrinterId: printerId,
-      watt: NumberInput.dirty(
-        value: tryParseLocalizedNum(printer?.wattage) ?? state.watt.value,
-      ),
+      watt: NumberInput.dirty(value: resolution?.wattage ?? (state.watt.value ?? 0)),
+      wattageSource: resolution?.source ?? WattageSource.rated,
     );
     submit();
   }
@@ -586,6 +591,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       risk: num.parse(frCost.toStringAsFixed(2)),
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
+      electricitySource: state.wattageSource,
     );
 
     final pricing = PricingCalculator.calculate(
