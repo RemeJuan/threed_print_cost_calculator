@@ -3,6 +3,8 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_s
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/pricing_calculator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 class BatchSummaryItemBreakdown {
   const BatchSummaryItemBreakdown({
@@ -57,7 +59,13 @@ class BatchSummaryResult {
 class BatchSummaryCalculator {
   const BatchSummaryCalculator._();
 
-  static BatchSummaryResult calculate(BatchCostingState state) {
+  static const _resolver = ElectricityResolver();
+
+  static BatchSummaryResult calculate(
+    BatchCostingState state, {
+    Map<String, PrinterModel>? printersById,
+    num kwCost = 0,
+  }) {
     final items = <BatchSummaryItemBreakdown>[];
     var totalQuantity = 0;
     var totalWeightG = 0.0;
@@ -83,7 +91,14 @@ class BatchSummaryCalculator {
       totalWeightG += itemWeight * item.quantity;
       totalPrintMinutes += itemDurationMin * item.quantity;
 
-      final itemBaseCost = _itemBaseCost(item, batchLabourRate, state.pricing);
+      final itemWattage = _resolveItemWattage(item, printersById);
+      final itemBaseCost = _itemBaseCost(
+        item,
+        batchLabourRate,
+        state.pricing,
+        wattage: itemWattage,
+        kwCost: kwCost,
+      );
       if (state.pricing.failureRisk.scope == BatchPricingScope.item) {
         failureRiskMonetary += itemBaseCost * batchFailureRisk / 100;
       }
@@ -179,11 +194,27 @@ class BatchSummaryCalculator {
   static num _itemBaseCost(
     BatchCostingItem item,
     num batchLabourRate,
-    BatchPricingState pricing,
-  ) {
+    BatchPricingState pricing, {
+    num wattage = 0,
+    num kwCost = 0,
+  }) {
     final labourRate = _scopeValue(pricing.labourRate, batchLabourRate);
     final hours = (item.printDuration?.inMinutes ?? 0) / 60;
-    return hours * labourRate * item.quantity;
+    final labour = hours * labourRate * item.quantity;
+    final electricity = (wattage / 1000) * hours * kwCost * item.quantity;
+    return labour + electricity;
+  }
+
+  static num _resolveItemWattage(
+    BatchCostingItem item,
+    Map<String, PrinterModel>? printersById,
+  ) {
+    if (printersById == null) return 0;
+    final printerId = item.printerId;
+    if (printerId == null) return 0;
+    final printer = printersById[printerId];
+    if (printer == null) return 0;
+    return _resolver.resolveFromPrinter(printer).wattage;
   }
 
   static num _itemAdditionalCost(
