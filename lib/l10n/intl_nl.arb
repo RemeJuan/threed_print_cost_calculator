@@ -839,7 +839,11 @@
   "customMaterialUsedLabel": "Gebruikt",
   "helpSupportFaqPremiumQuestion": "Wat voegt Premium toe?",
   "helpSupportFaqPremiumAnswer": "Free bevat alles wat nodig is om printkosten te berekenen, inclusief elektriciteit, multi-materiaal prints, G-code import en batchkostenberekening.\n\nPremium voegt geavanceerde prijstools toe zoals arbeid, risico op mislukking, opslag, instelkosten, gedetailleerde kostenuitsplitsingen, onbeperkte gegevensopslag en filamentvoorraadbeheer.",
+  "helpSupportFaqPremiumUpgradeCta": "Upgrade naar Premium",
   "helpSupportFaqPremiumComparisonCta": "Volledige vergelijking bekijken →",
+  "settingsPremiumCardTitle": "Upgrade naar Premium",
+  "settingsPremiumCardBody": "Geavanceerde prijstools, onbeperkt gebruik en voorraadtracking.",
+  "settingsPremiumCardCta": "Upgrade",
   "calculatorPremiumFooterBody": "Premium voegt geavanceerde prijstools toe.",
   "calculatorPremiumFooterCta": "Meer informatie →"
 }

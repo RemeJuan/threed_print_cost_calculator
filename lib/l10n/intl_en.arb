@@ -562,7 +562,7 @@
   "batchGcodeImportParseFailure": "This file could not be imported.",
   "batchGcodeImportContinueButton": "Continue to batch review",
   "batchGcodeImportRetryButton": "Choose again",
-  "batchGcodeImportImportingLabel": "Importing\u2026",
+  "batchGcodeImportImportingLabel": "Importing…",
   "batchGcodeImportPendingLabel": "Pending",
   "batchGcodeImportNeedsDetailsLabel": "Details needed",
   "batchGcodeImportReadyLabel": "Ready",
@@ -767,7 +767,11 @@
   },
   "helpSupportFaqPremiumQuestion": "What does Premium add?",
   "helpSupportFaqPremiumAnswer": "Free includes everything needed to calculate print costs, including electricity, multi-material prints, G-code import, and batch costing.\n\nPremium adds advanced pricing tools such as labour, failure risk, markup, setup fees, detailed cost breakdowns, unlimited saved data, and filament inventory tracking.",
+  "helpSupportFaqPremiumUpgradeCta": "Upgrade to Premium",
   "helpSupportFaqPremiumComparisonCta": "View full comparison →",
+  "settingsPremiumCardTitle": "Upgrade to Premium",
+  "settingsPremiumCardBody": "Advanced pricing tools, unlimited usage, and inventory tracking.",
+  "settingsPremiumCardCta": "Upgrade",
   "calculatorPremiumFooterBody": "Premium adds advanced pricing tools.",
   "calculatorPremiumFooterCta": "Learn more →"
 }

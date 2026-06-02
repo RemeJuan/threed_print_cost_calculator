@@ -1834,8 +1834,21 @@ class AppLocalizationsId extends AppLocalizations {
       'Free mencakup semua yang diperlukan untuk menghitung biaya cetak, termasuk listrik, cetakan multi-material, impor G-code, dan penetapan biaya batch.\n\nPremium menambahkan alat penetapan harga lanjutan seperti tenaga kerja, risiko kegagalan, markup, biaya penyiapan, rincian biaya terperinci, penyimpanan data tak terbatas, dan pelacakan inventaris filamen.';
 
   @override
+  String get helpSupportFaqPremiumUpgradeCta => 'Tingkatkan ke Premium';
+
+  @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Lihat perbandingan lengkap →';
+
+  @override
+  String get settingsPremiumCardTitle => 'Tingkatkan ke Premium';
+
+  @override
+  String get settingsPremiumCardBody =>
+      'Alat penetapan harga lanjutan, penggunaan tanpa batas, dan pelacakan inventaris.';
+
+  @override
+  String get settingsPremiumCardCta => 'Tingkatkan';
 
   @override
   String get calculatorPremiumFooterBody =>

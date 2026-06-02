@@ -1866,8 +1866,21 @@ class AppLocalizationsDe extends AppLocalizations {
       'Free bietet alles, was Sie zur Berechnung der Druckkosten benötigen, einschließlich Strom, Multi-Material-Drucke, G-Code-Import und Stapelkalkulation.\n\nPremium erweitert die Möglichkeiten mit Werkzeugen für Arbeitskosten, Ausfallrisiko, Aufschlag, Einrichtungsgebühren, detaillierte Kostenaufschlüsselung, unbegrenzte Speicherung und Filamentbestandsverwaltung.';
 
   @override
+  String get helpSupportFaqPremiumUpgradeCta => 'Auf Premium upgraden';
+
+  @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Vollständigen Vergleich anzeigen →';
+
+  @override
+  String get settingsPremiumCardTitle => 'Auf Premium upgraden';
+
+  @override
+  String get settingsPremiumCardBody =>
+      'Erweiterte Preiswerkzeuge, unbegrenzte Nutzung und Bestandsverfolgung.';
+
+  @override
+  String get settingsPremiumCardCta => 'Upgraden';
 
   @override
   String get calculatorPremiumFooterBody =>

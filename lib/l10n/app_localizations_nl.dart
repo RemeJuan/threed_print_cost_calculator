@@ -1861,8 +1861,21 @@ class AppLocalizationsNl extends AppLocalizations {
       'Free bevat alles wat nodig is om printkosten te berekenen, inclusief elektriciteit, multi-materiaal prints, G-code import en batchkostenberekening.\n\nPremium voegt geavanceerde prijstools toe zoals arbeid, risico op mislukking, opslag, instelkosten, gedetailleerde kostenuitsplitsingen, onbeperkte gegevensopslag en filamentvoorraadbeheer.';
 
   @override
+  String get helpSupportFaqPremiumUpgradeCta => 'Upgrade naar Premium';
+
+  @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Volledige vergelijking bekijken →';
+
+  @override
+  String get settingsPremiumCardTitle => 'Upgrade naar Premium';
+
+  @override
+  String get settingsPremiumCardBody =>
+      'Geavanceerde prijstools, onbeperkt gebruik en voorraadtracking.';
+
+  @override
+  String get settingsPremiumCardCta => 'Upgrade';
 
   @override
   String get calculatorPremiumFooterBody =>

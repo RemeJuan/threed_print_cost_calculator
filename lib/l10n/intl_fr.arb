@@ -840,7 +840,11 @@
   "customMaterialUsedLabel": "Utilisé",
   "helpSupportFaqPremiumQuestion": "Qu'est-ce que Premium apporte ?",
   "helpSupportFaqPremiumAnswer": "Free comprend tout le nécessaire pour calculer les coûts d'impression, y compris l'électricité, les impressions multi-matériaux, l'importation G-code et le calcul par lot.\n\nPremium ajoute des outils de tarification avancés tels que la main-d'œuvre, le risque d'échec, la majoration, les frais de configuration, des analyses de coûts détaillées, un stockage de données illimité et le suivi des stocks de filament.",
+  "helpSupportFaqPremiumUpgradeCta": "Passer à Premium",
   "helpSupportFaqPremiumComparisonCta": "Voir la comparaison complète →",
+  "settingsPremiumCardTitle": "Passer à Premium",
+  "settingsPremiumCardBody": "Outils de tarification avancés, utilisation illimitée et suivi des stocks.",
+  "settingsPremiumCardCta": "Passer",
   "calculatorPremiumFooterBody": "Premium ajoute des outils de tarification avancés.",
   "calculatorPremiumFooterCta": "En savoir plus →"
 }

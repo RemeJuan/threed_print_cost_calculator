@@ -1828,7 +1828,20 @@ class AppLocalizationsTh extends AppLocalizations {
       'Free มีทุกสิ่งที่จำเป็นสำหรับการคำนวณต้นทุนการพิมพ์ รวมถึงค่าไฟฟ้า การพิมพ์หลายวัสดุ การนำเข้า G-code และการคิดต้นทุนแบบแบตช์\n\nPremium เพิ่มเครื่องมือกำหนดราคาขั้นสูง เช่น ค่าแรง ความเสี่ยงจากความล้มเหลว ส่วนเพิ่ม ค่าตั้งค่า รายละเอียดต้นทุน การจัดเก็บข้อมูลไม่จำกัด และการติดตามสินค้าคงคลังฟิลาเมนต์';
 
   @override
+  String get helpSupportFaqPremiumUpgradeCta => 'อัปเกรดเป็นพรีเมียม';
+
+  @override
   String get helpSupportFaqPremiumComparisonCta => 'ดูการเปรียบเทียบแบบเต็ม →';
+
+  @override
+  String get settingsPremiumCardTitle => 'อัปเกรดเป็นพรีเมียม';
+
+  @override
+  String get settingsPremiumCardBody =>
+      'เครื่องมือคำนวณราคาขั้นสูง การใช้งานไม่จำกัด และการติดตามสินค้าคงคลัง';
+
+  @override
+  String get settingsPremiumCardCta => 'อัปเกรด';
 
   @override
   String get calculatorPremiumFooterBody =>

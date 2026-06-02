@@ -839,7 +839,11 @@
   "customMaterialUsedLabel": "ที่ใช้",
   "helpSupportFaqPremiumQuestion": "Premium เพิ่มอะไรบ้าง?",
   "helpSupportFaqPremiumAnswer": "Free มีทุกสิ่งที่จำเป็นสำหรับการคำนวณต้นทุนการพิมพ์ รวมถึงค่าไฟฟ้า การพิมพ์หลายวัสดุ การนำเข้า G-code และการคิดต้นทุนแบบแบตช์\n\nPremium เพิ่มเครื่องมือกำหนดราคาขั้นสูง เช่น ค่าแรง ความเสี่ยงจากความล้มเหลว ส่วนเพิ่ม ค่าตั้งค่า รายละเอียดต้นทุน การจัดเก็บข้อมูลไม่จำกัด และการติดตามสินค้าคงคลังฟิลาเมนต์",
+  "helpSupportFaqPremiumUpgradeCta": "อัปเกรดเป็นพรีเมียม",
   "helpSupportFaqPremiumComparisonCta": "ดูการเปรียบเทียบแบบเต็ม →",
+  "settingsPremiumCardTitle": "อัปเกรดเป็นพรีเมียม",
+  "settingsPremiumCardBody": "เครื่องมือคำนวณราคาขั้นสูง การใช้งานไม่จำกัด และการติดตามสินค้าคงคลัง",
+  "settingsPremiumCardCta": "อัปเกรด",
   "calculatorPremiumFooterBody": "Premium เพิ่มเครื่องมือกำหนดราคาขั้นสูง",
   "calculatorPremiumFooterCta": "เรียนรู้เพิ่มเติม →"
 }

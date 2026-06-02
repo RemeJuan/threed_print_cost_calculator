@@ -1872,8 +1872,21 @@ class AppLocalizationsIt extends AppLocalizations {
       'Free include tutto il necessario per calcolare i costi di stampa, inclusi elettricità, stampe multi-materiale, importazione G-code e calcolo batch.\n\nPremium aggiunge strumenti di prezzo avanzati come manodopera, rischio di guasto, ricarico, tariffe di configurazione, ripartizione dettagliata dei costi, archiviazione dati illimitata e gestione dell\'inventario dei filamenti.';
 
   @override
+  String get helpSupportFaqPremiumUpgradeCta => 'Passa a Premium';
+
+  @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Vedi il confronto completo →';
+
+  @override
+  String get settingsPremiumCardTitle => 'Passa a Premium';
+
+  @override
+  String get settingsPremiumCardBody =>
+      'Strumenti di prezzo avanzati, utilizzo illimitato e monitoraggio dell\'inventario.';
+
+  @override
+  String get settingsPremiumCardCta => 'Passa';
 
   @override
   String get calculatorPremiumFooterBody =>

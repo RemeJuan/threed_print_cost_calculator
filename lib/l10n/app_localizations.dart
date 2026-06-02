@@ -3395,11 +3395,35 @@ abstract class AppLocalizations {
   /// **'Free includes everything needed to calculate print costs, including electricity, multi-material prints, G-code import, and batch costing.\n\nPremium adds advanced pricing tools such as labour, failure risk, markup, setup fees, detailed cost breakdowns, unlimited saved data, and filament inventory tracking.'**
   String get helpSupportFaqPremiumAnswer;
 
+  /// No description provided for @helpSupportFaqPremiumUpgradeCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get helpSupportFaqPremiumUpgradeCta;
+
   /// No description provided for @helpSupportFaqPremiumComparisonCta.
   ///
   /// In en, this message translates to:
   /// **'View full comparison →'**
   String get helpSupportFaqPremiumComparisonCta;
+
+  /// No description provided for @settingsPremiumCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Premium'**
+  String get settingsPremiumCardTitle;
+
+  /// No description provided for @settingsPremiumCardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced pricing tools, unlimited usage, and inventory tracking.'**
+  String get settingsPremiumCardBody;
+
+  /// No description provided for @settingsPremiumCardCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get settingsPremiumCardCta;
 
   /// No description provided for @calculatorPremiumFooterBody.
   ///

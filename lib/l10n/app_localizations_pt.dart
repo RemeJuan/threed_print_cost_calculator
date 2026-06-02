@@ -1868,7 +1868,20 @@ class AppLocalizationsPt extends AppLocalizations {
       'O Free inclui tudo o que é necessário para calcular os custos de impressão, incluindo eletricidade, impressões multi-material, importação de G-code e cálculo por lote.\n\nO Premium adiciona ferramentas de preços avançadas como mão de obra, risco de falha, margem, taxas de configuração, discriminação detalhada de custos, armazenamento ilimitado de dados e controlo de inventário de filamento.';
 
   @override
+  String get helpSupportFaqPremiumUpgradeCta => 'Atualize para Premium';
+
+  @override
   String get helpSupportFaqPremiumComparisonCta => 'Ver comparação completa →';
+
+  @override
+  String get settingsPremiumCardTitle => 'Atualize para Premium';
+
+  @override
+  String get settingsPremiumCardBody =>
+      'Ferramentas avançadas de preços, utilização ilimitada e controlo de inventário.';
+
+  @override
+  String get settingsPremiumCardCta => 'Atualizar';
 
   @override
   String get calculatorPremiumFooterBody =>

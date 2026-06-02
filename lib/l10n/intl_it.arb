@@ -838,7 +838,11 @@
   "customMaterialUsedLabel": "Usato",
   "helpSupportFaqPremiumQuestion": "Cosa aggiunge Premium?",
   "helpSupportFaqPremiumAnswer": "Free include tutto il necessario per calcolare i costi di stampa, inclusi elettricità, stampe multi-materiale, importazione G-code e calcolo batch.\n\nPremium aggiunge strumenti di prezzo avanzati come manodopera, rischio di guasto, ricarico, tariffe di configurazione, ripartizione dettagliata dei costi, archiviazione dati illimitata e gestione dell'inventario dei filamenti.",
+  "helpSupportFaqPremiumUpgradeCta": "Passa a Premium",
   "helpSupportFaqPremiumComparisonCta": "Vedi il confronto completo →",
+  "settingsPremiumCardTitle": "Passa a Premium",
+  "settingsPremiumCardBody": "Strumenti di prezzo avanzati, utilizzo illimitato e monitoraggio dell'inventario.",
+  "settingsPremiumCardCta": "Passa",
   "calculatorPremiumFooterBody": "Premium aggiunge strumenti di prezzo avanzati.",
   "calculatorPremiumFooterCta": "Scopri di più →"
 }

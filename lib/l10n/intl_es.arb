@@ -837,7 +837,11 @@
   "customMaterialUsedLabel": "Usado",
   "helpSupportFaqPremiumQuestion": "¿Qué añade Premium?",
   "helpSupportFaqPremiumAnswer": "Free incluye todo lo necesario para calcular los costes de impresión, incluyendo electricidad, impresiones multimaterial, importación de G-code y cálculo por lotes.\n\nPremium añade herramientas de precios avanzadas como mano de obra, riesgo de fallo, margen, tarifas de configuración, desgloses detallados de costes, almacenamiento ilimitado de datos y seguimiento del inventario de filamento.",
+  "helpSupportFaqPremiumUpgradeCta": "Mejorar a Premium",
   "helpSupportFaqPremiumComparisonCta": "Ver comparativa completa →",
+  "settingsPremiumCardTitle": "Mejorar a Premium",
+  "settingsPremiumCardBody": "Herramientas avanzadas de precios, uso ilimitado y seguimiento de inventario.",
+  "settingsPremiumCardCta": "Mejorar",
   "calculatorPremiumFooterBody": "Premium añade herramientas de precios avanzadas.",
   "calculatorPremiumFooterCta": "Más información →"
 }
