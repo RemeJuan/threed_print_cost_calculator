@@ -32,12 +32,13 @@
 | Header icon | Free users see purchase CTA; premium users see G-code import | `source=header` |
 | Premium feature tap | `requirePremium()` gates via `PremiumAccessPolicy`, opens paywall | `source=premium_feature` |
 | History export | Upsell via `requirePremium()` for bulk/range export beyond free limits | `source=history_export` |
-| Settings locked sections | Analytics on tap; paywall only from premium-gated action flow | `source=settings` |
+| Settings compact card | Free users see compact Premium card after Printers; hidden for premium users | `source=settings` |
+| Help & Support premium FAQ | Free users see upgrade CTA inside existing Premium FAQ card; full comparison link remains | `source=faq` |
+| Calculator premium footer | Informational only; `Learn more` opens in-app Premium FAQ, not paywall | No direct paywall source |
 | What's New unlock CTA | Paywall after announcement CTA | `source=whats_new` |
 
 ## Known Issues
 - Messaging clarity may still be inconsistent across entry points.
 
 ## TODOs
-- Improve messaging clarity and consistency.
-- Decide whether settings lock tap should also open paywall or remain analytics-only.
+- Audit wording consistency across remaining upsell surfaces.

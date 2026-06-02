@@ -41,6 +41,7 @@
   - `lib/calculator/model/material_usage_input.dart`
 - Results/premium messaging:
   - `lib/calculator/view/calculator_results.dart` shows only rows available to the active calculation/access level; free tier uses a compact in-card footer that links into the support FAQ premium summary instead of locked promo rows
+  - Footer `Learn more` opens `HelpSupportPage(initialFaqEntryId: premium)` in-app, not a website or paywall
 - Tests:
   - `test/calculator/provider/`
   - `test/calculator/view/`
@@ -341,6 +342,7 @@
   - Sections always visible (no accordion/collapse/chevrons)
   - Order: General → Pricing & Work Costs → Printers (matches usage frequency)
   - Premium-gated sections/actions are controlled by `premiumAccessPolicyProvider` (policy-led); General settings remain available
+  - Free users also see a compact Premium card after Printers; the CTA opens the app-owned paywall. Premium users do not see this card.
   - Printer list is content-sized `Column` (no fixed-height `ListView`)
 - Providers/state:
   - `lib/settings/providers/printers_notifier.dart` (`printersProvider`)
@@ -362,6 +364,21 @@
   - `PrintersNotifier`
   - `PrinterListItem`
   - `work_costs_form`
+
+## Help & Support
+
+- Main screens/widgets:
+  - `lib/app/help_support/help_support_page.dart` — FAQ list, support card, app info, and footer links
+  - `lib/app/help_support/widgets/help_support_faq_tile.dart` — individual FAQ entry with answer text, optional inline link, and optional action button
+  - `lib/app/help_support/models/help_support_faq_entry.dart` — model with `id`, `question`, `answer`, `linkLabel`/`onLinkTap`, and optional `actionLabel`/`onActionTap`
+  - `lib/app/help_support/help_support_links.dart` — external URLs for plans, roadmap, and social links
+- Premium FAQ entry behavior:
+  - Exists for all users; shows question and answer about free vs premium differences
+  - Comparison link (`View full comparison →`) always visible, opens `https://printcostcalc.app/#plans-title`
+  - Free users also see the upgrade CTA (`AppSecondaryButton`, full-width, `minHeight:42`) after the comparison link, triggering `paywallPresenter.present('pro', ...)` with analytics
+  - CTA hidden for premium users
+- Tests:
+  - `test/app/view/help_support_page_test.dart` — free/premium FAQ CTA visibility and paywall trigger assertions
 
 ## Localization
 
