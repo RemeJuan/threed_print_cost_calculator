@@ -1852,4 +1852,22 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'Er zijn momenteel geen abonnementsplannen beschikbaar. Probeer het later opnieuw.';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'Wat voegt Premium toe?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Free bevat alles wat nodig is om printkosten te berekenen, inclusief elektriciteit, multi-materiaal prints, G-code import en batchkostenberekening.\n\nPremium voegt geavanceerde prijstools toe zoals arbeid, risico op mislukking, opslag, instelkosten, gedetailleerde kostenuitsplitsingen, onbeperkte gegevensopslag en filamentvoorraadbeheer.';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta =>
+      'Volledige vergelijking bekijken →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'Premium voegt geavanceerde prijstools toe.';
+
+  @override
+  String get calculatorPremiumFooterCta => 'Meer informatie →';
 }

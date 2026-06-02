@@ -1863,4 +1863,22 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'Al momento non sono disponibili piani di abbonamento. Riprova più tardi.';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'Cosa aggiunge Premium?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Free include tutto il necessario per calcolare i costi di stampa, inclusi elettricità, stampe multi-materiale, importazione G-code e calcolo batch.\n\nPremium aggiunge strumenti di prezzo avanzati come manodopera, rischio di guasto, ricarico, tariffe di configurazione, ripartizione dettagliata dei costi, archiviazione dati illimitata e gestione dell\'inventario dei filamenti.';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta =>
+      'Vedi il confronto completo →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'Premium aggiunge strumenti di prezzo avanzati.';
+
+  @override
+  String get calculatorPremiumFooterCta => 'Scopri di più →';
 }

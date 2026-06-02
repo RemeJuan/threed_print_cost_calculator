@@ -1859,4 +1859,21 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'De momento, não há planos de subscrição disponíveis. Tente novamente mais tarde.';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'O que o Premium acrescenta?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'O Free inclui tudo o que é necessário para calcular os custos de impressão, incluindo eletricidade, impressões multi-material, importação de G-code e cálculo por lote.\n\nO Premium adiciona ferramentas de preços avançadas como mão de obra, risco de falha, margem, taxas de configuração, discriminação detalhada de custos, armazenamento ilimitado de dados e controlo de inventário de filamento.';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta => 'Ver comparação completa →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'O Premium adiciona ferramentas de preços avançadas.';
+
+  @override
+  String get calculatorPremiumFooterCta => 'Saber mais →';
 }

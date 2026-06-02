@@ -1836,4 +1836,21 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'No subscription plans are currently available. Please try again later.';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'What does Premium add?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Free includes everything needed to calculate print costs, including electricity, multi-material prints, G-code import, and batch costing.\n\nPremium adds advanced pricing tools such as labour, failure risk, markup, setup fees, detailed cost breakdowns, unlimited saved data, and filament inventory tracking.';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta => 'View full comparison →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'Premium adds advanced pricing tools.';
+
+  @override
+  String get calculatorPremiumFooterCta => 'Learn more →';
 }

@@ -75,9 +75,9 @@
   "@printerNameLabel": {},
   "bedSizeLabel": "Tamaño de cama *",
   "@bedSizeLabel": {},
-"wattageLabel": "Potencia (Nominal) *",
-"@wattageLabel": {},
-"averageWattageLabel": "Potencia (Promedio)",
+  "wattageLabel": "Potencia (Nominal) *",
+  "@wattageLabel": {},
+  "averageWattageLabel": "Potencia (Promedio)",
   "materialNameLabel": "Nombre del material *",
   "@materialNameLabel": {},
   "colorLabel": "Color del material *",
@@ -106,11 +106,11 @@
   "@selectMaterialHint": {},
   "materialNone": "Ninguno",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "Restante:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "Restante:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "Hacer seguimiento del filamento restante",
   "@trackRemainingFilamentLabel": {},
@@ -629,7 +629,7 @@
   "batchGcodeImportParseFailure": "Este archivo no pudo importarse.",
   "batchGcodeImportContinueButton": "Continuar a revisión de lote",
   "batchGcodeImportRetryButton": "Elegir de nuevo",
-  "batchGcodeImportImportingLabel": "Importando\u2026",
+  "batchGcodeImportImportingLabel": "Importando…",
   "batchGcodeImportPendingLabel": "Pendiente",
   "batchGcodeImportNeedsDetailsLabel": "Detalles necesarios",
   "batchGcodeImportReadyLabel": "Listo",
@@ -730,11 +730,23 @@
   "paywallTrustLine": "Primero sin conexión • No se requiere cuenta",
   "paywallCtaAnnualTrial": "Iniciar prueba gratuita de 7 días",
   "paywallCtaQuarterly": "Actualizar por {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "Desbloquea Premium por {price}",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "Actualizar por {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "Materiales ilimitados",
   "paywallFeatureMaterialsDesc": "Guarda y gestiona bobinas de filamento y materiales ilimitados.",
   "paywallFeaturePrintersTitle": "Impresoras ilimitadas",
@@ -788,15 +800,44 @@
   "paywallPlanTrial": "Prueba gratuita de 7 días",
   "paywallPlanCancelAnytime": "Cancela en cualquier momento",
   "paywallPlanOwnForever": "Disfruta de Premium para siempre",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "Material no guardado",
   "unsavedMaterialHeader": "Material personalizado",
   "customMaterialWeightLabel": "Peso",
   "customMaterialCostLabel": "Costo",
-  "customMaterialUsedLabel": "Usado"
+  "customMaterialUsedLabel": "Usado",
+  "helpSupportFaqPremiumQuestion": "¿Qué añade Premium?",
+  "helpSupportFaqPremiumAnswer": "Free incluye todo lo necesario para calcular los costes de impresión, incluyendo electricidad, impresiones multimaterial, importación de G-code y cálculo por lotes.\n\nPremium añade herramientas de precios avanzadas como mano de obra, riesgo de fallo, margen, tarifas de configuración, desgloses detallados de costes, almacenamiento ilimitado de datos y seguimiento del inventario de filamento.",
+  "helpSupportFaqPremiumComparisonCta": "Ver comparativa completa →",
+  "calculatorPremiumFooterBody": "Premium añade herramientas de precios avanzadas.",
+  "calculatorPremiumFooterCta": "Más información →"
 }

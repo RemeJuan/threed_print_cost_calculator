@@ -75,9 +75,9 @@
   "@printerNameLabel": {},
   "bedSizeLabel": "Dimensione piano *",
   "@bedSizeLabel": {},
-"wattageLabel": "Potenza (Nominale) *",
-"@wattageLabel": {},
-"averageWattageLabel": "Potenza (Media)",
+  "wattageLabel": "Potenza (Nominale) *",
+  "@wattageLabel": {},
+  "averageWattageLabel": "Potenza (Media)",
   "materialNameLabel": "Nome materiale *",
   "@materialNameLabel": {},
   "colorLabel": "Colore *",
@@ -106,11 +106,11 @@
   "@selectMaterialHint": {},
   "materialNone": "Nessuno",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "Rimanente:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "Rimanente:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "Tieni traccia del filamento rimanente",
   "@trackRemainingFilamentLabel": {},
@@ -630,7 +630,7 @@
   "batchGcodeImportParseFailure": "Questo file non può essere importato.",
   "batchGcodeImportContinueButton": "Continua alla revisione batch",
   "batchGcodeImportRetryButton": "Scegli di nuovo",
-  "batchGcodeImportImportingLabel": "Importazione\u2026",
+  "batchGcodeImportImportingLabel": "Importazione…",
   "batchGcodeImportPendingLabel": "In attesa",
   "batchGcodeImportNeedsDetailsLabel": "Dettagli necessari",
   "batchGcodeImportReadyLabel": "Pronto",
@@ -731,11 +731,23 @@
   "paywallTrustLine": "Prima offline • Nessun account richiesto",
   "paywallCtaAnnualTrial": "Inizia la prova gratuita di 7 giorni",
   "paywallCtaQuarterly": "Aggiorna per {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "Sblocca Premium per {price}",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "Aggiorna per {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "Materiali illimitati",
   "paywallFeatureMaterialsDesc": "Salva e gestisci bobine di filamento e materiali illimitati.",
   "paywallFeaturePrintersTitle": "Stampanti illimitate",
@@ -789,15 +801,44 @@
   "paywallPlanTrial": "Prova gratuita di 7 giorni",
   "paywallPlanCancelAnytime": "Annulla in qualsiasi momento",
   "paywallPlanOwnForever": "Premium per sempre",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "Materiale non salvato",
   "unsavedMaterialHeader": "Materiale personalizzato",
   "customMaterialWeightLabel": "Peso",
   "customMaterialCostLabel": "Costo",
-  "customMaterialUsedLabel": "Usato"
+  "customMaterialUsedLabel": "Usato",
+  "helpSupportFaqPremiumQuestion": "Cosa aggiunge Premium?",
+  "helpSupportFaqPremiumAnswer": "Free include tutto il necessario per calcolare i costi di stampa, inclusi elettricità, stampe multi-materiale, importazione G-code e calcolo batch.\n\nPremium aggiunge strumenti di prezzo avanzati come manodopera, rischio di guasto, ricarico, tariffe di configurazione, ripartizione dettagliata dei costi, archiviazione dati illimitata e gestione dell'inventario dei filamenti.",
+  "helpSupportFaqPremiumComparisonCta": "Vedi il confronto completo →",
+  "calculatorPremiumFooterBody": "Premium aggiunge strumenti di prezzo avanzati.",
+  "calculatorPremiumFooterCta": "Scopri di più →"
 }

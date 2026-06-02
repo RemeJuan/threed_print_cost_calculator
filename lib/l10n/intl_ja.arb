@@ -83,9 +83,9 @@
   "@printerNameLabel": {},
   "bedSizeLabel": "ベッドサイズ *",
   "@bedSizeLabel": {},
-"wattageLabel": "消費電力（定格）*",
-"@wattageLabel": {},
-"averageWattageLabel": "消費電力（平均）",
+  "wattageLabel": "消費電力（定格）*",
+  "@wattageLabel": {},
+  "averageWattageLabel": "消費電力（平均）",
   "materialNameLabel": "材料名 *",
   "@materialNameLabel": {},
   "colorLabel": "色 *",
@@ -114,11 +114,11 @@
   "@selectMaterialHint": {},
   "materialNone": "なし",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "残量:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "残量:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "残りフィラメントを追跡",
   "@trackRemainingFilamentLabel": {},
@@ -631,7 +631,7 @@
   "batchGcodeImportParseFailure": "このファイルはインポートできませんでした。",
   "batchGcodeImportContinueButton": "バッチレビューへ進む",
   "batchGcodeImportRetryButton": "もう一度選択",
-  "batchGcodeImportImportingLabel": "インポート中\u2026",
+  "batchGcodeImportImportingLabel": "インポート中…",
   "batchGcodeImportPendingLabel": "保留中",
   "batchGcodeImportNeedsDetailsLabel": "詳細が必要です",
   "batchGcodeImportReadyLabel": "準備完了",
@@ -732,11 +732,23 @@
   "paywallTrustLine": "オフライン優先 • アカウント不要",
   "paywallCtaAnnualTrial": "7日間の無料トライアルを開始",
   "paywallCtaQuarterly": "{price}でアップグレード",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "{price}でPremiumをアンロック",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "{price}でアップグレード",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "素材無制限",
   "paywallFeatureMaterialsDesc": "無制限のフィラメントスプールと素材を保存・管理できます。",
   "paywallFeaturePrintersTitle": "プリンター無制限",
@@ -790,15 +802,44 @@
   "paywallPlanTrial": "7日間無料トライアル",
   "paywallPlanCancelAnytime": "いつでも解約可能",
   "paywallPlanOwnForever": "Premiumをずっと利用",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "未保存の素材",
   "unsavedMaterialHeader": "カスタム材料",
   "customMaterialWeightLabel": "重量",
   "customMaterialCostLabel": "コスト",
-  "customMaterialUsedLabel": "使用量"
+  "customMaterialUsedLabel": "使用量",
+  "helpSupportFaqPremiumQuestion": "Premiumで追加される機能は？",
+  "helpSupportFaqPremiumAnswer": "Freeには、電気代、マルチマテリアル印刷、G-codeインポート、バッチコスト計算など、印刷コスト計算に必要なすべてが含まれています。\n\nPremiumでは、人件費、失敗リスク、マークアップ、設定料、詳細なコスト内訳、無制限のデータ保存、フィラメント在庫管理などの高度な価格設定ツールが追加されます。",
+  "helpSupportFaqPremiumComparisonCta": "完全な比較を見る →",
+  "calculatorPremiumFooterBody": "Premiumは高度な価格設定ツールを追加します。",
+  "calculatorPremiumFooterCta": "もっと詳しく →"
 }

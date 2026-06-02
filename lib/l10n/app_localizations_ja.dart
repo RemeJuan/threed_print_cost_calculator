@@ -1777,4 +1777,20 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       '現在利用できるサブスクリプションプランはありません。後でもう一度お試しください。';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'Premiumで追加される機能は？';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Freeには、電気代、マルチマテリアル印刷、G-codeインポート、バッチコスト計算など、印刷コスト計算に必要なすべてが含まれています。\n\nPremiumでは、人件費、失敗リスク、マークアップ、設定料、詳細なコスト内訳、無制限のデータ保存、フィラメント在庫管理などの高度な価格設定ツールが追加されます。';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta => '完全な比較を見る →';
+
+  @override
+  String get calculatorPremiumFooterBody => 'Premiumは高度な価格設定ツールを追加します。';
+
+  @override
+  String get calculatorPremiumFooterCta => 'もっと詳しく →';
 }

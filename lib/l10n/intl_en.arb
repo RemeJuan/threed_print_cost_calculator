@@ -652,7 +652,6 @@
   "batchCostingSummaryPricingItemScopeFormat": "{perUnit} each → {lineTotal} total",
   "batchCostingAssignmentPrinterLabel": "Printer",
   "batchCostingEntryButton": "Start Batch Costing",
-
   "paywallTitle": "Unlock Premium",
   "paywallPitchLine": "Unlimited materials, unlimited printers, batch export, advanced pricing",
   "paywallSubtitle": "Scale your print quoting with unlimited capacity, business pricing, and inventory control.",
@@ -709,11 +708,23 @@
   "paywallTrustLine": "Offline first • No account required",
   "paywallCtaAnnualTrial": "Start 7-Day Free Trial",
   "paywallCtaQuarterly": "Upgrade for {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "Unlock Premium for {price}",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "Upgrade for {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallValueSaves": "{limit} saves",
   "@paywallValueSaves": {
     "placeholders": {
@@ -753,5 +764,10 @@
   "paywallEmptyOfferings": "No subscription plans are currently available. Please try again later.",
   "@paywallEmptyOfferings": {
     "description": "Shown when no subscription packages are available"
-  }
+  },
+  "helpSupportFaqPremiumQuestion": "What does Premium add?",
+  "helpSupportFaqPremiumAnswer": "Free includes everything needed to calculate print costs, including electricity, multi-material prints, G-code import, and batch costing.\n\nPremium adds advanced pricing tools such as labour, failure risk, markup, setup fees, detailed cost breakdowns, unlimited saved data, and filament inventory tracking.",
+  "helpSupportFaqPremiumComparisonCta": "View full comparison →",
+  "calculatorPremiumFooterBody": "Premium adds advanced pricing tools.",
+  "calculatorPremiumFooterCta": "Learn more →"
 }

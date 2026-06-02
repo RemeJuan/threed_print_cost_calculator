@@ -83,9 +83,9 @@
   "@printerNameLabel": {},
   "bedSizeLabel": "Bedgrootte *",
   "@bedSizeLabel": {},
-"wattageLabel": "Vermogen (Nominaal) *",
-"@wattageLabel": {},
-"averageWattageLabel": "Vermogen (Gemiddeld)",
+  "wattageLabel": "Vermogen (Nominaal) *",
+  "@wattageLabel": {},
+  "averageWattageLabel": "Vermogen (Gemiddeld)",
   "materialNameLabel": "Materiaalnaam *",
   "@materialNameLabel": {},
   "colorLabel": "Kleur *",
@@ -114,11 +114,11 @@
   "@selectMaterialHint": {},
   "materialNone": "Geen",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "Resterend:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "Resterend:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "Resterend filament bijhouden",
   "@trackRemainingFilamentLabel": {},
@@ -631,7 +631,7 @@
   "batchGcodeImportParseFailure": "Dit bestand kon niet worden geïmporteerd.",
   "batchGcodeImportContinueButton": "Verder naar batchcontrole",
   "batchGcodeImportRetryButton": "Opnieuw kiezen",
-  "batchGcodeImportImportingLabel": "Importeren\u2026",
+  "batchGcodeImportImportingLabel": "Importeren…",
   "batchGcodeImportPendingLabel": "In afwachting",
   "batchGcodeImportNeedsDetailsLabel": "Details nodig",
   "batchGcodeImportReadyLabel": "Gereed",
@@ -732,11 +732,23 @@
   "paywallTrustLine": "Eerst offline • Geen account vereist",
   "paywallCtaAnnualTrial": "Start gratis proefperiode van 7 dagen",
   "paywallCtaQuarterly": "Upgrade voor {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "Ontgrendel Premium voor {price}",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "Upgrade voor {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "Onbeperkte materialen",
   "paywallFeatureMaterialsDesc": "Sla onbeperkt filamentspoelen en materialen op en beheer ze.",
   "paywallFeaturePrintersTitle": "Onbeperkte printers",
@@ -790,15 +802,44 @@
   "paywallPlanTrial": "7 dagen gratis proefperiode",
   "paywallPlanCancelAnytime": "Altijd opzegbaar",
   "paywallPlanOwnForever": "Voor altijd Premium",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "Niet opgeslagen materiaal",
   "unsavedMaterialHeader": "Aangepast materiaal",
   "customMaterialWeightLabel": "Gewicht",
   "customMaterialCostLabel": "Kosten",
-  "customMaterialUsedLabel": "Gebruikt"
+  "customMaterialUsedLabel": "Gebruikt",
+  "helpSupportFaqPremiumQuestion": "Wat voegt Premium toe?",
+  "helpSupportFaqPremiumAnswer": "Free bevat alles wat nodig is om printkosten te berekenen, inclusief elektriciteit, multi-materiaal prints, G-code import en batchkostenberekening.\n\nPremium voegt geavanceerde prijstools toe zoals arbeid, risico op mislukking, opslag, instelkosten, gedetailleerde kostenuitsplitsingen, onbeperkte gegevensopslag en filamentvoorraadbeheer.",
+  "helpSupportFaqPremiumComparisonCta": "Volledige vergelijking bekijken →",
+  "calculatorPremiumFooterBody": "Premium voegt geavanceerde prijstools toe.",
+  "calculatorPremiumFooterCta": "Meer informatie →"
 }

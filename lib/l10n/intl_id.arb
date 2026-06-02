@@ -106,11 +106,11 @@
   "@selectMaterialHint": {},
   "materialNone": "Tidak ada",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "Sisa:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "Sisa:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "Lacak sisa filamen",
   "@trackRemainingFilamentLabel": {},
@@ -630,7 +630,7 @@
   "batchGcodeImportParseFailure": "File ini tidak dapat diimpor.",
   "batchGcodeImportContinueButton": "Lanjut ke tinjauan batch",
   "batchGcodeImportRetryButton": "Pilih lagi",
-  "batchGcodeImportImportingLabel": "Mengimpor\u2026",
+  "batchGcodeImportImportingLabel": "Mengimpor…",
   "batchGcodeImportPendingLabel": "Tertunda",
   "batchGcodeImportNeedsDetailsLabel": "Detail diperlukan",
   "batchGcodeImportReadyLabel": "Siap",
@@ -731,11 +731,23 @@
   "paywallTrustLine": "Utamakan offline • Tanpa akun",
   "paywallCtaAnnualTrial": "Mulai uji coba gratis 7 hari",
   "paywallCtaQuarterly": "Upgrade seharga {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "Buka Premium seharga {price}",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "Upgrade seharga {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "Material tanpa batas",
   "paywallFeatureMaterialsDesc": "Simpan dan kelola spool filamen dan material tanpa batas.",
   "paywallFeaturePrintersTitle": "Printer tanpa batas",
@@ -789,15 +801,44 @@
   "paywallPlanTrial": "Uji coba gratis 7 hari",
   "paywallPlanCancelAnytime": "Batalkan kapan saja",
   "paywallPlanOwnForever": "Miliki Premium selamanya",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "Material belum disimpan",
   "unsavedMaterialHeader": "Material Kustom",
   "customMaterialWeightLabel": "Berat",
   "customMaterialCostLabel": "Biaya",
-  "customMaterialUsedLabel": "Terpakai"
+  "customMaterialUsedLabel": "Terpakai",
+  "helpSupportFaqPremiumQuestion": "Apa yang ditambahkan Premium?",
+  "helpSupportFaqPremiumAnswer": "Free mencakup semua yang diperlukan untuk menghitung biaya cetak, termasuk listrik, cetakan multi-material, impor G-code, dan penetapan biaya batch.\n\nPremium menambahkan alat penetapan harga lanjutan seperti tenaga kerja, risiko kegagalan, markup, biaya penyiapan, rincian biaya terperinci, penyimpanan data tak terbatas, dan pelacakan inventaris filamen.",
+  "helpSupportFaqPremiumComparisonCta": "Lihat perbandingan lengkap →",
+  "calculatorPremiumFooterBody": "Premium menambahkan alat penetapan harga lanjutan.",
+  "calculatorPremiumFooterCta": "Pelajari lebih lanjut →"
 }

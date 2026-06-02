@@ -76,9 +76,9 @@
   "@printerNameLabel": {},
   "bedSizeLabel": "ขนาดฐานพิมพ์ *",
   "@bedSizeLabel": {},
-"wattageLabel": "กำลังไฟ (พิกัด) *",
-"@wattageLabel": {},
-"averageWattageLabel": "กำลังไฟ (เฉลี่ย)",
+  "wattageLabel": "กำลังไฟ (พิกัด) *",
+  "@wattageLabel": {},
+  "averageWattageLabel": "กำลังไฟ (เฉลี่ย)",
   "materialNameLabel": "ชื่อวัสดุ *",
   "@materialNameLabel": {},
   "colorLabel": "สี *",
@@ -107,11 +107,11 @@
   "@selectMaterialHint": {},
   "materialNone": "ไม่มี",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "คงเหลือ:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "คงเหลือ:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "ติดตามฟิลาเมนต์คงเหลือ",
   "@trackRemainingFilamentLabel": {},
@@ -631,7 +631,7 @@
   "batchGcodeImportParseFailure": "ไม่สามารถนำเข้าไฟล์นี้ได้",
   "batchGcodeImportContinueButton": "ต่อไปยังการตรวจสอบชุด",
   "batchGcodeImportRetryButton": "เลือกอีกครั้ง",
-  "batchGcodeImportImportingLabel": "กำลังนำเข้า\u2026",
+  "batchGcodeImportImportingLabel": "กำลังนำเข้า…",
   "batchGcodeImportPendingLabel": "รอดำเนินการ",
   "batchGcodeImportNeedsDetailsLabel": "ต้องการรายละเอียด",
   "batchGcodeImportReadyLabel": "พร้อม",
@@ -732,11 +732,23 @@
   "paywallTrustLine": "ใช้งานออฟไลน์ก่อน • ไม่ต้องมีบัญชี",
   "paywallCtaAnnualTrial": "เริ่มทดลองใช้ฟรี 7 วัน",
   "paywallCtaQuarterly": "อัปเกรดในราคา {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "ปลดล็อก Premium ในราคา {price}",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "อัปเกรดในราคา {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "วัสดุไม่จำกัด",
   "paywallFeatureMaterialsDesc": "บันทึกและจัดการม้วนฟิลาเมนต์และวัสดุได้ไม่จำกัด",
   "paywallFeaturePrintersTitle": "เครื่องพิมพ์ไม่จำกัด",
@@ -790,15 +802,44 @@
   "paywallPlanTrial": "ทดลองใช้ฟรี 7 วัน",
   "paywallPlanCancelAnytime": "ยกเลิกได้ทุกเมื่อ",
   "paywallPlanOwnForever": "เป็นเจ้าของ Premium ตลอดไป",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "วัสดุที่ยังไม่ได้บันทึก",
   "unsavedMaterialHeader": "วัสดุที่กำหนดเอง",
   "customMaterialWeightLabel": "น้ำหนัก",
   "customMaterialCostLabel": "ต้นทุน",
-  "customMaterialUsedLabel": "ที่ใช้"
+  "customMaterialUsedLabel": "ที่ใช้",
+  "helpSupportFaqPremiumQuestion": "Premium เพิ่มอะไรบ้าง?",
+  "helpSupportFaqPremiumAnswer": "Free มีทุกสิ่งที่จำเป็นสำหรับการคำนวณต้นทุนการพิมพ์ รวมถึงค่าไฟฟ้า การพิมพ์หลายวัสดุ การนำเข้า G-code และการคิดต้นทุนแบบแบตช์\n\nPremium เพิ่มเครื่องมือกำหนดราคาขั้นสูง เช่น ค่าแรง ความเสี่ยงจากความล้มเหลว ส่วนเพิ่ม ค่าตั้งค่า รายละเอียดต้นทุน การจัดเก็บข้อมูลไม่จำกัด และการติดตามสินค้าคงคลังฟิลาเมนต์",
+  "helpSupportFaqPremiumComparisonCta": "ดูการเปรียบเทียบแบบเต็ม →",
+  "calculatorPremiumFooterBody": "Premium เพิ่มเครื่องมือกำหนดราคาขั้นสูง",
+  "calculatorPremiumFooterCta": "เรียนรู้เพิ่มเติม →"
 }

@@ -1819,4 +1819,21 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'ขณะนี้ยังไม่มีแพ็กเกจสมัครสมาชิก โปรดลองอีกครั้งในภายหลัง';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'Premium เพิ่มอะไรบ้าง?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Free มีทุกสิ่งที่จำเป็นสำหรับการคำนวณต้นทุนการพิมพ์ รวมถึงค่าไฟฟ้า การพิมพ์หลายวัสดุ การนำเข้า G-code และการคิดต้นทุนแบบแบตช์\n\nPremium เพิ่มเครื่องมือกำหนดราคาขั้นสูง เช่น ค่าแรง ความเสี่ยงจากความล้มเหลว ส่วนเพิ่ม ค่าตั้งค่า รายละเอียดต้นทุน การจัดเก็บข้อมูลไม่จำกัด และการติดตามสินค้าคงคลังฟิลาเมนต์';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta => 'ดูการเปรียบเทียบแบบเต็ม →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'Premium เพิ่มเครื่องมือกำหนดราคาขั้นสูง';
+
+  @override
+  String get calculatorPremiumFooterCta => 'เรียนรู้เพิ่มเติม →';
 }

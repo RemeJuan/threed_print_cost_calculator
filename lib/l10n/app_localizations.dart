@@ -3382,6 +3382,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No subscription plans are currently available. Please try again later.'**
   String get paywallEmptyOfferings;
+
+  /// No description provided for @helpSupportFaqPremiumQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'What does Premium add?'**
+  String get helpSupportFaqPremiumQuestion;
+
+  /// No description provided for @helpSupportFaqPremiumAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Free includes everything needed to calculate print costs, including electricity, multi-material prints, G-code import, and batch costing.\n\nPremium adds advanced pricing tools such as labour, failure risk, markup, setup fees, detailed cost breakdowns, unlimited saved data, and filament inventory tracking.'**
+  String get helpSupportFaqPremiumAnswer;
+
+  /// No description provided for @helpSupportFaqPremiumComparisonCta.
+  ///
+  /// In en, this message translates to:
+  /// **'View full comparison →'**
+  String get helpSupportFaqPremiumComparisonCta;
+
+  /// No description provided for @calculatorPremiumFooterBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium adds advanced pricing tools.'**
+  String get calculatorPremiumFooterBody;
+
+  /// No description provided for @calculatorPremiumFooterCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn more →'**
+  String get calculatorPremiumFooterCta;
 }
 
 class _AppLocalizationsDelegate

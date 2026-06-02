@@ -82,9 +82,9 @@
   "@printerNameLabel": {},
   "bedSizeLabel": "Druckbettgröße *",
   "@bedSizeLabel": {},
-"wattageLabel": "Leistung (Nennwert) *",
-"@wattageLabel": {},
-"averageWattageLabel": "Leistung (Durchschnitt)",
+  "wattageLabel": "Leistung (Nennwert) *",
+  "@wattageLabel": {},
+  "averageWattageLabel": "Leistung (Durchschnitt)",
   "materialNameLabel": "Materialname *",
   "@materialNameLabel": {},
   "colorLabel": "Farbe *",
@@ -113,11 +113,11 @@
   "@selectMaterialHint": {},
   "materialNone": "Keine",
   "@materialNone": {},
-   "gramsSuffix": "g",
-   "@gramsSuffix": {},
-   "millimetersSuffix": "mm",
-   "@millimetersSuffix": {},
-   "remainingLabel": "Verbleibend:",
+  "gramsSuffix": "g",
+  "@gramsSuffix": {},
+  "millimetersSuffix": "mm",
+  "@millimetersSuffix": {},
+  "remainingLabel": "Verbleibend:",
   "@remainingLabel": {},
   "trackRemainingFilamentLabel": "Verbleibendes Filament verfolgen",
   "@trackRemainingFilamentLabel": {},
@@ -630,7 +630,7 @@
   "batchGcodeImportParseFailure": "Diese Datei konnte nicht importiert werden.",
   "batchGcodeImportContinueButton": "Zur Stapelprüfung fortfahren",
   "batchGcodeImportRetryButton": "Erneut auswählen",
-  "batchGcodeImportImportingLabel": "Wird importiert\u2026",
+  "batchGcodeImportImportingLabel": "Wird importiert…",
   "batchGcodeImportPendingLabel": "Ausstehend",
   "batchGcodeImportNeedsDetailsLabel": "Details erforderlich",
   "batchGcodeImportReadyLabel": "Bereit",
@@ -731,11 +731,23 @@
   "paywallTrustLine": "Offline zuerst • Kein Konto erforderlich",
   "paywallCtaAnnualTrial": "7-tägige kostenlose Testversion starten",
   "paywallCtaQuarterly": "Upgrade für {price}",
-  "@paywallCtaQuarterly": {"placeholders": {"price": {}}},
+  "@paywallCtaQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaLifetime": "Premium für {price} freischalten",
-  "@paywallCtaLifetime": {"placeholders": {"price": {}}},
+  "@paywallCtaLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallCtaGeneric": "Upgrade für {price}",
-  "@paywallCtaGeneric": {"placeholders": {"price": {}}},
+  "@paywallCtaGeneric": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "paywallFeatureMaterialsTitle": "Unbegrenzte Materialien",
   "paywallFeatureMaterialsDesc": "Speichern und verwalten Sie unbegrenzt Filamentspulen und Materialien.",
   "paywallFeaturePrintersTitle": "Unbegrenzte Drucker",
@@ -789,15 +801,44 @@
   "paywallPlanTrial": "7-tägige kostenlose Testversion",
   "paywallPlanCancelAnytime": "Jederzeit kündbar",
   "paywallPlanOwnForever": "Premium für immer besitzen",
-  "@paywallValueSaves": {"placeholders": {"limit": {}}},
-  "@paywallValueUpToModels": {"placeholders": {"limit": {}}},
-  "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "@paywallValueSaves": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallValueUpToModels": {
+    "placeholders": {
+      "limit": {}
+    }
+  },
+  "@paywallPlanPriceMonthly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceQuarterly": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceAnnual": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "@paywallPlanPriceLifetime": {
+    "placeholders": {
+      "price": {}
+    }
+  },
   "unsavedMaterialOptionLabel": "Nicht gespeichertes Material",
   "unsavedMaterialHeader": "Benutzerdefiniertes Material",
   "customMaterialWeightLabel": "Gewicht",
   "customMaterialCostLabel": "Kosten",
-  "customMaterialUsedLabel": "Verwendet"
+  "customMaterialUsedLabel": "Verwendet",
+  "helpSupportFaqPremiumQuestion": "Was bietet Premium zusätzlich?",
+  "helpSupportFaqPremiumAnswer": "Free bietet alles, was Sie zur Berechnung der Druckkosten benötigen, einschließlich Strom, Multi-Material-Drucke, G-Code-Import und Stapelkalkulation.\n\nPremium erweitert die Möglichkeiten mit Werkzeugen für Arbeitskosten, Ausfallrisiko, Aufschlag, Einrichtungsgebühren, detaillierte Kostenaufschlüsselung, unbegrenzte Speicherung und Filamentbestandsverwaltung.",
+  "helpSupportFaqPremiumComparisonCta": "Vollständigen Vergleich anzeigen →",
+  "calculatorPremiumFooterBody": "Premium ergänzt erweiterte Preistools.",
+  "calculatorPremiumFooterCta": "Mehr erfahren →"
 }

@@ -1857,4 +1857,22 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'Derzeit sind keine Abonnementpläne verfügbar. Bitte versuchen Sie es später erneut.';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'Was bietet Premium zusätzlich?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Free bietet alles, was Sie zur Berechnung der Druckkosten benötigen, einschließlich Strom, Multi-Material-Drucke, G-Code-Import und Stapelkalkulation.\n\nPremium erweitert die Möglichkeiten mit Werkzeugen für Arbeitskosten, Ausfallrisiko, Aufschlag, Einrichtungsgebühren, detaillierte Kostenaufschlüsselung, unbegrenzte Speicherung und Filamentbestandsverwaltung.';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta =>
+      'Vollständigen Vergleich anzeigen →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'Premium ergänzt erweiterte Preistools.';
+
+  @override
+  String get calculatorPremiumFooterCta => 'Mehr erfahren →';
 }

@@ -1825,4 +1825,22 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get paywallEmptyOfferings =>
       'Saat ini tidak ada paket langganan yang tersedia. Silakan coba lagi nanti.';
+
+  @override
+  String get helpSupportFaqPremiumQuestion => 'Apa yang ditambahkan Premium?';
+
+  @override
+  String get helpSupportFaqPremiumAnswer =>
+      'Free mencakup semua yang diperlukan untuk menghitung biaya cetak, termasuk listrik, cetakan multi-material, impor G-code, dan penetapan biaya batch.\n\nPremium menambahkan alat penetapan harga lanjutan seperti tenaga kerja, risiko kegagalan, markup, biaya penyiapan, rincian biaya terperinci, penyimpanan data tak terbatas, dan pelacakan inventaris filamen.';
+
+  @override
+  String get helpSupportFaqPremiumComparisonCta =>
+      'Lihat perbandingan lengkap →';
+
+  @override
+  String get calculatorPremiumFooterBody =>
+      'Premium menambahkan alat penetapan harga lanjutan.';
+
+  @override
+  String get calculatorPremiumFooterCta => 'Pelajari lebih lanjut →';
 }
