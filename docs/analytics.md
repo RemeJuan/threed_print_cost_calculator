@@ -380,6 +380,8 @@ Notes:
 - restore success: partial — `restore_completed` logged on success (custom paywall)
 - restore failure: no dedicated event — custom paywall surfaces error via SnackBar and app logger, but no analytics event for failures
 - paywall entry attribution: yes — all paths pass `source`
+- settings compact card CTA: `premium_feature_tapped` with `source=settings`, `trigger=settings_premium_card`
+- help/support premium FAQ CTA: `premium_feature_tapped` with `source=faq`, `trigger=faq_premium_card`
 
 ## Known gaps
 
