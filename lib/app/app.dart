@@ -33,10 +33,10 @@ class App extends ConsumerWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         home: RateMyAppBuilder(
           rateMyApp: RateMyApp(
-            minDays: 3,
-            minLaunches: 7,
-            remindDays: 2,
-            remindLaunches: 5,
+            minDays: 14,
+            minLaunches: 10,
+            remindDays: 14,
+            remindLaunches: 10,
             googlePlayIdentifier: 'com.threed_print_calculator',
             appStoreIdentifier: 'com.threed-print-calculator',
           ),
