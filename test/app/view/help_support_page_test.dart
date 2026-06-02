@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
@@ -11,6 +12,10 @@ import '../../helpers/helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  final urlLauncherChannel = const MethodChannel(
+    'plugins.flutter.io/url_launcher',
+  );
+  final launchCalls = <MethodCall>[];
 
   setUpAll(() async {
     await setupTest();
@@ -21,6 +26,20 @@ void main() {
       buildNumber: '42',
       buildSignature: 'sig',
     );
+  });
+
+  setUp(() {
+    launchCalls.clear();
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(urlLauncherChannel, (call) async {
+          launchCalls.add(call);
+          return true;
+        });
+  });
+
+  tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(urlLauncherChannel, null);
   });
 
   testWidgets('renders localized help content with dynamic support info', (
@@ -115,9 +134,21 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(find.byKey(const ValueKey<String>('helpSupport.faq.0')));
+    await tester.tap(
+      find.byKey(const ValueKey<String>('helpSupport.faq.weight')),
+    );
     await tester.pumpAndSettle();
     expect(find.text(l10n.helpSupportFaqWeightAnswer), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey<String>('helpSupport.faq.premium')),
+      200,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.faq.premium')),
+      findsOneWidget,
+    );
+    expect(find.text(l10n.helpSupportFaqPremiumQuestion), findsOneWidget);
 
     await tester.scrollUntilVisible(find.text(l10n.helpSupportAboutTitle), 300);
     expect(find.text(l10n.helpSupportAboutTitle), findsOneWidget);
@@ -157,6 +188,42 @@ void main() {
     expect(find.text(l10n.helpSupportPrivacyPolicyLabel), findsOneWidget);
     expect(find.text(l10n.helpSupportTermsOfUseLabel), findsOneWidget);
   });
+
+  testWidgets(
+    'initial premium FAQ target expands and comparison link opens website',
+    (tester) async {
+      final db = await tester.pumpApp(
+        const HelpSupportPage(
+          initialFaqEntryId: HelpSupportPage.premiumFaqEntryId,
+        ),
+        [
+          premiumStateProvider.overrideWith(
+            () => _FakePremiumStateNotifier(
+              const PremiumState(isPremium: false, isLoading: false),
+            ),
+          ),
+        ],
+      );
+      addTearDown(() => db.close());
+      await tester.pumpAndSettle();
+
+      final l10n = lookupAppLocalizations(const Locale('en'));
+
+      expect(find.text(l10n.helpSupportFaqPremiumQuestion), findsOneWidget);
+      expect(find.text(l10n.helpSupportFaqPremiumAnswer), findsOneWidget);
+
+      await tester.tap(
+        find.byKey(const ValueKey<String>('helpSupport.faq.premium.link')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(launchCalls, isNotEmpty);
+      expect(
+        launchCalls.last.arguments.toString(),
+        contains(helpSupportPlansUrl),
+      );
+    },
+  );
 }
 
 class _FakePremiumStateNotifier extends PremiumStateNotifier {
