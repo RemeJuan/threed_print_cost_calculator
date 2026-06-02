@@ -42,6 +42,18 @@ class HelpSupportFaqTile extends StatelessWidget {
               ),
             ),
           ],
+          if (entry.actionLabel != null && entry.onActionTap != null) ...[
+            const SizedBox(height: kAppSpace12),
+            SizedBox(
+              width: double.infinity,
+              child: AppSecondaryButton(
+                key: ValueKey<String>('helpSupport.faq.${entry.id}.action'),
+                onPressed: entry.onActionTap,
+                label: entry.actionLabel!,
+                minHeight: 42,
+              ),
+            ),
+          ],
         ],
       ),
     );
