@@ -90,6 +90,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resultElectricityPrefix => '電気代合計:';
 
   @override
+  String get resultElectricityRated => '電気 (定格)';
+
+  @override
+  String get resultElectricityAverage => '電気 (平均)';
+
+  @override
   String get resultFilamentPrefix => 'フィラメントの合計コスト:';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bedSizeLabel => 'ベッドサイズ *';
 
   @override
-  String get wattageLabel => '消費電力 *';
+  String get wattageLabel => '消費電力（定格）*';
+
+  @override
+  String get averageWattageLabel => '消費電力（平均）';
 
   @override
   String get materialNameLabel => '材料名 *';
@@ -317,6 +326,16 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get helpSupportFaqSetupAnswer =>
       'セットアップ料金は、キャリブレーション、マシン準備、管理のためのジョブごとの固定コストです。小さな印刷が諸経費をカバーするのに役立ちます。';
+
+  @override
+  String get wattageFaqHint => 'FAQでワット数の詳細を見る';
+
+  @override
+  String get helpSupportFaqWattageQuestion => '定格電力と平均電力の違いは何ですか？';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      '定格電力は、プリンターがコンセントから取り出せる最大電力です（銘板に記載）。平均電力は印刷中の典型的な消費電力で、できれば電力計付きプラグで測定します。電気代を正確に計算するには平均電力を、上限の目安には定格電力を使ってください。';
 
   @override
   String get helpSupportLinksTitle => 'リンク';
@@ -722,12 +741,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get lockedValuePlaceholder => 'プレミアムのみ';
 
   @override
-  String get hideProPromotionsTitle => 'Proのプロモーションを非表示';
-
-  @override
-  String get hideProPromotionsSubtitle => 'アップグレードのバナーと案内を非表示';
-
-  @override
   String get printerLimitReachedMessage =>
       '無料プランではプリンターを2台まで保存できます。無制限にするにはPremiumにアップグレードしてください。';
 
@@ -815,6 +828,21 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Proでダウンロード / 共有';
+
+  @override
+  String get unsavedMaterialOptionLabel => '未保存の素材';
+
+  @override
+  String get unsavedMaterialHeader => 'カスタム材料';
+
+  @override
+  String get customMaterialWeightLabel => '重量';
+
+  @override
+  String get customMaterialCostLabel => 'コスト';
+
+  @override
+  String get customMaterialUsedLabel => '使用量';
 
   @override
   String get addMaterialButton => '素材を追加';

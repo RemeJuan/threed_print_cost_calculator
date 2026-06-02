@@ -121,10 +121,7 @@ void main() {
           overrides: [
             materialsRepositoryProvider.overrideWithValue(materialsRepository),
             premiumAccessPolicyProvider.overrideWithValue(
-              DefaultPremiumAccessPolicy(
-                isPremium: true,
-                hideProPromotions: false,
-              ),
+              DefaultPremiumAccessPolicy(isPremium: true),
             ),
           ],
         );

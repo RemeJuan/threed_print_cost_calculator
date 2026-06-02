@@ -1,9 +1,7 @@
-El cálculo por lotes ya está aquí para usuarios Pro:
+Plan gratuito ampliado.
 
-* Importa varios archivos G-code en un solo lote
-* Asigna impresoras y materiales por elemento
-* Define cantidades y añade partidas manuales
-* Revisa los totales del lote con su impacto monetario
-* Guarda presupuestos completados en el historial
-* Usa selectores con búsqueda para asignar impresoras y materiales más rápido
-* Sustituye los valores importados del G-code cuando sea necesario
+* El cálculo multimaterial ahora está disponible para todos los usuarios
+* La importación de G-code para una sola impresión ahora está incluida en Gratis
+* Guarde hasta 5 materiales, 2 perfiles de impresora y 7 entradas de historial en Gratis
+* El cálculo manual por lotes está disponible para hasta 3 elementos por lote
+* Premium ahora se centra en herramientas avanzadas de precios, flujos por lotes, seguimiento de inventario, exportaciones y uso ilimitado

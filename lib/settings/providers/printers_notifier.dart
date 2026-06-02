@@ -32,6 +32,11 @@ class PrintersNotifier extends Notifier<PrinterState> {
     return validatePositiveNumber(value);
   }
 
+  FieldValidationError? validateAverageWattage(String? value) {
+    if (value == null || value.trim().isEmpty) return null;
+    return validatePositiveNumber(value);
+  }
+
   Future<void> init(String? key) async {
     if (key != null) {
       final printer = await _printersRepository.getPrinterById(key);
@@ -40,6 +45,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
       updateName(printer.name);
       updateBedSize(printer.bedSize);
       updateWattage(printer.wattage);
+      updateAverageWattage(printer.averageWattage);
     }
   }
 
@@ -53,6 +59,10 @@ class PrintersNotifier extends Notifier<PrinterState> {
 
   void updateWattage(String value) {
     state = state.copyWith(wattage: StringInput.dirty(value: value));
+  }
+
+  void updateAverageWattage(String value) {
+    state = state.copyWith(averageWattage: StringInput.dirty(value: value));
   }
 
   Future<bool> submit(String? dbRef) async {
@@ -75,6 +85,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
       name: state.name.value.trim(),
       bedSize: state.bedSize.value.trim(),
       wattage: state.wattage.value.trim(),
+      averageWattage: state.averageWattage.value.trim(),
       archived: false,
     );
 
@@ -86,6 +97,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
   bool get isValidForSubmit {
     return validateName(state.name.value) == null &&
         validateBedSize(state.bedSize.value) == null &&
-        validateWattage(state.wattage.value) == null;
+        validateWattage(state.wattage.value) == null &&
+        validateAverageWattage(state.averageWattage.value) == null;
   }
 }

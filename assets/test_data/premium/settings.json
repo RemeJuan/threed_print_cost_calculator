@@ -16,7 +16,6 @@
     "currencySpacing": false
   },
   "sharedPreferences": {
-    "hideProPromotions": false,
     "run_count": 0,
     "paywall": false
   }

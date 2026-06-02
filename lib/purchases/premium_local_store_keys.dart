@@ -1,4 +1,3 @@
-const hideProPromotionsPreferenceKey = 'hideProPromotions';
 const testPremiumOverrideEnabledOnPreferenceKey =
     'testPremiumOverrideEnabledOn';
 const calculationCountPreferenceKey = 'calculation_count';

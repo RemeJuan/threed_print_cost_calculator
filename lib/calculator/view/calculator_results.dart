@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_providers.
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
@@ -28,7 +29,6 @@ class CalculatorResults extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
     final isPremium = policy.isPremium;
-    final shouldShowProPromotion = policy.shouldShowPromotions;
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
@@ -49,7 +49,9 @@ class CalculatorResults extends ConsumerWidget {
         children: [
           _itemRow(
             context,
-            l10n.resultElectricityPrefix,
+            results.electricitySource == WattageSource.average
+                ? l10n.resultElectricityAverage
+                : l10n.resultElectricityRated,
             results.electricity,
             currencySettings: currencySettings,
             key: const ValueKey<String>('calculator.result.electricityCost'),
@@ -89,7 +91,7 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.additionalCost'),
             ),
-          if (!policy.riskPricing().allowed && shouldShowProPromotion) ...[
+          if (!policy.riskPricing().allowed) ...[
             _lockedPromoRow(
               context,
               l10n.wearAndTearLabel,
@@ -105,7 +107,7 @@ class CalculatorResults extends ConsumerWidget {
               key: const ValueKey<String>('calculator.result.locked.riskCost'),
             ),
           ],
-          if (!policy.labourPricing().allowed && shouldShowProPromotion)
+          if (!policy.labourPricing().allowed)
             _lockedPromoRow(
               context,
               l10n.labourCostPrefix,

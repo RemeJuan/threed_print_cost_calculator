@@ -22,6 +22,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorProvider =
@@ -162,12 +163,14 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         return false;
       }
 
-      await settingsService.update(
-        (current) => current.copyWith(
-          activePrinter: result.activePrinterId,
-          selectedMaterial: result.selectedMaterialId ?? '',
-        ),
-      );
+      final materialId = result.selectedMaterialId;
+      await settingsService.update((current) {
+        var updated = current.copyWith(activePrinter: result.activePrinterId);
+        if (materialId != null && materialId.isNotEmpty) {
+          updated = updated.copyWith(selectedMaterial: materialId);
+        }
+        return updated;
+      });
 
       state = result.state;
       return true;
@@ -203,11 +206,19 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         .read(printersRepositoryProvider)
         .getPrinterById(printerId);
 
+    WattageResolution? resolution;
+    if (printer != null) {
+      resolution = ref
+          .read(electricityResolverProvider)
+          .resolveFromPrinter(printer);
+    }
+
     state = state.copyWith(
       activePrinterId: printerId,
       watt: NumberInput.dirty(
-        value: tryParseLocalizedNum(printer?.wattage) ?? state.watt.value,
+        value: resolution?.wattage ?? (state.watt.value ?? 0),
       ),
+      wattageSource: resolution?.source ?? WattageSource.rated,
     );
     submit();
   }
@@ -274,6 +285,28 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       materialUsages: result.usages,
       printWeight: NumberInput.dirty(value: result.totalWeight),
       selectedMaterialId: _selectedMaterialIdFor(result.usages),
+    );
+  }
+
+  void updateUnsavedMaterialSpool(
+    int index, {
+    num? spoolWeight,
+    num? spoolCost,
+  }) {
+    if (index < 0 || index >= state.materialUsages.length) return;
+    final updated = ref
+        .read(calculatorMaterialsServiceProvider)
+        .updateUnsavedSpoolValues(
+          state.materialUsages[index],
+          spoolWeight: spoolWeight,
+          spoolCost: spoolCost,
+        );
+
+    final usages = [...state.materialUsages];
+    usages[index] = updated;
+    state = state.copyWith(
+      materialUsages: usages,
+      selectedMaterialId: _selectedMaterialIdFor(usages),
     );
   }
 
@@ -586,6 +619,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       risk: num.parse(frCost.toStringAsFixed(2)),
       labour: labourCost,
       total: num.parse(totalCost.toStringAsFixed(2)),
+      electricitySource: state.wattageSource,
     );
 
     final pricing = PricingCalculator.calculate(

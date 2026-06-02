@@ -11,6 +11,11 @@ class MaterialsList extends StatelessWidget {
     required this.onPick,
     required this.onWeightChanged,
     required this.onRemove,
+    this.onSpoolWeightChanged,
+    this.onSpoolCostChanged,
+    this.currencySymbol = '',
+    this.currencyPosition = 'before',
+    this.currencySpacing = false,
     super.key,
   });
 
@@ -19,6 +24,11 @@ class MaterialsList extends StatelessWidget {
   final void Function(int index) onPick;
   final void Function(int index, int grams) onWeightChanged;
   final void Function(int index) onRemove;
+  final void Function(int index, num value)? onSpoolWeightChanged;
+  final void Function(int index, num value)? onSpoolCostChanged;
+  final String currencySymbol;
+  final String currencyPosition;
+  final bool currencySpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +37,17 @@ class MaterialsList extends StatelessWidget {
         (usages.length == 1 && usages.first.weightGrams == 0)
         ? null
         : (usages.length > 4 ? maxHeight : null);
+
+    final sortedIndices = List<int>.generate(usages.length, (i) => i)
+      ..sort((a, b) {
+        final aUnsaved = usages[a].isUnsaved;
+        final bUnsaved = usages[b].isUnsaved;
+        if (aUnsaved == bUnsaved) {
+          return a.compareTo(b);
+        }
+
+        return aUnsaved ? -1 : 1;
+      });
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -37,16 +58,27 @@ class MaterialsList extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         itemCount: usages.length,
         itemBuilder: (context, index) {
-          final usage = usages[index];
+          final actualIndex = sortedIndices[index];
+          final usage = usages[actualIndex];
           final material = materialsById[usage.materialId];
 
           return MaterialRow(
-            index: index,
+            index: actualIndex,
             usage: usage,
             material: material,
-            onPick: () => onPick(index),
-            onWeightChanged: (grams) => onWeightChanged(index, grams),
-            onRemove: () => onRemove(index),
+            isUnsaved: usage.isUnsaved,
+            onPick: () => onPick(actualIndex),
+            onWeightChanged: (grams) => onWeightChanged(actualIndex, grams),
+            onRemove: () => onRemove(actualIndex),
+            onSpoolWeightChanged: onSpoolWeightChanged != null
+                ? (v) => onSpoolWeightChanged!(actualIndex, v)
+                : null,
+            onSpoolCostChanged: onSpoolCostChanged != null
+                ? (v) => onSpoolCostChanged!(actualIndex, v)
+                : null,
+            currencySymbol: currencySymbol,
+            currencyPosition: currencyPosition,
+            currencySpacing: currencySpacing,
           );
         },
       ),

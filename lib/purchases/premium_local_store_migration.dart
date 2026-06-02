@@ -7,7 +7,6 @@ Future<void> migratePremiumLocalStore({
   required PremiumLocalStore premiumLocalStore,
 }) async {
   const keys = [
-    hideProPromotionsPreferenceKey,
     testPremiumOverrideEnabledOnPreferenceKey,
     calculationCountPreferenceKey,
     hasUsedGcodeImportPreferenceKey,

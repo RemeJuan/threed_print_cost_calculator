@@ -1,47 +1,50 @@
-Kennen Sie Ihre Margen vor dem Druck
+Kennen Sie Ihre Druckkosten, bevor Sie ein Angebot abgeben.
 
-Viele Maker berechnen nur die Filamentkosten. Dabei bleiben Strom, Druckerleistung, Ausfallrisiko, Arbeitszeit, verschleissbedingte Gemeinkosten, Einrichtungsgebühren und Aufschlag unberücksichtigt.
+3D Print Cost Calculator hilft Makern und kleinen 3D-Druck-Unternehmen, präzise 3D-Druckkosten zu berechnen, nicht nur Filamentkosten. Berücksichtigen Sie Strom, Druckerleistung, Fehldrucke, Arbeitszeit, Einrichtungszeit und Gemeinkosten in einem klaren Ablauf.
 
-3D Print Cost Calculator bietet Ihnen eine strukturierte Möglichkeit, die tatsächlichen Kosten jedes Drucks zu berechnen, bevor Sie einen Preis anbieten.
+So kalkulieren Sie Aufträge konsistent, schützen Ihre Marge und kommen schneller vom Kostenvoranschlag zum Preis.
 
 Für Hobbyisten, Maker, Nebenerwerbe und kleine 3D-Druck-Unternehmen.
 
-Kostenlose Funktionen
+Kostenlos enthalten:
 
-• Filamentkostenberechnung
-• Integration der Stromkosten (kWh)
-• Modellierung des Drucker-Stromverbrauchs
-• Materialbestandsverfolgung mit automatischen Aktualisierungen
-• Vollständig offline und datenschutzfreundlich
+• Grundlegende Druckkostenberechnung
+• Stromkostenberechnung
+• Multimaterial-Kalkulation
+• G-Code-Import für einzelne Drucke
+• Bis zu 5 gespeicherte Materialien (manuelle Verwaltung)
+• Bis zu 2 Druckerprofile
+• Bis zu 7 Verlaufseinträge
+• Export einzelner Aufträge
+• Manuelle Stapelkalkulation für bis zu 3 Positionen
+• Offline-first-Betrieb
 
-Premium-Funktionen
+Die kostenlose Version ist bewusst wirklich nützlich. Sie können echte Drucke kalkulieren, wichtige Daten speichern, letzte Aufträge prüfen und kleine manuelle Stapel ohne Konto bearbeiten.
 
-Für Maker, die Drucke verkaufen oder ihre Kosten genauer steuern möchten:
+Premium ergänzt Werkzeuge für mehr Volumen, mehr Preiskontrolle und schnellere Abläufe:
 
-• Kundenfertige Preisgestaltung
-• Aufschlag, Einrichtungsgebühren und Rundungsoptionen
-• Währungsformatierung
-• Unterstützung für Multimaterial-Drucke
-• Stapelkalkulation für mehrere Drucke
-• G-Code-Import für schnelleres Einrichten
-• Modellierung des Ausfallrisikos
-• Arbeitskosten und Bearbeitungszeit
-• Druckverlauf speichern und prüfen
-• Detaillierte Kostenaufschlüsselung pro Auftrag
-• Mehrere Druckerprofile verwalten
-• Einzelne Aufträge oder den gesamten Verlauf exportieren (CSV)
-• Erweiterte Konfigurationsoptionen
+• Unbegrenzte Materialien
+• Unbegrenzte Druckerprofile
+• Unbegrenzter Verlauf
+• Vollständiger Export und Bulk-Export
+• Stapelweiser G-Code-Import
+• Schnellere Stapelerstellung aus G-Code-Dateien
+• Unbegrenzte Stapelkalkulation
+• Arbeitskostenberechnung
+• Modellierung des Fehldruckrisikos
+• Aufschlagsunterstützung
+• Einrichtungsgebühren
+• Rundungsregeln
+• Detaillierte Kostenaufschlüsselungen
+• Materialimport
+• Filamentinventar und Restspulenverfolgung
+• Erweiterte Konfiguration
 
-Exportieren Sie Ihre Daten für Buchhaltung, Preisanalysen oder Kundenangebote.
+Datenschutz an erster Stelle:
 
-Datenschutz zuerst
+• Keine Konten
+• Keine Cloud-Abhängigkeit
+• Kein verpflichtendes Tracking
+• Ihre Daten bleiben auf Ihrem Gerät
 
-Keine Konten
-Keine Cloud-Synchronisierung
-Kein Tracking
-
-Alle Daten bleiben auf Ihrem Gerät.
-
-Entwickelt, um an der Oberfläche einfach zu bleiben und darunter präzise zu sein.
-
-Seit 2021 weltweit im Einsatz bei Makern und kleinen 3D-Druck-Unternehmen.
+Entwickelt, um an der Oberfläche einfach und im Ergebnis präzise zu bleiben.

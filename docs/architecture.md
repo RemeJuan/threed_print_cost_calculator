@@ -51,6 +51,7 @@
 - App shell gating happens in `lib/app/app_page.dart`:
   - Materials tab opens for all users; free tier enforcement happens through policy quota limits.
   - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
+- Printer management (settings) and calculator printer selection are both free-tier accessible, gated by a single `policy.printers()` gate. Free users are capped at 2 printers via `policy.canCreatePrinter(...)`. No separate `printersList()` gate exists.
 - Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
 
 ## Structured logging approach

@@ -3,10 +3,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dar
 
 void main() {
   group('DefaultPremiumAccessPolicy free tier', () {
-    final policy = DefaultPremiumAccessPolicy(
-      isPremium: false,
-      hideProPromotions: false,
-    );
+    final policy = DefaultPremiumAccessPolicy(isPremium: false);
 
     test('uses free-tier limits', () {
       expect(policy.materialLimit, 5);
@@ -17,8 +14,8 @@ void main() {
 
     test('allows free features', () {
       expect(policy.multiMaterial().allowed, isTrue);
+      expect(policy.materialsLibrary().allowed, isTrue);
       expect(policy.printers().allowed, isTrue);
-      expect(policy.printersList().allowed, isFalse);
       expect(policy.historyView().allowed, isTrue);
       expect(policy.gcodeImport().allowed, isTrue);
       expect(policy.batchCosting().allowed, isTrue);
@@ -26,7 +23,6 @@ void main() {
     });
 
     test('keeps premium-only features gated', () {
-      expect(policy.materialsLibrary().allowed, isFalse);
       expect(policy.csvMaterialImport().allowed, isFalse);
       expect(policy.batchExport().allowed, isFalse);
       expect(policy.bulkHistoryExport().allowed, isFalse);
@@ -134,10 +130,7 @@ void main() {
   });
 
   group('DefaultPremiumAccessPolicy premium tier', () {
-    final policy = DefaultPremiumAccessPolicy(
-      isPremium: true,
-      hideProPromotions: false,
-    );
+    final policy = DefaultPremiumAccessPolicy(isPremium: true);
 
     test('has no limits', () {
       expect(policy.materialLimit, isNull);

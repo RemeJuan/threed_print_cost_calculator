@@ -28,7 +28,6 @@ void main() {
   testWidgets(
     'free state keeps history gate visible without badge when promos hidden',
     (tester) async {
-      SharedPreferences.setMockInitialValues({'hideProPromotions': true});
       final db = await tester.pumpApp(const AppPage(), [
         calculatorProvider.overrideWith(() => mockCalculatorProvider),
         purchasesGatewayProvider.overrideWithValue(
@@ -55,35 +54,6 @@ void main() {
       );
     },
   );
-
-  testWidgets('free state shows teaser history gate when promos enabled', (
-    tester,
-  ) async {
-    final db = await tester.pumpApp(const AppPage(), [
-      calculatorProvider.overrideWith(() => mockCalculatorProvider),
-      purchasesGatewayProvider.overrideWithValue(
-        FakePurchasesGateway(
-          const PremiumState(
-            isPremium: false,
-            isLoading: false,
-            userId: 'free',
-          ),
-        ),
-      ),
-    ]);
-    addTearDown(() => db.close());
-
-    await tester.pumpAndSettle();
-
-    expect(
-      find.text(lookupAppLocalizations(const Locale('en')).historyNavLabel),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('nav.history.pro.badge')),
-      findsNothing,
-    );
-  });
 
   testWidgets('premium state shows premium history gate', (tester) async {
     final db = await tester.pumpApp(const AppPage(), [

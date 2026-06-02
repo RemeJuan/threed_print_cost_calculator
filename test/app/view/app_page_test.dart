@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -11,7 +10,6 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart'
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/lower_level_test_fakes.dart';
@@ -52,10 +50,7 @@ void main() {
   });
 
   testWidgets('shows free nav with history', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -202,12 +197,6 @@ void main() {
       findsNothing,
     );
 
-    final container = ProviderScope.containerOf(
-      tester.element(find.byType(BottomNavigationBar)),
-    );
-    await container
-        .read(hideProPromotionsProvider.notifier)
-        .setHideProPromotions(true);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
@@ -225,10 +214,7 @@ void main() {
   testWidgets('premium changes update nav items from gateway updates', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -267,10 +253,7 @@ void main() {
   testWidgets('opening materials tab logs analytics once per open', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(premiumUser());
 
@@ -314,10 +297,7 @@ void main() {
   testWidgets('premium app bar icons match the source of truth', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(premiumUser());
 
@@ -352,10 +332,7 @@ void main() {
   });
 
   testWidgets('free app bar icons match the source of truth', (tester) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': false,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(freeUser());
 
@@ -378,10 +355,7 @@ void main() {
   testWidgets('selected index stays stable across entitlement changes', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
@@ -424,10 +398,7 @@ void main() {
   testWidgets('swiping between pages updates bottom navigation selection', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
@@ -495,12 +466,6 @@ void main() {
       2,
     );
 
-    final container = ProviderScope.containerOf(
-      tester.element(find.byType(BottomNavigationBar)),
-    );
-    await container
-        .read(hideProPromotionsProvider.notifier)
-        .setHideProPromotions(true);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 600));
 
@@ -560,10 +525,7 @@ void main() {
   testWidgets('re-enabling history promo keeps settings selected', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
@@ -584,12 +546,6 @@ void main() {
           .currentIndex,
       3,
     );
-    final container = ProviderScope.containerOf(
-      tester.element(find.byType(BottomNavigationBar)),
-    );
-    await container
-        .read(hideProPromotionsProvider.notifier)
-        .setHideProPromotions(false);
     await tester.pump();
     await tester.pump();
     await tester.pump();
@@ -657,10 +613,7 @@ void main() {
   testWidgets('help support page still exposes hidden tools tap target', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      'run_count': 0,
-      'hideProPromotions': true,
-    });
+    SharedPreferences.setMockInitialValues({'run_count': 0});
     final calculatorNotifier = FakeCalculatorNotifier();
     final gateway = FakePurchasesGateway(
       const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),

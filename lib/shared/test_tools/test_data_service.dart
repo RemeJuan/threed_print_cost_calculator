@@ -57,7 +57,6 @@ class TestDataService {
 
   bool _isPremiumSeedKey(String key) {
     return switch (key) {
-      hideProPromotionsPreferenceKey => true,
       testPremiumOverrideEnabledOnPreferenceKey => true,
       calculationCountPreferenceKey => true,
       hasUsedGcodeImportPreferenceKey => true,

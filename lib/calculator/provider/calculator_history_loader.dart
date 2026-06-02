@@ -10,6 +10,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 final calculatorHistoryLoaderProvider = Provider<CalculatorHistoryLoader>(
@@ -57,18 +58,24 @@ class CalculatorHistoryLoader {
               entry.model.filamentCost > 0);
 
       if (usage.materialId.trim().isNotEmpty) {
-        final material = await materialsRepository.getMaterialById(
-          usage.materialId,
-        );
-        if (material == null && fallbackMaterial != null) {
-          hasReplacement = true;
-          resolvedMaterial = fallbackMaterial;
-          resolvedUsage = usage.copyWith(
-            materialId: fallbackMaterial.id,
-            materialName: fallbackMaterial.name,
-          );
+        if (usage.materialId.startsWith(
+          MaterialUsageInput.unsavedMaterialIdPrefix,
+        )) {
+          resolvedMaterial = null;
         } else {
-          resolvedMaterial = material;
+          final material = await materialsRepository.getMaterialById(
+            usage.materialId,
+          );
+          if (material == null && fallbackMaterial != null) {
+            hasReplacement = true;
+            resolvedMaterial = fallbackMaterial;
+            resolvedUsage = usage.copyWith(
+              materialId: fallbackMaterial.id,
+              materialName: fallbackMaterial.name,
+            );
+          } else {
+            resolvedMaterial = material;
+          }
         }
       }
 
@@ -104,16 +111,27 @@ class CalculatorHistoryLoader {
             finalPrice: entry.model.finalPrice ?? entry.model.totalCost,
           );
 
+    final WattageSource storedSource;
+    switch (entry.model.electricitySource) {
+      case 'average':
+        storedSource = WattageSource.average;
+      default:
+        storedSource = WattageSource.rated;
+    }
+
+    final resolvedWattage = _resolveLoadedWattage(
+      resolvedPrinter: resolvedPrinter,
+      settings: settings,
+      storedSource: storedSource,
+    );
+
     final nextState = CalculatorState(
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
       selectedMaterialId: materialUsages.isNotEmpty
           ? materialUsages.first.materialId
           : '',
-      watt: NumberInput.dirty(
-        value: parseLocalizedNumOrFallback(
-          resolvedPrinter?.wattage ?? settings.wattage,
-        ),
-      ),
+      watt: NumberInput.dirty(value: resolvedWattage),
+      wattageSource: storedSource,
       kwCost: currentState.kwCost,
       printWeight: NumberInput.dirty(value: entry.model.weight),
       materialUsages: materialUsages,
@@ -140,6 +158,7 @@ class CalculatorHistoryLoader {
         risk: entry.model.riskCost,
         labour: entry.model.labourCost,
         total: entry.model.totalCost,
+        electricitySource: storedSource,
       ),
       pricing: pricing,
       showHistoryLoadReplacementWarning: hasReplacement,
@@ -157,7 +176,11 @@ class CalculatorHistoryLoader {
     return CalculatorHistoryLoadResult(
       state: nextState,
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
-      selectedMaterialId: materialUsages.isNotEmpty
+      selectedMaterialId:
+          materialUsages.isNotEmpty &&
+              !materialUsages.first.materialId.startsWith(
+                MaterialUsageInput.unsavedMaterialIdPrefix,
+              )
           ? materialUsages.first.materialId
           : null,
     );
@@ -206,6 +229,38 @@ class CalculatorHistoryLoader {
 
   num _costPerKgFromSpool({required num spoolWeight, required num spoolCost}) {
     return spoolWeight <= 0 ? 0 : (spoolCost / spoolWeight) * 1000;
+  }
+
+  num _resolveLoadedWattage({
+    required PrinterModel? resolvedPrinter,
+    required GeneralSettingsModel settings,
+    required WattageSource storedSource,
+  }) {
+    if (resolvedPrinter != null) {
+      final preferred = storedSource == WattageSource.average
+          ? tryParseLocalizedNum(resolvedPrinter.averageWattage)
+          : tryParseLocalizedNum(resolvedPrinter.wattage);
+      if (preferred != null) return preferred;
+
+      final fallbackResolution = ref
+          .read(electricityResolverProvider)
+          .resolveFromPrinter(resolvedPrinter);
+      return fallbackResolution.wattage;
+    }
+
+    final preferred = storedSource == WattageSource.average
+        ? tryParseLocalizedNum(settings.averageWattage)
+        : tryParseLocalizedNum(settings.wattage);
+    if (preferred != null) return preferred;
+
+    final fallbackResolution = ref
+        .read(electricityResolverProvider)
+        .resolve(
+          printers: const [],
+          activePrinterId: settings.activePrinter,
+          settings: settings,
+        );
+    return fallbackResolution.wattage;
   }
 }
 

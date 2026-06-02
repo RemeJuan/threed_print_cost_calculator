@@ -47,15 +47,13 @@ void main() {
     tester,
   ) async {
     final repo = FakePrintersRepository();
-    final db = await tester.pumpApp(
-      _PrinterDialogHost(builder: (_) => const AddPrinter()),
-      [
-        printersRepositoryProvider.overrideWithValue(repo),
-        premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
-        ),
-      ],
-    );
+    final db = await tester
+        .pumpApp(_PrinterDialogHost(builder: (_) => const AddPrinter()), [
+          printersRepositoryProvider.overrideWithValue(repo),
+          premiumAccessPolicyProvider.overrideWithValue(
+            DefaultPremiumAccessPolicy(isPremium: true),
+          ),
+        ]);
     addTearDown(db.close);
 
     await tester.tap(find.text('Open'));

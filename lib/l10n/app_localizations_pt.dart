@@ -90,6 +90,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get resultElectricityPrefix => 'Custo total de eletricidade: ';
 
   @override
+  String get resultElectricityRated => 'Eletricidade (Nominal)';
+
+  @override
+  String get resultElectricityAverage => 'Eletricidade (Média)';
+
+  @override
   String get resultFilamentPrefix => 'Custo total do filamento: ';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get bedSizeLabel => 'Tamanho da mesa *';
 
   @override
-  String get wattageLabel => 'Potência *';
+  String get wattageLabel => 'Potência (Nominal) *';
+
+  @override
+  String get averageWattageLabel => 'Potência (Média)';
 
   @override
   String get materialNameLabel => 'Nome do material *';
@@ -324,6 +333,17 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get helpSupportFaqSetupAnswer =>
       'Uma taxa de configuração é um custo fixo por trabalho para calibração, preparação da máquina e administração. Ajuda impressões pequenas a cobrir despesas gerais.';
+
+  @override
+  String get wattageFaqHint => 'Veja a FAQ para detalhes sobre watts';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Potência nominal vs. potência média - qual a diferença?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'A potência nominal é o máximo que a sua impressora pode puxar da tomada (impresso na placa de identificação). A potência média é o consumo típico durante uma impressão, idealmente medido com um medidor de tomada. Use a potência média para um custo de eletricidade preciso, ou a nominal como limite superior seguro.';
 
   @override
   String get helpSupportLinksTitle => 'Links';
@@ -743,13 +763,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get lockedValuePlaceholder => 'Somente Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Ocultar promoções Pro';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Ocultar banners e prompts de atualização';
-
-  @override
   String get printerLimitReachedMessage =>
       'Você pode salvar até 2 impressoras no Free. Faça upgrade para Premium para impressoras ilimitadas.';
 
@@ -845,6 +858,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Baixar / Compartilhar com Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Material não salvo';
+
+  @override
+  String get unsavedMaterialHeader => 'Material personalizado';
+
+  @override
+  String get customMaterialWeightLabel => 'Peso';
+
+  @override
+  String get customMaterialCostLabel => 'Custo';
+
+  @override
+  String get customMaterialUsedLabel => 'Usado';
 
   @override
   String get addMaterialButton => 'Adicionar';

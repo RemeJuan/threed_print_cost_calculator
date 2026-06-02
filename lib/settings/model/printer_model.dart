@@ -9,6 +9,7 @@ abstract class PrinterModel with _$PrinterModel {
     required String name,
     required String bedSize,
     required String wattage,
+    @Default('') String averageWattage,
     required bool archived,
   }) = _PrinterModel;
 
@@ -18,6 +19,7 @@ abstract class PrinterModel with _$PrinterModel {
       name: map['name'].toString(),
       bedSize: map['bedSize'].toString(),
       wattage: map['wattage'].toString(),
+      averageWattage: (map['averageWattage'] ?? '').toString(),
       archived: false,
     );
   }
@@ -29,6 +31,7 @@ extension PrinterModelX on PrinterModel {
       'name': name,
       'bedSize': bedSize,
       'wattage': wattage,
+      'averageWattage': averageWattage,
       'archived': archived,
     };
   }

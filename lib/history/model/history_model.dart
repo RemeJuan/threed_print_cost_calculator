@@ -33,6 +33,7 @@ abstract class HistoryModel with _$HistoryModel {
     num? pricingSubtotalBeforeRounding,
     num? pricingRoundingAdjustment,
     num? finalPrice,
+    @Default('') String electricitySource,
     bool? pricingUsedOverrides,
     @Default(false) bool batchQuote,
     @Default(<Map<String, dynamic>>[])
@@ -127,6 +128,7 @@ abstract class HistoryModel with _$HistoryModel {
         map['pricingRoundingAdjustment'],
       ),
       finalPrice: _parseNullableNum(map['finalPrice']),
+      electricitySource: (map['electricitySource'] ?? '').toString(),
       pricingUsedOverrides: map['pricingUsedOverrides'] == null
           ? null
           : map['pricingUsedOverrides'] == true,
@@ -219,6 +221,7 @@ extension HistoryModelX on HistoryModel {
       'materialUsages': materialUsages,
       'timeHours': timeHours,
       'importedFromGcode': importedFromGcode,
+      'electricitySource': electricitySource,
       'pricingMarkupPercent': pricingMarkupPercent,
       'pricingMarkupAmount': pricingMarkupAmount,
       'pricingSetupFee': pricingSetupFee,

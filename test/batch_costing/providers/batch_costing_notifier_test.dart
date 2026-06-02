@@ -12,7 +12,7 @@ ProviderContainer _createContainer() {
   return ProviderContainer(
     overrides: [
       premiumAccessPolicyProvider.overrideWithValue(
-        DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+        DefaultPremiumAccessPolicy(isPremium: true),
       ),
     ],
   );
@@ -22,7 +22,7 @@ ProviderContainer _createFreeContainer() {
   return ProviderContainer(
     overrides: [
       premiumAccessPolicyProvider.overrideWithValue(
-        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+        DefaultPremiumAccessPolicy(isPremium: false),
       ),
     ],
   );

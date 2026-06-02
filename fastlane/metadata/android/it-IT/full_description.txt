@@ -1,43 +1,60 @@
-3D Print Cost Calculator aiuta maker e piccole attività di stampa 3D a calcolare prezzi accurati usando filamento, elettricità, manodopera, consumo energetico della stampante, rischio di fallimento, commissioni di configurazione e margine.
+3D Print Cost Calculator aiuta maker e piccole aziende di stampa 3D a calcolare il costo reale di ogni stampa prima di fare un preventivo, vendere o iniziare un lavoro.
 
-La maggior parte dei maker conta solo il costo del filamento. Il prezzo reale include anche elettricità, tempo macchina, usura, stampe fallite, manodopera e preparazione.
+La maggior parte dei maker calcola solo il costo del filamento. I costi reali di stampa includono anche elettricità, consumo della stampante, stampe fallite, manodopera, tempo di preparazione e costi generali.
 
-Dai un prezzo preciso alle tue stampe e proteggi i tuoi margini.
+Usalo per calcolare i lavori con sicurezza, proteggere i margini e mantenere prezzi coerenti.
 
-Per hobbisti, maker e piccole aziende di stampa 3D.
+Pensato per hobbisti, maker, attività secondarie e piccole aziende di stampa 3D.
 
 Funzionalità gratuite
 
-• Calcolo del costo del filamento
-• Costo dell'elettricità per kWh
-• Modellazione del consumo energetico della stampante
-• Tracciamento delle scorte di materiale con aggiornamenti automatici
-• Completamente offline e attento alla privacy
+• Calcolo base del costo di stampa
+• Calcolo del costo dell'elettricità
+• Calcolo multimateriale
+• Importazione G-code per una singola stampa
+• Fino a 5 materiali salvati (gestione manuale)
+• Fino a 2 profili stampante
+• Fino a 7 voci nella cronologia
+• Esportazione di lavori singoli
+• Calcolo manuale in batch fino a 3 elementi
+• Funzionamento offline-first
+
+Calcola lavori reali, salva i dati principali, rivedi i lavori recenti e gestisci piccoli batch senza account né abbonamento.
 
 Funzionalità Premium
 
-• Prezzi pronti per il cliente
-• Margine, commissioni di configurazione e opzioni di arrotondamento
-• Formattazione valuta
-• Importazione G-code per una configurazione più rapida
-• Supporto alla stampa multimateriale
-• Calcolo in batch per più stampe
+Premium è pensato per più volume, flussi più rapidi e strumenti di prezzo per il business.
+
+Sblocca:
+
+• Materiali illimitati
+• Profili stampante illimitati
+• Cronologia illimitata
+• Esportazione completa e in blocco
+• Importazione G-code in batch
+• Configurazione dei batch più rapida da file G-code
+• Calcolo in batch illimitato
+• Calcolo della manodopera
 • Modellazione del rischio di fallimento
-• Costo della manodopera e tempo di lavorazione
-• Salva e rivedi la cronologia di stampa
-• Ripartizione dettagliata dei costi per lavoro
-• Profili stampante multipli
-• Esporta lavori singoli o la cronologia completa (CSV)
+• Supporto per il margine
+• Commissioni di configurazione
+• Regole di arrotondamento
+• Ripartizioni dettagliate dei costi
+• Importazione dei materiali
+• Inventario del filamento e monitoraggio della bobina residua
 • Configurazione avanzata
 
-Esporta i tuoi dati per contabilità, analisi dei prezzi o preventivi per i clienti.
+Perché i maker lo usano
 
-Privacy prima di tutto:
+• Risolve il vero problema del prezzo, non solo il calcolo del filamento
+• Aiuta a fare preventivi più coerenti sui lavori ripetuti
+• Gestisce sia lavori semplici sia flussi business più avanzati
+• I tuoi dati restano sul tuo dispositivo
+• Funziona senza account, senza vincoli cloud e senza sincronizzazione forzata
+
+Privacy prima di tutto
+
 Nessun account
-Nessuna sincronizzazione cloud
-Nessun tracciamento
-Tutti i dati rimangono sul tuo dispositivo
-
-Costruito con un motore di costi deterministico per risultati coerenti e ripetibili.
-
-Usato da maker e piccole aziende di stampa 3D in tutto il mondo dal 2021.
+Nessuna dipendenza dal cloud
+Nessun tracciamento obbligatorio
+I dati dell'app restano sul tuo dispositivo

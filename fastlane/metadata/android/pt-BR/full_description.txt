@@ -1,43 +1,60 @@
-3D Print Cost Calculator ajuda makers e pequenas empresas de impressão 3D a calcular preços precisos usando filamento, eletricidade, mão de obra, consumo de energia da impressora, risco de falha, taxas de configuração e margem.
+3D Print Cost Calculator ajuda makers e pequenas empresas de impressão 3D a calcular o custo real de cada impressão antes de fazer um orçamento, vender ou iniciar um trabalho.
 
-A maioria dos makers só conta o custo do filamento. O preço real também inclui eletricidade, tempo de máquina, desgaste, impressões com falha, mão de obra e preparação.
+A maioria dos makers calcula só o custo do filamento. Os custos reais de impressão também incluem eletricidade, consumo da impressora, falhas, mão de obra, tempo de preparação e custos indiretos.
 
-Defina preços com precisão e proteja suas margens.
+Use para calcular trabalhos com confiança, proteger sua margem e manter preços consistentes.
 
-Para hobistas, makers e pequenas empresas de impressão 3D.
+Feito para hobistas, makers, rendas extras e pequenas empresas de impressão 3D.
 
 Recursos gratuitos
 
-• Cálculo do custo do filamento
-• Custo de eletricidade por kWh
-• Modelagem do consumo de energia da impressora
-• Rastreamento de estoque de material com atualizações automáticas
-• Totalmente offline e com privacidade em primeiro lugar
+• Cálculo básico de custo de impressão
+• Cálculo de custo de eletricidade
+• Custeio multimaterial
+• Importação de G-code para uma única impressão
+• Até 5 materiais salvos (gerenciamento manual)
+• Até 2 perfis de impressora
+• Até 7 entradas no histórico
+• Exportação de trabalhos individuais
+• Custeio manual em lote para até 3 itens
+• Operação offline-first
+
+Calcule trabalhos reais, salve dados principais, revise trabalhos recentes e monte pequenos lotes sem conta nem assinatura.
 
 Recursos Premium
 
-• Preços prontos para o cliente
-• Margem, taxas de configuração e opções de arredondamento
-• Formatação de moeda
-• Importação de G-code para configuração mais rápida
-• Suporte a impressão multimaterial
-• Custeio em lote para várias impressões
+O Premium é para mais volume, fluxos mais rápidos e ferramentas de precificação para o negócio.
+
+Desbloqueie:
+
+• Materiais ilimitados
+• Perfis de impressora ilimitados
+• Histórico ilimitado
+• Exportação completa e em lote
+• Importação de G-code em lote
+• Configuração de lotes mais rápida a partir de arquivos G-code
+• Custeio em lote ilimitado
+• Precificação de mão de obra
 • Modelagem de risco de falha
-• Tempo de mão de obra e processamento
-• Salvar e revisar o histórico de impressão
-• Detalhamento de custos por trabalho
-• Vários perfis de impressora
-• Exportar trabalhos individuais ou o histórico completo (CSV)
+• Suporte a margem
+• Taxas de configuração
+• Regras de arredondamento
+• Detalhamentos de custo
+• Importação de materiais
+• Inventário de filamento e acompanhamento da bobina restante
 • Configuração avançada
 
-Exporte seus dados para contabilidade, análise de preços ou orçamentos para clientes.
+Por que os makers usam
 
-Privacidade em primeiro lugar:
+• Resolve o problema real de preços, não só a conta do filamento
+• Ajuda a orçar com mais consistência em trabalhos repetidos
+• Atende tanto trabalhos simples quanto fluxos mais avançados de negócio
+• Seus dados ficam no seu dispositivo
+• Funciona sem conta, sem bloqueio em nuvem e sem sincronização forçada
+
+Privacidade em primeiro lugar
+
 Sem contas
-Sem sincronização na nuvem
-Sem rastreamento
-Todos os dados permanecem no seu dispositivo
-
-Construído com um mecanismo de custos determinístico para resultados consistentes e repetíveis.
-
-Usado por makers e pequenas empresas de impressão 3D em todo o mundo desde 2021.
+Sem dependência de nuvem
+Sem exigência de rastreamento
+Os dados do app ficam no seu dispositivo

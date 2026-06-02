@@ -7,6 +7,7 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
   const factory GeneralSettingsModel({
     required String electricityCost,
     required String wattage,
+    @Default('') String averageWattage,
     required String activePrinter,
     required String selectedMaterial,
     required String wearAndTear,
@@ -24,6 +25,7 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
     return GeneralSettingsModel(
       electricityCost: (map['electricityCost'] ?? '').toString(),
       wattage: (map['wattage'] ?? '').toString(),
+      averageWattage: (map['averageWattage'] ?? '').toString(),
       activePrinter: (map['activePrinter'] ?? '').toString(),
       selectedMaterial: (map['selectedMaterial'] ?? '').toString(),
       wearAndTear: (map['wearAndTear'] ?? '').toString(),
@@ -44,6 +46,7 @@ abstract class GeneralSettingsModel with _$GeneralSettingsModel {
     return const GeneralSettingsModel(
       electricityCost: '',
       wattage: '',
+      averageWattage: '',
       activePrinter: '',
       selectedMaterial: '',
       wearAndTear: '',
@@ -64,6 +67,7 @@ extension GeneralSettingsModelX on GeneralSettingsModel {
     return {
       'electricityCost': electricityCost,
       'wattage': wattage,
+      'averageWattage': averageWattage,
       'activePrinter': activePrinter,
       'selectedMaterial': selectedMaterial,
       'wearAndTear': wearAndTear,

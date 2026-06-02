@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 part 'calculation_results_state.freezed.dart';
 
@@ -10,6 +11,7 @@ abstract class CalculationResult with _$CalculationResult {
     required num risk,
     required num labour,
     required num total,
+    @Default(WattageSource.rated) WattageSource electricitySource,
   }) = _CalculationResult;
 
   factory CalculationResult.empty() {

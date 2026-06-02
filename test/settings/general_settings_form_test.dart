@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -72,6 +69,7 @@ Finder _decorator(String key) {
 GeneralSettingsModel _settings({
   String electricityCost = '',
   String wattage = '',
+  String averageWattage = '',
   String activePrinter = '',
   String selectedMaterial = '',
   String wearAndTear = '',
@@ -81,6 +79,7 @@ GeneralSettingsModel _settings({
   return GeneralSettingsModel(
     electricityCost: electricityCost,
     wattage: wattage,
+    averageWattage: averageWattage,
     activePrinter: activePrinter,
     selectedMaterial: selectedMaterial,
     wearAndTear: wearAndTear,
@@ -152,7 +151,13 @@ void main() {
       repo.emit(GeneralSettingsModel.initial());
       await tester.pump();
 
-      repo.emit(_settings(electricityCost: '0.42', wattage: '220'));
+      repo.emit(
+        _settings(
+          electricityCost: '0.42',
+          wattage: '220',
+          averageWattage: '140',
+        ),
+      );
       await tester.pump();
       await tester.pump();
 
@@ -170,6 +175,62 @@ void main() {
             .text,
         '220',
       );
+      expect(
+        tester
+            .widget<TextFormField>(
+              _field('settings.generalAverageWattage.input'),
+            )
+            .controller!
+            .text,
+        '140',
+      );
+    });
+
+    testWidgets('shows average wattage field from clean state', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const GeneralSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+
+      expect(
+        find.byKey(
+          const ValueKey<String>('settings.generalAverageWattage.input'),
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('persists clearing average wattage after debounce', (
+      tester,
+    ) async {
+      final repo = _FakeSettingsRepository(
+        initialSettings: _settings(averageWattage: '140'),
+      );
+      final db = await tester.pumpApp(const GeneralSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(_settings(averageWattage: '140'));
+      await tester.pump();
+
+      await tester.enterText(
+        _field('settings.generalAverageWattage.input'),
+        '',
+      );
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      expect(repo.savedSettings, isNotEmpty);
+      expect(repo.savedSettings.last.averageWattage, '');
     });
 
     testWidgets('does not overwrite a focused field from stream updates', (
@@ -302,52 +363,5 @@ void main() {
         );
       },
     );
-
-    testWidgets('persists the hide Pro promotions toggle', (tester) async {
-      final repo = _FakeSettingsRepository();
-      final premiumLocalStore = InMemoryPremiumLocalStore();
-      final db = await tester.pumpApp(const GeneralSettings(), [
-        settingsRepositoryProvider.overrideWithValue(repo),
-        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-        isPremiumProvider.overrideWithValue(false),
-      ], premiumLocalStore);
-      addTearDown(db.close);
-      addTearDown(repo.dispose);
-
-      repo.emit(GeneralSettingsModel.initial());
-      await tester.pump();
-
-      final toggle = find.byKey(
-        const ValueKey<String>('settings.hideProPromotions.toggle'),
-      );
-      expect(toggle, findsOneWidget);
-
-      await tester.tap(toggle);
-      await tester.pump();
-
-      expect(
-        premiumLocalStore.readSync(hideProPromotionsPreferenceKey),
-        'true',
-      );
-    });
-
-    testWidgets('hides the toggle for premium users', (tester) async {
-      final repo = _FakeSettingsRepository();
-      final db = await tester.pumpApp(const GeneralSettings(), [
-        settingsRepositoryProvider.overrideWithValue(repo),
-        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-        isPremiumProvider.overrideWithValue(true),
-      ]);
-      addTearDown(db.close);
-      addTearDown(repo.dispose);
-
-      repo.emit(GeneralSettingsModel.initial());
-      await tester.pump();
-
-      expect(
-        find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
-        findsNothing,
-      );
-    });
   });
 }

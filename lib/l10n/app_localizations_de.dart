@@ -90,6 +90,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get resultElectricityPrefix => 'Gesamtkosten für Strom:';
 
   @override
+  String get resultElectricityRated => 'Strom (Nennwert)';
+
+  @override
+  String get resultElectricityAverage => 'Strom (Durchschnitt)';
+
+  @override
   String get resultFilamentPrefix => 'Gesamtkosten für Filament:';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bedSizeLabel => 'Druckbettgröße *';
 
   @override
-  String get wattageLabel => 'Leistung *';
+  String get wattageLabel => 'Leistung (Nennwert) *';
+
+  @override
+  String get averageWattageLabel => 'Leistung (Durchschnitt)';
 
   @override
   String get materialNameLabel => 'Materialname *';
@@ -326,6 +335,17 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get helpSupportFaqSetupAnswer =>
       'Eine Einrichtungsgebühr ist ein fester Kostenbetrag pro Auftrag für Kalibrierung, Maschinenvorbereitung und Verwaltung. Sie hilft bei kleinen Drucken, Gemeinkosten zu decken.';
+
+  @override
+  String get wattageFaqHint => 'Siehe FAQ für Details zur Wattzahl';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Nennleistung vs. Durchschnittsleistung - was ist der Unterschied?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Die Nennleistung ist die maximale Leistung, die Ihr Drucker aus der Steckdose ziehen kann (auf dem Typenschild angegeben). Die Durchschnittsleistung ist seine typische Leistung während eines Drucks und wird idealerweise mit einem Zwischenstecker-Messgerät gemessen. Verwenden Sie die Durchschnittsleistung für genaue Stromkosten oder die Nennleistung als sichere Obergrenze.';
 
   @override
   String get helpSupportLinksTitle => 'Links';
@@ -741,13 +761,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get lockedValuePlaceholder => 'Nur Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Pro-Aktionen ausblenden';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Upgrade-Banner und Hinweise ausblenden';
-
-  @override
   String get printerLimitReachedMessage =>
       'Du kannst auf Free bis zu 2 Drucker speichern. Upgrade auf Premium für unbegrenzte Drucker.';
 
@@ -840,6 +853,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Mit Premium herunterladen / teilen';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Nicht gespeichertes Material';
+
+  @override
+  String get unsavedMaterialHeader => 'Benutzerdefiniertes Material';
+
+  @override
+  String get customMaterialWeightLabel => 'Gewicht';
+
+  @override
+  String get customMaterialCostLabel => 'Kosten';
+
+  @override
+  String get customMaterialUsedLabel => 'Verwendet';
 
   @override
   String get addMaterialButton => 'Material hinzufügen';

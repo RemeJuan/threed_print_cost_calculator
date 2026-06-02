@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 class HistoryItemCostRows extends StatelessWidget {
   const HistoryItemCostRows({
@@ -20,7 +21,9 @@ class HistoryItemCostRows extends StatelessWidget {
       children: [
         _costRow(
           context,
-          l10n.electricityCostLabel,
+          data.electricitySource == WattageSource.average.name
+              ? l10n.resultElectricityAverage
+              : l10n.resultElectricityRated,
           data.electricityCost,
           key: ValueKey<String>('$itemKeyPrefix.electricityCost'),
         ),

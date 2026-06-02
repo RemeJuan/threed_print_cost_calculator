@@ -11,6 +11,9 @@ abstract class MaterialUsageInput with _$MaterialUsageInput {
     required String materialName,
     required num costPerKg,
     required int weightGrams,
+    @Default(false) bool isUnsaved,
+    @Default(0) num unsavedSpoolWeight,
+    @Default(0) num unsavedSpoolCost,
   }) = _MaterialUsageInput;
 
   factory MaterialUsageInput.fromMap(Map<String, dynamic> map) {
@@ -25,8 +28,15 @@ abstract class MaterialUsageInput with _$MaterialUsageInput {
       materialName: materialName,
       costPerKg: cost,
       weightGrams: weight,
+      isUnsaved: map['isUnsaved'] == true,
+      unsavedSpoolWeight: parseLocalizedNumOrFallback(
+        map['unsavedSpoolWeight'],
+      ),
+      unsavedSpoolCost: parseLocalizedNumOrFallback(map['unsavedSpoolCost']),
     );
   }
+
+  static const unsavedMaterialIdPrefix = '__unsaved__';
 }
 
 extension MaterialUsageInputX on MaterialUsageInput {
@@ -36,6 +46,9 @@ extension MaterialUsageInputX on MaterialUsageInput {
       'materialName': materialName,
       'costPerKg': costPerKg,
       'weightGrams': weightGrams,
+      'isUnsaved': isUnsaved,
+      'unsavedSpoolWeight': unsavedSpoolWeight,
+      'unsavedSpoolCost': unsavedSpoolCost,
     };
   }
 }

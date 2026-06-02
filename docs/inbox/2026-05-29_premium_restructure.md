@@ -19,7 +19,7 @@ Secondary goals:
 
 - RevenueCat remains entitlement source of truth.
 - Encrypted local storage is deterrence only — not DRM or true security.
-- Free users get a useful product (core calculator, multi-material, limited history with 7 saves, manual batch costing up to 3 items, individual job export, 2 printers, 5 materials).
+- Free users get a useful product (core calculator, multi-material, limited history with 7 saves, manual batch costing up to 3 items, individual job export, 2 printers, 5 saved materials + 1 temporary unsaved material per calculation).
 - Premium focuses on scale (unlimited printers/materials/history/batch items), batch G-code workflows, business pricing (labour, risk, markup), advanced configuration, and bulk exports.
 - Final step includes wiki-wide docs updates.
 
@@ -93,7 +93,8 @@ abstract class PremiumAccessPolicy {
 
   FeatureAccess materialsLibrary();
   FeatureAccess printers();
-  FeatureAccess printersList();
+
+
   FeatureAccess historyView();
   FeatureAccess historyExport();
   FeatureAccess gcodeImport();
@@ -173,8 +174,8 @@ Remove `lib/shared/providers/pro_promotion_visibility.dart` after migration.
 | Capability | Limits |
 |---|---|
 | Core calculator | Full (material cost, print time, electricity) |
-| Multi-material | Supported (saved-material cap is the natural constraint) |
-| Material entry | Manual single-material inputs (no library); up to 5 saved materials |
+| Multi-material | Supported (5 saved + 1 temporary unsaved material per calculation; see [free-material-temporary-flow.md](2026-06-01_free-material-temporary-flow.md)) |
+| Material entry | Up to 5 saved materials plus 1 temporary unsaved material per calculation |
 | Saved printers | 2 |
 | History saves | 7 jobs, real limited list |
 | History view | Real limited list (7 entries), not teaser-only |
@@ -432,6 +433,7 @@ Close bypass gaps without changing product behavior.
 - [x] In `lib/settings/providers/materials_notifier.dart` `submit()`: read `policy.canCreateMaterial(currentCount)` before calling `_materialsRepository.saveMaterial()`. If denied, surface error/upsell instead of saving.
 - [x] In CSV import service/page: add quota check per row batch. If free user exceeds cap, reject entire import with clear message.
 - [x] Test: verify material save blocked at cap, allowed under cap. (Covered by existing test infra + policy override)
+- [ ] Temporary-material calculator entry must not depend on saved-material quota (see [free-material-temporary-flow.md](2026-06-01_free-material-temporary-flow.md) for lifecycle and enforcement boundary).
 
 #### 2.3 Printers enforcement
 
@@ -505,9 +507,9 @@ Deliberately change product behavior.
   - [x] `printerLimit` = 2 for free, null for premium
   - [x] `historyLimit` = 7 for free, null for premium
   - [x] `batchItemLimit` = 3 for free, null for premium
-  - [x] `materialsLibrary()` = `allowed: isPremium`
-  - [x] `multiMaterial()` = `allowed: true` (free; saved-material cap is the natural constraint)
-  - [ ] `printers()` = `allowed: isPremium` *(intentionally changed to free-allowed for Settings visibility; calculator list still gated via `printersList()`)*
+  - [x] `materialsLibrary()` = `allowed: isPremium` (saved-material library access; temporary calculator-only material access specified in [free-material-temporary-flow.md](2026-06-01_free-material-temporary-flow.md))
+  - [x] `multiMaterial()` = `allowed: true` (free; may combine saved materials and 1 temporary unsaved material per calculation)
+  - [x] `printers()` = `allowed: true` (free; single gate controls both settings and calculator printer selection. `printersList()` was removed — no separate calculator-list gate exists)
   - [x] `historyExport()` split into `singleJobExport()` (free) and `bulkHistoryExport()` (premium)
   - [x] `gcodeImport()` = `allowed: true` for single-print import
   - [x] `batchGcodeImport()` = `allowed: isPremium`
@@ -523,8 +525,8 @@ Deliberately change product behavior.
 
 #### 3.2 Free calculator experience
 
-- [x] Verify free user sees only manual single-material inputs (`MaterialsSectionFree`), not `MaterialsSectionPremium`.
-- [x] Verify free user sees no printer selection.
+- [ ] Verify free user experience: up to 5 saved materials plus 1 temporary unsaved material per calculation; picker shows `Temporary Material` path (see [free-material-temporary-flow.md](2026-06-01_free-material-temporary-flow.md)).
+- [x] Verify free user sees printer selection when printers exist (capped at 2 via quota).
 - [x] Verify free user sees no labour/risk/advanced pricing sections.
 - [x] Verify free user sees base calculator results (electricity, filament, total) but not premium result rows.
 - [x] Verify free user sees batch costing entry button (free feature, capped at 3 items).
@@ -546,7 +548,7 @@ Deliberately change product behavior.
 
 #### 3.5 Free material management
 
-- [x] Free user has 5 material slots. Materials page currently premium-only — allow free user to access page but limit to 5 saved materials.
+- [ ] Free user has 5 saved-material slots + 1 temporary unsaved material per calculation (see [free-material-temporary-flow.md](2026-06-01_free-material-temporary-flow.md) for lifecycle, calculator flow, and downgrade behavior). Materials page currently premium-only — allow free user to access page but limit to 5 saved materials.
 - [x] CSV import blocked for free (already covered by `csvMaterialImport()` enforcement in Phase 2).
 
 #### 3.6 Remove free access to premium features
@@ -778,6 +780,7 @@ Strong candidates for deletion or redesign:
 - Premium expires while app is running and user is on history/premium-only tab.
 - Tab disappearing after entitlement change while selected.
 - Free user who already has >1 printer/material after downgrade (over-cap rule).
+- Material-specific edge cases for saved-material vs temporary-material boundaries specified in [free-material-temporary-flow.md](2026-06-01_free-material-temporary-flow.md#edge-cases).
 - Imported materials/CSV exceeding free cap (edge case for downgrade).
 - Multi-file or batch G-code import on free via deep link/share sheet. Single-print G-code import remains allowed.
 - Batch costing already open when entitlement changes mid-session.
@@ -812,10 +815,11 @@ Update after implementation:
 | Free history: real limited list or teaser-only? | Real limited list, 7 entries |
 | Batch costing free access? | Free manual batch costing up to 3 items. Single-print G-code import is free, but G-code-assisted batch import is Premium |
 | Single-print G-code import | Free |
-| Free item limits | 5 materials, 2 printers, 7 history entries, 3 batch items |
+| Free item limits | 5 saved materials + 1 temporary unsaved material per calculation, 2 printers, 7 history entries, 3 batch items |
 | Over-cap editing of existing items? | Yes; block only new creates/imports |
 | Individual job export | Free |
 | Bulk/full history export | Premium |
-| Multi-material free or premium? | Free; saved-material cap is the natural constraint |
+| Multi-material free or premium? | Free; may combine 5 saved + 1 temporary per calculation |
+| Material quota scope | Persistence/library only, never calculator capability |
 | Failure risk free or premium? | Premium-only for this rollout |
 | Stock tracking free or premium? | Premium-only |

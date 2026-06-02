@@ -46,7 +46,6 @@ void main() {
       runCount: 0,
       calculationCount: 3,
       hasUsedGcodeImport: true,
-      hideProPromotions: true,
     );
 
     final gateway = FakePurchasesGateway(canceledTrialUser());
@@ -89,7 +88,7 @@ void main() {
   ) async {
     _setTallViewport(tester);
 
-    seedAppPagePrefs(runCount: 0, calculationCount: 1, hideProPromotions: true);
+    seedAppPagePrefs(runCount: 0, calculationCount: 1);
 
     await pumpAppPage(
       tester,
@@ -107,7 +106,7 @@ void main() {
   ) async {
     _setTallViewport(tester);
 
-    seedAppPagePrefs(runCount: 0, hideProPromotions: true);
+    seedAppPagePrefs(runCount: 0);
 
     await pumpAppPage(
       tester,

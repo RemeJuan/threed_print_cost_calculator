@@ -72,13 +72,25 @@ class SaveForm extends HookConsumerWidget {
                         ? (calcState.printWeight.value ?? 0)
                         : materialsSum;
 
-                    final usages = calcState.materialUsages
-                        .map((usage) => usage.toMap())
-                        .toList();
+                    final usages = calcState.materialUsages.map((usage) {
+                      if (usage.isUnsaved &&
+                          usage.materialName.trim().isEmpty) {
+                        return usage
+                            .copyWith(
+                              materialName: l10n.unsavedMaterialOptionLabel,
+                            )
+                            .toMap();
+                      }
+                      return usage.toMap();
+                    }).toList();
 
                     if (calcState.materialUsages.isNotEmpty) {
+                      final firstUsage = calcState.materialUsages.first;
                       final firstName =
-                          calcState.materialUsages.first.materialName;
+                          firstUsage.isUnsaved &&
+                              firstUsage.materialName.trim().isEmpty
+                          ? l10n.unsavedMaterialOptionLabel
+                          : firstUsage.materialName;
                       final count = calcState.materialUsages.length;
                       materialName = count > 1
                           ? '$firstName +${count - 1}'
@@ -145,6 +157,7 @@ class SaveForm extends HookConsumerWidget {
                     final model = HistoryModel(
                       name: name.value,
                       electricityCost: data.electricity,
+                      electricitySource: data.electricitySource.name,
                       filamentCost: data.filament,
                       totalCost: data.total,
                       riskCost: data.risk,

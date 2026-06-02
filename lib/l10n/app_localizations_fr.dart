@@ -90,6 +90,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get resultElectricityPrefix => 'Coût total de l\'électricité : ';
 
   @override
+  String get resultElectricityRated => 'Électricité (Nominale)';
+
+  @override
+  String get resultElectricityAverage => 'Électricité (Moyenne)';
+
+  @override
   String get resultFilamentPrefix => 'Coût total du filament : ';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get bedSizeLabel => 'Taille du plateau *';
 
   @override
-  String get wattageLabel => 'Puissance *';
+  String get wattageLabel => 'Puissance (Nominale) *';
+
+  @override
+  String get averageWattageLabel => 'Puissance (Moyenne)';
 
   @override
   String get materialNameLabel => 'Nom du matériau *';
@@ -328,6 +337,17 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpSupportFaqSetupAnswer =>
       'Un frais de configuration est un coût fixe par travail pour l\'étalonnage, la préparation de la machine et l\'administration. Il aide les petites impressions à couvrir les frais généraux.';
+
+  @override
+  String get wattageFaqHint => 'Voir la FAQ pour les details sur la puissance';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Puissance nominale vs puissance moyenne - quelle est la difference ?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'La puissance nominale est la puissance maximale que votre imprimante peut tirer du secteur (indiquee sur la plaque signaletique). La puissance moyenne correspond a sa consommation typique pendant une impression, idealement mesuree avec un wattmetre branchable. Utilisez la puissance moyenne pour un cout d\'electricite precis, ou la puissance nominale comme limite superieure sure.';
 
   @override
   String get helpSupportLinksTitle => 'Liens';
@@ -748,13 +768,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get lockedValuePlaceholder => 'Premium uniquement';
 
   @override
-  String get hideProPromotionsTitle => 'Masquer les promotions Pro';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Masquer les bannières et les invites de mise à niveau';
-
-  @override
   String get printerLimitReachedMessage =>
       'Vous pouvez enregistrer jusqu\'à 2 imprimantes sur Free. Passez à Premium pour des imprimantes illimitées.';
 
@@ -851,6 +864,21 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get historyExportPreviewAction =>
       'Télécharger / Partager avec Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Matériau non enregistré';
+
+  @override
+  String get unsavedMaterialHeader => 'Matériau personnalisé';
+
+  @override
+  String get customMaterialWeightLabel => 'Poids';
+
+  @override
+  String get customMaterialCostLabel => 'Coût';
+
+  @override
+  String get customMaterialUsedLabel => 'Utilisé';
 
   @override
   String get addMaterialButton => 'Ajouter un matériau';

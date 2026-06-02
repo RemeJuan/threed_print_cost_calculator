@@ -1,47 +1,50 @@
-Know Your Margins Before You Print
+Know your print costs before you quote.
 
-Many makers only calculate filament cost. That ignores electricity, printer wattage, failure risk, labour time, wear-related overhead, setup fees, and markup.
+3D Print Cost Calculator helps makers and small print businesses calculate accurate 3D printing costs using more than filament alone. Include electricity, printer power usage, failed prints, labour, setup time, and business overhead in one clear workflow.
 
-3D Print Cost Calculator gives you a structured way to calculate the true cost of any print before you quote a price.
+Use it to cost jobs consistently, protect margins, and move faster from estimate to price.
 
-For hobbyists, makers, side hustles, and small print businesses.
+Built for hobbyists, makers, side hustles, and small print businesses.
 
-Free Features
+Free includes:
 
-• Filament cost calculation
-• Electricity cost (kWh) integration
-• Printer power usage modelling
-• Material stock tracking with automatic updates
-• Fully offline and privacy-first
+• Core print costing
+• Electricity costing
+• Multi-material costing
+• Single-print G-code import
+• Up to 5 saved materials (manual management)
+• Up to 2 printer profiles
+• Up to 7 history entries
+• Individual job export
+• Manual batch costing for up to 3 items
+• Offline-first operation
 
-Premium Features
+Free is designed to be genuinely useful. You can cost real prints, save key data, review recent jobs, and handle small manual batches without needing an account.
 
-For makers who sell prints or want deeper cost control:
+Premium adds tools for scale, pricing control, and faster workflows:
 
-• Client-ready pricing
-• Markup, setup fees, and rounding options
-• Currency formatting
-• Multi-material print support
-• Batch costing for multiple prints
-• G-code import for faster setup
-• Failure risk modelling
-• Labour cost and processing time
-• Save and review print history
-• Detailed per-job cost breakdown
-• Manage multiple printer profiles
-• Export individual jobs or full history (CSV)
-• Advanced configuration options
+• Unlimited materials
+• Unlimited printer profiles
+• Unlimited history
+• Full and bulk export
+• Batch G-code import
+• Faster batch setup from G-code files
+• Unlimited batch costing
+• Labour pricing
+• Failure risk cost modelling
+• Markup support
+• Setup fees
+• Rounding rules
+• Detailed cost breakdowns
+• Material import
+• Filament inventory and remaining spool tracking
+• Advanced configuration
 
-Export your data for bookkeeping, pricing analysis, or client quotes.
+Privacy-first by design:
 
-Privacy First
-
-No accounts
-No cloud sync
-No tracking
-
-All data stays on your device.
+• No accounts
+• No cloud dependency
+• No required tracking
+• Your data stays on your device
 
 Designed to stay simple on the surface while remaining accurate underneath.
-
-Used by makers and small print businesses worldwide since 2021.

@@ -9,9 +9,12 @@ import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
@@ -30,9 +33,16 @@ class BatchSummaryPage extends ConsumerStatefulWidget {
 class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
   var _analyticsFired = false;
 
+  final _printersById = <String, PrinterModel>{};
+  var _printersLoaded = false;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _loadBatchSettings();
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || _analyticsFired) return;
       _analyticsFired = true;
@@ -59,6 +69,19 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     });
   }
 
+  Future<void> _loadBatchSettings() async {
+    try {
+      final printers = await ref.read(printersRepositoryProvider).getPrinters();
+      for (final p in printers) {
+        _printersById[p.id] = p;
+      }
+      _printersLoaded = true;
+    } catch (_) {
+      _printersLoaded = false;
+    }
+    if (mounted) setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -67,12 +90,17 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
       return _emptyState(context, l10n);
     }
 
-    final summary = BatchSummaryCalculator.calculate(state);
-
     final currencyAsync = ref.watch(settingsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
         : GeneralSettingsModel.initial();
+
+    final kwCost = tryParseLocalizedNum(currencySettings.electricityCost) ?? 0;
+    final summary = BatchSummaryCalculator.calculate(
+      state,
+      printersById: _printersLoaded ? _printersById : null,
+      kwCost: kwCost,
+    );
 
     return Scaffold(
       appBar: AppScreenHeader(

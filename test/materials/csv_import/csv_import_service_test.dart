@@ -18,8 +18,7 @@ class _NoopLogSink extends AppLogSink {
 }
 
 class _QuotaLimitedMaterialsPolicy extends DefaultPremiumAccessPolicy {
-  _QuotaLimitedMaterialsPolicy()
-    : super(isPremium: false, hideProPromotions: false);
+  _QuotaLimitedMaterialsPolicy() : super(isPremium: false);
 
   @override
   int? get materialLimit => 5;
@@ -41,7 +40,7 @@ void main() {
           const AppLoggerConfig(minLevel: AppLogLevel.debug),
         ),
         premiumAccessPolicyProvider.overrideWithValue(
-          DefaultPremiumAccessPolicy(isPremium: true, hideProPromotions: false),
+          DefaultPremiumAccessPolicy(isPremium: true),
         ),
       ],
     );

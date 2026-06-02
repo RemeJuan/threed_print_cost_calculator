@@ -90,6 +90,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resultElectricityPrefix => 'Electricity';
 
   @override
+  String get resultElectricityRated => 'Electricity (Rated)';
+
+  @override
+  String get resultElectricityAverage => 'Electricity (Avg)';
+
+  @override
   String get resultFilamentPrefix => 'Filament';
 
   @override
@@ -126,7 +132,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bedSizeLabel => 'Bed Size *';
 
   @override
-  String get wattageLabel => 'Wattage *';
+  String get wattageLabel => 'Wattage (Rated) *';
+
+  @override
+  String get averageWattageLabel => 'Wattage (Avg)';
 
   @override
   String get materialNameLabel => 'Name *';
@@ -324,6 +333,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get helpSupportFaqSetupAnswer =>
       'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.';
+
+  @override
+  String get wattageFaqHint => 'See FAQ for wattage details';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Rated vs Average wattage — what\'s the difference?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.';
 
   @override
   String get helpSupportLinksTitle => 'Links';
@@ -737,12 +757,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lockedValuePlaceholder => 'Premium only';
 
   @override
-  String get hideProPromotionsTitle => 'Hide Pro promotions';
-
-  @override
-  String get hideProPromotionsSubtitle => 'Hide upgrade banners and prompts';
-
-  @override
   String get printerLimitReachedMessage =>
       'You can save up to 2 printers on Free. Upgrade to Premium for unlimited printers.';
 
@@ -831,6 +845,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Download / Share with Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Custom material';
+
+  @override
+  String get unsavedMaterialHeader => 'Custom Material';
+
+  @override
+  String get customMaterialWeightLabel => 'Weight';
+
+  @override
+  String get customMaterialCostLabel => 'Cost';
+
+  @override
+  String get customMaterialUsedLabel => 'Used';
 
   @override
   String get addMaterialButton => 'Add';

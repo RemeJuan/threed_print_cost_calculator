@@ -1,9 +1,7 @@
-Batch costing is here for Pro users:
+Expanded the free plan.
 
-* Import multiple G-code files into one batch
-* Assign printers and materials per item
-* Set quantities and add manual line items
-* Review batch totals with monetary impact
-* Save completed quotes to history
-* Use searchable selectors for faster printer and material assignment
-* Override imported G-code values when needed
+* Multi-material costing is now available to all users
+* Single-print G-code import is now included on Free
+* Save up to 5 materials, 2 printer profiles, and 7 history entries on Free
+* Manual batch costing is available for up to 3 items per batch
+* Premium now focuses on advanced pricing tools, batch workflows, inventory tracking, exports, and unlimited usage
