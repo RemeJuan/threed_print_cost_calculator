@@ -130,20 +130,16 @@ abstract class PremiumAccessPolicy {
 }
 
 class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
-  DefaultPremiumAccessPolicy({
-    required bool isPremium,
-    required bool hideProPromotions,
-  }) : _isPremium = isPremium,
-       _hideProPromotions = hideProPromotions;
+  DefaultPremiumAccessPolicy({required bool isPremium})
+    : _isPremium = isPremium;
 
   final bool _isPremium;
-  final bool _hideProPromotions;
 
   @override
   bool get isPremium => _isPremium;
 
   @override
-  bool get shouldShowPromotions => !_isPremium && !_hideProPromotions;
+  bool get shouldShowPromotions => !_isPremium;
 
   @override
   bool get shouldShowHistoryTab => true;
@@ -241,7 +237,7 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
   ];
 
   @override
-  FeatureAccess materialsLibrary() => _premiumFeature(PremiumFeature.materials);
+  FeatureAccess materialsLibrary() => _freeFeature(PremiumFeature.materials);
 
   @override
   FeatureAccess printers() => _freeFeature(PremiumFeature.printers);

@@ -11,7 +11,6 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -302,7 +301,6 @@ class _SettingsVersionTapTargetState
     container.invalidate(settingsStreamProvider);
     container.invalidate(printersStreamProvider);
     container.invalidate(materialsStreamProvider);
-    container.refresh(hideProPromotionsProvider);
     container.invalidate(printersProvider);
     container.invalidate(materialsProvider);
     container.invalidate(calculatorProvider);

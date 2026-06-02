@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/shared/utils/form_validation.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class AddPrinter extends HookConsumerWidget {
   const AddPrinter({this.dbRef, super.key});
@@ -143,6 +144,15 @@ class AddPrinter extends HookConsumerWidget {
                     labelText: l10n.averageWattageLabel,
                   ),
                   onChanged: notifier.updateAverageWattage,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4),
+                  child: Text(
+                    l10n.wattageFaqHint,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 AppPrimaryButton(

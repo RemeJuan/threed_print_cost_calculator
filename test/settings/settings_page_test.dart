@@ -6,8 +6,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -50,12 +48,6 @@ class _FakeSettingsRepository implements SettingsRepository {
   }
 
   Future<void> dispose() => _controller.close();
-}
-
-Finder _hideProPromotionsToggle() {
-  return find.byKey(
-    const ValueKey<String>('settings.hideProPromotions.toggle'),
-  );
 }
 
 void main() {
@@ -101,7 +93,6 @@ void main() {
       find.byKey(const ValueKey<String>('settings.workCost.section')),
       findsNothing,
     );
-    expect(_hideProPromotionsToggle(), findsOneWidget);
     expect(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
       findsOneWidget,
@@ -162,60 +153,6 @@ void main() {
     );
   });
 
-  testWidgets('free user toggle restores persisted enabled state', (
-    tester,
-  ) async {
-    final premiumLocalStore = InMemoryPremiumLocalStore({
-      hideProPromotionsPreferenceKey: 'true',
-    });
-
-    final settingsRepo = _FakeSettingsRepository();
-    final db = await tester.pumpApp(const SettingsPage(), [
-      isPremiumProvider.overrideWithValue(false),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ], premiumLocalStore);
-    addTearDown(db.close);
-    addTearDown(settingsRepo.dispose);
-
-    settingsRepo.emit(GeneralSettingsModel.initial());
-
-    await tester.pumpAndSettle();
-
-    expect(_hideProPromotionsToggle(), findsOneWidget);
-    expect(
-      tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
-      isTrue,
-    );
-    expect(premiumLocalStore.readSync(hideProPromotionsPreferenceKey), 'true');
-  });
-
-  testWidgets('toggling promo visibility updates immediately', (tester) async {
-    final premiumLocalStore = InMemoryPremiumLocalStore();
-
-    final settingsRepo = _FakeSettingsRepository();
-    final db = await tester.pumpApp(const SettingsPage(), [
-      isPremiumProvider.overrideWithValue(false),
-      settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-    ], premiumLocalStore);
-    addTearDown(db.close);
-    addTearDown(settingsRepo.dispose);
-
-    settingsRepo.emit(GeneralSettingsModel.initial());
-
-    await tester.pumpAndSettle();
-
-    await tester.tap(_hideProPromotionsToggle());
-    await tester.pump();
-
-    expect(
-      tester.widget<SwitchListTile>(_hideProPromotionsToggle()).value,
-      isTrue,
-    );
-    expect(premiumLocalStore.readSync(hideProPromotionsPreferenceKey), 'true');
-  });
-
   testWidgets(
     'premium users see printers and work cost sections but not materials',
     (tester) async {
@@ -271,8 +208,10 @@ void main() {
         findsNothing,
       );
       expect(
-        find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
-        findsNothing,
+        find.byKey(
+          const ValueKey<String>('settings.workCost.currencySpacing.toggle'),
+        ),
+        findsOneWidget,
       );
 
       final printersTopLeft = tester.getTopLeft(

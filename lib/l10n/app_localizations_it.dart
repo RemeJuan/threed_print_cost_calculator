@@ -340,6 +340,17 @@ class AppLocalizationsIt extends AppLocalizations {
       'Una tariffa di configurazione è un costo fisso per lavoro per calibrazione, preparazione macchina e amministrazione. Aiuta le stampe piccole a coprire le spese generali.';
 
   @override
+  String get wattageFaqHint => 'Vedi le FAQ per i dettagli sui watt';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Potenza nominale vs potenza media - qual e la differenza?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'La potenza nominale e la potenza massima che la tua stampante puo assorbire dalla presa (indicata sulla targhetta). La potenza media e il consumo tipico durante una stampa, idealmente misurato con un misuratore da presa. Usa la potenza media per un costo dell\'elettricita accurato, oppure la nominale come limite superiore sicuro.';
+
+  @override
   String get helpSupportLinksTitle => 'Link';
 
   @override
@@ -755,13 +766,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get lockedValuePlaceholder => 'Solo Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Nascondi promozioni Pro';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Nascondi banner e richieste di aggiornamento';
-
-  @override
   String get printerLimitReachedMessage =>
       'Puoi salvare fino a 2 stampanti su Free. Passa a Premium per stampanti illimitate.';
 
@@ -855,6 +859,21 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Scarica / Condividi con Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Materiale non salvato';
+
+  @override
+  String get unsavedMaterialHeader => 'Materiale personalizzato';
+
+  @override
+  String get customMaterialWeightLabel => 'Peso';
+
+  @override
+  String get customMaterialCostLabel => 'Costo';
+
+  @override
+  String get customMaterialUsedLabel => 'Usato';
 
   @override
   String get addMaterialButton => 'Aggiungi materiale';

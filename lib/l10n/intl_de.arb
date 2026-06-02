@@ -193,6 +193,9 @@
   "helpSupportFaqMarkupAnswer": "Aufschlag ist der Prozentsatz, der zu den Gesamtkosten hinzugefügt wird, um Ihren Verkaufspreis zu erreichen. Er deckt Marge, Gemeinkosten und Gewinn ab.",
   "helpSupportFaqSetupQuestion": "Was ist eine Einrichtungsgebühr?",
   "helpSupportFaqSetupAnswer": "Eine Einrichtungsgebühr ist ein fester Kostenbetrag pro Auftrag für Kalibrierung, Maschinenvorbereitung und Verwaltung. Sie hilft bei kleinen Drucken, Gemeinkosten zu decken.",
+  "wattageFaqHint": "Siehe FAQ für Details zur Wattzahl",
+  "helpSupportFaqWattageQuestion": "Nennleistung vs. Durchschnittsleistung - was ist der Unterschied?",
+  "helpSupportFaqWattageAnswer": "Die Nennleistung ist die maximale Leistung, die Ihr Drucker aus der Steckdose ziehen kann (auf dem Typenschild angegeben). Die Durchschnittsleistung ist seine typische Leistung während eines Drucks und wird idealerweise mit einem Zwischenstecker-Messgerät gemessen. Verwenden Sie die Durchschnittsleistung für genaue Stromkosten oder die Nennleistung als sichere Obergrenze.",
   "helpSupportLinksTitle": "Links",
   "helpSupportPrivacyPolicyLabel": "Datenschutzrichtlinie",
   "helpSupportTermsOfUseLabel": "Nutzungsbedingungen",
@@ -470,8 +473,6 @@
   "historyExportPreviewSampleLabel": "[Beispiel]",
   "historyExportPreviewAction": "Mit Premium herunterladen / teilen",
   "lockedValuePlaceholder": "Nur Premium",
-  "hideProPromotionsTitle": "Pro-Aktionen ausblenden",
-  "hideProPromotionsSubtitle": "Upgrade-Banner und Hinweise ausblenden",
   "durationPickerLabel": "Printing time (hh:mm)",
   "importGcodeButton": "G-code importieren (Autoausfüllen)",
   "importGcodePageTitle": "G-code importieren (Beta)",
@@ -793,5 +794,10 @@
   "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}}
+  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "unsavedMaterialOptionLabel": "Nicht gespeichertes Material",
+  "unsavedMaterialHeader": "Benutzerdefiniertes Material",
+  "customMaterialWeightLabel": "Gewicht",
+  "customMaterialCostLabel": "Kosten",
+  "customMaterialUsedLabel": "Verwendet"
 }

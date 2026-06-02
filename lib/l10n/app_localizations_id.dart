@@ -90,7 +90,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get resultElectricityPrefix => 'Total biaya Listrik: ';
 
   @override
-  String get resultElectricityRated => 'Listrik (Tertulis)';
+  String get resultElectricityRated => 'Listrik (Nominal)';
 
   @override
   String get resultElectricityAverage => 'Listrik (Rata-rata)';
@@ -132,7 +132,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get bedSizeLabel => 'Ukuran bed *';
 
   @override
-  String get wattageLabel => 'Daya (Tertulis) *';
+  String get wattageLabel => 'Daya (Nominal) *';
 
   @override
   String get averageWattageLabel => 'Daya (Rata-rata)';
@@ -333,6 +333,17 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get helpSupportFaqSetupAnswer =>
       'Biaya setup adalah biaya tetap per pekerjaan untuk kalibrasi, persiapan mesin, dan administrasi. Ini membantu cetakan kecil menutupi overhead.';
+
+  @override
+  String get wattageFaqHint => 'Lihat FAQ untuk detail watt';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Daya tertera vs daya rata-rata - apa bedanya?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Daya tertera adalah daya maksimum yang dapat ditarik printer dari stopkontak (tertera pada pelat nama). Daya rata-rata adalah daya tipikalnya saat mencetak, idealnya diukur dengan meter colokan. Gunakan Daya rata-rata untuk biaya listrik yang akurat, atau Daya tertera sebagai batas atas yang aman.';
 
   @override
   String get helpSupportLinksTitle => 'Tautan';
@@ -738,13 +749,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get lockedValuePlaceholder => 'Hanya Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Sembunyikan promosi Pro';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Sembunyikan banner dan prompt upgrade';
-
-  @override
   String get printerLimitReachedMessage =>
       'Anda dapat menyimpan hingga 2 printer di Free. Upgrade ke Premium untuk printer tanpa batas.';
 
@@ -835,6 +839,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Unduh / Bagikan dengan Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Material belum disimpan';
+
+  @override
+  String get unsavedMaterialHeader => 'Material Kustom';
+
+  @override
+  String get customMaterialWeightLabel => 'Berat';
+
+  @override
+  String get customMaterialCostLabel => 'Biaya';
+
+  @override
+  String get customMaterialUsedLabel => 'Terpakai';
 
   @override
   String get addMaterialButton => 'Tambahkan bahan';

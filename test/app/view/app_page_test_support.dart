@@ -34,14 +34,12 @@ Future<void> bootstrapAppPageTests() async {
 void seedAppPagePrefs({
   int runCount = 0,
   int calculationCount = 0,
-  bool hideProPromotions = false,
   bool hasUsedGcodeImport = false,
 }) {
   SharedPreferences.setMockInitialValues({
     runCountPreferenceKey: runCount,
     calculationCountPreferenceKey: calculationCount,
     hasUsedGcodeImportPreferenceKey: hasUsedGcodeImport,
-    if (hideProPromotions) 'hideProPromotions': true,
   });
 }
 

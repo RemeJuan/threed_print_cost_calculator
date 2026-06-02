@@ -61,7 +61,7 @@ void main() {
       isPremiumProvider.overrideWithValue(false),
       paywallPresenterProvider.overrideWithValue(paywallPresenter),
       premiumAccessPolicyProvider.overrideWithValue(
-        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+        DefaultPremiumAccessPolicy(isPremium: false),
       ),
     ]);
 
@@ -443,7 +443,7 @@ void main() {
     await tester.pumpApp(const BatchCostingPage(), [
       batchCostingProvider.overrideWith(() => _FakeBatchCostingNotifier(items)),
       premiumAccessPolicyProvider.overrideWithValue(
-        DefaultPremiumAccessPolicy(isPremium: false, hideProPromotions: false),
+        DefaultPremiumAccessPolicy(isPremium: false),
       ),
       isPremiumProvider.overrideWithValue(false),
     ]);

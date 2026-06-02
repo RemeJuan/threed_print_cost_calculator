@@ -30,11 +30,7 @@ SeedDataBundle _bundle() {
       'failureRisk': '4.5',
       'labourRate': '18',
     },
-    sharedPreferences: {
-      'hideProPromotions': false,
-      'run_count': 0,
-      'paywall': false,
-    },
+    sharedPreferences: {'run_count': 0, 'paywall': false},
     printers: [
       {
         'id': 'prusa_mk4',

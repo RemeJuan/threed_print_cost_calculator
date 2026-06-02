@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
@@ -103,6 +104,21 @@ class CalculatorMaterialsService {
     final nextUsages = [...usages];
     nextUsages[index] = usage;
     return (usages: nextUsages, totalWeight: _totalWeight(nextUsages));
+  }
+
+  MaterialUsageInput updateUnsavedSpoolValues(
+    MaterialUsageInput usage, {
+    num? spoolWeight,
+    num? spoolCost,
+  }) {
+    final sw = max(0, spoolWeight ?? usage.unsavedSpoolWeight);
+    final sc = max(0, spoolCost ?? usage.unsavedSpoolCost);
+    final cpkg = sw > 0 ? (sc / sw) * 1000 : 0;
+    return usage.copyWith(
+      unsavedSpoolWeight: sw,
+      unsavedSpoolCost: sc,
+      costPerKg: cpkg,
+    );
   }
 
   int totalWeight(List<MaterialUsageInput> usages) => _totalWeight(usages);

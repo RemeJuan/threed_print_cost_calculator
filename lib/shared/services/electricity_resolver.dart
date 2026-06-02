@@ -37,11 +37,8 @@ class ElectricityResolver {
 
     PrinterModel? printer;
     if (activePrinterId != null && activePrinterId.isNotEmpty) {
-      try {
-        printer = printers.firstWhere(
-          (p) => p.id == activePrinterId,
-        );
-      } catch (_) {}
+      final match = printers.where((p) => p.id == activePrinterId);
+      printer = match.isNotEmpty ? match.first : null;
     }
 
     printer ??= printers.first;
@@ -76,16 +73,10 @@ class ElectricityResolver {
   WattageResolution _resolveFromSettings(GeneralSettingsModel settings) {
     final avg = tryParseLocalizedNum(settings.averageWattage);
     if (avg != null) {
-      return WattageResolution(
-        wattage: avg,
-        source: WattageSource.average,
-      );
+      return WattageResolution(wattage: avg, source: WattageSource.average);
     }
 
     final rated = tryParseLocalizedNum(settings.wattage);
-    return WattageResolution(
-      wattage: rated ?? 0,
-      source: WattageSource.rated,
-    );
+    return WattageResolution(wattage: rated ?? 0, source: WattageSource.rated);
   }
 }

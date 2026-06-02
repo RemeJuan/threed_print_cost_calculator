@@ -720,6 +720,24 @@ abstract class AppLocalizations {
   /// **'A setup fee is a fixed cost per job for calibration, machine prep, and admin. It helps small prints cover overhead.'**
   String get helpSupportFaqSetupAnswer;
 
+  /// No description provided for @wattageFaqHint.
+  ///
+  /// In en, this message translates to:
+  /// **'See FAQ for wattage details'**
+  String get wattageFaqHint;
+
+  /// No description provided for @helpSupportFaqWattageQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated vs Average wattage — what\'s the difference?'**
+  String get helpSupportFaqWattageQuestion;
+
+  /// No description provided for @helpSupportFaqWattageAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated wattage is the maximum your printer can draw from the wall (printed on the nameplate). Average wattage is its typical power during a print, ideally measured with a plug-in meter. Use Average for accurate electricity cost, or Rated as a safe upper bound.'**
+  String get helpSupportFaqWattageAnswer;
+
   /// No description provided for @helpSupportLinksTitle.
   ///
   /// In en, this message translates to:
@@ -1445,18 +1463,6 @@ abstract class AppLocalizations {
   /// **'Premium only'**
   String get lockedValuePlaceholder;
 
-  /// No description provided for @hideProPromotionsTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide Pro promotions'**
-  String get hideProPromotionsTitle;
-
-  /// No description provided for @hideProPromotionsSubtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide upgrade banners and prompts'**
-  String get hideProPromotionsSubtitle;
-
   /// No description provided for @printerLimitReachedMessage.
   ///
   /// In en, this message translates to:
@@ -1618,6 +1624,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download / Share with Premium'**
   String get historyExportPreviewAction;
+
+  /// No description provided for @unsavedMaterialOptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom material'**
+  String get unsavedMaterialOptionLabel;
+
+  /// No description provided for @unsavedMaterialHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Material'**
+  String get unsavedMaterialHeader;
+
+  /// No description provided for @customMaterialWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get customMaterialWeightLabel;
+
+  /// No description provided for @customMaterialCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost'**
+  String get customMaterialCostLabel;
+
+  /// No description provided for @customMaterialUsedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Used'**
+  String get customMaterialUsedLabel;
 
   /// No description provided for @addMaterialButton.
   ///

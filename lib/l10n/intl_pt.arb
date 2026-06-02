@@ -194,6 +194,9 @@
   "helpSupportFaqMarkupAnswer": "A margem de lucro é a porcentagem adicionada em cima do custo total para atingir seu preço de venda. Ela cobre margem, despesas gerais e lucro.",
   "helpSupportFaqSetupQuestion": "O que é uma taxa de configuração?",
   "helpSupportFaqSetupAnswer": "Uma taxa de configuração é um custo fixo por trabalho para calibração, preparação da máquina e administração. Ajuda impressões pequenas a cobrir despesas gerais.",
+  "wattageFaqHint": "Veja a FAQ para detalhes sobre watts",
+  "helpSupportFaqWattageQuestion": "Potência nominal vs. potência média - qual a diferença?",
+  "helpSupportFaqWattageAnswer": "A potência nominal é o máximo que a sua impressora pode puxar da tomada (impresso na placa de identificação). A potência média é o consumo típico durante uma impressão, idealmente medido com um medidor de tomada. Use a potência média para um custo de eletricidade preciso, ou a nominal como limite superior seguro.",
   "helpSupportLinksTitle": "Links",
   "helpSupportPrivacyPolicyLabel": "Política de privacidade",
   "helpSupportTermsOfUseLabel": "Termos de uso",
@@ -471,8 +474,6 @@
   "historyExportPreviewSampleLabel": "[Amostra]",
   "historyExportPreviewAction": "Baixar / Compartilhar com Premium",
   "lockedValuePlaceholder": "Somente Premium",
-  "hideProPromotionsTitle": "Ocultar promoções Pro",
-  "hideProPromotionsSubtitle": "Ocultar banners e prompts de atualização",
   "durationPickerLabel": "Printing time (hh:mm)",
   "importGcodeButton": "Importar G-code (Preenchimento auto)",
   "importGcodePageTitle": "Importar G-code (Beta)",
@@ -789,5 +790,10 @@
   "@paywallPlanPriceMonthly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceQuarterly": {"placeholders": {"price": {}}},
   "@paywallPlanPriceAnnual": {"placeholders": {"price": {}}},
-  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}}
+  "@paywallPlanPriceLifetime": {"placeholders": {"price": {}}},
+  "unsavedMaterialOptionLabel": "Material não salvo",
+  "unsavedMaterialHeader": "Material personalizado",
+  "customMaterialWeightLabel": "Peso",
+  "customMaterialCostLabel": "Custo",
+  "customMaterialUsedLabel": "Usado"
 }

@@ -58,18 +58,24 @@ class CalculatorHistoryLoader {
               entry.model.filamentCost > 0);
 
       if (usage.materialId.trim().isNotEmpty) {
-        final material = await materialsRepository.getMaterialById(
-          usage.materialId,
-        );
-        if (material == null && fallbackMaterial != null) {
-          hasReplacement = true;
-          resolvedMaterial = fallbackMaterial;
-          resolvedUsage = usage.copyWith(
-            materialId: fallbackMaterial.id,
-            materialName: fallbackMaterial.name,
-          );
+        if (usage.materialId.startsWith(
+          MaterialUsageInput.unsavedMaterialIdPrefix,
+        )) {
+          resolvedMaterial = null;
         } else {
-          resolvedMaterial = material;
+          final material = await materialsRepository.getMaterialById(
+            usage.materialId,
+          );
+          if (material == null && fallbackMaterial != null) {
+            hasReplacement = true;
+            resolvedMaterial = fallbackMaterial;
+            resolvedUsage = usage.copyWith(
+              materialId: fallbackMaterial.id,
+              materialName: fallbackMaterial.name,
+            );
+          } else {
+            resolvedMaterial = material;
+          }
         }
       }
 
@@ -124,9 +130,7 @@ class CalculatorHistoryLoader {
       selectedMaterialId: materialUsages.isNotEmpty
           ? materialUsages.first.materialId
           : '',
-      watt: NumberInput.dirty(
-        value: resolvedWattage,
-      ),
+      watt: NumberInput.dirty(value: resolvedWattage),
       wattageSource: storedSource,
       kwCost: currentState.kwCost,
       printWeight: NumberInput.dirty(value: entry.model.weight),
@@ -172,7 +176,11 @@ class CalculatorHistoryLoader {
     return CalculatorHistoryLoadResult(
       state: nextState,
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
-      selectedMaterialId: materialUsages.isNotEmpty
+      selectedMaterialId:
+          materialUsages.isNotEmpty &&
+              !materialUsages.first.materialId.startsWith(
+                MaterialUsageInput.unsavedMaterialIdPrefix,
+              )
           ? materialUsages.first.materialId
           : null,
     );
@@ -245,11 +253,13 @@ class CalculatorHistoryLoader {
         : tryParseLocalizedNum(settings.wattage);
     if (preferred != null) return preferred;
 
-    final fallbackResolution = ref.read(electricityResolverProvider).resolve(
-      printers: const [],
-      activePrinterId: settings.activePrinter,
-      settings: settings,
-    );
+    final fallbackResolution = ref
+        .read(electricityResolverProvider)
+        .resolve(
+          printers: const [],
+          activePrinterId: settings.activePrinter,
+          settings: settings,
+        );
     return fallbackResolution.wattage;
   }
 }

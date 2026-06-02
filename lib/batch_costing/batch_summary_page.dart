@@ -75,8 +75,10 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
       for (final p in printers) {
         _printersById[p.id] = p;
       }
-    } catch (_) {}
-    _printersLoaded = true;
+      _printersLoaded = true;
+    } catch (_) {
+      _printersLoaded = false;
+    }
     if (mounted) setState(() {});
   }
 

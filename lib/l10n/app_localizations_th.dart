@@ -333,6 +333,17 @@ class AppLocalizationsTh extends AppLocalizations {
       'ค่าธรรมเนียมการตั้งค่าคือต้นทุนคงที่ต่อหนึ่งงานสำหรับการปรับเทียบ การเตรียมเครื่อง และการบริหาร ช่วยให้งานพิมพ์ขนาดเล็กสามารถครอบคลุมค่าใช้จ่ายทั่วไปได้';
 
   @override
+  String get wattageFaqHint => 'ดูรายละเอียดวัตต์ในคำถามที่พบบ่อย';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'กำลังไฟตามพิกัดกับกำลังไฟเฉลี่ย ต่างกันอย่างไร?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'กำลังไฟตามพิกัดคือกำลังไฟสูงสุดที่เครื่องพิมพ์ของคุณดึงจากปลั๊กได้ (ระบุบนป้ายชื่อเครื่อง) ส่วนกำลังไฟเฉลี่ยคือการใช้พลังงานโดยทั่วไประหว่างการพิมพ์ ควรวัดด้วยมิเตอร์เสียบปลั๊ก ใช้กำลังไฟเฉลี่ยเพื่อคำนวณค่าไฟได้แม่นยำ หรือใช้กำลังไฟตามพิกัดเป็นขอบเขตสูงสุดที่ปลอดภัย';
+
+  @override
   String get helpSupportLinksTitle => 'ลิงก์';
 
   @override
@@ -743,12 +754,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get lockedValuePlaceholder => 'Premium เท่านั้น';
 
   @override
-  String get hideProPromotionsTitle => 'ซ่อนโปรโมชัน Pro';
-
-  @override
-  String get hideProPromotionsSubtitle => 'ซ่อนแบนเนอร์และข้อความอัปเกรด';
-
-  @override
   String get printerLimitReachedMessage =>
       'คุณบันทึกเครื่องพิมพ์ได้สูงสุด 2 เครื่องใน Free อัปเกรดเป็น Premium เพื่อเก็บได้ไม่จำกัด';
 
@@ -838,6 +843,21 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'ดาวน์โหลด / แชร์ด้วย Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'วัสดุที่ยังไม่ได้บันทึก';
+
+  @override
+  String get unsavedMaterialHeader => 'วัสดุที่กำหนดเอง';
+
+  @override
+  String get customMaterialWeightLabel => 'น้ำหนัก';
+
+  @override
+  String get customMaterialCostLabel => 'ต้นทุน';
+
+  @override
+  String get customMaterialUsedLabel => 'ที่ใช้';
 
   @override
   String get addMaterialButton => 'เพิ่มวัสดุ';

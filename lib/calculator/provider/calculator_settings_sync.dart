@@ -39,11 +39,13 @@ class CalculatorSettingsSync {
     );
 
     final printers = await ref.read(printersRepositoryProvider).getPrinters();
-    final resolution = ref.read(electricityResolverProvider).resolve(
-      printers: printers,
-      activePrinterId: settings.activePrinter,
-      settings: settings,
-    );
+    final resolution = ref
+        .read(electricityResolverProvider)
+        .resolve(
+          printers: printers,
+          activePrinterId: settings.activePrinter,
+          settings: settings,
+        );
     final watt = resolution.wattage;
     final wattageSource = resolution.source;
 

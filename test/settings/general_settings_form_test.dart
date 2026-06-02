@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -225,7 +222,10 @@ void main() {
       repo.emit(_settings(averageWattage: '140'));
       await tester.pump();
 
-      await tester.enterText(_field('settings.generalAverageWattage.input'), '');
+      await tester.enterText(
+        _field('settings.generalAverageWattage.input'),
+        '',
+      );
       await tester.pump(const Duration(milliseconds: 401));
       await tester.pump();
 
@@ -363,52 +363,5 @@ void main() {
         );
       },
     );
-
-    testWidgets('persists the hide Pro promotions toggle', (tester) async {
-      final repo = _FakeSettingsRepository();
-      final premiumLocalStore = InMemoryPremiumLocalStore();
-      final db = await tester.pumpApp(const GeneralSettings(), [
-        settingsRepositoryProvider.overrideWithValue(repo),
-        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-        isPremiumProvider.overrideWithValue(false),
-      ], premiumLocalStore);
-      addTearDown(db.close);
-      addTearDown(repo.dispose);
-
-      repo.emit(GeneralSettingsModel.initial());
-      await tester.pump();
-
-      final toggle = find.byKey(
-        const ValueKey<String>('settings.hideProPromotions.toggle'),
-      );
-      expect(toggle, findsOneWidget);
-
-      await tester.tap(toggle);
-      await tester.pump();
-
-      expect(
-        premiumLocalStore.readSync(hideProPromotionsPreferenceKey),
-        'true',
-      );
-    });
-
-    testWidgets('hides the toggle for premium users', (tester) async {
-      final repo = _FakeSettingsRepository();
-      final db = await tester.pumpApp(const GeneralSettings(), [
-        settingsRepositoryProvider.overrideWithValue(repo),
-        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
-        isPremiumProvider.overrideWithValue(true),
-      ]);
-      addTearDown(db.close);
-      addTearDown(repo.dispose);
-
-      repo.emit(GeneralSettingsModel.initial());
-      await tester.pump();
-
-      expect(
-        find.byKey(const ValueKey<String>('settings.hideProPromotions.toggle')),
-        findsNothing,
-      );
-    });
   });
 }

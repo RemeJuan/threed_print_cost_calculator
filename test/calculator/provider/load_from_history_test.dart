@@ -275,6 +275,89 @@ void main() {
     });
 
     test(
+      'restores average wattage when history snapshot used average source',
+      () async {
+        final settingsRepository = FakeSettingsRepository(
+          initialSettings: const GeneralSettingsModel(
+            electricityCost: '0.32',
+            wattage: '180',
+            activePrinter: 'printer-history',
+            selectedMaterial: 'material-current',
+            wearAndTear: '1.5',
+            failureRisk: '10',
+            labourRate: '15',
+          ),
+        );
+        final printersRepository = FakePrintersRepository({
+          'printer-history': const PrinterModel(
+            id: 'printer-history',
+            name: 'Prusa MK4',
+            bedSize: '250x210',
+            wattage: '500',
+            averageWattage: '280',
+            archived: false,
+          ),
+        });
+        final materialsRepository = FakeMaterialsRepository({
+          'mat-pla': const MaterialModel(
+            id: 'mat-pla',
+            name: 'PLA Red',
+            cost: '25',
+            color: '#FF0000',
+            weight: '1000',
+            archived: false,
+          ),
+        });
+
+        final container = ProviderContainer(
+          overrides: [
+            settingsRepositoryProvider.overrideWithValue(settingsRepository),
+            printersRepositoryProvider.overrideWithValue(printersRepository),
+            materialsRepositoryProvider.overrideWithValue(materialsRepository),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        final notifier = container.read(calculatorProvider.notifier);
+
+        final didLoad = await notifier.loadFromHistory(
+          HistoryEntry(
+            key: 'history-avg',
+            model: HistoryModel(
+              name: 'Avg Benchy',
+              totalCost: 12.34,
+              riskCost: 1.11,
+              filamentCost: 7.89,
+              electricityCost: 0.45,
+              electricitySource: 'average',
+              labourCost: 2.89,
+              date: DateTime.utc(2024, 1, 1),
+              printer: 'Prusa MK4',
+              material: 'PLA Red',
+              weight: 123,
+              timeHours: '02:15',
+              materialUsages: const [
+                {
+                  'materialId': 'mat-pla',
+                  'materialName': 'PLA Red',
+                  'costPerKg': 25,
+                  'weightGrams': 100,
+                },
+              ],
+            ),
+          ),
+        );
+
+        expect(didLoad, isTrue);
+
+        final state = container.read(calculatorProvider);
+        expect(state.watt.value, 280);
+        expect(state.wattageSource, WattageSource.average);
+        expect(state.results.electricitySource, WattageSource.average);
+      },
+    );
+
+    test(
       'falls back missing references and flags replacement warning',
       () async {
         final settingsRepository = FakeSettingsRepository(

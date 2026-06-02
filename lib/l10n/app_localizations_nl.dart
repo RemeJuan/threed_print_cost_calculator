@@ -335,6 +335,17 @@ class AppLocalizationsNl extends AppLocalizations {
       'Opstartkosten zijn vaste kosten per opdracht voor kalibratie, machine voorbereiding en administratie. Het helpt kleine prints overhead te dekken.';
 
   @override
+  String get wattageFaqHint => 'Zie de FAQ voor wattage-details';
+
+  @override
+  String get helpSupportFaqWattageQuestion =>
+      'Nominaal versus gemiddeld wattage - wat is het verschil?';
+
+  @override
+  String get helpSupportFaqWattageAnswer =>
+      'Het nominale wattage is het maximale vermogen dat je printer uit het stopcontact kan trekken (vermeld op het typeplaatje). Het gemiddelde wattage is het typische verbruik tijdens een print, idealiter gemeten met een plug-in meter. Gebruik het gemiddelde wattage voor een nauwkeurige elektriciteitskost, of het nominale wattage als veilige bovengrens.';
+
+  @override
   String get helpSupportLinksTitle => 'Links';
 
   @override
@@ -751,13 +762,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get lockedValuePlaceholder => 'Alleen Premium';
 
   @override
-  String get hideProPromotionsTitle => 'Pro-promoties verbergen';
-
-  @override
-  String get hideProPromotionsSubtitle =>
-      'Upgrade-banners en prompts verbergen';
-
-  @override
   String get printerLimitReachedMessage =>
       'Je kunt op Free maximaal 2 printers opslaan. Upgrade naar Premium voor onbeperkte printers.';
 
@@ -849,6 +853,21 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get historyExportPreviewAction => 'Downloaden / Delen met Premium';
+
+  @override
+  String get unsavedMaterialOptionLabel => 'Niet opgeslagen materiaal';
+
+  @override
+  String get unsavedMaterialHeader => 'Aangepast materiaal';
+
+  @override
+  String get customMaterialWeightLabel => 'Gewicht';
+
+  @override
+  String get customMaterialCostLabel => 'Kosten';
+
+  @override
+  String get customMaterialUsedLabel => 'Gebruikt';
 
   @override
   String get addMaterialButton => 'Materiaal toevoegen';
