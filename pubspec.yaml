@@ -34,6 +34,7 @@ dependencies:
   platform_info: 5.0.0
   purchases_flutter: ^10.1.0
   purchases_ui_flutter: ^10.1.0
+  rate_my_app: ^2.4.0
   riverpod: 3.2.1
   sembast: ^3.8.7
   shared_preferences: 2.5.5
