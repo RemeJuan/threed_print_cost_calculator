@@ -5,6 +5,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/app/help_support/models/help_support_faq_entry.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_about_section.dart';
@@ -14,6 +15,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_section_header.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_support_card.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
@@ -113,6 +115,8 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
   }
 
   List<HelpSupportFaqEntry> _faqEntries(AppLocalizations l10n) {
+    final isPremium = ref.watch(isPremiumProvider);
+
     return [
       HelpSupportFaqEntry(
         id: 'weight',
@@ -133,6 +137,26 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
         id: HelpSupportPage.premiumFaqEntryId,
         question: l10n.helpSupportFaqPremiumQuestion,
         answer: l10n.helpSupportFaqPremiumAnswer,
+        actionLabel: isPremium ? null : l10n.helpSupportFaqPremiumUpgradeCta,
+        onActionTap: isPremium
+            ? null
+            : () {
+                AppAnalytics.safeLog(
+                  () => AppAnalytics.premiumFeatureTapped(
+                    'faq_premium_card',
+                    isPro: isPremium,
+                    source: 'faq',
+                  ),
+                );
+                ref
+                    .read(paywallPresenterProvider)
+                    .present(
+                      'pro',
+                      triggerFeature: 'faq_premium_card',
+                      purchaseSource: 'faq',
+                      source: 'faq',
+                    );
+              },
         linkLabel: l10n.helpSupportFaqPremiumComparisonCta,
         onLinkTap: () =>
             openUrl(helpSupportPlansUrl, logger: ref.read(appLoggerProvider)),

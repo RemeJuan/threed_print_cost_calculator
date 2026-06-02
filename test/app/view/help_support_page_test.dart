@@ -5,10 +5,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import '../../helpers/helpers.dart';
+import '../../helpers/lower_level_test_fakes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -190,8 +192,9 @@ void main() {
   });
 
   testWidgets(
-    'initial premium FAQ target expands and comparison link opens website',
+    'initial premium FAQ target shows upgrade CTA and comparison link',
     (tester) async {
+      final paywallPresenter = FakePaywallPresenter();
       final db = await tester.pumpApp(
         const HelpSupportPage(
           initialFaqEntryId: HelpSupportPage.premiumFaqEntryId,
@@ -202,6 +205,7 @@ void main() {
               const PremiumState(isPremium: false, isLoading: false),
             ),
           ),
+          paywallPresenterProvider.overrideWithValue(paywallPresenter),
         ],
       );
       addTearDown(() => db.close());
@@ -211,6 +215,21 @@ void main() {
 
       expect(find.text(l10n.helpSupportFaqPremiumQuestion), findsOneWidget);
       expect(find.text(l10n.helpSupportFaqPremiumAnswer), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey<String>('helpSupport.faq.premium.action')),
+        findsOneWidget,
+      );
+
+      await tester.tap(
+        find.byKey(const ValueKey<String>('helpSupport.faq.premium.action')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(paywallPresenter.calls, 1);
+      expect(paywallPresenter.lastOfferingId, 'pro');
+      expect(paywallPresenter.lastTriggerFeature, 'faq_premium_card');
+      expect(paywallPresenter.lastPurchaseSource, 'faq');
+      expect(paywallPresenter.lastSource, 'faq');
 
       await tester.tap(
         find.byKey(const ValueKey<String>('helpSupport.faq.premium.link')),
@@ -224,6 +243,28 @@ void main() {
       );
     },
   );
+
+  testWidgets('premium users do not see FAQ upgrade CTA', (tester) async {
+    final db = await tester.pumpApp(
+      const HelpSupportPage(
+        initialFaqEntryId: HelpSupportPage.premiumFaqEntryId,
+      ),
+      [
+        premiumStateProvider.overrideWith(
+          () => _FakePremiumStateNotifier(
+            const PremiumState(isPremium: true, isLoading: false),
+          ),
+        ),
+      ],
+    );
+    addTearDown(() => db.close());
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const ValueKey<String>('helpSupport.faq.premium.action')),
+      findsNothing,
+    );
+  });
 }
 
 class _FakePremiumStateNotifier extends PremiumStateNotifier {
