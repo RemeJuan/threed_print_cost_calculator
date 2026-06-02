@@ -2,9 +2,12 @@
 
 ### Added
 - Custom in-app paywall screen with live RevenueCat offerings, feature comparison table from premium policy metadata, purchase and restore flows.
+- Compact Premium upgrade card in Settings for free users.
+- Direct in-app upgrade CTA inside the Help & Support Premium FAQ for free users, while keeping the full comparison link.
 
 ### Changed
 - Custom in-app paywall now fronts all normal premium upsell flows, replacing the hosted RevenueCat paywall as the default user-facing path.
+- Calculator Premium messaging remains informational; `Learn more` opens the in-app FAQ instead of the website.
 
 ## [2.11.0] - 2026-05-20
 
