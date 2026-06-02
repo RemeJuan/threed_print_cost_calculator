@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
@@ -108,125 +110,95 @@ void main() {
   }
 
   group('CalculatorResults', () {
-    testWidgets('covers promo visibility matrix for free and premium users', (
-      tester,
-    ) async {
-      final matrix = <({bool isPremium, bool shouldShow, bool locked})>[
-        (isPremium: false, shouldShow: true, locked: true),
-        (isPremium: false, shouldShow: false, locked: true),
-        (isPremium: true, shouldShow: true, locked: false),
-        (isPremium: true, shouldShow: false, locked: false),
-      ];
-
-      for (final c in matrix) {
-        await pumpResults(tester, isPremium: c.isPremium);
-
-        expect(
-          find.byKey(
-            const ValueKey<String>('calculator.result.locked.wearAndTear'),
-          ),
-          c.locked ? findsOneWidget : findsNothing,
-        );
-        expect(
-          find.byKey(
-            const ValueKey<String>('calculator.result.locked.riskCost'),
-          ),
-          c.locked ? findsOneWidget : findsNothing,
-        );
-        expect(
-          find.byKey(
-            const ValueKey<String>('calculator.result.locked.labourCost'),
-          ),
-          c.locked ? findsOneWidget : findsNothing,
-        );
-      }
-    });
-
-    testWidgets('free user with promos enabled sees locked premium rows', (
-      tester,
-    ) async {
-      await pumpResults(tester, isPremium: false);
-
-      expect(
-        find.byKey(
-          const ValueKey<String>('calculator.result.locked.wearAndTear'),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey<String>('calculator.result.locked.riskCost')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(
-          const ValueKey<String>('calculator.result.locked.labourCost'),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey<String>('calculator.result.riskCost')),
-        findsNothing,
-      );
-      expect(
-        find.byKey(const ValueKey<String>('calculator.result.labourCost')),
-        findsNothing,
-      );
-    });
-
-    testWidgets('free user sees locked rows', (tester) async {
-      await pumpResults(tester, isPremium: false);
-
-      expect(
-        find.byKey(
-          const ValueKey<String>('calculator.result.locked.wearAndTear'),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey<String>('calculator.result.locked.riskCost')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(
-          const ValueKey<String>('calculator.result.locked.labourCost'),
-        ),
-        findsOneWidget,
-      );
-    });
-
     testWidgets(
-      'premium user does not see locked promo rows even when promos enabled',
+      'free user sees compact premium footer instead of locked rows',
       (tester) async {
-        await pumpResults(tester, isPremium: true);
+        await pumpResults(tester, isPremium: false);
+
+        final l10n = AppLocalizations.of(
+          tester.element(
+            find.byKey(
+              const ValueKey<String>('calculator.result.premiumFooter'),
+            ),
+          ),
+        )!;
 
         expect(
-          find.byKey(
-            const ValueKey<String>('calculator.result.locked.wearAndTear'),
+          find.byKey(const ValueKey<String>('calculator.result.premiumFooter')),
+          findsOneWidget,
+        );
+        expect(
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is Text &&
+                widget.textSpan
+                        ?.toPlainText()
+                        .contains(l10n.calculatorPremiumFooterBody) ==
+                    true,
           ),
-          findsNothing,
+          findsOneWidget,
         );
         expect(
           find.byKey(
-            const ValueKey<String>('calculator.result.locked.riskCost'),
+            const ValueKey<String>('calculator.result.premiumFooter.link'),
           ),
-          findsNothing,
-        );
-        expect(
-          find.byKey(
-            const ValueKey<String>('calculator.result.locked.labourCost'),
-          ),
-          findsNothing,
+          findsOneWidget,
         );
         expect(
           find.byKey(const ValueKey<String>('calculator.result.riskCost')),
-          findsOneWidget,
+          findsNothing,
         );
         expect(
           find.byKey(const ValueKey<String>('calculator.result.labourCost')),
-          findsOneWidget,
+          findsNothing,
         );
       },
     );
+
+    testWidgets('premium user does not see premium footer', (tester) async {
+      await pumpResults(tester, isPremium: true);
+
+      expect(
+        find.byKey(const ValueKey<String>('calculator.result.premiumFooter')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('calculator.result.riskCost')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('calculator.result.labourCost')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('footer learn more opens premium FAQ entry in app', (
+      tester,
+    ) async {
+      await pumpResults(tester, isPremium: false);
+
+      await tester.tap(
+        find.byKey(
+          const ValueKey<String>('calculator.result.premiumFooter.link'),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(HelpSupportPage)),
+      )!;
+
+      expect(find.byType(HelpSupportPage), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey<String>('helpSupport.faq.premium')),
+        findsOneWidget,
+      );
+      expect(find.text(l10n.helpSupportFaqPremiumQuestion), findsOneWidget);
+      expect(
+        find.textContaining(l10n.helpSupportFaqPremiumAnswer),
+        findsOneWidget,
+      );
+    });
 
     testWidgets('labour row includes materials when labour is zero', (
       tester,
