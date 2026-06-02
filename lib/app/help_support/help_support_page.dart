@@ -119,21 +119,6 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
 
     return [
       HelpSupportFaqEntry(
-        id: 'weight',
-        question: l10n.helpSupportFaqWeightQuestion,
-        answer: l10n.helpSupportFaqWeightAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'electricity',
-        question: l10n.helpSupportFaqElectricityQuestion,
-        answer: l10n.helpSupportFaqElectricityAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'wattage',
-        question: l10n.helpSupportFaqWattageQuestion,
-        answer: l10n.helpSupportFaqWattageAnswer,
-      ),
-      HelpSupportFaqEntry(
         id: HelpSupportPage.premiumFaqEntryId,
         question: l10n.helpSupportFaqPremiumQuestion,
         answer: l10n.helpSupportFaqPremiumAnswer,
@@ -161,6 +146,22 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
         onLinkTap: () =>
             openUrl(helpSupportPlansUrl, logger: ref.read(appLoggerProvider)),
       ),
+      HelpSupportFaqEntry(
+        id: 'weight',
+        question: l10n.helpSupportFaqWeightQuestion,
+        answer: l10n.helpSupportFaqWeightAnswer,
+      ),
+      HelpSupportFaqEntry(
+        id: 'electricity',
+        question: l10n.helpSupportFaqElectricityQuestion,
+        answer: l10n.helpSupportFaqElectricityAnswer,
+      ),
+      HelpSupportFaqEntry(
+        id: 'wattage',
+        question: l10n.helpSupportFaqWattageQuestion,
+        answer: l10n.helpSupportFaqWattageAnswer,
+      ),
+
       HelpSupportFaqEntry(
         id: 'risk',
         question: l10n.helpSupportFaqRiskQuestion,
