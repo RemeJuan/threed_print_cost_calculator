@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
@@ -91,31 +92,6 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.additionalCost'),
             ),
-          if (!policy.riskPricing().allowed) ...[
-            _lockedPromoRow(
-              context,
-              l10n.wearAndTearLabel,
-              l10n.lockedValuePlaceholder,
-              key: const ValueKey<String>(
-                'calculator.result.locked.wearAndTear',
-              ),
-            ),
-            _lockedPromoRow(
-              context,
-              l10n.riskTotalPrefix,
-              l10n.lockedValuePlaceholder,
-              key: const ValueKey<String>('calculator.result.locked.riskCost'),
-            ),
-          ],
-          if (!policy.labourPricing().allowed)
-            _lockedPromoRow(
-              context,
-              l10n.labourCostPrefix,
-              l10n.lockedValuePlaceholder,
-              key: const ValueKey<String>(
-                'calculator.result.locked.labourCost',
-              ),
-            ),
           const Divider(),
           _summaryRow(
             context,
@@ -125,6 +101,12 @@ class CalculatorResults extends ConsumerWidget {
             key: const ValueKey<String>('calculator.result.totalCost'),
             emphasize: !pricing.isEnabled,
           ),
+          if (!isPremium)
+            _premiumFooter(
+              context,
+              l10n,
+              key: const ValueKey<String>('calculator.result.premiumFooter'),
+            ),
           if (isPremium && pricing.isEnabled) ...[
             const Divider(),
             _itemRow(
@@ -244,52 +226,45 @@ class CalculatorResults extends ConsumerWidget {
     );
   }
 
-  Padding _lockedPromoRow(
+  Widget _premiumFooter(
     BuildContext context,
-    String label,
-    String placeholder, {
+    AppLocalizations l10n, {
     Key? key,
   }) {
-    const mutedColor = TEXT_TERTIARY;
-    return Padding(
+    final secondaryStyle = Theme.of(
+      context,
+    ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY, height: 1.3);
+    final linkStyle = secondaryStyle?.copyWith(
+      color: LIGHT_BLUE,
+      fontWeight: FontWeight.w600,
+    );
+    void onTap() {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => const HelpSupportPage(
+            initialFaqEntryId: HelpSupportPage.premiumFaqEntryId,
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      alignment: Alignment.centerLeft,
       key: key,
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.lock_outline_rounded,
-                  size: 14,
-                  color: mutedColor,
-                ),
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    label,
-                    overflow: TextOverflow.ellipsis,
-                    style:
-                        Theme.of(
-                          context,
-                        ).textTheme.bodyLarge?.copyWith(color: mutedColor) ??
-                        const TextStyle(color: mutedColor),
-                  ),
-                ),
-              ],
-            ),
+      padding: const EdgeInsets.only(top: kAppSpace4, bottom: kAppSpace4),
+      child: GestureDetector(
+        key: const ValueKey<String>('calculator.result.premiumFooter.link'),
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Text.rich(
+          TextSpan(
+            style: secondaryStyle,
+            children: [
+              TextSpan(text: '${l10n.calculatorPremiumFooterBody} '),
+              TextSpan(text: l10n.calculatorPremiumFooterCta, style: linkStyle),
+            ],
           ),
-          Text(
-            placeholder,
-            style:
-                Theme.of(
-                  context,
-                ).textTheme.bodyLarge?.copyWith(color: mutedColor) ??
-                const TextStyle(color: mutedColor),
-          ),
-        ],
+        ),
       ),
     );
   }
