@@ -39,6 +39,8 @@
   - `lib/settings/services/settings_service.dart`
 - Models:
   - `lib/calculator/model/material_usage_input.dart`
+- Results/premium messaging:
+  - `lib/calculator/view/calculator_results.dart` shows only rows available to the active calculation/access level; free tier uses a compact in-card footer that links into the support FAQ premium summary instead of locked promo rows
 - Tests:
   - `test/calculator/provider/`
   - `test/calculator/view/`

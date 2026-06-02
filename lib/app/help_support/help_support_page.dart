@@ -19,7 +19,11 @@ import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 
 class HelpSupportPage extends ConsumerStatefulWidget {
-  const HelpSupportPage({super.key});
+  const HelpSupportPage({super.key, this.initialFaqEntryId});
+
+  static const String premiumFaqEntryId = 'premium';
+
+  final String? initialFaqEntryId;
 
   @override
   ConsumerState<HelpSupportPage> createState() => _HelpSupportPageState();
@@ -27,6 +31,9 @@ class HelpSupportPage extends ConsumerStatefulWidget {
 
 class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
   late final Future<PackageInfo> _packageInfoFuture;
+  final ScrollController _scrollController = ScrollController();
+  final Map<String, GlobalKey> _faqKeys = <String, GlobalKey>{};
+  bool _initialFaqRevealed = false;
 
   @override
   void initState() {
@@ -35,15 +42,25 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final supportId = ref.watch(premiumStateProvider).userId;
     final visibleSupportId = supportId.isEmpty ? '—' : supportId;
+    final faqEntries = _faqEntries(l10n);
+
+    _scheduleInitialFaqReveal();
 
     return Scaffold(
       appBar: AppScreenHeader(title: l10n.needHelpTitle),
       body: ListView(
         key: const ValueKey<String>('helpSupport.page'),
+        controller: _scrollController,
         padding: const EdgeInsets.fromLTRB(
           kAppSpace16,
           kAppSpace16,
@@ -76,8 +93,12 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
           const SizedBox(height: 28),
           HelpSupportSectionHeader(title: l10n.helpSupportFaqTitle),
           const SizedBox(height: kAppSpace12),
-          ..._faqEntries(l10n).asMap().entries.map(
-            (entry) => HelpSupportFaqTile(index: entry.key, entry: entry.value),
+          ...faqEntries.map(
+            (entry) => HelpSupportFaqTile(
+              entry: entry,
+              initiallyExpanded: entry.id == widget.initialFaqEntryId,
+              cardKey: _faqKeyFor(entry.id),
+            ),
           ),
           const SizedBox(height: 28),
           HelpSupportSectionHeader(title: l10n.helpSupportAboutTitle),
@@ -94,34 +115,79 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
   List<HelpSupportFaqEntry> _faqEntries(AppLocalizations l10n) {
     return [
       HelpSupportFaqEntry(
+        id: 'weight',
         question: l10n.helpSupportFaqWeightQuestion,
         answer: l10n.helpSupportFaqWeightAnswer,
       ),
       HelpSupportFaqEntry(
+        id: 'electricity',
         question: l10n.helpSupportFaqElectricityQuestion,
         answer: l10n.helpSupportFaqElectricityAnswer,
       ),
       HelpSupportFaqEntry(
+        id: 'wattage',
         question: l10n.helpSupportFaqWattageQuestion,
         answer: l10n.helpSupportFaqWattageAnswer,
       ),
       HelpSupportFaqEntry(
+        id: HelpSupportPage.premiumFaqEntryId,
+        question: l10n.helpSupportFaqPremiumQuestion,
+        answer: l10n.helpSupportFaqPremiumAnswer,
+        linkLabel: l10n.helpSupportFaqPremiumComparisonCta,
+        onLinkTap: () =>
+            openUrl(helpSupportPlansUrl, logger: ref.read(appLoggerProvider)),
+      ),
+      HelpSupportFaqEntry(
+        id: 'risk',
         question: l10n.helpSupportFaqRiskQuestion,
         answer: l10n.helpSupportFaqRiskAnswer,
       ),
       HelpSupportFaqEntry(
+        id: 'labour',
         question: l10n.helpSupportFaqLabourQuestion,
         answer: l10n.helpSupportFaqLabourAnswer,
       ),
       HelpSupportFaqEntry(
+        id: 'markup',
         question: l10n.helpSupportFaqMarkupQuestion,
         answer: l10n.helpSupportFaqMarkupAnswer,
       ),
       HelpSupportFaqEntry(
+        id: 'setup',
         question: l10n.helpSupportFaqSetupQuestion,
         answer: l10n.helpSupportFaqSetupAnswer,
       ),
     ];
+  }
+
+  GlobalKey _faqKeyFor(String id) {
+    return _faqKeys.putIfAbsent(id, () => GlobalKey());
+  }
+
+  void _scheduleInitialFaqReveal() {
+    final targetId = widget.initialFaqEntryId;
+    if (_initialFaqRevealed || targetId == null) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _initialFaqRevealed) {
+        return;
+      }
+
+      final targetContext = _faqKeys[targetId]?.currentContext;
+      if (targetContext == null) {
+        return;
+      }
+
+      _initialFaqRevealed = true;
+      Scrollable.ensureVisible(
+        targetContext,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.easeInOut,
+        alignment: 0.1,
+      );
+    });
   }
 
   Future<void> _sendEmail({

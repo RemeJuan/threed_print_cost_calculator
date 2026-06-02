@@ -2,6 +2,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 
 const String helpSupportWebsiteUrl = 'https://printcostcalc.app';
+const String helpSupportPlansUrl = 'https://printcostcalc.app/#plans-title';
 const String helpSupportRoadmapUrl = 'https://printcostcalc.app/roadmap/';
 const String helpSupportXUrl = 'https://x.com/PrintCostCalc';
 const String helpSupportInstagramUrl =
