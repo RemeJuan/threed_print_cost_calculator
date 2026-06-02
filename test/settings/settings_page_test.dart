@@ -6,12 +6,14 @@ import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 
 import '../helpers/helpers.dart';
+import '../helpers/lower_level_test_fakes.dart';
 
 class _NoopLogSink extends AppLogSink {
   const _NoopLogSink();
@@ -95,6 +97,19 @@ void main() {
     );
     expect(
       find.byKey(const ValueKey<String>('settings.printers.add.button')),
+      findsOneWidget,
+    );
+    await tester.dragUntilVisible(
+      find.byKey(const ValueKey<String>('settings.premium.title')),
+      find.byType(ListView),
+      const Offset(0, -200),
+    );
+    expect(
+      find.byKey(const ValueKey<String>('settings.premium.title')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('settings.premium.button')),
       findsOneWidget,
     );
     expect(
@@ -204,6 +219,10 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const ValueKey<String>('settings.premium.title')),
+        findsNothing,
+      );
+      expect(
         find.byKey(const ValueKey<String>('settings.materials.add.button')),
         findsNothing,
       );
@@ -222,6 +241,41 @@ void main() {
       expect(workCostsTopLeft.dy, lessThan(printersTopLeft.dy));
     },
   );
+
+  testWidgets('settings premium card opens paywall for free users', (
+    tester,
+  ) async {
+    final settingsRepo = _FakeSettingsRepository();
+    final paywallPresenter = FakePaywallPresenter();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(false),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
+      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+    await tester.dragUntilVisible(
+      find.byKey(const ValueKey<String>('settings.premium.button')),
+      find.byType(ListView),
+      const Offset(0, -200),
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('settings.premium.button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(paywallPresenter.calls, 1);
+    expect(paywallPresenter.lastOfferingId, 'pro');
+    expect(paywallPresenter.lastTriggerFeature, 'settings_premium_card');
+    expect(paywallPresenter.lastPurchaseSource, 'settings');
+    expect(paywallPresenter.lastSource, 'settings');
+  });
 
   testWidgets('printer add action opens AddPrinter dialog', (tester) async {
     final settingsRepo = _FakeSettingsRepository();
