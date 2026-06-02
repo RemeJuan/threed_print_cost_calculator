@@ -12,12 +12,14 @@ class AppPrimaryButton extends StatelessWidget {
     required this.label,
     this.icon,
     this.loading = false,
+    this.minHeight = _kButtonHeight,
   });
 
   final VoidCallback? onPressed;
   final String label;
   final Widget? icon;
   final bool loading;
+  final double minHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class AppPrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(_kButtonRadius),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        minimumSize: const Size(0, _kButtonHeight),
+        minimumSize: Size(0, minHeight),
         textStyle: const TextStyle(fontWeight: FontWeight.w600),
       ),
       child: _ButtonContent(
@@ -53,12 +55,14 @@ class AppSecondaryButton extends StatelessWidget {
     required this.label,
     this.icon,
     this.loading = false,
+    this.minHeight = _kButtonHeight,
   });
 
   final VoidCallback? onPressed;
   final String label;
   final Widget? icon;
   final bool loading;
+  final double minHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +79,7 @@ class AppSecondaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(_kButtonRadius),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        minimumSize: const Size(0, _kButtonHeight),
+        minimumSize: Size(0, minHeight),
         textStyle: const TextStyle(fontWeight: FontWeight.w600),
       ),
       child: _ButtonContent(
