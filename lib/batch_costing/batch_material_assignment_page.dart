@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_assignment_flow.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
@@ -14,6 +15,7 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/warning_box.d
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
@@ -217,17 +219,24 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
     BatchCostingState state,
-  ) => batchContinueFlow(
-    context: context,
-    state: state,
-    isBatchWide: (s) =>
-        s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
-    itemAllocations: (s) => s.itemMaterialAllocations,
-    batchId: (s) => s.batchMaterialId,
-    errorText: (l) => l.batchCostingMaterialAssignmentRequiredError,
-    analyticsType: 'material',
-    nextPage: const BatchPricingScopePage(),
-  );
+  ) {
+    final policy = ref.read(premiumAccessPolicyProvider);
+    final nextPage = policy.advancedPricingConfig().allowed
+        ? const BatchPricingScopePage()
+        : const BatchSummaryPage();
+
+    batchContinueFlow(
+      context: context,
+      state: state,
+      isBatchWide: (s) =>
+          s.materialAssignmentMode == BatchMaterialAssignmentMode.batchWide,
+      itemAllocations: (s) => s.itemMaterialAllocations,
+      batchId: (s) => s.batchMaterialId,
+      errorText: (l) => l.batchCostingMaterialAssignmentRequiredError,
+      analyticsType: 'material',
+      nextPage: nextPage,
+    );
+  }
 
   double _totalRequiredWeight(BatchCostingState state) {
     return state.items.fold<double>(

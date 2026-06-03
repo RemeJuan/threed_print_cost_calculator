@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/batch_material_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_pricing_scope_page.dart';
+import 'package:threed_print_cost_calculator/batch_costing/batch_summary_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
@@ -173,6 +174,25 @@ void main() {
     await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
     expect(find.byType(BatchPricingScopePage), findsOneWidget);
+  });
+
+  testWidgets('free users continue directly to summary', (tester) async {
+    final notifier = _FakeBatchCostingNotifier(items);
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      materialsStreamProvider.overrideWith((ref) => Stream.value(materials)),
+      isPremiumProvider.overrideWithValue(false),
+    ]);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('PLA Red'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BatchSummaryPage), findsOneWidget);
+    expect(find.byType(BatchPricingScopePage), findsNothing);
   });
 }
 
