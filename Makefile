@@ -31,15 +31,17 @@ metadata_pull:
 
 SCREENSHOTS_VENV = /tmp/screenshots_venv
 
-generate_screenshots:
+screenshots_venv:
 	[ -d $(SCREENSHOTS_VENV) ] || python3 -m venv $(SCREENSHOTS_VENV)
 	$(SCREENSHOTS_VENV)/bin/pip install -q -r scripts/requirements_screenshots.txt
+
+generate_screenshots: screenshots_venv
 	$(SCREENSHOTS_VENV)/bin/python3 scripts/generate_screenshots.py --formats all
 
-generate_screenshots_ios:
+generate_screenshots_ios: screenshots_venv
 	$(SCREENSHOTS_VENV)/bin/python3 scripts/generate_screenshots.py --formats ios
 
-generate_screenshots_android:
+generate_screenshots_android: screenshots_venv
 	$(SCREENSHOTS_VENV)/bin/python3 scripts/generate_screenshots.py --formats android
 
 ### Store metadata management ###
