@@ -176,10 +176,7 @@ void main() {
 
   test('material cost contributes without labour pricing', () {
     final summary = BatchSummaryCalculator.calculate(
-      BatchCostingState(
-        items: [item()],
-        batchMaterialId: pla.id,
-      ),
+      BatchCostingState(items: [item()], batchMaterialId: pla.id),
       materialsById: {pla.id: pla},
     );
 
@@ -207,10 +204,7 @@ void main() {
           ],
         },
       ),
-      materialsById: {
-        pla.id: pla,
-        petg.id: petg,
-      },
+      materialsById: {pla.id: pla, petg.id: petg},
     );
 
     expect(summary.items.single.baseCost, 1.40);

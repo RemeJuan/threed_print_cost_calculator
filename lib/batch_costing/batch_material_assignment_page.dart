@@ -215,11 +215,7 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
     batchId: (s) => s.batchMaterialId,
   );
 
-  void _continue(
-    BuildContext context,
-    WidgetRef ref,
-    BatchCostingState state,
-  ) {
+  void _continue(BuildContext context, WidgetRef ref, BatchCostingState state) {
     final policy = ref.read(premiumAccessPolicyProvider);
     final nextPage = policy.advancedPricingConfig().allowed
         ? const BatchPricingScopePage()

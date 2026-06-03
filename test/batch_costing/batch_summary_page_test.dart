@@ -81,7 +81,9 @@ void main() {
     tester,
   ) async {
     await tester.pumpApp(const BatchSummaryPage(), [
-      batchCostingProvider.overrideWith(() => _FreeSummaryBatchCostingNotifier()),
+      batchCostingProvider.overrideWith(
+        () => _FreeSummaryBatchCostingNotifier(),
+      ),
       isPremiumProvider.overrideWithValue(false),
       materialsStreamProvider.overrideWith(
         (ref) => Stream.value(const [
