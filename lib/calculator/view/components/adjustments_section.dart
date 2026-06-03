@@ -69,7 +69,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             ),
             onChanged: (value) async {
               notifier.setLabourRate(parseLocalizedNumOrFallback(value));
-              notifier.submitDebounced();
+              notifier.submitDebounced(trackCompletedCosting: true);
             },
           ),
         ),
@@ -88,7 +88,7 @@ class AdjustmentsSection extends HookConsumerWidget {
             onChanged: (value) async {
               notifier
                 ..updateLabourTime(parseLocalizedNumOrFallback(value))
-                ..submitDebounced();
+                ..submitDebounced(trackCompletedCosting: true);
             },
           ),
         ),

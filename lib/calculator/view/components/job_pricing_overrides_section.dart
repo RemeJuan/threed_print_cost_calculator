@@ -61,7 +61,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               final parsed = tryParseLocalizedNum(value) ?? 0;
               notifier
                 ..setWearAndTear(parsed)
-                ..submitDebounced();
+                ..submitDebounced(trackCompletedCosting: true);
               AppAnalytics.safeLog(
                 () => AppAnalytics.pricingOverrideUsed(
                   field: 'wear_and_tear',
@@ -82,7 +82,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               final parsed = tryParseLocalizedNum(value) ?? 0;
               notifier
                 ..setFailureRisk(parsed)
-                ..submitDebounced();
+                ..submitDebounced(trackCompletedCosting: true);
               AppAnalytics.safeLog(
                 () => AppAnalytics.pricingOverrideUsed(
                   field: 'failure_risk',
@@ -106,7 +106,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               final parsed = tryParseLocalizedNum(value) ?? 0;
               notifier
                 ..setLabourRate(parsed)
-                ..submitDebounced();
+                ..submitDebounced(trackCompletedCosting: true);
               AppAnalytics.safeLog(
                 () => AppAnalytics.pricingOverrideUsed(
                   field: 'labour_rate',
@@ -125,7 +125,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
               final parsed = tryParseLocalizedNum(value) ?? 0;
               notifier
                 ..setMarkupPercent(parsed)
-                ..submitDebounced();
+                ..submitDebounced(trackCompletedCosting: true);
               AppAnalytics.safeLog(
                 () => AppAnalytics.pricingOverrideUsed(
                   field: 'markup_percent',
@@ -153,7 +153,7 @@ class JobPricingOverridesSection extends HookConsumerWidget {
                   final parsed = tryParseLocalizedNum(value) ?? 0;
                   notifier
                     ..setAdditionalCostAmount(parsed)
-                    ..submitDebounced();
+                    ..submitDebounced(trackCompletedCosting: true);
                   AppAnalytics.safeLog(
                     () => AppAnalytics.pricingOverrideUsed(
                       field: 'additional_cost',

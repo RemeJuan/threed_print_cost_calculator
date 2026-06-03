@@ -6,3 +6,4 @@ const Duration debounce200ms = Duration(milliseconds: 200);
 const Duration debounce250ms = Duration(milliseconds: 250);
 const Duration debounce300ms = Duration(milliseconds: 300);
 const Duration debounce400ms = Duration(milliseconds: 400);
+const Duration debounce7s = Duration(seconds: 7);

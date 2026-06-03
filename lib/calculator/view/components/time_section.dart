@@ -53,7 +53,7 @@ class TimeSection extends HookConsumerWidget {
                         notifier
                           ..updateHours(result['hours'] ?? 0)
                           ..updateMinutes(result['minutes'] ?? 0)
-                          ..submit();
+                          ..submit(trackCompletedCosting: true);
                       }
                     },
                   ),
@@ -90,7 +90,7 @@ class TimeSection extends HookConsumerWidget {
                           final workTime = hours + (minutes / 60);
                           notifier
                             ..updateLabourTime(workTime)
-                            ..submit();
+                            ..submit(trackCompletedCosting: true);
                         }
                       },
                     ),

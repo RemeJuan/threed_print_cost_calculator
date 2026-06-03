@@ -68,7 +68,7 @@ Future<String?> showMaterialPicker(
                 ),
               );
             }
-            notifier.submit();
+            notifier.submit(trackCompletedCosting: true);
             Navigator.of(context).pop(material.id);
           },
           excludedIds: selectedIds,
@@ -120,7 +120,7 @@ Future<String?> showMaterialPicker(
                   } else {
                     notifier.addMaterialUsage(usage);
                   }
-                  notifier.submit();
+                  notifier.submit(trackCompletedCosting: true);
                   nav.pop(usage.materialId);
                 }
               : null,

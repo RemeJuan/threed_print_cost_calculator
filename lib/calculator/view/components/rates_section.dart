@@ -67,7 +67,7 @@ class RatesSection extends HookConsumerWidget {
             ),
             onChanged: (value) async {
               notifier.setWearAndTear(parseLocalizedNumOrFallback(value));
-              notifier.submitDebounced();
+              notifier.submitDebounced(trackCompletedCosting: true);
             },
           ),
         ),
@@ -83,7 +83,7 @@ class RatesSection extends HookConsumerWidget {
             decoration: InputDecoration(labelText: l10n.failureRiskLabel),
             onChanged: (value) async {
               notifier.setFailureRisk(parseLocalizedNumOrFallback(value));
-              notifier.submitDebounced();
+              notifier.submitDebounced(trackCompletedCosting: true);
             },
           ),
         ),

@@ -40,7 +40,7 @@ class FakeCalculatorNotifier extends CalculatorProvider {
   }
 
   @override
-  void submit() {
+  void submit({bool trackCompletedCosting = false}) {
     submitCalls += 1;
   }
 

@@ -60,25 +60,25 @@ class MaterialsSection extends HookConsumerWidget {
     void onRowWeightChanged(int index, int grams) {
       notifier
         ..updateMaterialUsageWeight(index, grams)
-        ..submitDebounced();
+        ..submitDebounced(trackCompletedCosting: true);
     }
 
     void onRowSpoolWeightChanged(int index, num value) {
       notifier
         ..updateUnsavedMaterialSpool(index, spoolWeight: value)
-        ..submitDebounced();
+        ..submitDebounced(trackCompletedCosting: true);
     }
 
     void onRowSpoolCostChanged(int index, num value) {
       notifier
         ..updateUnsavedMaterialSpool(index, spoolCost: value)
-        ..submitDebounced();
+        ..submitDebounced(trackCompletedCosting: true);
     }
 
     void onRowRemove(int index) {
       notifier
         ..removeMaterialUsageAt(index)
-        ..submitDebounced();
+        ..submitDebounced(trackCompletedCosting: true);
     }
 
     return Column(

@@ -30,8 +30,13 @@ final calculatorProvider =
       CalculatorProvider.new,
     );
 
+final completedCostingTrackingDelayProvider = Provider<Duration>(
+  (ref) => debounce7s,
+);
+
 class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
+  Timer? _completedCostingDebounce;
   StreamSubscription<GeneralSettingsModel>? _settingsSubscription;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
@@ -44,6 +49,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     ref.onDispose(() {
       _submitDebounce?.cancel();
       _submitDebounce = null;
+      _completedCostingDebounce?.cancel();
+      _completedCostingDebounce = null;
       _settingsSubscription?.cancel();
       _settingsSubscription = null;
     });
@@ -124,6 +131,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   Future<void> resetToDefaults() async {
     _submitDebounce?.cancel();
+    _cancelCompletedCostingTracking();
 
     final settings = await ref.read(settingsServiceProvider).get();
     state = await ref
@@ -134,6 +142,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   Future<bool> loadFromHistory(HistoryEntry entry) async {
     _submitDebounce?.cancel();
+    _cancelCompletedCostingTracking();
 
     if (entry.model.materialUsages.isEmpty) {
       _logger.warn(
@@ -220,7 +229,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       ),
       wattageSource: resolution?.source ?? WattageSource.rated,
     );
-    submit();
+    submit(trackCompletedCosting: true);
   }
 
   void updateKwCost(String value) {
@@ -370,7 +379,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
     state = nextState.copyWith(importedFromGcode: true);
     unawaited(ref.read(appUsageServiceProvider).markGcodeImportUsed());
-    submit();
+    submit(trackCompletedCosting: true);
   }
 
   void updateSpoolWeight(num value) {
@@ -442,7 +451,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       materialUsages: syncedUsages,
     );
 
-    submit();
+    submit(trackCompletedCosting: true);
   }
 
   Future<void> updateWearAndTear(num value) async {
@@ -564,7 +573,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     state = state.copyWith(pricing: pricing);
   }
 
-  void submit() {
+  void submit({bool trackCompletedCosting = false}) {
     num electricityCost = 0;
     num filamentCost = 0;
     num labourCost = 0;
@@ -633,6 +642,12 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     unawaited(ref.read(appUsageServiceProvider).recordCalculation());
     updatePricing(pricing);
 
+    if (trackCompletedCosting) {
+      _scheduleCompletedCostingTracking(results);
+    } else {
+      _cancelCompletedCostingTracking();
+    }
+
     AppAnalytics.safeLog(
       () => AppAnalytics.calculationCreated(
         materialCount: state.materialUsages.length,
@@ -661,6 +676,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   Future<void> clearUsagesForDeletedMaterial(String materialId) async {
     _submitDebounce?.cancel();
     _submitDebounce = null;
+    _cancelCompletedCostingTracking();
     final usages = state.materialUsages;
     final filtered = usages.where((u) => u.materialId != materialId).toList();
     final removedUsage = filtered.length != usages.length;
@@ -710,9 +726,36 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   /// Schedule a debounced submit to avoid running heavy calculations on every keystroke.
   ///
   /// Cancels any previously scheduled submit and schedules a new one after [delay].
-  void submitDebounced({Duration delay = debounce250ms}) {
+  void submitDebounced({
+    Duration delay = debounce250ms,
+    bool trackCompletedCosting = false,
+  }) {
     _submitDebounce?.cancel();
-    _submitDebounce = Timer(delay, submit);
+    _submitDebounce = Timer(
+      delay,
+      () => submit(trackCompletedCosting: trackCompletedCosting),
+    );
+  }
+
+  void _cancelCompletedCostingTracking() {
+    _completedCostingDebounce?.cancel();
+    _completedCostingDebounce = null;
+  }
+
+  void _scheduleCompletedCostingTracking(CalculationResult results) {
+    final hasMeaningfulCompletedCosting =
+        results.electricity > 0 && results.filament > 0;
+    if (!hasMeaningfulCompletedCosting) {
+      _cancelCompletedCostingTracking();
+      return;
+    }
+
+    _completedCostingDebounce?.cancel();
+    final delay = ref.read(completedCostingTrackingDelayProvider);
+    _completedCostingDebounce = Timer(delay, () {
+      _completedCostingDebounce = null;
+      unawaited(ref.read(appUsageServiceProvider).recordCompletedCosting());
+    });
   }
 
   String _selectedMaterialIdFor(List<MaterialUsageInput> usages) {

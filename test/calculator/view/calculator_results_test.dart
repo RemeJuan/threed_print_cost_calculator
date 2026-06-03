@@ -131,9 +131,9 @@ void main() {
           find.byWidgetPredicate(
             (widget) =>
                 widget is Text &&
-                widget.textSpan
-                        ?.toPlainText()
-                        .contains(l10n.calculatorPremiumFooterBody) ==
+                widget.textSpan?.toPlainText().contains(
+                      l10n.calculatorPremiumFooterBody,
+                    ) ==
                     true,
           ),
           findsOneWidget,
