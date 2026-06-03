@@ -9,7 +9,7 @@ Built for hobbyists, makers, side hustles, and small print businesses.
 Free features
 
 • Core print costing
-• Electricity costing
+• Electricity costing with rated and average wattage support
 • Multi-material costing
 • Single-print G-code import
 • Up to 5 saved materials (manual management)
