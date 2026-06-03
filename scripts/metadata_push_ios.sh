@@ -4,11 +4,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
 echo "==> Metadata diff (files to be pushed):"
-git diff --stat -- fastlane/metadata/ios/
+git --no-pager diff --stat -- fastlane/metadata/ios/
 
 echo ""
 echo "==> Pushing iOS metadata to App Store Connect..."
-bundle exec fastlane ios metadata_push
+CI=1 EDITOR=true VISUAL=true GIT_EDITOR=true bundle exec fastlane ios metadata_push
 
 echo ""
 echo "==> iOS metadata uploaded."
