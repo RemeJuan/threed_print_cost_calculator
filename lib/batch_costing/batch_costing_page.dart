@@ -95,14 +95,15 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         icon: const Icon(Icons.add),
                       ),
                       const SizedBox(width: kAppSpace8),
-                      Opacity(
-                        opacity: batchImportAllowed ? 1 : 0.55,
-                        child: AppTertiaryButton(
-                          onPressed: () => _openBatchGcodeImport(context),
-                          label: batchImportLabel,
-                          icon: const Icon(Icons.upload_file),
+                      if (policy.isPremium)
+                        Opacity(
+                          opacity: batchImportAllowed ? 1 : 0.55,
+                          child: AppTertiaryButton(
+                            onPressed: () => _openBatchGcodeImport(context),
+                            label: batchImportLabel,
+                            icon: const Icon(Icons.upload_file),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
