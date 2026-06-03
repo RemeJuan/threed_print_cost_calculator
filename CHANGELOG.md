@@ -1,13 +1,19 @@
-## [Unreleased]
+## [3.0.0] - 2026-06-03
 
 ### Added
-- Custom in-app paywall screen with live RevenueCat offerings, feature comparison table from premium policy metadata, purchase and restore flows.
-- Compact Premium upgrade card in Settings for free users.
-- Direct in-app upgrade CTA inside the Help & Support Premium FAQ for free users, while keeping the full comparison link.
+- Added average wattage support for more accurate electricity estimates — set rated or average wattage per printer, or define a general default in settings.
+- Added clearer electricity results that show whether rated or average wattage was used for the calculation.
 
 ### Changed
-- Custom in-app paywall now fronts all normal premium upsell flows, replacing the hosted RevenueCat paywall as the default user-facing path.
-- Calculator Premium messaging remains informational; `Learn more` opens the in-app FAQ instead of the website.
+- Expanded the free plan with multi-material costing, single-print G-code import, limited material and printer storage, limited history, and manual batch costing for up to 3 items.
+- Refocused Premium around advanced pricing, batch workflows, inventory management, exports, and unlimited usage.
+- Moved the batch quote action above the main calculator actions for easier access.
+
+### Fixed
+- Fixed pricing overflow when switching materials.
+- Fixed Android ANR regressions from earlier builds.
+- Fixed CSV import feedback so empty or invalid imports now show an error toast.
+- Fixed batch flow reset behaviour and placeholder allocation row visibility.
 
 ## [2.11.0] - 2026-05-20
 
@@ -216,6 +222,7 @@
 ### Added
 - Added in-app update checker
 
+[3.0.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.11.0...3.0.0
 [2.11.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.10.0...2.11.0
 [2.10.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.4...2.10.0
 [2.9.4]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.3...2.9.4
