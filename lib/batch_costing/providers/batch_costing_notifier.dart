@@ -205,6 +205,12 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setAdditionalCostAmount(String value) {
+    if (!ref
+        .read(premiumAccessPolicyProvider)
+        .advancedPricingConfig()
+        .allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         additionalCostAmount: state.pricing.additionalCostAmount.copyWith(
@@ -215,6 +221,12 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
   }
 
   void setAdditionalCostAmountScope(BatchPricingScope scope) {
+    if (!ref
+        .read(premiumAccessPolicyProvider)
+        .advancedPricingConfig()
+        .allowed) {
+      return;
+    }
     state = state.copyWith(
       pricing: state.pricing.copyWith(
         additionalCostAmount: state.pricing.additionalCostAmount.copyWith(

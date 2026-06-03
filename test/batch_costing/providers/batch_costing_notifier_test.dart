@@ -440,5 +440,18 @@ void main() {
       expect(pricing.labourRate.value, isEmpty);
       expect(pricing.additionalCostAmount.value, isEmpty);
     });
+
+    test('free users cannot set additional cost pricing fields', () {
+      final container = _createFreeContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(batchCostingProvider.notifier);
+
+      notifier.setAdditionalCostAmount('15');
+      notifier.setAdditionalCostAmountScope(BatchPricingScope.item);
+
+      final pricing = container.read(batchCostingProvider).pricing;
+      expect(pricing.additionalCostAmount.value, isEmpty);
+      expect(pricing.additionalCostAmount.scope, BatchPricingScope.batch);
+    });
   });
 }
