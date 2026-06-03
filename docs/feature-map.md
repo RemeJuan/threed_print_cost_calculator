@@ -153,7 +153,7 @@
   - `lib/purchases/cancel_feedback_service.dart`
 - Repositories/services:
   - `lib/purchases/purchases_gateway.dart` — RevenueCat SDK mapping into app premium state
-  - `lib/shared/services/app_usage_service.dart` — premium-store calculation count / G-code usage analytics helpers
+  - `lib/shared/services/app_usage_service.dart` — premium-store calculation count / G-code usage analytics helpers, completed-costing counter, and `RateMyApp` eligibility gate (`completed_costing_count > 10` before review prompt init)
   - `lib/database/repositories/history_repository.dart` — history count + G-code-import history lookup for analytics payloads
 - Analytics events:
   - `trial_cancel_feedback_submitted`

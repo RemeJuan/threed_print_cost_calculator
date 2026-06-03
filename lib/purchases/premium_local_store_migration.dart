@@ -9,6 +9,7 @@ Future<void> migratePremiumLocalStore({
   const keys = [
     testPremiumOverrideEnabledOnPreferenceKey,
     calculationCountPreferenceKey,
+    completedCostingCountPreferenceKey,
     hasUsedGcodeImportPreferenceKey,
     cancelFeedbackPromptShownStatePreferenceKey,
     cancelFeedbackPromptSubmittedStatePreferenceKey,

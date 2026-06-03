@@ -1,6 +1,7 @@
 const testPremiumOverrideEnabledOnPreferenceKey =
     'testPremiumOverrideEnabledOn';
 const calculationCountPreferenceKey = 'calculation_count';
+const completedCostingCountPreferenceKey = 'completed_costing_count';
 const hasUsedGcodeImportPreferenceKey = 'has_used_gcode_import';
 const cancelFeedbackPromptShownStatePreferenceKey =
     'cancel_feedback_prompt_shown_state';
