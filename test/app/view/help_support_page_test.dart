@@ -136,9 +136,13 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(
-      find.byKey(const ValueKey<String>('helpSupport.faq.weight')),
+    final weightQuestion = find.text(l10n.helpSupportFaqWeightQuestion);
+    await tester.drag(
+      find.byKey(const ValueKey<String>('helpSupport.page')),
+      const Offset(0, -100),
     );
+    await tester.pumpAndSettle();
+    await tester.tap(weightQuestion);
     await tester.pumpAndSettle();
     expect(find.text(l10n.helpSupportFaqWeightAnswer), findsOneWidget);
 
