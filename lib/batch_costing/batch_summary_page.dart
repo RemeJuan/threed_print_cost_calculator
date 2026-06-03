@@ -9,9 +9,11 @@ import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
@@ -91,14 +93,19 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
     }
 
     final currencyAsync = ref.watch(settingsStreamProvider);
+    final materialsAsync = ref.watch(materialsStreamProvider);
     final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
         ? currencyAsync.value
         : GeneralSettingsModel.initial();
+    final materialsById = materialsAsync is AsyncData<List<MaterialModel>>
+        ? {for (final material in materialsAsync.value) material.id: material}
+        : null;
 
     final kwCost = tryParseLocalizedNum(currencySettings.electricityCost) ?? 0;
     final summary = BatchSummaryCalculator.calculate(
       state,
       printersById: _printersLoaded ? _printersById : null,
+      materialsById: materialsById,
       kwCost: kwCost,
     );
 

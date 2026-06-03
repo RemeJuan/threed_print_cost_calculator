@@ -12,8 +12,12 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import '../helpers/helpers.dart';
@@ -71,6 +75,34 @@ void main() {
     expect(find.text('Export'), findsNothing);
     expect(find.text('Share'), findsNothing);
     expect(find.text('History'), findsNothing);
+  });
+
+  testWidgets('free-user summary includes material cost after pricing skip', (
+    tester,
+  ) async {
+    await tester.pumpApp(const BatchSummaryPage(), [
+      batchCostingProvider.overrideWith(() => _FreeSummaryBatchCostingNotifier()),
+      isPremiumProvider.overrideWithValue(false),
+      materialsStreamProvider.overrideWith(
+        (ref) => Stream.value(const [
+          MaterialModel(
+            id: 'mat-1',
+            name: 'PLA',
+            cost: '20',
+            color: 'Black',
+            weight: '1000',
+            archived: false,
+          ),
+        ]),
+      ),
+      settingsStreamProvider.overrideWith(
+        (ref) => Stream.value(GeneralSettingsModel.initial()),
+      ),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('0.60'), findsOneWidget);
   });
 
   testWidgets('start new batch clears gcode stack and returns home', (
@@ -234,6 +266,25 @@ class _SummaryBatchCostingNotifier extends BatchCostingNotifier {
           scope: BatchPricingScope.item,
         ),
       ),
+    );
+  }
+}
+
+class _FreeSummaryBatchCostingNotifier extends BatchCostingNotifier {
+  @override
+  BatchCostingState build() {
+    return BatchCostingState(
+      items: [
+        BatchCostingItem.manual(
+          id: 'item-1',
+          displayName: 'Benchy',
+          quantity: 3,
+          printWeightG: 10,
+          printDuration: const Duration(hours: 1),
+          materialId: 'mat-1',
+        ),
+      ],
+      batchMaterialId: 'mat-1',
     );
   }
 }

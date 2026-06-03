@@ -3,8 +3,10 @@ import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_s
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/pricing_calculator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class BatchSummaryItemBreakdown {
   const BatchSummaryItemBreakdown({
@@ -64,6 +66,7 @@ class BatchSummaryCalculator {
   static BatchSummaryResult calculate(
     BatchCostingState state, {
     Map<String, PrinterModel>? printersById,
+    Map<String, MaterialModel>? materialsById,
     num kwCost = 0,
   }) {
     final items = <BatchSummaryItemBreakdown>[];
@@ -93,10 +96,12 @@ class BatchSummaryCalculator {
 
       final itemWattage = _resolveItemWattage(item, printersById);
       final itemBaseCost = _itemBaseCost(
+        state,
         item,
         batchLabourRate,
         state.pricing,
         wattage: itemWattage,
+        materialsById: materialsById,
         kwCost: kwCost,
       );
       if (state.pricing.failureRisk.scope == BatchPricingScope.item) {
@@ -192,17 +197,80 @@ class BatchSummaryCalculator {
   }
 
   static num _itemBaseCost(
+    BatchCostingState state,
     BatchCostingItem item,
     num batchLabourRate,
     BatchPricingState pricing, {
     num wattage = 0,
+    Map<String, MaterialModel>? materialsById,
     num kwCost = 0,
   }) {
     final labourRate = _scopeValue(pricing.labourRate, batchLabourRate);
     final hours = (item.printDuration?.inMinutes ?? 0) / 60;
     final labour = hours * labourRate * item.quantity;
     final electricity = (wattage / 1000) * hours * kwCost * item.quantity;
-    return labour + electricity;
+    final material = _itemMaterialCost(state, item, materialsById);
+    return labour + electricity + material;
+  }
+
+  static num _itemMaterialCost(
+    BatchCostingState state,
+    BatchCostingItem item,
+    Map<String, MaterialModel>? materialsById,
+  ) {
+    if (materialsById == null) return 0;
+
+    final weightPerUnit = item.printWeightG ?? 0;
+    if (weightPerUnit <= 0) return 0;
+
+    final allocations = state.itemMaterialAllocations[item.id];
+    if (allocations != null && allocations.isNotEmpty) {
+      return _multiMaterialCost(weightPerUnit, allocations, materialsById);
+    }
+
+    final materialId = item.materialId ?? state.batchMaterialId;
+    if (materialId == null) return 0;
+
+    final material = materialsById[materialId];
+    if (material == null) return 0;
+
+    return _filamentCost(
+      itemWeight: weightPerUnit * item.quantity,
+      material: material,
+    );
+  }
+
+  static num _multiMaterialCost(
+    double weightPerUnit,
+    List<BatchAssignmentAllocation> allocations,
+    Map<String, MaterialModel> materialsById,
+  ) {
+    num total = 0;
+    for (final allocation in allocations) {
+      final material = materialsById[allocation.targetId];
+      if (material == null) continue;
+
+      final spoolWeight = parseLocalizedNumOrFallback(material.weight);
+      final costPerSpool = parseLocalizedNumOrFallback(material.cost);
+      if (spoolWeight <= 0 || costPerSpool <= 0) continue;
+
+      final weightGrams = weightPerUnit * allocation.quantity;
+      final raw = (weightGrams * costPerSpool) / spoolWeight;
+      total += num.parse(raw.toStringAsFixed(2));
+    }
+    return num.parse(total.toStringAsFixed(2));
+  }
+
+  static num _filamentCost({
+    required double itemWeight,
+    required MaterialModel material,
+  }) {
+    final spoolWeight = parseLocalizedNumOrFallback(material.weight);
+    final costPerSpool = parseLocalizedNumOrFallback(material.cost);
+    if (spoolWeight <= 0 || costPerSpool <= 0 || itemWeight <= 0) return 0;
+
+    final raw = (itemWeight / spoolWeight) * costPerSpool;
+    return num.parse(raw.toStringAsFixed(2));
   }
 
   static num _resolveItemWattage(

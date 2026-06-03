@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_summary
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 void main() {
   BatchCostingItem item({int quantity = 1, Duration? duration}) {
@@ -15,6 +16,15 @@ void main() {
       printDuration: duration ?? const Duration(hours: 1),
     );
   }
+
+  const pla = MaterialModel(
+    id: 'mat-1',
+    name: 'PLA',
+    cost: '20',
+    color: 'Black',
+    weight: '1000',
+    archived: false,
+  );
 
   test('quantity 1 defaults calculate a single item', () {
     final summary = BatchSummaryCalculator.calculate(
@@ -162,5 +172,48 @@ void main() {
     );
 
     expect(summary.finalTotal, 27);
+  });
+
+  test('material cost contributes without labour pricing', () {
+    final summary = BatchSummaryCalculator.calculate(
+      BatchCostingState(
+        items: [item()],
+        batchMaterialId: pla.id,
+      ),
+      materialsById: {pla.id: pla},
+    );
+
+    expect(summary.items.single.baseCost, 0.2);
+    expect(summary.finalTotal, 0.2);
+  });
+
+  test('split material allocations sum weighted material cost', () {
+    const petg = MaterialModel(
+      id: 'mat-2',
+      name: 'PETG',
+      cost: '30',
+      color: 'Blue',
+      weight: '500',
+      archived: false,
+    );
+
+    final summary = BatchSummaryCalculator.calculate(
+      BatchCostingState(
+        items: [item(quantity: 3)],
+        itemMaterialAllocations: const {
+          'item-1': [
+            BatchAssignmentAllocation(targetId: 'mat-1', quantity: 1),
+            BatchAssignmentAllocation(targetId: 'mat-2', quantity: 2),
+          ],
+        },
+      ),
+      materialsById: {
+        pla.id: pla,
+        petg.id: petg,
+      },
+    );
+
+    expect(summary.items.single.baseCost, 1.40);
+    expect(summary.finalTotal, 1.40);
   });
 }
