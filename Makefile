@@ -7,6 +7,9 @@ bump_feat:
 bump_build:
 	./version-bump.sh build
 
+bump_break:
+	./version-bump.sh major
+
 fix_ios:
 	fvm flutter precache --ios && cd ios && rm Podfile.lock && pod install --repo-update && cd ..
 
