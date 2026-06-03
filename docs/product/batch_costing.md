@@ -14,7 +14,7 @@ The current calculator remains the fast single-print path. Batch costing is a se
 
 Current implementation status:
 
-- End-to-end gated flow is implemented: review -> printer assignment -> material assignment -> pricing scope -> summary/save
+- End-to-end gated flow is implemented: review -> printer assignment -> material assignment -> pricing scope -> summary/save for premium, with free users skipping pricing scope and going straight to summary
 - Manual and G-code entry are both implemented
 - Quantity edits happen in batch review, not during batch G-code import
 - Saving completed batch quotes to history is implemented
@@ -112,7 +112,7 @@ Manual path:
 3. User can add, edit, or remove manual items from review
 4. Printer assignment
 5. Material assignment
-6. Pricing scope
+6. Premium only: pricing scope
 7. Summary / quote
 8. Save named quote to history or leave/start a new batch
 
@@ -126,7 +126,7 @@ G-code path:
 6. Batch review shows imported items
 7. Printer assignment
 8. Material assignment
-9. Pricing scope
+9. Premium only: pricing scope
 10. Summary / quote
 11. Save named quote to history or leave/start a new batch
 
