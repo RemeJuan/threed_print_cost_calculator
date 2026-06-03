@@ -9,7 +9,7 @@ Pensato per hobbisti, maker, attività secondarie e piccole aziende di stampa 3D
 Funzionalità gratuite
 
 • Calcolo base del costo di stampa
-• Calcolo del costo dell'elettricità
+• Calcolo del costo dell'elettricità con supporto per wattaggio nominale e medio
 • Calcolo multimateriale
 • Importazione G-code per una singola stampa
 • Fino a 5 materiali salvati (gestione manuale)

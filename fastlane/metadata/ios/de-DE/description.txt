@@ -9,7 +9,7 @@ Für Hobbyisten, Maker, Nebenerwerbe und kleine 3D-Druck-Unternehmen.
 Kostenlos enthalten:
 
 • Grundlegende Druckkostenberechnung
-• Stromkostenberechnung
+• Stromkostenberechnung mit Unterstützung für Nenn- und Durchschnittswattzahl
 • Multimaterial-Kalkulation
 • G-Code-Import für einzelne Drucke
 • Bis zu 5 gespeicherte Materialien (manuelle Verwaltung)

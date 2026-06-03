@@ -9,7 +9,7 @@ Pensado para aficionados, makers, trabajos paralelos y pequeñas empresas de imp
 Funciones gratuitas
 
 • Cálculo básico del costo de impresión
-• Cálculo del costo de electricidad
+• Cálculo del costo de electricidad con soporte para vatios nominales y promedio
 • Cálculo multimaterial
 • Importación de G-code para una sola impresión
 • Hasta 5 materiales guardados (gestión manual)

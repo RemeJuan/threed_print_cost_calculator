@@ -9,7 +9,7 @@ Feito para hobistas, makers, rendas extras e pequenas empresas de impressão 3D.
 Recursos gratuitos
 
 • Cálculo básico de custo de impressão
-• Cálculo de custo de eletricidade
+• Cálculo de custo de eletricidade com suporte a potência nominal e média
 • Custeio multimaterial
 • Importação de G-code para uma única impressão
 • Até 5 materiais salvos (gerenciamento manual)

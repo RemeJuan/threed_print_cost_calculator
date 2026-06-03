@@ -9,7 +9,7 @@ Pour les passionnés, les makers, les activités complémentaires et les petites
 La version gratuite comprend :
 
 • Calcul de base du coût d'impression
-• Calcul du coût de l'électricité
+• Calcul du coût de l'électricité avec prise en charge de la puissance nominale et moyenne
 • Calcul multi-matériaux
 • Import de G-code pour une impression unique
 • Jusqu'à 5 matériaux enregistrés (gestion manuelle)

@@ -1,7 +1,7 @@
 Piano gratuito ampliato.
 
-* Il calcolo multimateriale è ora disponibile per tutti gli utenti
-* L'importazione G-code per una singola stampa è ora inclusa in Gratuito
-* Salva fino a 5 materiali, 2 profili stampante e 7 voci nella cronologia in Gratuito
-* Il calcolo manuale in batch è disponibile fino a 3 elementi per batch
+* Il calcolo multimateriale e l'importazione G-code per una singola stampa sono ora inclusi nel piano gratuito
+* Il piano gratuito ora include fino a 5 materiali, 2 profili stampante, 7 voci nella cronologia e calcolo manuale in batch per 3 elementi
 * Premium ora si concentra su strumenti avanzati di prezzo, flussi batch, monitoraggio dell'inventario, esportazioni e uso illimitato
+* Aggiungi il wattaggio medio opzionale per stime dell'elettricità più precise
+* Risultati e cronologia ora mostrano se è stato usato il wattaggio nominale o medio
