@@ -166,8 +166,9 @@ Or use scripts directly:
 ```
 
 **What gets pushed:**
-- iOS: metadata only — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
-- iOS changelog lane: `release_notes.txt` only — description/subtitle/keywords and other metadata stay untouched
+- iOS metadata lane: full metadata, including `release_notes.txt` from the `en-US/` upload folder — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
+- iOS metadata lane: full metadata, including `release_notes.txt` from the `default/` upload folder — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
+- iOS changelog lane: `release_notes.txt` only from the `default/` upload folder — useful when only What's New changes
 - Android: metadata only — no APK/AAB (`skip_upload_apk`, `skip_upload_aab`), no images (`skip_upload_images`), includes changelogs
 - Android changelog lane: `changelogs/default.txt` only — title/short/full description and screenshots stay untouched
 
@@ -208,6 +209,7 @@ Or use scripts directly:
 - No metadata upload
 - No binary upload
 - No submission for review
+- Existing screenshots on App Store Connect are preserved; the lane does not overwrite the whole set
 
 ---
 
