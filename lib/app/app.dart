@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 class App extends ConsumerWidget {
@@ -15,6 +16,7 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final logger = ref.read(appLoggerProvider);
+    final isRateMyAppEligible = ref.watch(rateMyAppEligibilityProvider);
     AppAnalytics.logger = logger;
 
     return GestureDetector(
@@ -38,10 +40,10 @@ class App extends ConsumerWidget {
             remindDays: 14,
             remindLaunches: 10,
             googlePlayIdentifier: 'com.threed_print_calculator',
-            appStoreIdentifier: 'com.threed-print-calculator',
+            appStoreIdentifier: '6444106268',
           ),
           onInitialized: (context, rateMyApp) async {
-            if (rateMyApp.shouldOpenDialog) {
+            if (isRateMyAppEligible && rateMyApp.shouldOpenDialog) {
               try {
                 rateMyApp.showRateDialog(context);
               } catch (e) {
