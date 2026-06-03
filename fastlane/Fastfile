@@ -1,5 +1,6 @@
 default_platform :ios
 
+require "deliver"
 require "fileutils"
 require "tmpdir"
 
@@ -110,6 +111,39 @@ def stage_android_screenshots_upload
   staging_dir
 end
 
+def replace_ios_screenshots(screenshots_path)
+  app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+  UI.user_error!("Missing iOS app identifier in Appfile") if app_identifier.to_s.empty?
+
+  Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(**api_key)
+
+  app = Spaceship::ConnectAPI::App.find(app_identifier)
+  UI.user_error!("Could not find app with app identifier '#{app_identifier}'") unless app
+
+  version = app.get_edit_app_store_version(platform: Spaceship::ConnectAPI::Platform::IOS)
+  UI.user_error!("Could not find a version to edit for app '#{app.name}'") unless version
+
+  localizations = version.get_app_store_version_localizations
+  screenshots = Deliver::Loader.load_app_screenshots(screenshots_path, true)
+  screenshots_per_language = screenshots.group_by(&:language)
+  iterator = Deliver::AppScreenshotIterator.new(localizations)
+  processed_sets = {}
+
+  iterator.each_local_screenshot(screenshots_per_language) do |localization, app_screenshot_set, screenshot, index|
+    unless processed_sets[app_screenshot_set.id]
+      UI.important("Replacing screenshots for #{localization.locale} #{app_screenshot_set.screenshot_display_type}")
+      (app_screenshot_set.app_screenshots || []).each(&:delete!)
+      processed_sets[app_screenshot_set.id] = true
+    end
+
+    UI.message("Uploading #{File.basename(screenshot.path)} to #{localization.locale} #{app_screenshot_set.screenshot_display_type}")
+    app_screenshot_set.upload_screenshot(path: screenshot.path, wait_for_processing: true, position: index)
+    UI.message("Uploaded #{File.basename(screenshot.path)}")
+  end
+
+  UI.success("Successfully uploaded screenshots to App Store Connect")
+end
+
 platform :ios do
   ################################################################
   # Build API key from env vars for deliver
@@ -157,7 +191,7 @@ platform :ios do
   end
 
   ################################################################
-  # Push local metadata changes to App Store Connect
+  # Push local metadata changes to App Store Connect.
   #
   # en-GB is the default ASC locale — its content comes from en-US files
   # (no separate en-GB folder; content is identical).
@@ -177,12 +211,16 @@ platform :ios do
     push_dir = File.expand_path("metadata/ios_push", __dir__)
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
-    # en-GB is the default ASC locale — source from en-US (no separate folder)
+    # Default ASC metadata lives in the special `default` folder.
     en_gb_src = File.join(metadata_dir, "en-US")
+    en_gb_dst = File.join(push_dir, "default")
     if Dir.exist?(en_gb_src)
+      FileUtils.mkdir_p(en_gb_dst)
       Dir.glob(File.join(en_gb_src, "*")).each do |f|
-        FileUtils.cp(f, File.join(push_dir, File.basename(f)))
+        FileUtils.cp(f, File.join(en_gb_dst, File.basename(f)))
       end
+      default_name = File.join(en_gb_dst, "name.txt")
+      FileUtils.rm(default_name) if File.exist?(default_name)
     end
     # Copy non-default locale subdirectories
     ios_push_locales.each do |locale|
@@ -236,10 +274,12 @@ platform :ios do
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
 
-    # en-GB is the default ASC locale — source from en-US release notes
+    # Default ASC release notes live in the special `default` folder.
     en_us_release_notes = File.join(metadata_dir, "en-US", "release_notes.txt")
     UI.user_error!("Missing #{en_us_release_notes}") unless File.exist?(en_us_release_notes)
-    FileUtils.cp(en_us_release_notes, File.join(push_dir, "release_notes.txt"))
+    en_gb_dst = File.join(push_dir, "default")
+    FileUtils.mkdir_p(en_gb_dst)
+    FileUtils.cp(en_us_release_notes, File.join(en_gb_dst, "release_notes.txt"))
 
     ios_push_locales.each do |locale|
       src = File.join(metadata_dir, locale, "release_notes.txt")
@@ -278,22 +318,7 @@ platform :ios do
   lane :screenshot_push do
     check_ios_creds
     screenshots_path = stage_ios_screenshots_upload
-
-    deliver(
-      api_key: api_key,
-      skip_metadata: true,
-      skip_binary_upload: true,
-      skip_screenshots: false,
-      force: true,
-      submit_for_review: false,
-      automatic_release: false,
-      phased_release: false,
-      reject_if_possible: false,
-      overwrite_screenshots: true,
-      screenshots_path: screenshots_path,
-      ignore_language_directory_validation: true,
-      run_precheck_before_submit: false
-    )
+    replace_ios_screenshots(screenshots_path)
   end
 end
 
