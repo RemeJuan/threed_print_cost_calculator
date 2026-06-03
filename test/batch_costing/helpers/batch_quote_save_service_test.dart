@@ -11,6 +11,8 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import '../../helpers/helpers.dart';
@@ -100,6 +102,7 @@ void main() {
 
     testWidgets('saves history and shows success dialog', (tester) async {
       final sink = _CapturingLogSink();
+      final premiumLocalStore = InMemoryPremiumLocalStore();
       await tester.pumpApp(const BatchSummaryPage(), [
         batchCostingProvider.overrideWith(() => _SaveBatchNotifier()),
         isPremiumProvider.overrideWithValue(true),
@@ -107,7 +110,7 @@ void main() {
         appLoggerConfigProvider.overrideWithValue(
           const AppLoggerConfig(minLevel: AppLogLevel.debug),
         ),
-      ]);
+      ], premiumLocalStore);
 
       final l10n = AppLocalizations.of(
         tester.element(find.byType(BatchSummaryPage)),
@@ -139,12 +142,17 @@ void main() {
         find.text(l10n.batchCostingSummarySaveSuccessTitle),
         findsOneWidget,
       );
+      expect(
+        premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+        '1',
+      );
     });
   });
 
   group('saveBatchQuote failure path', () {
     testWidgets('shows error toast when repository save fails', (tester) async {
       final sink = _CapturingLogSink();
+      final premiumLocalStore = InMemoryPremiumLocalStore();
       await tester.pumpApp(const BatchSummaryPage(), [
         batchCostingProvider.overrideWith(() => _SaveBatchNotifier()),
         isPremiumProvider.overrideWithValue(true),
@@ -155,7 +163,7 @@ void main() {
         historyRepositoryProvider.overrideWith(
           (ref) => _ThrowingHistoryRepository(ref),
         ),
-      ]);
+      ], premiumLocalStore);
 
       final l10n = AppLocalizations.of(
         tester.element(find.byType(BatchSummaryPage)),
@@ -183,6 +191,10 @@ void main() {
         isTrue,
       );
       expect(sink.events.any((e) => e.category == AppLogCategory.db), isTrue);
+      expect(
+        premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+        isNull,
+      );
     });
   });
 

@@ -15,6 +15,7 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/services/app_usage_service.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchQuoteSaveService {
@@ -65,6 +66,7 @@ class BatchQuoteSaveService {
 
     try {
       await _ref.read(historyRepositoryProvider).saveHistory(model);
+      await _ref.read(appUsageServiceProvider).recordCompletedCosting();
     } catch (e, st) {
       _logger.warn(
         AppLogCategory.db,
