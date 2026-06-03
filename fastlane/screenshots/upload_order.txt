@@ -1,8 +1,8 @@
 calculator_free
+batch_quotes
+materials
+gcode_import
+history_export
 settings_free
 calculator_pro
-batch_quotes
-gcode_import
-materials
-history_export
 settings_pro

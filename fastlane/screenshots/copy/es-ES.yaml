@@ -1,64 +1,62 @@
 locale: es-ES
 screenshots:
-  - asset: batch_quotes
-    heading:
-      - text: "Presupuesto"
-        style: accent
-      - text: " múltiple"
-        style: primary
-
   - asset: calculator_free
     heading:
-      - text: "Conoce"
+      - text: "Calcula"
         style: accent
-      - text: " tus costes reales"
+      - text: " el coste real"
         style: primary
 
-  - asset: calculator_pro
+  - asset: batch_quotes
     heading:
-      - text: "Incluye"
+      - text: "Presupuesta"
         style: accent
-      - text: " riesgo de error"
+      - text: " lotes"
+        style: primary
+
+  - asset: materials
+    heading:
+      - text: "Controla"
+        style: accent
+      - text: " materiales"
         style: primary
 
   - asset: gcode_import
     heading:
-      - text: "Importar"
+      - text: "Importa"
         style: accent
       - text: " G-Code"
         style: primary
 
   - asset: history_export
     heading:
-      - text: "Exportar historial"
+      - text: "Guarda"
         style: accent
-      - text: " como CSV"
+      - text: " historial"
         style: primary
-
-  - asset: materials
-    heading:
-      - line:
-          - text: "Gestiona y"
-            style: accent
-      - line:
-          - text: "calcula materiales"
-            style: primary
 
   - asset: settings_free
     heading:
       - text: "Define"
         style: accent
-      - text: " tus costes"
+      - text: " valores por defecto"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Desbloquea"
+        style: accent
+      - text: " precios avanzados"
         style: primary
 
   - asset: settings_pro
     heading:
       - line:
           - text: "Sin cuentas."
-            style: primary
-      - line:
-          - text: "Sin nube."
             style: accent
       - line:
-          - text: "Simplemente funciona."
+          - text: "Sin nube."
             style: primary
+      - line:
+          - text: "Simplemente funciona."
+            style: accent

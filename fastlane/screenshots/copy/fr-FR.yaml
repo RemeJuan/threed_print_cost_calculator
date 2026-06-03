@@ -1,64 +1,62 @@
 locale: fr-FR
 screenshots:
-  - asset: batch_quotes
-    heading:
-      - text: "Devis"
-        style: accent
-      - text: " plusieurs impressions"
-        style: primary
-
   - asset: calculator_free
     heading:
-      - text: "Connaissez"
+      - text: "Calculez"
         style: accent
-      - text: " vos vrais coûts"
+      - text: " le vrai coût"
         style: primary
 
-  - asset: calculator_pro
+  - asset: batch_quotes
     heading:
-      - text: "Incluez"
+      - text: "Chiffrez"
         style: accent
-      - text: " le risque d'échec"
+      - text: " vos lots"
+        style: primary
+
+  - asset: materials
+    heading:
+      - text: "Suivez"
+        style: accent
+      - text: " vos matériaux"
         style: primary
 
   - asset: gcode_import
     heading:
-      - text: "Importer"
+      - text: "Importez"
         style: accent
       - text: " le G-Code"
         style: primary
 
   - asset: history_export
     heading:
-      - text: "Exporter l'historique"
+      - text: "Enregistrez"
         style: accent
-      - text: " en CSV"
+      - text: " l'historique"
         style: primary
-
-  - asset: materials
-    heading:
-      - line:
-          - text: "Gérez et"
-            style: accent
-      - line:
-          - text: "calculez vos matériaux"
-            style: primary
 
   - asset: settings_free
     heading:
       - text: "Définissez"
         style: accent
-      - text: " vos coûts"
+      - text: " vos valeurs par défaut"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Débloquez"
+        style: accent
+      - text: " les tarifs avancés"
         style: primary
 
   - asset: settings_pro
     heading:
       - line:
           - text: "Pas de comptes."
-            style: primary
-      - line:
-          - text: "Pas de cloud."
             style: accent
       - line:
-          - text: "Tout simplement."
+          - text: "Pas de cloud."
             style: primary
+      - line:
+          - text: "Ça fonctionne."
+            style: accent

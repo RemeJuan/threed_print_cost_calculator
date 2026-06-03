@@ -3,30 +3,23 @@ name: "3D Print Cost Calculator"
 screenshots:
   - asset: calculator_free
     heading:
-      - text: "Know"
+      - text: "Calculate"
         style: accent
-      - text: " Your True Costs"
-        style: primary
-
-  - asset: settings_free
-    heading:
-      - text: "Set"
-        style: accent
-      - text: " Your Costs"
-        style: primary
-
-  - asset: calculator_pro
-    heading:
-      - text: "Include"
-        style: accent
-      - text: " Failure Risk"
+      - text: " True Print Cost"
         style: primary
 
   - asset: batch_quotes
     heading:
-      - text: "Batch"
+      - text: "Price"
         style: accent
-      - text: " Costing"
+      - text: " Batch Jobs"
+        style: primary
+
+  - asset: materials
+    heading:
+      - text: "Track"
+        style: accent
+      - text: " Materials"
         style: primary
 
   - asset: gcode_import
@@ -36,18 +29,25 @@ screenshots:
       - text: " G-Code"
         style: primary
 
-  - asset: materials
-    heading:
-      - text: "Manage"
-        style: accent
-      - text: " Materials"
-        style: primary
-
   - asset: history_export
     heading:
-      - text: "Export History"
+      - text: "Save"
         style: accent
-      - text: " as CSV"
+      - text: " Cost History"
+        style: primary
+
+  - asset: settings_free
+    heading:
+      - text: "Set"
+        style: accent
+      - text: " Your Defaults"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Unlock"
+        style: accent
+      - text: " Advanced Pricing"
         style: primary
 
   - asset: settings_pro

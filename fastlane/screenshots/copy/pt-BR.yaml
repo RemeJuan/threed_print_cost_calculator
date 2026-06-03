@@ -1,64 +1,62 @@
 locale: pt-BR
 screenshots:
-  - asset: batch_quotes
-    heading:
-      - text: "Orçamento"
-        style: accent
-      - text: " múltiplo"
-        style: primary
-
   - asset: calculator_free
     heading:
-      - text: "Conheça"
+      - text: "Calcule"
         style: accent
-      - text: " seus custos reais"
+      - text: " o custo real"
         style: primary
 
-  - asset: calculator_pro
+  - asset: batch_quotes
     heading:
-      - text: "Inclua"
+      - text: "Calcule"
         style: accent
-      - text: " risco de falha"
+      - text: " lotes"
+        style: primary
+
+  - asset: materials
+    heading:
+      - text: "Acompanhe"
+        style: accent
+      - text: " materiais"
         style: primary
 
   - asset: gcode_import
     heading:
-      - text: "Importar"
+      - text: "Importe"
         style: accent
       - text: " G-Code"
         style: primary
 
   - asset: history_export
     heading:
-      - text: "Exportar histórico"
+      - text: "Salve"
         style: accent
-      - text: " como CSV"
+      - text: " o histórico"
         style: primary
-
-  - asset: materials
-    heading:
-      - line:
-          - text: "Gerencie e"
-            style: accent
-      - line:
-          - text: "calcule materiais"
-            style: primary
 
   - asset: settings_free
     heading:
       - text: "Defina"
         style: accent
-      - text: " seus custos"
+      - text: " padrões"
+        style: primary
+
+  - asset: calculator_pro
+    heading:
+      - text: "Desbloqueie"
+        style: accent
+      - text: " preços avançados"
         style: primary
 
   - asset: settings_pro
     heading:
       - line:
           - text: "Sem contas."
-            style: primary
-      - line:
-          - text: "Sem nuvem."
             style: accent
       - line:
-          - text: "Simples assim."
+          - text: "Sem nuvem."
             style: primary
+      - line:
+          - text: "Simples assim."
+            style: accent
