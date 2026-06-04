@@ -46,6 +46,9 @@ fastlane/metadata/
 | `marketing_url.txt` | Marketing URL | No |
 | `privacy_url.txt` | Privacy policy URL | Yes (if app uses) |
 
+Notes:
+- Every iOS `description.txt` must retain the App Store standard EULA link: `EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/`
+
 ### Android (`fastlane/metadata/android/<locale>/`)
 
 | File | Description | Required |

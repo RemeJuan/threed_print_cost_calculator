@@ -48,3 +48,5 @@ Premium では、より多い作業量、より細かな価格管理、より速
 • データは端末内に保持
 
 見た目はシンプルに、計算は正確に保てるよう設計されています。
+
+EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

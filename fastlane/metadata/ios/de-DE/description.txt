@@ -48,3 +48,5 @@ Datenschutz an erster Stelle:
 • Ihre Daten bleiben auf Ihrem Gerät
 
 Entwickelt, um an der Oberfläche einfach und im Ergebnis präzise zu bleiben.
+
+EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
