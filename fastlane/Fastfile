@@ -41,16 +41,12 @@ def stage_ios_screenshots_upload
   UI.user_error!("Missing iOS screenshots output: #{source_dir}") unless Dir.exist?(source_dir)
 
   staging_dir = Dir.mktmpdir("ios-screenshots-upload-")
-  locale_map = {
-    "en-US" => "en-GB"
-  }
 
   Dir.children(source_dir).sort.each do |locale|
     locale_src = File.join(source_dir, locale)
     next unless File.directory?(locale_src)
 
-    app_store_locale = locale_map.fetch(locale, locale)
-    locale_dst = File.join(staging_dir, app_store_locale)
+    locale_dst = File.join(staging_dir, locale)
     FileUtils.mkdir_p(locale_dst)
 
     by_asset = Dir.glob(File.join(locale_src, "*.png")).each_with_object({}) do |path, memo|
@@ -193,8 +189,9 @@ platform :ios do
   ################################################################
   # Push local metadata changes to App Store Connect.
   #
-  # en-GB is the default ASC locale — its content comes from en-US files
-  # (no separate en-GB folder; content is identical).
+  # en-GB is the default ASC locale.
+  # Repo source lives in metadata/ios/en-GB and is uploaded as the
+  # real `en-GB` locale directory.
   # All 6 non-default locales pushed as subdirectories.
   ################################################################
   desc "Push metadata to App Store Connect (no binary, no screenshots)"
@@ -203,7 +200,7 @@ platform :ios do
     ios_push_locales = %w[de-DE pt-BR es-ES fr-FR it ja]
     check_no_untranslated(
       File.expand_path("metadata/ios", __dir__),
-      %w[en-US de-DE pt-BR es-ES fr-FR it ja],
+      %w[en-GB de-DE pt-BR es-ES fr-FR it ja],
       %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt]
     )
     key = api_key
@@ -211,9 +208,9 @@ platform :ios do
     push_dir = File.expand_path("metadata/ios_push", __dir__)
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
-    # Default ASC metadata lives in the special `default` folder.
-    en_gb_src = File.join(metadata_dir, "en-US")
-    en_gb_dst = File.join(push_dir, "default")
+    # Primary ASC metadata lives in the real en-GB locale folder.
+    en_gb_src = File.join(metadata_dir, "en-GB")
+    en_gb_dst = File.join(push_dir, "en-GB")
     if Dir.exist?(en_gb_src)
       FileUtils.mkdir_p(en_gb_dst)
       Dir.glob(File.join(en_gb_src, "*")).each do |f|
@@ -274,12 +271,12 @@ platform :ios do
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
 
-    # Default ASC release notes live in the special `default` folder.
-    en_us_release_notes = File.join(metadata_dir, "en-US", "release_notes.txt")
-    UI.user_error!("Missing #{en_us_release_notes}") unless File.exist?(en_us_release_notes)
-    en_gb_dst = File.join(push_dir, "default")
+    # Primary ASC release notes live in the real en-GB locale folder.
+    en_gb_release_notes = File.join(metadata_dir, "en-GB", "release_notes.txt")
+    UI.user_error!("Missing #{en_gb_release_notes}") unless File.exist?(en_gb_release_notes)
+    en_gb_dst = File.join(push_dir, "en-GB")
     FileUtils.mkdir_p(en_gb_dst)
-    FileUtils.cp(en_us_release_notes, File.join(en_gb_dst, "release_notes.txt"))
+    FileUtils.cp(en_gb_release_notes, File.join(en_gb_dst, "release_notes.txt"))
 
     ios_push_locales.each do |locale|
       src = File.join(metadata_dir, locale, "release_notes.txt")
