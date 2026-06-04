@@ -7,7 +7,6 @@
 
 import 'dart:io';
 
-import 'package:device_check/device_check.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -75,15 +74,6 @@ Future<void> main() async {
 
   // Run any startup migrations (index rebuild etc.)
   await startupMigration(db);
-
-  if (Platform.isIOS) {
-    final deviceCheck = DeviceCheck.instance;
-    final isSupported = await deviceCheck.isSupported();
-
-    if (isSupported) {
-      await DeviceCheck.instance.generateToken();
-    }
-  }
 
   return bootstrap(
     () => ProviderScope(
