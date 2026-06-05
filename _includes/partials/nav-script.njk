@@ -30,4 +30,34 @@
       }
     });
   }
+
+  document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+    const list = carousel.querySelector(".screenshots");
+    const prevButton = carousel.querySelector("[data-carousel-prev]");
+    const nextButton = carousel.querySelector("[data-carousel-next]");
+
+    if (!list || !prevButton || !nextButton) {
+      return;
+    }
+
+    const getStep = () => list.clientWidth;
+
+    const updateButtons = () => {
+      const maxScrollLeft = list.scrollWidth - list.clientWidth;
+      prevButton.disabled = list.scrollLeft <= 8;
+      nextButton.disabled = list.scrollLeft >= maxScrollLeft - 8;
+    };
+
+    prevButton.addEventListener("click", () => {
+      list.scrollBy({ left: -getStep(), behavior: "smooth" });
+    });
+
+    nextButton.addEventListener("click", () => {
+      list.scrollBy({ left: getStep(), behavior: "smooth" });
+    });
+
+    list.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    updateButtons();
+  });
 </script>
