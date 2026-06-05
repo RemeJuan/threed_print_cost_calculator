@@ -159,31 +159,45 @@ mainId: top
 
 <section class="section" aria-labelledby="screenshots-title">
   <h2 id="screenshots-title">Screenshots</h2>
-  <div class="screenshots">
-    <figure>
-      <img src="assets/screenshots/calculator_prem.webp" alt="Calculator tab with materials, electricity, and total cost">
-      <figcaption>Core calculator</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/gcode.webp" alt="Single-print G-code import for supported files">
-      <figcaption>Single-print G-code import</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/materials.webp" alt="Saved materials and printer setup screens">
-      <figcaption>Saved materials and printer setup</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/history.webp" alt="History tab listing saved print jobs with cost totals">
-      <figcaption>History with saved cost breakdowns</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/batch_costing_summary.webp" alt="Summary view for manual batch costing">
-      <figcaption>Manual batch costing</figcaption>
-    </figure>
-    <figure>
-      <img src="assets/screenshots/settings_prem.webp" alt="Premium settings for pricing controls and stock tracking">
-      <figcaption>Premium pricing and stock controls</figcaption>
-    </figure>
+  <div class="screenshots-carousel" data-carousel>
+    <button class="carousel-button" type="button" data-carousel-prev aria-label="Show previous screenshots">
+      <span aria-hidden="true">←</span>
+    </button>
+    <div class="screenshots-viewport">
+      <div class="screenshots" tabindex="0">
+        <figure>
+          <img src="assets/screenshots/calculator_free.webp" alt="Free calculator showing filament, electricity, and total print cost">
+          <figcaption>Start with accurate everyday print costing</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/batch_costing_summary.webp" alt="Batch costing summary showing combined costs for multiple print items">
+          <figcaption>Cost multiple items in one batch</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/materials.webp" alt="Saved materials and printer profiles used for faster repeat calculations">
+          <figcaption>Reuse saved materials and printer profiles</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/history.webp" alt="History screen listing saved print estimates with their total costs">
+          <figcaption>Keep previous estimates easy to find</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/settings_free.webp" alt="Free settings showing the core options available without upgrading">
+          <figcaption>Configure the essentials in Free</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/calculator_prem.webp" alt="Premium calculator showing labour, failure risk, markup, setup fees, and final price">
+          <figcaption>Add business pricing to each calculation</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/settings_prem.webp" alt="Premium settings for labour, failure risk, markup, setup fees, rounding, exports, and stock tracking">
+          <figcaption>Unlock advanced pricing and workflow controls</figcaption>
+        </figure>
+      </div>
+    </div>
+    <button class="carousel-button" type="button" data-carousel-next aria-label="Show next screenshots">
+      <span aria-hidden="true">→</span>
+    </button>
   </div>
 </section>
 
