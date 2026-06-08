@@ -299,7 +299,6 @@
 - Tests:
   - `test/core/analytics/app_analytics_test.dart`
   - Event catalogue: `docs/analytics.md`
-  - Weekly report spec: `docs/dev/weekly-analytics-report.md`
 - Common search terms:
   - `AppAnalytics`
   - `safeLog`
