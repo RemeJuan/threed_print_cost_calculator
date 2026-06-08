@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -29,6 +31,64 @@ void main() {
       find.byKey(const ValueKey<String>('gcode_import.select_file.button')),
       findsOneWidget,
     );
+  });
+
+  testWidgets('page view logs gcode import opened', (tester) async {
+    final analytics = _RecordingAnalytics();
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = analytics;
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await tester.pumpApp(const GCodeImportPage(source: 'calculator'));
+
+    expect(analytics.eventNames, contains('gcode_import_opened'));
+  });
+
+  testWidgets('select file logs gcode import started once with source', (
+    tester,
+  ) async {
+    final analytics = _RecordingAnalytics();
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = analytics;
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await tester.pumpApp(const GCodeImportPage(source: 'calculator'), [
+      gcodeImportFilePickerProvider.overrideWithValue(_NullPicker()),
+    ]);
+
+    final pickButton = find.byKey(
+      const ValueKey<String>('gcode_import.select_file.button'),
+    );
+    await tester.tap(pickButton);
+    await tester.pumpAndSettle();
+    await tester.tap(pickButton);
+    await tester.pumpAndSettle();
+
+    expect(
+      analytics.events.where((event) => event.name == 'gcode_import_started'),
+      hasLength(1),
+    );
+    expect(
+      analytics.events
+          .singleWhere((event) => event.name == 'gcode_import_started')
+          .params!['source'],
+      'calculator',
+    );
+  });
+
+  testWidgets('page dispose logs gcode import abandoned when unfinished', (
+    tester,
+  ) async {
+    final analytics = _RecordingAnalytics();
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = analytics;
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await tester.pumpApp(const GCodeImportPage());
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpAndSettle();
+
+    expect(analytics.eventNames, contains('gcode_import_abandoned'));
   });
 
   testWidgets('premium users can access the import flow', (tester) async {
@@ -329,6 +389,24 @@ class _TestNavigatorObserver extends NavigatorObserver {
   }
 }
 
+class _RecordedAnalyticsEvent {
+  _RecordedAnalyticsEvent(this.name, this.params);
+
+  final String name;
+  final Map<String, Object>? params;
+}
+
+class _RecordingAnalytics implements AnalyticsService {
+  final List<_RecordedAnalyticsEvent> events = [];
+
+  List<String> get eventNames => events.map((event) => event.name).toList();
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(_RecordedAnalyticsEvent(name, params));
+  }
+}
+
 class _FakeController extends GCodeImportController {
   _FakeController(this._state);
 
@@ -370,6 +448,14 @@ class _TrackingPicker extends GCodeImportFilePicker {
     pickManyCalls += 1;
     return files;
   }
+}
+
+class _NullPicker extends GCodeImportFilePicker {
+  @override
+  Future<GCodePickedFile?> pick() async => null;
+
+  @override
+  Future<List<GCodePickedFile>> pickMany() async => const [];
 }
 
 class _FakeService extends GCodeImportService {
