@@ -364,13 +364,29 @@ platform :android do
   desc "Push metadata to Google Play Console (no APK)"
   lane :metadata_push do |options|
     check_android_creds
+    track = options[:track] || ENV["METADATA_TRACK"] || "open_testing"
+    track = "beta" if %w[open_testing open-testing open testing].include?(track.to_s.downcase.tr(" ", "_"))
+    version_code = options[:version_code] || ENV["VERSION_CODE"]
+
+    if version_code.to_s.strip.empty?
+      version_codes = google_play_track_version_codes(
+        package_name: "com.threed_print_calculator",
+        track: track
+      )
+      version_code = version_codes.compact.max
+    end
+
+    UI.user_error!("version_code is required") if version_code.to_s.strip.empty?
+
     check_no_untranslated(
       File.expand_path("metadata/android", __dir__),
-      %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
+      %w[en-GB de-DE pt-BR es-ES fr-FR it-IT ja-JP],
       %w[title.txt short_description.txt full_description.txt changelogs/default.txt]
     )
     supply(
       package_name: "com.threed_print_calculator",
+      track: track,
+      version_code: version_code,
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_metadata: false,
