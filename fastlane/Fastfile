@@ -406,7 +406,7 @@ platform :android do
 
     check_no_untranslated(
       File.expand_path("metadata/android", __dir__),
-      %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
+      %w[en-GB de-DE pt-BR es-ES fr-FR it-IT ja-JP],
       %w[changelogs/default.txt]
     )
 

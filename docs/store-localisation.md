@@ -19,7 +19,7 @@ fastlane/metadata/
     it/            # Italian
     ja/            # Japanese
   android/         # Google Play metadata (supply)
-    en-US/         # English (reference)
+    en-GB/         # English (reference)
     de-DE/
     pt-BR/
     es-ES/
@@ -125,9 +125,9 @@ Use the project command:
 
 What it does:
 
-- reads English source metadata from `fastlane/metadata/ios/en-GB/` and `fastlane/metadata/android/en-US/`
+- reads English source metadata from `fastlane/metadata/ios/en-GB/` and `fastlane/metadata/android/en-GB/`
 - updates non-English locale files in `fastlane/metadata/` — including `name.txt`, `subtitle.txt`, `description.txt`, `keywords.txt`, `release_notes.txt` (iOS) and `title.txt`, `short_description.txt`, `full_description.txt`, `changelogs/*.txt` (Android)
-- for Android changelogs: English source directory is the only source of truth — update `en-US/changelogs/default.txt` and sync the same `default.txt` into every Android locale
+- for Android changelogs: English source directory is the only source of truth — update `en-GB/changelogs/default.txt` and sync the same `default.txt` into every Android locale
 - runs `./scripts/validate_metadata.sh`
 - creates a git commit for translation changes only
 
@@ -244,7 +244,7 @@ make metadata_push_android
 1. Copy the English reference folder:
    ```bash
    cp -r fastlane/metadata/ios/en-GB fastlane/metadata/ios/<new-locale>
-   cp -r fastlane/metadata/android/en-US fastlane/metadata/android/<new-locale-android>
+   cp -r fastlane/metadata/android/en-GB fastlane/metadata/android/<new-locale-android>
    ```
 2. Replace content with translations (remove the placeholder prefix)
 3. Update the validation script's locale arrays

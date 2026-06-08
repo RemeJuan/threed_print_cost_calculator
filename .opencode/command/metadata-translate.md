@@ -17,9 +17,9 @@ Use the English metadata files as the source of truth, update the non-English lo
 
 Use these English trees as source:
 
-- iOS reference copy: `fastlane/metadata/ios/en-US/`
-- iOS push-compatible English locale: en-GB (default ASC locale; content sourced from `fastlane/metadata/ios/en-US/`)
-- Android reference copy: `fastlane/metadata/android/en-US/`
+- iOS reference copy: `fastlane/metadata/ios/en-GB/`
+- iOS push-compatible English locale: en-GB (default ASC locale; content sourced from `fastlane/metadata/ios/en-GB/`)
+- Android reference copy: `fastlane/metadata/android/en-GB/`
 
 ## Target locales
 
@@ -50,7 +50,7 @@ Do **not** generate or touch these non-localizable files:
 - `apple_tv_privacy_policy.txt`
 - `promotional_text.txt`
 
-These files exist only in the default locale dir (`en-US`) as single-copy shared values.
+These files exist only in the default locale dir (`en-GB`) as single-copy shared values.
 They are removed from non-English locale directories — do not recreate them there.
 
 ### Android
@@ -71,7 +71,7 @@ For each locale, update:
 - `full_description.txt`
 - `changelogs/default.txt`
 
-For Android release notes, treat `fastlane/metadata/android/en-US/changelogs/default.txt` as the source of truth.
+For Android release notes, treat `fastlane/metadata/android/en-GB/changelogs/default.txt` as the source of truth.
 
 - Update every Android locale's `changelogs/default.txt` from the latest English source.
 - Create missing locale changelog files unconditionally.
