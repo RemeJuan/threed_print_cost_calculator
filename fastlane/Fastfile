@@ -74,11 +74,24 @@ def stage_android_screenshots_upload
   UI.user_error!("Missing Android screenshots output: #{source_dir}") unless Dir.exist?(source_dir)
 
   staging_dir = Dir.mktmpdir("android-screenshots-upload-")
-  locales = Dir.children(source_dir).sort.select { |entry| File.directory?(File.join(source_dir, entry)) }
+  copy_dir = File.expand_path("screenshots/copy", __dir__)
+  configured_locales = Dir.glob(File.join(copy_dir, "*.yaml")).map do |path|
+    File.basename(path, ".yaml")
+  end
+  locales = Dir.children(source_dir).sort.select do |entry|
+    File.directory?(File.join(source_dir, entry)) && configured_locales.include?(entry)
+  end
+  skipped_locales = Dir.children(source_dir).sort.select do |entry|
+    File.directory?(File.join(source_dir, entry)) && !configured_locales.include?(entry)
+  end
   screenshot_types = %w[phoneScreenshots sevenInchScreenshots tenInchScreenshots]
   locale_map = {
     "it" => "it-IT"
   }
+
+  skipped_locales.each do |locale|
+    UI.important("Skipping stale Android screenshot locale '#{locale}' (no matching copy YAML)")
+  end
 
   locales.each do |locale|
     play_locale = locale_map.fetch(locale, locale)
@@ -457,7 +470,8 @@ platform :android do
         skip_upload_images: true,
         skip_upload_screenshots: false,
         skip_upload_changelogs: true,
-        metadata_path: staging_dir
+        metadata_path: staging_dir,
+        sync_image_upload: true
       )
     ensure
       FileUtils.rm_rf(staging_dir) if Dir.exist?(staging_dir)
