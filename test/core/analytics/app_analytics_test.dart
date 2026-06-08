@@ -363,6 +363,41 @@ void main() {
     ).called(1);
   });
 
+  test('gcode flow completed clears abandon tracking', () async {
+    when(
+      () => mock.logEvent(any(), params: any(named: 'params')),
+    ).thenAnswer((_) async {});
+
+    await AppAnalytics.gcodeImportOpened();
+    await AppAnalytics.gcodeFlowCompleted(
+      slicer: 'prusaSlicer',
+      hasPreview: true,
+      fileSizeBytes: 2 * 1024 * 1024,
+      parseStatus: 'success',
+    );
+    await AppAnalytics.gcodeImportAbandoned(
+      failureReason: GCodeFailureReason.cancelled,
+    );
+
+    final flowCompletedParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_flow_completed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
+    expect(flowCompletedParams['slicer'], 'prusaSlicer');
+    expect(flowCompletedParams['has_preview'], 1);
+    expect(flowCompletedParams['parse_status'], 'success');
+    expect(flowCompletedParams['file_size_bucket'], '1-5MB');
+    expect(flowCompletedParams['gcode_time_to_value_ms'], isA<num>());
+    verifyNever(
+      () =>
+          mock.logEvent('gcode_import_abandoned', params: any(named: 'params')),
+    );
+  });
+
   group('batch costing analytics', () {
     late _FakeAnalytics fake;
 
