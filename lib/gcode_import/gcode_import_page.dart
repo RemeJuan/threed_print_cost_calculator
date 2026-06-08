@@ -28,7 +28,22 @@ class GCodeImportPage extends ConsumerStatefulWidget {
 
 class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
   bool _multiMode = false;
+  bool _hasLoggedImportStarted = false;
   List<GCodePickedFile> _multiFiles = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    AppAnalytics.safeLog(() => AppAnalytics.gcodeImportOpened());
+  }
+
+  @override
+  void dispose() {
+    if (!_multiMode) {
+      AppAnalytics.safeLog(() => AppAnalytics.gcodeImportAbandoned());
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +150,7 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
   }
 
   Future<void> _pickFiles(GCodeImportController controller) async {
+    _logImportStartedIfNeeded();
     final policy = ref.read(premiumAccessPolicyProvider);
     if (policy.batchGcodeImport().allowed) {
       final files = await ref.read(gcodeImportFilePickerProvider).pickMany();
@@ -153,6 +169,14 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     final file = await ref.read(gcodeImportFilePickerProvider).pick();
     if (!mounted || file == null) return;
     await controller.parsePickedFile(file);
+  }
+
+  void _logImportStartedIfNeeded() {
+    if (_hasLoggedImportStarted) return;
+    _hasLoggedImportStarted = true;
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeImportStarted(source: widget.source),
+    );
   }
 
   String _errorMessage(AppLocalizations l10n, GCodeImportError error) {
