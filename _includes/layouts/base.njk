@@ -4,12 +4,39 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% set canonicalUrl = site.url ~ canonicalPath %}
   <title>{{ title }}</title>
   <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="{{ canonicalUrl }}">
   <link rel="icon" href="{{ relativePrefix }}{{ site.logoWebp }}" type="image/webp">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="{{ relativePrefix }}assets/styles/site.css">
+  <script>
+    (() => {
+      const canonicalOrigin = "{{ site.url }}";
+      const canonicalHost = "{{ site.canonicalHost }}";
+
+      if (window.location.hostname !== canonicalHost) {
+        return;
+      }
+
+      const { protocol, pathname, search, hash } = window.location;
+      let normalizedPath = pathname;
+
+      if (normalizedPath === "/index.html") {
+        normalizedPath = "/";
+      } else if (normalizedPath.endsWith("/index.html")) {
+        normalizedPath = normalizedPath.slice(0, -10);
+      }
+
+      if (protocol === "https:" && normalizedPath === pathname) {
+        return;
+      }
+
+      window.location.replace(`${canonicalOrigin}${normalizedPath}${search}${hash}`);
+    })();
+  </script>
 </head>
 
 <body>
