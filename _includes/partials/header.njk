@@ -1,11 +1,11 @@
-{% set homeHref = relativePrefix ~ "index.html" %}
-{% set brandHref = "#top" if pageId == "home" else homeHref %}
+{% set homeHref = "/" %}
+{% set brandHref = homeHref %}
 {% set featuresHref = "#features" if pageId == "home" else homeHref ~ "#features" %}
 {% set downloadHref = "#download" if pageId == "home" else homeHref ~ "#download" %}
-{% set roadmapHref = relativePrefix ~ "roadmap/" %}
-{% set changelogHref = relativePrefix ~ "changelog.html" %}
-{% set privacyHref = relativePrefix ~ "privacy.html" %}
-{% set termsHref = relativePrefix ~ "terms.html" %}
+{% set roadmapHref = "/roadmap/" %}
+{% set changelogHref = "/changelog.html" %}
+{% set privacyHref = "/privacy.html" %}
+{% set termsHref = "/terms.html" %}
 <header class="site-header">
   <nav class="nav" aria-label="Primary">
     <a class="brand" href="{{ brandHref }}">
