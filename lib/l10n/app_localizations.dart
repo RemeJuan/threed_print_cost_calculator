@@ -3407,6 +3407,66 @@ abstract class AppLocalizations {
   /// **'View full comparison →'**
   String get helpSupportFaqPremiumComparisonCta;
 
+  /// No description provided for @dataBackupRestoreHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Data / Backup & Restore'**
+  String get dataBackupRestoreHeader;
+
+  /// No description provided for @dataBackupRestoreBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups include your local app settings, printers, materials, and saved data. Purchases are not included.'**
+  String get dataBackupRestoreBody;
+
+  /// No description provided for @dataBackupExportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export backup'**
+  String get dataBackupExportButton;
+
+  /// No description provided for @dataBackupRestoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup'**
+  String get dataBackupRestoreButton;
+
+  /// No description provided for @dataBackupRestoreConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup?'**
+  String get dataBackupRestoreConfirmTitle;
+
+  /// No description provided for @dataBackupRestoreConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring a backup may replace your current local data. Continue?'**
+  String get dataBackupRestoreConfirmBody;
+
+  /// No description provided for @dataBackupExportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup exported'**
+  String get dataBackupExportSuccess;
+
+  /// No description provided for @dataBackupExportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup export failed'**
+  String get dataBackupExportError;
+
+  /// No description provided for @dataBackupRestoreSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored'**
+  String get dataBackupRestoreSuccess;
+
+  /// No description provided for @dataBackupRestoreError.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restore failed'**
+  String get dataBackupRestoreError;
+
   /// No description provided for @settingsPremiumCardTitle.
   ///
   /// In en, this message translates to:

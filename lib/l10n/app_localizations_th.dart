@@ -1834,6 +1834,38 @@ class AppLocalizationsTh extends AppLocalizations {
   String get helpSupportFaqPremiumComparisonCta => 'ดูการเปรียบเทียบแบบเต็ม →';
 
   @override
+  String get dataBackupRestoreHeader => 'ข้อมูล / สำรองและกู้คืน';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'ข้อมูลสำรองจะรวมการตั้งค่าแอปในเครื่อง เครื่องพิมพ์ วัสดุ และข้อมูลที่บันทึกไว้ การซื้อจะไม่ถูกรวมไว้';
+
+  @override
+  String get dataBackupExportButton => 'ส่งออกข้อมูลสำรอง';
+
+  @override
+  String get dataBackupRestoreButton => 'กู้คืนข้อมูลสำรอง';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'กู้คืนข้อมูลสำรอง?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'การกู้คืนข้อมูลสำรองอาจแทนที่ข้อมูลในเครื่องปัจจุบันของคุณ ดำเนินการต่อหรือไม่?';
+
+  @override
+  String get dataBackupExportSuccess => 'ส่งออกข้อมูลสำรองแล้ว';
+
+  @override
+  String get dataBackupExportError => 'ส่งออกข้อมูลสำรองไม่สำเร็จ';
+
+  @override
+  String get dataBackupRestoreSuccess => 'กู้คืนข้อมูลสำรองแล้ว';
+
+  @override
+  String get dataBackupRestoreError => 'กู้คืนข้อมูลสำรองไม่สำเร็จ';
+
+  @override
   String get settingsPremiumCardTitle => 'อัปเกรดเป็นพรีเมียม';
 
   @override

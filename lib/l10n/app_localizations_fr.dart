@@ -1890,6 +1890,39 @@ class AppLocalizationsFr extends AppLocalizations {
       'Voir la comparaison complète →';
 
   @override
+  String get dataBackupRestoreHeader => 'Données / Sauvegarde et restauration';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Les sauvegardes incluent les paramètres locaux de l’application, les imprimantes, les matériaux et les données enregistrées. Les achats ne sont pas inclus.';
+
+  @override
+  String get dataBackupExportButton => 'Exporter la sauvegarde';
+
+  @override
+  String get dataBackupRestoreButton => 'Restaurer la sauvegarde';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Restaurer la sauvegarde ?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'La restauration d’une sauvegarde peut remplacer vos données locales actuelles. Continuer ?';
+
+  @override
+  String get dataBackupExportSuccess => 'Sauvegarde exportée';
+
+  @override
+  String get dataBackupExportError => 'Échec de l’exportation de la sauvegarde';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Sauvegarde restaurée';
+
+  @override
+  String get dataBackupRestoreError =>
+      'Échec de la restauration de la sauvegarde';
+
+  @override
   String get settingsPremiumCardTitle => 'Passer à Premium';
 
   @override

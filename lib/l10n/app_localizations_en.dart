@@ -1851,6 +1851,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get helpSupportFaqPremiumComparisonCta => 'View full comparison →';
 
   @override
+  String get dataBackupRestoreHeader => 'Data / Backup & Restore';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Backups include your local app settings, printers, materials, and saved data. Purchases are not included.';
+
+  @override
+  String get dataBackupExportButton => 'Export backup';
+
+  @override
+  String get dataBackupRestoreButton => 'Restore backup';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Restore backup?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Restoring a backup may replace your current local data. Continue?';
+
+  @override
+  String get dataBackupExportSuccess => 'Backup exported';
+
+  @override
+  String get dataBackupExportError => 'Backup export failed';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Backup restored';
+
+  @override
+  String get dataBackupRestoreError => 'Backup restore failed';
+
+  @override
   String get settingsPremiumCardTitle => 'Upgrade to Premium';
 
   @override

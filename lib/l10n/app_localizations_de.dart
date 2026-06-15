@@ -1873,6 +1873,39 @@ class AppLocalizationsDe extends AppLocalizations {
       'Vollständigen Vergleich anzeigen →';
 
   @override
+  String get dataBackupRestoreHeader => 'Daten / Sicherung & Wiederherstellung';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Backups enthalten Ihre lokalen App-Einstellungen, Drucker, Materialien und gespeicherten Daten. Käufe sind nicht enthalten.';
+
+  @override
+  String get dataBackupExportButton => 'Backup exportieren';
+
+  @override
+  String get dataBackupRestoreButton => 'Backup wiederherstellen';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Backup wiederherstellen?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Das Wiederherstellen eines Backups kann Ihre aktuellen lokalen Daten ersetzen. Fortfahren?';
+
+  @override
+  String get dataBackupExportSuccess => 'Backup exportiert';
+
+  @override
+  String get dataBackupExportError => 'Backup-Export fehlgeschlagen';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Backup wiederhergestellt';
+
+  @override
+  String get dataBackupRestoreError =>
+      'Wiederherstellung des Backups fehlgeschlagen';
+
+  @override
   String get settingsPremiumCardTitle => 'Auf Premium upgraden';
 
   @override

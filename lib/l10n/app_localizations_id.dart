@@ -1841,6 +1841,38 @@ class AppLocalizationsId extends AppLocalizations {
       'Lihat perbandingan lengkap →';
 
   @override
+  String get dataBackupRestoreHeader => 'Data / Cadangkan & Pulihkan';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Cadangan mencakup pengaturan aplikasi lokal, printer, material, dan data tersimpan Anda. Pembelian tidak termasuk.';
+
+  @override
+  String get dataBackupExportButton => 'Ekspor cadangan';
+
+  @override
+  String get dataBackupRestoreButton => 'Pulihkan cadangan';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Pulihkan cadangan?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Memulihkan cadangan dapat menggantikan data lokal Anda saat ini. Lanjutkan?';
+
+  @override
+  String get dataBackupExportSuccess => 'Cadangan diekspor';
+
+  @override
+  String get dataBackupExportError => 'Ekspor cadangan gagal';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Cadangan dipulihkan';
+
+  @override
+  String get dataBackupRestoreError => 'Pemulihan cadangan gagal';
+
+  @override
   String get settingsPremiumCardTitle => 'Tingkatkan ke Premium';
 
   @override

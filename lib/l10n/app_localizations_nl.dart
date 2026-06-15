@@ -1868,6 +1868,38 @@ class AppLocalizationsNl extends AppLocalizations {
       'Volledige vergelijking bekijken →';
 
   @override
+  String get dataBackupRestoreHeader => 'Gegevens / Back-up en herstel';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Back-ups bevatten je lokale app-instellingen, printers, materialen en opgeslagen gegevens. Aankopen zijn niet inbegrepen.';
+
+  @override
+  String get dataBackupExportButton => 'Back-up exporteren';
+
+  @override
+  String get dataBackupRestoreButton => 'Back-up herstellen';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Back-up herstellen?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Het herstellen van een back-up kan je huidige lokale gegevens vervangen. Doorgaan?';
+
+  @override
+  String get dataBackupExportSuccess => 'Back-up geëxporteerd';
+
+  @override
+  String get dataBackupExportError => 'Exporteren van back-up mislukt';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Back-up hersteld';
+
+  @override
+  String get dataBackupRestoreError => 'Herstellen van back-up mislukt';
+
+  @override
   String get settingsPremiumCardTitle => 'Upgrade naar Premium';
 
   @override

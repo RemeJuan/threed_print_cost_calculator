@@ -1877,6 +1877,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String get helpSupportFaqPremiumComparisonCta => 'Ver comparativa completa →';
 
   @override
+  String get dataBackupRestoreHeader =>
+      'Datos / Copia de seguridad y restauración';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Las copias de seguridad incluyen la configuración local de la aplicación, impresoras, materiales y datos guardados. Las compras no están incluidas.';
+
+  @override
+  String get dataBackupExportButton => 'Exportar copia de seguridad';
+
+  @override
+  String get dataBackupRestoreButton => 'Restaurar copia de seguridad';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => '¿Restaurar copia de seguridad?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Restaurar una copia de seguridad puede reemplazar tus datos locales actuales. ¿Continuar?';
+
+  @override
+  String get dataBackupExportSuccess => 'Copia de seguridad exportada';
+
+  @override
+  String get dataBackupExportError => 'Error al exportar la copia de seguridad';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Copia de seguridad restaurada';
+
+  @override
+  String get dataBackupRestoreError =>
+      'Error al restaurar la copia de seguridad';
+
+  @override
   String get settingsPremiumCardTitle => 'Mejorar a Premium';
 
   @override

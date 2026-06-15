@@ -1792,6 +1792,38 @@ class AppLocalizationsJa extends AppLocalizations {
   String get helpSupportFaqPremiumComparisonCta => '完全な比較を見る →';
 
   @override
+  String get dataBackupRestoreHeader => 'データ / バックアップと復元';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'バックアップには、ローカルのアプリ設定、プリンター、材料、保存データが含まれます。購入情報は含まれません。';
+
+  @override
+  String get dataBackupExportButton => 'バックアップを書き出す';
+
+  @override
+  String get dataBackupRestoreButton => 'バックアップを復元';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'バックアップを復元しますか？';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'バックアップを復元すると、現在のローカルデータが置き換えられる場合があります。続行しますか？';
+
+  @override
+  String get dataBackupExportSuccess => 'バックアップを書き出しました';
+
+  @override
+  String get dataBackupExportError => 'バックアップの書き出しに失敗しました';
+
+  @override
+  String get dataBackupRestoreSuccess => 'バックアップを復元しました';
+
+  @override
+  String get dataBackupRestoreError => 'バックアップの復元に失敗しました';
+
+  @override
   String get settingsPremiumCardTitle => 'Premiumにアップグレード';
 
   @override
