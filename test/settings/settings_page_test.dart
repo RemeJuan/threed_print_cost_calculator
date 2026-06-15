@@ -262,8 +262,12 @@ void main() {
     await tester.dragUntilVisible(
       find.byKey(const ValueKey<String>('settings.premium.button')),
       find.byType(ListView),
-      const Offset(0, -200),
+      const Offset(0, -500),
     );
+    await tester.ensureVisible(
+      find.byKey(const ValueKey<String>('settings.premium.button')),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.premium.button')),

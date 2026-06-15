@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/database/repositories/printers_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/settings/backup_restore/backup_restore_section.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
@@ -86,6 +87,8 @@ class SettingsPage extends ConsumerWidget {
             ),
           ),
         ],
+        const SizedBox(height: kAppSpace16),
+        const BackupRestoreSection(),
         if (!policy.isPremium) ...[
           const SizedBox(height: kAppSpace16),
           AppSurfaceCard(
