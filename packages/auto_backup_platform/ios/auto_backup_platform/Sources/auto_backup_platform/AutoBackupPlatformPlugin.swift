@@ -2,6 +2,15 @@ import Flutter
 import UIKit
 import UniformTypeIdentifiers
 
+private struct PluginError: Error {
+  let code: String
+  let message: String
+
+  func asFlutterError() -> FlutterError {
+    FlutterError(code: code, message: message, details: nil)
+  }
+}
+
 public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPickerDelegate {
   private var channel: FlutterMethodChannel!
   private var pickerResult: FlutterResult?
@@ -39,7 +48,8 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
   }
 
   public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    guard let url = urls.first, let data = try? url.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil) else {
+    guard let url = urls.first,
+          let data = try? url.bookmarkData(options: [], includingResourceValuesForKeys: nil, relativeTo: nil) else {
       pickerResult?(FlutterError(code: "pick_failed", message: "bookmark", details: nil)); pickerResult = nil; return
     }
     pickerResult?(["accessToken": data.base64EncodedString(), "displayLabel": url.lastPathComponent, "platform": "ios"])
@@ -47,14 +57,18 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
   }
 
   private func resolveFolder(_ accessToken: String) throws -> URL {
-    guard let data = Data(base64Encoded: accessToken) else { throw FlutterError(code: "invalid_token", message: "base64", details: nil) }
+    guard let data = Data(base64Encoded: accessToken) else {
+      throw PluginError(code: "invalid_token", message: "base64")
+    }
     var stale = false
-    return try URL(resolvingBookmarkData: data, options: [.withSecurityScope], relativeTo: nil, bookmarkDataIsStale: &stale)
+    return try URL(resolvingBookmarkData: data, options: [], relativeTo: nil, bookmarkDataIsStale: &stale)
   }
 
   private func withScopedFolder(_ accessToken: String, _ block: (URL) throws -> Void) throws {
     let url = try resolveFolder(accessToken)
-    guard url.startAccessingSecurityScopedResource() else { throw FlutterError(code: "scope_failed", message: "scope", details: nil) }
+    guard url.startAccessingSecurityScopedResource() else {
+      throw PluginError(code: "scope_failed", message: "scope")
+    }
     defer { url.stopAccessingSecurityScopedResource() }
     try block(url)
   }
@@ -70,38 +84,50 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
           contents: Data([1]),
           attributes: nil,
         ) else {
-          throw FlutterError(
-            code: "verify_failed",
-            message: "Failed to create temp file",
-            details: nil,
-          )
+          throw PluginError(code: "verify_failed", message: "Failed to create temp file")
         }
         defer { try? FileManager.default.removeItem(at: temp) }
       }
       result(["ok": true, "displayLabel": (call.arguments as? [String: Any])?["displayLabel"] ?? ""])
-    } catch let error as FlutterError { result(error) } catch { result(FlutterError(code: "verify_failed", message: error.localizedDescription, details: nil)) }
+    } catch let error as PluginError {
+      result(error.asFlutterError())
+    } catch {
+      result(FlutterError(code: "verify_failed", message: error.localizedDescription, details: nil))
+    }
   }
 
   private func handleWrite(call: FlutterMethodCall, result: @escaping FlutterResult) {
     do {
       let args = call.arguments as? [String: Any] ?? [:]
       let fileName = try validatedFileName(args["fileName"] as? String ?? "backup")
-      let contents = (args["contents"] as? String ?? "").data(using: .utf8) ?? Data()
+      let rawContents = args["contents"] as? String ?? ""
+      guard let contents = rawContents.data(using: .utf8) else {
+        throw PluginError(code: "invalid_contents", message: "contents must be valid UTF-8")
+      }
       try withScopedFolder(args["accessToken"] as? String ?? "") { folder in
         let fileURL = folder.appendingPathComponent(fileName)
         try contents.write(to: fileURL, options: .atomic)
       }
       result(["ok": true, "displayLabel": args["displayLabel"] ?? "", "fileName": fileName])
-    } catch let error as FlutterError { result(error) } catch { result(FlutterError(code: "write_failed", message: error.localizedDescription, details: nil)) }
+    } catch let error as PluginError {
+      result(error.asFlutterError())
+    } catch {
+      result(FlutterError(code: "write_failed", message: error.localizedDescription, details: nil))
+    }
   }
 
   private func validatedFileName(_ fileName: String) throws -> String {
+    guard fileName != ".", fileName != ".." else {
+      throw PluginError(
+        code: "invalid_filename",
+        message: "fileName cannot be '.' or '..'",
+      )
+    }
     let pattern = #"^[A-Za-z0-9._-]+$"#
     guard fileName.range(of: pattern, options: .regularExpression) != nil else {
-      throw FlutterError(
+      throw PluginError(
         code: "invalid_filename",
         message: "fileName must use only letters, numbers, dots, hyphens, and underscores",
-        details: nil,
       )
     }
     return fileName

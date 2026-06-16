@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import workmanager_apple
+import workmanager
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
