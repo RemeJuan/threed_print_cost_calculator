@@ -13,7 +13,9 @@ import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 Future<ProviderContainer> _container() async {
-  final db = await databaseFactoryMemory.openDatabase('backup_restore_test');
+  final db = await databaseFactoryMemory.openDatabase(
+    'backup_restore_test_${_databaseCounter++}',
+  );
   addTearDown(db.close);
   return ProviderContainer(
     overrides: [
@@ -27,6 +29,8 @@ Future<ProviderContainer> _container() async {
     ],
   );
 }
+
+int _databaseCounter = 0;
 
 class _NoopLogSink extends AppLogSink {
   const _NoopLogSink();
@@ -111,6 +115,20 @@ void main() {
     expect((payload['data']['history'] as List).length, 1);
   });
 
+  test('builds shared backup payload shape', () {
+    final payload = buildBackupPayload(
+      settings: const {'a': 1},
+      printers: const [
+        {'id': 'p1'},
+      ],
+      materials: const [],
+      history: const [],
+    );
+
+    expect(payload['version'], 1);
+    expect((payload['data'] as Map)['settings'], {'a': 1});
+  });
+
   test('rejects invalid backup before restore', () async {
     final container = await _container();
     addTearDown(container.dispose);
@@ -141,6 +159,208 @@ void main() {
     );
     expect(
       await stringMapStoreFactory.store(DBName.printers.name).count(db),
+      beforeCount,
+    );
+  });
+
+  test('rejects restore when printer list contains non-map item', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .record('keep')
+        .put(
+          db,
+          const PrinterModel(
+            id: 'keep',
+            name: 'Keep',
+            bedSize: '220 x 220',
+            wattage: '200',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': ['not_a_map'],
+        'materials': [],
+        'history': [],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(isA<FormatException>()),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.printers.name).count(db),
+      beforeCount,
+    );
+  });
+
+  test('rejects restore when material list contains non-map item', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.materials.name)
+        .record('keep')
+        .put(
+          db,
+          const MaterialModel(
+            id: 'keep',
+            name: 'Keep',
+            cost: '20',
+            color: 'Red',
+            weight: '1000',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.materials.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [],
+        'materials': ['not_a_map'],
+        'history': [],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(isA<FormatException>()),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.materials.name).count(db),
+      beforeCount,
+    );
+  });
+
+  test('rejects restore when printer is missing required id', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .record('keep')
+        .put(
+          db,
+          const PrinterModel(
+            id: 'keep',
+            name: 'Keep',
+            bedSize: '220 x 220',
+            wattage: '200',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [
+          {
+            'name': 'No ID Printer',
+            'bedSize': '220 x 220',
+            'wattage': '200',
+            'archived': false,
+          },
+        ],
+        'materials': [],
+        'history': [],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(isA<FormatException>()),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.printers.name).count(db),
+      beforeCount,
+    );
+  });
+
+  test('rejects restore when material has empty id', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.materials.name)
+        .record('keep')
+        .put(
+          db,
+          const MaterialModel(
+            id: 'keep',
+            name: 'Keep',
+            cost: '20',
+            color: 'Red',
+            weight: '1000',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.materials.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [],
+        'materials': [
+          {
+            'id': '',
+            'name': 'Empty ID Material',
+            'cost': '20',
+            'color': 'Red',
+            'weight': '1000',
+            'archived': false,
+          },
+        ],
+        'history': [],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(isA<FormatException>()),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.materials.name).count(db),
       beforeCount,
     );
   });

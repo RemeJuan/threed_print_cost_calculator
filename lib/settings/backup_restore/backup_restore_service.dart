@@ -123,16 +123,10 @@ class BackupRestoreService {
 
   Future<void> _restorePayload(Map<String, Object?> payload) async {
     final data = payload['data'] as Map;
-    final historyRaw = _listOfMaps(data['history']);
     final settings = GeneralSettingsModel.fromMap(_mapOf(data['settings']));
-    final printers = _listOfMaps(data['printers'])
-        .map((e) => PrinterModel.fromMap(e, e['id'].toString()))
-        .where((e) => e.id.isNotEmpty)
-        .toList();
-    final materials = _listOfMaps(data['materials'])
-        .map((e) => MaterialModel.fromMap(e, e['id'].toString()))
-        .where((e) => e.id.isNotEmpty)
-        .toList();
+    final printers = _parsePrinters(data['printers']);
+    final materials = _parseMaterials(data['materials']);
+    final historyRaw = _listOfMaps(data['history']);
     final history = historyRaw.map((e) => HistoryModel.fromMap(e)).toList();
 
     await _db.transaction((txn) async {
@@ -212,4 +206,36 @@ class BackupRestoreService {
       (raw as Map).map((k, v) => MapEntry(k.toString(), v));
   List<Map<String, dynamic>> _listOfMaps(Object? raw) =>
       (raw as List).whereType<Map>().map(_mapOf).toList();
+
+  List<PrinterModel> _parsePrinters(Object? raw) {
+    final items = _strictListOfMaps(raw);
+    return items.map((e) {
+      final id = e['id']?.toString() ?? '';
+      if (id.trim().isEmpty) {
+        throw FormatException('Printer entry missing required id');
+      }
+      return PrinterModel.fromMap(e, id);
+    }).toList();
+  }
+
+  List<MaterialModel> _parseMaterials(Object? raw) {
+    final items = _strictListOfMaps(raw);
+    return items.map((e) {
+      final id = e['id']?.toString() ?? '';
+      if (id.trim().isEmpty) {
+        throw FormatException('Material entry missing required id');
+      }
+      return MaterialModel.fromMap(e, id);
+    }).toList();
+  }
+
+  List<Map<String, dynamic>> _strictListOfMaps(Object? raw) {
+    final list = raw as List;
+    return list.map((e) {
+      if (e is! Map) {
+        throw FormatException('Expected a Map, got ${e.runtimeType}');
+      }
+      return _mapOf(e);
+    }).toList();
+  }
 }
