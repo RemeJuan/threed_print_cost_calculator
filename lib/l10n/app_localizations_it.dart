@@ -430,23 +430,23 @@ class AppLocalizationsIt extends AppLocalizations {
   String get exportButton => 'Esporta';
 
   @override
-  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+  String get scheduleAutomaticBackupButton => 'Pianifica backup automatico';
 
   @override
-  String get automaticBackupDailyLabel => 'Daily';
+  String get automaticBackupDailyLabel => 'Giornaliero';
 
   @override
-  String get automaticBackupWeeklyLabel => 'Weekly';
+  String get automaticBackupWeeklyLabel => 'Settimanale';
 
   @override
-  String get automaticBackupMonthlyLabel => 'Monthly';
+  String get automaticBackupMonthlyLabel => 'Mensile';
 
   @override
   String get automaticBackupNote =>
-      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+      'I backup automatici vengono eseguiti in background quando il dispositivo lo consente. Il sistema operativo può ritardare o impedire i backup pianificati.';
 
   @override
-  String get automaticBackupStatusPending => 'Pending';
+  String get automaticBackupStatusPending => 'In attesa';
 
   @override
   String get automaticBackupStatusSuccess => 'Riuscito';
@@ -455,11 +455,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get automaticBackupStatusFailure => 'Non riuscito';
 
   @override
-  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+  String get automaticBackupScheduleSuccess => 'Backup automatico pianificato';
 
   @override
   String get automaticBackupScheduleError =>
-      'Could not schedule automatic backup';
+      'Impossibile pianificare il backup automatico';
 
   @override
   String automaticBackupStatusLabel(
@@ -467,7 +467,7 @@ class AppLocalizationsIt extends AppLocalizations {
     Object destination,
     Object result,
   ) {
-    return 'Automatic backup: $cadence • $destination • $result';
+    return 'Backup automatico: $cadence • $destination • $result';
   }
 
   @override

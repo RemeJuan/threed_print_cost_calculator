@@ -426,23 +426,23 @@ class AppLocalizationsNl extends AppLocalizations {
   String get exportButton => 'Exporteren';
 
   @override
-  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+  String get scheduleAutomaticBackupButton => 'Automatische back-up plannen';
 
   @override
-  String get automaticBackupDailyLabel => 'Daily';
+  String get automaticBackupDailyLabel => 'Dagelijks';
 
   @override
-  String get automaticBackupWeeklyLabel => 'Weekly';
+  String get automaticBackupWeeklyLabel => 'Wekelijks';
 
   @override
-  String get automaticBackupMonthlyLabel => 'Monthly';
+  String get automaticBackupMonthlyLabel => 'Maandelijks';
 
   @override
   String get automaticBackupNote =>
-      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+      'Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het besturingssysteem kan geplande back-ups vertragen of voorkomen.';
 
   @override
-  String get automaticBackupStatusPending => 'Pending';
+  String get automaticBackupStatusPending => 'In afwachting';
 
   @override
   String get automaticBackupStatusSuccess => 'Gelukt';
@@ -451,11 +451,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get automaticBackupStatusFailure => 'Mislukt';
 
   @override
-  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+  String get automaticBackupScheduleSuccess => 'Automatische back-up gepland';
 
   @override
   String get automaticBackupScheduleError =>
-      'Could not schedule automatic backup';
+      'Automatische back-up kon niet worden gepland';
 
   @override
   String automaticBackupStatusLabel(
@@ -463,7 +463,7 @@ class AppLocalizationsNl extends AppLocalizations {
     Object destination,
     Object result,
   ) {
-    return 'Automatic backup: $cadence • $destination • $result';
+    return 'Automatische back-up: $cadence • $destination • $result';
   }
 
   @override

@@ -423,23 +423,23 @@ class AppLocalizationsTh extends AppLocalizations {
   String get exportButton => 'ส่งออก';
 
   @override
-  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+  String get scheduleAutomaticBackupButton => 'ตั้งเวลาสำรองข้อมูลอัตโนมัติ';
 
   @override
-  String get automaticBackupDailyLabel => 'Daily';
+  String get automaticBackupDailyLabel => 'ทุกวัน';
 
   @override
-  String get automaticBackupWeeklyLabel => 'Weekly';
+  String get automaticBackupWeeklyLabel => 'ทุกสัปดาห์';
 
   @override
-  String get automaticBackupMonthlyLabel => 'Monthly';
+  String get automaticBackupMonthlyLabel => 'ทุกเดือน';
 
   @override
   String get automaticBackupNote =>
-      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+      'การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต ระบบปฏิบัติการอาจเลื่อนเวลาหรือป้องกันการสำรองข้อมูลตามกำหนดได้';
 
   @override
-  String get automaticBackupStatusPending => 'Pending';
+  String get automaticBackupStatusPending => 'รอดำเนินการ';
 
   @override
   String get automaticBackupStatusSuccess => 'สำเร็จ';
@@ -448,11 +448,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get automaticBackupStatusFailure => 'ล้มเหลว';
 
   @override
-  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+  String get automaticBackupScheduleSuccess =>
+      'ตั้งเวลาสำรองข้อมูลอัตโนมัติแล้ว';
 
   @override
   String get automaticBackupScheduleError =>
-      'Could not schedule automatic backup';
+      'ไม่สามารถตั้งเวลาสำรองข้อมูลอัตโนมัติได้';
 
   @override
   String automaticBackupStatusLabel(
@@ -460,7 +461,7 @@ class AppLocalizationsTh extends AppLocalizations {
     Object destination,
     Object result,
   ) {
-    return 'Automatic backup: $cadence • $destination • $result';
+    return 'การสำรองข้อมูลอัตโนมัติ: $cadence • $destination • $result';
   }
 
   @override

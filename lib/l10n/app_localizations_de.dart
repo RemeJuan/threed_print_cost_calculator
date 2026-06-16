@@ -427,23 +427,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exportButton => 'Exportieren';
 
   @override
-  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+  String get scheduleAutomaticBackupButton => 'Automatische Sicherung planen';
 
   @override
-  String get automaticBackupDailyLabel => 'Daily';
+  String get automaticBackupDailyLabel => 'Täglich';
 
   @override
-  String get automaticBackupWeeklyLabel => 'Weekly';
+  String get automaticBackupWeeklyLabel => 'Wöchentlich';
 
   @override
-  String get automaticBackupMonthlyLabel => 'Monthly';
+  String get automaticBackupMonthlyLabel => 'Monatlich';
 
   @override
   String get automaticBackupNote =>
-      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+      'Automatische Sicherungen werden im Hintergrund ausgeführt, wenn dein Gerät dies zulässt. Das Betriebssystem kann geplante Sicherungen verzögern oder verhindern.';
 
   @override
-  String get automaticBackupStatusPending => 'Pending';
+  String get automaticBackupStatusPending => 'Ausstehend';
 
   @override
   String get automaticBackupStatusSuccess => 'Erfolgreich';
@@ -452,11 +452,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get automaticBackupStatusFailure => 'Fehlgeschlagen';
 
   @override
-  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+  String get automaticBackupScheduleSuccess => 'Automatische Sicherung geplant';
 
   @override
   String get automaticBackupScheduleError =>
-      'Could not schedule automatic backup';
+      'Automatische Sicherung konnte nicht geplant werden';
 
   @override
   String automaticBackupStatusLabel(
@@ -464,7 +464,7 @@ class AppLocalizationsDe extends AppLocalizations {
     Object destination,
     Object result,
   ) {
-    return 'Automatic backup: $cadence • $destination • $result';
+    return 'Automatische Sicherung: $cadence • $destination • $result';
   }
 
   @override

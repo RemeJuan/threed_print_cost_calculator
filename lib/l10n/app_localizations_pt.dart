@@ -426,23 +426,24 @@ class AppLocalizationsPt extends AppLocalizations {
   String get exportButton => 'Exportar';
 
   @override
-  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+  String get scheduleAutomaticBackupButton =>
+      'Agendar cópia de segurança automática';
 
   @override
-  String get automaticBackupDailyLabel => 'Daily';
+  String get automaticBackupDailyLabel => 'Diária';
 
   @override
-  String get automaticBackupWeeklyLabel => 'Weekly';
+  String get automaticBackupWeeklyLabel => 'Semanal';
 
   @override
-  String get automaticBackupMonthlyLabel => 'Monthly';
+  String get automaticBackupMonthlyLabel => 'Mensal';
 
   @override
   String get automaticBackupNote =>
-      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+      'As cópias de segurança automáticas são executadas em segundo plano quando o dispositivo o permite. O sistema operativo pode atrasar ou impedir as cópias de segurança agendadas.';
 
   @override
-  String get automaticBackupStatusPending => 'Pending';
+  String get automaticBackupStatusPending => 'Pendente';
 
   @override
   String get automaticBackupStatusSuccess => 'Concluída';
@@ -451,11 +452,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get automaticBackupStatusFailure => 'Falhou';
 
   @override
-  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+  String get automaticBackupScheduleSuccess =>
+      'Cópia de segurança automática agendada';
 
   @override
   String get automaticBackupScheduleError =>
-      'Could not schedule automatic backup';
+      'Não foi possível agendar a cópia de segurança automática';
 
   @override
   String automaticBackupStatusLabel(
@@ -463,7 +465,7 @@ class AppLocalizationsPt extends AppLocalizations {
     Object destination,
     Object result,
   ) {
-    return 'Automatic backup: $cadence • $destination • $result';
+    return 'Cópia de segurança automática: $cadence • $destination • $result';
   }
 
   @override

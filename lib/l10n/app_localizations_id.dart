@@ -425,23 +425,23 @@ class AppLocalizationsId extends AppLocalizations {
   String get exportButton => 'Ekspor';
 
   @override
-  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+  String get scheduleAutomaticBackupButton => 'Jadwalkan cadangan otomatis';
 
   @override
-  String get automaticBackupDailyLabel => 'Daily';
+  String get automaticBackupDailyLabel => 'Harian';
 
   @override
-  String get automaticBackupWeeklyLabel => 'Weekly';
+  String get automaticBackupWeeklyLabel => 'Mingguan';
 
   @override
-  String get automaticBackupMonthlyLabel => 'Monthly';
+  String get automaticBackupMonthlyLabel => 'Bulanan';
 
   @override
   String get automaticBackupNote =>
-      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+      'Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Sistem operasi dapat menunda atau mencegah cadangan terjadwal.';
 
   @override
-  String get automaticBackupStatusPending => 'Pending';
+  String get automaticBackupStatusPending => 'Tertunda';
 
   @override
   String get automaticBackupStatusSuccess => 'Berhasil';
@@ -450,11 +450,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get automaticBackupStatusFailure => 'Gagal';
 
   @override
-  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+  String get automaticBackupScheduleSuccess => 'Cadangan otomatis dijadwalkan';
 
   @override
   String get automaticBackupScheduleError =>
-      'Could not schedule automatic backup';
+      'Tidak dapat menjadwalkan cadangan otomatis';
 
   @override
   String automaticBackupStatusLabel(
@@ -462,7 +462,7 @@ class AppLocalizationsId extends AppLocalizations {
     Object destination,
     Object result,
   ) {
-    return 'Automatic backup: $cadence • $destination • $result';
+    return 'Cadangan otomatis: $cadence • $destination • $result';
   }
 
   @override
