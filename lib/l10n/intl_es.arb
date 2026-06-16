@@ -227,6 +227,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Exportar",
+  "scheduleAutomaticBackupButton": "Programar copia de seguridad automática",
+  "automaticBackupDailyLabel": "Diaria",
+  "automaticBackupWeeklyLabel": "Semanal",
+  "automaticBackupMonthlyLabel": "Mensual",
+  "automaticBackupNote": "Las copias de seguridad automáticas se ejecutan en segundo plano cuando tu dispositivo lo permite. El sistema operativo puede retrasar o impedir las copias de seguridad programadas.",
+  "automaticBackupStatusPending": "Pendiente",
+  "automaticBackupStatusSuccess": "Correcta",
+  "automaticBackupStatusFailure": "Fallida",
+  "automaticBackupScheduleSuccess": "Copia de seguridad automática programada",
+  "automaticBackupScheduleError": "No se pudo programar la copia de seguridad automática",
+  "automaticBackupStatusLabel": "Copia de seguridad automática: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

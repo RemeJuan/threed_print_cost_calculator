@@ -228,6 +228,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Ekspor",
+  "scheduleAutomaticBackupButton": "Jadwalkan cadangan otomatis",
+  "automaticBackupDailyLabel": "Harian",
+  "automaticBackupWeeklyLabel": "Mingguan",
+  "automaticBackupMonthlyLabel": "Bulanan",
+  "automaticBackupNote": "Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Sistem operasi dapat menunda atau mencegah cadangan terjadwal.",
+  "automaticBackupStatusPending": "Tertunda",
+  "automaticBackupStatusSuccess": "Berhasil",
+  "automaticBackupStatusFailure": "Gagal",
+  "automaticBackupScheduleSuccess": "Cadangan otomatis dijadwalkan",
+  "automaticBackupScheduleError": "Tidak dapat menjadwalkan cadangan otomatis",
+  "automaticBackupStatusLabel": "Cadangan otomatis: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

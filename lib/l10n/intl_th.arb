@@ -229,6 +229,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "ส่งออก",
+  "scheduleAutomaticBackupButton": "ตั้งเวลาสำรองข้อมูลอัตโนมัติ",
+  "automaticBackupDailyLabel": "ทุกวัน",
+  "automaticBackupWeeklyLabel": "ทุกสัปดาห์",
+  "automaticBackupMonthlyLabel": "ทุกเดือน",
+  "automaticBackupNote": "การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต ระบบปฏิบัติการอาจเลื่อนเวลาหรือป้องกันการสำรองข้อมูลตามกำหนดได้",
+  "automaticBackupStatusPending": "รอดำเนินการ",
+  "automaticBackupStatusSuccess": "สำเร็จ",
+  "automaticBackupStatusFailure": "ล้มเหลว",
+  "automaticBackupScheduleSuccess": "ตั้งเวลาสำรองข้อมูลอัตโนมัติแล้ว",
+  "automaticBackupScheduleError": "ไม่สามารถตั้งเวลาสำรองข้อมูลอัตโนมัติได้",
+  "automaticBackupStatusLabel": "การสำรองข้อมูลอัตโนมัติ: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

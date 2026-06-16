@@ -234,6 +234,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Exportieren",
+  "scheduleAutomaticBackupButton": "Automatische Sicherung planen",
+  "automaticBackupDailyLabel": "Täglich",
+  "automaticBackupWeeklyLabel": "Wöchentlich",
+  "automaticBackupMonthlyLabel": "Monatlich",
+  "automaticBackupNote": "Automatische Sicherungen werden im Hintergrund ausgeführt, wenn dein Gerät dies zulässt. Das Betriebssystem kann geplante Sicherungen verzögern oder verhindern.",
+  "automaticBackupStatusPending": "Ausstehend",
+  "automaticBackupStatusSuccess": "Erfolgreich",
+  "automaticBackupStatusFailure": "Fehlgeschlagen",
+  "automaticBackupScheduleSuccess": "Automatische Sicherung geplant",
+  "automaticBackupScheduleError": "Automatische Sicherung konnte nicht geplant werden",
+  "automaticBackupStatusLabel": "Automatische Sicherung: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

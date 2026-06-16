@@ -429,6 +429,47 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportButton => 'Exportar';
 
   @override
+  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+
+  @override
+  String get automaticBackupDailyLabel => 'Daily';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Weekly';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Monthly';
+
+  @override
+  String get automaticBackupNote =>
+      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+
+  @override
+  String get automaticBackupStatusPending => 'Pending';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Correcta';
+
+  @override
+  String get automaticBackupStatusFailure => 'Fallida';
+
+  @override
+  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'Could not schedule automatic backup';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Automatic backup: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Política de privacidad';
 
   @override

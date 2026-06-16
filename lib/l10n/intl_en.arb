@@ -173,6 +173,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Export",
+  "scheduleAutomaticBackupButton": "Schedule automatic backup",
+  "automaticBackupDailyLabel": "Daily",
+  "automaticBackupWeeklyLabel": "Weekly",
+  "automaticBackupMonthlyLabel": "Monthly",
+  "automaticBackupNote": "Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.",
+  "automaticBackupStatusPending": "Pending",
+  "automaticBackupStatusSuccess": "Success",
+  "automaticBackupStatusFailure": "Failed",
+  "automaticBackupScheduleSuccess": "Automatic backup scheduled",
+  "automaticBackupScheduleError": "Could not schedule automatic backup",
+  "automaticBackupStatusLabel": "Automatic backup: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

@@ -888,6 +888,76 @@ abstract class AppLocalizations {
   /// **'Export'**
   String get exportButton;
 
+  /// No description provided for @scheduleAutomaticBackupButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule automatic backup'**
+  String get scheduleAutomaticBackupButton;
+
+  /// No description provided for @automaticBackupDailyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get automaticBackupDailyLabel;
+
+  /// No description provided for @automaticBackupWeeklyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get automaticBackupWeeklyLabel;
+
+  /// No description provided for @automaticBackupMonthlyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get automaticBackupMonthlyLabel;
+
+  /// No description provided for @automaticBackupNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.'**
+  String get automaticBackupNote;
+
+  /// No description provided for @automaticBackupStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get automaticBackupStatusPending;
+
+  /// No description provided for @automaticBackupStatusSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get automaticBackupStatusSuccess;
+
+  /// No description provided for @automaticBackupStatusFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get automaticBackupStatusFailure;
+
+  /// No description provided for @automaticBackupScheduleSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup scheduled'**
+  String get automaticBackupScheduleSuccess;
+
+  /// No description provided for @automaticBackupScheduleError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not schedule automatic backup'**
+  String get automaticBackupScheduleError;
+
+  /// No description provided for @automaticBackupStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup: {cadence} • {destination} • {result}'**
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  );
+
   /// No description provided for @privacyPolicyLink.
   ///
   /// In en, this message translates to:

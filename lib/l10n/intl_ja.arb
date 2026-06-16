@@ -236,6 +236,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "エクスポート",
+  "scheduleAutomaticBackupButton": "自動バックアップを設定",
+  "automaticBackupDailyLabel": "毎日",
+  "automaticBackupWeeklyLabel": "毎週",
+  "automaticBackupMonthlyLabel": "毎月",
+  "automaticBackupNote": "自動バックアップは、デバイスが許可している場合にバックグラウンドで実行されます。オペレーティングシステムにより、予定されたバックアップが遅延または実行されないことがあります。",
+  "automaticBackupStatusPending": "保留中",
+  "automaticBackupStatusSuccess": "成功",
+  "automaticBackupStatusFailure": "失敗",
+  "automaticBackupScheduleSuccess": "自動バックアップを設定しました",
+  "automaticBackupScheduleError": "自動バックアップを設定できませんでした",
+  "automaticBackupStatusLabel": "自動バックアップ: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

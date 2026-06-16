@@ -236,6 +236,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Exporter",
+  "scheduleAutomaticBackupButton": "Planifier la sauvegarde automatique",
+  "automaticBackupDailyLabel": "Quotidienne",
+  "automaticBackupWeeklyLabel": "Hebdomadaire",
+  "automaticBackupMonthlyLabel": "Mensuelle",
+  "automaticBackupNote": "Les sauvegardes automatiques s'exécutent en arrière-plan lorsque votre appareil le permet. Le système d'exploitation peut retarder ou empêcher les sauvegardes planifiées.",
+  "automaticBackupStatusPending": "En attente",
+  "automaticBackupStatusSuccess": "Réussie",
+  "automaticBackupStatusFailure": "Échouée",
+  "automaticBackupScheduleSuccess": "Sauvegarde automatique planifiée",
+  "automaticBackupScheduleError": "Impossible de planifier la sauvegarde automatique",
+  "automaticBackupStatusLabel": "Sauvegarde automatique : {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

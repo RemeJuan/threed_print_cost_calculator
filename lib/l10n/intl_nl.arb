@@ -236,6 +236,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Exporteren",
+  "scheduleAutomaticBackupButton": "Automatische back-up plannen",
+  "automaticBackupDailyLabel": "Dagelijks",
+  "automaticBackupWeeklyLabel": "Wekelijks",
+  "automaticBackupMonthlyLabel": "Maandelijks",
+  "automaticBackupNote": "Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het besturingssysteem kan geplande back-ups vertragen of voorkomen.",
+  "automaticBackupStatusPending": "In afwachting",
+  "automaticBackupStatusSuccess": "Gelukt",
+  "automaticBackupStatusFailure": "Mislukt",
+  "automaticBackupScheduleSuccess": "Automatische back-up gepland",
+  "automaticBackupScheduleError": "Automatische back-up kon niet worden gepland",
+  "automaticBackupStatusLabel": "Automatische back-up: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },

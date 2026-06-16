@@ -2,7 +2,7 @@
 
 ClickUp Task: 86c9pafbe
 
-Manual local backup and restore for Settings.
+Manual local backup, restore, and scheduled automatic backup for Settings.
 
 ## Scope
 - Export local DB data only: general settings, printers, materials, history.
@@ -18,6 +18,7 @@ Manual local backup and restore for Settings.
 - Refresh app state after success.
 
 ## UI
-- Settings section: export backup, restore backup.
+- Settings section: export backup, restore backup, schedule automatic backup.
 - Restore requires confirmation warning.
 - Export uses save dialog on desktop; share/download fallback otherwise.
+- Scheduled backups are best-effort, premium-only, and overwrite one fixed JSON file.

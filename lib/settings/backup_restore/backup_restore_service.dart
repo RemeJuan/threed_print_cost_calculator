@@ -21,6 +21,27 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 import 'backup_restore_file_write.dart'
     if (dart.library.io) 'backup_restore_file_write_io.dart';
 
+const autoBackupFileName = '3d_print_cost_calculator_auto_backup.json';
+
+Map<String, Object?> buildBackupPayload({
+  required Map<String, Object?> settings,
+  required List<Map<String, Object?>> printers,
+  required List<Map<String, Object?>> materials,
+  required List<Map<String, Object?>> history,
+}) {
+  return <String, Object?>{
+    'version': 1,
+    'schemaVersion': 1,
+    'createdAt': DateTime.now().toUtc().toIso8601String(),
+    'data': {
+      'settings': settings,
+      'printers': printers,
+      'materials': materials,
+      'history': history,
+    },
+  };
+}
+
 final backupRestoreServiceProvider = Provider<BackupRestoreService>(
   BackupRestoreService.new,
 );
@@ -80,20 +101,12 @@ class BackupRestoreService {
         .read(materialsRepositoryProvider)
         .getMaterials();
     final history = await ref.read(historyRepositoryProvider).getAllHistory();
-    final payload = <String, Object?>{
-      'version': 1,
-      'schemaVersion': 1,
-      'createdAt': DateTime.now().toUtc().toIso8601String(),
-      'data': {
-        'settings': settings.toMap(),
-        'printers': printers.map((e) => {'id': e.id, ...e.toMap()}).toList(),
-        'materials': materials.map((e) => {'id': e.id, ...e.toMap()}).toList(),
-        'history': history
-            .map((e) => {'id': e.key, ...e.model.toMap()})
-            .toList(),
-      },
-    };
-    return payload;
+    return buildBackupPayload(
+      settings: settings.toMap(),
+      printers: printers.map((e) => {'id': e.id, ...e.toMap()}).toList(),
+      materials: materials.map((e) => {'id': e.id, ...e.toMap()}).toList(),
+      history: history.map((e) => {'id': e.key, ...e.model.toMap()}).toList(),
+    );
   }
 
   Map<String, Object?> _parseAndValidate(String raw) {
