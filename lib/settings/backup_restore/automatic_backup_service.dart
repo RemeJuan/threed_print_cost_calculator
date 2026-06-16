@@ -12,7 +12,9 @@ final automaticBackupServiceProvider = Provider<AutomaticBackupService>((ref) {
   return AutomaticBackupService(ref);
 });
 
-final automaticBackupConfigProvider = FutureProvider<AutomaticBackupConfig?>((ref) {
+final automaticBackupConfigProvider = FutureProvider<AutomaticBackupConfig?>((
+  ref,
+) {
   return ref.read(automaticBackupServiceProvider).readConfig();
 });
 
@@ -249,13 +251,17 @@ class AutomaticBackupConfig {
   static AutomaticBackupConfig fromJson(Map<String, Object?> json) {
     return AutomaticBackupConfig(
       enabled: json['enabled'] == true,
-      cadence: AutomaticBackupCadence.fromValue(json['cadence']?.toString()).value,
+      cadence: AutomaticBackupCadence.fromValue(
+        json['cadence']?.toString(),
+      ).value,
       accessToken: json['accessToken']?.toString() ?? '',
       displayLabel: json['displayLabel']?.toString() ?? '',
       platform: json['platform']?.toString() ?? '',
       lastAttemptAt: json['lastAttemptAt']?.toString(),
       lastSuccessAt: json['lastSuccessAt']?.toString(),
-      lastResult: AutomaticBackupRunResult.fromValue(json['lastResult']?.toString())?.value,
+      lastResult: AutomaticBackupRunResult.fromValue(
+        json['lastResult']?.toString(),
+      )?.value,
       lastErrorMessage: json['lastErrorMessage']?.toString(),
     );
   }

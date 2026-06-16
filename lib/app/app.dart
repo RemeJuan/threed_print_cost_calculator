@@ -29,9 +29,9 @@ class _AppState extends ConsumerState<App> {
   void initState() {
     super.initState();
     unawaited(
-      ref.read(automaticBackupServiceProvider).reconcile(
-            ref.read(premiumStateProvider).isPremium,
-          ),
+      ref
+          .read(automaticBackupServiceProvider)
+          .reconcile(ref.read(premiumStateProvider).isPremium),
     );
     _premiumStateSubscription = ref.listenManual(premiumStateProvider, (
       _,

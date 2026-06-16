@@ -219,8 +219,8 @@ class BackupRestoreSection extends ConsumerWidget {
     return switch (AutomaticBackupRunResult.fromValue(result)) {
       AutomaticBackupRunResult.success => l10n.automaticBackupStatusSuccess,
       AutomaticBackupRunResult.failure => l10n.automaticBackupStatusFailure,
-      AutomaticBackupRunResult.skipped || null =>
-        l10n.automaticBackupStatusPending,
+      AutomaticBackupRunResult.skipped ||
+      null => l10n.automaticBackupStatusPending,
     };
   }
 }
