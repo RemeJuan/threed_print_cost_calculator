@@ -1,9 +1,13 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:file_selector/file_selector.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/backup_restore/backup_restore_service.dart';
 import 'package:threed_print_cost_calculator/settings/backup_restore/automatic_backup_service.dart';
@@ -14,12 +18,16 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dar
 import 'package:auto_backup_platform/auto_backup_platform.dart';
 
 class BackupRestoreSection extends ConsumerWidget {
-  const BackupRestoreSection({super.key});
+  const BackupRestoreSection({super.key, this.pickBackupFile});
+
+  @visibleForTesting
+  final Future<XFile?> Function()? pickBackupFile;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
+    final automaticBackupAccess = policy.automaticBackup();
     final backupConfig = ref.watch(automaticBackupConfigProvider);
     return AppSurfaceCard(
       child: Column(
@@ -44,17 +52,22 @@ class BackupRestoreSection extends ConsumerWidget {
             children: [
               Expanded(
                 child: AppSecondaryButton(
+                  key: const ValueKey('settings.backup.export.button'),
                   onPressed: () async {
                     try {
                       await ref
                           .read(backupRestoreServiceProvider)
                           .exportBackup();
                       if (context.mounted) {
-                        BotToast.showText(text: l10n.dataBackupExportSuccess);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.dataBackupExportSuccess)),
+                        );
                       }
                     } catch (_) {
                       if (context.mounted) {
-                        BotToast.showText(text: l10n.dataBackupExportError);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.dataBackupExportError)),
+                        );
                       }
                     }
                   },
@@ -64,14 +77,29 @@ class BackupRestoreSection extends ConsumerWidget {
               const SizedBox(width: kAppSpace8),
               Expanded(
                 child: AppPrimaryButton(
+                  key: const ValueKey('settings.backup.restore.button'),
                   onPressed: () async {
-                    final file = await openFile(
-                      acceptedTypeGroups: [
-                        const XTypeGroup(label: 'JSON', extensions: ['json']),
-                      ],
-                    );
+                    final XFile? file;
+                    try {
+                      file =
+                          await (pickBackupFile ??
+                              () => openFile(
+                                acceptedTypeGroups: backupAcceptedTypeGroups(
+                                  defaultTargetPlatform,
+                                  l10n,
+                                ),
+                              ))();
+                    } catch (_) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.dataBackupRestoreError)),
+                        );
+                      }
+                      return;
+                    }
                     if (file == null) return;
                     if (!context.mounted) return;
+                    final selectedFile = file;
                     final confirmed = await showDialog<bool>(
                       context: context,
                       builder: (dialogContext) => AlertDialog(
@@ -93,15 +121,30 @@ class BackupRestoreSection extends ConsumerWidget {
                     );
                     if (confirmed != true) return;
                     try {
-                      await ref
-                          .read(backupRestoreServiceProvider)
-                          .restoreBackupFromFile(file);
+                      await restoreBackupAndRefresh(
+                        restore: () => ref
+                            .read(backupRestoreServiceProvider)
+                            .restoreBackupFromFile(selectedFile),
+                        resetCalculator: () => ref
+                            .read(calculatorProvider.notifier)
+                            .resetToDefaults(),
+                        refreshHistory: () =>
+                            ref.read(historyPagedProvider.notifier).refresh(),
+                        waitForEndOfFrame: () =>
+                            SchedulerBinding.instance.endOfFrame,
+                      );
                       if (context.mounted) {
-                        BotToast.showText(text: l10n.dataBackupRestoreSuccess);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(l10n.dataBackupRestoreSuccess),
+                          ),
+                        );
                       }
                     } catch (_) {
                       if (context.mounted) {
-                        BotToast.showText(text: l10n.dataBackupRestoreError);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.dataBackupRestoreError)),
+                        );
                       }
                     }
                   },
@@ -197,11 +240,15 @@ class BackupRestoreSection extends ConsumerWidget {
         throw StateError('initial backup failed');
       }
       if (context.mounted) {
-        BotToast.showText(text: l10n.automaticBackupScheduleSuccess);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.automaticBackupScheduleSuccess)),
+        );
       }
     } catch (_) {
       if (context.mounted) {
-        BotToast.showText(text: l10n.automaticBackupScheduleError);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.automaticBackupScheduleError)),
+        );
       }
     }
   }
@@ -225,6 +272,37 @@ class BackupRestoreSection extends ConsumerWidget {
       AutomaticBackupRunResult.skipped ||
       null => l10n.automaticBackupStatusPending,
     };
+  }
+}
+
+@visibleForTesting
+Future<void> restoreBackupAndRefresh({
+  required Future<void> Function() restore,
+  required Future<void> Function() resetCalculator,
+  required Future<void> Function() refreshHistory,
+  required Future<void> Function() waitForEndOfFrame,
+}) async {
+  await waitForEndOfFrame();
+  await restore();
+  await resetCalculator();
+  await refreshHistory();
+}
+
+@visibleForTesting
+List<XTypeGroup> backupAcceptedTypeGroups(
+  TargetPlatform platform,
+  AppLocalizations l10n,
+) {
+  final label = l10n.dataBackupJsonFileTypeLabel;
+  switch (platform) {
+    case TargetPlatform.iOS:
+      return [
+        XTypeGroup(label: label, uniformTypeIdentifiers: ['public.data']),
+      ];
+    default:
+      return [
+        XTypeGroup(label: label, extensions: ['json']),
+      ];
   }
 }
 

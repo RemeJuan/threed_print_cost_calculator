@@ -28,19 +28,29 @@ class _AppState extends ConsumerState<App> {
   @override
   void initState() {
     super.initState();
-    unawaited(
-      ref
-          .read(automaticBackupServiceProvider)
-          .reconcile(ref.read(premiumStateProvider).isPremium),
-    );
+    _reconcileBackups(ref.read(premiumStateProvider).isPremium);
     _premiumStateSubscription = ref.listenManual(premiumStateProvider, (
       _,
       next,
     ) {
-      unawaited(
-        ref.read(automaticBackupServiceProvider).reconcile(next.isPremium),
-      );
+      _reconcileBackups(next.isPremium);
     });
+  }
+
+  void _reconcileBackups(bool isPremium) {
+    unawaited(
+      ref.read(automaticBackupServiceProvider).reconcile(isPremium).catchError((
+        Object error,
+      ) {
+        ref
+            .read(appLoggerProvider)
+            .error(
+              AppLogCategory.provider,
+              'Backup reconcile failed',
+              error: error,
+            );
+      }),
+    );
   }
 
   @override
