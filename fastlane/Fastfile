@@ -75,7 +75,7 @@ def stage_android_screenshots_upload
 
   staging_dir = Dir.mktmpdir("android-screenshots-upload-")
   copy_dir = File.expand_path("screenshots/copy", __dir__)
-  configured_locales = Dir.glob(File.join(copy_dir, "*.yaml")).map do |path|
+  configured_locales = Dir.glob(File.join(copy_dir, "*.{yaml,yml}")).map do |path|
     File.basename(path, ".yaml")
   end
   locales = Dir.children(source_dir).sort.select do |entry|
