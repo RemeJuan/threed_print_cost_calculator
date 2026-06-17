@@ -21,6 +21,7 @@ class AutoBackupPlatformPlugin : FlutterPlugin, MethodChannel.MethodCallHandler,
   private lateinit var context: Context
   private var activity: Activity? = null
   private var pendingResult: MethodChannel.Result? = null
+  private var activityBinding: ActivityPluginBinding? = null
 
   override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(binding.binaryMessenger, "auto_backup_platform")
@@ -46,6 +47,10 @@ class AutoBackupPlatformPlugin : FlutterPlugin, MethodChannel.MethodCallHandler,
     val activity = activity ?: run {
       result.error("no_activity", "Activity required", null)
       return
+    }
+    if (pendingResult != null) {
+      pendingResult!!.error("pending", "A destination pick is already in progress", null)
+      pendingResult = null
     }
     pendingResult = result
     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
@@ -112,12 +117,23 @@ class AutoBackupPlatformPlugin : FlutterPlugin, MethodChannel.MethodCallHandler,
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
     activity = binding.activity
+    activityBinding = binding
     binding.addActivityResultListener(this)
   }
 
-  override fun onDetachedFromActivityForConfigChanges() { activity = null }
+  override fun onDetachedFromActivityForConfigChanges() {
+    activityBinding?.removeActivityResultListener(this)
+    activityBinding = null
+    activity = null
+  }
+
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) { onAttachedToActivity(binding) }
-  override fun onDetachedFromActivity() { activity = null }
+
+  override fun onDetachedFromActivity() {
+    activityBinding?.removeActivityResultListener(this)
+    activityBinding = null
+    activity = null
+  }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
     if (requestCode != 9011) return false
@@ -129,7 +145,12 @@ class AutoBackupPlatformPlugin : FlutterPlugin, MethodChannel.MethodCallHandler,
     }
     val uri = data.data!!
     val flags = data.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-    resolver.takePersistableUriPermission(uri, flags)
+    try {
+      resolver.takePersistableUriPermission(uri, flags)
+    } catch (e: SecurityException) {
+      result.error("permission_failed", "Failed to persist URI permission: ${e.message}", null)
+      return
+    }
     result.success(mapOf("accessToken" to uri.toString(), "displayLabel" to (DocumentFile.fromTreeUri(context, uri)?.name ?: ""), "platform" to "android"))
     return true
   }
