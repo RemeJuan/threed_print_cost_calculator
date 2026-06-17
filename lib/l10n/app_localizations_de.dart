@@ -1947,6 +1947,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wiederherstellung des Backups fehlgeschlagen';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Auf Premium upgraden';
 
   @override

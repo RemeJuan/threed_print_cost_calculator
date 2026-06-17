@@ -1954,6 +1954,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Error al restaurar la copia de seguridad';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Mejorar a Premium';
 
   @override

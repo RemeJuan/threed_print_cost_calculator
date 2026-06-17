@@ -1966,6 +1966,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Échec de la restauration de la sauvegarde';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Passer à Premium';
 
   @override

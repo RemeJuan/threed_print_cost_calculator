@@ -1952,6 +1952,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dataBackupRestoreError => 'Ripristino del backup non riuscito';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Passa a Premium';
 
   @override

@@ -1914,6 +1914,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get dataBackupRestoreError => 'Pemulihan cadangan gagal';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Tingkatkan ke Premium';
 
   @override

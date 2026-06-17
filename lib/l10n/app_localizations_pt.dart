@@ -1950,6 +1950,9 @@ class AppLocalizationsPt extends AppLocalizations {
       'Falha ao restaurar a cópia de segurança';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Atualize para Premium';
 
   @override

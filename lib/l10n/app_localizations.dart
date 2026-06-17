@@ -3537,6 +3537,12 @@ abstract class AppLocalizations {
   /// **'Backup restore failed'**
   String get dataBackupRestoreError;
 
+  /// No description provided for @dataBackupJsonFileTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON'**
+  String get dataBackupJsonFileTypeLabel;
+
   /// No description provided for @settingsPremiumCardTitle.
   ///
   /// In en, this message translates to:

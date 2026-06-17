@@ -1924,6 +1924,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataBackupRestoreError => 'Backup restore failed';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Upgrade to Premium';
 
   @override

@@ -1941,6 +1941,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dataBackupRestoreError => 'Herstellen van back-up mislukt';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Upgrade naar Premium';
 
   @override

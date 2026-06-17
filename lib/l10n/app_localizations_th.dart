@@ -1908,6 +1908,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get dataBackupRestoreError => 'กู้คืนข้อมูลสำรองไม่สำเร็จ';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'อัปเกรดเป็นพรีเมียม';
 
   @override

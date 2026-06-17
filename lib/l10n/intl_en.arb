@@ -797,6 +797,7 @@
   "dataBackupExportError": "Backup export failed",
   "dataBackupRestoreSuccess": "Backup restored",
   "dataBackupRestoreError": "Backup restore failed",
+  "dataBackupJsonFileTypeLabel": "JSON",
   "settingsPremiumCardTitle": "Upgrade to Premium",
   "settingsPremiumCardBody": "Advanced pricing tools, unlimited usage, and inventory tracking.",
   "settingsPremiumCardCta": "Upgrade",

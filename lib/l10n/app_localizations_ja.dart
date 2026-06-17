@@ -1864,6 +1864,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dataBackupRestoreError => 'バックアップの復元に失敗しました';
 
   @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
+
+  @override
   String get settingsPremiumCardTitle => 'Premiumにアップグレード';
 
   @override
