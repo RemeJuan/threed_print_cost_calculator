@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/database/repositories/calculator_pr
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 class _RecordingLogSink extends AppLogSink {
@@ -81,6 +82,21 @@ void main() {
 
       expect(settings.electricityCost, '');
       expect(settings.activePrinter, '');
+      expect(sink.events, hasLength(1));
+      expect(sink.events.single.category, AppLogCategory.migration);
+      expect(sink.events.single.message, 'Skipping malformed database record');
+    },
+  );
+
+  test(
+    'settings repository returns defaults for missing record without logs',
+    () async {
+      final settings = await container
+          .read(settingsRepositoryProvider)
+          .getSettings();
+
+      expect(settings, GeneralSettingsModel.initial());
+      expect(sink.events, isEmpty);
     },
   );
 

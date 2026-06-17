@@ -49,6 +49,10 @@ class SettingsRepository {
     Object? raw, {
     required Object key,
   }) async {
+    if (raw == null) {
+      return GeneralSettingsModel.initial();
+    }
+
     final map = castDatabaseRecord(
       raw,
       storeName: DBName.settings.name,
