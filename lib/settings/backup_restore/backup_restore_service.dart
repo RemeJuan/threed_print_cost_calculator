@@ -148,8 +148,14 @@ class BackupRestoreService {
     final settings = GeneralSettingsModel.fromMap(_mapOf(data['settings']));
     final printers = _parsePrinters(data['printers']);
     final materials = _parseMaterials(data['materials']);
-    final historyRaw = _listOfMaps(data['history']);
-    final history = historyRaw.map((e) => HistoryModel.fromMap(e)).toList();
+    final historyRaw = _strictListOfMaps(data['history']);
+    final history = historyRaw.map((e) {
+      final id = e['id']?.toString() ?? '';
+      if (id.trim().isEmpty) {
+        throw FormatException('History entry missing required id');
+      }
+      return HistoryModel.fromMap(e);
+    }).toList();
 
     await _db.transaction((txn) async {
       await _clearDb(txn);
@@ -173,10 +179,7 @@ class BackupRestoreService {
       stringMapStoreFactory.store('printer_index'),
       stringMapStoreFactory.store('history_search_index'),
     ]) {
-      final snapshots = await store.find(txn);
-      for (final snapshot in snapshots) {
-        await store.record(snapshot.key).delete(txn);
-      }
+      await store.delete(txn);
     }
   }
 
@@ -204,12 +207,16 @@ class BackupRestoreService {
     for (final material in materials) {
       await materialsStore.record(material.id).put(txn, material.toMap());
     }
+    final seenIds = <String>{};
     for (var i = 0; i < history.length; i++) {
       final item = history[i];
       final raw = historyRaw[i];
       final id = raw['id']?.toString().trim().isNotEmpty == true
           ? raw['id'].toString()
           : 'history_$i';
+      if (!seenIds.add(id)) {
+        throw FormatException('Duplicate history entry id: $id');
+      }
       await historyStore.record(id).put(txn, item.toMap());
       if (item.printer.trim().isNotEmpty) {
         await printerIndex.addKeyInTransaction(txn, item.printer, id);
@@ -225,9 +232,6 @@ class BackupRestoreService {
 
   Map<String, dynamic> _mapOf(Object? raw) =>
       (raw as Map).map((k, v) => MapEntry(k.toString(), v));
-  List<Map<String, dynamic>> _listOfMaps(Object? raw) =>
-      (raw as List).whereType<Map>().map(_mapOf).toList();
-
   List<PrinterModel> _parsePrinters(Object? raw) {
     final items = _strictListOfMaps(raw);
     return items.map((e) {

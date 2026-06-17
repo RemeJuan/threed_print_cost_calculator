@@ -402,6 +402,133 @@ void main() {
     );
   });
 
+  test('rejects restore when history list contains non-map item', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .record('keep')
+        .put(
+          db,
+          const PrinterModel(
+            id: 'keep',
+            name: 'Keep',
+            bedSize: '220 x 220',
+            wattage: '200',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [],
+        'materials': [],
+        'history': ['not_a_map'],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(isA<FormatException>()),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.printers.name).count(db),
+      beforeCount,
+    );
+  });
+
+  test('rejects restore when history contains duplicate ids', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .record('keep')
+        .put(
+          db,
+          const PrinterModel(
+            id: 'keep',
+            name: 'Keep',
+            bedSize: '220 x 220',
+            wattage: '200',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [],
+        'materials': [],
+        'history': [
+          {
+            'id': 'dup',
+            'name': 'Job 1',
+            'totalCost': 10,
+            'riskCost': 1,
+            'filamentCost': 5,
+            'electricityCost': 1,
+            'labourCost': 3,
+            'date': '2026-01-01T00:00:00.000Z',
+            'printer': 'p1',
+            'material': 'm1',
+            'weight': 12,
+            'timeHours': '01:00',
+          },
+          {
+            'id': 'dup',
+            'name': 'Job 2',
+            'totalCost': 20,
+            'riskCost': 2,
+            'filamentCost': 10,
+            'electricityCost': 2,
+            'labourCost': 6,
+            'date': '2026-01-02T00:00:00.000Z',
+            'printer': 'p1',
+            'material': 'm1',
+            'weight': 24,
+            'timeHours': '02:00',
+          },
+        ],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(
+        isA<FormatException>().having(
+          (e) => e.message,
+          'message',
+          contains('Duplicate history entry id'),
+        ),
+      ),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.printers.name).count(db),
+      beforeCount,
+    );
+  });
+
   test('restores backup by replacing existing local data', () async {
     final container = await _container();
     addTearDown(container.dispose);
