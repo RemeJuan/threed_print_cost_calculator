@@ -30,6 +30,7 @@ let package = Package(
         .package(name: "firebase_app_check", path: "../.packages/firebase_app_check-0.4.4+2"),
         .package(name: "firebase_analytics", path: "../.packages/firebase_analytics-12.4.2"),
         .package(name: "file_selector_ios", path: "../.packages/file_selector_ios-0.5.3+5"),
+        .package(name: "auto_backup_platform", path: "../.packages/auto_backup_platform"),
         .package(name: "FlutterFramework", path: "../.packages/FlutterFramework")
     ],
     targets: [
@@ -51,6 +52,7 @@ let package = Package(
                 .product(name: "firebase-app-check", package: "firebase_app_check"),
                 .product(name: "firebase-analytics", package: "firebase_analytics"),
                 .product(name: "file-selector-ios", package: "file_selector_ios"),
+                .product(name: "auto-backup-platform", package: "auto_backup_platform"),
                 .product(name: "FlutterFramework", package: "FlutterFramework")
             ]
         )

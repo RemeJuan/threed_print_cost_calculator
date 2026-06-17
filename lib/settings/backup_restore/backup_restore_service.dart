@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:auto_backup_platform/auto_backup_platform.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
@@ -46,6 +47,10 @@ final backupRestoreServiceProvider = Provider<BackupRestoreService>(
   BackupRestoreService.new,
 );
 
+final autoBackupPlatformProvider = Provider<AutoBackupPlatform>((ref) {
+  return AutoBackupPlatform();
+});
+
 class BackupRestoreService {
   BackupRestoreService(this.ref);
   final Ref ref;
@@ -60,6 +65,23 @@ class BackupRestoreService {
       if (saveLocation == null) return '';
       await writeStringToFile(saveLocation.path, jsonText);
       return saveLocation.path;
+    }
+
+    // Mobile (iOS/Android): use native folder picker + direct file write
+    // so re-saving to the same folder overwrites the existing file instead
+    // of creating a duplicate or blocking the replace (share-sheet limitation).
+    if (!kIsWeb) {
+      final platform = ref.read(autoBackupPlatformProvider);
+      final destination = await platform.pickDestination();
+      if (destination == null) return '';
+      final label = destination['displayLabel'] as String? ?? '';
+      await platform.writeBackup(
+        accessToken: destination['accessToken'] as String,
+        displayLabel: label,
+        fileName: fileName,
+        contents: jsonText,
+      );
+      return label;
     }
 
     await SharePlus.instance.share(

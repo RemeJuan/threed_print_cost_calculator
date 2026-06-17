@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary          = 'Native destination access for scheduled backups.'
   s.description      = 'Native destination access for scheduled backups.'
   s.homepage         = 'https://example.com'
-  s.license          = { :file => '../LICENSE' }
+  s.license          = { :file => 'LICENSE' }
   s.author           = { 'None' => 'none@example.com' }
   s.source           = { :path => '.' }
   s.source_files     = 'ios/Classes/**/*'
