@@ -27,9 +27,13 @@ class AutomaticBackupService {
   Future<AutomaticBackupConfig?> readConfig() async {
     final raw = _prefs.getString(_configKey);
     if (raw == null) return null;
-    return AutomaticBackupConfig.fromJson(
-      jsonDecode(raw) as Map<String, Object?>,
-    );
+    try {
+      return AutomaticBackupConfig.fromJson(
+        jsonDecode(raw) as Map<String, Object?>,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> saveConfig(AutomaticBackupConfig config) async {
