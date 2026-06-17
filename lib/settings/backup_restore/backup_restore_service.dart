@@ -140,7 +140,6 @@ class BackupRestoreService {
         historyRaw,
       );
     });
-    ref.read(appRefreshProvider.notifier).refresh();
   }
 
   Future<void> _clearDb(Transaction txn) async {
