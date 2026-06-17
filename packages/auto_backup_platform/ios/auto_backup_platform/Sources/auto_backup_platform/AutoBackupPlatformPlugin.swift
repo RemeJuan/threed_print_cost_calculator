@@ -78,7 +78,7 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
       let args = call.arguments as? [String: Any] ?? [:]
       let fileName = try validatedFileName(args["fileName"] as? String ?? "backup")
       try withScopedFolder(args["accessToken"] as? String ?? "") { folder in
-        let temp = folder.appendingPathComponent(".verify_\(fileName).tmp")
+        let temp = folder.appendingPathComponent(".verify_\(fileName)_\(UUID().uuidString).tmp")
         guard FileManager.default.createFile(
           atPath: temp.path,
           contents: Data([1]),
@@ -100,13 +100,26 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
     do {
       let args = call.arguments as? [String: Any] ?? [:]
       let fileName = try validatedFileName(args["fileName"] as? String ?? "backup")
-      let rawContents = args["contents"] as? String ?? ""
+      guard let rawContents = args["contents"] as? String, !rawContents.isEmpty else {
+        throw PluginError(code: "missing_contents", message: "Backup contents is missing or empty")
+      }
       guard let contents = rawContents.data(using: .utf8) else {
         throw PluginError(code: "invalid_contents", message: "contents must be valid UTF-8")
       }
       try withScopedFolder(args["accessToken"] as? String ?? "") { folder in
         let fileURL = folder.appendingPathComponent(fileName)
-        try contents.write(to: fileURL, options: .atomic)
+        // Delete existing file so re-save to same folder overwrites cleanly
+        // rather than creating a duplicate or leaving stale content.
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+          try FileManager.default.removeItem(at: fileURL)
+        }
+        guard FileManager.default.createFile(
+          atPath: fileURL.path,
+          contents: contents,
+          attributes: nil
+        ) else {
+          throw PluginError(code: "write_failed", message: "Failed to create file")
+        }
       }
       result(["ok": true, "displayLabel": args["displayLabel"] ?? "", "fileName": fileName])
     } catch let error as PluginError {
