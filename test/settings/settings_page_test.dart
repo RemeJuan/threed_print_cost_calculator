@@ -276,15 +276,28 @@ void main() {
     expect(paywallPresenter.lastSource, 'settings');
   });
 
-  testWidgets('automatic backup button opens paywall for free users', (
-    tester,
-  ) async {
+  testWidgets('free users do not see automatic backup button', (tester) async {
     final settingsRepo = _FakeSettingsRepository();
-    final paywallPresenter = FakePaywallPresenter();
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
-      paywallPresenterProvider.overrideWithValue(paywallPresenter),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Schedule automatic backup'), findsNothing);
+  });
+
+  testWidgets('premium users see automatic backup button', (tester) async {
+    final settingsRepo = _FakeSettingsRepository();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
       appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
     ]);
     addTearDown(db.close);
@@ -300,11 +313,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Schedule automatic backup'));
-    await tester.pumpAndSettle();
-
-    expect(paywallPresenter.calls, 1);
-    expect(paywallPresenter.lastTriggerFeature, 'automatic_backup');
+    expect(find.text('Schedule automatic backup'), findsOneWidget);
   });
 
   testWidgets('printer add action opens AddPrinter dialog', (tester) async {

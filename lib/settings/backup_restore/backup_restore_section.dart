@@ -110,44 +110,47 @@ class BackupRestoreSection extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: kAppSpace12),
-          SizedBox(
-            width: double.infinity,
-            child: AppSecondaryButton(
-              onPressed: () => _scheduleBackup(context, ref, policy.isPremium),
-              label: l10n.scheduleAutomaticBackupButton,
-              minHeight: 42,
+          if (automaticBackupAccess.allowed) ...[
+            const SizedBox(height: kAppSpace12),
+            SizedBox(
+              width: double.infinity,
+              child: AppSecondaryButton(
+                onPressed: () =>
+                    _scheduleBackup(context, ref, automaticBackupAccess),
+                label: l10n.scheduleAutomaticBackupButton,
+                minHeight: 42,
+              ),
             ),
-          ),
-          const SizedBox(height: kAppSpace8),
-          Text(
-            l10n.automaticBackupNote,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY),
-          ),
-          backupConfig.when(
-            data: (config) {
-              if (config == null || !config.enabled) {
-                return const SizedBox.shrink();
-              }
-              return Padding(
-                padding: const EdgeInsets.only(top: kAppSpace8),
-                child: Text(
-                  l10n.automaticBackupStatusLabel(
-                    _cadenceLabel(l10n, config.cadenceValue),
-                    config.displayLabel,
-                    _resultLabel(l10n, config.lastResult),
+            const SizedBox(height: kAppSpace8),
+            Text(
+              l10n.automaticBackupNote,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY),
+            ),
+            backupConfig.when(
+              data: (config) {
+                if (config == null || !config.enabled) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(top: kAppSpace8),
+                  child: Text(
+                    l10n.automaticBackupStatusLabel(
+                      _cadenceLabel(l10n, config.cadenceValue),
+                      config.displayLabel,
+                      _resultLabel(l10n, config.lastResult),
+                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY),
                   ),
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY),
-                ),
-              );
-            },
-            loading: () => const SizedBox.shrink(),
-            error: (error, stackTrace) => const SizedBox.shrink(),
-          ),
+                );
+              },
+              loading: () => const SizedBox.shrink(),
+              error: (error, stackTrace) => const SizedBox.shrink(),
+            ),
+          ],
         ],
       ),
     );
@@ -156,10 +159,10 @@ class BackupRestoreSection extends ConsumerWidget {
   Future<void> _scheduleBackup(
     BuildContext context,
     WidgetRef ref,
-    bool isPremium,
+    FeatureAccess access,
   ) async {
     final l10n = AppLocalizations.of(context)!;
-    if (!isPremium) {
+    if (!access.allowed) {
       await ref
           .read(paywallPresenterProvider)
           .present(

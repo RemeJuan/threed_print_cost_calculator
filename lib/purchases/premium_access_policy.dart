@@ -16,6 +16,7 @@ enum PremiumFeature {
   saveToHistory,
   csvMaterialImport,
   stockTracking,
+  automaticBackup,
 }
 
 enum AccessDenyReason { notPremium, quotaExceeded, featureNotAvailable }
@@ -60,6 +61,7 @@ enum UpsellSurface {
   advancedPricingConfig,
   printerManagement,
   stockTracking,
+  automaticBackup,
 }
 
 class FeatureAccess {
@@ -113,6 +115,7 @@ abstract class PremiumAccessPolicy {
   FeatureAccess saveToHistory();
   FeatureAccess csvMaterialImport();
   FeatureAccess stockTracking();
+  FeatureAccess automaticBackup();
 
   QuotaAccess canCreateMaterial(int currentCount);
   QuotaAccess canCreatePrinter(int currentCount);
@@ -296,6 +299,10 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       _premiumFeature(PremiumFeature.stockTracking);
 
   @override
+  FeatureAccess automaticBackup() =>
+      _premiumFeature(PremiumFeature.automaticBackup);
+
+  @override
   QuotaAccess canCreateMaterial(int currentCount) =>
       _quotaAccess(currentCount, materialLimit);
 
@@ -362,6 +369,7 @@ class DefaultPremiumAccessPolicy implements PremiumAccessPolicy {
       PremiumFeature.saveToHistory => UpsellSurface.historyTab,
       PremiumFeature.csvMaterialImport => UpsellSurface.materialsTab,
       PremiumFeature.stockTracking => UpsellSurface.stockTracking,
+      PremiumFeature.automaticBackup => UpsellSurface.automaticBackup,
     };
   }
 }
