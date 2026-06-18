@@ -234,10 +234,14 @@ class BackupRestoreService {
       (raw as Map).map((k, v) => MapEntry(k.toString(), v));
   List<PrinterModel> _parsePrinters(Object? raw) {
     final items = _strictListOfMaps(raw);
+    final seenIds = <String>{};
     return items.map((e) {
       final id = e['id']?.toString() ?? '';
       if (id.trim().isEmpty) {
         throw FormatException('Printer entry missing required id');
+      }
+      if (!seenIds.add(id)) {
+        throw FormatException('Duplicate printer entry id: $id');
       }
       return PrinterModel.fromMap(e, id);
     }).toList();
@@ -245,10 +249,14 @@ class BackupRestoreService {
 
   List<MaterialModel> _parseMaterials(Object? raw) {
     final items = _strictListOfMaps(raw);
+    final seenIds = <String>{};
     return items.map((e) {
       final id = e['id']?.toString() ?? '';
       if (id.trim().isEmpty) {
         throw FormatException('Material entry missing required id');
+      }
+      if (!seenIds.add(id)) {
+        throw FormatException('Duplicate material entry id: $id');
       }
       return MaterialModel.fromMap(e, id);
     }).toList();

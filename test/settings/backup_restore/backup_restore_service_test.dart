@@ -529,6 +529,146 @@ void main() {
     );
   });
 
+  test('rejects restore when printer list contains duplicate ids', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .record('keep')
+        .put(
+          db,
+          const PrinterModel(
+            id: 'keep',
+            name: 'Keep',
+            bedSize: '220 x 220',
+            wattage: '200',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.printers.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [
+          {
+            'id': 'printerA',
+            'name': 'A',
+            'bedSize': '220 x 220',
+            'wattage': '200',
+            'archived': false,
+          },
+          {
+            'id': 'printerA',
+            'name': 'A duplicate',
+            'bedSize': '300 x 300',
+            'wattage': '400',
+            'archived': false,
+          },
+        ],
+        'materials': [],
+        'history': [],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(
+        isA<FormatException>().having(
+          (e) => e.message,
+          'message',
+          contains('Duplicate printer entry id'),
+        ),
+      ),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.printers.name).count(db),
+      beforeCount,
+    );
+  });
+
+  test('rejects restore when material list contains duplicate ids', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await stringMapStoreFactory
+        .store(DBName.materials.name)
+        .record('keep')
+        .put(
+          db,
+          const MaterialModel(
+            id: 'keep',
+            name: 'Keep',
+            cost: '30',
+            color: '',
+            weight: '0',
+            materialType: 'PLA',
+            archived: false,
+          ).toMap(),
+        );
+
+    final beforeCount = await stringMapStoreFactory
+        .store(DBName.materials.name)
+        .count(db);
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': GeneralSettingsModel.initial().toMap(),
+        'printers': [],
+        'materials': [
+          {
+            'id': 'matX',
+            'name': 'X',
+            'cost': '25',
+            'color': '',
+            'weight': '0',
+            'materialType': 'PLA',
+            'archived': false,
+          },
+          {
+            'id': 'matX',
+            'name': 'X duplicate',
+            'cost': '30',
+            'color': '',
+            'weight': '0',
+            'materialType': 'ABS',
+            'archived': false,
+          },
+        ],
+        'history': [],
+      },
+    });
+
+    await expectLater(
+      service.restoreBackupJson(backup),
+      throwsA(
+        isA<FormatException>().having(
+          (e) => e.message,
+          'message',
+          contains('Duplicate material entry id'),
+        ),
+      ),
+    );
+    expect(
+      await stringMapStoreFactory.store(DBName.materials.name).count(db),
+      beforeCount,
+    );
+  });
+
   test('restores backup by replacing existing local data', () async {
     final container = await _container();
     addTearDown(container.dispose);
