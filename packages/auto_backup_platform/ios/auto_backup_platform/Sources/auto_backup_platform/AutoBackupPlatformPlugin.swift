@@ -108,18 +108,22 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
       }
       try withScopedFolder(args["accessToken"] as? String ?? "") { folder in
         let fileURL = folder.appendingPathComponent(fileName)
-        // Delete existing file so re-save to same folder overwrites cleanly
-        // rather than creating a duplicate or leaving stale content.
-        if FileManager.default.fileExists(atPath: fileURL.path) {
-          try FileManager.default.removeItem(at: fileURL)
-        }
+        let tempURL = folder.appendingPathComponent(".\(fileName).\(UUID().uuidString).tmp")
+        defer { try? FileManager.default.removeItem(at: tempURL) }
         guard FileManager.default.createFile(
-          atPath: fileURL.path,
+          atPath: tempURL.path,
           contents: contents,
           attributes: nil
         ) else {
           throw PluginError(code: "write_failed", message: "Failed to create file")
         }
+        // Atomic replace: temp file written and verified, now swap
+        _ = try FileManager.default.replaceItemAt(
+          fileURL,
+          withItemAt: tempURL,
+          backupItemName: nil,
+          options: []
+        )
       }
       result(["ok": true, "displayLabel": args["displayLabel"] ?? "", "fileName": fileName])
     } catch let error as PluginError {
