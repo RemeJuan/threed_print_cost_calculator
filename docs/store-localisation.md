@@ -11,7 +11,7 @@ All store metadata lives in `fastlane/metadata/` as plain text files tracked in 
 ```
 fastlane/metadata/
   ios/             # App Store Connect metadata (deliver)
-    en-US/         # English (reference)
+    en-GB/         # English (reference / default ASC locale)
     de-DE/         # German
     pt-BR/         # Portuguese (Brazil)
     es-ES/         # Spanish (Spain)
@@ -19,7 +19,7 @@ fastlane/metadata/
     it/            # Italian
     ja/            # Japanese
   android/         # Google Play metadata (supply)
-    en-US/         # English (reference)
+    en-GB/         # English (reference)
     de-DE/
     pt-BR/
     es-ES/
@@ -45,6 +45,9 @@ fastlane/metadata/
 | `support_url.txt` | Support URL | Yes |
 | `marketing_url.txt` | Marketing URL | No |
 | `privacy_url.txt` | Privacy policy URL | Yes (if app uses) |
+
+Notes:
+- Every iOS `description.txt` must retain the App Store standard EULA link: `EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/`
 
 ### Android (`fastlane/metadata/android/<locale>/`)
 
@@ -122,9 +125,9 @@ Use the project command:
 
 What it does:
 
-- reads English source metadata from `fastlane/metadata/ios/en-US/` and `fastlane/metadata/android/en-US/`
+- reads English source metadata from `fastlane/metadata/ios/en-GB/` and `fastlane/metadata/android/en-GB/`
 - updates non-English locale files in `fastlane/metadata/` — including `name.txt`, `subtitle.txt`, `description.txt`, `keywords.txt`, `release_notes.txt` (iOS) and `title.txt`, `short_description.txt`, `full_description.txt`, `changelogs/*.txt` (Android)
-- for Android changelogs: English source directory is the only source of truth — update `en-US/changelogs/default.txt` and sync the same `default.txt` into every Android locale
+- for Android changelogs: English source directory is the only source of truth — update `en-GB/changelogs/default.txt` and sync the same `default.txt` into every Android locale
 - runs `./scripts/validate_metadata.sh`
 - creates a git commit for translation changes only
 
@@ -166,9 +169,8 @@ Or use scripts directly:
 ```
 
 **What gets pushed:**
-- iOS metadata lane: full metadata, including `release_notes.txt` from the `en-US/` upload folder — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
-- iOS metadata lane: full metadata, including `release_notes.txt` from the `default/` upload folder — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
-- iOS changelog lane: `release_notes.txt` only from the `default/` upload folder — useful when only What's New changes
+- iOS metadata lane: full metadata, including `release_notes.txt`, uploaded from real locale folders (`en-GB/`, `de-DE/`, etc.) — no binary (`skip_binary_upload`), no screenshots (`skip_screenshots`)
+- iOS changelog lane: `release_notes.txt` only from real locale folders — useful when only What's New changes
 - Android: metadata only — no APK/AAB (`skip_upload_apk`, `skip_upload_aab`), no images (`skip_upload_images`), includes changelogs
 - Android changelog lane: `changelogs/default.txt` only — title/short/full description and screenshots stay untouched
 
@@ -241,8 +243,8 @@ make metadata_push_android
 
 1. Copy the English reference folder:
    ```bash
-   cp -r fastlane/metadata/ios/en fastlane/metadata/ios/<new-locale>
-   cp -r fastlane/metadata/android/en-US fastlane/metadata/android/<new-locale-android>
+   cp -r fastlane/metadata/ios/en-GB fastlane/metadata/ios/<new-locale>
+   cp -r fastlane/metadata/android/en-GB fastlane/metadata/android/<new-locale-android>
    ```
 2. Replace content with translations (remove the placeholder prefix)
 3. Update the validation script's locale arrays
@@ -333,12 +335,12 @@ fastlane/screenshots/
     android/            # Android screenshots (same filenames, native ratio)
       ...
   copy/                 # Per-locale heading text (segment arrays)
-    en-US.yaml
+    en-GB.yaml
     de-DE.yaml
     ...
   output/               # Generated PNG — gitignored
     6.5/
-      en-US/
+      en-GB/
         batch_quotes.png
         calculator_free.png
         ...
@@ -383,7 +385,7 @@ formats:
 Each locale file uses multi-segment headings for two-tone primary/accent styling:
 
 ```yaml
-locale: en-US
+locale: en-GB
 name: "3D Print Cost Calculator"      # optional iOS name.txt; omitted → not generated
 screenshots:
   - asset: batch_quotes
@@ -426,7 +428,7 @@ make generate_screenshots_android  # Android only
 Or directly:
 
 ```bash
-python3 scripts/generate_screenshots.py --formats ios --locale en-US
+python3 scripts/generate_screenshots.py --formats ios --locale en-GB
 ```
 
 The script:

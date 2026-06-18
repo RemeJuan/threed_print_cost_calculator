@@ -227,6 +227,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Exportar",
+  "scheduleAutomaticBackupButton": "Programar copia de seguridad automática",
+  "automaticBackupDailyLabel": "Diaria",
+  "automaticBackupWeeklyLabel": "Semanal",
+  "automaticBackupMonthlyLabel": "Mensual",
+  "automaticBackupNote": "Las copias de seguridad automáticas se ejecutan en segundo plano cuando tu dispositivo lo permite. El sistema operativo puede retrasar o impedir las copias de seguridad programadas.",
+  "automaticBackupStatusPending": "Pendiente",
+  "automaticBackupStatusSuccess": "Correcta",
+  "automaticBackupStatusFailure": "Fallida",
+  "automaticBackupScheduleSuccess": "Copia de seguridad automática programada",
+  "automaticBackupScheduleError": "No se pudo programar la copia de seguridad automática",
+  "automaticBackupStatusLabel": "Copia de seguridad automática: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },
@@ -839,6 +857,16 @@
   "helpSupportFaqPremiumAnswer": "Free incluye todo lo necesario para calcular los costes de impresión, incluyendo electricidad, impresiones multimaterial, importación de G-code y cálculo por lotes.\n\nPremium añade herramientas de precios avanzadas como mano de obra, riesgo de fallo, margen, tarifas de configuración, desgloses detallados de costes, almacenamiento ilimitado de datos y seguimiento del inventario de filamento.",
   "helpSupportFaqPremiumUpgradeCta": "Mejorar a Premium",
   "helpSupportFaqPremiumComparisonCta": "Ver comparativa completa →",
+  "dataBackupRestoreHeader": "Datos / Copia de seguridad y restauración",
+  "dataBackupRestoreBody": "Las copias de seguridad incluyen la configuración local de la aplicación, impresoras, materiales y datos guardados. Las compras no están incluidas.",
+  "dataBackupExportButton": "Exportar copia de seguridad",
+  "dataBackupRestoreButton": "Restaurar copia de seguridad",
+  "dataBackupRestoreConfirmTitle": "¿Restaurar copia de seguridad?",
+  "dataBackupRestoreConfirmBody": "Restaurar una copia de seguridad puede reemplazar tus datos locales actuales. ¿Continuar?",
+  "dataBackupExportSuccess": "Copia de seguridad exportada",
+  "dataBackupExportError": "Error al exportar la copia de seguridad",
+  "dataBackupRestoreSuccess": "Copia de seguridad restaurada",
+  "dataBackupRestoreError": "Error al restaurar la copia de seguridad",
   "settingsPremiumCardTitle": "Mejorar a Premium",
   "settingsPremiumCardBody": "Herramientas avanzadas de precios, uso ilimitado y seguimiento de inventario.",
   "settingsPremiumCardCta": "Mejorar",

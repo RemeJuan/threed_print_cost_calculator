@@ -425,6 +425,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportButton => 'Export';
 
   @override
+  String get scheduleAutomaticBackupButton => 'Schedule automatic backup';
+
+  @override
+  String get automaticBackupDailyLabel => 'Daily';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Weekly';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Monthly';
+
+  @override
+  String get automaticBackupNote =>
+      'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.';
+
+  @override
+  String get automaticBackupStatusPending => 'Pending';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Success';
+
+  @override
+  String get automaticBackupStatusFailure => 'Failed';
+
+  @override
+  String get automaticBackupScheduleSuccess => 'Automatic backup scheduled';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'Could not schedule automatic backup';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Automatic backup: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Privacy Policy';
 
   @override
@@ -1849,6 +1890,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helpSupportFaqPremiumComparisonCta => 'View full comparison →';
+
+  @override
+  String get dataBackupRestoreHeader => 'Data / Backup & Restore';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Backups include your local app settings, printers, materials, and saved data. Purchases are not included.';
+
+  @override
+  String get dataBackupExportButton => 'Export backup';
+
+  @override
+  String get dataBackupRestoreButton => 'Restore backup';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Restore backup?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Restoring a backup may replace your current local data. Continue?';
+
+  @override
+  String get dataBackupExportSuccess => 'Backup exported';
+
+  @override
+  String get dataBackupExportError => 'Backup export failed';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Backup restored';
+
+  @override
+  String get dataBackupRestoreError => 'Backup restore failed';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Upgrade to Premium';

@@ -41,16 +41,12 @@ def stage_ios_screenshots_upload
   UI.user_error!("Missing iOS screenshots output: #{source_dir}") unless Dir.exist?(source_dir)
 
   staging_dir = Dir.mktmpdir("ios-screenshots-upload-")
-  locale_map = {
-    "en-US" => "en-GB"
-  }
 
   Dir.children(source_dir).sort.each do |locale|
     locale_src = File.join(source_dir, locale)
     next unless File.directory?(locale_src)
 
-    app_store_locale = locale_map.fetch(locale, locale)
-    locale_dst = File.join(staging_dir, app_store_locale)
+    locale_dst = File.join(staging_dir, locale)
     FileUtils.mkdir_p(locale_dst)
 
     by_asset = Dir.glob(File.join(locale_src, "*.png")).each_with_object({}) do |path, memo|
@@ -78,11 +74,24 @@ def stage_android_screenshots_upload
   UI.user_error!("Missing Android screenshots output: #{source_dir}") unless Dir.exist?(source_dir)
 
   staging_dir = Dir.mktmpdir("android-screenshots-upload-")
-  locales = Dir.children(source_dir).sort.select { |entry| File.directory?(File.join(source_dir, entry)) }
+  copy_dir = File.expand_path("screenshots/copy", __dir__)
+  configured_locales = Dir.glob(File.join(copy_dir, "*.{yaml,yml}")).map do |path|
+    File.basename(path, ".yaml")
+  end
+  locales = Dir.children(source_dir).sort.select do |entry|
+    File.directory?(File.join(source_dir, entry)) && configured_locales.include?(entry)
+  end
+  skipped_locales = Dir.children(source_dir).sort.select do |entry|
+    File.directory?(File.join(source_dir, entry)) && !configured_locales.include?(entry)
+  end
   screenshot_types = %w[phoneScreenshots sevenInchScreenshots tenInchScreenshots]
   locale_map = {
     "it" => "it-IT"
   }
+
+  skipped_locales.each do |locale|
+    UI.important("Skipping stale Android screenshot locale '#{locale}' (no matching copy YAML)")
+  end
 
   locales.each do |locale|
     play_locale = locale_map.fetch(locale, locale)
@@ -193,8 +202,9 @@ platform :ios do
   ################################################################
   # Push local metadata changes to App Store Connect.
   #
-  # en-GB is the default ASC locale — its content comes from en-US files
-  # (no separate en-GB folder; content is identical).
+  # en-GB is the default ASC locale.
+  # Repo source lives in metadata/ios/en-GB and is uploaded as the
+  # real `en-GB` locale directory.
   # All 6 non-default locales pushed as subdirectories.
   ################################################################
   desc "Push metadata to App Store Connect (no binary, no screenshots)"
@@ -203,7 +213,7 @@ platform :ios do
     ios_push_locales = %w[de-DE pt-BR es-ES fr-FR it ja]
     check_no_untranslated(
       File.expand_path("metadata/ios", __dir__),
-      %w[en-US de-DE pt-BR es-ES fr-FR it ja],
+      %w[en-GB de-DE pt-BR es-ES fr-FR it ja],
       %w[name.txt subtitle.txt description.txt keywords.txt release_notes.txt]
     )
     key = api_key
@@ -211,9 +221,9 @@ platform :ios do
     push_dir = File.expand_path("metadata/ios_push", __dir__)
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
-    # Default ASC metadata lives in the special `default` folder.
-    en_gb_src = File.join(metadata_dir, "en-US")
-    en_gb_dst = File.join(push_dir, "default")
+    # Primary ASC metadata lives in the real en-GB locale folder.
+    en_gb_src = File.join(metadata_dir, "en-GB")
+    en_gb_dst = File.join(push_dir, "en-GB")
     if Dir.exist?(en_gb_src)
       FileUtils.mkdir_p(en_gb_dst)
       Dir.glob(File.join(en_gb_src, "*")).each do |f|
@@ -274,12 +284,12 @@ platform :ios do
     FileUtils.rm_rf(push_dir) if Dir.exist?(push_dir)
     FileUtils.mkdir_p(push_dir)
 
-    # Default ASC release notes live in the special `default` folder.
-    en_us_release_notes = File.join(metadata_dir, "en-US", "release_notes.txt")
-    UI.user_error!("Missing #{en_us_release_notes}") unless File.exist?(en_us_release_notes)
-    en_gb_dst = File.join(push_dir, "default")
+    # Primary ASC release notes live in the real en-GB locale folder.
+    en_gb_release_notes = File.join(metadata_dir, "en-GB", "release_notes.txt")
+    UI.user_error!("Missing #{en_gb_release_notes}") unless File.exist?(en_gb_release_notes)
+    en_gb_dst = File.join(push_dir, "en-GB")
     FileUtils.mkdir_p(en_gb_dst)
-    FileUtils.cp(en_us_release_notes, File.join(en_gb_dst, "release_notes.txt"))
+    FileUtils.cp(en_gb_release_notes, File.join(en_gb_dst, "release_notes.txt"))
 
     ios_push_locales.each do |locale|
       src = File.join(metadata_dir, locale, "release_notes.txt")
@@ -367,13 +377,29 @@ platform :android do
   desc "Push metadata to Google Play Console (no APK)"
   lane :metadata_push do |options|
     check_android_creds
+    track = options[:track] || ENV["METADATA_TRACK"] || "open_testing"
+    track = "beta" if %w[open_testing open-testing open testing].include?(track.to_s.downcase.tr(" ", "_"))
+    version_code = options[:version_code] || ENV["VERSION_CODE"]
+
+    if version_code.to_s.strip.empty?
+      version_codes = google_play_track_version_codes(
+        package_name: "com.threed_print_calculator",
+        track: track
+      )
+      version_code = version_codes.compact.max
+    end
+
+    UI.user_error!("version_code is required") if version_code.to_s.strip.empty?
+
     check_no_untranslated(
       File.expand_path("metadata/android", __dir__),
-      %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
+      %w[en-GB de-DE pt-BR es-ES fr-FR it-IT ja-JP],
       %w[title.txt short_description.txt full_description.txt changelogs/default.txt]
     )
     supply(
       package_name: "com.threed_print_calculator",
+      track: track,
+      version_code: version_code,
       skip_upload_apk: true,
       skip_upload_aab: true,
       skip_upload_metadata: false,
@@ -409,7 +435,7 @@ platform :android do
 
     check_no_untranslated(
       File.expand_path("metadata/android", __dir__),
-      %w[en-US de-DE pt-BR es-ES fr-FR it-IT ja-JP],
+      %w[en-GB de-DE pt-BR es-ES fr-FR it-IT ja-JP],
       %w[changelogs/default.txt]
     )
 
@@ -444,7 +470,8 @@ platform :android do
         skip_upload_images: true,
         skip_upload_screenshots: false,
         skip_upload_changelogs: true,
-        metadata_path: staging_dir
+        metadata_path: staging_dir,
+        sync_image_upload: true
       )
     ensure
       FileUtils.rm_rf(staging_dir) if Dir.exist?(staging_dir)

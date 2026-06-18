@@ -10,11 +10,11 @@ if [[ "$TRACK_NORMALIZED" == "open_testing" || "$TRACK_NORMALIZED" == "open-test
 fi
 
 echo "==> Changelog diff (files to be pushed):"
-git diff --stat -- 'fastlane/metadata/android/*/changelogs/default.txt'
+git --no-pager diff --stat -- 'fastlane/metadata/android/*/changelogs/default.txt'
 
 echo ""
 echo "==> Pushing Android changelogs to Google Play Console (${TRACK} track)..."
-bundle exec fastlane android changelog_push track:"${TRACK}"
+CI=1 EDITOR=true VISUAL=true GIT_EDITOR=true bundle exec fastlane android changelog_push track:"${TRACK}"
 
 echo ""
 echo "==> Android changelogs uploaded."

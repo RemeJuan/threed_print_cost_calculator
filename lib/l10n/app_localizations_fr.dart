@@ -430,6 +430,49 @@ class AppLocalizationsFr extends AppLocalizations {
   String get exportButton => 'Exporter';
 
   @override
+  String get scheduleAutomaticBackupButton =>
+      'Planifier la sauvegarde automatique';
+
+  @override
+  String get automaticBackupDailyLabel => 'Quotidienne';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Hebdomadaire';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Mensuelle';
+
+  @override
+  String get automaticBackupNote =>
+      'Les sauvegardes automatiques s\'exécutent en arrière-plan lorsque votre appareil le permet. Le système d\'exploitation peut retarder ou empêcher les sauvegardes planifiées.';
+
+  @override
+  String get automaticBackupStatusPending => 'En attente';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Réussie';
+
+  @override
+  String get automaticBackupStatusFailure => 'Échouée';
+
+  @override
+  String get automaticBackupScheduleSuccess =>
+      'Sauvegarde automatique planifiée';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'Impossible de planifier la sauvegarde automatique';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Sauvegarde automatique : $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Politique de confidentialité';
 
   @override
@@ -1888,6 +1931,42 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Voir la comparaison complète →';
+
+  @override
+  String get dataBackupRestoreHeader => 'Données / Sauvegarde et restauration';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Les sauvegardes incluent les paramètres locaux de l’application, les imprimantes, les matériaux et les données enregistrées. Les achats ne sont pas inclus.';
+
+  @override
+  String get dataBackupExportButton => 'Exporter la sauvegarde';
+
+  @override
+  String get dataBackupRestoreButton => 'Restaurer la sauvegarde';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Restaurer la sauvegarde ?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'La restauration d’une sauvegarde peut remplacer vos données locales actuelles. Continuer ?';
+
+  @override
+  String get dataBackupExportSuccess => 'Sauvegarde exportée';
+
+  @override
+  String get dataBackupExportError => 'Échec de l’exportation de la sauvegarde';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Sauvegarde restaurée';
+
+  @override
+  String get dataBackupRestoreError =>
+      'Échec de la restauration de la sauvegarde';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Passer à Premium';

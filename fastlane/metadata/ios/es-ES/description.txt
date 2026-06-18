@@ -48,3 +48,5 @@ Privacidad primero:
 • Sus datos permanecen en su dispositivo
 
 Diseñado para seguir siendo simple por fuera y preciso por dentro.
+
+EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

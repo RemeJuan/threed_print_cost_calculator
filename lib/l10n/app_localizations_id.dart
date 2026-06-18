@@ -425,6 +425,47 @@ class AppLocalizationsId extends AppLocalizations {
   String get exportButton => 'Ekspor';
 
   @override
+  String get scheduleAutomaticBackupButton => 'Jadwalkan cadangan otomatis';
+
+  @override
+  String get automaticBackupDailyLabel => 'Harian';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Mingguan';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Bulanan';
+
+  @override
+  String get automaticBackupNote =>
+      'Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Sistem operasi dapat menunda atau mencegah cadangan terjadwal.';
+
+  @override
+  String get automaticBackupStatusPending => 'Tertunda';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Berhasil';
+
+  @override
+  String get automaticBackupStatusFailure => 'Gagal';
+
+  @override
+  String get automaticBackupScheduleSuccess => 'Cadangan otomatis dijadwalkan';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'Tidak dapat menjadwalkan cadangan otomatis';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Cadangan otomatis: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Kebijakan Privasi';
 
   @override
@@ -1839,6 +1880,41 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Lihat perbandingan lengkap →';
+
+  @override
+  String get dataBackupRestoreHeader => 'Data / Cadangkan & Pulihkan';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Cadangan mencakup pengaturan aplikasi lokal, printer, material, dan data tersimpan Anda. Pembelian tidak termasuk.';
+
+  @override
+  String get dataBackupExportButton => 'Ekspor cadangan';
+
+  @override
+  String get dataBackupRestoreButton => 'Pulihkan cadangan';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Pulihkan cadangan?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Memulihkan cadangan dapat menggantikan data lokal Anda saat ini. Lanjutkan?';
+
+  @override
+  String get dataBackupExportSuccess => 'Cadangan diekspor';
+
+  @override
+  String get dataBackupExportError => 'Ekspor cadangan gagal';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Cadangan dipulihkan';
+
+  @override
+  String get dataBackupRestoreError => 'Pemulihan cadangan gagal';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Tingkatkan ke Premium';

@@ -21,6 +21,7 @@ Options:
 
 import argparse
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -440,6 +441,13 @@ def generate(
 
         fmt_cfg = layout_formats[fmt]
         fmt_assets = fmt_cfg["assets"]
+        fmt_output = output_dir / fmt
+
+        if locales:
+            for locale in copy_data:
+                shutil.rmtree(fmt_output / locale, ignore_errors=True)
+        else:
+            shutil.rmtree(fmt_output, ignore_errors=True)
 
         for locale, data in copy_data.items():
             _validate_copy(data, copy_paths[locale], fmt_assets)

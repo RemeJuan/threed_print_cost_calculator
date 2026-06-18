@@ -1,7 +1,7 @@
 Gratisversion erweitert.
 
-* Multimaterial-Kalkulation und G-Code-Import für einzelne Drucke sind jetzt in der Gratisversion verfügbar
-* Die Gratisversion umfasst jetzt bis zu 5 Materialien, 2 Druckerprofile, 7 Verlaufseinträge und manuelle Stapelkalkulation für 3 Positionen
-* Premium konzentriert sich jetzt auf erweiterte Preiswerkzeuge, Stapel-Workflows, Inventarverfolgung, Exporte und unbegrenzte Nutzung
-* Optionale Durchschnittswattzahl für genauere Stromkostenschätzungen
-* Ergebnisse und Verlauf zeigen jetzt, ob Nenn- oder Durchschnittswattzahl verwendet wurde
+* Multimaterial und Einzel-G-Code jetzt gratis
+* Gratis: 5 Materialien, 2 Druckerprofile, 7 Verläufe, manuelle Stapel für 3 Positionen
+* Premium fokussiert nun Preiswerkzeuge, Batch-Workflows, Inventar, Exporte und unbegrenzte Nutzung
+* Optionale Durchschnittswattzahl für genauere Stromkosten
+* Ergebnisse und Verlauf zeigen Nenn- oder Durchschnittswattzahl

@@ -48,3 +48,5 @@ Confidentialité avant tout :
 • Vos données restent sur votre appareil
 
 Conçu pour rester simple en surface tout en restant précis en profondeur.
+
+EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

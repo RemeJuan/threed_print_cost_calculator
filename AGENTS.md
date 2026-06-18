@@ -59,8 +59,8 @@
 - Prefer passing localized strings into pure helpers rather than reading localisation state inside them.
 
 ## Store metadata (App Store / Play Store)
-- English source files live in `fastlane/metadata/ios/en-US/` and `fastlane/metadata/android/en-US/`
-- iOS push locale: en-GB (default ASC locale; content sourced from `fastlane/metadata/ios/en-US/`)
+- English source files live in `fastlane/metadata/ios/en-GB/` and `fastlane/metadata/android/en-GB/`
+- iOS push locale: en-GB (default ASC locale; content sourced from `fastlane/metadata/ios/en-GB/`)
 - Android changelogs use `default.txt` per locale — non-English locale `default.txt` files are updated during translation sync
 - Run `/metadata-translate` to sync non-English translations from English source (no store push)
 - Run `make metadata_push_ios` / `make metadata_push_android` to push to stores

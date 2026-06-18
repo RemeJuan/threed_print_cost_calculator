@@ -48,3 +48,5 @@ Privacy-first by design:
 • Your data stays on your device
 
 Designed to stay simple on the surface while remaining accurate underneath.
+
+EULA: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/

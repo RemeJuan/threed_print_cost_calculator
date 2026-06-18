@@ -1,7 +1,7 @@
 Plano gratuito ampliado.
 
-* O custeio multimaterial e a importação de G-code para uma única impressão agora estão no plano gratuito
-* O plano gratuito agora inclui até 5 materiais, 2 perfis de impressora, 7 entradas no histórico e custeio manual em lote para 3 itens
-* O Premium agora foca em ferramentas avançadas de precificação, fluxos em lote, controle de inventário, exportações e uso ilimitado
-* Adicione potência média opcional para estimativas de eletricidade mais precisas
-* Resultados e histórico agora mostram se foi usada a potência nominal ou média
+* Custeio multimaterial e G-code de peça única agora são grátis
+* Grátis: até 5 materiais, 2 perfis, 7 históricos e lote manual para 3 itens
+* Premium agora foca em precificação avançada, fluxos em lote, inventário, exportações e uso ilimitado
+* Potência média opcional para estimativas de eletricidade mais precisas
+* Resultados e histórico mostram potência nominal ou média

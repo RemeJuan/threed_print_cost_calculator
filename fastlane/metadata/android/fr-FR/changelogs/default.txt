@@ -1,7 +1,7 @@
 Plan gratuit élargi.
 
-* Le calcul multi-matériaux et l'import de G-code pour une impression unique sont maintenant inclus dans le plan gratuit
-* Le plan gratuit comprend maintenant jusqu'à 5 matériaux, 2 profils d'imprimante, 7 entrées d'historique et le calcul manuel par lot pour 3 éléments
-* Premium se concentre désormais sur les outils de tarification avancés, les flux par lot, le suivi d'inventaire, les exports et l'utilisation illimitée
-* Ajoutez une puissance moyenne en option pour des estimations d'électricité plus précises
-* Les résultats et l'historique indiquent maintenant si la puissance nominale ou moyenne a été utilisée
+* Le calcul multi-matériaux et le G-code unitaire sont maintenant gratuits
+* Gratuit : jusqu'à 5 matériaux, 2 profils, 7 historiques et lots manuels pour 3 éléments
+* Premium vise désormais la tarification avancée, les lots, l'inventaire, les exports et l'illimité
+* Puissance moyenne en option pour des estimations d'électricité plus précises
+* Résultats et historique affichent la puissance nominale ou moyenne

@@ -1,7 +1,7 @@
 Plan gratuito ampliado.
 
-* El cálculo multimaterial y la importación de G-code para una sola impresión ya están en el plan Gratis
-* El plan Gratis ahora incluye hasta 5 materiales, 2 perfiles de impresora, 7 entradas de historial y cálculo manual por lotes para 3 elementos
-* Premium ahora se centra en herramientas avanzadas de precios, flujos por lotes, seguimiento de inventario, exportaciones y uso ilimitado
-* Añada vatios promedio opcionales para estimaciones de electricidad más precisas
-* Los resultados y el historial ahora muestran si se usaron vatios nominales o promedio
+* El cálculo multimaterial y el G-code individual ya son gratis
+* Gratis: hasta 5 materiales, 2 perfiles, 7 historiales y lotes manuales para 3 elementos
+* Premium ahora se centra en precios avanzados, flujos por lotes, inventario, exportaciones y uso ilimitado
+* Vatios medios opcionales para estimaciones eléctricas más precisas
+* Resultados e historial muestran vatios nominales o medios

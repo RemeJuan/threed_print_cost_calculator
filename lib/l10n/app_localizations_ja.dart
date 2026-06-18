@@ -416,6 +416,46 @@ class AppLocalizationsJa extends AppLocalizations {
   String get exportButton => 'エクスポート';
 
   @override
+  String get scheduleAutomaticBackupButton => '自動バックアップを設定';
+
+  @override
+  String get automaticBackupDailyLabel => '毎日';
+
+  @override
+  String get automaticBackupWeeklyLabel => '毎週';
+
+  @override
+  String get automaticBackupMonthlyLabel => '毎月';
+
+  @override
+  String get automaticBackupNote =>
+      '自動バックアップは、デバイスが許可している場合にバックグラウンドで実行されます。オペレーティングシステムにより、予定されたバックアップが遅延または実行されないことがあります。';
+
+  @override
+  String get automaticBackupStatusPending => '保留中';
+
+  @override
+  String get automaticBackupStatusSuccess => '成功';
+
+  @override
+  String get automaticBackupStatusFailure => '失敗';
+
+  @override
+  String get automaticBackupScheduleSuccess => '自動バックアップを設定しました';
+
+  @override
+  String get automaticBackupScheduleError => '自動バックアップを設定できませんでした';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return '自動バックアップ: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'プライバシーポリシー';
 
   @override
@@ -1790,6 +1830,41 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get helpSupportFaqPremiumComparisonCta => '完全な比較を見る →';
+
+  @override
+  String get dataBackupRestoreHeader => 'データ / バックアップと復元';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'バックアップには、ローカルのアプリ設定、プリンター、材料、保存データが含まれます。購入情報は含まれません。';
+
+  @override
+  String get dataBackupExportButton => 'バックアップを書き出す';
+
+  @override
+  String get dataBackupRestoreButton => 'バックアップを復元';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'バックアップを復元しますか？';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'バックアップを復元すると、現在のローカルデータが置き換えられる場合があります。続行しますか？';
+
+  @override
+  String get dataBackupExportSuccess => 'バックアップを書き出しました';
+
+  @override
+  String get dataBackupExportError => 'バックアップの書き出しに失敗しました';
+
+  @override
+  String get dataBackupRestoreSuccess => 'バックアップを復元しました';
+
+  @override
+  String get dataBackupRestoreError => 'バックアップの復元に失敗しました';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Premiumにアップグレード';

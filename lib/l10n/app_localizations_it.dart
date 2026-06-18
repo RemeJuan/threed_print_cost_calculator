@@ -430,6 +430,47 @@ class AppLocalizationsIt extends AppLocalizations {
   String get exportButton => 'Esporta';
 
   @override
+  String get scheduleAutomaticBackupButton => 'Pianifica backup automatico';
+
+  @override
+  String get automaticBackupDailyLabel => 'Giornaliero';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Settimanale';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Mensile';
+
+  @override
+  String get automaticBackupNote =>
+      'I backup automatici vengono eseguiti in background quando il dispositivo lo consente. Il sistema operativo può ritardare o impedire i backup pianificati.';
+
+  @override
+  String get automaticBackupStatusPending => 'In attesa';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Riuscito';
+
+  @override
+  String get automaticBackupStatusFailure => 'Non riuscito';
+
+  @override
+  String get automaticBackupScheduleSuccess => 'Backup automatico pianificato';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'Impossibile pianificare il backup automatico';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Backup automatico: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Informativa sulla privacy';
 
   @override
@@ -1877,6 +1918,41 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Vedi il confronto completo →';
+
+  @override
+  String get dataBackupRestoreHeader => 'Dati / Backup e ripristino';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'I backup includono le impostazioni locali dell\'app, le stampanti, i materiali e i dati salvati. Gli acquisti non sono inclusi.';
+
+  @override
+  String get dataBackupExportButton => 'Esporta backup';
+
+  @override
+  String get dataBackupRestoreButton => 'Ripristina backup';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Ripristinare il backup?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Il ripristino di un backup può sostituire i dati locali attuali. Continuare?';
+
+  @override
+  String get dataBackupExportSuccess => 'Backup esportato';
+
+  @override
+  String get dataBackupExportError => 'Esportazione del backup non riuscita';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Backup ripristinato';
+
+  @override
+  String get dataBackupRestoreError => 'Ripristino del backup non riuscito';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Passa a Premium';
