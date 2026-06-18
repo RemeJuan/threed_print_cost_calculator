@@ -55,9 +55,10 @@ class BackupRestoreSection extends ConsumerWidget {
                   key: const ValueKey('settings.backup.export.button'),
                   onPressed: () async {
                     try {
-                      await ref
+                      final result = await ref
                           .read(backupRestoreServiceProvider)
                           .exportBackup();
+                      if (result.isEmpty) return;
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(l10n.dataBackupExportSuccess)),
@@ -158,6 +159,7 @@ class BackupRestoreSection extends ConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: AppSecondaryButton(
+                key: const ValueKey('settings.backup.schedule.button'),
                 onPressed: () =>
                     _scheduleBackup(context, ref, automaticBackupAccess),
                 label: l10n.scheduleAutomaticBackupButton,
