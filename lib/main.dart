@@ -18,12 +18,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
+import 'package:threed_print_cost_calculator/settings/backup_restore/automatic_backup_callback.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_migration.dart';
 import 'package:threed_print_cost_calculator/startup.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'app/app.dart';
 import 'database/database.dart';
@@ -43,6 +45,8 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     providerApple: AppleAppAttestProvider(),
   );
+
+  await Workmanager().initialize(automaticBackupCallbackDispatcher);
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {

@@ -10,7 +10,7 @@ workflows:
       groups:
         - google_play_credentials # GCLOUD_SERVICE_ACCOUNT_CREDENTIALS for Play publishing.
       vars:
-        FLUTTER_VERSION: 3.41.6 # Matches .fvmrc; update if the app moves Flutter versions.
+        FLUTTER_VERSION: 3.44.1 # Matches .fvmrc; update if the app moves Flutter versions.
     cache:
       cache_paths:
         - $HOME/.pub-cache
@@ -70,7 +70,7 @@ workflows:
       groups:
         - app_store_credentials # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY.
       vars:
-        FLUTTER_VERSION: 3.41.6 # Matches .fvmrc; update if the app moves Flutter versions.
+        FLUTTER_VERSION: 3.44.1 # Matches .fvmrc; update if the app moves Flutter versions.
         BUNDLE_ID: com.threed-print-calculator
     cache:
       cache_paths:
@@ -195,7 +195,7 @@ workflows:
       groups:
         - app_store_credentials # APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY.
       vars:
-        FLUTTER_VERSION: 3.41.6 # Matches .fvmrc; update if the app moves Flutter versions.
+        FLUTTER_VERSION: 3.44.1 # Matches .fvmrc; update if the app moves Flutter versions.
         BUNDLE_ID: com.threed-print-calculator
     cache:
       cache_paths:

@@ -423,6 +423,48 @@ class AppLocalizationsTh extends AppLocalizations {
   String get exportButton => 'ส่งออก';
 
   @override
+  String get scheduleAutomaticBackupButton => 'ตั้งเวลาสำรองข้อมูลอัตโนมัติ';
+
+  @override
+  String get automaticBackupDailyLabel => 'ทุกวัน';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'ทุกสัปดาห์';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'ทุกเดือน';
+
+  @override
+  String get automaticBackupNote =>
+      'การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต ระบบปฏิบัติการอาจเลื่อนเวลาหรือป้องกันการสำรองข้อมูลตามกำหนดได้';
+
+  @override
+  String get automaticBackupStatusPending => 'รอดำเนินการ';
+
+  @override
+  String get automaticBackupStatusSuccess => 'สำเร็จ';
+
+  @override
+  String get automaticBackupStatusFailure => 'ล้มเหลว';
+
+  @override
+  String get automaticBackupScheduleSuccess =>
+      'ตั้งเวลาสำรองข้อมูลอัตโนมัติแล้ว';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'ไม่สามารถตั้งเวลาสำรองข้อมูลอัตโนมัติได้';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'การสำรองข้อมูลอัตโนมัติ: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'นโยบายความเป็นส่วนตัว';
 
   @override
@@ -1832,6 +1874,41 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get helpSupportFaqPremiumComparisonCta => 'ดูการเปรียบเทียบแบบเต็ม →';
+
+  @override
+  String get dataBackupRestoreHeader => 'ข้อมูล / สำรองและกู้คืน';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'ข้อมูลสำรองจะรวมการตั้งค่าแอปในเครื่อง เครื่องพิมพ์ วัสดุ และข้อมูลที่บันทึกไว้ การซื้อจะไม่ถูกรวมไว้';
+
+  @override
+  String get dataBackupExportButton => 'ส่งออกข้อมูลสำรอง';
+
+  @override
+  String get dataBackupRestoreButton => 'กู้คืนข้อมูลสำรอง';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'กู้คืนข้อมูลสำรอง?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'การกู้คืนข้อมูลสำรองอาจแทนที่ข้อมูลในเครื่องปัจจุบันของคุณ ดำเนินการต่อหรือไม่?';
+
+  @override
+  String get dataBackupExportSuccess => 'ส่งออกข้อมูลสำรองแล้ว';
+
+  @override
+  String get dataBackupExportError => 'ส่งออกข้อมูลสำรองไม่สำเร็จ';
+
+  @override
+  String get dataBackupRestoreSuccess => 'กู้คืนข้อมูลสำรองแล้ว';
+
+  @override
+  String get dataBackupRestoreError => 'กู้คืนข้อมูลสำรองไม่สำเร็จ';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'อัปเกรดเป็นพรีเมียม';

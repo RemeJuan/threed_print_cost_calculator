@@ -429,6 +429,49 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportButton => 'Exportar';
 
   @override
+  String get scheduleAutomaticBackupButton =>
+      'Programar copia de seguridad automática';
+
+  @override
+  String get automaticBackupDailyLabel => 'Diaria';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Semanal';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Mensual';
+
+  @override
+  String get automaticBackupNote =>
+      'Las copias de seguridad automáticas se ejecutan en segundo plano cuando tu dispositivo lo permite. El sistema operativo puede retrasar o impedir las copias de seguridad programadas.';
+
+  @override
+  String get automaticBackupStatusPending => 'Pendiente';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Correcta';
+
+  @override
+  String get automaticBackupStatusFailure => 'Fallida';
+
+  @override
+  String get automaticBackupScheduleSuccess =>
+      'Copia de seguridad automática programada';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'No se pudo programar la copia de seguridad automática';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Copia de seguridad automática: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Política de privacidad';
 
   @override
@@ -1875,6 +1918,43 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpSupportFaqPremiumComparisonCta => 'Ver comparativa completa →';
+
+  @override
+  String get dataBackupRestoreHeader =>
+      'Datos / Copia de seguridad y restauración';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Las copias de seguridad incluyen la configuración local de la aplicación, impresoras, materiales y datos guardados. Las compras no están incluidas.';
+
+  @override
+  String get dataBackupExportButton => 'Exportar copia de seguridad';
+
+  @override
+  String get dataBackupRestoreButton => 'Restaurar copia de seguridad';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => '¿Restaurar copia de seguridad?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Restaurar una copia de seguridad puede reemplazar tus datos locales actuales. ¿Continuar?';
+
+  @override
+  String get dataBackupExportSuccess => 'Copia de seguridad exportada';
+
+  @override
+  String get dataBackupExportError => 'Error al exportar la copia de seguridad';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Copia de seguridad restaurada';
+
+  @override
+  String get dataBackupRestoreError =>
+      'Error al restaurar la copia de seguridad';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Mejorar a Premium';

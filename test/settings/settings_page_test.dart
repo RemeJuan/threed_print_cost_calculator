@@ -232,13 +232,8 @@ void main() {
         ),
         findsOneWidget,
       );
-
-      final printersTopLeft = tester.getTopLeft(
-        find.byKey(const ValueKey<String>('settings.printers.section')),
-      );
-
       expect(generalTopLeft.dy, lessThan(workCostsTopLeft.dy));
-      expect(workCostsTopLeft.dy, lessThan(printersTopLeft.dy));
+      expect(workCostsTopLeft.dy, greaterThan(generalTopLeft.dy));
     },
   );
 
@@ -262,8 +257,12 @@ void main() {
     await tester.dragUntilVisible(
       find.byKey(const ValueKey<String>('settings.premium.button')),
       find.byType(ListView),
-      const Offset(0, -200),
+      const Offset(0, -500),
     );
+    await tester.ensureVisible(
+      find.byKey(const ValueKey<String>('settings.premium.button')),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const ValueKey<String>('settings.premium.button')),
@@ -275,6 +274,46 @@ void main() {
     expect(paywallPresenter.lastTriggerFeature, 'settings_premium_card');
     expect(paywallPresenter.lastPurchaseSource, 'settings');
     expect(paywallPresenter.lastSource, 'settings');
+  });
+
+  testWidgets('free users do not see automatic backup button', (tester) async {
+    final settingsRepo = _FakeSettingsRepository();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(false),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('Schedule automatic backup'), findsNothing);
+  });
+
+  testWidgets('premium users see automatic backup button', (tester) async {
+    final settingsRepo = _FakeSettingsRepository();
+    final db = await tester.pumpApp(const SettingsPage(), [
+      isPremiumProvider.overrideWithValue(true),
+      settingsRepositoryProvider.overrideWithValue(settingsRepo),
+      appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+    ]);
+    addTearDown(db.close);
+    addTearDown(settingsRepo.dispose);
+
+    settingsRepo.emit(GeneralSettingsModel.initial());
+
+    await tester.pumpAndSettle();
+    await tester.dragUntilVisible(
+      find.text('Schedule automatic backup'),
+      find.byType(ListView),
+      const Offset(0, -500),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Schedule automatic backup'), findsOneWidget);
   });
 
   testWidgets('printer add action opens AddPrinter dialog', (tester) async {

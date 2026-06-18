@@ -236,6 +236,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Exporter",
+  "scheduleAutomaticBackupButton": "Planifier la sauvegarde automatique",
+  "automaticBackupDailyLabel": "Quotidienne",
+  "automaticBackupWeeklyLabel": "Hebdomadaire",
+  "automaticBackupMonthlyLabel": "Mensuelle",
+  "automaticBackupNote": "Les sauvegardes automatiques s'exécutent en arrière-plan lorsque votre appareil le permet. Le système d'exploitation peut retarder ou empêcher les sauvegardes planifiées.",
+  "automaticBackupStatusPending": "En attente",
+  "automaticBackupStatusSuccess": "Réussie",
+  "automaticBackupStatusFailure": "Échouée",
+  "automaticBackupScheduleSuccess": "Sauvegarde automatique planifiée",
+  "automaticBackupScheduleError": "Impossible de planifier la sauvegarde automatique",
+  "automaticBackupStatusLabel": "Sauvegarde automatique : {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },
@@ -842,6 +860,16 @@
   "helpSupportFaqPremiumAnswer": "Free comprend tout le nécessaire pour calculer les coûts d'impression, y compris l'électricité, les impressions multi-matériaux, l'importation G-code et le calcul par lot.\n\nPremium ajoute des outils de tarification avancés tels que la main-d'œuvre, le risque d'échec, la majoration, les frais de configuration, des analyses de coûts détaillées, un stockage de données illimité et le suivi des stocks de filament.",
   "helpSupportFaqPremiumUpgradeCta": "Passer à Premium",
   "helpSupportFaqPremiumComparisonCta": "Voir la comparaison complète →",
+  "dataBackupRestoreHeader": "Données / Sauvegarde et restauration",
+  "dataBackupRestoreBody": "Les sauvegardes incluent les paramètres locaux de l’application, les imprimantes, les matériaux et les données enregistrées. Les achats ne sont pas inclus.",
+  "dataBackupExportButton": "Exporter la sauvegarde",
+  "dataBackupRestoreButton": "Restaurer la sauvegarde",
+  "dataBackupRestoreConfirmTitle": "Restaurer la sauvegarde ?",
+  "dataBackupRestoreConfirmBody": "La restauration d’une sauvegarde peut remplacer vos données locales actuelles. Continuer ?",
+  "dataBackupExportSuccess": "Sauvegarde exportée",
+  "dataBackupExportError": "Échec de l’exportation de la sauvegarde",
+  "dataBackupRestoreSuccess": "Sauvegarde restaurée",
+  "dataBackupRestoreError": "Échec de la restauration de la sauvegarde",
   "settingsPremiumCardTitle": "Passer à Premium",
   "settingsPremiumCardBody": "Outils de tarification avancés, utilisation illimitée et suivi des stocks.",
   "settingsPremiumCardCta": "Passer",

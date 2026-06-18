@@ -228,6 +228,24 @@
     "description": "Shown when a history export fails"
   },
   "exportButton": "Ekspor",
+  "scheduleAutomaticBackupButton": "Jadwalkan cadangan otomatis",
+  "automaticBackupDailyLabel": "Harian",
+  "automaticBackupWeeklyLabel": "Mingguan",
+  "automaticBackupMonthlyLabel": "Bulanan",
+  "automaticBackupNote": "Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Sistem operasi dapat menunda atau mencegah cadangan terjadwal.",
+  "automaticBackupStatusPending": "Tertunda",
+  "automaticBackupStatusSuccess": "Berhasil",
+  "automaticBackupStatusFailure": "Gagal",
+  "automaticBackupScheduleSuccess": "Cadangan otomatis dijadwalkan",
+  "automaticBackupScheduleError": "Tidak dapat menjadwalkan cadangan otomatis",
+  "automaticBackupStatusLabel": "Cadangan otomatis: {cadence} • {destination} • {result}",
+  "@automaticBackupStatusLabel": {
+    "placeholders": {
+      "cadence": {},
+      "destination": {},
+      "result": {}
+    }
+  },
   "@exportButton": {
     "description": "Label for export action in history list"
   },
@@ -840,6 +858,16 @@
   "helpSupportFaqPremiumAnswer": "Free mencakup semua yang diperlukan untuk menghitung biaya cetak, termasuk listrik, cetakan multi-material, impor G-code, dan penetapan biaya batch.\n\nPremium menambahkan alat penetapan harga lanjutan seperti tenaga kerja, risiko kegagalan, markup, biaya penyiapan, rincian biaya terperinci, penyimpanan data tak terbatas, dan pelacakan inventaris filamen.",
   "helpSupportFaqPremiumUpgradeCta": "Tingkatkan ke Premium",
   "helpSupportFaqPremiumComparisonCta": "Lihat perbandingan lengkap →",
+  "dataBackupRestoreHeader": "Data / Cadangkan & Pulihkan",
+  "dataBackupRestoreBody": "Cadangan mencakup pengaturan aplikasi lokal, printer, material, dan data tersimpan Anda. Pembelian tidak termasuk.",
+  "dataBackupExportButton": "Ekspor cadangan",
+  "dataBackupRestoreButton": "Pulihkan cadangan",
+  "dataBackupRestoreConfirmTitle": "Pulihkan cadangan?",
+  "dataBackupRestoreConfirmBody": "Memulihkan cadangan dapat menggantikan data lokal Anda saat ini. Lanjutkan?",
+  "dataBackupExportSuccess": "Cadangan diekspor",
+  "dataBackupExportError": "Ekspor cadangan gagal",
+  "dataBackupRestoreSuccess": "Cadangan dipulihkan",
+  "dataBackupRestoreError": "Pemulihan cadangan gagal",
   "settingsPremiumCardTitle": "Tingkatkan ke Premium",
   "settingsPremiumCardBody": "Alat penetapan harga lanjutan, penggunaan tanpa batas, dan pelacakan inventaris.",
   "settingsPremiumCardCta": "Tingkatkan",

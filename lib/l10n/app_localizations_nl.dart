@@ -426,6 +426,47 @@ class AppLocalizationsNl extends AppLocalizations {
   String get exportButton => 'Exporteren';
 
   @override
+  String get scheduleAutomaticBackupButton => 'Automatische back-up plannen';
+
+  @override
+  String get automaticBackupDailyLabel => 'Dagelijks';
+
+  @override
+  String get automaticBackupWeeklyLabel => 'Wekelijks';
+
+  @override
+  String get automaticBackupMonthlyLabel => 'Maandelijks';
+
+  @override
+  String get automaticBackupNote =>
+      'Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het besturingssysteem kan geplande back-ups vertragen of voorkomen.';
+
+  @override
+  String get automaticBackupStatusPending => 'In afwachting';
+
+  @override
+  String get automaticBackupStatusSuccess => 'Gelukt';
+
+  @override
+  String get automaticBackupStatusFailure => 'Mislukt';
+
+  @override
+  String get automaticBackupScheduleSuccess => 'Automatische back-up gepland';
+
+  @override
+  String get automaticBackupScheduleError =>
+      'Automatische back-up kon niet worden gepland';
+
+  @override
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  ) {
+    return 'Automatische back-up: $cadence • $destination • $result';
+  }
+
+  @override
   String get privacyPolicyLink => 'Privacybeleid';
 
   @override
@@ -1866,6 +1907,41 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get helpSupportFaqPremiumComparisonCta =>
       'Volledige vergelijking bekijken →';
+
+  @override
+  String get dataBackupRestoreHeader => 'Gegevens / Back-up en herstel';
+
+  @override
+  String get dataBackupRestoreBody =>
+      'Back-ups bevatten je lokale app-instellingen, printers, materialen en opgeslagen gegevens. Aankopen zijn niet inbegrepen.';
+
+  @override
+  String get dataBackupExportButton => 'Back-up exporteren';
+
+  @override
+  String get dataBackupRestoreButton => 'Back-up herstellen';
+
+  @override
+  String get dataBackupRestoreConfirmTitle => 'Back-up herstellen?';
+
+  @override
+  String get dataBackupRestoreConfirmBody =>
+      'Het herstellen van een back-up kan je huidige lokale gegevens vervangen. Doorgaan?';
+
+  @override
+  String get dataBackupExportSuccess => 'Back-up geëxporteerd';
+
+  @override
+  String get dataBackupExportError => 'Exporteren van back-up mislukt';
+
+  @override
+  String get dataBackupRestoreSuccess => 'Back-up hersteld';
+
+  @override
+  String get dataBackupRestoreError => 'Herstellen van back-up mislukt';
+
+  @override
+  String get dataBackupJsonFileTypeLabel => 'JSON';
 
   @override
   String get settingsPremiumCardTitle => 'Upgrade naar Premium';

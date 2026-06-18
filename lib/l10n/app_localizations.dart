@@ -888,6 +888,76 @@ abstract class AppLocalizations {
   /// **'Export'**
   String get exportButton;
 
+  /// No description provided for @scheduleAutomaticBackupButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule automatic backup'**
+  String get scheduleAutomaticBackupButton;
+
+  /// No description provided for @automaticBackupDailyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get automaticBackupDailyLabel;
+
+  /// No description provided for @automaticBackupWeeklyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get automaticBackupWeeklyLabel;
+
+  /// No description provided for @automaticBackupMonthlyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get automaticBackupMonthlyLabel;
+
+  /// No description provided for @automaticBackupNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.'**
+  String get automaticBackupNote;
+
+  /// No description provided for @automaticBackupStatusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get automaticBackupStatusPending;
+
+  /// No description provided for @automaticBackupStatusSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get automaticBackupStatusSuccess;
+
+  /// No description provided for @automaticBackupStatusFailure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get automaticBackupStatusFailure;
+
+  /// No description provided for @automaticBackupScheduleSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup scheduled'**
+  String get automaticBackupScheduleSuccess;
+
+  /// No description provided for @automaticBackupScheduleError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not schedule automatic backup'**
+  String get automaticBackupScheduleError;
+
+  /// No description provided for @automaticBackupStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backup: {cadence} • {destination} • {result}'**
+  String automaticBackupStatusLabel(
+    Object cadence,
+    Object destination,
+    Object result,
+  );
+
   /// No description provided for @privacyPolicyLink.
   ///
   /// In en, this message translates to:
@@ -3406,6 +3476,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View full comparison →'**
   String get helpSupportFaqPremiumComparisonCta;
+
+  /// No description provided for @dataBackupRestoreHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Data / Backup & Restore'**
+  String get dataBackupRestoreHeader;
+
+  /// No description provided for @dataBackupRestoreBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups include your local app settings, printers, materials, and saved data. Purchases are not included.'**
+  String get dataBackupRestoreBody;
+
+  /// No description provided for @dataBackupExportButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Export backup'**
+  String get dataBackupExportButton;
+
+  /// No description provided for @dataBackupRestoreButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup'**
+  String get dataBackupRestoreButton;
+
+  /// No description provided for @dataBackupRestoreConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup?'**
+  String get dataBackupRestoreConfirmTitle;
+
+  /// No description provided for @dataBackupRestoreConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring a backup may replace your current local data. Continue?'**
+  String get dataBackupRestoreConfirmBody;
+
+  /// No description provided for @dataBackupExportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup exported'**
+  String get dataBackupExportSuccess;
+
+  /// No description provided for @dataBackupExportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup export failed'**
+  String get dataBackupExportError;
+
+  /// No description provided for @dataBackupRestoreSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored'**
+  String get dataBackupRestoreSuccess;
+
+  /// No description provided for @dataBackupRestoreError.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restore failed'**
+  String get dataBackupRestoreError;
+
+  /// No description provided for @dataBackupJsonFileTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON'**
+  String get dataBackupJsonFileTypeLabel;
 
   /// No description provided for @settingsPremiumCardTitle.
   ///
