@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import '../../helpers/helpers.dart';
 
 void main() {
   group('AppRefreshNotifier', () {
+    setUp(() async {
+      await setupTest();
+    });
+
     test('refresh() increments state in pure dart context', () {
       // SchedulerBinding unavailable in pure dart test
       // -> falls through to immediate increment
@@ -21,10 +26,8 @@ void main() {
     testWidgets('refresh() during build defers and does not throw', (
       tester,
     ) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          child: _RefreshDuringBuild(key: const Key('refreshDuringBuild')),
-        ),
+      await tester.pumpApp(
+        _RefreshDuringBuild(key: const Key('refreshDuringBuild')),
       );
 
       // No FlutterError about markNeedsBuild/setState during build
@@ -43,12 +46,8 @@ void main() {
     });
 
     testWidgets('multiple refresh() during build coalesce', (tester) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          child: _MultiRefreshDuringBuild(
-            key: const Key('multiRefreshDuringBuild'),
-          ),
-        ),
+      await tester.pumpApp(
+        _MultiRefreshDuringBuild(key: const Key('multiRefreshDuringBuild')),
       );
 
       expect(tester.takeException(), isNull);
