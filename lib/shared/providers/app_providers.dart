@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart';
@@ -29,10 +30,42 @@ final appRefreshProvider = NotifierProvider<AppRefreshNotifier, int>(
 );
 
 class AppRefreshNotifier extends Notifier<int> {
+  bool _refreshQueued = false;
+
   @override
   int build() => 0;
 
-  void refresh() => state++;
+  void refresh() {
+    SchedulerBinding binding;
+    try {
+      binding = SchedulerBinding.instance;
+    } catch (_) {
+      state++;
+      return;
+    }
+
+    final schedulerPhase = binding.schedulerPhase;
+
+    final shouldDefer =
+        schedulerPhase == SchedulerPhase.persistentCallbacks ||
+        schedulerPhase == SchedulerPhase.transientCallbacks ||
+        schedulerPhase == SchedulerPhase.midFrameMicrotasks;
+
+    if (!shouldDefer) {
+      state++;
+      return;
+    }
+
+    if (_refreshQueued) {
+      return;
+    }
+
+    _refreshQueued = true;
+    binding.addPostFrameCallback((_) {
+      _refreshQueued = false;
+      state++;
+    });
+  }
 }
 
 final sharedPreferencesProvider = Provider<SharedPreferences>(
