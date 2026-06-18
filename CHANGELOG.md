@@ -1,3 +1,9 @@
+## [3.1.0] - 2026-06-18
+
+### Added
+- Added local backup export and restore in Settings for your saved app data, including printers, materials, history, and preferences.
+- Added premium automatic backups with background scheduling and destination selection.
+
 ## [3.0.0] - 2026-06-03
 
 ### Added
@@ -222,6 +228,7 @@
 ### Added
 - Added in-app update checker
 
+[3.1.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.11.0...3.0.0
 [2.11.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.10.0...2.11.0
 [2.10.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.4...2.10.0

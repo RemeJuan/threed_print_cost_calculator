@@ -3,4 +3,4 @@
 
 export PATH="/opt/homebrew/bin:$PATH"
 
-fvm dart format . && fvm flutter analyze
+fvm dart format lib test integration_test patrol_test test_support --set-exit-if-changed && fvm flutter analyze
