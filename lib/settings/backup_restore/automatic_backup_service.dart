@@ -71,7 +71,7 @@ class AutomaticBackupService {
     return Workmanager().registerPeriodicTask(
       automaticBackupTaskUniqueName,
       automaticBackupTaskName,
-      existingWorkPolicy: ExistingWorkPolicy.replace,
+      existingWorkPolicy: ExistingPeriodicWorkPolicy.update,
       frequency: _heartbeatFrequency,
       initialDelay: _initialDelay,
     );
