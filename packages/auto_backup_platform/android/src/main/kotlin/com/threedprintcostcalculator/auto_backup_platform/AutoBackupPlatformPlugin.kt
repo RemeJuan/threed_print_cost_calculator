@@ -149,7 +149,7 @@ class AutoBackupPlatformPlugin : FlutterPlugin, MethodChannel.MethodCallHandler,
       resolver.takePersistableUriPermission(uri, flags)
     } catch (e: SecurityException) {
       result.error("permission_failed", "Failed to persist URI permission: ${e.message}", null)
-      return
+      return true
     }
     result.success(mapOf("accessToken" to uri.toString(), "displayLabel" to (DocumentFile.fromTreeUri(context, uri)?.name ?: ""), "platform" to "android"))
     return true
