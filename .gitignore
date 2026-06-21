@@ -97,14 +97,6 @@ desiredFileName.json
 **/ios/Flutter/flutter_assets/
 **/ios/Flutter/flutter_export_environment.sh
 **/ios/Flutter/ephemeral/
-!**/ios/Flutter/ephemeral/
-**/ios/Flutter/ephemeral/**
-!**/ios/Flutter/ephemeral/Packages/
-!**/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/
-!**/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift
-!**/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Sources/
-!**/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Sources/FlutterGeneratedPluginSwiftPackage/
-!**/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Sources/FlutterGeneratedPluginSwiftPackage/FlutterGeneratedPluginSwiftPackage.swift
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 
