@@ -67,29 +67,26 @@ class BackupRestoreService {
       return saveLocation.path;
     }
 
-    // Mobile (iOS/Android): use native folder picker + direct file write
-    // so re-saving to the same folder overwrites the existing file instead
-    // of creating a duplicate or blocking the replace (share-sheet limitation).
-    if (!kIsWeb) {
-      final platform = ref.read(autoBackupPlatformProvider);
-      final destination = await platform.pickDestination();
-      if (destination == null) return '';
-      final label = destination['displayLabel'] as String? ?? '';
-      await platform.writeBackup(
-        accessToken: destination['accessToken'] as String,
-        displayLabel: label,
-        fileName: fileName,
-        contents: jsonText,
+    if (kIsWeb) {
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [XFile.fromData(utf8.encode(jsonText), name: fileName)],
+        ),
       );
-      return label;
+      return fileName;
     }
 
-    await SharePlus.instance.share(
-      ShareParams(
-        files: [XFile.fromData(utf8.encode(jsonText), name: fileName)],
-      ),
+    final platform = ref.read(autoBackupPlatformProvider);
+    final destination = await platform.pickDestination();
+    if (destination == null) return '';
+    final label = destination['displayLabel'] as String? ?? '';
+    await platform.writeBackup(
+      accessToken: destination['accessToken'] as String,
+      displayLabel: label,
+      fileName: fileName,
+      contents: jsonText,
     );
-    return fileName;
+    return label;
   }
 
   bool get _isDesktopPlatform {
