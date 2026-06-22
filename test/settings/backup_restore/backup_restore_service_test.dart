@@ -718,7 +718,37 @@ void main() {
     expect(printers.single.key, 'new');
   });
 
-  test('exportBackup uses native folder picker on mobile platforms', () async {
+  test('exportBackup uses native folder picker on Android', () async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+
+    final fakePlatform = _FakeAutoBackupPlatform();
+    final container = await _container(
+      extraOverrides: [
+        autoBackupPlatformProvider.overrideWithValue(fakePlatform),
+      ],
+    );
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await StoreRef<String, Object?>.main()
+        .record(DBName.settings.name)
+        .put(db, GeneralSettingsModel.initial().toMap());
+
+    final result = await service.exportBackup();
+
+    expect(fakePlatform.pickDestinationCalled, true);
+    expect(fakePlatform.writeBackupCalled, true);
+    expect(
+      fakePlatform.lastFileName,
+      contains('3d_print_cost_calculator_backup_'),
+    );
+    expect(fakePlatform.lastContents, isNotEmpty);
+    expect(result, isNotEmpty);
+  });
+
+  test('exportBackup uses native folder picker on iOS', () async {
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
     addTearDown(() => debugDefaultTargetPlatformOverride = null);
 
