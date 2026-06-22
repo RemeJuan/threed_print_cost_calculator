@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -143,6 +145,16 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           selectedFileSizeBytes: fileSizeBytes,
           error: GCodeImportError.unsupportedFile,
         );
+        unawaited(
+          captureGCodeImportFailure(
+            stage: 'metadata_parse',
+            error: StateError('No extracted metadata'),
+            file: pickedFile,
+            slicer: result.slicer,
+            lineCount: null,
+            category: 'empty_metadata',
+          ),
+        );
         return;
       }
 
@@ -174,7 +186,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         selectedFileSizeBytes: fileSizeBytes,
         result: result,
       );
-    } catch (_) {
+    } catch (error, stackTrace) {
       logGCodeImportBreadcrumb(
         'parse_failed',
         fileName: pickedFile.name,
@@ -182,6 +194,15 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         mimeType: pickedFile.mimeType,
         fileSizeBytes: fileSizeBytes,
         reason: 'exception',
+      );
+      unawaited(
+        captureGCodeImportFailure(
+          stage: 'command_parse',
+          error: error,
+          stackTrace: stackTrace,
+          file: pickedFile,
+          category: 'import_exception',
+        ),
       );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(

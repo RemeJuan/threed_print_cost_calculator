@@ -1,4 +1,5 @@
 import 'dart:developer' as developer;
+import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.da
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_gcode_import_helpers.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_import_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_diagnostics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -318,6 +320,15 @@ class BatchGCodeImportHandler {
           'Batch G-code import failed for ${file.name}',
           error: error,
           stackTrace: stackTrace,
+        );
+        unawaited(
+          captureGCodeImportFailure(
+            stage: 'command_parse',
+            error: error,
+            stackTrace: stackTrace,
+            file: file,
+            category: 'batch_import_exception',
+          ),
         );
         if (singleFileMode) {
           setState(() {
