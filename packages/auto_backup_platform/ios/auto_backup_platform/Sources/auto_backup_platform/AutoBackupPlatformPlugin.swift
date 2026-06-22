@@ -117,13 +117,17 @@ public class AutoBackupPlatformPlugin: NSObject, FlutterPlugin, UIDocumentPicker
         ) else {
           throw PluginError(code: "write_failed", message: "Failed to create file")
         }
-        // Atomic replace: temp file written and verified, now swap
-        _ = try FileManager.default.replaceItemAt(
-          fileURL,
-          withItemAt: tempURL,
-          backupItemName: nil,
-          options: []
-        )
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+          // Atomic replace when target already exists.
+          _ = try FileManager.default.replaceItemAt(
+            fileURL,
+            withItemAt: tempURL,
+            backupItemName: nil,
+            options: []
+          )
+        } else {
+          try FileManager.default.moveItem(at: tempURL, to: fileURL)
+        }
       }
       result(["ok": true, "displayLabel": args["displayLabel"] ?? "", "fileName": fileName])
     } catch let error as PluginError {
