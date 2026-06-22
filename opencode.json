@@ -10,8 +10,13 @@
         "firebase-tools@latest",
         "mcp",
         "--only",
-        "core,crashlytics"
+        "core"
       ]
+    },
+    "sentry": {
+      "type": "remote",
+      "enabled": true,
+      "url": "https://mcp.sentry.dev/mcp?agent=1"
     },
     "dart-mcp-server": {
       "type": "local",

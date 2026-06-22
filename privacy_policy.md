@@ -37,7 +37,7 @@ We do not intentionally send print names, file names, or full cost/job payloads 
 
 ## Crash and Error Reporting
 
-We use Firebase Crashlytics to receive crash and diagnostic reports so we can detect and fix issues.
+We use Sentry to receive crash and diagnostic reports so we can detect and fix issues.
 
 ## Subscription and Purchase Processing
 
@@ -61,7 +61,8 @@ If you export history, the app generates a CSV file in temporary local storage a
 
 This app uses third-party services that process data under their own policies:
 
-- Google Firebase (Analytics, Crashlytics, App Check)
+- Google Firebase (Analytics, App Check)
+- Sentry
 - RevenueCat
 - Apple App Store / Google Play billing
 
