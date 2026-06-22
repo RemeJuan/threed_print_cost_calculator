@@ -5,6 +5,7 @@
 - Format: `fvm dart format .`
 - Analyze: `fvm flutter analyze`
 - Tests: `make flutter_test`
+- Android release builds (`fvm flutter build appbundle --release`, Play upload artifacts) require signing credentials only present on CI. Do not expect local Android release builds to succeed unless CI-style signing env vars or keystore files are explicitly provided.
 - Husky install: `fvm dart run husky install` (run after clone)
 - Single test file: `fvm flutter test path/to_test.dart`
 - Coverage: `./scripts/coverage.sh` (`lcov` required)
