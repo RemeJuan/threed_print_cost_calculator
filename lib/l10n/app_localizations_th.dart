@@ -533,6 +533,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String get previewCancelFeedbackButton => 'ดูตัวอย่างความคิดเห็นการยกเลิก';
 
   @override
+  String get previewCustomPaywallButton => 'ดูตัวอย่างเพย์วอลล์แบบกำหนดเอง';
+
+  @override
+  String get sendHandledSentryTestButton => 'ส่งการทดสอบ Sentry แบบจัดการแล้ว';
+
+  @override
+  String get sendUnhandledSentryTestButton =>
+      'ส่งการทดสอบ Sentry แบบยังไม่จัดการ';
+
+  @override
   String get enableBatchCostingButton => 'เปิดใช้งานการคิดต้นทุนแบบแบตช์';
 
   @override

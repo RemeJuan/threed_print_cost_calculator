@@ -536,6 +536,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Rückmeldeansicht zur Verlängerung';
 
   @override
+  String get previewCustomPaywallButton =>
+      'Benutzerdefinierte Paywall-Vorschau';
+
+  @override
+  String get sendHandledSentryTestButton => 'Verarbeiteten Sentry-Test senden';
+
+  @override
+  String get sendUnhandledSentryTestButton =>
+      'Unverarbeiteten Sentry-Test senden';
+
+  @override
   String get enableBatchCostingButton => 'Stapelkalkulation aktivieren';
 
   @override

@@ -523,6 +523,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get previewCancelFeedbackButton => '取消フィードバックをプレビュー';
 
   @override
+  String get previewCustomPaywallButton => 'カスタムペイウォールをプレビュー';
+
+  @override
+  String get sendHandledSentryTestButton => '処理済みSentryテストを送信';
+
+  @override
+  String get sendUnhandledSentryTestButton => '未処理Sentryテストを送信';
+
+  @override
   String get enableBatchCostingButton => 'バッチコスト計算を有効化';
 
   @override

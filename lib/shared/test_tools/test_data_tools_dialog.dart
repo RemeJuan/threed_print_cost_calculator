@@ -11,6 +11,8 @@ enum TestDataAction {
   previewCancelFeedback,
   showWhatsNew,
   previewCustomPaywall,
+  sendHandledSentryTest,
+  sendUnhandledSentryTest,
 }
 
 class TestDataToolsDialog extends StatelessWidget {
@@ -90,7 +92,22 @@ class TestDataToolsDialog extends StatelessWidget {
                   'settings.testData.previewCustomPaywall.button',
                 ),
                 onPressed: () => onAction(TestDataAction.previewCustomPaywall),
-                child: const Text('Preview custom paywall'),
+                child: Text(l10n.previewCustomPaywallButton),
+              ),
+              TextButton(
+                key: const ValueKey<String>(
+                  'settings.testData.sentryHandled.button',
+                ),
+                onPressed: () => onAction(TestDataAction.sendHandledSentryTest),
+                child: Text(l10n.sendHandledSentryTestButton),
+              ),
+              TextButton(
+                key: const ValueKey<String>(
+                  'settings.testData.sentryUnhandled.button',
+                ),
+                onPressed: () =>
+                    onAction(TestDataAction.sendUnhandledSentryTest),
+                child: Text(l10n.sendUnhandledSentryTestButton),
               ),
             ],
           ),

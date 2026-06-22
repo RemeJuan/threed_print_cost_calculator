@@ -534,6 +534,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Preview renewal feedback';
 
   @override
+  String get previewCustomPaywallButton => 'Preview custom paywall';
+
+  @override
+  String get sendHandledSentryTestButton => 'Send handled Sentry test';
+
+  @override
+  String get sendUnhandledSentryTestButton => 'Send unhandled Sentry test';
+
+  @override
   String get enableBatchCostingButton => 'Enable batch costing';
 
   @override

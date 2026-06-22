@@ -137,6 +137,20 @@ class _SettingsVersionTapTargetState
           context,
         ).push(MaterialPageRoute(builder: (_) => const PaywallScreen()));
         break;
+      case TestDataAction.sendHandledSentryTest:
+        Sentry.configureScope((scope) {
+          scope.setTag('test_event', 'admin_menu');
+          scope.setTag('test_event_type', 'handled');
+        });
+        await Sentry.captureMessage('Sentry test handled');
+        break;
+      case TestDataAction.sendUnhandledSentryTest:
+        unawaited(
+          Future<void>.microtask(
+            () => throw StateError('Sentry test unhandled'),
+          ),
+        );
+        break;
     }
   }
 

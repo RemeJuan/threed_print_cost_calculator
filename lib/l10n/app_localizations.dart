@@ -1090,6 +1090,24 @@ abstract class AppLocalizations {
   /// **'Preview renewal feedback'**
   String get previewCancelFeedbackButton;
 
+  /// No description provided for @previewCustomPaywallButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview custom paywall'**
+  String get previewCustomPaywallButton;
+
+  /// No description provided for @sendHandledSentryTestButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send handled Sentry test'**
+  String get sendHandledSentryTestButton;
+
+  /// No description provided for @sendUnhandledSentryTestButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send unhandled Sentry test'**
+  String get sendUnhandledSentryTestButton;
+
   /// No description provided for @enableBatchCostingButton.
   ///
   /// In en, this message translates to:

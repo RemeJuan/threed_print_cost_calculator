@@ -539,6 +539,17 @@ class AppLocalizationsPt extends AppLocalizations {
       'Prévia do feedback de cancelamento';
 
   @override
+  String get previewCustomPaywallButton =>
+      'Pré-visualizar paywall personalizado';
+
+  @override
+  String get sendHandledSentryTestButton => 'Enviar teste tratado do Sentry';
+
+  @override
+  String get sendUnhandledSentryTestButton =>
+      'Enviar teste não tratado do Sentry';
+
+  @override
   String get enableBatchCostingButton => 'Ativar cálculo por lote';
 
   @override

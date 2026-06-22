@@ -536,6 +536,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Voorvertoning annuleringsfeedback';
 
   @override
+  String get previewCustomPaywallButton => 'Aangepaste paywall bekijken';
+
+  @override
+  String get sendHandledSentryTestButton => 'Verwerkte Sentry-test verzenden';
+
+  @override
+  String get sendUnhandledSentryTestButton =>
+      'Onverwerkte Sentry-test verzenden';
+
+  @override
   String get enableBatchCostingButton => 'Batchkostenberekening inschakelen';
 
   @override

@@ -543,6 +543,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aperçu des commentaires d\'annulation';
 
   @override
+  String get previewCustomPaywallButton => 'Aperçu du paywall personnalisé';
+
+  @override
+  String get sendHandledSentryTestButton => 'Envoyer un test Sentry géré';
+
+  @override
+  String get sendUnhandledSentryTestButton => 'Envoyer un test Sentry non géré';
+
+  @override
   String get enableBatchCostingButton => 'Activer le calcul par lots';
 
   @override

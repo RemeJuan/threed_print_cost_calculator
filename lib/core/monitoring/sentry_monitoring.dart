@@ -28,9 +28,8 @@ class AppMonitoring {
       contexts: _scrubContexts(event.contexts),
       exceptions: event.exceptions
           ?.map(
-            (exception) => exception.copyWith(
-              value: _sanitizeString(exception.value),
-            ),
+            (exception) =>
+                exception.copyWith(value: _sanitizeString(exception.value)),
           )
           .toList(growable: false),
     );
@@ -73,10 +72,8 @@ class AppMonitoring {
         value.entries
             .where((entry) => entry.key is String)
             .map(
-              (entry) => MapEntry(
-                entry.key as String,
-                _scrubValue(entry.value),
-              ),
+              (entry) =>
+                  MapEntry(entry.key as String, _scrubValue(entry.value)),
             ),
       );
     }

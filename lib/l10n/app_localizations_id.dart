@@ -536,6 +536,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get previewCancelFeedbackButton => 'Pratinjau umpan balik pembatalan';
 
   @override
+  String get previewCustomPaywallButton => 'Pratinjau paywall kustom';
+
+  @override
+  String get sendHandledSentryTestButton => 'Kirim uji Sentry yang tertangani';
+
+  @override
+  String get sendUnhandledSentryTestButton =>
+      'Kirim uji Sentry yang tidak tertangani';
+
+  @override
   String get enableBatchCostingButton => 'Aktifkan penetapan harga batch';
 
   @override

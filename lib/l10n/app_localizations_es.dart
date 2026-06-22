@@ -541,6 +541,18 @@ class AppLocalizationsEs extends AppLocalizations {
       'Vista previa de comentarios de cancelación';
 
   @override
+  String get previewCustomPaywallButton =>
+      'Vista previa del muro de pago personalizado';
+
+  @override
+  String get sendHandledSentryTestButton =>
+      'Enviar prueba controlada de Sentry';
+
+  @override
+  String get sendUnhandledSentryTestButton =>
+      'Enviar prueba no controlada de Sentry';
+
+  @override
   String get enableBatchCostingButton => 'Activar cálculo por lotes';
 
   @override

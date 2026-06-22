@@ -19,7 +19,8 @@ void logGCodeImportBreadcrumb(
   final params = <String, Object?>{
     'stage': stage,
     if (fileName?.isNotEmpty ?? false) 'file_name': '[redacted]',
-    if (originalFileName?.isNotEmpty ?? false) 'original_file_name': '[redacted]',
+    if (originalFileName?.isNotEmpty ?? false)
+      'original_file_name': '[redacted]',
     if (mimeType?.isNotEmpty ?? false) 'mime_type': mimeType,
     ...?fileSizeBytes != null ? {'file_size_bytes': fileSizeBytes} : null,
     if (reason?.isNotEmpty ?? false) 'reason': _sanitizeMessage(reason!),
@@ -81,7 +82,12 @@ Future<PackageInfo> _safePackageInfo() async {
   try {
     return await PackageInfo.fromPlatform();
   } catch (_) {
-    return PackageInfo(appName: 'unknown', packageName: 'unknown', version: 'unknown', buildNumber: 'unknown');
+    return PackageInfo(
+      appName: 'unknown',
+      packageName: 'unknown',
+      version: 'unknown',
+      buildNumber: 'unknown',
+    );
   }
 }
 
