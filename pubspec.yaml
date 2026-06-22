@@ -14,7 +14,6 @@ dependencies:
   firebase_analytics: ^12.4.3
   firebase_app_check: ^0.4.5
   firebase_core: ^4.11.0
-  firebase_crashlytics: ^5.2.4
   file_selector: 1.1.0
   flutter:
     sdk: flutter
