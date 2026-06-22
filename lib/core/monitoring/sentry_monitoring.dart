@@ -18,36 +18,36 @@ class AppMonitoring {
   }
 
   static SentryEvent? _beforeSend(SentryEvent event, Hint hint) {
-    return event.copyWith(
-      request: null,
-      user: null,
-      breadcrumbs: event.breadcrumbs
-          ?.map(_scrubBreadcrumb)
-          .whereType<Breadcrumb>()
-          .toList(growable: false),
-      contexts: _scrubContexts(event.contexts),
-      exceptions: event.exceptions
-          ?.map(
-            (exception) =>
-                exception.copyWith(value: _sanitizeString(exception.value)),
-          )
-          .toList(growable: false),
-    );
+    event.request = null;
+    event.user = null;
+    event.breadcrumbs = event.breadcrumbs
+        ?.map(_scrubBreadcrumb)
+        .whereType<Breadcrumb>()
+        .toList(growable: false);
+    _scrubContexts(event.contexts);
+    final exceptions = event.exceptions;
+    if (exceptions != null) {
+      for (final exception in exceptions) {
+        exception.value = _sanitizeString(exception.value);
+      }
+    }
+    return event;
   }
 
   static Breadcrumb? _scrubBreadcrumb(Breadcrumb breadcrumb) {
     final message = _sanitizeString(breadcrumb.message);
     final data = _scrubMap(breadcrumb.data);
     if ((message?.isEmpty ?? true) && (data?.isEmpty ?? true)) return null;
-    return breadcrumb.copyWith(message: message, data: data);
+    breadcrumb.message = message;
+    breadcrumb.data = data;
+    return breadcrumb;
   }
 
   static Contexts _scrubContexts(Contexts contexts) {
-    final scrubbed = contexts.clone();
-    for (final entry in scrubbed.entries.toList(growable: false)) {
-      scrubbed[entry.key] = _scrubValue(entry.value);
+    for (final entry in contexts.entries.toList(growable: false)) {
+      contexts[entry.key] = _scrubValue(entry.value);
     }
-    return scrubbed;
+    return contexts;
   }
 
   static Map<String, dynamic>? _scrubMap(Map<String, dynamic>? values) {
