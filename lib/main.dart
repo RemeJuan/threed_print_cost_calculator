@@ -23,6 +23,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart'
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_migration.dart';
 import 'package:threed_print_cost_calculator/startup.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
+import 'package:threed_print_cost_calculator/core/monitoring/sentry_monitoring.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:workmanager/workmanager.dart';
@@ -32,63 +33,60 @@ import 'database/database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppMonitoring.init(() async {
+    await SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
 
-  // Set preferred orientations early and await to avoid side-effects in widgets
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+    await FirebaseAppCheck.instance.activate(
+      providerApple: AppleAppAttestProvider(),
+    );
 
-  await FirebaseAppCheck.instance.activate(
-    providerApple: AppleAppAttestProvider(),
-  );
+    await Workmanager().initialize(automaticBackupCallbackDispatcher);
 
-  await Workmanager().initialize(automaticBackupCallbackDispatcher);
+    await revenueCat();
+    final prefs = await SharedPreferences.getInstance();
+    final premiumLocalStore = CachedPremiumLocalStore(
+      const FlutterSecureStorage(),
+      onError: (error, stackTrace) {
+        FlutterError.reportError(
+          FlutterErrorDetails(
+            exception: error,
+            stack: stackTrace,
+            library: 'premium_local_store',
+            context: ErrorDescription(
+              'while reading secure premium local store',
+            ),
+          ),
+        );
+      },
+    );
+    await premiumLocalStore.preload();
+    await migratePremiumLocalStore(
+      sharedPreferences: prefs,
+      premiumLocalStore: premiumLocalStore,
+    );
+    final db = await DatabaseStorageImpl().openDb();
 
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+    await startupMigration(db);
 
-  await revenueCat();
-  final prefs = await SharedPreferences.getInstance();
-  final premiumLocalStore = CachedPremiumLocalStore(
-    const FlutterSecureStorage(),
-    onError: (error, stackTrace) {
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: error,
-          stack: stackTrace,
-          library: 'premium_local_store',
-          context: ErrorDescription('while reading secure premium local store'),
-        ),
-      );
-    },
-  );
-  await premiumLocalStore.preload();
-  await migratePremiumLocalStore(
-    sharedPreferences: prefs,
-    premiumLocalStore: premiumLocalStore,
-  );
-  final db = await DatabaseStorageImpl().openDb();
-
-  // Run any startup migrations (index rebuild etc.)
-  await startupMigration(db);
-
-  return bootstrap(
-    () => ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
-        premiumLocalStoreProvider.overrideWithValue(premiumLocalStore),
-        databaseProvider.overrideWithValue(db),
-      ],
-      child: const App(),
-    ),
-  );
+    return bootstrap(
+      () => ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          premiumLocalStoreProvider.overrideWithValue(premiumLocalStore),
+          databaseProvider.overrideWithValue(db),
+        ],
+        child: const App(),
+      ),
+    );
+  });
 }
 
 Future<void> revenueCat() async {
