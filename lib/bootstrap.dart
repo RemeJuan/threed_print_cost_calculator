@@ -29,7 +29,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   WidgetsFlutterBinding.ensureInitialized();
   // Register services
 
+  final previousOnError = FlutterError.onError;
   FlutterError.onError = (details) {
+    previousOnError?.call(details);
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
   Bloc.observer = AppBlocObserver();
