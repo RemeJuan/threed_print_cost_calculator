@@ -144,10 +144,15 @@ class AutoBackupPlatformPlugin : FlutterPlugin, MethodChannel.MethodCallHandler,
       return true
     }
     val uri = data.data!!
-    val flags = data.flags and (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+    val flags = data.flags and (
+      Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+    )
     try {
       resolver.takePersistableUriPermission(uri, flags)
     } catch (e: SecurityException) {
+      result.error("permission_failed", "Failed to persist URI permission: ${e.message}", null)
+      return true
+    } catch (e: IllegalArgumentException) {
       result.error("permission_failed", "Failed to persist URI permission: ${e.message}", null)
       return true
     }
