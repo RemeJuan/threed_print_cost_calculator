@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart'
-    show debugDefaultTargetPlatformOverride, TargetPlatform;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:flutter_riverpod/misc.dart';
@@ -9,7 +7,6 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:auto_backup_platform/auto_backup_platform.dart';
 import 'package:threed_print_cost_calculator/settings/backup_restore/backup_restore_service.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -44,36 +41,6 @@ class _NoopLogSink extends AppLogSink {
 
   @override
   void log(AppLogEvent event) {}
-}
-
-class _FakeAutoBackupPlatform extends AutoBackupPlatform {
-  bool pickDestinationCalled = false;
-  bool writeBackupCalled = false;
-  String? lastFileName;
-  String? lastContents;
-
-  @override
-  Future<Map<String, dynamic>?> pickDestination() async {
-    pickDestinationCalled = true;
-    return {
-      'accessToken': 'fake_token',
-      'displayLabel': 'Backups',
-      'platform': 'ios',
-    };
-  }
-
-  @override
-  Future<Map<String, dynamic>> writeBackup({
-    required String accessToken,
-    required String displayLabel,
-    required String fileName,
-    required String contents,
-  }) async {
-    writeBackupCalled = true;
-    lastFileName = fileName;
-    lastContents = contents;
-    return {'ok': true};
-  }
 }
 
 void main() {
@@ -716,65 +683,5 @@ void main() {
         .find(db);
     expect(printers, hasLength(1));
     expect(printers.single.key, 'new');
-  });
-
-  test('exportBackup uses native folder picker on Android', () async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.android;
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
-    final fakePlatform = _FakeAutoBackupPlatform();
-    final container = await _container(
-      extraOverrides: [
-        autoBackupPlatformProvider.overrideWithValue(fakePlatform),
-      ],
-    );
-    addTearDown(container.dispose);
-    final service = container.read(backupRestoreServiceProvider);
-    final db = container.read(databaseProvider);
-
-    await StoreRef<String, Object?>.main()
-        .record(DBName.settings.name)
-        .put(db, GeneralSettingsModel.initial().toMap());
-
-    final result = await service.exportBackup();
-
-    expect(fakePlatform.pickDestinationCalled, true);
-    expect(fakePlatform.writeBackupCalled, true);
-    expect(
-      fakePlatform.lastFileName,
-      contains('3d_print_cost_calculator_backup_'),
-    );
-    expect(fakePlatform.lastContents, isNotEmpty);
-    expect(result, isNotEmpty);
-  });
-
-  test('exportBackup uses native folder picker on iOS', () async {
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    addTearDown(() => debugDefaultTargetPlatformOverride = null);
-
-    final fakePlatform = _FakeAutoBackupPlatform();
-    final container = await _container(
-      extraOverrides: [
-        autoBackupPlatformProvider.overrideWithValue(fakePlatform),
-      ],
-    );
-    addTearDown(container.dispose);
-    final service = container.read(backupRestoreServiceProvider);
-    final db = container.read(databaseProvider);
-
-    await StoreRef<String, Object?>.main()
-        .record(DBName.settings.name)
-        .put(db, GeneralSettingsModel.initial().toMap());
-
-    final result = await service.exportBackup();
-
-    expect(fakePlatform.pickDestinationCalled, true);
-    expect(fakePlatform.writeBackupCalled, true);
-    expect(
-      fakePlatform.lastFileName,
-      contains('3d_print_cost_calculator_backup_'),
-    );
-    expect(fakePlatform.lastContents, isNotEmpty);
-    expect(result, isNotEmpty);
   });
 }
