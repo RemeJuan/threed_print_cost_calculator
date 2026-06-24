@@ -240,17 +240,16 @@
   "automaticBackupDailyLabel": "Quotidienne",
   "automaticBackupWeeklyLabel": "Hebdomadaire",
   "automaticBackupMonthlyLabel": "Mensuelle",
-  "automaticBackupNote": "Les sauvegardes automatiques s'exécutent en arrière-plan lorsque votre appareil le permet. Le système d'exploitation peut retarder ou empêcher les sauvegardes planifiées.",
+  "automaticBackupNote": "Les sauvegardes automatiques s'exécutent en arrière-plan lorsque votre appareil le permet. Le rythme choisi ne fait que rendre la sauvegarde à nouveau éligible ; le système d'exploitation peut retarder l'exécution réelle.",
   "automaticBackupStatusPending": "En attente",
   "automaticBackupStatusSuccess": "Réussie",
   "automaticBackupStatusFailure": "Échouée",
   "automaticBackupScheduleSuccess": "Sauvegarde automatique planifiée",
   "automaticBackupScheduleError": "Impossible de planifier la sauvegarde automatique",
-  "automaticBackupStatusLabel": "Sauvegarde automatique : {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Sauvegarde automatique : {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -877,5 +876,9 @@
   "settingsPremiumCardBody": "Outils de tarification avancés, utilisation illimitée et suivi des stocks.",
   "settingsPremiumCardCta": "Passer",
   "calculatorPremiumFooterBody": "Premium ajoute des outils de tarification avancés.",
-  "calculatorPremiumFooterCta": "En savoir plus →"
+  "calculatorPremiumFooterCta": "En savoir plus →",
+  "automaticBackupExpectedRunWithDate": "Exécution prévue : à partir du {dateTime}, quand votre appareil le permet.",
+  "automaticBackupExpectedRunNoSuccess": "Exécution prévue : quand votre appareil autorisera à nouveau le travail en arrière-plan.",
+  "automaticBackupLastSuccessWithDate": "Dernière sauvegarde réussie : {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Dernière sauvegarde réussie : pas encore."
 }

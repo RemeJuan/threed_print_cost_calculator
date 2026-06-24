@@ -440,7 +440,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get automaticBackupNote =>
-      'As cópias de segurança automáticas são executadas em segundo plano quando o dispositivo o permite. O sistema operativo pode atrasar ou impedir as cópias de segurança agendadas.';
+      'As cópias de segurança automáticas são executadas em segundo plano quando o dispositivo o permite. O ritmo escolhido só volta a tornar a cópia elegível; o sistema operativo pode atrasar a execução real.';
 
   @override
   String get automaticBackupStatusPending => 'Pendente';
@@ -460,13 +460,18 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível agendar a cópia de segurança automática';
 
   @override
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  ) {
-    return 'Cópia de segurança automática: $cadence • $destination • $result';
+  String automaticBackupStatusLabel(Object cadence, Object result) {
+    return 'Cópia de segurança automática: $cadence • $result';
   }
+
+  @override
+  String automaticBackupExpectedRunWithDate(Object dateTime) {
+    return 'Execução prevista: a partir de $dateTime, quando o dispositivo permitir.';
+  }
+
+  @override
+  String get automaticBackupExpectedRunNoSuccess =>
+      'Execução prevista: quando o dispositivo voltar a permitir trabalho em segundo plano.';
 
   @override
   String get privacyPolicyLink => 'Política de Privacidade';
@@ -1979,4 +1984,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get calculatorPremiumFooterCta => 'Saber mais →';
+
+  @override
+  String automaticBackupLastSuccessWithDate(Object dateTime) {
+    return 'Última cópia de segurança concluída: $dateTime.';
+  }
+
+  @override
+  String get automaticBackupLastSuccessNoBackup =>
+      'Última cópia de segurança concluída: ainda não.';
 }

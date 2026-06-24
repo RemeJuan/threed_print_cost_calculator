@@ -429,7 +429,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get automaticBackupNote =>
-      '自動バックアップは、デバイスが許可している場合にバックグラウンドで実行されます。オペレーティングシステムにより、予定されたバックアップが遅延または実行されないことがあります。';
+      '自動バックアップは、デバイスが許可している場合にバックグラウンドで実行されます。選択した間隔は再び実行対象になる時期を示すだけで、実際の実行はOSにより遅延することがあります。';
 
   @override
   String get automaticBackupStatusPending => '保留中';
@@ -447,13 +447,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get automaticBackupScheduleError => '自動バックアップを設定できませんでした';
 
   @override
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  ) {
-    return '自動バックアップ: $cadence • $destination • $result';
+  String automaticBackupStatusLabel(Object cadence, Object result) {
+    return '自動バックアップ: $cadence • $result';
   }
+
+  @override
+  String automaticBackupExpectedRunWithDate(Object dateTime) {
+    return '予定時刻: $dateTime 以降、端末が許可したときに実行されます。';
+  }
+
+  @override
+  String get automaticBackupExpectedRunNoSuccess =>
+      '予定時刻: 端末がバックグラウンド作業を再び許可したときに実行されます。';
 
   @override
   String get privacyPolicyLink => 'プライバシーポリシー';
@@ -1889,4 +1894,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get calculatorPremiumFooterCta => 'もっと詳しく →';
+
+  @override
+  String automaticBackupLastSuccessWithDate(Object dateTime) {
+    return '最後に成功したバックアップ: $dateTime。';
+  }
+
+  @override
+  String get automaticBackupLastSuccessNoBackup => '最後に成功したバックアップ: まだありません。';
 }

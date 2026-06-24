@@ -240,17 +240,16 @@
   "automaticBackupDailyLabel": "毎日",
   "automaticBackupWeeklyLabel": "毎週",
   "automaticBackupMonthlyLabel": "毎月",
-  "automaticBackupNote": "自動バックアップは、デバイスが許可している場合にバックグラウンドで実行されます。オペレーティングシステムにより、予定されたバックアップが遅延または実行されないことがあります。",
+  "automaticBackupNote": "自動バックアップは、デバイスが許可している場合にバックグラウンドで実行されます。選択した間隔は再び実行対象になる時期を示すだけで、実際の実行はOSにより遅延することがあります。",
   "automaticBackupStatusPending": "保留中",
   "automaticBackupStatusSuccess": "成功",
   "automaticBackupStatusFailure": "失敗",
   "automaticBackupScheduleSuccess": "自動バックアップを設定しました",
   "automaticBackupScheduleError": "自動バックアップを設定できませんでした",
-  "automaticBackupStatusLabel": "自動バックアップ: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "自動バックアップ: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -876,5 +875,9 @@
   "settingsPremiumCardBody": "高度な価格設定ツール、無制限の利用、在庫追跡。",
   "settingsPremiumCardCta": "アップグレード",
   "calculatorPremiumFooterBody": "Premiumは高度な価格設定ツールを追加します。",
-  "calculatorPremiumFooterCta": "もっと詳しく →"
+  "calculatorPremiumFooterCta": "もっと詳しく →",
+  "automaticBackupExpectedRunWithDate": "予定時刻: {dateTime} 以降、端末が許可したときに実行されます。",
+  "automaticBackupExpectedRunNoSuccess": "予定時刻: 端末がバックグラウンド作業を再び許可したときに実行されます。",
+  "automaticBackupLastSuccessWithDate": "最後に成功したバックアップ: {dateTime}。",
+  "automaticBackupLastSuccessNoBackup": "最後に成功したバックアップ: まだありません。"
 }

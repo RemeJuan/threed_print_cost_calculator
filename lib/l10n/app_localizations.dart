@@ -915,7 +915,7 @@ abstract class AppLocalizations {
   /// No description provided for @automaticBackupNote.
   ///
   /// In en, this message translates to:
-  /// **'Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.'**
+  /// **'Automatic backups run in the background when your device allows it. The chosen cadence only makes backups eligible again; the operating system may delay the actual run.'**
   String get automaticBackupNote;
 
   /// No description provided for @automaticBackupStatusPending.
@@ -951,12 +951,20 @@ abstract class AppLocalizations {
   /// No description provided for @automaticBackupStatusLabel.
   ///
   /// In en, this message translates to:
-  /// **'Automatic backup: {cadence} • {destination} • {result}'**
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  );
+  /// **'Automatic backup: {cadence} • {result}'**
+  String automaticBackupStatusLabel(Object cadence, Object result);
+
+  /// No description provided for @automaticBackupExpectedRunWithDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected run: on or after {dateTime}, when your device allows it.'**
+  String automaticBackupExpectedRunWithDate(Object dateTime);
+
+  /// No description provided for @automaticBackupExpectedRunNoSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected run: when your device next allows background work.'**
+  String get automaticBackupExpectedRunNoSuccess;
 
   /// No description provided for @privacyPolicyLink.
   ///
@@ -3590,6 +3598,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Learn more →'**
   String get calculatorPremiumFooterCta;
+
+  /// No description provided for @automaticBackupLastSuccessWithDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Last successful backup: {dateTime}.'**
+  String automaticBackupLastSuccessWithDate(Object dateTime);
+
+  /// No description provided for @automaticBackupLastSuccessNoBackup.
+  ///
+  /// In en, this message translates to:
+  /// **'Last successful backup: Not yet.'**
+  String get automaticBackupLastSuccessNoBackup;
 }
 
 class _AppLocalizationsDelegate

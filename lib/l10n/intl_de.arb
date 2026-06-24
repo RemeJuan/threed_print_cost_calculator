@@ -238,17 +238,16 @@
   "automaticBackupDailyLabel": "Täglich",
   "automaticBackupWeeklyLabel": "Wöchentlich",
   "automaticBackupMonthlyLabel": "Monatlich",
-  "automaticBackupNote": "Automatische Sicherungen werden im Hintergrund ausgeführt, wenn dein Gerät dies zulässt. Das Betriebssystem kann geplante Sicherungen verzögern oder verhindern.",
+  "automaticBackupNote": "Automatische Sicherungen werden im Hintergrund ausgeführt, wenn dein Gerät dies zulässt. Der gewählte Rhythmus macht die Sicherung nur wieder fällig; das Betriebssystem kann die eigentliche Ausführung verzögern.",
   "automaticBackupStatusPending": "Ausstehend",
   "automaticBackupStatusSuccess": "Erfolgreich",
   "automaticBackupStatusFailure": "Fehlgeschlagen",
   "automaticBackupScheduleSuccess": "Automatische Sicherung geplant",
   "automaticBackupScheduleError": "Automatische Sicherung konnte nicht geplant werden",
-  "automaticBackupStatusLabel": "Automatische Sicherung: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Automatische Sicherung: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -875,5 +874,9 @@
   "settingsPremiumCardBody": "Erweiterte Preiswerkzeuge, unbegrenzte Nutzung und Bestandsverfolgung.",
   "settingsPremiumCardCta": "Upgraden",
   "calculatorPremiumFooterBody": "Premium ergänzt erweiterte Preistools.",
-  "calculatorPremiumFooterCta": "Mehr erfahren →"
+  "calculatorPremiumFooterCta": "Mehr erfahren →",
+  "automaticBackupExpectedRunWithDate": "Erwartete Ausführung: frühestens am {dateTime}, wenn dein Gerät es zulässt.",
+  "automaticBackupExpectedRunNoSuccess": "Erwartete Ausführung: sobald dein Gerät Hintergrundarbeit wieder zulässt.",
+  "automaticBackupLastSuccessWithDate": "Letzte erfolgreiche Sicherung: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Letzte erfolgreiche Sicherung: noch nicht."
 }

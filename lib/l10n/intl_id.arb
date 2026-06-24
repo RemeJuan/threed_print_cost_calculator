@@ -232,17 +232,16 @@
   "automaticBackupDailyLabel": "Harian",
   "automaticBackupWeeklyLabel": "Mingguan",
   "automaticBackupMonthlyLabel": "Bulanan",
-  "automaticBackupNote": "Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Sistem operasi dapat menunda atau mencegah cadangan terjadwal.",
+  "automaticBackupNote": "Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Ritme yang dipilih hanya membuat cadangan kembali layak; sistem operasi bisa menunda eksekusi sebenarnya.",
   "automaticBackupStatusPending": "Tertunda",
   "automaticBackupStatusSuccess": "Berhasil",
   "automaticBackupStatusFailure": "Gagal",
   "automaticBackupScheduleSuccess": "Cadangan otomatis dijadwalkan",
   "automaticBackupScheduleError": "Tidak dapat menjadwalkan cadangan otomatis",
-  "automaticBackupStatusLabel": "Cadangan otomatis: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Cadangan otomatis: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -875,5 +874,9 @@
   "settingsPremiumCardBody": "Alat penetapan harga lanjutan, penggunaan tanpa batas, dan pelacakan inventaris.",
   "settingsPremiumCardCta": "Tingkatkan",
   "calculatorPremiumFooterBody": "Premium menambahkan alat penetapan harga lanjutan.",
-  "calculatorPremiumFooterCta": "Pelajari lebih lanjut →"
+  "calculatorPremiumFooterCta": "Pelajari lebih lanjut →",
+  "automaticBackupExpectedRunWithDate": "Perkiraan jalan: pada atau setelah {dateTime}, saat perangkat Anda mengizinkannya.",
+  "automaticBackupExpectedRunNoSuccess": "Perkiraan jalan: saat perangkat Anda kembali mengizinkan pekerjaan latar belakang.",
+  "automaticBackupLastSuccessWithDate": "Cadangan berhasil terakhir: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Cadangan berhasil terakhir: belum ada."
 }

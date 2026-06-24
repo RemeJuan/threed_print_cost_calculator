@@ -19,5 +19,4 @@ void main() {
     expect(endOfFrameWaited, isTrue);
     expect(calls, ['frame', 'restore', 'reset', 'history']);
   });
-
 }

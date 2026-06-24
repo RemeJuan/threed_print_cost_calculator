@@ -177,17 +177,23 @@
   "automaticBackupDailyLabel": "Daily",
   "automaticBackupWeeklyLabel": "Weekly",
   "automaticBackupMonthlyLabel": "Monthly",
-  "automaticBackupNote": "Automatic backups run in the background when your device allows it. The operating system may delay or prevent scheduled backups.",
+  "automaticBackupNote": "Automatic backups run in the background when your device allows it. The chosen cadence only makes backups eligible again; the operating system may delay the actual run.",
   "automaticBackupStatusPending": "Pending",
   "automaticBackupStatusSuccess": "Success",
   "automaticBackupStatusFailure": "Failed",
   "automaticBackupScheduleSuccess": "Automatic backup scheduled",
   "automaticBackupScheduleError": "Could not schedule automatic backup",
-  "automaticBackupStatusLabel": "Automatic backup: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Automatic backup: {cadence} • {result}",
+  "automaticBackupExpectedRunWithDate": "Expected run: on or after {dateTime}, when your device allows it.",
+  "@automaticBackupExpectedRunWithDate": {
+    "placeholders": {
+      "dateTime": {}
+    }
+  },
+  "automaticBackupExpectedRunNoSuccess": "Expected run: when your device next allows background work.",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -805,5 +811,7 @@
   "settingsPremiumCardBody": "Advanced pricing tools, unlimited usage, and inventory tracking.",
   "settingsPremiumCardCta": "Upgrade",
   "calculatorPremiumFooterBody": "Premium adds advanced pricing tools.",
-  "calculatorPremiumFooterCta": "Learn more →"
+  "calculatorPremiumFooterCta": "Learn more →",
+  "automaticBackupLastSuccessWithDate": "Last successful backup: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Last successful backup: Not yet."
 }

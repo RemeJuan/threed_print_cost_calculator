@@ -239,17 +239,16 @@
   "automaticBackupDailyLabel": "Diária",
   "automaticBackupWeeklyLabel": "Semanal",
   "automaticBackupMonthlyLabel": "Mensal",
-  "automaticBackupNote": "As cópias de segurança automáticas são executadas em segundo plano quando o dispositivo o permite. O sistema operativo pode atrasar ou impedir as cópias de segurança agendadas.",
+  "automaticBackupNote": "As cópias de segurança automáticas são executadas em segundo plano quando o dispositivo o permite. O ritmo escolhido só volta a tornar a cópia elegível; o sistema operativo pode atrasar a execução real.",
   "automaticBackupStatusPending": "Pendente",
   "automaticBackupStatusSuccess": "Concluída",
   "automaticBackupStatusFailure": "Falhou",
   "automaticBackupScheduleSuccess": "Cópia de segurança automática agendada",
   "automaticBackupScheduleError": "Não foi possível agendar a cópia de segurança automática",
-  "automaticBackupStatusLabel": "Cópia de segurança automática: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Cópia de segurança automática: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -871,5 +870,9 @@
   "settingsPremiumCardBody": "Ferramentas avançadas de preços, utilização ilimitada e controlo de inventário.",
   "settingsPremiumCardCta": "Atualizar",
   "calculatorPremiumFooterBody": "O Premium adiciona ferramentas de preços avançadas.",
-  "calculatorPremiumFooterCta": "Saber mais →"
+  "calculatorPremiumFooterCta": "Saber mais →",
+  "automaticBackupExpectedRunWithDate": "Execução prevista: a partir de {dateTime}, quando o dispositivo permitir.",
+  "automaticBackupExpectedRunNoSuccess": "Execução prevista: quando o dispositivo voltar a permitir trabalho em segundo plano.",
+  "automaticBackupLastSuccessWithDate": "Última cópia de segurança concluída: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Última cópia de segurança concluída: ainda não."
 }

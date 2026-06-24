@@ -443,7 +443,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get automaticBackupNote =>
-      'I backup automatici vengono eseguiti in background quando il dispositivo lo consente. Il sistema operativo può ritardare o impedire i backup pianificati.';
+      'I backup automatici vengono eseguiti in background quando il dispositivo lo consente. Il ritmo scelto rende solo di nuovo idoneo il backup; il sistema operativo può ritardare l\'esecuzione reale.';
 
   @override
   String get automaticBackupStatusPending => 'In attesa';
@@ -462,13 +462,18 @@ class AppLocalizationsIt extends AppLocalizations {
       'Impossibile pianificare il backup automatico';
 
   @override
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  ) {
-    return 'Backup automatico: $cadence • $destination • $result';
+  String automaticBackupStatusLabel(Object cadence, Object result) {
+    return 'Backup automatico: $cadence • $result';
   }
+
+  @override
+  String automaticBackupExpectedRunWithDate(Object dateTime) {
+    return 'Esecuzione prevista: non prima del $dateTime, quando il dispositivo lo consente.';
+  }
+
+  @override
+  String get automaticBackupExpectedRunNoSuccess =>
+      'Esecuzione prevista: quando il dispositivo consentirà di nuovo il lavoro in background.';
 
   @override
   String get privacyPolicyLink => 'Informativa sulla privacy';
@@ -1979,4 +1984,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get calculatorPremiumFooterCta => 'Scopri di più →';
+
+  @override
+  String automaticBackupLastSuccessWithDate(Object dateTime) {
+    return 'Ultimo backup riuscito: $dateTime.';
+  }
+
+  @override
+  String get automaticBackupLastSuccessNoBackup =>
+      'Ultimo backup riuscito: non ancora.';
 }

@@ -436,7 +436,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get automaticBackupNote =>
-      'การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต ระบบปฏิบัติการอาจเลื่อนเวลาหรือป้องกันการสำรองข้อมูลตามกำหนดได้';
+      'การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต จังหวะที่เลือกเป็นเพียงการทำให้สำรองข้อมูลกลับมาอยู่ในช่วงที่ทำได้ ระบบปฏิบัติการอาจเลื่อนการทำงานจริง';
 
   @override
   String get automaticBackupStatusPending => 'รอดำเนินการ';
@@ -456,13 +456,18 @@ class AppLocalizationsTh extends AppLocalizations {
       'ไม่สามารถตั้งเวลาสำรองข้อมูลอัตโนมัติได้';
 
   @override
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  ) {
-    return 'การสำรองข้อมูลอัตโนมัติ: $cadence • $destination • $result';
+  String automaticBackupStatusLabel(Object cadence, Object result) {
+    return 'สำรองข้อมูลอัตโนมัติ: $cadence • $result';
   }
+
+  @override
+  String automaticBackupExpectedRunWithDate(Object dateTime) {
+    return 'คาดว่าจะทำงาน: ตั้งแต่ $dateTime เป็นต้นไป เมื่ออุปกรณ์ของคุณอนุญาต';
+  }
+
+  @override
+  String get automaticBackupExpectedRunNoSuccess =>
+      'คาดว่าจะทำงาน: เมื่ออุปกรณ์ของคุณอนุญาตให้ทำงานเบื้องหลังอีกครั้ง';
 
   @override
   String get privacyPolicyLink => 'นโยบายความเป็นส่วนตัว';
@@ -1936,4 +1941,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get calculatorPremiumFooterCta => 'เรียนรู้เพิ่มเติม →';
+
+  @override
+  String automaticBackupLastSuccessWithDate(Object dateTime) {
+    return 'การสำรองข้อมูลที่สำเร็จล่าสุด: $dateTime';
+  }
+
+  @override
+  String get automaticBackupLastSuccessNoBackup =>
+      'การสำรองข้อมูลที่สำเร็จล่าสุด: ยังไม่มี';
 }

@@ -231,17 +231,16 @@
   "automaticBackupDailyLabel": "Diaria",
   "automaticBackupWeeklyLabel": "Semanal",
   "automaticBackupMonthlyLabel": "Mensual",
-  "automaticBackupNote": "Las copias de seguridad automáticas se ejecutan en segundo plano cuando tu dispositivo lo permite. El sistema operativo puede retrasar o impedir las copias de seguridad programadas.",
+  "automaticBackupNote": "Las copias de seguridad automáticas se ejecutan en segundo plano cuando tu dispositivo lo permite. El ritmo elegido solo vuelve a hacer elegible la copia; el sistema operativo puede retrasar la ejecución real.",
   "automaticBackupStatusPending": "Pendiente",
   "automaticBackupStatusSuccess": "Correcta",
   "automaticBackupStatusFailure": "Fallida",
   "automaticBackupScheduleSuccess": "Copia de seguridad automática programada",
   "automaticBackupScheduleError": "No se pudo programar la copia de seguridad automática",
-  "automaticBackupStatusLabel": "Copia de seguridad automática: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Copia de seguridad automática: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -874,5 +873,9 @@
   "settingsPremiumCardBody": "Herramientas avanzadas de precios, uso ilimitado y seguimiento de inventario.",
   "settingsPremiumCardCta": "Mejorar",
   "calculatorPremiumFooterBody": "Premium añade herramientas de precios avanzadas.",
-  "calculatorPremiumFooterCta": "Más información →"
+  "calculatorPremiumFooterCta": "Más información →",
+  "automaticBackupExpectedRunWithDate": "Ejecución prevista: a partir de {dateTime}, cuando tu dispositivo lo permita.",
+  "automaticBackupExpectedRunNoSuccess": "Ejecución prevista: cuando tu dispositivo vuelva a permitir el trabajo en segundo plano.",
+  "automaticBackupLastSuccessWithDate": "Última copia de seguridad correcta: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Última copia de seguridad correcta: todavía no."
 }

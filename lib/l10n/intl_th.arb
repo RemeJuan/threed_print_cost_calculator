@@ -233,17 +233,16 @@
   "automaticBackupDailyLabel": "ทุกวัน",
   "automaticBackupWeeklyLabel": "ทุกสัปดาห์",
   "automaticBackupMonthlyLabel": "ทุกเดือน",
-  "automaticBackupNote": "การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต ระบบปฏิบัติการอาจเลื่อนเวลาหรือป้องกันการสำรองข้อมูลตามกำหนดได้",
+  "automaticBackupNote": "การสำรองข้อมูลอัตโนมัติจะทำงานในเบื้องหลังเมื่ออุปกรณ์ของคุณอนุญาต จังหวะที่เลือกเป็นเพียงการทำให้สำรองข้อมูลกลับมาอยู่ในช่วงที่ทำได้ ระบบปฏิบัติการอาจเลื่อนการทำงานจริง",
   "automaticBackupStatusPending": "รอดำเนินการ",
   "automaticBackupStatusSuccess": "สำเร็จ",
   "automaticBackupStatusFailure": "ล้มเหลว",
   "automaticBackupScheduleSuccess": "ตั้งเวลาสำรองข้อมูลอัตโนมัติแล้ว",
   "automaticBackupScheduleError": "ไม่สามารถตั้งเวลาสำรองข้อมูลอัตโนมัติได้",
-  "automaticBackupStatusLabel": "การสำรองข้อมูลอัตโนมัติ: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "สำรองข้อมูลอัตโนมัติ: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -876,5 +875,9 @@
   "settingsPremiumCardBody": "เครื่องมือคำนวณราคาขั้นสูง การใช้งานไม่จำกัด และการติดตามสินค้าคงคลัง",
   "settingsPremiumCardCta": "อัปเกรด",
   "calculatorPremiumFooterBody": "Premium เพิ่มเครื่องมือกำหนดราคาขั้นสูง",
-  "calculatorPremiumFooterCta": "เรียนรู้เพิ่มเติม →"
+  "calculatorPremiumFooterCta": "เรียนรู้เพิ่มเติม →",
+  "automaticBackupExpectedRunWithDate": "คาดว่าจะทำงาน: ตั้งแต่ {dateTime} เป็นต้นไป เมื่ออุปกรณ์ของคุณอนุญาต",
+  "automaticBackupExpectedRunNoSuccess": "คาดว่าจะทำงาน: เมื่ออุปกรณ์ของคุณอนุญาตให้ทำงานเบื้องหลังอีกครั้ง",
+  "automaticBackupLastSuccessWithDate": "การสำรองข้อมูลที่สำเร็จล่าสุด: {dateTime}",
+  "automaticBackupLastSuccessNoBackup": "การสำรองข้อมูลที่สำเร็จล่าสุด: ยังไม่มี"
 }

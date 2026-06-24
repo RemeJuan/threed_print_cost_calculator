@@ -232,17 +232,16 @@
   "automaticBackupDailyLabel": "Giornaliero",
   "automaticBackupWeeklyLabel": "Settimanale",
   "automaticBackupMonthlyLabel": "Mensile",
-  "automaticBackupNote": "I backup automatici vengono eseguiti in background quando il dispositivo lo consente. Il sistema operativo può ritardare o impedire i backup pianificati.",
+  "automaticBackupNote": "I backup automatici vengono eseguiti in background quando il dispositivo lo consente. Il ritmo scelto rende solo di nuovo idoneo il backup; il sistema operativo può ritardare l'esecuzione reale.",
   "automaticBackupStatusPending": "In attesa",
   "automaticBackupStatusSuccess": "Riuscito",
   "automaticBackupStatusFailure": "Non riuscito",
   "automaticBackupScheduleSuccess": "Backup automatico pianificato",
   "automaticBackupScheduleError": "Impossibile pianificare il backup automatico",
-  "automaticBackupStatusLabel": "Backup automatico: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Backup automatico: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -875,5 +874,9 @@
   "settingsPremiumCardBody": "Strumenti di prezzo avanzati, utilizzo illimitato e monitoraggio dell'inventario.",
   "settingsPremiumCardCta": "Passa",
   "calculatorPremiumFooterBody": "Premium aggiunge strumenti di prezzo avanzati.",
-  "calculatorPremiumFooterCta": "Scopri di più →"
+  "calculatorPremiumFooterCta": "Scopri di più →",
+  "automaticBackupExpectedRunWithDate": "Esecuzione prevista: non prima del {dateTime}, quando il dispositivo lo consente.",
+  "automaticBackupExpectedRunNoSuccess": "Esecuzione prevista: quando il dispositivo consentirà di nuovo il lavoro in background.",
+  "automaticBackupLastSuccessWithDate": "Ultimo backup riuscito: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Ultimo backup riuscito: non ancora."
 }

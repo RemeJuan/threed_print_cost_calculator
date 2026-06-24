@@ -35,9 +35,9 @@ class BackupRestoreSection extends ConsumerWidget {
           const SizedBox(height: kAppSpace8),
           Text(
             l10n.dataBackupRestoreBody,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: TEXT_SECONDARY,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
           ),
           const SizedBox(height: kAppSpace12),
           Row(
@@ -74,8 +74,9 @@ class BackupRestoreSection extends ConsumerWidget {
                   onPressed: () async {
                     final XFile? file;
                     try {
-                      file = await (pickBackupFile ??
-                          () => openFile(
+                      file =
+                          await (pickBackupFile ??
+                              () => openFile(
                                 acceptedTypeGroups: backupAcceptedTypeGroups(
                                   defaultTargetPlatform,
                                   l10n,
@@ -97,11 +98,13 @@ class BackupRestoreSection extends ConsumerWidget {
                         content: Text(l10n.dataBackupRestoreConfirmBody),
                         actions: [
                           TextButton(
-                            onPressed: () => Navigator.of(dialogContext).pop(false),
+                            onPressed: () =>
+                                Navigator.of(dialogContext).pop(false),
                             child: Text(l10n.cancelButton),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.of(dialogContext).pop(true),
+                            onPressed: () =>
+                                Navigator.of(dialogContext).pop(true),
                             child: Text(l10n.dataBackupRestoreButton),
                           ),
                         ],
@@ -113,15 +116,19 @@ class BackupRestoreSection extends ConsumerWidget {
                         restore: () => ref
                             .read(backupRestoreServiceProvider)
                             .restoreBackupFromFile(file!),
-                        resetCalculator: () =>
-                            ref.read(calculatorProvider.notifier).resetToDefaults(),
+                        resetCalculator: () => ref
+                            .read(calculatorProvider.notifier)
+                            .resetToDefaults(),
                         refreshHistory: () =>
                             ref.read(historyPagedProvider.notifier).refresh(),
-                        waitForEndOfFrame: () => SchedulerBinding.instance.endOfFrame,
+                        waitForEndOfFrame: () =>
+                            SchedulerBinding.instance.endOfFrame,
                       );
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(l10n.dataBackupRestoreSuccess)),
+                          SnackBar(
+                            content: Text(l10n.dataBackupRestoreSuccess),
+                          ),
                         );
                       }
                     } catch (_) {

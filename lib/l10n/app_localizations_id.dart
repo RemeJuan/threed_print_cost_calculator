@@ -438,7 +438,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get automaticBackupNote =>
-      'Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Sistem operasi dapat menunda atau mencegah cadangan terjadwal.';
+      'Cadangan otomatis berjalan di latar belakang saat perangkat Anda mengizinkannya. Ritme yang dipilih hanya membuat cadangan kembali layak; sistem operasi bisa menunda eksekusi sebenarnya.';
 
   @override
   String get automaticBackupStatusPending => 'Tertunda';
@@ -457,13 +457,18 @@ class AppLocalizationsId extends AppLocalizations {
       'Tidak dapat menjadwalkan cadangan otomatis';
 
   @override
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  ) {
-    return 'Cadangan otomatis: $cadence • $destination • $result';
+  String automaticBackupStatusLabel(Object cadence, Object result) {
+    return 'Cadangan otomatis: $cadence • $result';
   }
+
+  @override
+  String automaticBackupExpectedRunWithDate(Object dateTime) {
+    return 'Perkiraan jalan: pada atau setelah $dateTime, saat perangkat Anda mengizinkannya.';
+  }
+
+  @override
+  String get automaticBackupExpectedRunNoSuccess =>
+      'Perkiraan jalan: saat perangkat Anda kembali mengizinkan pekerjaan latar belakang.';
 
   @override
   String get privacyPolicyLink => 'Kebijakan Privasi';
@@ -1942,4 +1947,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get calculatorPremiumFooterCta => 'Pelajari lebih lanjut →';
+
+  @override
+  String automaticBackupLastSuccessWithDate(Object dateTime) {
+    return 'Cadangan berhasil terakhir: $dateTime.';
+  }
+
+  @override
+  String get automaticBackupLastSuccessNoBackup =>
+      'Cadangan berhasil terakhir: belum ada.';
 }

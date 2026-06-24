@@ -439,7 +439,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get automaticBackupNote =>
-      'Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het besturingssysteem kan geplande back-ups vertragen of voorkomen.';
+      'Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het gekozen ritme maakt de back-up alleen opnieuw geschikt; het besturingssysteem kan de echte uitvoering vertragen.';
 
   @override
   String get automaticBackupStatusPending => 'In afwachting';
@@ -458,13 +458,18 @@ class AppLocalizationsNl extends AppLocalizations {
       'Automatische back-up kon niet worden gepland';
 
   @override
-  String automaticBackupStatusLabel(
-    Object cadence,
-    Object destination,
-    Object result,
-  ) {
-    return 'Automatische back-up: $cadence • $destination • $result';
+  String automaticBackupStatusLabel(Object cadence, Object result) {
+    return 'Automatische back-up: $cadence • $result';
   }
+
+  @override
+  String automaticBackupExpectedRunWithDate(Object dateTime) {
+    return 'Verwachte uitvoering: op of na $dateTime, wanneer je apparaat het toelaat.';
+  }
+
+  @override
+  String get automaticBackupExpectedRunNoSuccess =>
+      'Verwachte uitvoering: wanneer je apparaat achtergrondwerk weer toelaat.';
 
   @override
   String get privacyPolicyLink => 'Privacybeleid';
@@ -1969,4 +1974,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get calculatorPremiumFooterCta => 'Meer informatie →';
+
+  @override
+  String automaticBackupLastSuccessWithDate(Object dateTime) {
+    return 'Laatste geslaagde back-up: $dateTime.';
+  }
+
+  @override
+  String get automaticBackupLastSuccessNoBackup =>
+      'Laatste geslaagde back-up: nog niet.';
 }

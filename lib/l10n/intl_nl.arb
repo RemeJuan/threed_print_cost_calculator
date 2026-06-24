@@ -240,17 +240,16 @@
   "automaticBackupDailyLabel": "Dagelijks",
   "automaticBackupWeeklyLabel": "Wekelijks",
   "automaticBackupMonthlyLabel": "Maandelijks",
-  "automaticBackupNote": "Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het besturingssysteem kan geplande back-ups vertragen of voorkomen.",
+  "automaticBackupNote": "Automatische back-ups worden op de achtergrond uitgevoerd wanneer je apparaat dit toelaat. Het gekozen ritme maakt de back-up alleen opnieuw geschikt; het besturingssysteem kan de echte uitvoering vertragen.",
   "automaticBackupStatusPending": "In afwachting",
   "automaticBackupStatusSuccess": "Gelukt",
   "automaticBackupStatusFailure": "Mislukt",
   "automaticBackupScheduleSuccess": "Automatische back-up gepland",
   "automaticBackupScheduleError": "Automatische back-up kon niet worden gepland",
-  "automaticBackupStatusLabel": "Automatische back-up: {cadence} • {destination} • {result}",
+  "automaticBackupStatusLabel": "Automatische back-up: {cadence} • {result}",
   "@automaticBackupStatusLabel": {
     "placeholders": {
       "cadence": {},
-      "destination": {},
       "result": {}
     }
   },
@@ -876,5 +875,9 @@
   "settingsPremiumCardBody": "Geavanceerde prijstools, onbeperkt gebruik en voorraadtracking.",
   "settingsPremiumCardCta": "Upgrade",
   "calculatorPremiumFooterBody": "Premium voegt geavanceerde prijstools toe.",
-  "calculatorPremiumFooterCta": "Meer informatie →"
+  "calculatorPremiumFooterCta": "Meer informatie →",
+  "automaticBackupExpectedRunWithDate": "Verwachte uitvoering: op of na {dateTime}, wanneer je apparaat het toelaat.",
+  "automaticBackupExpectedRunNoSuccess": "Verwachte uitvoering: wanneer je apparaat achtergrondwerk weer toelaat.",
+  "automaticBackupLastSuccessWithDate": "Laatste geslaagde back-up: {dateTime}.",
+  "automaticBackupLastSuccessNoBackup": "Laatste geslaagde back-up: nog niet."
 }
