@@ -1,11 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.threed_print_calculator">
           <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.android.vending.BILLING"/>
     <application
             android:allowBackup="true"
-            android:fullBackupContent="@xml/backup_rules"
-            android:dataExtractionRules="@xml/data_extraction_rules"
             android:label="3D Print Calculator"
             android:icon="@mipmap/ic_launcher">
         <meta-data

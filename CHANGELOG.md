@@ -2,7 +2,6 @@
 
 ### Added
 - Added local backup export and restore in Settings for your saved app data, including printers, materials, history, and preferences.
-- Added premium automatic backups with background scheduling and destination selection.
 
 ## [3.0.0] - 2026-06-03
 
