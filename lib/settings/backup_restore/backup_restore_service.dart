@@ -23,6 +23,7 @@ import 'backup_restore_file_write.dart'
     if (dart.library.io) 'backup_restore_file_write_io.dart';
 
 const autoBackupFileName = '3d_print_cost_calculator_auto_backup.json';
+const backupJsonMimeType = 'application/json';
 
 Map<String, Object?> buildBackupPayload({
   required Map<String, Object?> settings,
