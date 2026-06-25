@@ -17,6 +17,7 @@ Funzionalità gratuite
 • Fino a 7 voci nella cronologia
 • Esportazione di lavori singoli
 • Calcolo manuale in batch fino a 3 elementi
+• Backup e ripristino
 • Funzionamento offline-first
 
 Calcola lavori reali, salva i dati principali, rivedi i lavori recenti e gestisci piccoli batch senza account né abbonamento.

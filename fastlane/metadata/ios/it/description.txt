@@ -17,6 +17,7 @@ La versione gratuita include:
 • Fino a 7 voci nella cronologia
 • Esportazione di lavori singoli
 • Calcolo manuale in batch fino a 3 elementi
+• Backup e ripristino
 • Funzionamento offline-first
 
 La versione gratuita è pensata per essere davvero utile. Puoi calcolare stampe reali, salvare i dati principali, rivedere i lavori recenti e gestire piccoli batch manuali senza account.

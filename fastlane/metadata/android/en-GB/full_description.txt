@@ -17,6 +17,7 @@ Free features
 • Up to 7 history entries
 • Individual job export
 • Manual batch costing for up to 3 items
+• Backup and restore
 • Offline-first operation
 
 Calculate real jobs, save core data, review recent work, and cost small batches without an account or subscription.

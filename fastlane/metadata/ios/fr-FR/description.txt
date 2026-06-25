@@ -17,6 +17,7 @@ La version gratuite comprend :
 • Jusqu'à 7 entrées dans l'historique
 • Export de tâches individuelles
 • Calcul manuel par lot pour jusqu'à 3 éléments
+• Sauvegarde et restauration
 • Fonctionnement offline-first
 
 La version gratuite est pensée pour être réellement utile. Vous pouvez chiffrer de vraies impressions, enregistrer les données clés, revoir les travaux récents et gérer de petits lots manuels sans compte.

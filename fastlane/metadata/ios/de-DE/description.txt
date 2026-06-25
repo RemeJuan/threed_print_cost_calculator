@@ -17,6 +17,7 @@ Kostenlos enthalten:
 • Bis zu 7 Verlaufseinträge
 • Export einzelner Aufträge
 • Manuelle Stapelkalkulation für bis zu 3 Positionen
+• Sichern und Wiederherstellen
 • Offline-first-Betrieb
 
 Die kostenlose Version ist bewusst wirklich nützlich. Sie können echte Drucke kalkulieren, wichtige Daten speichern, letzte Aufträge prüfen und kleine manuelle Stapel ohne Konto bearbeiten.

@@ -17,6 +17,7 @@ O plano gratuito inclui:
 • Até 7 entradas no histórico
 • Exportação de trabalhos individuais
 • Custeio manual em lote para até 3 itens
+• Backup e restauração
 • Operação offline-first
 
 O plano gratuito foi feito para ser realmente útil. Você pode calcular impressões reais, salvar dados principais, revisar trabalhos recentes e montar pequenos lotes manuais sem precisar de conta.

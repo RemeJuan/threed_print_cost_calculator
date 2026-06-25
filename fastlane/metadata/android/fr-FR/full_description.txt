@@ -17,6 +17,7 @@ Fonctionnalités gratuites
 • Jusqu'à 7 entrées dans l'historique
 • Export de tâches individuelles
 • Calcul manuel par lot pour jusqu'à 3 éléments
+• Sauvegarde et restauration
 • Fonctionnement offline-first
 
 Calculez de vrais travaux, enregistrez les données clés, revoyez les tâches récentes et gérez de petits lots sans compte ni abonnement.

@@ -17,6 +17,7 @@ Recursos gratuitos
 • Até 7 entradas no histórico
 • Exportação de trabalhos individuais
 • Custeio manual em lote para até 3 itens
+• Backup e restauração
 • Operação offline-first
 
 Calcule trabalhos reais, salve dados principais, revise trabalhos recentes e monte pequenos lotes sem conta nem assinatura.

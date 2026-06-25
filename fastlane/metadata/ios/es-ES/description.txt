@@ -17,6 +17,7 @@ La versión gratuita incluye:
 • Hasta 7 entradas en el historial
 • Exportación de trabajos individuales
 • Cálculo manual por lotes de hasta 3 elementos
+• Copia de seguridad y restauración
 • Funcionamiento offline-first
 
 La versión gratuita está diseñada para ser realmente útil. Puede calcular impresiones reales, guardar datos clave, revisar trabajos recientes y manejar pequeños lotes manuales sin necesidad de una cuenta.

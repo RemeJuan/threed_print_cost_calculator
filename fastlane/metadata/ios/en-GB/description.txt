@@ -17,6 +17,7 @@ Free includes:
 • Up to 7 history entries
 • Individual job export
 • Manual batch costing for up to 3 items
+• Backup and restore
 • Offline-first operation
 
 Free is designed to be genuinely useful. You can cost real prints, save key data, review recent jobs, and handle small manual batches without needing an account.

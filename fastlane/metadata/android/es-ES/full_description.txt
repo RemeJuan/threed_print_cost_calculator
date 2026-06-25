@@ -17,6 +17,7 @@ Funciones gratuitas
 • Hasta 7 entradas en el historial
 • Exportación de trabajos individuales
 • Cálculo manual por lotes de hasta 3 elementos
+• Copia de seguridad y restauración
 • Funcionamiento offline-first
 
 Calcule trabajos reales, guarde datos clave, revise trabajos recientes y gestione pequeños lotes sin cuenta ni suscripción.
