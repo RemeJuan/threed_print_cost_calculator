@@ -16,6 +16,7 @@ import 'package:threed_print_cost_calculator/database/repositories/history_repos
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import 'backup_restore_file_write.dart'
@@ -154,6 +155,19 @@ class BackupRestoreService {
       return HistoryModel.fromMap(e);
     }).toList();
 
+    final currentSettings = await ref
+        .read(settingsRepositoryProvider)
+        .getSettings();
+    final policy = ref.read(premiumAccessPolicyProvider);
+    final settings = _settingsForRestore(
+      restored: restoredSettings,
+      current: currentSettings,
+      isPremium: policy.isPremium,
+    );
+    final skippedPremiumSettings =
+        !policy.isPremium &&
+        _premiumOnlySettingsChanged(restoredSettings, settings);
+
     await _db.transaction((txn) async {
       await _clearDb(txn);
       await _writeRestore(
@@ -165,6 +179,43 @@ class BackupRestoreService {
         historyRaw,
       );
     });
+
+    return BackupRestoreResult(skippedPremiumSettings: skippedPremiumSettings);
+  }
+
+  GeneralSettingsModel _settingsForRestore({
+    required GeneralSettingsModel restored,
+    required GeneralSettingsModel current,
+    required bool isPremium,
+  }) {
+    if (isPremium) return restored;
+
+    return restored.copyWith(
+      wearAndTear: current.wearAndTear,
+      failureRisk: current.failureRisk,
+      labourRate: current.labourRate,
+      pricingMarkupPercent: current.pricingMarkupPercent,
+      pricingSetupFee: current.pricingSetupFee,
+      pricingRoundingMode: current.pricingRoundingMode,
+      currencySymbol: current.currencySymbol,
+      currencyPosition: current.currencyPosition,
+      currencySpacing: current.currencySpacing,
+    );
+  }
+
+  bool _premiumOnlySettingsChanged(
+    GeneralSettingsModel left,
+    GeneralSettingsModel right,
+  ) {
+    return left.wearAndTear != right.wearAndTear ||
+        left.failureRisk != right.failureRisk ||
+        left.labourRate != right.labourRate ||
+        left.pricingMarkupPercent != right.pricingMarkupPercent ||
+        left.pricingSetupFee != right.pricingSetupFee ||
+        left.pricingRoundingMode != right.pricingRoundingMode ||
+        left.currencySymbol != right.currencySymbol ||
+        left.currencyPosition != right.currencyPosition ||
+        left.currencySpacing != right.currencySpacing;
   }
 
   Future<void> _clearDb(Transaction txn) async {

@@ -7,6 +7,7 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/backup_restore/backup_restore_service.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -683,5 +684,163 @@ void main() {
         .find(db);
     expect(printers, hasLength(1));
     expect(printers.single.key, 'new');
+  });
+
+  test('non-premium restore preserves current premium-only settings', () async {
+    final container = await _container();
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await StoreRef<String, Object?>.main()
+        .record(DBName.settings.name)
+        .put(
+          db,
+          const GeneralSettingsModel(
+            electricityCost: '0.21',
+            wattage: '180',
+            averageWattage: '150',
+            activePrinter: 'current_printer',
+            selectedMaterial: 'current_material',
+            wearAndTear: '0.11',
+            failureRisk: '0.07',
+            labourRate: '22',
+            pricingMarkupPercent: '12',
+            pricingSetupFee: '3.5',
+            pricingRoundingMode: '.99',
+            currencySymbol: 'USD',
+            currencyPosition: 'after',
+            currencySpacing: true,
+          ).toMap(),
+        );
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': const GeneralSettingsModel(
+          electricityCost: '0.45',
+          wattage: '260',
+          averageWattage: '210',
+          activePrinter: 'backup_printer',
+          selectedMaterial: 'backup_material',
+          wearAndTear: '0.40',
+          failureRisk: '0.25',
+          labourRate: '35',
+          pricingMarkupPercent: '30',
+          pricingSetupFee: '15',
+          pricingRoundingMode: '.00',
+          currencySymbol: 'EUR',
+          currencyPosition: 'before',
+          currencySpacing: false,
+        ).toMap(),
+        'printers': [],
+        'materials': [],
+        'history': [],
+      },
+    });
+
+    final result = await service.restoreBackupJson(backup);
+    final restored =
+        await StoreRef<String, Object?>.main()
+                .record(DBName.settings.name)
+                .get(db)
+            as Map<String, Object?>;
+    final settings = GeneralSettingsModel.fromMap(restored);
+
+    expect(result.skippedPremiumSettings, isTrue);
+    expect(settings.electricityCost, '0.45');
+    expect(settings.wattage, '260');
+    expect(settings.averageWattage, '210');
+    expect(settings.activePrinter, 'backup_printer');
+    expect(settings.selectedMaterial, 'backup_material');
+    expect(settings.wearAndTear, '0.11');
+    expect(settings.failureRisk, '0.07');
+    expect(settings.labourRate, '22');
+    expect(settings.pricingMarkupPercent, '12');
+    expect(settings.pricingSetupFee, '3.5');
+    expect(settings.pricingRoundingMode, '.99');
+    expect(settings.currencySymbol, 'USD');
+    expect(settings.currencyPosition, 'after');
+    expect(settings.currencySpacing, isTrue);
+  });
+
+  test('premium restore applies premium-only settings from backup', () async {
+    final container = await _container(
+      extraOverrides: [isPremiumProvider.overrideWithValue(true)],
+    );
+    addTearDown(container.dispose);
+    final service = container.read(backupRestoreServiceProvider);
+    final db = container.read(databaseProvider);
+
+    await StoreRef<String, Object?>.main()
+        .record(DBName.settings.name)
+        .put(
+          db,
+          const GeneralSettingsModel(
+            electricityCost: '0.21',
+            wattage: '180',
+            averageWattage: '150',
+            activePrinter: 'current_printer',
+            selectedMaterial: 'current_material',
+            wearAndTear: '0.11',
+            failureRisk: '0.07',
+            labourRate: '22',
+            pricingMarkupPercent: '12',
+            pricingSetupFee: '3.5',
+            pricingRoundingMode: '.99',
+            currencySymbol: 'USD',
+            currencyPosition: 'after',
+            currencySpacing: true,
+          ).toMap(),
+        );
+
+    final backup = jsonEncode({
+      'version': 1,
+      'schemaVersion': 1,
+      'createdAt': '2026-01-01T00:00:00Z',
+      'data': {
+        'settings': const GeneralSettingsModel(
+          electricityCost: '0.45',
+          wattage: '260',
+          averageWattage: '210',
+          activePrinter: 'backup_printer',
+          selectedMaterial: 'backup_material',
+          wearAndTear: '0.40',
+          failureRisk: '0.25',
+          labourRate: '35',
+          pricingMarkupPercent: '30',
+          pricingSetupFee: '15',
+          pricingRoundingMode: '.00',
+          currencySymbol: 'EUR',
+          currencyPosition: 'before',
+          currencySpacing: false,
+        ).toMap(),
+        'printers': [],
+        'materials': [],
+        'history': [],
+      },
+    });
+
+    final result = await service.restoreBackupJson(backup);
+    final restored =
+        await StoreRef<String, Object?>.main()
+                .record(DBName.settings.name)
+                .get(db)
+            as Map<String, Object?>;
+    final settings = GeneralSettingsModel.fromMap(restored);
+
+    expect(result.skippedPremiumSettings, isFalse);
+    expect(settings.electricityCost, '0.45');
+    expect(settings.wearAndTear, '0.40');
+    expect(settings.failureRisk, '0.25');
+    expect(settings.labourRate, '35');
+    expect(settings.pricingMarkupPercent, '30');
+    expect(settings.pricingSetupFee, '15');
+    expect(settings.pricingRoundingMode, '.00');
+    expect(settings.currencySymbol, 'EUR');
+    expect(settings.currencyPosition, 'before');
+    expect(settings.currencySpacing, isFalse);
   });
 }
