@@ -134,6 +134,17 @@ void main() {
     expect((payload['data'] as Map)['settings'], {'a': 1});
   });
 
+  test('builds shared backup params with json filename override', () {
+    final params = BackupRestoreService.buildBackupShareParams(
+      '{"version":1}',
+      'backup.json',
+    );
+
+    expect(params.fileNameOverrides, ['backup.json']);
+    expect(params.files, hasLength(1));
+    expect(params.files!.single.mimeType, backupJsonMimeType);
+  });
+
   test('rejects invalid backup before restore', () async {
     final container = await _container();
     addTearDown(container.dispose);

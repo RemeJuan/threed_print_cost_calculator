@@ -72,19 +72,27 @@ class BackupRestoreService {
 
     if (kIsWeb) {
       await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile.fromData(utf8.encode(jsonText), name: fileName)],
-        ),
+        buildBackupShareParams(jsonText, fileName),
       );
       return fileName;
     }
 
-    await SharePlus.instance.share(
-      ShareParams(
-        files: [XFile.fromData(utf8.encode(jsonText), name: fileName)],
-      ),
-    );
+    await SharePlus.instance.share(buildBackupShareParams(jsonText, fileName));
     return fileName;
+  }
+
+  @visibleForTesting
+  static ShareParams buildBackupShareParams(String jsonText, String fileName) {
+    return ShareParams(
+      files: [
+        XFile.fromData(
+          utf8.encode(jsonText),
+          name: fileName,
+          mimeType: backupJsonMimeType,
+        ),
+      ],
+      fileNameOverrides: [fileName],
+    );
   }
 
   bool get _isDesktopPlatform {
