@@ -151,16 +151,17 @@ class BackupRestoreSection extends ConsumerWidget {
 }
 
 @visibleForTesting
-Future<void> restoreBackupAndRefresh({
-  required Future<void> Function() restore,
+Future<T> restoreBackupAndRefresh<T>({
+  required Future<T> Function() restore,
   required Future<void> Function() resetCalculator,
   required Future<void> Function() refreshHistory,
   required Future<void> Function() waitForEndOfFrame,
 }) async {
   await waitForEndOfFrame();
-  await restore();
+  final result = await restore();
   await resetCalculator();
   await refreshHistory();
+  return result;
 }
 
 @visibleForTesting

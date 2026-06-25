@@ -6,8 +6,11 @@ void main() {
     var endOfFrameWaited = false;
     final calls = <String>[];
 
-    await restoreBackupAndRefresh(
-      restore: () async => calls.add('restore'),
+    final result = await restoreBackupAndRefresh(
+      restore: () async {
+        calls.add('restore');
+        return 'done';
+      },
       resetCalculator: () async => calls.add('reset'),
       refreshHistory: () async => calls.add('history'),
       waitForEndOfFrame: () async {
@@ -17,6 +20,7 @@ void main() {
     );
 
     expect(endOfFrameWaited, isTrue);
+    expect(result, 'done');
     expect(calls, ['frame', 'restore', 'reset', 'history']);
   });
 }

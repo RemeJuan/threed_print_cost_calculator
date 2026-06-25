@@ -46,6 +46,12 @@ final backupRestoreServiceProvider = Provider<BackupRestoreService>(
   BackupRestoreService.new,
 );
 
+class BackupRestoreResult {
+  const BackupRestoreResult({this.skippedPremiumSettings = false});
+
+  final bool skippedPremiumSettings;
+}
+
 class BackupRestoreService {
   BackupRestoreService(this.ref);
   final Ref ref;
@@ -94,13 +100,13 @@ class BackupRestoreService {
     return const JsonEncoder.withIndent('  ').convert(payload);
   }
 
-  Future<void> restoreBackupJson(String raw) async {
+  Future<BackupRestoreResult> restoreBackupJson(String raw) async {
     final payload = _parseAndValidate(raw);
-    await _restorePayload(payload);
+    return _restorePayload(payload);
   }
 
-  Future<void> restoreBackupFromFile(XFile file) async {
-    await restoreBackupJson(await file.readAsString());
+  Future<BackupRestoreResult> restoreBackupFromFile(XFile file) async {
+    return restoreBackupJson(await file.readAsString());
   }
 
   Future<Map<String, Object?>> _buildPayload() async {
@@ -130,9 +136,13 @@ class BackupRestoreService {
     return map;
   }
 
-  Future<void> _restorePayload(Map<String, Object?> payload) async {
+  Future<BackupRestoreResult> _restorePayload(
+    Map<String, Object?> payload,
+  ) async {
     final data = payload['data'] as Map;
-    final settings = GeneralSettingsModel.fromMap(_mapOf(data['settings']));
+    final restoredSettings = GeneralSettingsModel.fromMap(
+      _mapOf(data['settings']),
+    );
     final printers = _parsePrinters(data['printers']);
     final materials = _parseMaterials(data['materials']);
     final historyRaw = _strictListOfMaps(data['history']);
