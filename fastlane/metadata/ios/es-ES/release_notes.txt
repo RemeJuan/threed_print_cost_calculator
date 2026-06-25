@@ -1,7 +1,1 @@
-Plan gratuito ampliado.
-
-• El cálculo multimaterial y la importación de G-code para una sola impresión ya están en el plan Gratis
-• El plan Gratis ahora incluye hasta 5 materiales, 2 perfiles de impresora, 7 entradas de historial y cálculo manual por lotes para 3 elementos
-• Premium ahora se centra en herramientas avanzadas de precios, flujos por lotes, seguimiento de inventario, exportaciones y uso ilimitado
-• Añada vatios promedio opcionales para estimaciones de electricidad más precisas
-• Los resultados y el historial ahora muestran si se usaron vatios nominales o promedio
+La copia de seguridad y restauración ya está disponible para todos los usuarios. Guarda una copia de los datos de la app y restáurala más tarde al cambiar de dispositivo o tras un restablecimiento.

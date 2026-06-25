@@ -1,7 +1,1 @@
-Expanded the free plan.
-
-• Multi-material costing and single-print G-code import are now available on Free
-• Free now includes up to 5 materials, 2 printer profiles, 7 history entries, and manual batch costing for 3 items
-• Premium now focuses on advanced pricing tools, batch workflows, inventory tracking, exports, and unlimited usage
-• Add optional average wattage for more accurate electricity cost estimates
-• Results and history now show whether rated or average wattage was used
+Backup and restore is now available to all users. Save a copy of your app data and restore it later when moving devices or recovering from a reset.

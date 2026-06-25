@@ -1,7 +1,1 @@
-Plano gratuito ampliado.
-
-* Custeio multimaterial e G-code de peça única agora são grátis
-* Grátis: até 5 materiais, 2 perfis, 7 históricos e lote manual para 3 itens
-* Premium agora foca em precificação avançada, fluxos em lote, inventário, exportações e uso ilimitado
-* Potência média opcional para estimativas de eletricidade mais precisas
-* Resultados e histórico mostram potência nominal ou média
+Backup e restauração agora estão disponíveis para todos os usuários. Salve uma cópia dos dados do app e restaure depois ao trocar de dispositivo ou após uma redefinição.

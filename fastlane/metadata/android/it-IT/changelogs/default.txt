@@ -1,7 +1,1 @@
-Piano gratuito ampliato.
-
-* Calcolo multimateriale e G-code singolo ora sono gratis
-* Gratis: fino a 5 materiali, 2 profili, 7 cronologie e batch manuali per 3 elementi
-* Premium ora punta su prezzi avanzati, flussi batch, inventario, esportazioni e uso illimitato
-* Wattaggio medio opzionale per stime elettriche più precise
-* Risultati e cronologia mostrano wattaggio nominale o medio
+Backup e ripristino sono ora disponibili per tutti gli utenti. Salva una copia dei dati dell’app e ripristinala in seguito quando cambi dispositivo o dopo un ripristino.

@@ -1,7 +1,1 @@
-Plan gratuito ampliado.
-
-* El cálculo multimaterial y el G-code individual ya son gratis
-* Gratis: hasta 5 materiales, 2 perfiles, 7 historiales y lotes manuales para 3 elementos
-* Premium ahora se centra en precios avanzados, flujos por lotes, inventario, exportaciones y uso ilimitado
-* Vatios medios opcionales para estimaciones eléctricas más precisas
-* Resultados e historial muestran vatios nominales o medios
+La copia de seguridad y restauración ya está disponible para todos los usuarios. Guarda una copia de los datos de la app y restáurala más tarde al cambiar de dispositivo o tras un restablecimiento.

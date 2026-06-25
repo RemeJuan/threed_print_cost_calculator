@@ -1,7 +1,1 @@
-Plano gratuito ampliado.
-
-• O custeio multimaterial e a importação de G-code para uma única impressão agora estão no plano gratuito
-• O plano gratuito agora inclui até 5 materiais, 2 perfis de impressora, 7 entradas no histórico e custeio manual em lote para 3 itens
-• O Premium agora foca em ferramentas avançadas de precificação, fluxos em lote, controle de inventário, exportações e uso ilimitado
-• Adicione potência média opcional para estimativas de eletricidade mais precisas
-• Resultados e histórico agora mostram se foi usada a potência nominal ou média
+Backup e restauração agora estão disponíveis para todos os usuários. Salve uma cópia dos dados do app e restaure depois ao trocar de dispositivo ou após uma redefinição.
