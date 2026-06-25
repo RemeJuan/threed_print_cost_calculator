@@ -179,6 +179,14 @@ List<XTypeGroup> backupAcceptedTypeGroups(
       return [
         XTypeGroup(label: label, uniformTypeIdentifiers: ['public.data']),
       ];
+    case TargetPlatform.android:
+      return [
+        XTypeGroup(
+          label: label,
+          extensions: ['json'],
+          mimeTypes: [backupJsonMimeType],
+        ),
+      ];
     default:
       return [
         XTypeGroup(label: label, extensions: ['json']),
