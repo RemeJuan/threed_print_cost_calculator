@@ -1920,6 +1920,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'กู้คืนข้อมูลสำรองแล้ว';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'กู้คืนข้อมูลสำรองแล้ว การตั้งค่า Premium บางส่วนไม่ได้รับการกู้คืนเนื่องจาก Premium ยังไม่เปิดใช้งาน';
+
+  @override
   String get dataBackupRestoreError => 'กู้คืนข้อมูลสำรองไม่สำเร็จ';
 
   @override

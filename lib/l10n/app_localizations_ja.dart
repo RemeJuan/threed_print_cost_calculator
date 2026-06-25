@@ -1875,6 +1875,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'バックアップを復元しました';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'バックアップを復元しました。一部のPremium設定は、Premiumが有効ではないため復元されませんでした。';
+
+  @override
   String get dataBackupRestoreError => 'バックアップの復元に失敗しました';
 
   @override

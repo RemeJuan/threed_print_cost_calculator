@@ -112,7 +112,7 @@ class BackupRestoreSection extends ConsumerWidget {
                     );
                     if (confirmed != true) return;
                     try {
-                      await restoreBackupAndRefresh(
+                      final result = await restoreBackupAndRefresh(
                         restore: () => ref
                             .read(backupRestoreServiceProvider)
                             .restoreBackupFromFile(file!),
@@ -127,7 +127,11 @@ class BackupRestoreSection extends ConsumerWidget {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(l10n.dataBackupRestoreSuccess),
+                            content: Text(
+                              result.skippedPremiumSettings
+                                  ? l10n.dataBackupRestorePremiumSkipped
+                                  : l10n.dataBackupRestoreSuccess,
+                            ),
                           ),
                         );
                       }

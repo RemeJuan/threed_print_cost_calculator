@@ -865,6 +865,7 @@
   "dataBackupExportSuccess": "Cópia de segurança exportada",
   "dataBackupExportError": "Falha ao exportar a cópia de segurança",
   "dataBackupRestoreSuccess": "Cópia de segurança restaurada",
+  "dataBackupRestorePremiumSkipped": "Cópia de segurança restaurada. Algumas definições Premium não foram restauradas porque o Premium não está ativo.",
   "dataBackupRestoreError": "Falha ao restaurar a cópia de segurança",
   "settingsPremiumCardTitle": "Atualize para Premium",
   "settingsPremiumCardBody": "Ferramentas avançadas de preços, utilização ilimitada e controlo de inventário.",

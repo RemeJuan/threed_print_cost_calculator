@@ -1959,6 +1959,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'Backup wiederhergestellt';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'Backup wiederhergestellt. Einige Premium-Einstellungen wurden nicht wiederhergestellt, weil Premium nicht aktiv ist.';
+
+  @override
   String get dataBackupRestoreError =>
       'Wiederherstellung des Backups fehlgeschlagen';
 

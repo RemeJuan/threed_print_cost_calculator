@@ -40,9 +40,7 @@ Future<void> _runApp() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
 
   await FirebaseAppCheck.instance.activate(
@@ -59,9 +57,7 @@ Future<void> _runApp() async {
           exception: error,
           stack: stackTrace,
           library: 'premium_local_store',
-          context: ErrorDescription(
-            'while reading secure premium local store',
-          ),
+          context: ErrorDescription('while reading secure premium local store'),
         ),
       );
     },

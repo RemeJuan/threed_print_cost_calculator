@@ -871,6 +871,7 @@
   "dataBackupExportSuccess": "Sauvegarde exportée",
   "dataBackupExportError": "Échec de l’exportation de la sauvegarde",
   "dataBackupRestoreSuccess": "Sauvegarde restaurée",
+  "dataBackupRestorePremiumSkipped": "Sauvegarde restaurée. Certains réglages Premium n’ont pas été restaurés car Premium n’est pas actif.",
   "dataBackupRestoreError": "Échec de la restauration de la sauvegarde",
   "settingsPremiumCardTitle": "Passer à Premium",
   "settingsPremiumCardBody": "Outils de tarification avancés, utilisation illimitée et suivi des stocks.",

@@ -869,6 +869,7 @@
   "dataBackupExportSuccess": "Cadangan diekspor",
   "dataBackupExportError": "Ekspor cadangan gagal",
   "dataBackupRestoreSuccess": "Cadangan dipulihkan",
+  "dataBackupRestorePremiumSkipped": "Cadangan dipulihkan. Beberapa pengaturan Premium tidak dipulihkan karena Premium tidak aktif.",
   "dataBackupRestoreError": "Pemulihan cadangan gagal",
   "settingsPremiumCardTitle": "Tingkatkan ke Premium",
   "settingsPremiumCardBody": "Alat penetapan harga lanjutan, penggunaan tanpa batas, dan pelacakan inventaris.",

@@ -869,6 +869,7 @@
   "dataBackupExportSuccess": "Backup esportato",
   "dataBackupExportError": "Esportazione del backup non riuscita",
   "dataBackupRestoreSuccess": "Backup ripristinato",
+  "dataBackupRestorePremiumSkipped": "Backup ripristinato. Alcune impostazioni Premium non sono state ripristinate perché Premium non è attivo.",
   "dataBackupRestoreError": "Ripristino del backup non riuscito",
   "settingsPremiumCardTitle": "Passa a Premium",
   "settingsPremiumCardBody": "Strumenti di prezzo avanzati, utilizzo illimitato e monitoraggio dell'inventario.",

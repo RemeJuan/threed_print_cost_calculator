@@ -1976,6 +1976,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'Sauvegarde restaurée';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'Sauvegarde restaurée. Certains réglages Premium n’ont pas été restaurés car Premium n’est pas actif.';
+
+  @override
   String get dataBackupRestoreError =>
       'Échec de la restauration de la sauvegarde';
 

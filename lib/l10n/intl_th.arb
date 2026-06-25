@@ -870,6 +870,7 @@
   "dataBackupExportSuccess": "ส่งออกข้อมูลสำรองแล้ว",
   "dataBackupExportError": "ส่งออกข้อมูลสำรองไม่สำเร็จ",
   "dataBackupRestoreSuccess": "กู้คืนข้อมูลสำรองแล้ว",
+  "dataBackupRestorePremiumSkipped": "กู้คืนข้อมูลสำรองแล้ว การตั้งค่า Premium บางส่วนไม่ได้รับการกู้คืนเนื่องจาก Premium ยังไม่เปิดใช้งาน",
   "dataBackupRestoreError": "กู้คืนข้อมูลสำรองไม่สำเร็จ",
   "settingsPremiumCardTitle": "อัปเกรดเป็นพรีเมียม",
   "settingsPremiumCardBody": "เครื่องมือคำนวณราคาขั้นสูง การใช้งานไม่จำกัด และการติดตามสินค้าคงคลัง",

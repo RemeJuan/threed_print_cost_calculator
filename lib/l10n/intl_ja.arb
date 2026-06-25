@@ -870,6 +870,7 @@
   "dataBackupExportSuccess": "バックアップを書き出しました",
   "dataBackupExportError": "バックアップの書き出しに失敗しました",
   "dataBackupRestoreSuccess": "バックアップを復元しました",
+  "dataBackupRestorePremiumSkipped": "バックアップを復元しました。一部のPremium設定は、Premiumが有効ではないため復元されませんでした。",
   "dataBackupRestoreError": "バックアップの復元に失敗しました",
   "settingsPremiumCardTitle": "Premiumにアップグレード",
   "settingsPremiumCardBody": "高度な価格設定ツール、無制限の利用、在庫追跡。",

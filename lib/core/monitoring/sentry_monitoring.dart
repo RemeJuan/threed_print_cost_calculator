@@ -92,8 +92,7 @@ Object? _scrubValue(Object? value) {
       value.entries
           .where((entry) => entry.key is String)
           .map(
-            (entry) =>
-                MapEntry(entry.key as String, _scrubValue(entry.value)),
+            (entry) => MapEntry(entry.key as String, _scrubValue(entry.value)),
           ),
     );
   }

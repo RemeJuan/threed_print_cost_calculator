@@ -805,6 +805,7 @@
   "dataBackupExportSuccess": "Backup exported",
   "dataBackupExportError": "Backup export failed",
   "dataBackupRestoreSuccess": "Backup restored",
+  "dataBackupRestorePremiumSkipped": "Backup restored. Some Premium settings were not restored because Premium is not active.",
   "dataBackupRestoreError": "Backup restore failed",
   "dataBackupJsonFileTypeLabel": "JSON",
   "settingsPremiumCardTitle": "Upgrade to Premium",

@@ -3557,6 +3557,12 @@ abstract class AppLocalizations {
   /// **'Backup restored'**
   String get dataBackupRestoreSuccess;
 
+  /// No description provided for @dataBackupRestorePremiumSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored. Some Premium settings were not restored because Premium is not active.'**
+  String get dataBackupRestorePremiumSkipped;
+
   /// No description provided for @dataBackupRestoreError.
   ///
   /// In en, this message translates to:

@@ -1967,6 +1967,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'Copia de seguridad restaurada';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'Copia de seguridad restaurada. Algunos ajustes Premium no se restauraron porque Premium no está activo.';
+
+  @override
   String get dataBackupRestoreError =>
       'Error al restaurar la copia de seguridad';
 

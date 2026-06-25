@@ -870,6 +870,7 @@
   "dataBackupExportSuccess": "Back-up geëxporteerd",
   "dataBackupExportError": "Exporteren van back-up mislukt",
   "dataBackupRestoreSuccess": "Back-up hersteld",
+  "dataBackupRestorePremiumSkipped": "Back-up hersteld. Sommige Premium-instellingen zijn niet hersteld omdat Premium niet actief is.",
   "dataBackupRestoreError": "Herstellen van back-up mislukt",
   "settingsPremiumCardTitle": "Upgrade naar Premium",
   "settingsPremiumCardBody": "Geavanceerde prijstools, onbeperkt gebruik en voorraadtracking.",

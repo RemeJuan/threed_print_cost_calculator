@@ -1926,6 +1926,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'Cadangan dipulihkan';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'Cadangan dipulihkan. Beberapa pengaturan Premium tidak dipulihkan karena Premium tidak aktif.';
+
+  @override
   String get dataBackupRestoreError => 'Pemulihan cadangan gagal';
 
   @override

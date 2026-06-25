@@ -869,6 +869,7 @@
   "dataBackupExportSuccess": "Backup exportiert",
   "dataBackupExportError": "Backup-Export fehlgeschlagen",
   "dataBackupRestoreSuccess": "Backup wiederhergestellt",
+  "dataBackupRestorePremiumSkipped": "Backup wiederhergestellt. Einige Premium-Einstellungen wurden nicht wiederhergestellt, weil Premium nicht aktiv ist.",
   "dataBackupRestoreError": "Wiederherstellung des Backups fehlgeschlagen",
   "settingsPremiumCardTitle": "Auf Premium upgraden",
   "settingsPremiumCardBody": "Erweiterte Preiswerkzeuge, unbegrenzte Nutzung und Bestandsverfolgung.",

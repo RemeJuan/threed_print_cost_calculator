@@ -1935,6 +1935,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'Backup restored';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'Backup restored. Some Premium settings were not restored because Premium is not active.';
+
+  @override
   String get dataBackupRestoreError => 'Backup restore failed';
 
   @override

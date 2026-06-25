@@ -1953,6 +1953,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dataBackupRestoreSuccess => 'Back-up hersteld';
 
   @override
+  String get dataBackupRestorePremiumSkipped =>
+      'Back-up hersteld. Sommige Premium-instellingen zijn niet hersteld omdat Premium niet actief is.';
+
+  @override
   String get dataBackupRestoreError => 'Herstellen van back-up mislukt';
 
   @override
