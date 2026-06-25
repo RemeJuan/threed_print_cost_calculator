@@ -5,6 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -30,58 +31,62 @@ import 'database/database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppMonitoring.init(() async {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+  await _runApp();
+}
 
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+Future<void> _runApp() async {
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-    await FirebaseAppCheck.instance.activate(
-      providerApple: AppleAppAttestProvider(),
-    );
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
 
-    await revenueCat();
-    final prefs = await SharedPreferences.getInstance();
-    final premiumLocalStore = CachedPremiumLocalStore(
-      const FlutterSecureStorage(),
-      onError: (error, stackTrace) {
-        FlutterError.reportError(
-          FlutterErrorDetails(
-            exception: error,
-            stack: stackTrace,
-            library: 'premium_local_store',
-            context: ErrorDescription(
-              'while reading secure premium local store',
-            ),
+  await FirebaseAppCheck.instance.activate(
+    providerApple: AppleAppAttestProvider(),
+  );
+
+  await revenueCat();
+  final prefs = await SharedPreferences.getInstance();
+  final premiumLocalStore = CachedPremiumLocalStore(
+    const FlutterSecureStorage(),
+    onError: (error, stackTrace) {
+      FlutterError.reportError(
+        FlutterErrorDetails(
+          exception: error,
+          stack: stackTrace,
+          library: 'premium_local_store',
+          context: ErrorDescription(
+            'while reading secure premium local store',
           ),
-        );
-      },
-    );
-    await premiumLocalStore.preload();
-    await migratePremiumLocalStore(
-      sharedPreferences: prefs,
-      premiumLocalStore: premiumLocalStore,
-    );
-    final db = await DatabaseStorageImpl().openDb();
+        ),
+      );
+    },
+  );
+  await premiumLocalStore.preload();
+  await migratePremiumLocalStore(
+    sharedPreferences: prefs,
+    premiumLocalStore: premiumLocalStore,
+  );
+  final db = await DatabaseStorageImpl().openDb();
 
-    await startupMigration(db);
+  await startupMigration(db);
 
-    return bootstrap(
-      () => ProviderScope(
-        overrides: [
-          sharedPreferencesProvider.overrideWithValue(prefs),
-          premiumLocalStoreProvider.overrideWithValue(premiumLocalStore),
-          databaseProvider.overrideWithValue(db),
-        ],
-        child: const App(),
-      ),
-    );
-  });
+  await bootstrap(
+    () => ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        premiumLocalStoreProvider.overrideWithValue(premiumLocalStore),
+        databaseProvider.overrideWithValue(db),
+      ],
+      child: const App(),
+    ),
+  );
+
+  unawaited(initSentry());
 }
 
 Future<void> revenueCat() async {

@@ -17,7 +17,10 @@
 
 ## Bootstrap sequence
 
-- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, Crashlytics, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, and Sembast DB.
+- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, Sembast DB, then best-effort Sentry init.
+- `main()` no longer waits on Sentry. It runs `_runApp()` first, then starts `initSentry()` as background work so monitoring never blocks launch.
+- Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart` (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), avoiding any `PackageInfo` dependency in the startup path.
+- On iOS debug builds, `configureSentryOptions()` disables native auto-init to avoid early `sentry_flutter` native channel failures during startup.
 - Startup migrations from `lib/startup.dart` run after those services are ready and before the root Riverpod `ProviderScope` is applied.
 - That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
 

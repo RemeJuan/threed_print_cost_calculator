@@ -307,6 +307,25 @@
   - `paywall_viewed`
   - `gcode_import_`
 
+## Monitoring / Sentry
+
+- Init:
+  - `lib/main.dart` runs `_runApp()` first, then starts `initSentry()` as best-effort background work.
+  - Monitoring never blocks startup; Sentry init is detached from the critical launch path.
+  - `lib/core/monitoring/sentry_monitoring.dart` holds DSN/environment config plus `_beforeSend` scrubbing logic.
+  - Release/dist are always set (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), so Sentry does not need `PackageInfo` in the startup path.
+  - iOS debug builds disable Sentry native auto-init to avoid early `sentry_flutter` method-channel failures.
+  - Scrubbing logic in `_beforeSend` callback strips paths, file names, user data, and request info from events before transmission.
+  - Bootstrap error hook in `lib/bootstrap.dart` chains to Sentry's `FlutterError.onError` handler and adds local logging via `log(...)`.
+- Tests:
+  - No dedicated test file; coverage indirect through app-level test helpers.
+- Common search terms:
+  - `configureSentryOptions`
+  - `initSentry`
+  - `_beforeSend`
+  - `SentryFlutter.init`
+  - `_runApp`
+
 ## Update checker
 
 - Main screens/widgets:
