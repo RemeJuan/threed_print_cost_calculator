@@ -223,7 +223,7 @@ Notes:
 - [x] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
 - [x] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
 - [x] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
-- [ ] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, history_snapshot)
+- [x] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, optional history_snapshot deferred)
 - [ ] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
 - [ ] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
 - [ ] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
@@ -363,7 +363,7 @@ Notes:
 
 ### 2026-06-26 — G-code import test split by scenario
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Split `test/gcode_import/gcode_import_page_test.dart` into `test/gcode_import/gcode_import_page_rendering_test.dart`, `test/gcode_import/gcode_import_page_preview_test.dart`, and `test/gcode_import/gcode_import_page_quantity_test.dart`.
@@ -372,16 +372,17 @@ Changed:
 
 Verification:
 - `fvm flutter test test/gcode_import` passes.
+- `fvm flutter analyze` passes.
 
 Notes:
 - Focused on test-only churn. No production code touched.
-- Next step: run `fvm flutter test test/gcode_import/...`.
+- `test/history/history_snapshot_regression_test.dart` remains optional PR 7 follow-up if it becomes difficult to extend.
 
 ---
 
 ### 2026-06-26 — Batch costing test split by scenario
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Split `test/batch_costing/batch_costing_page_test.dart` into `test/batch_costing/batch_costing_page_review_test.dart` and `test/batch_costing/batch_costing_page_manual_item_test.dart`.
@@ -389,10 +390,11 @@ Changed:
 - Preserved review/remove/import-gate/start-new-batch, manual CRUD, validation, defaults, and quota assertions; only file organization changed.
 
 Verification:
-- Not run yet.
+- `fvm flutter test test/batch_costing/batch_costing_page_review_test.dart test/batch_costing/batch_costing_page_manual_item_test.dart` passes.
+- `fvm flutter analyze` passes.
 
 Notes:
-- Next step: run focused batch-costing widget tests after formatting.
+- This completes the required PR 7 oversized-test split targets; optional history snapshot split is deferred because the main app, G-code import, batch costing, and settings files are now scenario-grouped.
 
 ---
 
