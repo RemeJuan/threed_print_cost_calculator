@@ -29,7 +29,7 @@ void main() {
   });
 
   test(
-    'deleteRecord removes history records keyed by int and updates index',
+    'deleteRecord removes history records keyed by int and updates indexes',
     () async {
       final dbHelpers = container.read(dbHelpersProvider(DBName.history));
       final key = await dbHelpers.insertRecord({
@@ -49,17 +49,26 @@ void main() {
       expect(key, isNotNull);
       final resolvedKey = key as Object;
 
-      final indexHelpers = PrinterIndexHelpers.fromContainer(container);
-      var keys = await indexHelpers.getKeysMatchingPrinter('prusa');
-      expect(keys.contains(resolvedKey), isTrue);
+      final printerIndex = PrinterIndexHelpers.fromContainer(container);
+      final searchIndex = HistorySearchIndexHelpers.fromContainer(container);
+      var printerKeys = await printerIndex.getKeysMatchingPrinter('prusa');
+      var searchKeys = await searchIndex.getKeysMatchingQuery('delete');
+      expect(printerKeys, contains(resolvedKey));
+      expect(searchKeys, contains(resolvedKey));
+
+      await container.read(historyPagedProvider.notifier).refreshIfNeeded();
+      expect(container.read(historyPagedProvider).isStale, isFalse);
 
       await dbHelpers.deleteRecord(resolvedKey);
 
       final deletedRecord = await historyStore.record(resolvedKey).get(db);
       expect(deletedRecord, isNull);
 
-      keys = await indexHelpers.getKeysMatchingPrinter('prusa');
-      expect(keys.contains(resolvedKey), isFalse);
+      printerKeys = await printerIndex.getKeysMatchingPrinter('prusa');
+      searchKeys = await searchIndex.getKeysMatchingQuery('delete');
+      expect(printerKeys, isNot(contains(resolvedKey)));
+      expect(searchKeys, isNot(contains(resolvedKey)));
+      expect(container.read(historyPagedProvider).isStale, isTrue);
     },
   );
 
@@ -167,27 +176,42 @@ void main() {
     },
   );
 
-  test('insertRecord marks paged history state stale', () async {
-    final dbHelpers = container.read(dbHelpersProvider(DBName.history));
-    final notifier = container.read(historyPagedProvider.notifier);
+  test(
+    'insertRecord updates history indexes and marks paged state stale',
+    () async {
+      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
+      final notifier = container.read(historyPagedProvider.notifier);
+      final printerIndex = PrinterIndexHelpers.fromContainer(container);
+      final searchIndex = HistorySearchIndexHelpers.fromContainer(container);
 
-    await notifier.refreshIfNeeded();
-    expect(container.read(historyPagedProvider).isStale, isFalse);
+      await notifier.refreshIfNeeded();
+      expect(container.read(historyPagedProvider).isStale, isFalse);
 
-    await dbHelpers.insertRecord({
-      'name': 'Newest Print',
-      'printer': 'Prusa MK4',
-      'date': DateTime.now().toUtc().toIso8601String(),
-      'material': 'PLA',
-      'weight': 25,
-      'timeHours': '01:00',
-      'totalCost': 2.0,
-      'riskCost': 0.0,
-      'filamentCost': 0.0,
-      'electricityCost': 0.0,
-      'labourCost': 0.0,
-    });
+      final key = await dbHelpers.insertRecord({
+        'name': 'Newest Print',
+        'printer': 'Prusa MK4',
+        'date': DateTime.now().toUtc().toIso8601String(),
+        'material': 'PLA',
+        'weight': 25,
+        'timeHours': '01:00',
+        'totalCost': 2.0,
+        'riskCost': 0.0,
+        'filamentCost': 0.0,
+        'electricityCost': 0.0,
+        'labourCost': 0.0,
+      });
+      expect(key, isNotNull);
+      final resolvedKey = key as Object;
 
-    expect(container.read(historyPagedProvider).isStale, isTrue);
-  });
+      expect(
+        await printerIndex.getKeysMatchingPrinter('prusa'),
+        contains(resolvedKey),
+      );
+      expect(
+        await searchIndex.getKeysMatchingQuery('newest'),
+        contains(resolvedKey),
+      );
+      expect(container.read(historyPagedProvider).isStale, isTrue);
+    },
+  );
 }
