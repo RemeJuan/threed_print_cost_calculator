@@ -1,0 +1,276 @@
+# Project Maintenance Review — 2026-06-26
+
+> ClickUp Task: (pending)
+
+Initial review was investigation-only. Progress updates below track maintenance PR work started from this review.
+
+## Summary
+
+1. `lib/history/history_page.dart`, `lib/batch_costing/batch_costing_page.dart`, `lib/purchases/paywall_screen.dart`, `lib/materials/widgets/materials_page.dart`, `lib/gcode_import/gcode_import_page.dart` carry too many responsibilities. Best maintenance ROI: split orchestration from subviews/actions/state helpers. No behavior change needed.
+2. Strongest boundary leak: `lib/materials/widgets/materials_page.dart` does persistence, repository mutation, calculator cleanup, hint prefs inside widget. Good first cleanup target. Small, isolated, testable.
+3. Architectural coupling risk: `lib/database/history_record_store.dart` mutates persistence and also invalidates `historyPagedProvider`. Storage knows UI paging state. Fragile over time.
+4. `lib/settings/backup_restore/backup_restore_service.dart` mixes backup I/O, premium policy, DB clear/write, index rebuild. Important code, already tested, but hard to maintain safely.
+5. `lib/shared/utils/csv_utils.dart` looks overloaded and partially duplicated. Split export/query/generation concerns before more features land there.
+6. Test suite has some oversized files. Biggest value not "more tests everywhere"; value is focused gaps around materials delete/duplicate/hint persistence, history store invalidation, CSV import quota edge cases.
+7. No analyzer errors. No obvious TODO/FIXME litter. Dead-code findings mostly low-confidence, not safe blind deletion.
+
+---
+
+## Findings
+
+| File | Issue | Risk | Suggested cleanup | Effort |
+| --- | --- | --- | --- | --- |
+| `lib/materials/widgets/materials_page.dart` | Widget owns prefs, repo writes, delete/duplicate flows, calculator cleanup, toast orchestration | high | Extract page actions/controller helper for CRUD + swipe-hint persistence; keep widget focused on rendering | M |
+| `lib/history/history_page.dart` | Screen mixes search, teaser/paywall, export flow, overflow-hint prefs/timer, infinite scroll | medium | Extract `history_page_body.dart`, overflow hint controller/helper, export flow helper | M |
+| `lib/batch_costing/batch_costing_page.dart` | Page owns controller map sync, expanded-state sync, dialogs, premium gate, navigation | medium | Extract state-sync helper and action handlers; leave page as shell/composition | M |
+| `lib/purchases/paywall_screen.dart` | RevenueCat fetch/purchase/restore plus layout and section builders in one class | medium | Split header/pitch/actions widgets or private files; isolate purchase/restore action handling | M |
+| `lib/gcode_import/gcode_import_page.dart` | Single-file import, batch-mode gate, analytics, apply-to-calculator all mixed | medium | Extract single-flow vs multi-flow sections and action helper | M |
+| `lib/settings/backup_restore/backup_restore_service.dart` | Service mixes file/share concerns, restore policy, DB clear/write, index rebuild | high | Split internal collaborators: payload parsing, premium-field merge, DB rewrite/index rebuild, file/export adapter | L |
+| `lib/database/history_record_store.dart` | Persistence layer directly invalidates `historyPagedProvider` | high | Move stale-marking to higher-level coordinator/notifier or inject neutral callback boundary | M |
+| `lib/shared/utils/csv_utils.dart` | Large mixed-purpose file; top-level helpers plus thin wrapper methods duplicate API | medium | Split pure CSV generation, file export, history query/export, batch export; remove thin wrappers after callsite audit | M |
+| `lib/shared/test_tools/test_data_service.dart` | Raw store names duplicate index constants from history index files | low | Centralize store names in shared constants used by restore/test utilities | S |
+| `lib/settings/backup_restore/backup_restore_service.dart` | Raw `'printer_index'` / `'history_search_index'` strings duplicated | low | Reuse shared constants from index/store definitions | S |
+| `lib/materials/csv_import/csv_import_page.dart` | Quota check before import/save creates race window; likely under-tested | medium | Add focused tests first, then decide if sequencing helper needed | S |
+| `test/materials/widgets/materials_page_test.dart` | Missing delete failure, duplicate save failure, swipe-hint persistence, calculator cleanup coverage | medium | Add focused widget tests by scenario | S |
+| `test/app/view/app_page_test.dart` | Very large scenario matrix in one file | low | Split by theme: navigation, promo/premium, analytics | S |
+| `test/gcode_import/gcode_import_page_test.dart` | Mixed analytics/rendering/flow cases in one file | low | Split by flow vs analytics vs preview | S |
+| `test/batch_costing/batch_costing_page_test.dart` | Happy path, validation, premium gating, dialogs all in one file | low | Split by scenario groups | S |
+| `test/settings/backup_restore/backup_restore_service_test.dart` | Strong coverage but very large and harder to extend safely | low | Split by export/restore/validation or by premium vs structural cases | M |
+| `lib/shared/utils/csv_utils.dart` | Thin instance wrappers may be legacy pass-through API | low | Audit usages; collapse duplicate entry points if unused externally | S |
+| `lib/materials/widgets/materials_page.dart` | Hardcoded preference key in widget | low | Move key + persistence helper out of UI file | S |
+
+---
+
+## Safe Quick Wins
+
+- Split `MaterialsPage` action logic from widget tree.
+- Centralize store-name constants for `'printer_index'` and `'history_search_index'`.
+- Add materials-page tests for delete error, duplicate save failure, swipe hint persistence, calculator cleanup.
+- Split oversized test files by scenario groups only. No behavior change.
+- Extract history overflow-hint logic from `history_page.dart` into helper/controller file.
+- Audit `CsvUtils` thin wrappers and document which entry points remain canonical.
+
+## Needs Careful Refactor
+
+- Decouple `HistoryRecordStore` from `historyPagedProvider`. Cross-layer dependency.
+- Break up `BackupRestoreService` without weakening restore atomicity, premium-field preservation, or offline-first guarantees.
+- Split `csv_utils.dart` carefully because export paths likely serve history and batch costing.
+- Rework `gcode_import_page.dart` only after preserving premium multi-file gating and analytics ordering.
+- Rework `paywall_screen.dart` without changing RevenueCat purchase/restore behavior or snackbar/error timing.
+
+---
+
+## Suggested ClickUp Tasks
+
+### Extract materials page action logic from UI
+
+Scope:
+- `lib/materials/widgets/materials_page.dart`
+- likely new helper under `lib/materials/widgets/` or `lib/materials/`
+
+Acceptance criteria:
+- delete, duplicate, swipe-hint persistence, calculator cleanup no longer implemented inline in page widget
+- UI file primarily composes widgets and callbacks
+- existing behavior unchanged for free/premium limits and toasts
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- best small PR
+- keep repository and prefs usage out of widget where possible
+
+---
+
+### Add focused materials page regression tests
+
+Scope:
+- `test/materials/widgets/materials_page_test.dart`
+
+Acceptance criteria:
+- covers swipe-hint persistence path
+- covers delete success and delete failure path
+- covers calculator cleanup after delete
+- covers duplicate save failure path
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- good companion PR or first safety-net PR before refactor
+
+---
+
+### Decouple history persistence from paging invalidation
+
+Scope:
+- `lib/database/history_record_store.dart`
+- caller/notifier layer around history paging
+
+Acceptance criteria:
+- store no longer directly depends on `historyPagedProvider`
+- history list still refreshes after insert/update/delete
+- index maintenance remains intact
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- medium risk due refresh behavior
+- sequence after adding tests around stale/invalidation behavior
+
+---
+
+### Split history page orchestration helpers
+
+Scope:
+- `lib/history/history_page.dart`
+- possible new files under `lib/history/view/` or nearby
+
+Acceptance criteria:
+- overflow-hint prefs/timer logic extracted
+- export flow logic extracted
+- page shell easier to read, behavior unchanged
+- premium teaser/full mode behavior preserved
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- lower risk than storage refactor
+- existing page tests already decent safety net
+
+---
+
+### Break backup/restore service into internal collaborators
+
+Scope:
+- `lib/settings/backup_restore/backup_restore_service.dart`
+- related tests in `test/settings/backup_restore/backup_restore_service_test.dart`
+
+Acceptance criteria:
+- payload parsing, premium-setting merge, DB clear/write, and file/export concerns separated internally
+- restore remains atomic
+- premium-only settings still preserved correctly for free users
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- important maintainability win
+- high caution; keep PR small and internal-only
+
+---
+
+### Split csv utils by responsibility
+
+Scope:
+- `lib/shared/utils/csv_utils.dart`
+- callsites in history/batch export features
+
+Acceptance criteria:
+- pure CSV generation separated from file/export/query responsibilities
+- duplicate thin wrapper APIs removed or clearly deprecated internally
+- export behavior unchanged
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- do usage audit first
+- avoid churn if wrappers still needed by tests/mocks
+
+---
+
+### Add history store side-effect tests
+
+Scope:
+- tests around `lib/database/history_record_store.dart`
+
+Acceptance criteria:
+- covers insert/update/delete index sync
+- covers paging invalidation behavior after mutations
+- catches regression if index rebuild or stale marking breaks
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- do before decoupling store from paging provider
+
+---
+
+### Split oversized test files by scenario
+
+Scope:
+- `test/app/view/app_page_test.dart`
+- `test/gcode_import/gcode_import_page_test.dart`
+- `test/batch_costing/batch_costing_page_test.dart`
+- `test/settings/settings_page_test.dart`
+- optional `test/history/history_snapshot_regression_test.dart`
+
+Acceptance criteria:
+- scenario grouping clearer
+- no assertion behavior changed
+- shared fixtures stay readable
+- `fvm flutter analyze` passes
+- relevant focused tests pass
+
+Notes:
+- low risk
+- useful parallel maintenance work
+
+---
+
+## Task Checklist
+
+- [x] **PR 1 — Extract materials page action logic from UI** (`lib/materials/widgets/materials_page.dart`)
+- [x] **PR 2 — Add focused materials page regression tests** (`test/materials/widgets/materials_page_test.dart`)
+- [ ] **PR 3 — Centralize store-name constants** (`'printer_index'`, `'history_search_index'` → shared constant)
+- [ ] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
+- [ ] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
+- [ ] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
+- [ ] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, history_snapshot)
+- [ ] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
+- [ ] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
+- [ ] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
+- [ ] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
+- [ ] **PR 12 — Break backup/restore service into internal collaborators** (`lib/settings/backup_restore/backup_restore_service.dart`)
+
+---
+
+## Progress Log
+
+### 2026-06-26 — Materials page action extraction
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/materials/materials_page_actions.dart` for delete, duplicate, and swipe-hint persistence orchestration.
+- Slimmed `lib/materials/widgets/materials_page.dart` so action callbacks delegate to `MaterialsPageActions`.
+- Added focused `test/materials/widgets/materials_page_test.dart` coverage for swipe-hint persistence, delete success with calculator cleanup, and delete failure skipping calculator cleanup.
+
+Verification:
+- `fvm flutter test test/materials/widgets/materials_page_test.dart` passes.
+- Dart analyzer on changed files passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- This completes the recommended first PR scope and the focused materials regression-test companion scope.
+- `docs/inbox/maintenance-review-2026-06-26.md` is still untracked until added to git.
+
+---
+
+## Recommended First PR
+
+**Extract materials page action logic from UI**
+
+Why first:
+- strongest UI/domain leak
+- isolated feature surface
+- small enough for review
+- immediate readability gain
+- good pattern for later screens (`history`, `gcode_import`, `batch_costing`)
+
+Files likely touched:
+- `lib/materials/widgets/materials_page.dart`
+- new helper file for actions/persistence, likely under `lib/materials/widgets/` or `lib/materials/`
+- `test/materials/widgets/materials_page_test.dart`
+
+Verification expected:
+- `fvm flutter analyze`
+- focused materials widget tests
+- manual sanity: delete, duplicate, swipe hint dismiss, free-tier limits unchanged
