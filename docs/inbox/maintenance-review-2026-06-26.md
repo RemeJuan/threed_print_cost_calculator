@@ -222,7 +222,7 @@ Notes:
 - [x] **PR 3 — Centralize store-name constants** (`'printer_index'`, `'history_search_index'` → shared constant)
 - [x] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
 - [x] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
-- [ ] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
+- [x] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
 - [ ] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, history_snapshot)
 - [ ] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
 - [ ] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
@@ -292,7 +292,7 @@ Notes:
 
 ### 2026-06-26 — History persistence decoupled from paging invalidation
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Removed the `historyPagedProvider` dependency from `lib/database/history_record_store.dart` so the store now only handles history persistence plus printer/search index maintenance.
@@ -306,6 +306,24 @@ Verification:
 
 Notes:
 - This completes PR 5 scope while preserving the PR 4 stale-marking behavior contract at the helper boundary.
+
+---
+
+### 2026-06-26 — History page orchestration helpers
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Extracted `lib/history/hooks/history_overflow_hint.dart` so overflow-hint prefs, timer cleanup, and analytics no longer live inline in `lib/history/history_page.dart`.
+- Extracted `lib/history/hooks/history_page_actions.dart` for export-sheet, history export, teaser preview, and teaser paywall orchestration.
+- Slimmed `lib/history/history_page.dart` into page composition that wires the new hook/actions helpers into teaser and full-history modes.
+
+Verification:
+- `fvm flutter test test/history/view/history_page_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- This completes PR 6 scope while preserving the existing overflow-hint, export, and teaser/premium widget-test behavior.
 
 ---
 
