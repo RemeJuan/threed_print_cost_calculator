@@ -220,7 +220,7 @@ Notes:
 - [x] **PR 1 — Extract materials page action logic from UI** (`lib/materials/widgets/materials_page.dart`)
 - [x] **PR 2 — Add focused materials page regression tests** (`test/materials/widgets/materials_page_test.dart`)
 - [x] **PR 3 — Centralize store-name constants** (`'printer_index'`, `'history_search_index'` → shared constant)
-- [ ] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
+- [x] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
 - [ ] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
 - [ ] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
 - [ ] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, history_snapshot)
@@ -236,7 +236,7 @@ Notes:
 
 ### 2026-06-26 — Materials page action extraction
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/materials/materials_page_actions.dart` for delete, duplicate, and swipe-hint persistence orchestration.
@@ -250,13 +250,12 @@ Verification:
 
 Notes:
 - This completes the recommended first PR scope and the focused materials regression-test companion scope.
-- `docs/inbox/maintenance-review-2026-06-26.md` is still untracked until added to git.
 
 ---
 
 ### 2026-06-26 — History index store-name constants
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/history/index/history_index_store_names.dart` for shared Sembast index store names.
@@ -269,6 +268,25 @@ Verification:
 
 Notes:
 - This completes PR 3 scope and keeps restore/test utility cleanup aligned with index helper store names.
+
+---
+
+### 2026-06-26 — History store side-effect tests
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Extended `test/database/database_helpers_test.dart` to assert history insert updates both printer and search indexes while marking paged history stale.
+- Extended history delete coverage to assert record deletion removes printer/search index entries and marks paged history stale after a fresh refresh baseline.
+- Existing update coverage continues to assert printer/search index sync and stale marking after mutation.
+
+Verification:
+- `fvm flutter test test/database/database_helpers_test.dart` passes.
+- Dart analyzer on changed test file passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- This completes PR 4 safety-net scope before decoupling `HistoryRecordStore` from `historyPagedProvider` in PR 5.
 
 ---
 
