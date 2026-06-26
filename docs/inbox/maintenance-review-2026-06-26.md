@@ -309,6 +309,26 @@ Notes:
 
 ---
 
+### 2026-06-26 — CSV utils split, PR 8 slice 1
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/shared/utils/csv_generation.dart` with pure CSV helpers extracted from `csv_utils.dart`.
+- Kept `lib/shared/utils/csv_utils.dart` provider, wrappers, file-export APIs, and export query flow intact; it now imports and re-exports the generation helpers.
+
+Verification:
+- `fvm flutter test test/shared/utils/csv_utils_test.dart` passes.
+- `fvm flutter test test/history/history_snapshot_regression_test.dart` passes.
+- `fvm flutter test test/history/view/history_page_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- First safe slice only. Provider/query/export service split still untouched.
+- A batch-quote CSV column-count regression surfaced during extraction and was fixed before final verification.
+
+---
+
 ### 2026-06-26 — History page orchestration helpers
 
 Status: committed.
