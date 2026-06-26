@@ -346,7 +346,7 @@ Notes:
 
 ### 2026-06-26 — App page test split by scenario
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Split oversized `test/app/view/app_page_test.dart` into scenario files: `test/app/view/app_page_navigation_test.dart`, `test/app/view/app_page_app_bar_test.dart`, `test/app/view/app_page_selection_test.dart`, and `test/app/view/app_page_startup_test.dart`.
@@ -358,6 +358,24 @@ Verification:
 
 Notes:
 - This continues PR 7 by splitting the largest app-shell widget test into reviewable scenario files without touching production code.
+
+---
+
+### 2026-06-26 — G-code import test split by scenario
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Split `test/gcode_import/gcode_import_page_test.dart` into `test/gcode_import/gcode_import_page_rendering_test.dart`, `test/gcode_import/gcode_import_page_preview_test.dart`, and `test/gcode_import/gcode_import_page_quantity_test.dart`.
+- Added `test/gcode_import/gcode_import_page_test_support.dart` for shared controller, picker, service, analytics, and sample-result fakes.
+- Preserved the existing analytics, preview rendering, no-preview, quantity, and batch-flow assertions; only file organization changed.
+
+Verification:
+- `fvm flutter test test/gcode_import` passes.
+
+Notes:
+- Focused on test-only churn. No production code touched.
+- Next step: run `fvm flutter test test/gcode_import/...`.
 
 ---
 
