@@ -116,6 +116,20 @@ void main() {
     expect(container.read(historyPagedProvider).isStale, isTrue);
   });
 
+  test(
+    'updateRecord for missing history key does not mark paged state stale',
+    () async {
+      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
+
+      await container.read(historyPagedProvider.notifier).refreshIfNeeded();
+      expect(container.read(historyPagedProvider).isStale, isFalse);
+
+      await dbHelpers.updateRecord(999999, {'name': 'Missing'});
+
+      expect(container.read(historyPagedProvider).isStale, isFalse);
+    },
+  );
+
   test('getSettings falls back to a valid printer id when needed', () async {
     final printersStore = stringMapStoreFactory.store(DBName.printers.name);
     await printersStore.record('printer-1').put(db, {'name': 'Printer 1'});
@@ -212,6 +226,20 @@ void main() {
         contains(resolvedKey),
       );
       expect(container.read(historyPagedProvider).isStale, isTrue);
+    },
+  );
+
+  test(
+    'deleteRecord for missing history key does not mark paged state stale',
+    () async {
+      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
+
+      await container.read(historyPagedProvider.notifier).refreshIfNeeded();
+      expect(container.read(historyPagedProvider).isStale, isFalse);
+
+      await dbHelpers.deleteRecord(999999);
+
+      expect(container.read(historyPagedProvider).isStale, isFalse);
     },
   );
 }
