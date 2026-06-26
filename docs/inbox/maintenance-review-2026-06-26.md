@@ -379,6 +379,23 @@ Notes:
 
 ---
 
+### 2026-06-26 — Batch costing test split by scenario
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Split `test/batch_costing/batch_costing_page_test.dart` into `test/batch_costing/batch_costing_page_review_test.dart` and `test/batch_costing/batch_costing_page_manual_item_test.dart`.
+- Added `test/batch_costing/batch_costing_page_test_support.dart` for the shared batch-flow home harness and fake batch costing notifier.
+- Preserved review/remove/import-gate/start-new-batch, manual CRUD, validation, defaults, and quota assertions; only file organization changed.
+
+Verification:
+- Not run yet.
+
+Notes:
+- Next step: run focused batch-costing widget tests after formatting.
+
+---
+
 ## Recommended First PR
 
 **Extract materials page action logic from UI**
