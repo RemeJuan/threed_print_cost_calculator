@@ -599,3 +599,7 @@ main {
   font-size: 0.9rem;
   opacity: 0.85;
 }
+
+.liftoff {
+  visibility: hidden;
+}
