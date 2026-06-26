@@ -221,7 +221,7 @@ Notes:
 - [x] **PR 2 — Add focused materials page regression tests** (`test/materials/widgets/materials_page_test.dart`)
 - [x] **PR 3 — Centralize store-name constants** (`'printer_index'`, `'history_search_index'` → shared constant)
 - [x] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
-- [ ] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
+- [x] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
 - [ ] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
 - [ ] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, history_snapshot)
 - [ ] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
@@ -273,7 +273,7 @@ Notes:
 
 ### 2026-06-26 — History store side-effect tests
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Extended `test/database/database_helpers_test.dart` to assert history insert updates both printer and search indexes while marking paged history stale.
@@ -287,6 +287,25 @@ Verification:
 
 Notes:
 - This completes PR 4 safety-net scope before decoupling `HistoryRecordStore` from `historyPagedProvider` in PR 5.
+
+---
+
+### 2026-06-26 — History persistence decoupled from paging invalidation
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Removed the `historyPagedProvider` dependency from `lib/database/history_record_store.dart` so the store now only handles history persistence plus printer/search index maintenance.
+- Moved history paged-state invalidation into `lib/database/database_helpers.dart` after successful history insert/update/delete operations.
+- Extended `test/database/database_helpers_test.dart` with missing-key update/delete guards so paged history stays fresh when no history mutation actually occurs.
+
+Verification:
+- `fvm flutter test test/database/database_helpers_test.dart` passes.
+- Dart analyzer on changed files passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- This completes PR 5 scope while preserving the PR 4 stale-marking behavior contract at the helper boundary.
 
 ---
 
