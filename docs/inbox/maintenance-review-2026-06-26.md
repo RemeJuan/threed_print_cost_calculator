@@ -311,7 +311,7 @@ Notes:
 
 ### 2026-06-26 — History page orchestration helpers
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Extracted `lib/history/hooks/history_overflow_hint.dart` so overflow-hint prefs, timer cleanup, and analytics no longer live inline in `lib/history/history_page.dart`.
@@ -324,6 +324,23 @@ Verification:
 
 Notes:
 - This completes PR 6 scope while preserving the existing overflow-hint, export, and teaser/premium widget-test behavior.
+
+---
+
+### 2026-06-26 — Settings page test split by scenario
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Split `test/settings/settings_page_test.dart` into `test/settings/settings_page_free_access_test.dart` and `test/settings/settings_page_premium_actions_test.dart` so free-access coverage and premium-action coverage live in separate scenario files.
+- Added `test/settings/settings_page_test_support.dart` for shared `FakeSettingsRepository` and no-op log sink fixtures.
+- Kept assertions and test bodies aligned with prior settings-page coverage; only file organization changed.
+
+Verification:
+- `fvm flutter test test/settings/settings_page_free_access_test.dart test/settings/settings_page_premium_actions_test.dart` passes.
+
+Notes:
+- This starts PR 7 with the lowest-risk oversized test split before touching larger app, gcode import, or batch-costing files.
 
 ---
 
