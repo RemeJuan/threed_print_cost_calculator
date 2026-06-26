@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart' hide Finder;
 import 'package:threed_print_cost_calculator/app/app_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
@@ -14,11 +15,33 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
+
+class FakeAnalytics implements AnalyticsService {
+  final events = <String>[];
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(name);
+  }
+}
+
+const whatsNewAnnouncement = WhatsNewAnnouncement(
+  id: 'wn_42',
+  locales: {
+    'en': WhatsNewAnnouncementLocale(
+      title: 'Title',
+      body: 'Body',
+      cta: 'Got it',
+      unlockProCta: 'Start free trial',
+    ),
+  },
+);
 
 Future<void> bootstrapAppPageTests() async {
   await setupTest();
