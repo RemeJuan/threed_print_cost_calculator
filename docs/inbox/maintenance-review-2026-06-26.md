@@ -329,7 +329,7 @@ Notes:
 
 ### 2026-06-26 — Settings page test split by scenario
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Split `test/settings/settings_page_test.dart` into `test/settings/settings_page_free_access_test.dart` and `test/settings/settings_page_premium_actions_test.dart` so free-access coverage and premium-action coverage live in separate scenario files.
@@ -341,6 +341,23 @@ Verification:
 
 Notes:
 - This starts PR 7 with the lowest-risk oversized test split before touching larger app, gcode import, or batch-costing files.
+
+---
+
+### 2026-06-26 — App page test split by scenario
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Split oversized `test/app/view/app_page_test.dart` into scenario files: `test/app/view/app_page_navigation_test.dart`, `test/app/view/app_page_app_bar_test.dart`, `test/app/view/app_page_selection_test.dart`, and `test/app/view/app_page_startup_test.dart`.
+- Extended `test/app/view/app_page_test_support.dart` with shared fake analytics and whats-new fixture support used across the new scenario files.
+- Kept existing assertions and flow coverage aligned while grouping navigation, app-bar, selection/history promo, and startup/support scenarios into smaller files.
+
+Verification:
+- `fvm flutter test test/app/view/app_page_navigation_test.dart test/app/view/app_page_app_bar_test.dart test/app/view/app_page_selection_test.dart test/app/view/app_page_startup_test.dart` passes.
+
+Notes:
+- This continues PR 7 by splitting the largest app-shell widget test into reviewable scenario files without touching production code.
 
 ---
 
