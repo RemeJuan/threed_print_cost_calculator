@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 const String kHistorySearchNameField = 'searchName';
@@ -70,12 +71,10 @@ class HistorySearchIndexHelpers {
     );
   }
 
-  static const String _kSearchIndexStoreName = 'history_search_index';
-
   Database get _db => _database;
 
   final StoreRef<String, Map<String, Object?>> _indexStore =
-      stringMapStoreFactory.store(_kSearchIndexStoreName);
+      stringMapStoreFactory.store(kHistorySearchIndexStoreName);
 
   final StoreRef<Object?, Map<String, Object?>> _historyStore =
       StoreRef<Object?, Map<String, Object?>>(DBName.history.name);

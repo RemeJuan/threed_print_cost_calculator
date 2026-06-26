@@ -3,6 +3,7 @@ import 'package:sembast/sembast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -143,8 +144,11 @@ class TestDataService {
     await _clearStore(stringMapStoreFactory.store(DBName.printers.name), txn);
     await _clearStore(stringMapStoreFactory.store(DBName.materials.name), txn);
     await _clearStore(StoreRef<Object?, Object?>(DBName.history.name), txn);
-    await _clearStore(stringMapStoreFactory.store('printer_index'), txn);
-    await _clearStore(stringMapStoreFactory.store('history_search_index'), txn);
+    await _clearStore(stringMapStoreFactory.store(kPrinterIndexStoreName), txn);
+    await _clearStore(
+      stringMapStoreFactory.store(kHistorySearchIndexStoreName),
+      txn,
+    );
   }
 
   Future<void> _clearStore<K, V>(StoreRef<K, V> store, Transaction txn) async {

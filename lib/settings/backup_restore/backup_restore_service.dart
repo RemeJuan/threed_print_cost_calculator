@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -233,8 +234,8 @@ class BackupRestoreService {
       stringMapStoreFactory.store(DBName.printers.name),
       stringMapStoreFactory.store(DBName.materials.name),
       StoreRef<Object?, Object?>(DBName.history.name),
-      stringMapStoreFactory.store('printer_index'),
-      stringMapStoreFactory.store('history_search_index'),
+      stringMapStoreFactory.store(kPrinterIndexStoreName),
+      stringMapStoreFactory.store(kHistorySearchIndexStoreName),
     ]) {
       await store.delete(txn);
     }

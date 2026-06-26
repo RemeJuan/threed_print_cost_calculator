@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
@@ -139,7 +140,7 @@ void main() {
     });
 
     final indexRecords = await stringMapStoreFactory
-        .store('history_search_index')
+        .store(kHistorySearchIndexStoreName)
         .find(db);
     expect(
       indexRecords.every(
@@ -167,7 +168,9 @@ void main() {
     await helpers.backfillSearchFields();
     await helpers.rebuildIndex();
 
-    final indexStore = stringMapStoreFactory.store('history_search_index');
+    final indexStore = stringMapStoreFactory.store(
+      kHistorySearchIndexStoreName,
+    );
     final allEntries = await indexStore.find(db);
 
     final recordEntries = allEntries.where(
