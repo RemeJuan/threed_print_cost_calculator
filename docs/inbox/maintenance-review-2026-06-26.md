@@ -219,7 +219,7 @@ Notes:
 
 - [x] **PR 1 — Extract materials page action logic from UI** (`lib/materials/widgets/materials_page.dart`)
 - [x] **PR 2 — Add focused materials page regression tests** (`test/materials/widgets/materials_page_test.dart`)
-- [ ] **PR 3 — Centralize store-name constants** (`'printer_index'`, `'history_search_index'` → shared constant)
+- [x] **PR 3 — Centralize store-name constants** (`'printer_index'`, `'history_search_index'` → shared constant)
 - [ ] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
 - [ ] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
 - [ ] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
@@ -251,6 +251,24 @@ Verification:
 Notes:
 - This completes the recommended first PR scope and the focused materials regression-test companion scope.
 - `docs/inbox/maintenance-review-2026-06-26.md` is still untracked until added to git.
+
+---
+
+### 2026-06-26 — History index store-name constants
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/history/index/history_index_store_names.dart` for shared Sembast index store names.
+- Updated history index helpers, backup/restore cleanup, test-data purge, and focused tests to use shared constants instead of raw store-name strings.
+
+Verification:
+- `fvm flutter test test/history/index/history_search_index_test.dart test/testing/test_data_service_test.dart test/settings/backup_restore/backup_restore_service_test.dart` passes.
+- Dart analyzer on changed files passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- This completes PR 3 scope and keeps restore/test utility cleanup aligned with index helper store names.
 
 ---
 
