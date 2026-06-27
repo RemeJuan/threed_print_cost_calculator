@@ -6,14 +6,10 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
-import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_actions.dart';
-import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_feedback_entry_point.dart';
-import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_header.dart';
-import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_summary_card.dart';
+import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_single_file_content.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
-import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import 'gcode_import_controller.dart';
 
@@ -64,86 +60,30 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
       body: SafeArea(
         child: _multiMode
             ? BatchGCodeImportPage(initialFiles: _multiFiles, embedded: true)
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GCodeImportHeader(text: l10n.importGcodeIntro),
-                      const SizedBox(height: 16),
-                      AppPrimaryButton(
-                        key: const ValueKey<String>(
-                          'gcode_import.select_file.button',
-                        ),
-                        onPressed: state.status == GCodeImportStatus.loading
-                            ? null
-                            : () => _pickFiles(controller),
-                        icon: const Icon(Icons.folder_open),
-                        label: state.result == null
-                            ? l10n.importGcodeSelectFileButton
-                            : l10n.importGcodePickAnotherButton,
+            : GCodeImportSingleFileContent(
+                l10n: l10n,
+                state: state,
+                fileSizeBytes: fileSizeBytes,
+                parseStatus: parseStatus,
+                errorMessage: state.error == null
+                    ? null
+                    : _errorMessage(l10n, state.error!),
+                isPrimaryActionEnabled:
+                    state.result != null &&
+                    _isPrimaryActionEnabled(state.result!),
+                onSelectFile: state.status == GCodeImportStatus.loading
+                    ? null
+                    : () => _pickFiles(controller),
+                onPrimaryAction: state.result == null
+                    ? null
+                    : () => _handlePrimaryAction(
+                        context,
+                        ref,
+                        l10n,
+                        result: state.result!,
+                        fileSizeBytes: fileSizeBytes,
+                        parseStatus: parseStatus,
                       ),
-                      if (state.selectedFileName != null) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          '${l10n.importGcodeSelectedFileLabel}: ${state.selectedFileName}',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                      if (state.status == GCodeImportStatus.loading) ...[
-                        const SizedBox(height: 24),
-                        const Center(child: CircularProgressIndicator()),
-                      ],
-                      if (state.status == GCodeImportStatus.failure &&
-                          state.error != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 16),
-                          child: Text(
-                            _errorMessage(l10n, state.error!),
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                          ),
-                        ),
-                      if (state.result != null) ...[
-                        const SizedBox(height: 24),
-                        GCodeImportSummaryCard(
-                          result: state.result!,
-                          l10n: l10n,
-                          fileSizeBytes: fileSizeBytes,
-                        ),
-                        const SizedBox(height: 16),
-                        GCodeImportActions(
-                          l10n: l10n,
-                          onPressed: _isPrimaryActionEnabled(state.result!)
-                              ? () => _handlePrimaryAction(
-                                  context,
-                                  ref,
-                                  l10n,
-                                  result: state.result!,
-                                  fileSizeBytes: fileSizeBytes,
-                                  parseStatus: parseStatus,
-                                )
-                              : null,
-                        ),
-                      ],
-                      if (state.status == GCodeImportStatus.success ||
-                          state.status == GCodeImportStatus.failure) ...[
-                        const SizedBox(height: 16),
-                        GCodeImportFeedbackEntryPoint(
-                          state: state,
-                          importFailureContext:
-                              state.status == GCodeImportStatus.failure &&
-                                  state.error != null
-                              ? _errorMessage(l10n, state.error!)
-                              : null,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
               ),
       ),
     );
