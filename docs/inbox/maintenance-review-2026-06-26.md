@@ -227,7 +227,7 @@ Notes:
 - [x] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
 - [x] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
 - [x] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
-- [ ] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
+- [x] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
 - [ ] **PR 12 — Break backup/restore service into internal collaborators** (`lib/settings/backup_restore/backup_restore_service.dart`)
 
 ---
@@ -250,6 +250,46 @@ Verification:
 
 Notes:
 - This completes the recommended first PR scope and the focused materials regression-test companion scope.
+
+---
+
+### 2026-06-27 — Batch costing state sync extraction (PR11 slice 1)
+
+Status: committed.
+
+- Extracted batch costing quantity controller + expanded-row sync into `lib/batch_costing/helpers/batch_costing_page_state_sync.dart`.
+- `BatchCostingPage` now delegates controller lookup, expansion state, and sync/dispose to helper.
+- Behavior unchanged; action handlers left for PR11 slice 2.
+
+Changed:
+- Added `lib/batch_costing/helpers/batch_costing_page_state_sync.dart` for quantity-controller and expanded-row synchronization.
+- Updated `lib/batch_costing/batch_costing_page.dart` to delegate sync, controller lookup, expansion state, and controller disposal to the helper.
+
+Verification:
+- `fvm flutter test test/batch_costing/batch_costing_page_review_test.dart test/batch_costing/batch_costing_page_manual_item_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- This completes the low-risk state-sync extraction slice for PR11. Action/dialog/navigation helpers remain for PR11 slice 2.
+
+### 2026-06-27 — Batch costing action extraction (PR11 slice 2)
+
+Status: committed.
+
+- Extracting batch costing action/dialog/navigation handlers into `lib/batch_costing/helpers/batch_costing_page_actions.dart`.
+- `BatchCostingPage` remains shell/composition around state sync + action helper.
+- Behavior unchanged; no copy changes.
+
+Changed:
+- Added `lib/batch_costing/helpers/batch_costing_page_actions.dart` for dialog, navigation, premium gate, analytics, and batch reset orchestration.
+- Slimmed `lib/batch_costing/batch_costing_page.dart` to shell/composition over state sync + action helper.
+
+Verification:
+- `fvm flutter test test/batch_costing/batch_costing_page_review_test.dart test/batch_costing/batch_costing_page_manual_item_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- PR11 acceptance met locally. `BatchCostingPage` now reads as shell/composition over state sync + action helpers.
 
 ---
 
