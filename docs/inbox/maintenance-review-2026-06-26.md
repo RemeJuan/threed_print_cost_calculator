@@ -228,7 +228,7 @@ Notes:
 - [x] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
 - [x] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
 - [x] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
-- [ ] **PR 12 — Break backup/restore service into internal collaborators** (`lib/settings/backup_restore/backup_restore_service.dart`)
+- [x] **PR 12 — Break backup/restore service into internal collaborators** (`lib/settings/backup_restore/backup_restore_service.dart`)
 
 ---
 
@@ -290,6 +290,70 @@ Verification:
 
 Notes:
 - PR11 acceptance met locally. `BatchCostingPage` now reads as shell/composition over state sync + action helpers.
+
+---
+
+### 2026-06-27 — Backup/restore payload parser extraction (PR12 slice 1)
+
+Status: committed.
+
+- Extracted backup payload JSON decode, version/data validation, and model conversion into `lib/settings/backup_restore/backup_restore_payload_parser.dart`.
+- `BackupRestoreService` now delegates restore payload parsing to the helper; file/share export, premium merge, and DB rewrite remain in the service for later slices.
+- Behavior unchanged; duplicate history id handling still lives in restore write path.
+
+Changed:
+- Added `lib/settings/backup_restore/backup_restore_payload_parser.dart` for typed restore payload parsing.
+- Updated `lib/settings/backup_restore/backup_restore_service.dart` to use `parseBackupPayload(...)` and keep restore orchestration intact.
+
+Verification:
+- `fvm flutter test test/settings/backup_restore/backup_restore_service_test.dart test/settings/backup_restore/backup_restore_section_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- PR12 checklist stays open. Remaining slices still need premium-merge and DB rewrite/index-rebuild extraction.
+
+---
+
+### 2026-06-27 — Backup/restore settings merge extraction (PR12 slice 2)
+
+Status: committed.
+
+- Extracted premium/non-premium restore settings merge into `lib/settings/backup_restore/backup_restore_settings_merge.dart`.
+- `BackupRestoreService` now delegates merge + skipped-premium flag calculation to helper; export, payload parse, and DB rewrite remain in service for later slice.
+- Behavior unchanged; free-user premium-only settings preservation stays identical.
+
+Changed:
+- Added `lib/settings/backup_restore/backup_restore_settings_merge.dart` for restore settings merge logic.
+- Updated `lib/settings/backup_restore/backup_restore_service.dart` to use `mergeBackupRestoreSettings(...)`.
+
+Verification:
+- `fvm flutter test test/settings/backup_restore/backup_restore_service_test.dart test/settings/backup_restore/backup_restore_section_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- PR12 checklist stays open. Remaining slice still needs DB clear/write plus history index rebuild extraction while preserving atomic restore behavior.
+
+---
+
+### 2026-06-27 — Backup/restore database writer extraction (PR12 slice 3)
+
+Status: committed.
+
+- Extracted DB clear/write + history/printer/search index rebuild orchestration into `lib/settings/backup_restore/backup_restore_database_writer.dart`.
+- `BackupRestoreService` now delegates restore transaction work to helper; public API and atomic transaction boundary unchanged.
+- Behavior unchanged; duplicate history id handling and fallback ids still occur in the writer.
+
+Changed:
+- Added `lib/settings/backup_restore/backup_restore_database_writer.dart` for restore transaction orchestration.
+- Updated `lib/settings/backup_restore/backup_restore_service.dart` to call `restoreBackupToDatabase(...)`.
+
+Verification:
+- `fvm flutter test test/settings/backup_restore/backup_restore_service_test.dart test/settings/backup_restore/backup_restore_section_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- PR12 acceptance met. Service now mainly export/share orchestration + parser + settings merge + DB writer delegation.
+- PR12 checklist complete.
 
 ---
 
