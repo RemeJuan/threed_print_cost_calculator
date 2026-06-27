@@ -226,7 +226,7 @@ Notes:
 - [x] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, optional history_snapshot deferred)
 - [x] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
 - [x] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
-- [ ] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
+- [x] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
 - [ ] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
 - [ ] **PR 12 — Break backup/restore service into internal collaborators** (`lib/settings/backup_restore/backup_restore_service.dart`)
 
@@ -389,7 +389,7 @@ Notes:
 
 ### 2026-06-27 — G-code import page actions, PR9 slice 2
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/gcode_import/gcode_import_page_actions.dart` for error mapping and apply-flow orchestration.
@@ -403,6 +403,48 @@ Verification:
 Notes:
 - Batch mode unchanged.
 - `lib/gcode_import/gcode_import_page.dart` is now shell-only for lifecycle analytics, file picking, and mode switching, so PR9 acceptance is met.
+- Slice maps to commits `850d68f8` and `feafd316`.
+
+---
+
+### 2026-06-27 — Paywall screen presentational sections, PR 10 slice 1
+
+Status: committed.
+
+Changed:
+- Added `lib/purchases/widgets/paywall_header.dart` for the close button header.
+- Added `lib/purchases/widgets/paywall_pitch_section.dart` for title, pitch line, and subtitle.
+- Added `lib/purchases/widgets/paywall_offering_error.dart` for the load-error message and retry action.
+- Added `lib/purchases/widgets/paywall_bottom_bar.dart` for trust line, CTA, restore, and privacy/terms links.
+- Slimmed `lib/purchases/paywall_screen.dart` to stateful orchestration plus composition of the new presentational widgets.
+
+Verification:
+- `fvm dart format lib/purchases/paywall_screen.dart lib/purchases/widgets/paywall_header.dart lib/purchases/widgets/paywall_pitch_section.dart lib/purchases/widgets/paywall_offering_error.dart lib/purchases/widgets/paywall_bottom_bar.dart` passes.
+- `fvm flutter test test/purchases/paywall_screen_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Purchase/restore orchestration still inline by design for this first slice.
+
+---
+
+### 2026-06-27 — Paywall screen action extraction, PR 10 slice 2
+
+Status: committed.
+
+Changed:
+- Added `lib/purchases/paywall_screen_actions.dart` for paywall offering load, purchase, restore, and snackbar/log orchestration.
+- Updated `lib/purchases/paywall_screen.dart` so async methods delegate gateway, analytics, and logger work to the new helper.
+
+Verification:
+- `fvm dart format lib/purchases/paywall_screen.dart lib/purchases/paywall_screen_actions.dart` passes.
+- `fvm flutter test test/purchases/paywall_screen_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Purchase/restore orchestration moved out of the widget methods, but state remains in `PaywallScreen` by design.
+- `lib/purchases/paywall_screen.dart` now reads as state/wiring shell plus composed sections, so PR 10 acceptance is met.
+- Slices map to commit `a4486fc5` plus this documentation commit.
 
 ---
 
