@@ -223,7 +223,7 @@ Notes:
 - [x] **PR 4 — Add history store side-effect tests** (`lib/database/history_record_store.dart`)
 - [x] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
 - [x] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
-- [x] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, optional history_snapshot deferred)
+- [x] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, history_snapshot)
 - [x] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
 - [x] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
 - [x] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
@@ -250,6 +250,25 @@ Verification:
 
 Notes:
 - This completes the recommended first PR scope and the focused materials regression-test companion scope.
+
+---
+
+### 2026-06-27 — History snapshot split (PR7 deferred item)
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Split `test/history/history_snapshot_regression_test.dart` into scenario files for persistence, export, and material-mutation rules.
+- Added `test/history/history_snapshot_regression_test_support.dart` for shared fixtures and CSV helpers.
+
+Verification:
+- `fvm dart format` passes on changed test files.
+- `fvm flutter test test/history/history_snapshot_persistence_test.dart test/history/history_snapshot_export_test.dart test/history/history_snapshot_material_mutation_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Optional deferred PR7 snapshot split is now complete locally.
+- No production behavior changed.
 
 ---
 
@@ -637,7 +656,7 @@ Verification:
 - `fvm flutter analyze` passes.
 
 Notes:
-- This completes the required PR 7 oversized-test split targets; optional history snapshot split is deferred because the main app, G-code import, batch costing, and settings files are now scenario-grouped.
+- This completes the PR 7 oversized-test split targets, including the optional history snapshot follow-up.
 
 ---
 
