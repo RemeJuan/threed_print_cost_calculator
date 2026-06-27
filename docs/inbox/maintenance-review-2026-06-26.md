@@ -225,7 +225,7 @@ Notes:
 - [x] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
 - [x] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, optional history_snapshot deferred)
 - [x] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
-- [ ] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
+- [x] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
 - [ ] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
 - [ ] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
 - [ ] **PR 12 — Break backup/restore service into internal collaborators** (`lib/settings/backup_restore/backup_restore_service.dart`)
@@ -368,9 +368,9 @@ Notes:
 
 ---
 
-### 2026-06-27 — G-code import page section extraction
+### 2026-06-27 — G-code import page sections, PR9 slice 1
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/gcode_import/widgets/gcode_import_single_file_content.dart` for the single-file import body.
@@ -383,7 +383,26 @@ Verification:
 
 Notes:
 - Batch mode unchanged.
-- Apply flow still owned by page for mounted/context safety.
+- Slice maps to commits `59f0c7b1` and `be7958eb`.
+
+---
+
+### 2026-06-27 — G-code import page actions, PR9 slice 2
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/gcode_import/gcode_import_page_actions.dart` for error mapping and apply-flow orchestration.
+- Slimmed `lib/gcode_import/gcode_import_page.dart` to state, analytics, mode switching, and callbacks.
+
+Verification:
+- `fvm dart format lib/gcode_import/gcode_import_page.dart lib/gcode_import/gcode_import_page_actions.dart lib/gcode_import/widgets/gcode_import_single_file_content.dart` passes.
+- `fvm flutter test test/gcode_import/gcode_import_page_rendering_test.dart test/gcode_import/gcode_import_page_preview_test.dart test/gcode_import/gcode_import_page_quantity_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Batch mode unchanged.
+- `lib/gcode_import/gcode_import_page.dart` is now shell-only for lifecycle analytics, file picking, and mode switching, so PR9 acceptance is met.
 
 ---
 
