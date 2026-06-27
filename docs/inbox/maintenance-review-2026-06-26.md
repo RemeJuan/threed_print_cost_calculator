@@ -224,7 +224,7 @@ Notes:
 - [x] **PR 5 — Decouple history persistence from paging invalidation** (follows PR 4)
 - [x] **PR 6 — Split history page orchestration helpers** (`lib/history/history_page.dart`)
 - [x] **PR 7 — Split oversized test files by scenario** (app, gcode_import, batch_costing, settings, optional history_snapshot deferred)
-- [ ] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
+- [x] **PR 8 — Split csv utils by responsibility** (`lib/shared/utils/csv_utils.dart`)
 - [ ] **PR 9 — Extract gcode_import page sections** (`lib/gcode_import/gcode_import_page.dart`)
 - [ ] **PR 10 — Split paywall screen sections** (`lib/purchases/paywall_screen.dart`)
 - [ ] **PR 11 — Break batch_cost page into helpers** (`lib/batch_costing/batch_costing_page.dart`)
@@ -311,7 +311,7 @@ Notes:
 
 ### 2026-06-26 — CSV utils split, PR 8 slice 1
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/shared/utils/csv_generation.dart` with pure CSV helpers extracted from `csv_utils.dart`.
@@ -326,6 +326,45 @@ Verification:
 Notes:
 - First safe slice only. Provider/query/export service split still untouched.
 - A batch-quote CSV column-count regression surfaced during extraction and was fixed before final verification.
+
+---
+
+### 2026-06-26 — CSV file export helpers, PR 8 slice 2
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/shared/utils/csv_file_export.dart` with `writeCsvToFile` and `exportCSVFile` extracted from `lib/shared/utils/csv_utils.dart`.
+- Updated `lib/shared/utils/csv_utils.dart` to import/export the new helper file while keeping `CsvUtils` wrapper methods and query/export service flow unchanged.
+
+Verification:
+- `fvm flutter test test/shared/utils/csv_utils_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Query/export service moved in slice 3.
+- Public imports remain stable because `lib/shared/utils/csv_utils.dart` now re-exports `csv_file_export.dart`.
+
+---
+
+### 2026-06-26 — CSV history export service, PR 8 slice 3
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/shared/utils/csv_history_export_service.dart` with `ExportRange`, `CsvUtils`, `csvUtilsProvider`, and history query/export methods moved out of `lib/shared/utils/csv_utils.dart`.
+- Updated `lib/shared/utils/csv_utils.dart` into a compatibility facade that re-exports generation, file export, and service modules for callers.
+
+Verification:
+- `fvm flutter test test/shared/utils/csv_utils_test.dart` passes.
+- `fvm flutter test test/history/history_snapshot_regression_test.dart` passes.
+- `fvm flutter test test/history/view/history_page_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Public imports remain stable through `lib/shared/utils/csv_utils.dart`.
+- `lib/shared/utils/csv_utils.dart` is now a facade-only compatibility export, so PR 8 acceptance is met.
+- One initial validation attempt hit a transient Flutter build lock / macOS `install_name_tool` failure; rerun passed without code changes.
 
 ---
 
