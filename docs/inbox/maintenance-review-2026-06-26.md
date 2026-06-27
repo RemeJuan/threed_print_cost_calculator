@@ -331,7 +331,7 @@ Notes:
 
 ### 2026-06-26 — CSV file export helpers, PR 8 slice 2
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/shared/utils/csv_file_export.dart` with `writeCsvToFile` and `exportCSVFile` extracted from `lib/shared/utils/csv_utils.dart`.
@@ -349,7 +349,7 @@ Notes:
 
 ### 2026-06-26 — CSV history export service, PR 8 slice 3
 
-Status: implemented locally, not yet committed.
+Status: committed.
 
 Changed:
 - Added `lib/shared/utils/csv_history_export_service.dart` with `ExportRange`, `CsvUtils`, `csvUtilsProvider`, and history query/export methods moved out of `lib/shared/utils/csv_utils.dart`.
@@ -365,6 +365,25 @@ Notes:
 - Public imports remain stable through `lib/shared/utils/csv_utils.dart`.
 - `lib/shared/utils/csv_utils.dart` is now a facade-only compatibility export, so PR 8 acceptance is met.
 - One initial validation attempt hit a transient Flutter build lock / macOS `install_name_tool` failure; rerun passed without code changes.
+
+---
+
+### 2026-06-27 — G-code import page section extraction
+
+Status: implemented locally, not yet committed.
+
+Changed:
+- Added `lib/gcode_import/widgets/gcode_import_single_file_content.dart` for the single-file import body.
+- Slimmed `lib/gcode_import/gcode_import_page.dart` to state, analytics, mode switching, and callbacks.
+
+Verification:
+- `fvm dart format lib/gcode_import/gcode_import_page.dart lib/gcode_import/widgets/gcode_import_single_file_content.dart` passes.
+- `fvm flutter test test/gcode_import/gcode_import_page_rendering_test.dart test/gcode_import/gcode_import_page_preview_test.dart test/gcode_import/gcode_import_page_quantity_test.dart` passes.
+- `fvm flutter analyze` passes.
+
+Notes:
+- Batch mode unchanged.
+- Apply flow still owned by page for mounted/context safety.
 
 ---
 
