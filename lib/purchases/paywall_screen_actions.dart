@@ -23,6 +23,12 @@ Future<PaywallOfferingsLoadResult> loadPaywallOfferings({
   try {
     final gateway = ref.read(premiumPurchaseGatewayProvider);
     final offering = await gateway.getOffering(offeringId);
+    if (offering == null) {
+      return const PaywallOfferingsLoadResult(
+        offering: null,
+        error: 'Offering not available',
+      );
+    }
     return PaywallOfferingsLoadResult(offering: offering, error: null);
   } catch (e) {
     return PaywallOfferingsLoadResult(offering: null, error: e.toString());

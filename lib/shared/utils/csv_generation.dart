@@ -186,7 +186,7 @@ String generateBatchQuoteCsv(HistoryModel item) {
         _quote(_pricingFieldValue(pricing, 'labourRate')),
         _quote(_pricingFieldValue(pricing, 'failureRisk')),
         _quote(_pricingFieldValue(pricing, 'markupPercent')),
-        _quote(_pricingFieldValue(pricing, 'additionalCostAmount')),
+        _quote(_pricingFieldValue(pricing, 'setupFee')),
         _quote(''),
         _quote(''),
       ].join(','),

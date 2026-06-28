@@ -44,8 +44,9 @@ class MaterialsPageActions {
   }) async {
     try {
       await materialsRepository.deleteMaterial(materialId);
-      if (!context.mounted) return;
-      BotToast.showText(text: l10n.deleteMaterialSuccessMessage);
+      if (context.mounted) {
+        BotToast.showText(text: l10n.deleteMaterialSuccessMessage);
+      }
     } catch (_) {
       if (!context.mounted) return;
       BotToast.showText(text: l10n.deleteRecordErrorMessage);

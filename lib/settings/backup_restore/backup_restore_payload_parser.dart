@@ -55,12 +55,18 @@ BackupRestorePayload parseBackupPayload(String raw) {
   );
 }
 
-Map<String, dynamic> _mapOf(Object? raw) =>
-    (raw as Map).map((k, v) => MapEntry(k.toString(), v));
+Map<String, dynamic> _mapOf(Object? raw) {
+  if (raw is! Map) {
+    throw FormatException('Expected a Map, got ${raw?.runtimeType ?? 'null'}');
+  }
+  return raw.map((k, v) => MapEntry(k.toString(), v));
+}
 
 List<Map<String, dynamic>> _strictListOfMaps(Object? raw) {
-  final list = raw as List;
-  return list.map((e) {
+  if (raw is! List) {
+    throw FormatException('Expected a List, got ${raw?.runtimeType ?? 'null'}');
+  }
+  return raw.map((e) {
     if (e is! Map) {
       throw FormatException('Expected a Map, got ${e.runtimeType}');
     }

@@ -1,7 +1,5 @@
 # Project Maintenance Review — 2026-06-26
 
-> ClickUp Task: (pending)
-
 Initial review was investigation-only. Progress updates below track maintenance PR work started from this review.
 
 ## Summary

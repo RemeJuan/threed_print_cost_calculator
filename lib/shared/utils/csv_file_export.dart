@@ -7,7 +7,8 @@ import 'package:threed_print_cost_calculator/shared/utils/csv_generation.dart';
 
 Future<String> writeCsvToFile(String csv) async {
   final directory = await getTemporaryDirectory();
-  final file = File('${directory.path}/3d_print_history.csv');
+  final timestamp = DateTime.now().millisecondsSinceEpoch;
+  final file = File('${directory.path}/3d_print_history_$timestamp.csv');
   await file.writeAsString(csv);
   return file.path;
 }

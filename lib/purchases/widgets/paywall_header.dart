@@ -13,7 +13,11 @@ class PaywallHeader extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          IconButton(icon: const Icon(Icons.close), onPressed: onClose),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: onClose,
+            tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          ),
         ],
       ),
     );
