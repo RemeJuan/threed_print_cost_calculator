@@ -247,23 +247,6 @@ class FakePremiumPurchaseGateway implements PremiumPurchaseGateway {
     this.shouldThrowOnRestore,
   });
 
-  static final Offering _defaultOffering =
-      Offering('default_offering', 'Default', {}, [
-        Package(
-          'monthly_pkg',
-          PackageType.monthly,
-          StoreProduct(
-            'monthly_sku',
-            'Monthly',
-            'Monthly',
-            9.99,
-            '\$9.99',
-            'USD',
-          ),
-          PresentedOfferingContext('default_offering', null, null),
-        ),
-      ]);
-
   final Offering? currentOffering;
   final bool? shouldThrowOnPurchase;
   final bool? shouldThrowOnRestore;
@@ -276,7 +259,22 @@ class FakePremiumPurchaseGateway implements PremiumPurchaseGateway {
   @override
   Future<Offering?> getOffering(String offeringId) async {
     getOfferingCalls += 1;
-    return currentOffering ?? _defaultOffering;
+    return currentOffering ??
+        Offering(offeringId, offeringId, {}, [
+          Package(
+            '${offeringId}_monthly',
+            PackageType.monthly,
+            StoreProduct(
+              '${offeringId}_sku',
+              offeringId,
+              offeringId,
+              9.99,
+              '\$9.99',
+              'USD',
+            ),
+            PresentedOfferingContext(offeringId, null, null),
+          ),
+        ]);
   }
 
   @override
