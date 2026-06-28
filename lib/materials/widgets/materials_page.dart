@@ -1,10 +1,9 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/materials/materials_page_actions.dart';
 import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_filters.dart';
@@ -30,16 +29,20 @@ class MaterialsPage extends HookConsumerWidget {
     final materialAccess = policy.canCreateMaterial(allMaterials.length);
     final searchController = useTextEditingController();
     final materialsRepo = ref.read(materialsRepositoryProvider);
+    final actions = MaterialsPageActions(
+      ref: ref,
+      l10n: l10n,
+      materialsRepository: materialsRepo,
+      policy: policy,
+    );
 
     final prefs = ref.read(sharedPreferencesProvider);
     final showSwipeHint = useState(
-      !(prefs.getBool('materials_swipe_hint_shown') ?? false),
+      !(prefs.getBool(materialsSwipeHintShownPreferenceKey) ?? false),
     );
 
     void dismissSwipeHint() {
-      if (!showSwipeHint.value) return;
-      showSwipeHint.value = false;
-      prefs.setBool('materials_swipe_hint_shown', true);
+      actions.dismissSwipeHint(showSwipeHint: showSwipeHint, prefs: prefs);
     }
 
     return Scaffold(
@@ -146,59 +149,16 @@ class MaterialsPage extends HookConsumerWidget {
                           );
                         },
                         onDelete: () async {
-                          try {
-                            await materialsRepo.deleteMaterial(material.id);
-                            if (!context.mounted) return;
-                            BotToast.showText(
-                              text: l10n.deleteMaterialSuccessMessage,
-                            );
-                          } catch (_) {
-                            if (!context.mounted) return;
-                            BotToast.showText(
-                              text: l10n.deleteRecordErrorMessage,
-                            );
-                            return;
-                          }
-                          try {
-                            await ref
-                                .read(calculatorProvider.notifier)
-                                .clearUsagesForDeletedMaterial(material.id);
-                          } catch (_) {
-                            // Cleanup failure is non-fatal; material is deleted.
-                          }
+                          await actions.deleteMaterial(
+                            context: context,
+                            materialId: material.id,
+                          );
                         },
                         onDuplicate: () async {
-                          try {
-                            final duplicateAccess = policy.canCreateMaterial(
-                              allMaterials.length,
-                            );
-                            if (!duplicateAccess.allowed) {
-                              if (!context.mounted) return;
-                              BotToast.showText(
-                                text: l10n.materialLimitReachedMessage,
-                              );
-                              return;
-                            }
-
-                            final existing = await materialsRepo
-                                .getMaterialById(material.id);
-                            if (existing == null) return;
-                            final copy = existing.copyWith(
-                              id: '',
-                              name:
-                                  '${existing.name} (${l10n.duplicateButton})',
-                            );
-                            await materialsRepo.saveMaterial(copy);
-                            if (!context.mounted) return;
-                            BotToast.showText(
-                              text: l10n.duplicateMaterialSuccessMessage,
-                            );
-                          } catch (_) {
-                            if (!context.mounted) return;
-                            BotToast.showText(
-                              text: l10n.duplicateMaterialErrorMessage,
-                            );
-                          }
+                          await actions.duplicateMaterial(
+                            context: context,
+                            materialId: material.id,
+                          );
                         },
                       );
                     },

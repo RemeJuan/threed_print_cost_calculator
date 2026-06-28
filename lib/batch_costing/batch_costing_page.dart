@@ -1,20 +1,12 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
-import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
-import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_flow_reset.dart';
-import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_costing_page_actions.dart';
+import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_costing_page_state_sync.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing_item_card.dart';
-import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_costing_item_editor_dialog.dart';
-import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_new_batch_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
-import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
@@ -28,24 +20,20 @@ class BatchCostingPage extends ConsumerStatefulWidget {
 }
 
 class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
-  final Map<String, TextEditingController> _quantityControllers =
-      <String, TextEditingController>{};
-  final Set<String> _expandedItemIds = <String>{};
-  bool _initialSyncDone = false;
+  final BatchCostingPageStateSync _stateSync = BatchCostingPageStateSync();
+  late final BatchCostingPageActions _actions = BatchCostingPageActions(ref);
 
   @override
   void initState() {
     super.initState();
     ref.listenManual(batchCostingProvider, (prev, next) {
-      _syncQuantityControllers(next.items);
+      _stateSync.sync(next.items);
     });
   }
 
   @override
   void dispose() {
-    for (final controller in _quantityControllers.values) {
-      controller.dispose();
-    }
+    _stateSync.dispose();
     super.dispose();
   }
 
@@ -60,11 +48,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
         ? l10n.batchCostingReviewImportGcodeButton
         : l10n.batchCostingReviewImportGcodeButtonPremium;
 
-    _syncExpandedState(items);
-
-    if (!_initialSyncDone) {
-      _initialSyncDone = true;
-      _syncQuantityControllers(items);
+    if (_stateSync.needsInitialSync) {
+      _stateSync.sync(items);
     }
 
     return Scaffold(
@@ -90,7 +75,7 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       AppTertiaryButton(
-                        onPressed: () => _addManualItem(context),
+                        onPressed: () => _actions.addManualItem(context),
                         label: l10n.batchCostingReviewAddManualItemButton,
                         icon: const Icon(Icons.add),
                       ),
@@ -99,7 +84,8 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                         Opacity(
                           opacity: batchImportAllowed ? 1 : 0.55,
                           child: AppTertiaryButton(
-                            onPressed: () => _openBatchGcodeImport(context),
+                            onPressed: () =>
+                                _actions.openBatchGcodeImport(context),
                             label: batchImportLabel,
                             icon: const Icon(Icons.upload_file),
                           ),
@@ -125,20 +111,14 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                           final item = items[index];
                           return BatchCostingItemCard(
                             item: item,
-                            quantityController: _quantityControllers[item.id]!,
-                            initiallyExpanded: _expandedItemIds.contains(
-                              item.id,
-                            ),
+                            quantityController: _stateSync.controllerFor(item),
+                            initiallyExpanded: _stateSync.isExpanded(item.id),
                             onExpansionChanged: (expanded) {
                               setState(() {
-                                if (expanded) {
-                                  _expandedItemIds.add(item.id);
-                                } else {
-                                  _expandedItemIds.remove(item.id);
-                                }
+                                _stateSync.setExpanded(item.id, expanded);
                               });
                             },
-                            onEdit: () => _editItem(context, item),
+                            onEdit: () => _actions.editItem(context, item),
                           );
                         },
                       ),
@@ -150,15 +130,17 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       AppPrimaryButton(
-                        onPressed: _hasMissingFields(items)
+                        onPressed: _actions.hasMissingFields(items)
                             ? null
-                            : () => _continueToPrinterAssignment(context),
+                            : () =>
+                                  _actions.continueToPrinterAssignment(context),
                         icon: const Icon(Icons.arrow_forward),
                         label: l10n.batchCostingReviewContinueButton,
                       ),
                       const SizedBox(height: kAppSpace12),
                       AppSecondaryButton(
-                        onPressed: () => _showStartNewBatchDialog(context),
+                        onPressed: () =>
+                            _actions.showStartNewBatchDialog(context),
                         label: l10n.batchCostingSummaryStartNewBatchButton,
                       ),
                     ],
@@ -170,37 +152,6 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
         ),
       ),
     );
-  }
-
-  void _syncQuantityControllers(List<BatchCostingItem> items) {
-    final activeIds = items.map((item) => item.id).toSet();
-
-    _quantityControllers.removeWhere((id, controller) {
-      if (!activeIds.contains(id)) {
-        controller.dispose();
-        return true;
-      }
-      return false;
-    });
-
-    for (final item in items) {
-      final controller = _quantityControllers.putIfAbsent(
-        item.id,
-        () => TextEditingController(text: item.quantity.toString()),
-      );
-      if (controller.text != item.quantity.toString()) {
-        controller.text = item.quantity.toString();
-      }
-    }
-  }
-
-  void _syncExpandedState(List<BatchCostingItem> items) {
-    final activeIds = items.map((i) => i.id).toSet();
-    _expandedItemIds.removeWhere((id) => !activeIds.contains(id));
-
-    if (items.isNotEmpty && _expandedItemIds.isEmpty) {
-      _expandedItemIds.add(items.first.id);
-    }
   }
 
   Widget _emptyState(
@@ -233,151 +184,18 @@ class _BatchCostingPageState extends ConsumerState<BatchCostingPage> {
           Opacity(
             opacity: batchImportAllowed ? 1 : 0.55,
             child: AppPrimaryButton(
-              onPressed: () => _openBatchGcodeImport(context),
+              onPressed: () => _actions.openBatchGcodeImport(context),
               icon: const Icon(Icons.upload_file),
               label: batchImportLabel,
             ),
           ),
           const SizedBox(height: 12),
           AppSecondaryButton(
-            onPressed: () => _addManualItem(context),
+            onPressed: () => _actions.addManualItem(context),
             icon: const Icon(Icons.add),
             label: l10n.batchCostingReviewAddManualItemButton,
           ),
         ],
-      ),
-    );
-  }
-
-  bool _hasMissingFields(List<BatchCostingItem> items) {
-    return items.any(
-      (item) => item.printWeightG == null || item.printDuration == null,
-    );
-  }
-
-  void _continueToPrinterAssignment(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => const BatchPrinterAssignmentPage(),
-      ),
-    );
-  }
-
-  Future<void> _showStartNewBatchDialog(BuildContext context) async {
-    final confirmed = await showStartNewBatchDialog(context);
-    if (!confirmed) return;
-    if (!context.mounted) return;
-    await resetBatchFlow(context, ref);
-  }
-
-  Future<void> _addManualItem(BuildContext context) async {
-    final l10n = AppLocalizations.of(context)!;
-    final result = await showDialog<BatchCostingItemEditorResult>(
-      context: context,
-      builder: (_) => BatchCostingItemEditorDialog(
-        title: l10n.batchCostingItemEditorAddTitle,
-        initialDisplayName: '',
-        initialQuantity: 0,
-        initialPrintWeightG: 0,
-        initialPrintDuration: Duration.zero,
-      ),
-    );
-
-    if (result == null) return;
-    if (!mounted) return;
-
-    final wasEmpty = ref.read(batchCostingProvider).items.isEmpty;
-
-    final itemId = DateTime.now().microsecondsSinceEpoch.toString();
-    final added = ref
-        .read(batchCostingProvider.notifier)
-        .addItem(
-          BatchCostingItem.manual(
-            id: itemId,
-            displayName: result.displayName,
-            quantity: result.quantity,
-            printWeightG: result.printWeightG,
-            printDuration: result.printDuration,
-          ),
-        );
-
-    if (!added) {
-      BotToast.showText(text: l10n.batchItemLimitReachedMessage);
-      return;
-    }
-
-    if (wasEmpty) {
-      AppAnalytics.safeLog(() => AppAnalytics.batchStarted(source: 'manual'));
-    }
-
-    AppAnalytics.safeLog(() => AppAnalytics.batchItemAdded(source: 'manual'));
-  }
-
-  Future<void> _openBatchGcodeImport(BuildContext context) async {
-    final policy = ref.read(premiumAccessPolicyProvider);
-    if (!policy.batchGcodeImport().allowed) {
-      final upgraded = await requirePremium(
-        ref.read(paywallPresenterProvider),
-        policy.batchGcodeImport(),
-        purchaseSource: 'batch_gcode_import',
-        recheck: () => Future.value(
-          ref.read(premiumAccessPolicyProvider).batchGcodeImport().allowed,
-        ),
-      );
-      if (!upgraded) return;
-    }
-
-    if (!context.mounted) return;
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const BatchGCodeImportPage()),
-    );
-  }
-
-  Future<void> _editItem(BuildContext context, BatchCostingItem item) async {
-    final l10n = AppLocalizations.of(context)!;
-    if (!context.mounted) return;
-    final result = await showDialog<BatchCostingItemEditorResult>(
-      context: context,
-      builder: (_) => BatchCostingItemEditorDialog(
-        title: l10n.batchCostingItemEditorEditTitle,
-        initialDisplayName: item.displayName,
-        initialQuantity: item.quantity,
-        initialPrintWeightG: item.printWeightG,
-        initialPrintDuration: item.printDuration,
-      ),
-    );
-
-    if (result == null) return;
-    if (!context.mounted) return;
-
-    final updatedItem = item.copyWith(
-      displayName: result.displayName,
-      quantity: result.quantity,
-      printWeightG: result.printWeightG,
-      printDuration: result.printDuration,
-    );
-    final cleared = ref
-        .read(batchCostingProvider.notifier)
-        .updateItem(updatedItem);
-    if (cleared && context.mounted) {
-      BotToast.showText(
-        text: l10n.batchCostingAssignmentQuantityChangedMessage,
-      );
-    }
-
-    final source = item.sourceType == BatchCostingItemSourceType.gcode
-        ? 'gcode'
-        : 'manual';
-    final changedQuantity = item.quantity != updatedItem.quantity;
-    final changedWeight = item.printWeightG != updatedItem.printWeightG;
-    final changedDuration = item.printDuration != updatedItem.printDuration;
-
-    AppAnalytics.safeLog(
-      () => AppAnalytics.batchItemEdited(
-        source: source,
-        changedQuantity: changedQuantity,
-        changedWeight: changedWeight,
-        changedDuration: changedDuration,
       ),
     );
   }

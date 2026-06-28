@@ -259,7 +259,22 @@ class FakePremiumPurchaseGateway implements PremiumPurchaseGateway {
   @override
   Future<Offering?> getOffering(String offeringId) async {
     getOfferingCalls += 1;
-    return currentOffering;
+    return currentOffering ??
+        Offering(offeringId, offeringId, {}, [
+          Package(
+            '${offeringId}_monthly',
+            PackageType.monthly,
+            StoreProduct(
+              '${offeringId}_sku',
+              offeringId,
+              offeringId,
+              9.99,
+              '\$9.99',
+              'USD',
+            ),
+            PresentedOfferingContext(offeringId, null, null),
+          ),
+        ]);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -262,9 +263,12 @@ void main() {
       0,
     );
     expect(await stringMapStoreFactory.store(DBName.history.name).count(db), 0);
-    expect(await stringMapStoreFactory.store('printer_index').count(db), 0);
     expect(
-      await stringMapStoreFactory.store('history_search_index').count(db),
+      await stringMapStoreFactory.store(kPrinterIndexStoreName).count(db),
+      0,
+    );
+    expect(
+      await stringMapStoreFactory.store(kHistorySearchIndexStoreName).count(db),
       0,
     );
     expect(prefs.getKeys(), isEmpty);

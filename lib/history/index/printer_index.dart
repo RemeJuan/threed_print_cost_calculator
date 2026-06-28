@@ -1,8 +1,9 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 // Local generic Reader type to match ProviderContainer.read / Ref.read signatures.
 // Use a broad `Object?` parameter so tests can pass `container.read` without
@@ -39,10 +40,8 @@ class PrinterIndexHelpers {
 
   Database get _db => _read(databaseProvider);
 
-  static const String _kPrinterIndexStoreName = 'printer_index';
-
   final StoreRef<String, Map<String, Object?>> _indexStore =
-      stringMapStoreFactory.store(_kPrinterIndexStoreName);
+      stringMapStoreFactory.store(kPrinterIndexStoreName);
 
   final StoreRef<Object?, Map<String, Object?>> _historyStore =
       StoreRef<Object?, Map<String, Object?>>(DBName.history.name);

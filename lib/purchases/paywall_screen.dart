@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_comparison_table.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_plan_selector.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_screen_actions.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
-import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/purchases/widgets/paywall_bottom_bar.dart';
+import 'package:threed_print_cost_calculator/purchases/widgets/paywall_header.dart';
+import 'package:threed_print_cost_calculator/purchases/widgets/paywall_offering_error.dart';
+import 'package:threed_print_cost_calculator/purchases/widgets/paywall_pitch_section.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
-import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class PaywallScreen extends ConsumerStatefulWidget {
   const PaywallScreen({
@@ -57,43 +58,33 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   }
 
   Future<void> _loadOfferings() async {
-    try {
-      final gateway = ref.read(premiumPurchaseGatewayProvider);
-      final current = await gateway.getOffering(widget.offeringId);
-      if (!mounted) return;
-      setState(() {
-        _currentOffering = current;
-        _selectedPackage = preferredPackage(current?.availablePackages);
-        _loadingOfferings = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _offeringsError = e.toString();
-        _loadingOfferings = false;
-      });
-    }
+    final result = await loadPaywallOfferings(
+      ref: ref,
+      offeringId: widget.offeringId,
+    );
+    if (!mounted) return;
+    setState(() {
+      _currentOffering = result.offering;
+      _selectedPackage = preferredPackage(result.offering?.availablePackages);
+      _offeringsError = result.error;
+      _loadingOfferings = false;
+    });
   }
 
   Future<void> _purchase() async {
     if (_selectedPackage == null || _purchasing) return;
     setState(() => _purchasing = true);
     try {
-      final gateway = ref.read(premiumPurchaseGatewayProvider);
-      await gateway.purchasePackage(_selectedPackage!);
-      if (!mounted) return;
-      AppAnalytics.safeLog(
-        () => AppAnalytics.purchaseCompleted(
-          widget.purchaseSource,
-          defaultEntryPoint: widget.defaultEntryPoint,
-        ),
+      await completePaywallPurchase(
+        ref: ref,
+        package: _selectedPackage!,
+        purchaseSource: widget.purchaseSource,
+        defaultEntryPoint: widget.defaultEntryPoint,
+        onSuccess: () => Navigator.of(context).pop(),
       );
-      Navigator.of(context).pop();
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.purchaseError)),
-      );
+      showPaywallPurchaseError(context);
     } finally {
       if (mounted) setState(() => _purchasing = false);
     }
@@ -103,32 +94,16 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     if (_purchasing) return;
     setState(() => _purchasing = true);
     try {
-      final gateway = ref.read(premiumPurchaseGatewayProvider);
-      await gateway.restorePurchases();
-      if (!mounted) return;
-      AppAnalytics.safeLog(
-        () => AppAnalytics.restoreCompleted(
-          source: widget.source,
-          defaultEntryPoint: widget.defaultEntryPoint,
-        ),
+      await completePaywallRestore(
+        ref: ref,
+        source: widget.source,
+        defaultEntryPoint: widget.defaultEntryPoint,
+        onSuccess: () => Navigator.of(context).pop(),
       );
-      if (!mounted) return;
-      Navigator.of(context).pop();
     } catch (e, st) {
-      ref
-          .read(appLoggerProvider)
-          .warn(
-            AppLogCategory.billing,
-            'Restore failed',
-            error: e,
-            stackTrace: st,
-          );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.paywallRestoreError),
-        ),
-      );
+      logPaywallRestoreFailure(ref: ref, error: e, stackTrace: st);
+      showPaywallRestoreError(context);
     } finally {
       if (mounted) setState(() => _purchasing = false);
     }
@@ -144,7 +119,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(context),
+            PaywallHeader(onClose: () => Navigator.of(context).pop()),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(
@@ -156,7 +131,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildPitchSection(l10n),
+                    PaywallPitchSection(l10n: l10n),
                     const SizedBox(height: kAppSpace16),
                     PaywallComparisonTable(policy: policy, l10n: l10n),
                     const SizedBox(height: kAppSpace16),
@@ -176,171 +151,27 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 child: Center(child: CircularProgressIndicator()),
               )
             else if (_offeringsError != null)
-              _buildOfferingError(l10n)
+              PaywallOfferingError(l10n: l10n, onRetry: _retryOfferings)
             else
-              _buildBottomSection(l10n),
+              PaywallBottomBar(
+                l10n: l10n,
+                selectedPackage: _selectedPackage,
+                purchasing: _purchasing,
+                onPurchase: _selectedPackage != null ? _purchase : null,
+                onRestore: _restore,
+                logger: ref.read(appLoggerProvider),
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: kAppSpace8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPitchSection(AppLocalizations l10n) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.paywallTitle,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-            height: 1.05,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          l10n.paywallPitchLine,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: TEXT_SECONDARY, height: 1.25),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          l10n.paywallSubtitle,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: TEXT_TERTIARY,
-            height: 1.25,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildOfferingError(AppLocalizations l10n) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(
-        kAppSpace16,
-        kAppSpace12,
-        kAppSpace16,
-        kAppSpace12,
-      ),
-      child: Column(
-        children: [
-          Text(
-            l10n.paywallOfferingError,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: STATUS_ERROR),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: kAppSpace8),
-          AppTertiaryButton(
-            onPressed: () {
-              setState(() {
-                _loadingOfferings = true;
-                _offeringsError = null;
-              });
-              _loadOfferings();
-            },
-            label: l10n.retryButton,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBottomSection(AppLocalizations l10n) {
-    final theme = Theme.of(context);
-    final mutedStyle = theme.textTheme.bodySmall?.copyWith(
-      color: TEXT_TERTIARY,
-    );
-    final logger = ref.read(appLoggerProvider);
-
-    return Container(
-      padding: const EdgeInsets.fromLTRB(kAppSpace16, 4, kAppSpace16, 0),
-      decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: SHELL_BORDER)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: Text(
-              l10n.paywallTrustLine,
-              textAlign: TextAlign.center,
-              style: mutedStyle,
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: AppPrimaryButton(
-              onPressed: _selectedPackage != null ? _purchase : null,
-              label: ctaLabel(l10n, _selectedPackage),
-              loading: _purchasing,
-            ),
-          ),
-          const SizedBox(height: 4),
-          AppInlineButton(
-            onPressed: _restore,
-            label: l10n.paywallRestore,
-            foregroundColor: TEXT_TERTIARY,
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            minHeight: 32,
-            textAlign: TextAlign.center,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                child: AppInlineButton(
-                  onPressed: () =>
-                      openUrl(helpSupportPrivacyUrl, logger: logger),
-                  label: l10n.helpSupportPrivacyPolicyLabel,
-                  foregroundColor: TEXT_TERTIARY,
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  minHeight: 32,
-                  maxLines: 2,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-                child: Text(l10n.separator, style: mutedStyle),
-              ),
-              Flexible(
-                child: AppInlineButton(
-                  onPressed: () => openUrl(helpSupportTermsUrl, logger: logger),
-                  label: l10n.helpSupportTermsOfUseLabel,
-                  foregroundColor: TEXT_TERTIARY,
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  minHeight: 32,
-                  maxLines: 2,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  Future<void> _retryOfferings() async {
+    setState(() {
+      _loadingOfferings = true;
+      _offeringsError = null;
+    });
+    await _loadOfferings();
   }
 }

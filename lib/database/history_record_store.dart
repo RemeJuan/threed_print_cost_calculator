@@ -4,7 +4,6 @@ import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
-import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 class HistoryRecordStore {
@@ -25,7 +24,7 @@ class HistoryRecordStore {
   Future<Object?> insert(Map<String, dynamic> data) async {
     final payload = withHistorySearchFields(data);
 
-    final key = await _db.transaction((txn) async {
+    return _db.transaction((txn) async {
       final key = await _store.add(txn, payload);
       final printer = (payload['printer']?.toString() ?? '').trim();
       if (printer.isNotEmpty) {
@@ -41,13 +40,10 @@ class HistoryRecordStore {
 
       return key;
     });
-
-    ref.read(historyPagedProvider.notifier).markStale();
-    return key;
   }
 
-  Future<void> update(Object key, Map<String, dynamic> data) async {
-    final didUpdate = await _db.transaction((txn) async {
+  Future<bool> update(Object key, Map<String, dynamic> data) {
+    return _db.transaction((txn) async {
       final existing = castDatabaseRecord(
         await _store.record(key).get(txn),
         storeName: DBName.history.name,
@@ -83,14 +79,10 @@ class HistoryRecordStore {
 
       return true;
     });
-
-    if (didUpdate) {
-      ref.read(historyPagedProvider.notifier).markStale();
-    }
   }
 
-  Future<void> delete(Object key) async {
-    final didDelete = await _db.transaction((txn) async {
+  Future<bool> delete(Object key) {
+    return _db.transaction((txn) async {
       final existing = castDatabaseRecord(
         await _store.record(key).get(txn),
         storeName: DBName.history.name,
@@ -118,9 +110,5 @@ class HistoryRecordStore {
 
       return true;
     });
-
-    if (!didDelete) return;
-
-    ref.read(historyPagedProvider.notifier).markStale();
   }
 }
