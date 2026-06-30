@@ -1,3 +1,8 @@
+## [3.1.1] - 2026-06-30
+
+### Fixed
+- Fixed an issue where some G-code files could not be imported.
+
 ## [3.1.0] - 2026-06-18
 
 ### Added
@@ -227,6 +232,7 @@
 ### Added
 - Added in-app update checker
 
+[3.1.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.11.0...3.0.0
 [2.11.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.10.0...2.11.0
