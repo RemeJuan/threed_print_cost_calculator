@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
@@ -35,5 +36,30 @@ G1 X10 Y10
     expect(result.filamentLengthMm, closeTo(1234.5, 0.0001));
     expect(result.filamentWeightG, closeTo(12.3, 0.0001));
     expect(result.layerHeightMm, closeTo(0.2, 0.0001));
+  });
+
+  test('handles malformed utf8 from path without throwing', () async {
+    final dir = await Directory.systemTemp.createTemp(
+      'gcode_import_service_test',
+    );
+    addTearDown(() async => dir.delete(recursive: true));
+
+    final file = File('${dir.path}/broken.stl');
+    await file.writeAsBytes(Uint8List.fromList([0xFF, 0xFE, 0x41, 0x42]));
+
+    final result = await const GCodeImportService().importPickedFile(
+      GCodePickedFile(
+        name: 'broken.stl',
+        path: file.path,
+        size: await file.length(),
+      ),
+    );
+
+    expect(result.slicer, GCodeSlicer.unknown);
+    expect(result.estimatedDuration, isNull);
+    expect(result.filamentLengthMm, isNull);
+    expect(result.filamentWeightG, isNull);
+    expect(result.layerHeightMm, isNull);
+    expect(result.hasAnyExtractedMetadata, isFalse);
   });
 }

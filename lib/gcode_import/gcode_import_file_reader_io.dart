@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-Future<String> readGCodeTextFromPath(String path) => File(path).readAsString();
+Future<String> readGCodeTextFromPath(String path) =>
+    File(path).readAsString(encoding: const Utf8Codec(allowMalformed: true));
 
 Future<Uint8List> readGCodeSampleFromPath(String path, int maxBytes) async {
   final bytes = BytesBuilder(copy: false);
@@ -32,7 +33,8 @@ Future<int?> readGCodeLengthFromPath(String path) async {
 }
 
 Stream<String> openGCodeLinesFromPath(String path) {
-  return File(
-    path,
-  ).openRead().transform(utf8.decoder).transform(const LineSplitter());
+  return File(path)
+      .openRead()
+      .transform(const Utf8Decoder(allowMalformed: true))
+      .transform(const LineSplitter());
 }
