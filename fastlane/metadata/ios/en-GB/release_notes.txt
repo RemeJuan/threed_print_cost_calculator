@@ -1,1 +1,1 @@
-Backup and restore is now available to all users. Save a copy of your app data and restore it later when moving devices or recovering from a reset.
+Fixed an issue where some G-code files could not be imported.

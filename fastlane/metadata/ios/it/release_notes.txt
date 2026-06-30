@@ -1,1 +1,1 @@
-Backup e ripristino sono ora disponibili per tutti gli utenti. Salva una copia dei dati dell’app e ripristinala in seguito quando cambi dispositivo o dopo un ripristino.
+Risolto un problema per cui alcuni file G-code non potevano essere importati.

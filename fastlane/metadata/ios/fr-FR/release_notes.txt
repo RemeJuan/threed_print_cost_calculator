@@ -1,1 +1,1 @@
-La sauvegarde et la restauration sont désormais disponibles pour tous les utilisateurs. Enregistrez une copie de vos données et restaurez-la plus tard lors d’un changement d’appareil ou après une réinitialisation.
+Correction d’un problème qui empêchait l’importation de certains fichiers G-code.

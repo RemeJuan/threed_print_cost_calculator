@@ -1,1 +1,1 @@
-Sichern und Wiederherstellen ist jetzt für alle Nutzer verfügbar. Speichern Sie eine Kopie Ihrer App-Daten und stellen Sie sie später beim Gerätewechsel oder nach einem Zurücksetzen wieder her.
+Es wurde ein Problem behoben, durch das einige G-Code-Dateien nicht importiert werden konnten.
