@@ -147,3 +147,6 @@ fastlane/Preview.html
 fastlane/screenshots/output/
 fastlane/test_output/
 **/fastlane/.env
+
+# functions
+node_modules
