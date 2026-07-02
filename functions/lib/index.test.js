@@ -32,6 +32,32 @@ const index_1 = require("./index");
     });
 });
 (0, vitest_1.describe)('decideForTest', () => {
+    (0, vitest_1.it)('hard blocks tampered apps', () => {
+        const decision = (0, index_1.decideForTest)('purchase', {
+            license: 'LICENSED',
+            appIntegrity: 'UNRECOGNIZED_VERSION',
+            deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+            virtualIntegrity: 'NOT_MET',
+            recentDeviceActivity: 'UNEVALUATED',
+            playProtect: 'NO_ISSUES',
+            appAccessRisk: [],
+            decision: 'allow',
+        });
+        (0, vitest_1.expect)(decision).toBe('block_tampered');
+    });
+    (0, vitest_1.it)('hard blocks unlicensed premium flows', () => {
+        const decision = (0, index_1.decideForTest)('restore', {
+            license: 'UNLICENSED',
+            appIntegrity: 'PLAY_RECOGNIZED',
+            deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+            virtualIntegrity: 'NOT_MET',
+            recentDeviceActivity: 'UNEVALUATED',
+            playProtect: 'NO_ISSUES',
+            appAccessRisk: [],
+            decision: 'allow',
+        });
+        (0, vitest_1.expect)(decision).toBe('block_unlicensed');
+    });
     (0, vitest_1.it)('soft gates premium when device integrity missing', () => {
         const decision = (0, index_1.decideForTest)('purchase', {
             license: 'LICENSED',
@@ -57,6 +83,58 @@ const index_1 = require("./index");
             decision: 'allow',
         });
         (0, vitest_1.expect)(decision).toBe('allow');
+    });
+    (0, vitest_1.it)('returns allow_logged_risk for recent device activity risk', () => {
+        const decision = (0, index_1.decideForTest)('calculator', {
+            license: 'LICENSED',
+            appIntegrity: 'PLAY_RECOGNIZED',
+            deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+            virtualIntegrity: 'NOT_MET',
+            recentDeviceActivity: 'LEVEL_2',
+            playProtect: 'NO_ISSUES',
+            appAccessRisk: [],
+            decision: 'allow',
+        });
+        (0, vitest_1.expect)(decision).toBe('allow_logged_risk');
+    });
+    (0, vitest_1.it)('returns allow_logged_risk for Play Protect risk', () => {
+        const decision = (0, index_1.decideForTest)('calculator', {
+            license: 'LICENSED',
+            appIntegrity: 'PLAY_RECOGNIZED',
+            deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+            virtualIntegrity: 'NOT_MET',
+            recentDeviceActivity: 'LEVEL_1',
+            playProtect: 'POSSIBLE_RISK',
+            appAccessRisk: [],
+            decision: 'allow',
+        });
+        (0, vitest_1.expect)(decision).toBe('allow_logged_risk');
+    });
+    (0, vitest_1.it)('returns allow_logged_risk for app access risk', () => {
+        const decision = (0, index_1.decideForTest)('calculator', {
+            license: 'LICENSED',
+            appIntegrity: 'PLAY_RECOGNIZED',
+            deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+            virtualIntegrity: 'NOT_MET',
+            recentDeviceActivity: 'LEVEL_1',
+            playProtect: 'NO_ISSUES',
+            appAccessRisk: ['KNOWN_OVERLAYS'],
+            decision: 'allow',
+        });
+        (0, vitest_1.expect)(decision).toBe('allow_logged_risk');
+    });
+    (0, vitest_1.it)('returns allow_logged_risk when device integrity is risky but evaluated', () => {
+        const decision = (0, index_1.decideForTest)('calculator', {
+            license: 'LICENSED',
+            appIntegrity: 'PLAY_RECOGNIZED',
+            deviceIntegrity: 'MEETS_BASIC_INTEGRITY',
+            virtualIntegrity: 'NOT_MET',
+            recentDeviceActivity: 'LEVEL_1',
+            playProtect: 'NO_ISSUES',
+            appAccessRisk: [],
+            decision: 'allow',
+        });
+        (0, vitest_1.expect)(decision).toBe('allow_logged_risk');
     });
 });
 //# sourceMappingURL=index.test.js.map

@@ -21,6 +21,7 @@ type ResponseData = {
 const auth = new GoogleAuth({ scopes: ['https://www.googleapis.com/auth/playintegrity'] });
 const endpointBase = 'https://playintegrity.googleapis.com/v1';
 const packageName = 'com.threed_print_calculator';
+const decodeTimeoutMs = 8000;
 
 function asString(value: unknown): string {
   return typeof value === 'string' && value ? value : 'UNKNOWN';
@@ -54,6 +55,12 @@ function normalizeVirtualIntegrity(deviceIntegrityLabels: string[]): string {
     return 'UNEVALUATED';
   }
   return 'NOT_MET';
+}
+
+function redactUpstreamBody(value: string): string {
+  const normalized = value.replace(/\s+/g, ' ').trim();
+  if (!normalized) return '';
+  return normalized.length > 200 ? `${normalized.slice(0, 200)}…` : normalized;
 }
 
 function normalizeResponse(payload: any): ResponseData {
@@ -127,18 +134,35 @@ export const decodePlayIntegrity = onCall(
     const access = await client.getAccessToken();
     if (!access.token) throw new HttpsError('internal', 'Missing access token');
 
-    const res = await fetch(`${endpointBase}/${packageName}:decodeIntegrityToken`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${access.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ integrityToken }),
-    });
+    const abortController = new AbortController();
+    const timeout = setTimeout(() => abortController.abort(), decodeTimeoutMs);
+
+    let res: Response;
+    try {
+      res = await fetch(`${endpointBase}/${packageName}:decodeIntegrityToken`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${access.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ integrityToken }),
+        signal: abortController.signal,
+      });
+    } catch (error) {
+      logger.error('Play Integrity decode request failed', {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw new HttpsError('internal', 'Integrity service unavailable');
+    } finally {
+      clearTimeout(timeout);
+    }
 
     if (!res.ok) {
       const text = await res.text();
-      logger.error('Play Integrity decode failed', { status: res.status, text });
+      logger.error('Play Integrity decode failed', {
+        status: res.status,
+        text: redactUpstreamBody(text),
+      });
       throw new HttpsError('internal', 'Integrity service unavailable');
     }
 

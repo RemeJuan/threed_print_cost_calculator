@@ -3,6 +3,8 @@ package com.threed_print_calculator
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
 import androidx.activity.result.contract.ActivityResultContracts.OpenMultipleDocuments
@@ -12,6 +14,7 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
+import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : FlutterFragmentActivity() {
     private var pendingPickerResult: MethodChannel.Result? = null
@@ -137,17 +140,39 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun requestPlayIntegrityToken(nonce: String, cloudProjectNumber: Long, result: MethodChannel.Result) {
-        val integrityManager = IntegrityManagerFactory.create(this)
+        val integrityManager = IntegrityManagerFactory.create(applicationContext)
         val tokenRequest =
                 IntegrityTokenRequest.builder()
                         .setNonce(nonce)
                         .setCloudProjectNumber(cloudProjectNumber)
                         .build()
 
+        val isResolved = AtomicBoolean(false)
+        val timeoutHandler = Handler(Looper.getMainLooper())
+        val timeoutRunnable = Runnable {
+            if (isResolved.compareAndSet(false, true)) {
+                result.error(
+                        "play_integrity_timeout",
+                        "Play Integrity request timed out.",
+                        null,
+                )
+            }
+        }
+
+        timeoutHandler.postDelayed(timeoutRunnable, 15000)
+
         integrityManager.requestIntegrityToken(tokenRequest)
-                .addOnSuccessListener { response -> result.success(response.token()) }
+                .addOnSuccessListener { response ->
+                    if (isResolved.compareAndSet(false, true)) {
+                        timeoutHandler.removeCallbacks(timeoutRunnable)
+                        result.success(response.token())
+                    }
+                }
                 .addOnFailureListener { error ->
-                    result.error("play_integrity_failed", error.message, null)
+                    if (isResolved.compareAndSet(false, true)) {
+                        timeoutHandler.removeCallbacks(timeoutRunnable)
+                        result.error("play_integrity_failed", error.message, null)
+                    }
                 }
     }
 

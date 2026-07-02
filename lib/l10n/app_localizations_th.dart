@@ -663,7 +663,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get playIntegrityActionBlocked =>
-      'This action can\'t continue on this device right now. Try again later or use a different device.';
+      'การดำเนินการนี้ไม่สามารถทำต่อบนอุปกรณ์นี้ได้ในขณะนี้ ลองอีกครั้งภายหลังหรือใช้อุปกรณ์เครื่องอื่น';
 
   @override
   String get restorePurchases => 'กู้คืนการซื้อ';

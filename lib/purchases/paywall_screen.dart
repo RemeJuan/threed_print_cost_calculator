@@ -59,7 +59,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   Future<void> _loadOfferings() async {
     final result = await loadPaywallOfferings(
-      read: (provider) => ref.read(provider),
+      read: <T>(provider) => ref.read(provider),
       offeringId: widget.offeringId,
     );
     if (!mounted) return;
@@ -76,7 +76,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     setState(() => _purchasing = true);
     try {
       await completePaywallPurchase(
-        read: (provider) => ref.read(provider),
+        read: <T>(provider) => ref.read(provider),
         package: _selectedPackage!,
         purchaseSource: widget.purchaseSource,
         defaultEntryPoint: widget.defaultEntryPoint,
@@ -98,7 +98,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     setState(() => _purchasing = true);
     try {
       await completePaywallRestore(
-        read: (provider) => ref.read(provider),
+        read: <T>(provider) => ref.read(provider),
         source: widget.source,
         defaultEntryPoint: widget.defaultEntryPoint,
         onSuccess: () => Navigator.of(context).pop(),
@@ -109,7 +109,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     } catch (e, st) {
       if (!mounted) return;
       logPaywallRestoreFailure(
-        read: (provider) => ref.read(provider),
+        read: <T>(provider) => ref.read(provider),
         error: e,
         stackTrace: st,
       );

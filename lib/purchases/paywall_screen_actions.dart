@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:riverpod/misc.dart' show ProviderListenable;
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_decision.dart';
@@ -8,7 +9,7 @@ import 'package:threed_print_cost_calculator/core/integrity/play_integrity_servi
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
 
-typedef ProviderReader = dynamic Function(dynamic provider);
+typedef ProviderReader = T Function<T>(ProviderListenable<T> provider);
 
 class PlayIntegrityActionBlockedException implements Exception {
   const PlayIntegrityActionBlockedException();
@@ -50,13 +51,10 @@ Future<void> completePaywallPurchase({
   required String defaultEntryPoint,
   required VoidCallback onSuccess,
 }) async {
-  final integrity = await read(
-    playIntegrityServiceProvider,
-  ).evaluate(PlayIntegrityFlow.purchase);
-  if (isPlayIntegrityHardBlocked(integrity) ||
-      isPlayIntegritySoftGated(integrity)) {
-    throw const PlayIntegrityActionBlockedException();
-  }
+  await _ensurePlayIntegrityAllowed(
+    read: read,
+    flow: PlayIntegrityFlow.purchase,
+  );
   final gateway = read(premiumPurchaseGatewayProvider);
   await gateway.purchasePackage(package);
   AppAnalytics.safeLog(
@@ -74,13 +72,10 @@ Future<void> completePaywallRestore({
   required String defaultEntryPoint,
   required VoidCallback onSuccess,
 }) async {
-  final integrity = await read(
-    playIntegrityServiceProvider,
-  ).evaluate(PlayIntegrityFlow.restore);
-  if (isPlayIntegrityHardBlocked(integrity) ||
-      isPlayIntegritySoftGated(integrity)) {
-    throw const PlayIntegrityActionBlockedException();
-  }
+  await _ensurePlayIntegrityAllowed(
+    read: read,
+    flow: PlayIntegrityFlow.restore,
+  );
   final gateway = read(premiumPurchaseGatewayProvider);
   await gateway.restorePurchases();
   AppAnalytics.safeLog(
@@ -115,6 +110,17 @@ void showPaywallRestoreError(BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(content: Text(AppLocalizations.of(context)!.paywallRestoreError)),
   );
+}
+
+Future<void> _ensurePlayIntegrityAllowed({
+  required ProviderReader read,
+  required PlayIntegrityFlow flow,
+}) async {
+  final integrity = await read(playIntegrityServiceProvider).evaluate(flow);
+  if (isPlayIntegrityHardBlocked(integrity) ||
+      isPlayIntegritySoftGated(integrity)) {
+    throw const PlayIntegrityActionBlockedException();
+  }
 }
 
 void showPlayIntegrityActionBlocked(BuildContext context) {

@@ -670,7 +670,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get playIntegrityActionBlocked =>
-      'This action can\'t continue on this device right now. Try again later or use a different device.';
+      'Deze actie kan op dit apparaat nu niet doorgaan. Probeer het later opnieuw of gebruik een ander apparaat.';
 
   @override
   String get restorePurchases => 'Aankopen herstellen';

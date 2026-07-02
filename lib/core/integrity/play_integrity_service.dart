@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -17,6 +18,8 @@ abstract class PlayIntegrityService {
 }
 
 class DefaultPlayIntegrityService implements PlayIntegrityService {
+  static const _requestTokenTimeout = Duration(seconds: 10);
+
   DefaultPlayIntegrityService({
     MethodChannel? channel,
     FirebaseFunctions? functions,
@@ -38,10 +41,12 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
   Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
     try {
       final nonce = _nonce();
-      final token = await _channel.invokeMethod<String>('requestToken', {
-        'nonce': nonce,
-        'cloudProjectNumber': _cloudProjectNumber,
-      });
+      final token = await _channel
+          .invokeMethod<String>('requestToken', {
+            'nonce': nonce,
+            'cloudProjectNumber': _cloudProjectNumber,
+          })
+          .timeout(_requestTokenTimeout);
       if (token == null || token.isEmpty) {
         throw StateError('Play Integrity token unavailable');
       }
@@ -75,6 +80,6 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
   String _nonce() {
     final rng = Random.secure();
     final bytes = List<int>.generate(32, (_) => rng.nextInt(256));
-    return base64UrlEncode(bytes);
+    return base64UrlEncode(bytes).replaceAll('=', '');
   }
 }

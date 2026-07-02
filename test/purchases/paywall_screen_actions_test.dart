@@ -43,7 +43,7 @@ void main() {
     addTearDown(container.dispose);
 
     await completePaywallPurchase(
-      read: (provider) => container.read(provider),
+      read: <T>(provider) => container.read(provider),
       package: _makePackage(),
       purchaseSource: 'source',
       defaultEntryPoint: 'entry',
@@ -79,7 +79,7 @@ void main() {
 
     await expectLater(
       () => completePaywallRestore(
-        read: (provider) => container.read(provider),
+        read: <T>(provider) => container.read(provider),
         source: 'source',
         defaultEntryPoint: 'entry',
         onSuccess: () {},
@@ -88,6 +88,84 @@ void main() {
     );
 
     expect(gateway.restorePurchasesCalls, 0);
+  });
+
+  test('purchase blocked on non-allow integrity decisions', () async {
+    for (final decision in [
+      PlayIntegrityDecisionLabel.softGatePremium,
+      PlayIntegrityDecisionLabel.blockTampered,
+      PlayIntegrityDecisionLabel.blockUnlicensed,
+    ]) {
+      final gateway = FakePremiumPurchaseGateway();
+      final container = ProviderContainer(
+        overrides: [
+          premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+          playIntegrityServiceProvider.overrideWithValue(
+            _FakeIntegrityService(
+              PlayIntegritySnapshot(
+                license: 'LICENSED',
+                appIntegrity: 'PLAY_RECOGNIZED',
+                deviceIntegrity: 'UNEVALUATED',
+                virtualIntegrity: 'UNEVALUATED',
+                recentDeviceActivity: 'UNEVALUATED',
+                playProtect: 'NO_ISSUES',
+                appAccessRisk: const <String>[],
+                decision: decision,
+              ),
+            ),
+          ),
+        ],
+      );
+
+      addTearDown(container.dispose);
+
+      await expectLater(
+        () => completePaywallPurchase(
+          read: <T>(provider) => container.read(provider),
+          package: _makePackage(),
+          purchaseSource: 'source',
+          defaultEntryPoint: 'entry',
+          onSuccess: () {},
+        ),
+        throwsA(isA<PlayIntegrityActionBlockedException>()),
+      );
+
+      expect(gateway.purchasePackageCalls, 0);
+    }
+  });
+
+  test('restore proceeds on allow', () async {
+    final gateway = FakePremiumPurchaseGateway();
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+        playIntegrityServiceProvider.overrideWithValue(
+          _FakeIntegrityService(
+            const PlayIntegritySnapshot(
+              license: 'LICENSED',
+              appIntegrity: 'PLAY_RECOGNIZED',
+              deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+              virtualIntegrity: 'UNEVALUATED',
+              recentDeviceActivity: 'UNEVALUATED',
+              playProtect: 'NO_ISSUES',
+              appAccessRisk: <String>[],
+              decision: PlayIntegrityDecisionLabel.allow,
+            ),
+          ),
+        ),
+      ],
+    );
+
+    addTearDown(container.dispose);
+
+    await completePaywallRestore(
+      read: <T>(provider) => container.read(provider),
+      source: 'source',
+      defaultEntryPoint: 'entry',
+      onSuccess: () {},
+    );
+
+    expect(gateway.restorePurchasesCalls, 1);
   });
 }
 

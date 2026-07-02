@@ -48,6 +48,12 @@ class PlayIntegritySnapshot {
   final List<String> appAccessRisk;
   final PlayIntegrityDecisionLabel decision;
 
+  static List<String> _parseAppAccessRisk(Object? value) {
+    if (value is! List) return const <String>[];
+
+    return value.map((entry) => entry.toString()).toList(growable: false);
+  }
+
   factory PlayIntegritySnapshot.fromJson(Map<String, dynamic>? json) {
     final data = json ?? const <String, dynamic>{};
     return PlayIntegritySnapshot(
@@ -58,11 +64,7 @@ class PlayIntegritySnapshot {
       recentDeviceActivity:
           data['recentDeviceActivity']?.toString() ?? 'UNEVALUATED',
       playProtect: data['playProtect']?.toString() ?? 'UNEVALUATED',
-      appAccessRisk:
-          (data['appAccessRisk'] as List?)
-              ?.map((entry) => entry.toString())
-              .toList(growable: false) ??
-          const <String>[],
+      appAccessRisk: _parseAppAccessRisk(data['appAccessRisk']),
       decision: playIntegrityDecisionFromJsonValue(data['decision']),
     );
   }

@@ -35,5 +35,85 @@ void main() {
       ),
       isTrue,
     );
+
+    expect(
+      isPlayIntegrityHardBlocked(
+        const PlayIntegritySnapshot(
+          license: 'LICENSED',
+          appIntegrity: 'PLAY_RECOGNIZED',
+          deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+          virtualIntegrity: 'UNEVALUATED',
+          recentDeviceActivity: 'UNEVALUATED',
+          playProtect: 'NO_ISSUES',
+          appAccessRisk: <String>[],
+          decision: PlayIntegrityDecisionLabel.allow,
+        ),
+      ),
+      isFalse,
+    );
+
+    expect(
+      isPlayIntegrityHardBlocked(
+        const PlayIntegritySnapshot(
+          license: 'LICENSED',
+          appIntegrity: 'PLAY_RECOGNIZED',
+          deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+          virtualIntegrity: 'UNEVALUATED',
+          recentDeviceActivity: 'UNEVALUATED',
+          playProtect: 'NO_ISSUES',
+          appAccessRisk: <String>[],
+          decision: PlayIntegrityDecisionLabel.allowLoggedRisk,
+        ),
+      ),
+      isFalse,
+    );
+
+    expect(
+      isPlayIntegrityHardBlocked(
+        const PlayIntegritySnapshot(
+          license: 'LICENSED',
+          appIntegrity: 'PLAY_RECOGNIZED',
+          deviceIntegrity: 'UNEVALUATED',
+          virtualIntegrity: 'UNEVALUATED',
+          recentDeviceActivity: 'UNEVALUATED',
+          playProtect: 'UNEVALUATED',
+          appAccessRisk: <String>[],
+          decision: PlayIntegrityDecisionLabel.softGatePremium,
+        ),
+      ),
+      isFalse,
+    );
+
+    expect(
+      isPlayIntegritySoftGated(
+        const PlayIntegritySnapshot(
+          license: 'UNLICENSED',
+          appIntegrity: 'PLAY_RECOGNIZED',
+          deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+          virtualIntegrity: 'UNEVALUATED',
+          recentDeviceActivity: 'UNEVALUATED',
+          playProtect: 'NO_ISSUES',
+          appAccessRisk: <String>[],
+          decision: PlayIntegrityDecisionLabel.blockUnlicensed,
+        ),
+      ),
+      isFalse,
+    );
+
+    expect(
+      isPlayIntegritySoftGated(
+        const PlayIntegritySnapshot(
+          license: 'LICENSED',
+          appIntegrity: 'UNRECOGNIZED_VERSION',
+          deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+          virtualIntegrity: 'UNEVALUATED',
+          recentDeviceActivity: 'UNEVALUATED',
+          playProtect: 'NO_ISSUES',
+          appAccessRisk: <String>[],
+          decision: PlayIntegrityDecisionLabel.blockTampered,
+        ),
+      ),
+      isFalse,
+    );
   });
 }

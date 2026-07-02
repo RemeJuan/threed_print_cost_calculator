@@ -677,7 +677,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playIntegrityActionBlocked =>
-      'This action can\'t continue on this device right now. Try again later or use a different device.';
+      'Cette action ne peut pas continuer sur cet appareil pour le moment. Réessayez plus tard ou utilisez un autre appareil.';
 
   @override
   String get restorePurchases => 'Restaurer les achats';

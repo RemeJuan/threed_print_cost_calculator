@@ -36,6 +36,36 @@ describe('normalizeResponseForTest', () => {
 });
 
 describe('decideForTest', () => {
+  it('hard blocks tampered apps', () => {
+    const decision = decideForTest('purchase', {
+      license: 'LICENSED',
+      appIntegrity: 'UNRECOGNIZED_VERSION',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'NOT_MET',
+      recentDeviceActivity: 'UNEVALUATED',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: [],
+      decision: 'allow',
+    });
+
+    expect(decision).toBe('block_tampered');
+  });
+
+  it('hard blocks unlicensed premium flows', () => {
+    const decision = decideForTest('restore', {
+      license: 'UNLICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'NOT_MET',
+      recentDeviceActivity: 'UNEVALUATED',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: [],
+      decision: 'allow',
+    });
+
+    expect(decision).toBe('block_unlicensed');
+  });
+
   it('soft gates premium when device integrity missing', () => {
     const decision = decideForTest('purchase', {
       license: 'LICENSED',
@@ -64,5 +94,65 @@ describe('decideForTest', () => {
     });
 
     expect(decision).toBe('allow');
+  });
+
+  it('returns allow_logged_risk for recent device activity risk', () => {
+    const decision = decideForTest('calculator', {
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'NOT_MET',
+      recentDeviceActivity: 'LEVEL_2',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: [],
+      decision: 'allow',
+    });
+
+    expect(decision).toBe('allow_logged_risk');
+  });
+
+  it('returns allow_logged_risk for Play Protect risk', () => {
+    const decision = decideForTest('calculator', {
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'NOT_MET',
+      recentDeviceActivity: 'LEVEL_1',
+      playProtect: 'POSSIBLE_RISK',
+      appAccessRisk: [],
+      decision: 'allow',
+    });
+
+    expect(decision).toBe('allow_logged_risk');
+  });
+
+  it('returns allow_logged_risk for app access risk', () => {
+    const decision = decideForTest('calculator', {
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'NOT_MET',
+      recentDeviceActivity: 'LEVEL_1',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: ['KNOWN_OVERLAYS'],
+      decision: 'allow',
+    });
+
+    expect(decision).toBe('allow_logged_risk');
+  });
+
+  it('returns allow_logged_risk when device integrity is risky but evaluated', () => {
+    const decision = decideForTest('calculator', {
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_BASIC_INTEGRITY',
+      virtualIntegrity: 'NOT_MET',
+      recentDeviceActivity: 'LEVEL_1',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: [],
+      decision: 'allow',
+    });
+
+    expect(decision).toBe('allow_logged_risk');
   });
 });

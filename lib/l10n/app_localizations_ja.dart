@@ -647,7 +647,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get playIntegrityActionBlocked =>
-      'This action can\'t continue on this device right now. Try again later or use a different device.';
+      'この操作は現在この端末では続行できません。しばらくしてから再試行するか、別の端末を使用してください。';
 
   @override
   String get restorePurchases => '購入を復元';
