@@ -656,6 +656,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Terjadi kesalahan saat memproses pembelian Anda. Silakan coba lagi nanti.';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'This action can\'t continue on this device right now. Try again later or use a different device.';
+
+  @override
   String get restorePurchases => 'Pulihkan pembelian';
 
   @override

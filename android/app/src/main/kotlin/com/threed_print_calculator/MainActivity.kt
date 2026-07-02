@@ -6,6 +6,8 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
 import androidx.activity.result.contract.ActivityResultContracts.OpenMultipleDocuments
+import com.google.android.play.core.integrity.IntegrityManagerFactory
+import com.google.android.play.core.integrity.IntegrityTokenRequest
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -13,6 +15,7 @@ import java.io.File
 
 class MainActivity : FlutterFragmentActivity() {
     private var pendingPickerResult: MethodChannel.Result? = null
+    private val playIntegrityChannelName = "com.threed_print_calculator/play_integrity"
 
     private val gcodePickerLauncher =
             registerForActivityResult(OpenDocument()) { uri ->
@@ -110,6 +113,41 @@ class MainActivity : FlutterFragmentActivity() {
                         }
                         else -> result.notImplemented()
                     }
+                }
+
+        MethodChannel(
+                        flutterEngine.dartExecutor.binaryMessenger,
+                        playIntegrityChannelName,
+                )
+                .setMethodCallHandler { call, result ->
+                    when (call.method) {
+                        "requestToken" -> {
+                            val nonce = call.argument<String>("nonce")
+                            val cloudProjectNumber = call.argument<Long>("cloudProjectNumber")
+                            if (nonce.isNullOrBlank() || cloudProjectNumber == null) {
+                                result.error("play_integrity_bad_args", "Missing nonce or cloudProjectNumber.", null)
+                                return@setMethodCallHandler
+                            }
+
+                            requestPlayIntegrityToken(nonce, cloudProjectNumber, result)
+                        }
+                        else -> result.notImplemented()
+                    }
+                }
+    }
+
+    private fun requestPlayIntegrityToken(nonce: String, cloudProjectNumber: Long, result: MethodChannel.Result) {
+        val integrityManager = IntegrityManagerFactory.create(this)
+        val tokenRequest =
+                IntegrityTokenRequest.builder()
+                        .setNonce(nonce)
+                        .setCloudProjectNumber(cloudProjectNumber)
+                        .build()
+
+        integrityManager.requestIntegrityToken(tokenRequest)
+                .addOnSuccessListener { response -> result.success(response.token()) }
+                .addOnFailureListener { error ->
+                    result.error("play_integrity_failed", error.message, null)
                 }
     }
 

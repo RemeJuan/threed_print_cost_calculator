@@ -279,6 +279,7 @@
   "offeringsError": "Error: ",
   "currentOfferings": "Current Offerings",
   "purchaseError": "There was an error processing your purchase. Please try again later.",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "restorePurchases": "Restore Purchases",
   "printersHeader": "Printers",
   "materialsHeader": "Materials",

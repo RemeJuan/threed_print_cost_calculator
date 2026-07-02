@@ -663,6 +663,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'There was an error processing your purchase. Please try again later.';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'This action can\'t continue on this device right now. Try again later or use a different device.';
+
+  @override
   String get restorePurchases => 'Restore Purchases';
 
   @override

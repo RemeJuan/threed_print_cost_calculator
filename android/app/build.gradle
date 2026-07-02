@@ -139,6 +139,7 @@ flutter {
 }
 
 dependencies {
+    implementation "com.google.android.play:integrity:1.5.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.0"
     androidTestUtil "androidx.test:orchestrator:1.5.1"
 }

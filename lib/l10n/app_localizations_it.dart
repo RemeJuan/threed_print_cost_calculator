@@ -672,6 +672,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Si è verificato un errore durante l\'elaborazione dell\'acquisto. Riprova più tardi.';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'This action can\'t continue on this device right now. Try again later or use a different device.';
+
+  @override
   String get restorePurchases => 'Ripristina acquisti';
 
   @override

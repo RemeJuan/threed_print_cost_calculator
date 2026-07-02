@@ -420,6 +420,7 @@
   "currentOfferings": "Penawaran saat ini",
   "@currentOfferings": {},
   "purchaseError": "Terjadi kesalahan saat memproses pembelian Anda. Silakan coba lagi nanti.",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "@purchaseError": {},
   "restorePurchases": "Pulihkan pembelian",
   "@restorePurchases": {},

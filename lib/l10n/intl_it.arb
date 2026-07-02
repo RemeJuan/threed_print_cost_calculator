@@ -420,6 +420,7 @@
   "currentOfferings": "Offerte attuali",
   "@currentOfferings": {},
   "purchaseError": "Si è verificato un errore durante l'elaborazione dell'acquisto. Riprova più tardi.",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "@purchaseError": {},
   "restorePurchases": "Ripristina acquisti",
   "@restorePurchases": {},

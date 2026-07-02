@@ -428,6 +428,7 @@
   "currentOfferings": "Huidige aanbiedingen",
   "@currentOfferings": {},
   "purchaseError": "Er is een fout opgetreden bij het verwerken van je aankoop. Probeer het later opnieuw.",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "@purchaseError": {},
   "restorePurchases": "Aankopen herstellen",
   "@restorePurchases": {},

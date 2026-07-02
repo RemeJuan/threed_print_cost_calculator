@@ -669,6 +669,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Beim Verarbeiten Ihres Kaufs ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'This action can\'t continue on this device right now. Try again later or use a different device.';
+
+  @override
   String get restorePurchases => 'Käufe wiederherstellen';
 
   @override

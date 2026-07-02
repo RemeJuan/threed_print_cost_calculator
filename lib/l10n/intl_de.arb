@@ -426,6 +426,7 @@
   "currentOfferings": "Aktuelle Angebote",
   "@currentOfferings": {},
   "purchaseError": "Beim Verarbeiten Ihres Kaufs ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "@purchaseError": {},
   "restorePurchases": "Käufe wiederherstellen",
   "@restorePurchases": {},

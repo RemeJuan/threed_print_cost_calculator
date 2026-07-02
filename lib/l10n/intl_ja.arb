@@ -428,6 +428,7 @@
   "currentOfferings": "現在のオファー",
   "@currentOfferings": {},
   "purchaseError": "購入処理中にエラーが発生しました。後でもう一度お試しください。",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "@purchaseError": {},
   "restorePurchases": "購入を復元",
   "@restorePurchases": {},

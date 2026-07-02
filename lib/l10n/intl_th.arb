@@ -421,6 +421,7 @@
   "currentOfferings": "ข้อเสนอปัจจุบัน",
   "@currentOfferings": {},
   "purchaseError": "เกิดข้อผิดพลาดในการประมวลผลการซื้อของคุณ โปรดลองอีกครั้งในภายหลัง",
+  "playIntegrityActionBlocked": "This action can't continue on this device right now. Try again later or use a different device.",
   "@purchaseError": {},
   "restorePurchases": "กู้คืนการซื้อ",
   "@restorePurchases": {},
