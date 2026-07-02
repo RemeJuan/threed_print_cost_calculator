@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provider.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
@@ -22,6 +25,22 @@ class _FakeAnalytics implements AnalyticsService {
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {
     events.add(MapEntry(name, params));
+  }
+}
+
+class _AllowIntegrityService implements PlayIntegrityService {
+  @override
+  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
+    return const PlayIntegritySnapshot(
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'UNEVALUATED',
+      recentDeviceActivity: 'UNEVALUATED',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: <String>[],
+      decision: PlayIntegrityDecisionLabel.allow,
+    );
   }
 }
 
@@ -49,6 +68,7 @@ void main() {
     final effectiveGateway = gateway ?? FakePremiumPurchaseGateway();
     final db = await tester.pumpApp(const PaywallScreen(), [
       premiumPurchaseGatewayProvider.overrideWithValue(effectiveGateway),
+      playIntegrityServiceProvider.overrideWithValue(_AllowIntegrityService()),
     ]);
     addTearDown(() => db.close());
     await tester.pump();
