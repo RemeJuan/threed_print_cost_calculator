@@ -17,27 +17,41 @@ class _FakeIntegrityService implements PlayIntegrityService {
       snapshot;
 }
 
+ProviderContainer _makeContainer({
+  required FakePremiumPurchaseGateway gateway,
+  required PlayIntegrityDecisionLabel decision,
+}) {
+  final deviceIntegrity = decision == PlayIntegrityDecisionLabel.allow
+      ? 'MEETS_DEVICE_INTEGRITY'
+      : 'UNEVALUATED';
+
+  return ProviderContainer(
+    overrides: [
+      premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+      playIntegrityServiceProvider.overrideWithValue(
+        _FakeIntegrityService(
+          PlayIntegritySnapshot(
+            license: 'LICENSED',
+            appIntegrity: 'PLAY_RECOGNIZED',
+            deviceIntegrity: deviceIntegrity,
+            virtualIntegrity: 'UNEVALUATED',
+            recentDeviceActivity: 'UNEVALUATED',
+            playProtect: 'NO_ISSUES',
+            appAccessRisk: const <String>[],
+            decision: decision,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 void main() {
   test('purchase proceeds on allow', () async {
     final gateway = FakePremiumPurchaseGateway();
-    final container = ProviderContainer(
-      overrides: [
-        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
-        playIntegrityServiceProvider.overrideWithValue(
-          _FakeIntegrityService(
-            const PlayIntegritySnapshot(
-              license: 'LICENSED',
-              appIntegrity: 'PLAY_RECOGNIZED',
-              deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
-              virtualIntegrity: 'UNEVALUATED',
-              recentDeviceActivity: 'UNEVALUATED',
-              playProtect: 'NO_ISSUES',
-              appAccessRisk: <String>[],
-              decision: PlayIntegrityDecisionLabel.allow,
-            ),
-          ),
-        ),
-      ],
+    final container = _makeContainer(
+      gateway: gateway,
+      decision: PlayIntegrityDecisionLabel.allow,
     );
 
     addTearDown(container.dispose);
@@ -55,24 +69,9 @@ void main() {
 
   test('restore blocked on soft gate', () async {
     final gateway = FakePremiumPurchaseGateway();
-    final container = ProviderContainer(
-      overrides: [
-        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
-        playIntegrityServiceProvider.overrideWithValue(
-          _FakeIntegrityService(
-            const PlayIntegritySnapshot(
-              license: 'LICENSED',
-              appIntegrity: 'PLAY_RECOGNIZED',
-              deviceIntegrity: 'UNEVALUATED',
-              virtualIntegrity: 'UNEVALUATED',
-              recentDeviceActivity: 'UNEVALUATED',
-              playProtect: 'NO_ISSUES',
-              appAccessRisk: <String>[],
-              decision: PlayIntegrityDecisionLabel.softGatePremium,
-            ),
-          ),
-        ),
-      ],
+    final container = _makeContainer(
+      gateway: gateway,
+      decision: PlayIntegrityDecisionLabel.softGatePremium,
     );
 
     addTearDown(container.dispose);
@@ -97,25 +96,7 @@ void main() {
       PlayIntegrityDecisionLabel.blockUnlicensed,
     ]) {
       final gateway = FakePremiumPurchaseGateway();
-      final container = ProviderContainer(
-        overrides: [
-          premiumPurchaseGatewayProvider.overrideWithValue(gateway),
-          playIntegrityServiceProvider.overrideWithValue(
-            _FakeIntegrityService(
-              PlayIntegritySnapshot(
-                license: 'LICENSED',
-                appIntegrity: 'PLAY_RECOGNIZED',
-                deviceIntegrity: 'UNEVALUATED',
-                virtualIntegrity: 'UNEVALUATED',
-                recentDeviceActivity: 'UNEVALUATED',
-                playProtect: 'NO_ISSUES',
-                appAccessRisk: const <String>[],
-                decision: decision,
-              ),
-            ),
-          ),
-        ],
-      );
+      final container = _makeContainer(gateway: gateway, decision: decision);
 
       addTearDown(container.dispose);
 
@@ -136,24 +117,9 @@ void main() {
 
   test('restore proceeds on allow', () async {
     final gateway = FakePremiumPurchaseGateway();
-    final container = ProviderContainer(
-      overrides: [
-        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
-        playIntegrityServiceProvider.overrideWithValue(
-          _FakeIntegrityService(
-            const PlayIntegritySnapshot(
-              license: 'LICENSED',
-              appIntegrity: 'PLAY_RECOGNIZED',
-              deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
-              virtualIntegrity: 'UNEVALUATED',
-              recentDeviceActivity: 'UNEVALUATED',
-              playProtect: 'NO_ISSUES',
-              appAccessRisk: <String>[],
-              decision: PlayIntegrityDecisionLabel.allow,
-            ),
-          ),
-        ),
-      ],
+    final container = _makeContainer(
+      gateway: gateway,
+      decision: PlayIntegrityDecisionLabel.allow,
     );
 
     addTearDown(container.dispose);
