@@ -1302,6 +1302,12 @@ abstract class AppLocalizations {
   /// **'There was an error processing your purchase. Please try again later.'**
   String get purchaseError;
 
+  /// No description provided for @playIntegrityActionBlocked.
+  ///
+  /// In en, this message translates to:
+  /// **'This action can\'t continue on this device right now. Try again later or use a different device.'**
+  String get playIntegrityActionBlocked;
+
   /// No description provided for @restorePurchases.
   ///
   /// In en, this message translates to:

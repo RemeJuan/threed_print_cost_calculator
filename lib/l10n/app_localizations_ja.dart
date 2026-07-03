@@ -646,6 +646,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get purchaseError => '購入処理中にエラーが発生しました。後でもう一度お試しください。';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'この操作は現在この端末では続行できません。しばらくしてから再試行するか、別の端末を使用してください。';
+
+  @override
   String get restorePurchases => '購入を復元';
 
   @override

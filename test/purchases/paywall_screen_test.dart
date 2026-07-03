@@ -3,6 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provider.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
@@ -22,6 +25,42 @@ class _FakeAnalytics implements AnalyticsService {
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {
     events.add(MapEntry(name, params));
+  }
+}
+
+class _AllowIntegrityService implements PlayIntegrityService {
+  @override
+  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
+    return const PlayIntegritySnapshot(
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'UNEVALUATED',
+      recentDeviceActivity: 'UNEVALUATED',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: <String>[],
+      decision: PlayIntegrityDecisionLabel.allow,
+    );
+  }
+}
+
+class _BlockedIntegrityService implements PlayIntegrityService {
+  _BlockedIntegrityService(this.decision);
+
+  final PlayIntegrityDecisionLabel decision;
+
+  @override
+  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
+    return PlayIntegritySnapshot(
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'UNEVALUATED',
+      virtualIntegrity: 'UNEVALUATED',
+      recentDeviceActivity: 'UNEVALUATED',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: const <String>[],
+      decision: decision,
+    );
   }
 }
 
@@ -45,10 +84,14 @@ void main() {
   Future<void> pumpPaywall(
     WidgetTester tester, {
     FakePremiumPurchaseGateway? gateway,
+    PlayIntegrityService? integrityService,
   }) async {
     final effectiveGateway = gateway ?? FakePremiumPurchaseGateway();
     final db = await tester.pumpApp(const PaywallScreen(), [
       premiumPurchaseGatewayProvider.overrideWithValue(effectiveGateway),
+      playIntegrityServiceProvider.overrideWithValue(
+        integrityService ?? _AllowIntegrityService(),
+      ),
     ]);
     addTearDown(() => db.close());
     await tester.pump();
@@ -514,5 +557,33 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(find.text(l10n.paywallRestoreError), findsOneWidget);
+  });
+
+  testWidgets('purchase blocked by integrity shows snackbar', (tester) async {
+    final gateway = FakePremiumPurchaseGateway(
+      currentOffering: Offering('test_offering', 'Test Offering', {}, [
+        Package(
+          'test_pkg',
+          PackageType.monthly,
+          StoreProduct('test_sku', 'desc', 'Plan', 9.99, '\$9.99', 'USD'),
+          PresentedOfferingContext('test_offering', null, null),
+        ),
+      ]),
+    );
+    await pumpPaywall(
+      tester,
+      gateway: gateway,
+      integrityService: _BlockedIntegrityService(
+        PlayIntegrityDecisionLabel.softGatePremium,
+      ),
+    );
+
+    final l10n = lookupAppLocalizations(const Locale('en'));
+    await tester.tap(find.byType(AppPrimaryButton));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.text(l10n.playIntegrityActionBlocked), findsOneWidget);
+    expect(gateway.purchasePackageCalls, 0);
   });
 }

@@ -44,6 +44,8 @@ Future<void> _runApp() async {
   await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
 
   await FirebaseAppCheck.instance.activate(
+    // ignore: deprecated_member_use
+    androidProvider: AndroidProvider.playIntegrity,
     providerApple: AppleAppAttestProvider(),
   );
 

@@ -59,7 +59,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
   Future<void> _loadOfferings() async {
     final result = await loadPaywallOfferings(
-      ref: ref,
+      read: <T>(provider) => ref.read(provider),
       offeringId: widget.offeringId,
     );
     if (!mounted) return;
@@ -76,12 +76,15 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     setState(() => _purchasing = true);
     try {
       await completePaywallPurchase(
-        ref: ref,
+        read: <T>(provider) => ref.read(provider),
         package: _selectedPackage!,
         purchaseSource: widget.purchaseSource,
         defaultEntryPoint: widget.defaultEntryPoint,
         onSuccess: () => Navigator.of(context).pop(),
       );
+    } on PlayIntegrityActionBlockedException {
+      if (!mounted) return;
+      showPlayIntegrityActionBlocked(context);
     } catch (e) {
       if (!mounted) return;
       showPaywallPurchaseError(context);
@@ -95,14 +98,21 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     setState(() => _purchasing = true);
     try {
       await completePaywallRestore(
-        ref: ref,
+        read: <T>(provider) => ref.read(provider),
         source: widget.source,
         defaultEntryPoint: widget.defaultEntryPoint,
         onSuccess: () => Navigator.of(context).pop(),
       );
+    } on PlayIntegrityActionBlockedException {
+      if (!mounted) return;
+      showPlayIntegrityActionBlocked(context);
     } catch (e, st) {
       if (!mounted) return;
-      logPaywallRestoreFailure(ref: ref, error: e, stackTrace: st);
+      logPaywallRestoreFailure(
+        read: <T>(provider) => ref.read(provider),
+        error: e,
+        stackTrace: st,
+      );
       showPaywallRestoreError(context);
     } finally {
       if (mounted) setState(() => _purchasing = false);

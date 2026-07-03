@@ -56,6 +56,9 @@
   - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
 - Printer management (settings) and calculator printer selection are both free-tier accessible, gated by a single `policy.printers()` gate. Free users are capped at 2 printers via `policy.canCreatePrinter(...)`. No separate `printersList()` gate exists.
 - Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
+- Android premium-sensitive flows run Play Integrity before purchase and restore via native token request in `android/app/src/main/kotlin/com/threed_print_calculator/MainActivity.kt` and Firebase callable decode in `functions/src/index.ts`.
+- `lib/core/integrity/` normalizes verdicts, tags Sentry with `play_integrity.*`, and keeps fallback behavior fail-open for infrastructure errors.
+- Hard blocks are limited to clear app tampering and unlicensed premium-sensitive flows. Device integrity can soft-gate purchase/restore only. Basic calculator access remains available on risky or unknown verdicts.
 
 ## Structured logging approach
 

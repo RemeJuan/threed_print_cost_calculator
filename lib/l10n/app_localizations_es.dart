@@ -677,6 +677,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Hubo un error al procesar tu compra. Inténtalo de nuevo más tarde.';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'Esta acción no puede continuar en este dispositivo ahora mismo. Inténtalo de nuevo más tarde o usa otro dispositivo.';
+
+  @override
   String get restorePurchases => 'Restaurar compras';
 
   @override

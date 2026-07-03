@@ -669,6 +669,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Er is een fout opgetreden bij het verwerken van je aankoop. Probeer het later opnieuw.';
 
   @override
+  String get playIntegrityActionBlocked =>
+      'Deze actie kan op dit apparaat nu niet doorgaan. Probeer het later opnieuw of gebruik een ander apparaat.';
+
+  @override
   String get restorePurchases => 'Aankopen herstellen';
 
   @override
