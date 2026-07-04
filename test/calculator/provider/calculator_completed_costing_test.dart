@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -17,11 +18,13 @@ class _NoopLogSink extends AppLogSink {
 }
 
 void main() {
+  final binding = TestWidgetsFlutterBinding.ensureInitialized();
   late Database db;
   late ProviderContainer container;
   late InMemoryPremiumLocalStore premiumLocalStore;
 
   setUp(() async {
+    binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     db = await databaseFactoryMemory.openDatabase(
       'calculator_completed_costing_${DateTime.now().microsecondsSinceEpoch}.db',
     );
@@ -66,6 +69,18 @@ void main() {
 
     expect(premiumLocalStore.readSync(completedCostingCountPreferenceKey), '1');
     expect(container.read(completedCostingCountProvider), 1);
+  });
+
+  test('paused app does not increment completed costing count', () async {
+    binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+
+    await container.read(appUsageServiceProvider).recordCompletedCosting();
+
+    expect(
+      premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+      isNull,
+    );
+    expect(container.read(completedCostingCountProvider), 0);
   });
 
   test(

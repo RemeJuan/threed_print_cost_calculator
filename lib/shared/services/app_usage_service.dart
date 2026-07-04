@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/legacy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
@@ -24,6 +25,12 @@ class AppUsageService {
   AppUsageService(this.ref);
 
   final Ref ref;
+
+  bool get _isAppResumed {
+    final lifecycleState = WidgetsBinding.instance.lifecycleState;
+    return lifecycleState == null ||
+        lifecycleState == AppLifecycleState.resumed;
+  }
 
   PremiumLocalStore? get _store {
     try {
@@ -59,7 +66,7 @@ class AppUsageService {
 
   Future<void> recordCompletedCosting() async {
     final store = _store;
-    if (store == null) {
+    if (store == null || !_isAppResumed) {
       return;
     }
 
