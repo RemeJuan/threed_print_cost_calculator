@@ -14,7 +14,7 @@ void main() {
   });
 
   testWidgets('free users see the gcode import action', (tester) async {
-    await tester.pumpApp(const HeaderActions(), [
+    await tester.pumpApp(const HeaderActions(showGcodeAction: true), [
       isPremiumProvider.overrideWithValue(false),
     ]);
 
@@ -28,7 +28,7 @@ void main() {
   });
 
   testWidgets('premium users see the gcode import action', (tester) async {
-    await tester.pumpApp(const HeaderActions(), [
+    await tester.pumpApp(const HeaderActions(showGcodeAction: true), [
       isPremiumProvider.overrideWithValue(true),
     ]);
 
