@@ -5,6 +5,7 @@
 - Format: `fvm dart format .`
 - Analyze: `fvm flutter analyze`
 - Tests: `make flutter_test`
+- Do not use `dart-mcp-server_run_tests` in this repo. It does not honor `fvm` here and can resolve against the wrong system Dart/Flutter SDK. Use `fvm flutter test ...` for focused tests and `make flutter_test` for the full suite.
 - Android release builds (`fvm flutter build appbundle --release`, Play upload artifacts) require signing credentials only present on CI. Do not expect local Android release builds to succeed unless CI-style signing env vars or keystore files are explicitly provided.
 - Husky install: `fvm dart run husky install` (run after clone)
 - Single test file: `fvm flutter test path/to_test.dart`

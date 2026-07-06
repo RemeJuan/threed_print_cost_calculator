@@ -52,14 +52,18 @@ Future<void> _runApp() async {
   await revenueCat();
   final prefs = await SharedPreferences.getInstance();
   final premiumLocalStore = CachedPremiumLocalStore(
-    const FlutterSecureStorage(),
+    const FlutterSecureStorage(
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+    ),
     onError: (error, stackTrace) {
       FlutterError.reportError(
         FlutterErrorDetails(
           exception: error,
           stack: stackTrace,
           library: 'premium_local_store',
-          context: ErrorDescription('while reading secure premium local store'),
+          context: ErrorDescription(
+            'while accessing secure premium local store',
+          ),
         ),
       );
     },
