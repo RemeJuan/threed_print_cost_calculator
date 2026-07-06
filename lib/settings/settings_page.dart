@@ -179,8 +179,10 @@ class SettingsPage extends ConsumerWidget {
       key: key,
       onPressed: !enabled
           ? null
-          : () async {
-              await showDialog<void>(context: context, builder: (_) => widget);
+          : () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => widget),
+              );
             },
       icon: icon,
     );
