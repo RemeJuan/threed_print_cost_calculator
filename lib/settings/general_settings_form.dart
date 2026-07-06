@@ -20,7 +20,6 @@ class GeneralSettings extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
-    final currencySettings = ref.watch(generalSettingsProvider);
     final interfaceSettings = ref.watch(interfaceSettingsProvider);
 
     // Hook-managed controllers and focus nodes must be called at the top-level of build
@@ -181,15 +180,15 @@ class GeneralSettings extends HookConsumerWidget {
           decoration: InputDecoration(
             labelText: l10n.electricityCostSettingsLabel,
             prefixText: interfaceSettings.showCurrency &&
-                    currencySettings.currencySymbol.isNotEmpty &&
-                    currencySettings.currencyPosition == 'before'
-                ? currencySettings.currencySymbol +
-                      (currencySettings.currencySpacing ? ' ' : '')
+                    data.currencySymbol.isNotEmpty &&
+                    data.currencyPosition == 'before'
+                ? data.currencySymbol +
+                      (data.currencySpacing ? ' ' : '')
                 : null,
             suffixText: interfaceSettings.showCurrency &&
-                    currencySettings.currencyPosition == 'after' &&
-                    currencySettings.currencySymbol.isNotEmpty
-                ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
+                    data.currencyPosition == 'after' &&
+                    data.currencySymbol.isNotEmpty
+                ? '${l10n.kwh}${data.currencySpacing ? ' ${data.currencySymbol}' : data.currencySymbol}'
                 : l10n.kwh,
           ),
           onChanged: (value) async {
