@@ -84,7 +84,7 @@ class InterfaceSettingsRepository {
 }
 
 final interfaceSettingsFutureProvider =
-    FutureProvider.autoDispose<InterfaceSettingsModel>((ref) async {
+    FutureProvider<InterfaceSettingsModel>((ref) async {
       ref.watch(appRefreshProvider);
       return ref.watch(interfaceSettingsRepositoryProvider).getSettings();
     });
