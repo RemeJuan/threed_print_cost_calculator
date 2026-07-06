@@ -1,1 +1,1 @@
-Fixed an issue where some G-code files could not be imported.
+New interface settings let you hide unused controls, tabs, and pricing details for a cleaner custom view. Your chosen layout is also included in backup and restore.

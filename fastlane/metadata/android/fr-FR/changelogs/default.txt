@@ -1,1 +1,1 @@
-Correction d’un problème qui empêchait l’importation de certains fichiers G-code.
+Les nouveaux réglages d’interface vous permettent de masquer les contrôles, onglets et détails de prix inutilisés pour une vue personnalisée plus épurée. La disposition choisie est aussi incluse dans la sauvegarde et la restauration.
