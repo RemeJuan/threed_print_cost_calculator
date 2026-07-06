@@ -14,7 +14,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
@@ -51,28 +50,10 @@ Future<void> _runApp() async {
 
   await revenueCat();
   final prefs = await SharedPreferences.getInstance();
-  final premiumLocalStore = CachedPremiumLocalStore(
-    const FlutterSecureStorage(
-      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-    ),
-    onError: (error, stackTrace) {
-      FlutterError.reportError(
-        FlutterErrorDetails(
-          exception: error,
-          stack: stackTrace,
-          library: 'premium_local_store',
-          context: ErrorDescription(
-            'while accessing secure premium local store',
-          ),
-        ),
-      );
-    },
-  );
-  await premiumLocalStore.preload();
-  await migratePremiumLocalStore(
-    sharedPreferences: prefs,
-    premiumLocalStore: premiumLocalStore,
-  );
+  await migrateFromSecureToSharedPrefs(sharedPreferences: prefs);
+  await cleanupSecureStorage();
+
+  final premiumLocalStore = SharedPrefsPremiumLocalStore(prefs);
   final db = await DatabaseStorageImpl().openDb();
 
   await startupMigration(db);
