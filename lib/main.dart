@@ -50,8 +50,11 @@ Future<void> _runApp() async {
 
   await revenueCat();
   final prefs = await SharedPreferences.getInstance();
-  await migrateFromSecureToSharedPrefs(sharedPreferences: prefs);
-  await cleanupSecureStorage();
+  if (prefs.getBool('_secure_storage_migrated') != true) {
+    await migrateFromSecureToSharedPrefs(sharedPreferences: prefs);
+    await cleanupSecureStorage();
+    await prefs.setBool('_secure_storage_migrated', true);
+  }
 
   final premiumLocalStore = SharedPrefsPremiumLocalStore(prefs);
   final db = await DatabaseStorageImpl().openDb();
