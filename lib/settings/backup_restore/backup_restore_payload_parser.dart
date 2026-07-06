@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -8,6 +9,7 @@ import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 class BackupRestorePayload {
   const BackupRestorePayload({
     required this.settings,
+    required this.interfaceSettings,
     required this.printers,
     required this.materials,
     required this.history,
@@ -15,6 +17,7 @@ class BackupRestorePayload {
   });
 
   final GeneralSettingsModel settings;
+  final InterfaceSettingsModel interfaceSettings;
   final List<PrinterModel> printers;
   final List<MaterialModel> materials;
   final List<HistoryModel> history;
@@ -35,6 +38,9 @@ BackupRestorePayload parseBackupPayload(String raw) {
   final restoredSettings = GeneralSettingsModel.fromMap(
     _mapOf(typedData['settings']),
   );
+  final restoredInterfaceSettings = InterfaceSettingsModel.fromMap(
+    _mapOf(typedData['interfaceSettings'] ?? const <String, dynamic>{}),
+  );
   final printers = _parsePrinters(typedData['printers']);
   final materials = _parseMaterials(typedData['materials']);
   final historyRaw = _strictListOfMaps(typedData['history']);
@@ -48,6 +54,7 @@ BackupRestorePayload parseBackupPayload(String raw) {
 
   return BackupRestorePayload(
     settings: restoredSettings,
+    interfaceSettings: restoredInterfaceSettings,
     printers: printers,
     materials: materials,
     history: history,

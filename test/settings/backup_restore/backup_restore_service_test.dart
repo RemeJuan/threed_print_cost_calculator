@@ -123,6 +123,7 @@ void main() {
   test('builds shared backup payload shape', () {
     final payload = buildBackupPayload(
       settings: const {'a': 1},
+      interfaceSettings: const {'showCurrency': true},
       printers: const [
         {'id': 'p1'},
       ],

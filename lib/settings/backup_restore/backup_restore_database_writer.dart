@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/history/index/history_index_store_n
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -13,6 +14,7 @@ Future<void> restoreBackupToDatabase({
   required Ref ref,
   required Transaction txn,
   required GeneralSettingsModel settings,
+  required InterfaceSettingsModel interfaceSettings,
   required List<PrinterModel> printers,
   required List<MaterialModel> materials,
   required List<HistoryModel> history,
@@ -23,6 +25,7 @@ Future<void> restoreBackupToDatabase({
     ref: ref,
     txn: txn,
     settings: settings,
+    interfaceSettings: interfaceSettings,
     printers: printers,
     materials: materials,
     history: history,
@@ -33,6 +36,7 @@ Future<void> restoreBackupToDatabase({
 Future<void> _clearDb(Transaction txn) async {
   for (final store in [
     StoreRef<String, Object?>.main(),
+    stringMapStoreFactory.store(DBName.interfaceSettings.name),
     stringMapStoreFactory.store(DBName.printers.name),
     stringMapStoreFactory.store(DBName.materials.name),
     StoreRef<Object?, Object?>(DBName.history.name),
@@ -47,6 +51,7 @@ Future<void> _writeRestore({
   required Ref ref,
   required Transaction txn,
   required GeneralSettingsModel settings,
+  required InterfaceSettingsModel interfaceSettings,
   required List<PrinterModel> printers,
   required List<MaterialModel> materials,
   required List<HistoryModel> history,
@@ -62,6 +67,7 @@ Future<void> _writeRestore({
   final historyIndex = HistorySearchIndexHelpers.fromRef(ref);
 
   await settingsStore.record(DBName.settings.name).put(txn, settings.toMap());
+  await settingsStore.record(DBName.interfaceSettings.name).put(txn, interfaceSettings.toMap());
   for (final printer in printers) {
     await printersStore.record(printer.id).put(txn, printer.toMap());
   }
