@@ -1,62 +1,62 @@
 {
-  "wn_id": "batch_costing_2026_05",
+  "wn_id": "interface_settings_2026_07",
   "en": {
-    "title": "New: Batch Costing",
-    "body": "Estimate the cost and final price for batches with multiple copies, multiple models, or a mix of both. Account for quantity, shared setup time, and per-item costs in one calculation.",
+    "title": "New: Interface Settings",
+    "body": "Choose which controls, tabs, and pricing details stay visible in the app. Switch between the default view and a cleaner custom view from Settings.",
     "cta": "Got it",
     "unlock_pro_cta": "Start free trial"
   },
   "de": {
-    "title": "Neu: Stapelkalkulation",
-    "body": "Schätze Kosten und Endpreis für Stapel mit mehreren Kopien, mehreren Modellen oder einer Kombination aus beidem. Berücksichtige Menge, gemeinsame Einrichtungszeit und Kosten pro Teil in einer Berechnung.",
+    "title": "Neu: Interface-Einstellungen",
+    "body": "Wähle aus, welche Steuerelemente, Tabs und Preisdetails in der App sichtbar bleiben. Wechsle in den Einstellungen zwischen Standardansicht und einer klareren benutzerdefinierten Ansicht.",
     "cta": "Verstanden",
     "unlock_pro_cta": "Kostenlose Testversion starten"
   },
   "es": {
-    "title": "Nuevo: cálculo por lote",
-    "body": "Estima el coste y el precio final de lotes con varias copias, varios modelos o una mezcla de ambos. Ten en cuenta la cantidad, el tiempo de preparación compartido y los costes por pieza en un solo cálculo.",
+    "title": "Nuevo: ajustes de interfaz",
+    "body": "Elige qué controles, pestañas y detalles de precios siguen visibles en la app. Cambia entre la vista predeterminada y una vista personalizada más limpia desde Ajustes.",
     "cta": "Entendido",
     "unlock_pro_cta": "Iniciar prueba gratuita"
   },
   "fr": {
-    "title": "Nouveau : calcul par lot",
-    "body": "Estimez le coût et le prix final de lots avec plusieurs copies, plusieurs modèles ou un mélange des deux. Prenez en compte la quantité, le temps de préparation partagé et les coûts par pièce en un seul calcul.",
+    "title": "Nouveau : réglages d'interface",
+    "body": "Choisissez quels contrôles, onglets et détails de prix restent visibles dans l'app. Passez de l'affichage par défaut à une vue personnalisée plus épurée depuis les réglages.",
     "cta": "Compris",
     "unlock_pro_cta": "Commencer l'essai gratuit"
   },
   "id": {
-    "title": "Baru: Perhitungan Batch",
-    "body": "Perkirakan biaya dan harga akhir untuk batch dengan beberapa salinan, beberapa model, atau gabungan keduanya. Hitung jumlah, waktu persiapan bersama, dan biaya per item dalam satu kalkulasi.",
+    "title": "Baru: Pengaturan Antarmuka",
+    "body": "Pilih kontrol, tab, dan detail harga mana yang tetap terlihat di aplikasi. Beralih antara tampilan bawaan dan tampilan kustom yang lebih rapi dari Pengaturan.",
     "cta": "Mengerti",
     "unlock_pro_cta": "Mulai uji coba gratis"
   },
   "it": {
-    "title": "Novità: calcolo a lotti",
-    "body": "Stima il costo e il prezzo finale di lotti con più copie, più modelli o una combinazione di entrambi. Considera quantità, tempo di preparazione condiviso e costi per pezzo in un unico calcolo.",
+    "title": "Novità: impostazioni interfaccia",
+    "body": "Scegli quali controlli, schede e dettagli di prezzo restano visibili nell'app. Passa dalla vista predefinita a una vista personalizzata più pulita dalle Impostazioni.",
     "cta": "Capito",
     "unlock_pro_cta": "Inizia la prova gratuita"
   },
   "ja": {
-    "title": "新機能: バッチ原価計算",
-    "body": "複数のコピー、複数のモデル、またはその両方を含むバッチのコストと最終価格を見積もれます。数量、共有セットアップ時間、アイテムごとのコストを1回の計算で反映できます。",
+    "title": "新機能: インターフェース設定",
+    "body": "アプリに表示する操作、タブ、価格詳細を選べます。設定から、標準表示とすっきりしたカスタム表示を切り替えられます。",
     "cta": "了解",
     "unlock_pro_cta": "無料トライアルを開始"
   },
   "nl": {
-    "title": "Nieuw: batchberekening",
-    "body": "Schat de kosten en eindprijs voor batches met meerdere kopieën, meerdere modellen of een combinatie van beide. Neem aantallen, gedeelde insteltijd en kosten per item mee in één berekening.",
+    "title": "Nieuw: interface-instellingen",
+    "body": "Kies welke bedieningselementen, tabbladen en prijsdetails zichtbaar blijven in de app. Schakel in Instellingen tussen de standaardweergave en een schonere aangepaste weergave.",
     "cta": "Begrepen",
     "unlock_pro_cta": "Start gratis proefperiode"
   },
   "pt": {
-    "title": "Novo: cálculo em lote",
-    "body": "Estime o custo e o preço final de lotes com várias cópias, vários modelos ou uma combinação dos dois. Inclua quantidade, tempo de configuração compartilhado e custos por item em um único cálculo.",
+    "title": "Novo: configurações da interface",
+    "body": "Escolha quais controles, abas e detalhes de preço continuam visíveis no app. Alterne entre a vista padrão e uma vista personalizada mais limpa em Configurações.",
     "cta": "Entendi",
     "unlock_pro_cta": "Iniciar teste gratuito"
   },
   "th": {
-    "title": "ใหม่: คำนวณแบบแบตช์",
-    "body": "ประเมินต้นทุนและราคาสุดท้ายสำหรับแบตช์ที่มีหลายชิ้น หลายโมเดล หรือทั้งสองแบบรวมกัน คิดจำนวน เวลาเตรียมงานร่วม และต้นทุนต่อชิ้นได้ในการคำนวณเดียว",
+    "title": "ใหม่: การตั้งค่าอินเทอร์เฟซ",
+    "body": "เลือกว่าปุ่ม แท็บ และรายละเอียดราคาใดจะยังแสดงในแอป สลับระหว่างมุมมองเริ่มต้นกับมุมมองกำหนดเองที่เรียบขึ้นได้จากการตั้งค่า",
     "cta": "เข้าใจแล้ว",
     "unlock_pro_cta": "เริ่มทดลองใช้ฟรี"
   }
