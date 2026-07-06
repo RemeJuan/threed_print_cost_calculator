@@ -18,9 +18,12 @@ Free features
 • Individual job export
 • Manual batch costing for up to 3 items
 • Backup and restore
+• Interface settings for a cleaner custom view
 • Offline-first operation
 
 Calculate real jobs, save core data, review recent work, and cost small batches without an account or subscription.
+
+You can also hide controls, tabs, and pricing details you do not use, so the app stays simpler for your workflow while calculations remain accurate underneath.
 
 Premium features
 

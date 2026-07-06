@@ -18,9 +18,12 @@ O plano gratuito inclui:
 • Exportação de trabalhos individuais
 • Custeio manual em lote para até 3 itens
 • Backup e restauração
+• Configurações da interface para uma visualização personalizada mais limpa
 • Operação offline-first
 
 O plano gratuito foi feito para ser realmente útil. Você pode calcular impressões reais, salvar dados principais, revisar trabalhos recentes e montar pequenos lotes manuais sem precisar de conta.
+
+Você também pode ocultar controles, abas e detalhes de preço que não usa, para que o app fique mais simples para o seu fluxo de trabalho enquanto os cálculos continuam precisos por baixo.
 
 O Premium adiciona ferramentas para mais volume, mais controle de preços e fluxos mais rápidos:
 

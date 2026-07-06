@@ -18,9 +18,12 @@ Funciones gratuitas
 • Exportación de trabajos individuales
 • Cálculo manual por lotes de hasta 3 elementos
 • Copia de seguridad y restauración
+• Ajustes de interfaz para una vista personalizada más limpia
 • Funcionamiento offline-first
 
 Calcule trabajos reales, guarde datos clave, revise trabajos recientes y gestione pequeños lotes sin cuenta ni suscripción.
+
+También puede ocultar controles, pestañas y detalles de precios que no use, para que la app se adapte mejor a su flujo de trabajo mientras los cálculos siguen siendo precisos por debajo.
 
 Funciones Premium
 

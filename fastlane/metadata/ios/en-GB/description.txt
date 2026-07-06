@@ -18,9 +18,12 @@ Free includes:
 • Individual job export
 • Manual batch costing for up to 3 items
 • Backup and restore
+• Interface settings for a cleaner custom view
 • Offline-first operation
 
 Free is designed to be genuinely useful. You can cost real prints, save key data, review recent jobs, and handle small manual batches without needing an account.
+
+You can also hide controls, tabs, and pricing details you do not use, so the app stays simpler for your workflow while calculations remain accurate underneath.
 
 Premium adds tools for scale, pricing control, and faster workflows:
 
