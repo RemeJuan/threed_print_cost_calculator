@@ -381,91 +381,95 @@ class WorkCostsSettings extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 if (interfaceSettings.showCurrency)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Column(
                     children: [
-                      Expanded(
-                        child: FocusSafeTextField(
-                          key: const ValueKey<String>(
-                            'settings.workCost.currencySymbol.input',
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: FocusSafeTextField(
+                              key: const ValueKey<String>(
+                                'settings.workCost.currencySymbol.input',
+                              ),
+                              controller: currencySymbolController,
+                              externalText: data.currencySymbol,
+                              keyboardType: TextInputType.text,
+                              onChanged: persistCurrencySymbol,
+                              decoration: InputDecoration(
+                                labelText: l10n.currencySymbolLabel,
+                              ),
+                            ),
                           ),
-                          controller: currencySymbolController,
-                          externalText: data.currencySymbol,
-                          keyboardType: TextInputType.text,
-                          onChanged: persistCurrencySymbol,
-                          decoration: InputDecoration(
-                            labelText: l10n.currencySymbolLabel,
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: DropdownButtonFormField<String>(
+                              key: const ValueKey<String>(
+                                'settings.workCost.currencyPosition.dropdown',
+                              ),
+                              initialValue: data.currencyPosition,
+                              decoration: InputDecoration(
+                                labelText: l10n.currencyPositionLabel,
+                              ),
+                              items: [
+                                DropdownMenuItem(
+                                  value: 'before',
+                                  child: Text(l10n.currencyPositionBeforeLabel),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'after',
+                                  child: Text(l10n.currencyPositionAfterLabel),
+                                ),
+                              ],
+                              onChanged: (value) async {
+                                if (value == null) return;
+                                await persistenceService.saveSetting(
+                                  updateWith: (settings) =>
+                                      settings.copyWith(currencyPosition: value),
+                                  settingName: 'currencyPosition',
+                                );
+                              },
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      const SizedBox(width: 24),
-                      Expanded(
-                        child: DropdownButtonFormField<String>(
-                          key: const ValueKey<String>(
-                            'settings.workCost.currencyPosition.dropdown',
-                          ),
-                          initialValue: data.currencyPosition,
-                          decoration: InputDecoration(
-                            labelText: l10n.currencyPositionLabel,
-                          ),
-                          items: [
-                            DropdownMenuItem(
-                              value: 'before',
-                              child: Text(l10n.currencyPositionBeforeLabel),
+                      const SizedBox(height: 16),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SwitchListTile.adaptive(
+                              key: const ValueKey<String>(
+                                'settings.workCost.currencySpacing.toggle',
+                              ),
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                              title: Text(l10n.currencySpacingLabel),
+                              value: data.currencySpacing,
+                              onChanged: (value) async {
+                                await persistenceService.saveSetting(
+                                  updateWith: (settings) =>
+                                      settings.copyWith(currencySpacing: value),
+                                  settingName: 'currencySpacing',
+                                );
+                              },
                             ),
-                            DropdownMenuItem(
-                              value: 'after',
-                              child: Text(l10n.currencyPositionAfterLabel),
+                          ),
+                          const SizedBox(width: 24),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${l10n.currencyPreviewLabel}: ${_formatPreview(data, interfaceSettings.showCurrency)}',
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
+                              ),
                             ),
-                          ],
-                          onChanged: (value) async {
-                            if (value == null) return;
-                            await persistenceService.saveSetting(
-                              updateWith: (settings) =>
-                                  settings.copyWith(currencyPosition: value),
-                              settingName: 'currencyPosition',
-                            );
-                          },
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                const SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: SwitchListTile.adaptive(
-                        key: const ValueKey<String>(
-                          'settings.workCost.currencySpacing.toggle',
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        dense: true,
-                        title: Text(l10n.currencySpacingLabel),
-                        value: data.currencySpacing,
-                        onChanged: (value) async {
-                          await persistenceService.saveSetting(
-                            updateWith: (settings) =>
-                                settings.copyWith(currencySpacing: value),
-                            settingName: 'currencySpacing',
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 24),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${l10n.currencyPreviewLabel}: ${_formatPreview(data, interfaceSettings.showCurrency)}',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           );
