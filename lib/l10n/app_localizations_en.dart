@@ -27,6 +27,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsNavLabel => 'Settings';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle => 'Default view vs Custom view';
+
+  @override
+  String get interfaceSettingsDefaultView => 'Default view';
+
+  @override
+  String get interfaceSettingsCustomView => 'Custom view';
+
+  @override
+  String get interfaceSettingsSaveError =>
+      'Could not save interface settings. Try again.';
+
+  @override
+  String get interfaceShowPrinterSelectLabel => 'Show printer select';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'Show batch button';
+
+  @override
+  String get interfaceShowHistoryTabLabel => 'Show history tab';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => 'Show materials tab';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'Show G-code action';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel =>
+      'Show advanced breakdown sections';
+
+  @override
+  String get interfaceShowLabourFieldsLabel => 'Show labour fields';
+
+  @override
+  String get interfaceShowFailureRiskLabel => 'Show failure risk';
+
+  @override
+  String get interfaceShowWearAndTearLabel => 'Show wear and tear';
+
+  @override
+  String get interfaceShowMarkupLabel => 'Show markup';
+
+  @override
+  String get interfaceShowCurrencyLabel => 'Show currency';
+
+  @override
   String get newAnnouncementBadgeLabel => 'New';
 
   @override

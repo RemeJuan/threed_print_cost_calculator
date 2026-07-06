@@ -27,6 +27,57 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsNavLabel => 'Configuración';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle =>
+      'Vista predeterminada vs vista personalizada';
+
+  @override
+  String get interfaceSettingsDefaultView => 'Vista predeterminada';
+
+  @override
+  String get interfaceSettingsCustomView => 'Vista personalizada';
+
+  @override
+  String get interfaceSettingsSaveError =>
+      'No se pudieron guardar los ajustes de la interfaz. Inténtalo de nuevo.';
+
+  @override
+  String get interfaceShowPrinterSelectLabel => 'Mostrar selector de impresora';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'Mostrar botón de lote';
+
+  @override
+  String get interfaceShowHistoryTabLabel => 'Mostrar pestaña de historial';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => 'Mostrar pestaña de materiales';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'Mostrar acción G-code';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel =>
+      'Mostrar secciones avanzadas de desglose';
+
+  @override
+  String get interfaceShowLabourFieldsLabel => 'Mostrar campos de mano de obra';
+
+  @override
+  String get interfaceShowFailureRiskLabel => 'Mostrar riesgo de fallo';
+
+  @override
+  String get interfaceShowWearAndTearLabel => 'Mostrar desgaste y rotura';
+
+  @override
+  String get interfaceShowMarkupLabel => 'Mostrar margen';
+
+  @override
+  String get interfaceShowCurrencyLabel => 'Mostrar moneda';
+
+  @override
   String get newAnnouncementBadgeLabel => 'Nuevo';
 
   @override

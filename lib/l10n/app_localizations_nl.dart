@@ -27,6 +27,57 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsNavLabel => 'Instellingen';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle =>
+      'Standaardweergave vs aangepaste weergave';
+
+  @override
+  String get interfaceSettingsDefaultView => 'Standaardweergave';
+
+  @override
+  String get interfaceSettingsCustomView => 'Aangepaste weergave';
+
+  @override
+  String get interfaceSettingsSaveError =>
+      'Interface-instellingen konden niet worden opgeslagen. Probeer het opnieuw.';
+
+  @override
+  String get interfaceShowPrinterSelectLabel => 'Printerselectie tonen';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'Batchknop tonen';
+
+  @override
+  String get interfaceShowHistoryTabLabel => 'Geschiedenistab tonen';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => 'Materialentab tonen';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'G-code actie tonen';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel =>
+      'Geavanceerde uitsplitsing tonen';
+
+  @override
+  String get interfaceShowLabourFieldsLabel => 'Arbeidsvelden tonen';
+
+  @override
+  String get interfaceShowFailureRiskLabel => 'Faalrisico tonen';
+
+  @override
+  String get interfaceShowWearAndTearLabel => 'Slijtage tonen';
+
+  @override
+  String get interfaceShowMarkupLabel => 'Opmaak tonen';
+
+  @override
+  String get interfaceShowCurrencyLabel => 'Valuta tonen';
+
+  @override
   String get newAnnouncementBadgeLabel => 'Nieuw';
 
   @override
