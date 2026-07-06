@@ -43,7 +43,7 @@
   "riskTotalPrefix": "Costo del riesgo: ",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "Ajustes",
-  "interfaceSettingsHeader": "Interface",
+  "interfaceSettingsHeader": "Interfaz",
   "interfaceSettingsSubtitle": "Vista predeterminada vs vista personalizada",
   "interfaceSettingsDefaultView": "Vista predeterminada",
   "interfaceSettingsCustomView": "Vista personalizada",

@@ -27,7 +27,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsNavLabel => 'Configuración';
 
   @override
-  String get interfaceSettingsHeader => 'Interface';
+  String get interfaceSettingsHeader => 'Interfaz';
 
   @override
   String get interfaceSettingsSubtitle =>
