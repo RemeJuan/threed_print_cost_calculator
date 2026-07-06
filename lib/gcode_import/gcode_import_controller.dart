@@ -145,16 +145,6 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           selectedFileSizeBytes: fileSizeBytes,
           error: GCodeImportError.unsupportedFile,
         );
-        unawaited(
-          captureGCodeImportFailure(
-            stage: 'metadata_parse',
-            error: StateError('No extracted metadata'),
-            file: pickedFile,
-            slicer: result.slicer,
-            lineCount: null,
-            category: 'empty_metadata',
-          ),
-        );
         return;
       }
 
