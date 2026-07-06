@@ -18,9 +18,12 @@ Kostenlos enthalten:
 • Export einzelner Aufträge
 • Manuelle Stapelkalkulation für bis zu 3 Positionen
 • Sichern und Wiederherstellen
+• Interface-Einstellungen für eine übersichtlichere benutzerdefinierte Ansicht
 • Offline-first-Betrieb
 
 Die kostenlose Version ist bewusst wirklich nützlich. Sie können echte Drucke kalkulieren, wichtige Daten speichern, letzte Aufträge prüfen und kleine manuelle Stapel ohne Konto bearbeiten.
+
+Sie können außerdem Bedienelemente, Tabs und Preisdetails ausblenden, die Sie nicht nutzen, damit die App für Ihren Ablauf einfacher bleibt und die Berechnungen darunter weiterhin präzise bleiben.
 
 Premium ergänzt Werkzeuge für mehr Volumen, mehr Preiskontrolle und schnellere Abläufe:
 

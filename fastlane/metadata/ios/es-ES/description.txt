@@ -18,9 +18,12 @@ La versión gratuita incluye:
 • Exportación de trabajos individuales
 • Cálculo manual por lotes de hasta 3 elementos
 • Copia de seguridad y restauración
+• Ajustes de interfaz para una vista personalizada más limpia
 • Funcionamiento offline-first
 
 La versión gratuita está diseñada para ser realmente útil. Puede calcular impresiones reales, guardar datos clave, revisar trabajos recientes y manejar pequeños lotes manuales sin necesidad de una cuenta.
+
+También puede ocultar controles, pestañas y detalles de precios que no use, para que la app se adapte mejor a su flujo de trabajo mientras los cálculos siguen siendo precisos por debajo.
 
 Premium añade herramientas para más volumen, más control de precios y flujos de trabajo más rápidos:
 

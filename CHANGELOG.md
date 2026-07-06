@@ -1,3 +1,8 @@
+## [3.1.2] - 2026-07-06
+
+### Added
+- Added interface settings to hide or show calculator controls, tabs, and pricing details.
+
 ## [3.1.1] - 2026-06-30
 
 ### Fixed

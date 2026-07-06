@@ -34,6 +34,9 @@
   - `lib/calculator/provider/calculator_materials_service.dart`
   - `lib/calculator/state/calculator_state.dart`
   - `lib/calculator/state/calculation_results_state.dart`
+- Presentation gates:
+  - `lib/calculator/view/calculator_page.dart` gates printer select, advanced pricing overrides, batch costing entry, and save form by policy and interface state.
+  - `lib/calculator/view/calculator_results.dart` gates risk, labour, additional cost, and premium-only pricing rows by policy and active pricing state.
 - Repositories/services:
   - `lib/database/repositories/calculator_preferences_repository.dart`
   - `lib/settings/services/settings_service.dart`
@@ -53,6 +56,20 @@
   - `applyImportedValues`
   - `loadFromHistory`
   - `material_usage_input`
+
+## Settings / interface
+
+- Main screens/widgets:
+  - `lib/settings/settings_page.dart` — interface summary subtitle resolves to `Default view` or `Custom view` from `InterfaceSettingsModel`.
+  - `lib/settings/interface_settings/interface_settings_page.dart` — interface settings card mirrors the same semantic subtitle.
+- Providers/state:
+  - `lib/settings/interface_settings/interface_settings_repository.dart` (`interfaceSettingsProvider`)
+  - `lib/settings/interface_settings/interface_settings_service.dart`
+  - `lib/settings/interface_settings/interface_settings_model.dart` (`isDefaultView`, `isCustomView`)
+- Common search terms:
+  - `interfaceSettingsProvider`
+  - `isDefaultView`
+  - `isCustomView`
 
 ## Materials
 

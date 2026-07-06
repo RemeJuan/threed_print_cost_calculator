@@ -10,6 +10,8 @@ class SettingsSection extends StatelessWidget {
     this.headerKey,
     this.bodyKey,
     this.action,
+    this.subtitle,
+    this.childSpacing = true,
   });
 
   final Widget title;
@@ -17,6 +19,8 @@ class SettingsSection extends StatelessWidget {
   final Key? headerKey;
   final Key? bodyKey;
   final Widget? action;
+  final Widget? subtitle;
+  final bool childSpacing;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +34,21 @@ class SettingsSection extends StatelessWidget {
             key: headerKey,
             children: [
               Expanded(
-                child: DefaultTextStyle(
-                  style: Theme.of(context).textTheme.titleMedium!,
-                  child: title,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    DefaultTextStyle(
+                      style: Theme.of(context).textTheme.titleMedium!,
+                      child: title,
+                    ),
+                    if (subtitle != null) ...[
+                      const SizedBox(height: 2),
+                      DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodySmall!,
+                        child: subtitle!,
+                      ),
+                    ],
+                  ],
                 ),
               ),
               if (action != null) ...[
@@ -41,7 +57,7 @@ class SettingsSection extends StatelessWidget {
               ],
             ],
           ),
-          const SizedBox(height: kAppSpace16),
+          if (childSpacing) const SizedBox(height: kAppSpace16),
           KeyedSubtree(key: bodyKey, child: child),
         ],
       ),

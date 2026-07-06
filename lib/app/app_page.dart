@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 
 class AppPage extends HookConsumerWidget {
   const AppPage({super.key});
@@ -24,6 +25,7 @@ class AppPage extends HookConsumerWidget {
     final tapNavigationTargetIndex = useState<int?>(null);
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
     final isPremium = policy.isPremium;
     final showHistoryTab = policy.shouldShowHistoryTab;
     useEffect(() {
@@ -70,6 +72,7 @@ class AppPage extends HookConsumerWidget {
       context: context,
       l10n: l10n,
       policy: policy,
+      interfaceSettings: interfaceSettings,
       onHistoryLoaded: () async {
         tapNavigationTargetIndex.value = 0;
         selectedTab.value = AppPageTab.calculator;
@@ -92,7 +95,7 @@ class AppPage extends HookConsumerWidget {
       });
 
       return null;
-    }, [isPremium, showHistoryTab, selectedTab.value]);
+    }, [isPremium, showHistoryTab, interfaceSettings, selectedTab.value]);
 
     int tabToIndex(AppPageTab tab) => tabs.indexOf(tab);
     AppPageTab tabFromIndex(int index) => tabs[index];

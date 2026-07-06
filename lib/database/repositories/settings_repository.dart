@@ -99,3 +99,11 @@ final settingsStreamProvider = StreamProvider<GeneralSettingsModel>((ref) {
   ref.watch(appRefreshProvider);
   return ref.watch(settingsRepositoryProvider).watchSettings();
 });
+
+final generalSettingsProvider = Provider<GeneralSettingsModel>((ref) {
+  final async = ref.watch(settingsStreamProvider);
+  return async.maybeWhen(
+    data: (value) => value,
+    orElse: GeneralSettingsModel.initial,
+  );
+});

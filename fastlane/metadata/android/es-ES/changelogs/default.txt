@@ -1,1 +1,1 @@
-Se corrigió un problema que impedía importar algunos archivos G-code.
+Los nuevos ajustes de interfaz te permiten ocultar controles, pestañas y detalles de precios que no uses para tener una vista personalizada más limpia. El diseño elegido también se incluye en copia de seguridad y restauración.

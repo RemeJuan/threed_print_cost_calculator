@@ -16,6 +16,8 @@ import 'package:threed_print_cost_calculator/core/analytics/analytics_service.da
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 
@@ -67,6 +69,9 @@ extension PumpApp on WidgetTester {
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
+      interfaceSettingsProvider.overrideWithValue(
+        const InterfaceSettingsModel(),
+      ),
       ...overrides,
     ];
 
@@ -107,6 +112,9 @@ extension PumpApp on WidgetTester {
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
+      interfaceSettingsProvider.overrideWithValue(
+        const InterfaceSettingsModel(),
+      ),
       ...overrides,
     ];
 

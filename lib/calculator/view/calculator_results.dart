@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculation_result
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
@@ -29,11 +30,9 @@ class CalculatorResults extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
     final isPremium = policy.isPremium;
-    final currencyAsync = ref.watch(settingsStreamProvider);
-    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
-        ? currencyAsync.value
-        : GeneralSettingsModel.initial();
+    final currencySettings = ref.watch(generalSettingsProvider);
     final additionalCostAmount = ref.watch(
       calculatorProvider.select(
         (state) => state.additionalCostAmount.value ?? 0,
@@ -64,7 +63,7 @@ class CalculatorResults extends ConsumerWidget {
             currencySettings: currencySettings,
             key: const ValueKey<String>('calculator.result.filamentCost'),
           ),
-          if (policy.riskPricing().allowed)
+          if (policy.riskPricing().allowed && interfaceSettings.showFailureRisk)
             _itemRow(
               context,
               l10n.riskTotalPrefix,
@@ -72,7 +71,8 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.riskCost'),
             ),
-          if (policy.labourPricing().allowed)
+          if (policy.labourPricing().allowed &&
+              interfaceSettings.showLabourFields)
             _itemRow(
               context,
               l10n.labourCostPrefix,
@@ -84,7 +84,7 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.labourCost'),
             ),
-          if (additionalCostAmount > 0)
+          if (additionalCostAmount > 0 && interfaceSettings.showWearAndTear)
             _itemRow(
               context,
               l10n.additionalCostLabel,
@@ -107,7 +107,9 @@ class CalculatorResults extends ConsumerWidget {
               l10n,
               key: const ValueKey<String>('calculator.result.premiumFooter'),
             ),
-          if (isPremium && pricing.isEnabled) ...[
+          if (isPremium &&
+              pricing.isEnabled &&
+              interfaceSettings.showMarkup) ...[
             const Divider(),
             _itemRow(
               context,

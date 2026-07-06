@@ -18,9 +18,12 @@ La versione gratuita include:
 • Esportazione di lavori singoli
 • Calcolo manuale in batch fino a 3 elementi
 • Backup e ripristino
+• Impostazioni dell'interfaccia per una vista personalizzata più pulita
 • Funzionamento offline-first
 
 La versione gratuita è pensata per essere davvero utile. Puoi calcolare stampe reali, salvare i dati principali, rivedere i lavori recenti e gestire piccoli batch manuali senza account.
+
+Puoi anche nascondere controlli, schede e dettagli di prezzo che non usi, così l'app resta più semplice per il tuo flusso di lavoro mentre i calcoli rimangono accurati sotto il cofano.
 
 Premium aggiunge strumenti per più volume, più controllo sui prezzi e flussi di lavoro più rapidi:
 

@@ -3,14 +3,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
-import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/calculator/view/components/additional_cost_note_dialog.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/numeric_input_formatters.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
-import 'additional_cost_note_dialog.dart';
 
 class JobPricingOverridesSection extends HookConsumerWidget {
   const JobPricingOverridesSection({super.key});
@@ -20,10 +20,8 @@ class JobPricingOverridesSection extends HookConsumerWidget {
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
-    final currencyAsync = ref.watch(settingsStreamProvider);
-    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
-        ? currencyAsync.value
-        : GeneralSettingsModel.initial();
+    final currencySettings = ref.watch(generalSettingsProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
 
     final wearController = useTextEditingController(
       text: (state.wearAndTear.value ?? 0).toString(),
@@ -49,157 +47,136 @@ class JobPricingOverridesSection extends HookConsumerWidget {
       collapsedShape: const Border(),
       title: Text(l10n.jobPricingOverridesLabel),
       children: [
-        _twoColumnRow(
-          left: _numberField(
-            controller: wearController,
-            externalText: (state.wearAndTear.value ?? 0).toString(),
-            label: l10n.wearAndTearLabel,
-            fieldKey: const ValueKey<String>(
-              'calculator.rates.wearAndTear.input',
-            ),
-            onChanged: (value) {
-              final parsed = tryParseLocalizedNum(value) ?? 0;
-              notifier
-                ..setWearAndTear(parsed)
-                ..submitDebounced(trackCompletedCosting: true);
-              AppAnalytics.safeLog(
-                () => AppAnalytics.pricingOverrideUsed(
-                  field: 'wear_and_tear',
-                  hasOverrides: true,
-                ),
-              );
-            },
-            currencySettings: currencySettings,
-          ),
-          right: _numberField(
-            controller: failureController,
-            externalText: (state.failureRisk.value ?? 0).toString(),
-            label: l10n.failureRiskLabel,
-            fieldKey: const ValueKey<String>(
-              'calculator.rates.failureRisk.input',
-            ),
-            onChanged: (value) {
-              final parsed = tryParseLocalizedNum(value) ?? 0;
-              notifier
-                ..setFailureRisk(parsed)
-                ..submitDebounced(trackCompletedCosting: true);
-              AppAnalytics.safeLog(
-                () => AppAnalytics.pricingOverrideUsed(
-                  field: 'failure_risk',
-                  hasOverrides: true,
-                ),
-              );
-            },
-            currencySettings: null,
-          ),
-        ),
-        const SizedBox(height: 12),
-        _twoColumnRow(
-          left: _numberField(
-            controller: labourRateController,
-            externalText: (state.labourRate.value ?? 0).toString(),
-            label: l10n.labourRateLabel,
-            fieldKey: const ValueKey<String>(
-              'calculator.adjustments.labourRate.input',
-            ),
-            onChanged: (value) {
-              final parsed = tryParseLocalizedNum(value) ?? 0;
-              notifier
-                ..setLabourRate(parsed)
-                ..submitDebounced(trackCompletedCosting: true);
-              AppAnalytics.safeLog(
-                () => AppAnalytics.pricingOverrideUsed(
-                  field: 'labour_rate',
-                  hasOverrides: true,
-                ),
-              );
-            },
-            currencySettings: currencySettings,
-          ),
-          right: _numberField(
-            controller: markupController,
-            externalText: (state.markupPercent.value ?? 0).toString(),
-            label: l10n.pricingMarkupPercentLabel,
-            fieldKey: const ValueKey<String>('calculator.pricing.markup.input'),
-            onChanged: (value) {
-              final parsed = tryParseLocalizedNum(value) ?? 0;
-              notifier
-                ..setMarkupPercent(parsed)
-                ..submitDebounced(trackCompletedCosting: true);
-              AppAnalytics.safeLog(
-                () => AppAnalytics.pricingOverrideUsed(
-                  field: 'markup_percent',
-                  hasOverrides: true,
-                ),
-              );
-            },
-            currencySettings: null,
-          ),
-        ),
-        const SizedBox(height: 12),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: _numberField(
-                controller: additionalCostController,
-                externalText: (state.additionalCostAmount.value ?? 0)
-                    .toString(),
-                label: l10n.additionalCostLabel,
-                fieldKey: const ValueKey<String>(
-                  'calculator.additionalCost.input',
-                ),
-                onChanged: (value) {
-                  final parsed = tryParseLocalizedNum(value) ?? 0;
-                  notifier
-                    ..setAdditionalCostAmount(parsed)
-                    ..submitDebounced(trackCompletedCosting: true);
-                  AppAnalytics.safeLog(
-                    () => AppAnalytics.pricingOverrideUsed(
-                      field: 'additional_cost',
-                      hasOverrides: true,
-                    ),
-                  );
-                },
-                currencySettings: currencySettings,
-              ),
-            ),
-            const SizedBox(width: 4),
-            IconButton(
-              key: const ValueKey<String>(
-                'calculator.additionalCost.note.button',
-              ),
-              tooltip: l10n.additionalCostNoteLabel,
-              onPressed: () async {
-                final note = await showDialog<String>(
-                  context: context,
-                  builder: (_) => AdditionalCostNoteDialog(
-                    initialValue: state.additionalCostNote,
+            if (interfaceSettings.showWearAndTear)
+              Expanded(
+                child: _numberField(
+                  controller: wearController,
+                  externalText: (state.wearAndTear.value ?? 0).toString(),
+                  label: l10n.wearAndTearLabel,
+                  fieldKey: const ValueKey<String>(
+                    'calculator.jobPricingOverrides.wearAndTear.input',
                   ),
-                );
-                if (note == null) return;
-                notifier.setAdditionalCostNote(note);
-              },
-              icon: Icon(
-                state.additionalCostNote == null
-                    ? Icons.edit_outlined
-                    : Icons.sticky_note_2_outlined,
+                  onChanged: (value) {
+                    notifier
+                      ..setWearAndTear(tryParseLocalizedNum(value) ?? 0)
+                      ..submit(trackCompletedCosting: true);
+                  },
+                  currencySettings: null,
+                ),
               ),
-            ),
+            if (interfaceSettings.showWearAndTear &&
+                interfaceSettings.showFailureRisk)
+              const SizedBox(width: 12),
+            if (interfaceSettings.showFailureRisk)
+              Expanded(
+                child: _numberField(
+                  controller: failureController,
+                  externalText: (state.failureRisk.value ?? 0).toString(),
+                  label: l10n.failureRiskLabel,
+                  fieldKey: const ValueKey<String>(
+                    'calculator.jobPricingOverrides.failureRisk.input',
+                  ),
+                  onChanged: (value) {
+                    notifier
+                      ..setFailureRisk(tryParseLocalizedNum(value) ?? 0)
+                      ..submit(trackCompletedCosting: true);
+                  },
+                  currencySettings: null,
+                ),
+              ),
           ],
         ),
+        if (interfaceSettings.showLabourFields ||
+            interfaceSettings.showMarkup) ...[
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              if (interfaceSettings.showLabourFields)
+                Expanded(
+                  child: _numberField(
+                    controller: labourRateController,
+                    externalText: (state.labourRate.value ?? 0).toString(),
+                    label: l10n.labourRateLabel,
+                    fieldKey: const ValueKey<String>(
+                      'calculator.jobPricingOverrides.labourRate.input',
+                    ),
+                    onChanged: (value) {
+                      notifier
+                        ..setLabourRate(tryParseLocalizedNum(value) ?? 0)
+                        ..submit(trackCompletedCosting: true);
+                    },
+                    currencySettings: currencySettings,
+                  ),
+                ),
+              if (interfaceSettings.showLabourFields &&
+                  interfaceSettings.showMarkup)
+                const SizedBox(width: 12),
+              if (interfaceSettings.showMarkup)
+                Expanded(
+                  child: _numberField(
+                    controller: markupController,
+                    externalText: (state.markupPercent.value ?? 0).toString(),
+                    label: l10n.pricingMarkupPercentLabel,
+                    fieldKey: const ValueKey<String>(
+                      'calculator.jobPricingOverrides.markupPercent.input',
+                    ),
+                    onChanged: (value) {
+                      notifier
+                        ..setMarkupPercent(tryParseLocalizedNum(value) ?? 0)
+                        ..submit(trackCompletedCosting: true);
+                    },
+                    currencySettings: null,
+                  ),
+                ),
+            ],
+          ),
+        ],
+        if (interfaceSettings.showWearAndTear) ...[
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _numberField(
+                  controller: additionalCostController,
+                  externalText: (state.additionalCostAmount.value ?? 0)
+                      .toString(),
+                  label: l10n.additionalCostLabel,
+                  fieldKey: const ValueKey<String>(
+                    'calculator.jobPricingOverrides.additionalCost.input',
+                  ),
+                  onChanged: (value) {
+                    notifier
+                      ..setAdditionalCostAmount(
+                        tryParseLocalizedNum(value) ?? 0,
+                      )
+                      ..submit(trackCompletedCosting: true);
+                  },
+                  currencySettings: currencySettings,
+                ),
+              ),
+              const SizedBox(width: 4),
+              IconButton(
+                key: const ValueKey<String>(
+                  'calculator.jobPricingOverrides.additionalCost.note.button',
+                ),
+                onPressed: () async {
+                  final note = await showDialog<String>(
+                    context: context,
+                    builder: (_) => AdditionalCostNoteDialog(
+                      initialValue: state.additionalCostNote,
+                    ),
+                  );
+                  if (note == null) return;
+                  notifier.setAdditionalCostNote(note);
+                },
+                icon: const Icon(Icons.info_outline),
+              ),
+            ],
+          ),
+        ],
         const SizedBox(height: 12),
-      ],
-    );
-  }
-
-  Widget _twoColumnRow({required Widget left, required Widget right}) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: left),
-        const SizedBox(width: 12),
-        Expanded(child: right),
       ],
     );
   }
@@ -226,13 +203,12 @@ class JobPricingOverridesSection extends HookConsumerWidget {
             currencySettings != null &&
                 currencySettings.currencySymbol.isNotEmpty &&
                 currencySettings.currencyPosition == 'before'
-            ? currencySettings.currencySymbol +
-                  (currencySettings.currencySpacing ? ' ' : '')
+            ? '${currencySettings.currencySymbol}${currencySettings.currencySpacing ? ' ' : ''}'
             : null,
         suffixText:
             currencySettings != null &&
-                currencySettings.currencyPosition == 'after' &&
-                currencySettings.currencySymbol.isNotEmpty
+                currencySettings.currencySymbol.isNotEmpty &&
+                currencySettings.currencyPosition == 'after'
             ? (currencySettings.currencySpacing
                   ? ' ${currencySettings.currencySymbol}'
                   : currencySettings.currencySymbol)

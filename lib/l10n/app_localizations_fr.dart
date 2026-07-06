@@ -27,6 +27,58 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsNavLabel => 'Paramètres';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle => 'Vue par défaut vs vue personnalisée';
+
+  @override
+  String get interfaceSettingsDefaultView => 'Vue par défaut';
+
+  @override
+  String get interfaceSettingsCustomView => 'Vue personnalisée';
+
+  @override
+  String get interfaceSettingsSaveError =>
+      'Impossible d’enregistrer les paramètres d’interface. Réessayez.';
+
+  @override
+  String get interfaceShowPrinterSelectLabel =>
+      'Afficher la sélection de l’imprimante';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'Afficher le bouton lot';
+
+  @override
+  String get interfaceShowHistoryTabLabel => 'Afficher l’onglet historique';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => 'Afficher l’onglet matériaux';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'Afficher l’action G-code';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel =>
+      'Afficher les sections de détail avancé';
+
+  @override
+  String get interfaceShowLabourFieldsLabel =>
+      'Afficher les champs de main-d’œuvre';
+
+  @override
+  String get interfaceShowFailureRiskLabel => 'Afficher le risque d’échec';
+
+  @override
+  String get interfaceShowWearAndTearLabel => 'Afficher l’usure et la casse';
+
+  @override
+  String get interfaceShowMarkupLabel => 'Afficher la marge';
+
+  @override
+  String get interfaceShowCurrencyLabel => 'Afficher la devise';
+
+  @override
   String get newAnnouncementBadgeLabel => 'Nouveau';
 
   @override

@@ -27,6 +27,55 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsNavLabel => 'การตั้งค่า';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle => 'มุมมองเริ่มต้น vs มุมมองกำหนดเอง';
+
+  @override
+  String get interfaceSettingsDefaultView => 'มุมมองเริ่มต้น';
+
+  @override
+  String get interfaceSettingsCustomView => 'มุมมองกำหนดเอง';
+
+  @override
+  String get interfaceSettingsSaveError =>
+      'ไม่สามารถบันทึกการตั้งค่าอินเทอร์เฟซได้ โปรดลองอีกครั้ง';
+
+  @override
+  String get interfaceShowPrinterSelectLabel => 'แสดงตัวเลือกเครื่องพิมพ์';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'แสดงปุ่มชุดงาน';
+
+  @override
+  String get interfaceShowHistoryTabLabel => 'แสดงแท็บประวัติ';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => 'แสดงแท็บวัสดุ';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'แสดงการทำงาน G-code';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel => 'แสดงส่วนสรุปขั้นสูง';
+
+  @override
+  String get interfaceShowLabourFieldsLabel => 'แสดงช่องแรงงาน';
+
+  @override
+  String get interfaceShowFailureRiskLabel => 'แสดงความเสี่ยงล้มเหลว';
+
+  @override
+  String get interfaceShowWearAndTearLabel => 'แสดงการสึกหรอ';
+
+  @override
+  String get interfaceShowMarkupLabel => 'แสดงมาร์กอัป';
+
+  @override
+  String get interfaceShowCurrencyLabel => 'แสดงสกุลเงิน';
+
+  @override
   String get newAnnouncementBadgeLabel => 'ใหม่';
 
   @override

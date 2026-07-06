@@ -18,9 +18,12 @@ La version gratuite comprend :
 • Export de tâches individuelles
 • Calcul manuel par lot pour jusqu'à 3 éléments
 • Sauvegarde et restauration
+• Réglages d'interface pour une vue personnalisée plus épurée
 • Fonctionnement offline-first
 
 La version gratuite est pensée pour être réellement utile. Vous pouvez chiffrer de vraies impressions, enregistrer les données clés, revoir les travaux récents et gérer de petits lots manuels sans compte.
+
+Vous pouvez aussi masquer les contrôles, onglets et détails de prix que vous n'utilisez pas, afin que l'app reste plus simple pour votre flux de travail tout en conservant des calculs précis en arrière-plan.
 
 Premium ajoute des outils pour plus de volume, plus de contrôle tarifaire et des flux de travail plus rapides :
 

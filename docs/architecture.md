@@ -93,6 +93,7 @@
 - Input styling is theme-driven and underlined; `LIGHT_BLUE` remains the focus/accent color for active fields, labels, and icons.
 - Search/header shells should reuse shared spacing rhythm from `kAppSearchSectionPadding` rather than feature-local padding literals.
 - Prefer semantic color tokens from `lib/shared/app_colors.dart` (`TEXT_*`, `ICON_*`, `STATUS_*`, `BORDER_*`, overlay tokens) over direct `Colors.*` or raw `Color(...)` values.
+- Interface settings summary text is derived upstream from `InterfaceSettingsModel.isDefaultView` / `isCustomView`; leaf widgets should not re-create fallback models.
 
 ## Testing conventions
 

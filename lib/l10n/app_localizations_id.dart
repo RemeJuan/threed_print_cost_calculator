@@ -27,6 +27,56 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsNavLabel => 'Pengaturan';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle => 'Tampilan bawaan vs tampilan kustom';
+
+  @override
+  String get interfaceSettingsDefaultView => 'Tampilan bawaan';
+
+  @override
+  String get interfaceSettingsCustomView => 'Tampilan kustom';
+
+  @override
+  String get interfaceSettingsSaveError =>
+      'Pengaturan antarmuka tidak dapat disimpan. Coba lagi.';
+
+  @override
+  String get interfaceShowPrinterSelectLabel => 'Tampilkan pemilih printer';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'Tampilkan tombol batch';
+
+  @override
+  String get interfaceShowHistoryTabLabel => 'Tampilkan tab riwayat';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => 'Tampilkan tab material';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'Tampilkan aksi G-code';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel =>
+      'Tampilkan bagian rincian lanjutan';
+
+  @override
+  String get interfaceShowLabourFieldsLabel => 'Tampilkan bidang tenaga kerja';
+
+  @override
+  String get interfaceShowFailureRiskLabel => 'Tampilkan risiko kegagalan';
+
+  @override
+  String get interfaceShowWearAndTearLabel => 'Tampilkan aus dan sobek';
+
+  @override
+  String get interfaceShowMarkupLabel => 'Tampilkan markup';
+
+  @override
+  String get interfaceShowCurrencyLabel => 'Tampilkan mata uang';
+
+  @override
   String get newAnnouncementBadgeLabel => 'Baru';
 
   @override

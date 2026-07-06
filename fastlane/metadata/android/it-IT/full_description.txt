@@ -18,9 +18,12 @@ Funzionalità gratuite
 • Esportazione di lavori singoli
 • Calcolo manuale in batch fino a 3 elementi
 • Backup e ripristino
+• Impostazioni dell'interfaccia per una vista personalizzata più pulita
 • Funzionamento offline-first
 
 Calcola lavori reali, salva i dati principali, rivedi i lavori recenti e gestisci piccoli batch senza account né abbonamento.
+
+Puoi anche nascondere controlli, schede e dettagli di prezzo che non usi, così l'app resta più semplice per il tuo flusso di lavoro mentre i calcoli rimangono accurati sotto il cofano.
 
 Funzionalità Premium
 

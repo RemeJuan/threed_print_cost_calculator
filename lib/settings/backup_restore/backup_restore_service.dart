@@ -8,10 +8,12 @@ import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -27,6 +29,7 @@ const backupJsonMimeType = 'application/json';
 
 Map<String, Object?> buildBackupPayload({
   required Map<String, Object?> settings,
+  required Map<String, Object?> interfaceSettings,
   required List<Map<String, Object?>> printers,
   required List<Map<String, Object?>> materials,
   required List<Map<String, Object?>> history,
@@ -37,6 +40,7 @@ Map<String, Object?> buildBackupPayload({
     'createdAt': DateTime.now().toUtc().toIso8601String(),
     'data': {
       'settings': settings,
+      'interfaceSettings': interfaceSettings,
       'printers': printers,
       'materials': materials,
       'history': history,
@@ -121,6 +125,9 @@ class BackupRestoreService {
 
   Future<Map<String, Object?>> _buildPayload() async {
     final settings = await ref.read(settingsRepositoryProvider).getSettings();
+    final interfaceSettings = await ref
+        .read(interfaceSettingsRepositoryProvider)
+        .getSettings();
     final printers = await ref.read(printersRepositoryProvider).getPrinters();
     final materials = await ref
         .read(materialsRepositoryProvider)
@@ -128,6 +135,7 @@ class BackupRestoreService {
     final history = await ref.read(historyRepositoryProvider).getAllHistory();
     return buildBackupPayload(
       settings: settings.toMap(),
+      interfaceSettings: interfaceSettings.toMap(),
       printers: printers.map((e) => {'id': e.id, ...e.toMap()}).toList(),
       materials: materials.map((e) => {'id': e.id, ...e.toMap()}).toList(),
       history: history.map((e) => {'id': e.key, ...e.model.toMap()}).toList(),
@@ -146,13 +154,19 @@ class BackupRestoreService {
     final currentSettings = await ref
         .read(settingsRepositoryProvider)
         .getSettings();
+    final currentInterfaceSettings = await ref
+        .read(interfaceSettingsRepositoryProvider)
+        .getSettings();
     final policy = ref.read(premiumAccessPolicyProvider);
     final settingsMerge = mergeBackupRestoreSettings(
       restored: restoredSettings,
       current: currentSettings,
+      restoredInterface: payload.interfaceSettings,
+      currentInterface: currentInterfaceSettings,
       isPremium: policy.isPremium,
     );
     final settings = settingsMerge.settings;
+    final interfaceSettings = settingsMerge.interfaceSettings;
     final skippedPremiumSettings = settingsMerge.skippedPremiumSettings;
 
     await _db.transaction((txn) async {
@@ -160,6 +174,7 @@ class BackupRestoreService {
         ref: ref,
         txn: txn,
         settings: settings,
+        interfaceSettings: interfaceSettings,
         printers: printers,
         materials: materials,
         history: history,

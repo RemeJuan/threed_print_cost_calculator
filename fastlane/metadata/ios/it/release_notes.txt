@@ -1,1 +1,1 @@
-Risolto un problema per cui alcuni file G-code non potevano essere importati.
+Le nuove impostazioni dell'interfaccia ti permettono di nascondere controlli, schede e dettagli di prezzo non usati per una vista personalizzata più pulita. Il layout scelto è incluso anche nel backup e ripristino.

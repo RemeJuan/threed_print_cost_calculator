@@ -1,1 +1,1 @@
-Es wurde ein Problem behoben, durch das einige G-Code-Dateien nicht importiert werden konnten.
+Neue Interface-Einstellungen lassen Sie ungenutzte Bedienelemente, Tabs und Preisdetails für eine übersichtlichere benutzerdefinierte Ansicht ausblenden. Ihr gewähltes Layout wird auch in Sichern und Wiederherstellen übernommen.

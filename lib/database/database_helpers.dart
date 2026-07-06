@@ -12,7 +12,7 @@ final dbHelpersProvider = Provider.family<DataBaseHelpers, DBName>(
   (ref, name) => DataBaseHelpers(ref, name),
 );
 
-enum DBName { materials, history, settings, printers }
+enum DBName { materials, history, settings, printers, interfaceSettings }
 
 class DataBaseHelpers {
   final Ref ref;

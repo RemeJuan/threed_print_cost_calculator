@@ -27,6 +27,54 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsNavLabel => '設定';
 
   @override
+  String get interfaceSettingsHeader => 'Interface';
+
+  @override
+  String get interfaceSettingsSubtitle => 'デフォルト表示とカスタム表示';
+
+  @override
+  String get interfaceSettingsDefaultView => 'デフォルト表示';
+
+  @override
+  String get interfaceSettingsCustomView => 'カスタム表示';
+
+  @override
+  String get interfaceSettingsSaveError => 'インターフェース設定を保存できませんでした。もう一度お試しください。';
+
+  @override
+  String get interfaceShowPrinterSelectLabel => 'プリンタ選択を表示';
+
+  @override
+  String get interfaceShowBatchButtonLabel => 'バッチボタンを表示';
+
+  @override
+  String get interfaceShowHistoryTabLabel => '履歴タブを表示';
+
+  @override
+  String get interfaceShowMaterialsTabLabel => '材料タブを表示';
+
+  @override
+  String get interfaceShowGcodeActionLabel => 'G-code操作を表示';
+
+  @override
+  String get interfaceShowAdvancedBreakdownLabel => '詳細内訳セクションを表示';
+
+  @override
+  String get interfaceShowLabourFieldsLabel => '工数項目を表示';
+
+  @override
+  String get interfaceShowFailureRiskLabel => '失敗リスクを表示';
+
+  @override
+  String get interfaceShowWearAndTearLabel => '摩耗と損耗を表示';
+
+  @override
+  String get interfaceShowMarkupLabel => 'マークアップを表示';
+
+  @override
+  String get interfaceShowCurrencyLabel => '通貨を表示';
+
+  @override
   String get newAnnouncementBadgeLabel => '新規';
 
   @override

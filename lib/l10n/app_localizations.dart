@@ -150,6 +150,102 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsNavLabel;
 
+  /// No description provided for @interfaceSettingsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Interface'**
+  String get interfaceSettingsHeader;
+
+  /// No description provided for @interfaceSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Default view vs Custom view'**
+  String get interfaceSettingsSubtitle;
+
+  /// No description provided for @interfaceSettingsDefaultView.
+  ///
+  /// In en, this message translates to:
+  /// **'Default view'**
+  String get interfaceSettingsDefaultView;
+
+  /// No description provided for @interfaceSettingsCustomView.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom view'**
+  String get interfaceSettingsCustomView;
+
+  /// No description provided for @interfaceSettingsSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save interface settings. Try again.'**
+  String get interfaceSettingsSaveError;
+
+  /// No description provided for @interfaceShowPrinterSelectLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show printer select'**
+  String get interfaceShowPrinterSelectLabel;
+
+  /// No description provided for @interfaceShowBatchButtonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show batch button'**
+  String get interfaceShowBatchButtonLabel;
+
+  /// No description provided for @interfaceShowHistoryTabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show history tab'**
+  String get interfaceShowHistoryTabLabel;
+
+  /// No description provided for @interfaceShowMaterialsTabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show materials tab'**
+  String get interfaceShowMaterialsTabLabel;
+
+  /// No description provided for @interfaceShowGcodeActionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show G-code action'**
+  String get interfaceShowGcodeActionLabel;
+
+  /// No description provided for @interfaceShowAdvancedBreakdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show advanced breakdown sections'**
+  String get interfaceShowAdvancedBreakdownLabel;
+
+  /// No description provided for @interfaceShowLabourFieldsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show labour fields'**
+  String get interfaceShowLabourFieldsLabel;
+
+  /// No description provided for @interfaceShowFailureRiskLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show failure risk'**
+  String get interfaceShowFailureRiskLabel;
+
+  /// No description provided for @interfaceShowWearAndTearLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show wear and tear'**
+  String get interfaceShowWearAndTearLabel;
+
+  /// No description provided for @interfaceShowMarkupLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show markup'**
+  String get interfaceShowMarkupLabel;
+
+  /// No description provided for @interfaceShowCurrencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show currency'**
+  String get interfaceShowCurrencyLabel;
+
   /// No description provided for @newAnnouncementBadgeLabel.
   ///
   /// In en, this message translates to:

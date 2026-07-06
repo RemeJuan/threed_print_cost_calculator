@@ -8,10 +8,14 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_providers.
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class HeaderActions extends ConsumerWidget {
-  const HeaderActions({super.key});
+  const HeaderActions({super.key, required this.showGcodeAction});
+
+  final bool showGcodeAction;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!showGcodeAction) return const SizedBox.shrink();
+
     final policy = ref.watch(premiumAccessPolicyProvider);
     final isPremium = policy.isPremium;
     final l10n = AppLocalizations.of(context)!;
