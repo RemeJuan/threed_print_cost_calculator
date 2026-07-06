@@ -32,6 +32,7 @@ class AppUsageService with WidgetsBindingObserver {
 
   final Ref ref;
   var _pendingCompletedCostingCount = 0;
+  Future<void> _completedCostingWriteChain = Future<void>.value();
 
   WidgetsBinding? get _widgetsBinding {
     try {
@@ -98,7 +99,7 @@ class AppUsageService with WidgetsBindingObserver {
       return;
     }
 
-    await _applyCompletedCostingIncrement(store, additionalCount: 1);
+    await _scheduleCompletedCostingWrite(store, additionalCount: 1);
   }
 
   @override
@@ -116,23 +117,57 @@ class AppUsageService with WidgetsBindingObserver {
       return;
     }
 
-    await _applyCompletedCostingIncrement(store);
+    await _scheduleCompletedCostingWrite(store);
+  }
+
+  Future<void> _scheduleCompletedCostingWrite(
+    PremiumLocalStore store, {
+    int additionalCount = 0,
+  }) {
+    final operation = _completedCostingWriteChain
+        .catchError((_) {})
+        .then(
+          (_) => _applyCompletedCostingIncrement(
+            store,
+            additionalCount: additionalCount,
+          ),
+        );
+    _completedCostingWriteChain = operation;
+    return operation;
   }
 
   Future<void> _applyCompletedCostingIncrement(
     PremiumLocalStore store, {
     int additionalCount = 0,
   }) async {
-    final incrementBy = _pendingCompletedCostingCount + additionalCount;
+    final pendingCount = _pendingCompletedCostingCount;
+    final incrementBy = pendingCount + additionalCount;
     if (incrementBy <= 0) {
       return;
     }
 
-    _pendingCompletedCostingCount = 0;
-
-    final nextCount = completedCostingCount + incrementBy;
+    final nextCount = _readCompletedCostingCount(store) + incrementBy;
     await store.write(completedCostingCountPreferenceKey, nextCount.toString());
+
+    if (_readCompletedCostingCount(store) != nextCount) {
+      return;
+    }
+
+    _pendingCompletedCostingCount = _pendingCompletedCostingCount > pendingCount
+        ? _pendingCompletedCostingCount - pendingCount
+        : 0;
     ref.read(completedCostingCountProvider.notifier).state = nextCount;
+  }
+
+  int _readCompletedCostingCount(PremiumLocalStore store) {
+    try {
+      return int.tryParse(
+            store.readSync(completedCostingCountPreferenceKey) ?? '',
+          ) ??
+          ref.read(completedCostingCountProvider);
+    } catch (_) {
+      return ref.read(completedCostingCountProvider);
+    }
   }
 
   Future<void> markGcodeImportUsed() async {
