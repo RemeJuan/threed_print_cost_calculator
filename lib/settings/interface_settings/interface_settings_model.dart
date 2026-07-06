@@ -22,7 +22,7 @@ abstract class InterfaceSettingsModel with _$InterfaceSettingsModel {
     bool readBool(String key) {
       if (!map.containsKey(key) || map[key] == null) return true;
       final value = map[key];
-      return value == true || value?.toString() == 'true';
+      return value == true || value.toString() == 'true';
     }
 
     return InterfaceSettingsModel(
