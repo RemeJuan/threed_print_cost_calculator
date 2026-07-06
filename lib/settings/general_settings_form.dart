@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
@@ -19,10 +20,8 @@ class GeneralSettings extends HookConsumerWidget {
   @override
   Widget build(context, ref) {
     final l10n = AppLocalizations.of(context)!;
-    final currencyAsync = ref.watch(settingsStreamProvider);
-    final currencySettings = currencyAsync is AsyncData<GeneralSettingsModel>
-        ? currencyAsync.value
-        : GeneralSettingsModel.initial();
+    final currencySettings = ref.watch(generalSettingsProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
 
     // Hook-managed controllers and focus nodes must be called at the top-level of build
     final electricityController = useTextEditingController();
@@ -181,14 +180,14 @@ class GeneralSettings extends HookConsumerWidget {
           inputNormalizer: normalizeLeadingZeroNumericInput,
           decoration: InputDecoration(
             labelText: l10n.electricityCostSettingsLabel,
-            prefixText:
-                currencySettings.currencySymbol.isNotEmpty &&
+            prefixText: interfaceSettings.showCurrency &&
+                    currencySettings.currencySymbol.isNotEmpty &&
                     currencySettings.currencyPosition == 'before'
                 ? currencySettings.currencySymbol +
                       (currencySettings.currencySpacing ? ' ' : '')
                 : null,
-            suffixText:
-                currencySettings.currencyPosition == 'after' &&
+            suffixText: interfaceSettings.showCurrency &&
+                    currencySettings.currencyPosition == 'after' &&
                     currencySettings.currencySymbol.isNotEmpty
                 ? '${l10n.kwh}${currencySettings.currencySpacing ? ' ${currencySettings.currencySymbol}' : currencySettings.currencySymbol}'
                 : l10n.kwh,
