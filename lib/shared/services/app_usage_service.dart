@@ -33,16 +33,24 @@ class AppUsageService with WidgetsBindingObserver {
   final Ref ref;
   var _pendingCompletedCostingCount = 0;
 
+  WidgetsBinding? get _widgetsBinding {
+    try {
+      return WidgetsBinding.instance;
+    } catch (_) {
+      return null;
+    }
+  }
+
   void initialize() {
-    WidgetsBinding.instance.addObserver(this);
+    _widgetsBinding?.addObserver(this);
   }
 
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    _widgetsBinding?.removeObserver(this);
   }
 
   bool get _isAppResumed {
-    final lifecycleState = WidgetsBinding.instance.lifecycleState;
+    final lifecycleState = _widgetsBinding?.lifecycleState;
     return lifecycleState == null ||
         lifecycleState == AppLifecycleState.resumed;
   }
