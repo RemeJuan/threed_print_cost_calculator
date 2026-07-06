@@ -6,6 +6,7 @@ import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
@@ -30,6 +31,7 @@ class CalculatorPage extends HookConsumerWidget {
     final notifier = ref.read(calculatorProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
 
     // Section-level inputs manage their own controllers and focus nodes to
     // avoid prop drilling. MaterialsSection will create its own controllers.
@@ -67,7 +69,9 @@ class CalculatorPage extends HookConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (policy.printers().allowed) const PrinterSelect(),
+                  if (policy.printers().allowed &&
+                      interfaceSettings.showPrinterSelect)
+                    const PrinterSelect(),
                   const MaterialsSection(),
                   const SizedBox(height: kAppSpace8),
                   const TimeSection(),
@@ -75,14 +79,16 @@ class CalculatorPage extends HookConsumerWidget {
                 ],
               ),
             ),
-            if (policy.advancedPricingConfig().allowed)
+            if (policy.advancedPricingConfig().allowed &&
+                interfaceSettings.showAdvancedBreakdown)
               AppSurfaceCard(
                 padding: const EdgeInsets.symmetric(horizontal: kAppSpace12),
                 child: const JobPricingOverridesSection(),
               ),
             CalculatorResults(results: state.results, pricing: state.pricing),
             const SizedBox(height: kAppSpace8),
-            if (policy.batchCosting().allowed) ...[
+            if (policy.batchCosting().allowed &&
+                interfaceSettings.showBatchButton) ...[
               AppSecondaryButton(
                 key: const ValueKey<String>(
                   'calculator.batch_costing.open.button',
