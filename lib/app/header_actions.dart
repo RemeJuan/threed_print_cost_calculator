@@ -14,11 +14,11 @@ class HeaderActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (!showGcodeAction) return const SizedBox.shrink();
+
     final policy = ref.watch(premiumAccessPolicyProvider);
     final isPremium = policy.isPremium;
     final l10n = AppLocalizations.of(context)!;
-
-    if (!showGcodeAction) return const SizedBox.shrink();
 
     final gcodeAllowed = policy.gcodeImport().allowed;
 
