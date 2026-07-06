@@ -71,16 +71,26 @@ void main() {
     expect(container.read(completedCostingCountProvider), 1);
   });
 
-  test('paused app does not increment completed costing count', () async {
+  test('paused tracked submit queues completed costing until resume', () async {
+    final notifier = container.read(calculatorProvider.notifier);
+    seedMeaningfulCostingInputs(notifier);
+
     binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
 
-    await container.read(appUsageServiceProvider).recordCompletedCosting();
+    notifier.submit(trackCompletedCosting: true);
+    await Future<void>.delayed(const Duration(milliseconds: 30));
 
     expect(
       premiumLocalStore.readSync(completedCostingCountPreferenceKey),
       isNull,
     );
     expect(container.read(completedCostingCountProvider), 0);
+
+    binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+
+    expect(premiumLocalStore.readSync(completedCostingCountPreferenceKey), '1');
+    expect(container.read(completedCostingCountProvider), 1);
   });
 
   test(

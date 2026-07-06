@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/legacy.dart';
@@ -5,7 +7,11 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart'
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
-final appUsageServiceProvider = Provider<AppUsageService>(AppUsageService.new);
+final appUsageServiceProvider = Provider<AppUsageService>((ref) {
+  final service = AppUsageService(ref)..initialize();
+  ref.onDispose(service.dispose);
+  return service;
+});
 final completedCostingCountProvider = StateProvider<int>((ref) {
   try {
     final store = ref.read(premiumLocalStoreProvider);
@@ -21,10 +27,19 @@ final rateMyAppEligibilityProvider = Provider<bool>(
   (ref) => ref.watch(completedCostingCountProvider) > 10,
 );
 
-class AppUsageService {
+class AppUsageService with WidgetsBindingObserver {
   AppUsageService(this.ref);
 
   final Ref ref;
+  var _pendingCompletedCostingCount = 0;
+
+  void initialize() {
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+  }
 
   bool get _isAppResumed {
     final lifecycleState = WidgetsBinding.instance.lifecycleState;
@@ -66,11 +81,48 @@ class AppUsageService {
 
   Future<void> recordCompletedCosting() async {
     final store = _store;
-    if (store == null || !_isAppResumed) {
+    if (store == null) {
       return;
     }
 
-    final nextCount = completedCostingCount + 1;
+    if (!_isAppResumed) {
+      _pendingCompletedCostingCount += 1;
+      return;
+    }
+
+    await _applyCompletedCostingIncrement(store, additionalCount: 1);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) {
+      return;
+    }
+
+    unawaited(_flushPendingCompletedCosting());
+  }
+
+  Future<void> _flushPendingCompletedCosting() async {
+    final store = _store;
+    if (store == null || !_isAppResumed || _pendingCompletedCostingCount == 0) {
+      return;
+    }
+
+    await _applyCompletedCostingIncrement(store);
+  }
+
+  Future<void> _applyCompletedCostingIncrement(
+    PremiumLocalStore store, {
+    int additionalCount = 0,
+  }) async {
+    final incrementBy = _pendingCompletedCostingCount + additionalCount;
+    if (incrementBy <= 0) {
+      return;
+    }
+
+    _pendingCompletedCostingCount = 0;
+
+    final nextCount = completedCostingCount + incrementBy;
     await store.write(completedCostingCountPreferenceKey, nextCount.toString());
     ref.read(completedCostingCountProvider.notifier).state = nextCount;
   }
