@@ -6,7 +6,10 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/settings/backup_restore/backup_restore_section.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_page.dart';
 import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/settings/printers/printers.dart';
 import 'package:threed_print_cost_calculator/settings/settings_section.dart';
@@ -24,6 +27,7 @@ class SettingsPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
     final printersAsync = ref.watch(printersStreamProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
     final printerCount = printersAsync.maybeWhen(
       data: (printers) => printers.length,
       orElse: () => null,
@@ -45,6 +49,25 @@ class SettingsPage extends ConsumerWidget {
           bodyKey: const ValueKey<String>('settings.general.body'),
           title: Text(l10n.generalHeader, style: style),
           child: const GeneralSettings(),
+        ),
+        const SizedBox(height: kAppSpace16),
+        SettingsSection(
+          headerKey: const ValueKey<String>('settings.interface.section'),
+          bodyKey: const ValueKey<String>('settings.interface.body'),
+          title: Text(l10n.interfaceSettingsHeader, style: style),
+          subtitle: Text(
+            interfaceSettings.isDefaultView
+                ? l10n.interfaceSettingsDefaultView
+                : l10n.interfaceSettingsCustomView,
+          ),
+          action: _action(
+            context,
+            const InterfaceSettingsPage(),
+            const Icon(Icons.tune),
+            const ValueKey<String>('settings.interface.button'),
+          ),
+          childSpacing: false,
+          child: const SizedBox.shrink(),
         ),
         if (policy.labourPricing().allowed || policy.riskPricing().allowed) ...[
           const SizedBox(height: kAppSpace16),
