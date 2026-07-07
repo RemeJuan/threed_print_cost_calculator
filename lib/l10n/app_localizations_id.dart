@@ -46,7 +46,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get interfaceShowPrinterSelectLabel => 'Tampilkan pemilih printer';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'Tampilkan tombol batch';
+  String get interfaceShowBatchButtonLabel => 'Tampilkan tombol hitung batch';
 
   @override
   String get interfaceShowHistoryTabLabel => 'Tampilkan tab riwayat';
@@ -55,14 +55,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'Tampilkan tab material';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'Tampilkan aksi G-code';
+  String get interfaceShowGcodeActionLabel => 'Tampilkan tombol impor G-code';
 
   @override
   String get interfaceShowAdvancedBreakdownLabel =>
-      'Tampilkan bagian rincian lanjutan';
+      'Tampilkan bagian harga terperinci';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'Tampilkan bidang tenaga kerja';
+  String get interfaceShowLabourFieldsLabel =>
+      'Tampilkan kontrol biaya tenaga kerja';
 
   @override
   String get interfaceShowFailureRiskLabel => 'Tampilkan risiko kegagalan';
@@ -71,10 +72,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'Tampilkan aus dan sobek';
 
   @override
-  String get interfaceShowMarkupLabel => 'Tampilkan markup';
+  String get interfaceShowMarkupLabel => 'Tampilkan kontrol markup';
 
   @override
-  String get interfaceShowCurrencyLabel => 'Tampilkan mata uang';
+  String get interfaceShowCurrencyLabel => 'Tampilkan pengaturan mata uang';
 
   @override
   String get newAnnouncementBadgeLabel => 'Baru';
