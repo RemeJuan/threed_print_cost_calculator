@@ -43,10 +43,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível salvar as configurações da interface. Tente novamente.';
 
   @override
-  String get interfaceShowPrinterSelectLabel => 'Mostrar seleção de impressora';
+  String get interfaceShowPrinterSelectLabel => 'Mostrar seletor de impressora';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'Mostrar botão de lote';
+  String get interfaceShowBatchButtonLabel => 'Mostrar botão de custo em lote';
 
   @override
   String get interfaceShowHistoryTabLabel => 'Mostrar aba de histórico';
@@ -55,14 +55,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'Mostrar aba de materiais';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'Mostrar ação G-code';
+  String get interfaceShowGcodeActionLabel =>
+      'Mostrar botão de importação de G-code';
 
   @override
   String get interfaceShowAdvancedBreakdownLabel =>
-      'Mostrar seções de detalhamento avançado';
+      'Mostrar seções detalhadas de preço';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'Mostrar campos de mão de obra';
+  String get interfaceShowLabourFieldsLabel =>
+      'Mostrar controles de custo de mão de obra';
 
   @override
   String get interfaceShowFailureRiskLabel => 'Mostrar risco de falha';
@@ -71,10 +73,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'Mostrar desgaste';
 
   @override
-  String get interfaceShowMarkupLabel => 'Mostrar margem';
+  String get interfaceShowMarkupLabel => 'Mostrar controles de margem';
 
   @override
-  String get interfaceShowCurrencyLabel => 'Mostrar moeda';
+  String get interfaceShowCurrencyLabel => 'Mostrar configurações de moeda';
 
   @override
   String get newAnnouncementBadgeLabel => 'Novo';
