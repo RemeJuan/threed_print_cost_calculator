@@ -90,23 +90,11 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       ref.read(historyRepositoryProvider);
 
   Future<void> setQuery(String q) async {
-    state = state.copyWith(
-      query: q,
-      page: 0,
-      items: [],
-      hasMore: true,
-      error: null,
-    );
-    _loadGeneration++;
-    final currentGen = _loadGeneration;
-    await _loadPage(reset: true, generation: currentGen);
+    await _resetAndLoad(query: q, preserveQuery: true);
   }
 
   Future<void> refresh() async {
-    state = state.copyWith(page: 0, items: [], hasMore: true, error: null);
-    _loadGeneration++;
-    final currentGen = _loadGeneration;
-    await _loadPage(reset: true, generation: currentGen);
+    await _resetAndLoad();
   }
 
   Future<void> refreshIfNeeded() async {
@@ -121,79 +109,30 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
   Future<void> loadMore() async {
     if (state.isLoading) return;
     if (!state.hasMore) return;
-    _loadGeneration++;
-    final currentGen = _loadGeneration;
-    await _loadPage(reset: false, generation: currentGen);
+    await _loadPage(reset: false, generation: _nextGeneration());
+  }
+
+  int _nextGeneration() => ++_loadGeneration;
+
+  Future<void> _resetAndLoad({
+    String? query,
+    bool preserveQuery = false,
+  }) async {
+    state = state.copyWith(
+      query: preserveQuery ? query ?? state.query : state.query,
+      page: 0,
+      items: [],
+      hasMore: true,
+      error: null,
+    );
+    await _loadPage(reset: true, generation: _nextGeneration());
   }
 
   Future<void> _loadPage({required bool reset, required int generation}) async {
     try {
-      final nextPage = reset ? 0 : state.page + 1;
-      state = state.copyWith(isLoading: true, error: null);
-
-      final offset = nextPage * _pageSize;
-
-      int totalCount = 0;
-      var queryCount = 0;
-      var usedFallbackScan = false;
-      final pageEntries = <HistoryEntry>[];
-
-      final q = state.query.trim();
-      _logger.debug(
-        AppLogCategory.provider,
-        'History page load started',
-        context: {'reset': reset, 'page': nextPage, 'hasQuery': q.isNotEmpty},
-      );
-
-      if (q.isEmpty) {
-        totalCount = await _historyRepository.countHistory();
-        queryCount++;
-        pageEntries.addAll(
-          await _historyRepository.getHistoryPage(
-            limit: _pageSize,
-            offset: offset,
-          ),
-        );
-        queryCount++;
-      } else {
-        final searchPage = await _historyRepository.getHistoryMatchingQueryPage(
-          query: q,
-          limit: _pageSize,
-          offset: offset,
-        );
-        queryCount += 2;
-        totalCount = searchPage.totalCount;
-        pageEntries.addAll(searchPage.items);
-      }
-
-      // Ensure generation matches before applying results — otherwise this load is stale
+      final request = await _fetchPage(reset: reset);
       if (generation != _loadGeneration) return;
-
-      final combined = reset ? pageEntries : [...state.items, ...pageEntries];
-      final hasMore = combined.length < totalCount;
-
-      state = state.copyWith(
-        items: combined,
-        isLoading: false,
-        hasMore: hasMore,
-        page: nextPage,
-        debugQueryCount: queryCount,
-        debugUsedFallbackScan: usedFallbackScan,
-        hasLoadedOnce: true,
-        isStale: false,
-      );
-      _logger.debug(
-        AppLogCategory.provider,
-        'History page load completed',
-        context: {
-          'reset': reset,
-          'page': nextPage,
-          'itemCount': pageEntries.length,
-          'totalLoaded': combined.length,
-          'hasMore': hasMore,
-          'hasQuery': q.isNotEmpty,
-        },
-      );
+      _applyPageResult(reset: reset, request: request);
     } catch (e, st) {
       _logger.error(
         AppLogCategory.provider,
@@ -212,6 +151,100 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
+
+  Future<_HistoryPageRequest> _fetchPage({required bool reset}) async {
+    final nextPage = reset ? 0 : state.page + 1;
+    state = state.copyWith(isLoading: true, error: null);
+
+    final offset = nextPage * _pageSize;
+    final q = state.query.trim();
+    _logger.debug(
+      AppLogCategory.provider,
+      'History page load started',
+      context: {'reset': reset, 'page': nextPage, 'hasQuery': q.isNotEmpty},
+    );
+
+    if (q.isEmpty) {
+      final totalCount = await _historyRepository.countHistory();
+      final pageEntries = await _historyRepository.getHistoryPage(
+        limit: _pageSize,
+        offset: offset,
+      );
+      return _HistoryPageRequest(
+        nextPage: nextPage,
+        totalCount: totalCount,
+        pageEntries: pageEntries,
+        queryCount: 2,
+        usedFallbackScan: false,
+        hasQuery: false,
+      );
+    }
+
+    final searchPage = await _historyRepository.getHistoryMatchingQueryPage(
+      query: q,
+      limit: _pageSize,
+      offset: offset,
+    );
+    return _HistoryPageRequest(
+      nextPage: nextPage,
+      totalCount: searchPage.totalCount,
+      pageEntries: searchPage.items,
+      queryCount: 2,
+      usedFallbackScan: false,
+      hasQuery: true,
+    );
+  }
+
+  void _applyPageResult({
+    required bool reset,
+    required _HistoryPageRequest request,
+  }) {
+    final combined = reset
+        ? request.pageEntries
+        : [...state.items, ...request.pageEntries];
+    final hasMore = combined.length < request.totalCount;
+
+    state = state.copyWith(
+      items: combined,
+      isLoading: false,
+      hasMore: hasMore,
+      page: request.nextPage,
+      debugQueryCount: request.queryCount,
+      debugUsedFallbackScan: request.usedFallbackScan,
+      hasLoadedOnce: true,
+      isStale: false,
+    );
+    _logger.debug(
+      AppLogCategory.provider,
+      'History page load completed',
+      context: {
+        'reset': reset,
+        'page': request.nextPage,
+        'itemCount': request.pageEntries.length,
+        'totalLoaded': combined.length,
+        'hasMore': hasMore,
+        'hasQuery': request.hasQuery,
+      },
+    );
+  }
+}
+
+class _HistoryPageRequest {
+  final int nextPage;
+  final int totalCount;
+  final List<HistoryEntry> pageEntries;
+  final int queryCount;
+  final bool usedFallbackScan;
+  final bool hasQuery;
+
+  const _HistoryPageRequest({
+    required this.nextPage,
+    required this.totalCount,
+    required this.pageEntries,
+    required this.queryCount,
+    required this.usedFallbackScan,
+    required this.hasQuery,
+  });
 }
 
 final historyPagedProvider =

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/sembast.dart' as sembast;
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
+import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
@@ -23,6 +26,32 @@ class _ThrowingHistoryRepository extends HistoryRepository {
   @override
   Future<int> countHistory() async {
     throw StateError('count failed');
+  }
+}
+
+class _DeferredHistoryRepository extends HistoryRepository {
+  _DeferredHistoryRepository(super.ref);
+
+  final countGates = <Completer<void>>[];
+  final pageGates = <Completer<void>>[];
+
+  @override
+  Future<int> countHistory() async {
+    final gate = Completer<void>();
+    countGates.add(gate);
+    await gate.future;
+    return super.countHistory();
+  }
+
+  @override
+  Future<List<HistoryEntry>> getHistoryPage({
+    required int limit,
+    required int offset,
+  }) async {
+    final gate = Completer<void>();
+    pageGates.add(gate);
+    await gate.future;
+    return super.getHistoryPage(limit: limit, offset: offset);
   }
 }
 
@@ -328,6 +357,84 @@ void main() {
     expect(state.page, 0);
     expect(state.hasMore, isTrue);
   });
+
+  test('refresh resets list and loads first page', () async {
+    final notifier = container.read(historyPagedProvider.notifier);
+
+    await notifier.loadMore();
+    expect(container.read(historyPagedProvider).items.length, 25);
+
+    await notifier.refresh();
+
+    final state = container.read(historyPagedProvider);
+    expect(state.items.length, 25);
+    expect(state.page, 0);
+    expect(state.hasMore, isTrue);
+    expect(state.query, '');
+  });
+
+  test(
+    'markStale toggles and refreshIfNeeded only refreshes when stale',
+    () async {
+      final notifier = container.read(historyPagedProvider.notifier);
+
+      await notifier.refreshIfNeeded();
+      final loaded = container.read(historyPagedProvider);
+      expect(loaded.hasLoadedOnce, isTrue);
+      expect(loaded.isStale, isFalse);
+
+      await notifier.refreshIfNeeded();
+      expect(container.read(historyPagedProvider).page, 0);
+
+      notifier.markStale();
+      expect(container.read(historyPagedProvider).isStale, isTrue);
+
+      await notifier.refreshIfNeeded();
+      expect(container.read(historyPagedProvider).isStale, isFalse);
+    },
+  );
+
+  test(
+    'stale earlier async load cannot overwrite newer refresh result',
+    () async {
+      final staleContainer = ProviderContainer(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          historyRepositoryProvider.overrideWith(
+            (ref) => _DeferredHistoryRepository(ref),
+          ),
+        ],
+      );
+      addTearDown(staleContainer.dispose);
+
+      final deferredRepo =
+          staleContainer.read(historyRepositoryProvider)
+              as _DeferredHistoryRepository;
+      final notifier = staleContainer.read(historyPagedProvider.notifier);
+      final firstLoad = notifier.refresh();
+      expect(staleContainer.read(historyPagedProvider).isLoading, isTrue);
+
+      final secondLoad = notifier.refresh();
+      expect(deferredRepo.countGates.length, 2);
+
+      deferredRepo.countGates[0].complete();
+      await pumpEventQueue();
+      expect(deferredRepo.pageGates.length, 1);
+
+      deferredRepo.countGates[1].complete();
+      await pumpEventQueue();
+      expect(deferredRepo.pageGates.length, 2);
+
+      deferredRepo.pageGates[1].complete();
+      await pumpEventQueue();
+      deferredRepo.pageGates[0].complete();
+
+      await Future.wait([firstLoad, secondLoad]);
+      final state = staleContainer.read(historyPagedProvider);
+      expect(state.items.length, 25);
+      expect(state.page, 0);
+    },
+  );
 
   test('stale state refreshes on demand after history changes', () async {
     final notifier = container.read(historyPagedProvider.notifier);
