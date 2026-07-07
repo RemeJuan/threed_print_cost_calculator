@@ -44,10 +44,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Interface-instellingen konden niet worden opgeslagen. Probeer het opnieuw.';
 
   @override
-  String get interfaceShowPrinterSelectLabel => 'Printerselectie tonen';
+  String get interfaceShowPrinterSelectLabel => 'Printerkiezer tonen';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'Batchknop tonen';
+  String get interfaceShowBatchButtonLabel => 'Knop voor batchkosten tonen';
 
   @override
   String get interfaceShowHistoryTabLabel => 'Geschiedenistab tonen';
@@ -56,14 +56,15 @@ class AppLocalizationsNl extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'Materialentab tonen';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'G-code actie tonen';
+  String get interfaceShowGcodeActionLabel => 'Knop voor G-code-import tonen';
 
   @override
   String get interfaceShowAdvancedBreakdownLabel =>
-      'Geavanceerde uitsplitsing tonen';
+      'Gedetailleerde prijssecties tonen';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'Arbeidsvelden tonen';
+  String get interfaceShowLabourFieldsLabel =>
+      'Bediening voor arbeidskosten tonen';
 
   @override
   String get interfaceShowFailureRiskLabel => 'Faalrisico tonen';
@@ -72,10 +73,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'Slijtage tonen';
 
   @override
-  String get interfaceShowMarkupLabel => 'Opmaak tonen';
+  String get interfaceShowMarkupLabel => 'Bediening voor opslag tonen';
 
   @override
-  String get interfaceShowCurrencyLabel => 'Valuta tonen';
+  String get interfaceShowCurrencyLabel => 'Valuta-instellingen tonen';
 
   @override
   String get newAnnouncementBadgeLabel => 'Nieuw';
