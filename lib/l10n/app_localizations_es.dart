@@ -47,7 +47,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get interfaceShowPrinterSelectLabel => 'Mostrar selector de impresora';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'Mostrar botón de lote';
+  String get interfaceShowBatchButtonLabel =>
+      'Mostrar botón de cálculo por lotes';
 
   @override
   String get interfaceShowHistoryTabLabel => 'Mostrar pestaña de historial';
@@ -56,14 +57,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'Mostrar pestaña de materiales';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'Mostrar acción G-code';
+  String get interfaceShowGcodeActionLabel =>
+      'Mostrar botón de importación de G-code';
 
   @override
   String get interfaceShowAdvancedBreakdownLabel =>
-      'Mostrar secciones avanzadas de desglose';
+      'Mostrar secciones detalladas de precios';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'Mostrar campos de mano de obra';
+  String get interfaceShowLabourFieldsLabel =>
+      'Mostrar controles de coste de mano de obra';
 
   @override
   String get interfaceShowFailureRiskLabel => 'Mostrar riesgo de fallo';
@@ -72,10 +75,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'Mostrar desgaste y rotura';
 
   @override
-  String get interfaceShowMarkupLabel => 'Mostrar margen';
+  String get interfaceShowMarkupLabel => 'Mostrar controles de margen';
 
   @override
-  String get interfaceShowCurrencyLabel => 'Mostrar moneda';
+  String get interfaceShowCurrencyLabel => 'Mostrar ajustes de moneda';
 
   @override
   String get newAnnouncementBadgeLabel => 'Nuevo';
