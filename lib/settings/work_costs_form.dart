@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
@@ -64,78 +65,68 @@ class WorkCostsSettings extends HookConsumerWidget {
     }
 
     void persistFailure(String value) {
-      failureDebounce.value?.cancel();
-      failureDebounce.value = Timer(debounce400ms, () async {
-        final parsed = tryParseLocalizedNum(value);
-        if (parsed == null) return;
-        persistenceService.saveSetting(
-          updateWith: (settings) =>
-              settings.copyWith(failureRisk: parsed.toString()),
-          settingName: 'failureRisk',
-        );
-      });
+      _debouncedPersistNumeric(
+        debounce: failureDebounce,
+        persistenceService: persistenceService,
+        value: value,
+        settingName: 'failureRisk',
+        updateWith: (settings, parsed) =>
+            settings.copyWith(failureRisk: parsed.toString()),
+      );
     }
 
     void persistLabour(String value) {
-      labourDebounce.value?.cancel();
-      labourDebounce.value = Timer(debounce400ms, () async {
-        final parsed = tryParseLocalizedNum(value);
-        if (parsed == null) return;
-        persistenceService.saveSetting(
-          updateWith: (settings) =>
-              settings.copyWith(labourRate: parsed.toString()),
-          settingName: 'labourRate',
-        );
-      });
+      _debouncedPersistNumeric(
+        debounce: labourDebounce,
+        persistenceService: persistenceService,
+        value: value,
+        settingName: 'labourRate',
+        updateWith: (settings, parsed) =>
+            settings.copyWith(labourRate: parsed.toString()),
+      );
     }
 
     void persistWear(String value) {
-      wearDebounce.value?.cancel();
-      wearDebounce.value = Timer(debounce400ms, () async {
-        final parsed = tryParseLocalizedNum(value);
-        if (parsed == null) return;
-        persistenceService.saveSetting(
-          updateWith: (settings) =>
-              settings.copyWith(wearAndTear: parsed.toString()),
-          settingName: 'wearAndTear',
-        );
-      });
+      _debouncedPersistNumeric(
+        debounce: wearDebounce,
+        persistenceService: persistenceService,
+        value: value,
+        settingName: 'wearAndTear',
+        updateWith: (settings, parsed) =>
+            settings.copyWith(wearAndTear: parsed.toString()),
+      );
     }
 
     void persistMarkup(String value) {
-      markupDebounce.value?.cancel();
-      markupDebounce.value = Timer(debounce400ms, () async {
-        final parsed = tryParseLocalizedNum(value);
-        if (parsed == null) return;
-        persistenceService.saveSetting(
-          updateWith: (settings) =>
-              settings.copyWith(pricingMarkupPercent: parsed.toString()),
-          settingName: 'pricingMarkupPercent',
-        );
-      });
+      _debouncedPersistNumeric(
+        debounce: markupDebounce,
+        persistenceService: persistenceService,
+        value: value,
+        settingName: 'pricingMarkupPercent',
+        updateWith: (settings, parsed) =>
+            settings.copyWith(pricingMarkupPercent: parsed.toString()),
+      );
     }
 
     void persistSetupFee(String value) {
-      setupFeeDebounce.value?.cancel();
-      setupFeeDebounce.value = Timer(debounce400ms, () async {
-        final parsed = tryParseLocalizedNum(value);
-        if (parsed == null) return;
-        persistenceService.saveSetting(
-          updateWith: (settings) =>
-              settings.copyWith(pricingSetupFee: parsed.toString()),
-          settingName: 'pricingSetupFee',
-        );
-      });
+      _debouncedPersistNumeric(
+        debounce: setupFeeDebounce,
+        persistenceService: persistenceService,
+        value: value,
+        settingName: 'pricingSetupFee',
+        updateWith: (settings, parsed) =>
+            settings.copyWith(pricingSetupFee: parsed.toString()),
+      );
     }
 
     void persistCurrencySymbol(String value) {
-      currencySymbolDebounce.value?.cancel();
-      currencySymbolDebounce.value = Timer(debounce400ms, () async {
-        persistenceService.saveSetting(
-          updateWith: (settings) => settings.copyWith(currencySymbol: value),
-          settingName: 'currencySymbol',
-        );
-      });
+      _debouncedPersistText(
+        debounce: currencySymbolDebounce,
+        persistenceService: persistenceService,
+        value: value,
+        settingName: 'currencySymbol',
+        updateWith: (settings, text) => settings.copyWith(currencySymbol: text),
+      );
     }
 
     return StreamBuilder(
@@ -174,30 +165,14 @@ class WorkCostsSettings extends HookConsumerWidget {
                   children: [
                     if (interfaceSettings.showWearAndTear)
                       Expanded(
-                        child: FocusSafeTextField(
-                          key: const ValueKey<String>(
-                            'settings.workCost.wearAndTear.input',
-                          ),
+                        child: _numericField(
+                          key: 'settings.workCost.wearAndTear.input',
                           controller: wearController,
                           externalText: wearText,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          inputFormatters: localizedDecimalInputFormatters,
-                          inputNormalizer: normalizeLeadingZeroNumericInput,
-                          validator: (value) {
-                            if (normalizeLocalizedNumber(value).isEmpty) {
-                              return l10n.enterNumber;
-                            }
-                            if (tryParseLocalizedNum(value) == null) {
-                              return l10n.invalidNumber;
-                            }
-                            return null;
-                          },
+                          labelText: l10n.wearAndTearLabel,
                           onChanged: persistWear,
-                          decoration: InputDecoration(
-                            labelText: l10n.wearAndTearLabel,
-                          ),
+                          validator: (value) =>
+                              _validateLocalizedNumber(value, l10n: l10n),
                         ),
                       ),
                     if (interfaceSettings.showWearAndTear &&
@@ -205,31 +180,15 @@ class WorkCostsSettings extends HookConsumerWidget {
                       const SizedBox(width: 24),
                     if (interfaceSettings.showFailureRisk)
                       Expanded(
-                        child: FocusSafeTextField(
-                          key: const ValueKey<String>(
-                            'settings.workCost.failureRisk.input',
-                          ),
+                        child: _numericField(
+                          key: 'settings.workCost.failureRisk.input',
                           controller: failureController,
                           externalText: data.failureRisk.toString(),
                           focusNode: failureFocus,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          inputFormatters: localizedDecimalInputFormatters,
-                          inputNormalizer: normalizeLeadingZeroNumericInput,
-                          validator: (value) {
-                            if (normalizeLocalizedNumber(value).isEmpty) {
-                              return l10n.enterNumber;
-                            }
-                            if (tryParseLocalizedNum(value) == null) {
-                              return l10n.invalidNumber;
-                            }
-                            return null;
-                          },
+                          labelText: l10n.failureRiskLabel,
                           onChanged: persistFailure,
-                          decoration: InputDecoration(
-                            labelText: l10n.failureRiskLabel,
-                          ),
+                          validator: (value) =>
+                              _validateLocalizedNumber(value, l10n: l10n),
                         ),
                       ),
                   ],
@@ -240,31 +199,15 @@ class WorkCostsSettings extends HookConsumerWidget {
                   children: [
                     if (interfaceSettings.showLabourFields)
                       Expanded(
-                        child: FocusSafeTextField(
-                          key: const ValueKey<String>(
-                            'settings.workCost.labourRate.input',
-                          ),
+                        child: _numericField(
+                          key: 'settings.workCost.labourRate.input',
                           controller: labourController,
                           externalText: data.labourRate.toString(),
                           focusNode: labourFocus,
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          inputFormatters: localizedDecimalInputFormatters,
-                          inputNormalizer: normalizeLeadingZeroNumericInput,
-                          validator: (value) {
-                            if (normalizeLocalizedNumber(value).isEmpty) {
-                              return l10n.enterNumber;
-                            }
-                            if (tryParseLocalizedNum(value) == null) {
-                              return l10n.invalidNumber;
-                            }
-                            return null;
-                          },
+                          labelText: l10n.labourRateLabel,
                           onChanged: persistLabour,
-                          decoration: InputDecoration(
-                            labelText: l10n.labourRateLabel,
-                          ),
+                          validator: (value) =>
+                              _validateLocalizedNumber(value, l10n: l10n),
                         ),
                       ),
                     if (interfaceSettings.showLabourFields &&
@@ -272,34 +215,18 @@ class WorkCostsSettings extends HookConsumerWidget {
                       const SizedBox(width: 24),
                     if (interfaceSettings.showMarkup)
                       Expanded(
-                        child: FocusSafeTextField(
-                          key: const ValueKey<String>(
-                            'settings.workCost.pricingMarkupPercent.input',
-                          ),
+                        child: _numericField(
+                          key: 'settings.workCost.pricingMarkupPercent.input',
                           controller: markupController,
                           externalText: data.pricingMarkupPercent.toString(),
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          inputFormatters: localizedDecimalInputFormatters,
-                          inputNormalizer: normalizeLeadingZeroNumericInput,
-                          validator: (value) {
-                            if (normalizeLocalizedNumber(value).isEmpty) {
-                              return l10n.enterNumber;
-                            }
-                            if (tryParseLocalizedNum(value) == null) {
-                              return l10n.invalidNumber;
-                            }
-                            return null;
-                          },
+                          labelText: l10n.pricingMarkupPercentLabel,
+                          suffixText: '%',
                           onChanged: (value) {
                             persistMarkup(value);
                             firePricingSettingsChanged(data);
                           },
-                          decoration: InputDecoration(
-                            labelText: l10n.pricingMarkupPercentLabel,
-                            suffixText: '%',
-                          ),
+                          validator: (value) =>
+                              _validateLocalizedNumber(value, l10n: l10n),
                         ),
                       ),
                   ],
@@ -310,33 +237,17 @@ class WorkCostsSettings extends HookConsumerWidget {
                   children: [
                     if (interfaceSettings.showMarkup)
                       Expanded(
-                        child: FocusSafeTextField(
-                          key: const ValueKey<String>(
-                            'settings.workCost.pricingSetupFee.input',
-                          ),
+                        child: _numericField(
+                          key: 'settings.workCost.pricingSetupFee.input',
                           controller: setupFeeController,
                           externalText: data.pricingSetupFee.toString(),
-                          keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true,
-                          ),
-                          inputFormatters: localizedDecimalInputFormatters,
-                          inputNormalizer: normalizeLeadingZeroNumericInput,
-                          validator: (value) {
-                            if (normalizeLocalizedNumber(value).isEmpty) {
-                              return l10n.enterNumber;
-                            }
-                            if (tryParseLocalizedNum(value) == null) {
-                              return l10n.invalidNumber;
-                            }
-                            return null;
-                          },
+                          labelText: l10n.pricingSetupFeeLabel,
                           onChanged: (value) {
                             persistSetupFee(value);
                             firePricingSettingsChanged(data);
                           },
-                          decoration: InputDecoration(
-                            labelText: l10n.pricingSetupFeeLabel,
-                          ),
+                          validator: (value) =>
+                              _validateLocalizedNumber(value, l10n: l10n),
                         ),
                       ),
                     if (interfaceSettings.showMarkup) const SizedBox(width: 24),
@@ -478,6 +389,43 @@ class WorkCostsSettings extends HookConsumerWidget {
     );
   }
 
+  Widget _numericField({
+    required String key,
+    required TextEditingController controller,
+    required String externalText,
+    required String labelText,
+    required ValueChanged<String> onChanged,
+    required FormFieldValidator<String> validator,
+    FocusNode? focusNode,
+    String? suffixText,
+  }) {
+    return FocusSafeTextField(
+      key: ValueKey<String>(key),
+      controller: controller,
+      externalText: externalText,
+      focusNode: focusNode,
+      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+      inputFormatters: localizedDecimalInputFormatters,
+      inputNormalizer: normalizeLeadingZeroNumericInput,
+      validator: validator,
+      onChanged: onChanged,
+      decoration: InputDecoration(labelText: labelText, suffixText: suffixText),
+    );
+  }
+
+  String? _validateLocalizedNumber(
+    String? value, {
+    required AppLocalizations l10n,
+  }) {
+    if (normalizeLocalizedNumber(value).isEmpty) {
+      return l10n.enterNumber;
+    }
+    if (tryParseLocalizedNum(value) == null) {
+      return l10n.invalidNumber;
+    }
+    return null;
+  }
+
   String _formatPreview(GeneralSettingsModel s, bool showCurrency) {
     final amount = '95.30';
     if (!showCurrency) return amount;
@@ -488,4 +436,46 @@ class WorkCostsSettings extends HookConsumerWidget {
         ? '$amount$sep$symbol'
         : '$symbol$sep$amount';
   }
+}
+
+void _debouncedPersistNumeric({
+  required ObjectRef<Timer?> debounce,
+  required WorkCostsPersistenceService persistenceService,
+  required String value,
+  required String settingName,
+  required GeneralSettingsModel Function(
+    GeneralSettingsModel settings,
+    num parsed,
+  )
+  updateWith,
+}) {
+  debounce.value?.cancel();
+  debounce.value = Timer(debounce400ms, () async {
+    final parsed = tryParseLocalizedNum(value);
+    if (parsed == null) return;
+    persistenceService.saveSetting(
+      updateWith: (settings) => updateWith(settings, parsed),
+      settingName: settingName,
+    );
+  });
+}
+
+void _debouncedPersistText({
+  required ObjectRef<Timer?> debounce,
+  required WorkCostsPersistenceService persistenceService,
+  required String value,
+  required String settingName,
+  required GeneralSettingsModel Function(
+    GeneralSettingsModel settings,
+    String text,
+  )
+  updateWith,
+}) {
+  debounce.value?.cancel();
+  debounce.value = Timer(debounce400ms, () async {
+    persistenceService.saveSetting(
+      updateWith: (settings) => updateWith(settings, value),
+      settingName: settingName,
+    );
+  });
 }
