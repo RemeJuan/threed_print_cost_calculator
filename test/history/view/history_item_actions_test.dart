@@ -38,10 +38,7 @@ void main() {
   });
 
   Future<({BuildContext context, WidgetRef ref, AppLogger logger})>
-  pumpControllerHarness(
-    WidgetTester tester,
-    List<Override> overrides,
-  ) async {
+  pumpControllerHarness(WidgetTester tester, List<Override> overrides) async {
     BuildContext? capturedContext;
     WidgetRef? capturedRef;
     AppLogger? capturedLogger;

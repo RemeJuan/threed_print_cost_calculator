@@ -145,7 +145,9 @@ void main() {
   test('load offerings maps missing offering to typed error', () async {
     final container = ProviderContainer(
       overrides: [
-        premiumPurchaseGatewayProvider.overrideWithValue(_NullOfferingGateway()),
+        premiumPurchaseGatewayProvider.overrideWithValue(
+          _NullOfferingGateway(),
+        ),
       ],
     );
 

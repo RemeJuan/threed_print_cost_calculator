@@ -25,9 +25,7 @@ class PaywallOfferingsLoadResult {
   final PaywallOfferingsLoadError? error;
 }
 
-enum PaywallOfferingsLoadError {
-  unavailable,
-}
+enum PaywallOfferingsLoadError { unavailable }
 
 Future<PaywallOfferingsLoadResult> loadPaywallOfferings({
   required ProviderReader read,
@@ -44,11 +42,7 @@ Future<PaywallOfferingsLoadResult> loadPaywallOfferings({
     }
     return PaywallOfferingsLoadResult(offering: offering, error: null);
   } catch (e, st) {
-    logPaywallOfferingsLoadFailure(
-      read: read,
-      error: e,
-      stackTrace: st,
-    );
+    logPaywallOfferingsLoadFailure(read: read, error: e, stackTrace: st);
     return const PaywallOfferingsLoadResult(
       offering: null,
       error: PaywallOfferingsLoadError.unavailable,

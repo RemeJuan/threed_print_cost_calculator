@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
+import 'package:threed_print_cost_calculator/app/app_page_shell_config.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
@@ -14,6 +15,7 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -103,14 +105,18 @@ void main() {
     testWidgets('saves history and shows success dialog', (tester) async {
       final sink = _CapturingLogSink();
       final premiumLocalStore = InMemoryPremiumLocalStore();
-      await tester.pumpApp(const BatchSummaryPage(), [
-        batchCostingProvider.overrideWith(() => _SaveBatchNotifier()),
-        isPremiumProvider.overrideWithValue(true),
-        appLogSinkProvider.overrideWithValue(sink),
-        appLoggerConfigProvider.overrideWithValue(
-          const AppLoggerConfig(minLevel: AppLogLevel.debug),
-        ),
-      ], premiumLocalStore);
+      final container = await tester.pumpAppWithContainer(
+        const BatchSummaryPage(),
+        overrides: [
+          batchCostingProvider.overrideWith(() => _SaveBatchNotifier()),
+          isPremiumProvider.overrideWithValue(true),
+          appLogSinkProvider.overrideWithValue(sink),
+          appLoggerConfigProvider.overrideWithValue(
+            const AppLoggerConfig(minLevel: AppLogLevel.debug),
+          ),
+        ],
+        premiumLocalStore: premiumLocalStore,
+      );
 
       final l10n = AppLocalizations.of(
         tester.element(find.byType(BatchSummaryPage)),
@@ -146,6 +152,59 @@ void main() {
         premiumLocalStore.readSync(completedCostingCountPreferenceKey),
         '1',
       );
+
+      await tester.tap(find.text(l10n.batchCostingSummaryViewHistoryButton));
+      await tester.pumpAndSettle();
+
+      expect(container.read(pendingTabNavigationProvider), AppPageTab.history);
+    });
+
+    testWidgets('resets batch on start new batch confirmation', (tester) async {
+      final sink = _CapturingLogSink();
+      final container = await tester.pumpAppWithContainer(
+        const BatchSummaryPage(),
+        overrides: [
+          batchCostingProvider.overrideWith(() => _SaveBatchNotifier()),
+          isPremiumProvider.overrideWithValue(true),
+          appLogSinkProvider.overrideWithValue(sink),
+          appLoggerConfigProvider.overrideWithValue(
+            const AppLoggerConfig(minLevel: AppLogLevel.debug),
+          ),
+        ],
+      );
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchSummaryPage)),
+      )!;
+
+      await tester.scrollUntilVisible(
+        find.text(l10n.batchCostingSummarySaveButton),
+        200,
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(l10n.batchCostingSummarySaveButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(l10n.saveButton));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.text(l10n.batchCostingSummaryStartNewBatchButton).at(1),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text(l10n.batchCostingNewBatchDialogTitle), findsWidgets);
+
+      await tester.tap(
+        find
+            .text(
+              l10n.batchCostingSummaryStartNewBatchButton,
+              skipOffstage: false,
+            )
+            .last,
+      );
+      await tester.pumpAndSettle();
+
+      expect(container.read(batchCostingProvider).items, isEmpty);
     });
   });
 

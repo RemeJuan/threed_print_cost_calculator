@@ -161,10 +161,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 child: Center(child: CircularProgressIndicator()),
               )
             else if (_offeringsError != null)
-              PaywallOfferingError(
-                l10n: l10n,
-                onRetry: _retryOfferings,
-              )
+              PaywallOfferingError(l10n: l10n, onRetry: _retryOfferings)
             else
               PaywallBottomBar(
                 l10n: l10n,
