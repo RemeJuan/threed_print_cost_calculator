@@ -46,7 +46,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get interfaceShowPrinterSelectLabel => 'แสดงตัวเลือกเครื่องพิมพ์';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'แสดงปุ่มชุดงาน';
+  String get interfaceShowBatchButtonLabel => 'แสดงปุ่มคำนวณแบบชุด';
 
   @override
   String get interfaceShowHistoryTabLabel => 'แสดงแท็บประวัติ';
@@ -55,13 +55,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'แสดงแท็บวัสดุ';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'แสดงการทำงาน G-code';
+  String get interfaceShowGcodeActionLabel => 'แสดงปุ่มนำเข้า G-code';
 
   @override
-  String get interfaceShowAdvancedBreakdownLabel => 'แสดงส่วนสรุปขั้นสูง';
+  String get interfaceShowAdvancedBreakdownLabel => 'แสดงส่วนราคาละเอียด';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'แสดงช่องแรงงาน';
+  String get interfaceShowLabourFieldsLabel => 'แสดงตัวควบคุมต้นทุนแรงงาน';
 
   @override
   String get interfaceShowFailureRiskLabel => 'แสดงความเสี่ยงล้มเหลว';
@@ -70,10 +70,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'แสดงการสึกหรอ';
 
   @override
-  String get interfaceShowMarkupLabel => 'แสดงมาร์กอัป';
+  String get interfaceShowMarkupLabel => 'แสดงตัวควบคุมมาร์กอัป';
 
   @override
-  String get interfaceShowCurrencyLabel => 'แสดงสกุลเงิน';
+  String get interfaceShowCurrencyLabel => 'แสดงการตั้งค่าสกุลเงิน';
 
   @override
   String get newAnnouncementBadgeLabel => 'ใหม่';
