@@ -44,10 +44,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Interface-Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut.';
 
   @override
-  String get interfaceShowPrinterSelectLabel => 'Druckerauswahl anzeigen';
+  String get interfaceShowPrinterSelectLabel => 'Druckerauswahlfeld anzeigen';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'Stapel-Schaltfläche anzeigen';
+  String get interfaceShowBatchButtonLabel =>
+      'Schaltfläche für Stapelkalkulation anzeigen';
 
   @override
   String get interfaceShowHistoryTabLabel => 'Verlauf-Tab anzeigen';
@@ -56,14 +57,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'Materialien-Tab anzeigen';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'G-Code-Aktion anzeigen';
+  String get interfaceShowGcodeActionLabel =>
+      'G-Code-Import-Schaltfläche anzeigen';
 
   @override
   String get interfaceShowAdvancedBreakdownLabel =>
-      'Erweiterte Aufschlüsselungsabschnitte anzeigen';
+      'Detaillierte Preisabschnitte anzeigen';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'Arbeitsfelder anzeigen';
+  String get interfaceShowLabourFieldsLabel =>
+      'Steuerelemente für Arbeitskosten anzeigen';
 
   @override
   String get interfaceShowFailureRiskLabel => 'Ausfallrisiko anzeigen';
@@ -72,10 +75,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'Verschleiß anzeigen';
 
   @override
-  String get interfaceShowMarkupLabel => 'Aufschlag anzeigen';
+  String get interfaceShowMarkupLabel =>
+      'Steuerelemente für Aufschlag anzeigen';
 
   @override
-  String get interfaceShowCurrencyLabel => 'Währung anzeigen';
+  String get interfaceShowCurrencyLabel => 'Währungseinstellungen anzeigen';
 
   @override
   String get newAnnouncementBadgeLabel => 'Neu';
