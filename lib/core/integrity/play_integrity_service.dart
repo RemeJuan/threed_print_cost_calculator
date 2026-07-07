@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/firebase_options.dart';
 
 import 'play_integrity_models.dart';
@@ -24,18 +24,30 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
     MethodChannel? channel,
     FirebaseFunctions? functions,
     int? cloudProjectNumber,
+    AppLogger? logger,
+    Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
+    decodeIntegrity,
   }) : _channel =
            channel ??
            const MethodChannel('com.threed_print_calculator/play_integrity'),
-       _functions =
-           functions ?? FirebaseFunctions.instanceFor(region: 'europe-west1'),
+       _functions = functions,
        _cloudProjectNumber =
            cloudProjectNumber ??
-           int.tryParse(DefaultFirebaseOptions.android.messagingSenderId);
+           int.tryParse(DefaultFirebaseOptions.android.messagingSenderId),
+       _logger =
+           logger ??
+           AppLogger(
+             sink: const DebugPrintAppLogSink(),
+             config: const AppLoggerConfig.defaults(),
+           ),
+       _decodeIntegrity = decodeIntegrity;
 
   final MethodChannel _channel;
-  final FirebaseFunctions _functions;
+  final FirebaseFunctions? _functions;
   final int? _cloudProjectNumber;
+  final AppLogger _logger;
+  final Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
+  _decodeIntegrity;
 
   @override
   Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
@@ -51,18 +63,23 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
         throw StateError('Play Integrity token unavailable');
       }
 
-      final callable = _functions.httpsCallable('decodePlayIntegrity');
-      final response = await callable.call(<String, Object?>{
-        'integrityToken': token,
-        'flow': flow.name,
-      });
+      final decodeIntegrity = _decodeIntegrity;
+      final response = await (decodeIntegrity != null
+          ? decodeIntegrity(token, flow)
+          : _decodePlayIntegrityViaCloudFunction(token, flow));
       final snapshot = PlayIntegritySnapshot.fromJson(
-        Map<String, dynamic>.from(response.data as Map),
+        Map<String, dynamic>.from(response as Map),
       );
       capturePlayIntegritySnapshot(snapshot);
       return snapshot;
     } catch (error, stackTrace) {
-      debugPrint('Play Integrity fallback: $error');
+      _logger.warn(
+        AppLogCategory.billing,
+        'Play Integrity fallback',
+        context: {'flow': flow.name},
+        error: error,
+        stackTrace: stackTrace,
+      );
       await Sentry.captureException(error, stackTrace: stackTrace);
       return const PlayIntegritySnapshot(
         license: 'UNEVALUATED',
@@ -75,6 +92,20 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
         decision: PlayIntegrityDecisionLabel.allow,
       );
     }
+  }
+
+  Future<dynamic> _decodePlayIntegrityViaCloudFunction(
+    String token,
+    PlayIntegrityFlow flow,
+  ) async {
+    final callable =
+        (_functions ?? FirebaseFunctions.instanceFor(region: 'europe-west1'))
+            .httpsCallable('decodePlayIntegrity');
+    final response = await callable.call(<String, Object?>{
+      'integrityToken': token,
+      'flow': flow.name,
+    });
+    return response.data;
   }
 
   String _nonce() {
