@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
@@ -39,6 +40,13 @@ class HistoryItemActionsController {
   final Future<void> Function(WidgetRef ref, String dbKey)? deleteHistoryEntry;
   final HistoryItemExportCsv exportCsv;
 
+  FeatureAccess _exportAccess(PremiumAccessPolicy policy) {
+    return data.batchQuote ? policy.batchExport() : policy.singleJobExport();
+  }
+
+  bool _isExportAllowed(PremiumAccessPolicy policy) =>
+      _exportAccess(policy).allowed;
+
   Future<void> exportEntry(
     BuildContext context,
     WidgetRef ref,
@@ -46,20 +54,14 @@ class HistoryItemActionsController {
   ) async {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.read(premiumAccessPolicyProvider);
-    final access = data.batchQuote
-        ? policy.batchExport()
-        : policy.singleJobExport();
+    final access = _exportAccess(policy);
     if (!await requirePremium(
       ref.read(paywallPresenterProvider),
       access,
       purchaseSource: 'history_export_entry',
       recheck: () {
         final p = ref.read(premiumAccessPolicyProvider);
-        return Future.value(
-          data.batchQuote
-              ? p.batchExport().allowed
-              : p.singleJobExport().allowed,
-        );
+        return Future.value(_isExportAllowed(p));
       },
     )) {
       return;
@@ -173,9 +175,6 @@ class HistoryItemActions extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final logger = ref.read(appLoggerProvider);
     final policy = ref.watch(premiumAccessPolicyProvider);
-    final canExport = data.batchQuote
-        ? policy.batchExport().allowed
-        : policy.singleJobExport().allowed;
     final controller = HistoryItemActionsController(
       dbKey: dbKey,
       data: data,
@@ -183,6 +182,7 @@ class HistoryItemActions extends ConsumerWidget {
       deleteHistoryEntry: deleteHistoryEntry,
       exportCsv: exportCsv,
     );
+    final canExport = controller._isExportAllowed(policy);
 
     return PopupMenuButton<_HistoryItemAction>(
       key: ValueKey<String>('$itemKeyPrefix.menu'),
