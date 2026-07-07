@@ -40,7 +40,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   Offering? _currentOffering;
   Package? _selectedPackage;
   bool _loadingOfferings = true;
-  String? _offeringsError;
+  PaywallOfferingsLoadError? _offeringsError;
   bool _purchasing = false;
 
   @override
@@ -161,7 +161,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 child: Center(child: CircularProgressIndicator()),
               )
             else if (_offeringsError != null)
-              PaywallOfferingError(l10n: l10n, onRetry: _retryOfferings)
+              PaywallOfferingError(
+                l10n: l10n,
+                onRetry: _retryOfferings,
+              )
             else
               PaywallBottomBar(
                 l10n: l10n,

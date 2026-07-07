@@ -17,6 +17,14 @@ class _FakeIntegrityService implements PlayIntegrityService {
       snapshot;
 }
 
+class _NullOfferingGateway extends FakePremiumPurchaseGateway {
+  @override
+  Future<Offering?> getOffering(String offeringId) async {
+    getOfferingCalls += 1;
+    return null;
+  }
+}
+
 ProviderContainer _makeContainer({
   required FakePremiumPurchaseGateway gateway,
   required PlayIntegrityDecisionLabel decision,
@@ -132,6 +140,24 @@ void main() {
     );
 
     expect(gateway.restorePurchasesCalls, 1);
+  });
+
+  test('load offerings maps missing offering to typed error', () async {
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(_NullOfferingGateway()),
+      ],
+    );
+
+    addTearDown(container.dispose);
+
+    final result = await loadPaywallOfferings(
+      read: <T>(provider) => container.read(provider),
+      offeringId: 'pro',
+    );
+
+    expect(result.offering, isNull);
+    expect(result.error, PaywallOfferingsLoadError.unavailable);
   });
 }
 

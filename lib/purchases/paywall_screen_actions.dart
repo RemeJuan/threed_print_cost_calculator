@@ -22,7 +22,11 @@ class PaywallOfferingsLoadResult {
   });
 
   final Offering? offering;
-  final String? error;
+  final PaywallOfferingsLoadError? error;
+}
+
+enum PaywallOfferingsLoadError {
+  unavailable,
 }
 
 Future<PaywallOfferingsLoadResult> loadPaywallOfferings({
@@ -35,13 +39,34 @@ Future<PaywallOfferingsLoadResult> loadPaywallOfferings({
     if (offering == null) {
       return const PaywallOfferingsLoadResult(
         offering: null,
-        error: 'Offering not available',
+        error: PaywallOfferingsLoadError.unavailable,
       );
     }
     return PaywallOfferingsLoadResult(offering: offering, error: null);
-  } catch (e) {
-    return PaywallOfferingsLoadResult(offering: null, error: e.toString());
+  } catch (e, st) {
+    logPaywallOfferingsLoadFailure(
+      read: read,
+      error: e,
+      stackTrace: st,
+    );
+    return const PaywallOfferingsLoadResult(
+      offering: null,
+      error: PaywallOfferingsLoadError.unavailable,
+    );
   }
+}
+
+void logPaywallOfferingsLoadFailure({
+  required ProviderReader read,
+  required Object error,
+  required StackTrace stackTrace,
+}) {
+  read(appLoggerProvider).warn(
+    AppLogCategory.billing,
+    'Paywall offerings load failed',
+    error: error,
+    stackTrace: stackTrace,
+  );
 }
 
 Future<void> completePaywallPurchase({
