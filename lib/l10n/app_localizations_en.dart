@@ -43,10 +43,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not save interface settings. Try again.';
 
   @override
-  String get interfaceShowPrinterSelectLabel => 'Show printer select';
+  String get interfaceShowPrinterSelectLabel => 'Show printer picker';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'Show batch button';
+  String get interfaceShowBatchButtonLabel => 'Show batch costing button';
 
   @override
   String get interfaceShowHistoryTabLabel => 'Show history tab';
@@ -55,14 +55,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => 'Show materials tab';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'Show G-code action';
+  String get interfaceShowGcodeActionLabel => 'Show G-code import button';
 
   @override
   String get interfaceShowAdvancedBreakdownLabel =>
-      'Show advanced breakdown sections';
+      'Show detailed pricing sections';
 
   @override
-  String get interfaceShowLabourFieldsLabel => 'Show labour fields';
+  String get interfaceShowLabourFieldsLabel => 'Show labour cost controls';
 
   @override
   String get interfaceShowFailureRiskLabel => 'Show failure risk';
@@ -71,10 +71,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => 'Show wear and tear';
 
   @override
-  String get interfaceShowMarkupLabel => 'Show markup';
+  String get interfaceShowMarkupLabel => 'Show markup controls';
 
   @override
-  String get interfaceShowCurrencyLabel => 'Show currency';
+  String get interfaceShowCurrencyLabel => 'Show currency settings';
 
   @override
   String get newAnnouncementBadgeLabel => 'New';

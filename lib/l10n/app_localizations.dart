@@ -183,13 +183,13 @@ abstract class AppLocalizations {
   /// No description provided for @interfaceShowPrinterSelectLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show printer select'**
+  /// **'Show printer picker'**
   String get interfaceShowPrinterSelectLabel;
 
   /// No description provided for @interfaceShowBatchButtonLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show batch button'**
+  /// **'Show batch costing button'**
   String get interfaceShowBatchButtonLabel;
 
   /// No description provided for @interfaceShowHistoryTabLabel.
@@ -207,19 +207,19 @@ abstract class AppLocalizations {
   /// No description provided for @interfaceShowGcodeActionLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show G-code action'**
+  /// **'Show G-code import button'**
   String get interfaceShowGcodeActionLabel;
 
   /// No description provided for @interfaceShowAdvancedBreakdownLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show advanced breakdown sections'**
+  /// **'Show detailed pricing sections'**
   String get interfaceShowAdvancedBreakdownLabel;
 
   /// No description provided for @interfaceShowLabourFieldsLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show labour fields'**
+  /// **'Show labour cost controls'**
   String get interfaceShowLabourFieldsLabel;
 
   /// No description provided for @interfaceShowFailureRiskLabel.
@@ -237,13 +237,13 @@ abstract class AppLocalizations {
   /// No description provided for @interfaceShowMarkupLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show markup'**
+  /// **'Show markup controls'**
   String get interfaceShowMarkupLabel;
 
   /// No description provided for @interfaceShowCurrencyLabel.
   ///
   /// In en, this message translates to:
-  /// **'Show currency'**
+  /// **'Show currency settings'**
   String get interfaceShowCurrencyLabel;
 
   /// No description provided for @newAnnouncementBadgeLabel.
