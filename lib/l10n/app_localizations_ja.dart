@@ -42,10 +42,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get interfaceSettingsSaveError => 'インターフェース設定を保存できませんでした。もう一度お試しください。';
 
   @override
-  String get interfaceShowPrinterSelectLabel => 'プリンタ選択を表示';
+  String get interfaceShowPrinterSelectLabel => 'プリンタ選択欄を表示';
 
   @override
-  String get interfaceShowBatchButtonLabel => 'バッチボタンを表示';
+  String get interfaceShowBatchButtonLabel => 'バッチ計算ボタンを表示';
 
   @override
   String get interfaceShowHistoryTabLabel => '履歴タブを表示';
@@ -54,13 +54,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get interfaceShowMaterialsTabLabel => '材料タブを表示';
 
   @override
-  String get interfaceShowGcodeActionLabel => 'G-code操作を表示';
+  String get interfaceShowGcodeActionLabel => 'G-codeインポートボタンを表示';
 
   @override
-  String get interfaceShowAdvancedBreakdownLabel => '詳細内訳セクションを表示';
+  String get interfaceShowAdvancedBreakdownLabel => '詳細な価格セクションを表示';
 
   @override
-  String get interfaceShowLabourFieldsLabel => '工数項目を表示';
+  String get interfaceShowLabourFieldsLabel => '人件費コントロールを表示';
 
   @override
   String get interfaceShowFailureRiskLabel => '失敗リスクを表示';
@@ -69,10 +69,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get interfaceShowWearAndTearLabel => '摩耗と損耗を表示';
 
   @override
-  String get interfaceShowMarkupLabel => 'マークアップを表示';
+  String get interfaceShowMarkupLabel => 'マークアップ設定を表示';
 
   @override
-  String get interfaceShowCurrencyLabel => '通貨を表示';
+  String get interfaceShowCurrencyLabel => '通貨設定を表示';
 
   @override
   String get newAnnouncementBadgeLabel => '新規';
