@@ -114,23 +114,21 @@ class MaterialRow extends StatelessWidget {
             foregroundColor: TEXT_INVERSE,
             padding: EdgeInsets.zero,
             borderRadius: BorderRadius.circular(kAppSurfaceRadius),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: kAppSpace8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.delete, size: 20, color: TEXT_INVERSE),
-                  const SizedBox(height: kAppSpace4),
-                  Text(
-                    l10n.deleteButton,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: TEXT_INVERSE,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    overflow: TextOverflow.ellipsis,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.delete, size: 20, color: TEXT_INVERSE),
+                Text(
+                  l10n.deleteButton,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: TEXT_INVERSE,
+                    fontWeight: FontWeight.w600,
+                    height: 1,
                   ),
-                ],
-              ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ],
