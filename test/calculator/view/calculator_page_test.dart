@@ -22,7 +22,8 @@ class _MaterialRowSummaryHarness extends StatefulWidget {
       _MaterialRowSummaryHarnessState();
 }
 
-class _MaterialRowSummaryHarnessState extends State<_MaterialRowSummaryHarness> {
+class _MaterialRowSummaryHarnessState
+    extends State<_MaterialRowSummaryHarness> {
   static final MaterialModel _material = MaterialModel(
     id: 'mat_1',
     name: 'PLA Black',

@@ -1,11 +1,14 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sembast/sembast_memory.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/startup.dart';
 
 void main() {
   test('migrates legacy history records into materialUsages', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
     final db = await databaseFactoryMemory.openDatabase('migration_test.db');
     addTearDown(() => db.close());
 
@@ -24,7 +27,13 @@ void main() {
       'timeHours': '01:00',
     });
 
-    await migrateLegacyHistoryRecords(db);
+    await startupMigration(
+      db,
+      prefs: prefs,
+      hooks: _FakeHooks([]),
+      migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecords,
+      reportError: (_) {},
+    );
 
     final migrated =
         await historyStore.record(key).get(db) as Map<String, dynamic>;
@@ -36,6 +45,8 @@ void main() {
   });
 
   test('skips records that already have materialUsages', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
     final db = await databaseFactoryMemory.openDatabase('migration_skip.db');
     addTearDown(() => db.close());
 
@@ -54,7 +65,13 @@ void main() {
       'printer': 'Printer A',
     });
 
-    await migrateLegacyHistoryRecords(db);
+    await startupMigration(
+      db,
+      prefs: prefs,
+      hooks: _FakeHooks([]),
+      migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecords,
+      reportError: (_) {},
+    );
 
     final migrated =
         await historyStore.record(key).get(db) as Map<String, dynamic>;
@@ -66,6 +83,8 @@ void main() {
   });
 
   test('handles partial legacy fields safely', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
     final db = await databaseFactoryMemory.openDatabase('migration_partial.db');
     addTearDown(() => db.close());
 
@@ -75,7 +94,13 @@ void main() {
       'printer': 'Printer A',
     });
 
-    await migrateLegacyHistoryRecords(db);
+    await startupMigration(
+      db,
+      prefs: prefs,
+      hooks: _FakeHooks([]),
+      migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecords,
+      reportError: (_) {},
+    );
 
     final migrated =
         await historyStore.record(key).get(db) as Map<String, dynamic>;
@@ -86,12 +111,15 @@ void main() {
   });
 
   test('runs startup tasks in order', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
     final db = await databaseFactoryMemory.openDatabase('startup_sequence.db');
     addTearDown(() => db.close());
 
     final calls = <String>[];
     await startupMigration(
       db,
+      prefs: prefs,
       hooks: _FakeHooks(calls),
       migrateLegacyHistoryRecordsFn: (_) async {
         calls.add('migrate');
@@ -103,18 +131,77 @@ void main() {
   });
 
   test('reports and rethrows startup failures', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
     final db = await databaseFactoryMemory.openDatabase('startup_error.db');
     addTearDown(() => db.close());
 
     final reported = <FlutterErrorDetails>[];
 
     await expectLater(
-      startupMigration(db, hooks: _ThrowingHooks(), reportError: reported.add),
+      startupMigration(
+        db,
+        prefs: prefs,
+        hooks: _ThrowingHooks(),
+        reportError: reported.add,
+      ),
       throwsStateError,
     );
 
     expect(reported, hasLength(1));
     expect(reported.single.exception, isStateError);
+  });
+
+  test('skips completed migration versions', () async {
+    SharedPreferences.setMockInitialValues({
+      printerIndexMigrationKey: printerIndexMigrationVersion,
+      searchFieldBackfillMigrationKey: searchFieldBackfillMigrationVersion,
+      historySearchRebuildMigrationKey: historySearchRebuildMigrationVersion,
+      legacyHistoryMigrationKey: legacyHistoryMigrationVersion,
+    });
+    final prefs = await SharedPreferences.getInstance();
+    final db = await databaseFactoryMemory.openDatabase('startup_version.db');
+    addTearDown(() => db.close());
+
+    final calls = <String>[];
+    await startupMigration(
+      db,
+      prefs: prefs,
+      hooks: _FakeHooks(calls),
+      migrateLegacyHistoryRecordsFn: (_) async {
+        calls.add('migrate');
+      },
+      reportError: (_) {},
+    );
+
+    expect(calls, isEmpty);
+  });
+
+  testWidgets('schedules deferred startup migration after first frame', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final db = await databaseFactoryMemory.openDatabase('startup_deferred.db');
+    addTearDown(() => db.close());
+
+    final calls = <String>[];
+    scheduleDeferredStartupMigration(
+      db: db,
+      prefs: prefs,
+      hooks: _FakeHooks(calls),
+      migrateLegacyHistoryRecordsFn: (_) async {
+        calls.add('migrate');
+      },
+      reportError: (_) {},
+    );
+
+    expect(calls, isEmpty);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pumpAndSettle();
+
+    expect(calls, ['printer', 'search_backfill', 'search_rebuild', 'migrate']);
   });
 }
 
