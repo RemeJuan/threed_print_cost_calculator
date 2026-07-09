@@ -59,8 +59,6 @@ Future<void> _runApp() async {
   final premiumLocalStore = SharedPrefsPremiumLocalStore(prefs);
   final db = await DatabaseStorageImpl().openDb();
 
-  await startupMigration(db);
-
   await bootstrap(
     () => ProviderScope(
       overrides: [
@@ -71,6 +69,8 @@ Future<void> _runApp() async {
       child: const App(),
     ),
   );
+
+  scheduleDeferredStartupMigration(db: db, prefs: prefs);
 
   unawaited(initSentry());
 }
