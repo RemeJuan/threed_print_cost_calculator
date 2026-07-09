@@ -1,11 +1,26 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
+
+import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
+
+const printerIndexMigrationVersion = 1;
+const searchFieldBackfillMigrationVersion = 1;
+const historySearchRebuildMigrationVersion = 1;
+const legacyHistoryMigrationVersion = 1;
+
+const printerIndexMigrationKey = 'startup_migration_printer_index_version';
+const searchFieldBackfillMigrationKey =
+    'startup_migration_search_field_backfill_version';
+const historySearchRebuildMigrationKey =
+    'startup_migration_history_search_rebuild_version';
+const legacyHistoryMigrationKey = 'startup_migration_legacy_history_version';
 
 abstract class StartupMigrationHooks {
   Future<void> rebuildPrinterIndex();
@@ -37,6 +52,7 @@ class DefaultStartupMigrationHooks implements StartupMigrationHooks {
 
 Future<void> startupMigration(
   Database db, {
+  SharedPreferences? prefs,
   StartupMigrationHooks? hooks,
   Future<void> Function(Database db)? migrateLegacyHistoryRecordsFn,
   void Function(FlutterErrorDetails details)? reportError,
@@ -49,12 +65,33 @@ Future<void> startupMigration(
   final migrateFn =
       migrateLegacyHistoryRecordsFn ?? migrateLegacyHistoryRecords;
   final errorReporter = reportError ?? FlutterError.reportError;
+  final preferences = prefs;
 
   try {
-    await effectiveHooks.rebuildPrinterIndex();
-    await effectiveHooks.backfillSearchFields();
-    await effectiveHooks.rebuildHistorySearchIndex();
-    await migrateFn(db);
+    await _runVersionedMigration(
+      preferences: preferences,
+      key: printerIndexMigrationKey,
+      version: printerIndexMigrationVersion,
+      migration: effectiveHooks.rebuildPrinterIndex,
+    );
+    await _runVersionedMigration(
+      preferences: preferences,
+      key: searchFieldBackfillMigrationKey,
+      version: searchFieldBackfillMigrationVersion,
+      migration: effectiveHooks.backfillSearchFields,
+    );
+    await _runVersionedMigration(
+      preferences: preferences,
+      key: historySearchRebuildMigrationKey,
+      version: historySearchRebuildMigrationVersion,
+      migration: effectiveHooks.rebuildHistorySearchIndex,
+    );
+    await _runVersionedMigration(
+      preferences: preferences,
+      key: legacyHistoryMigrationKey,
+      version: legacyHistoryMigrationVersion,
+      migration: () => migrateFn(db),
+    );
   } catch (e, st) {
     errorReporter(
       FlutterErrorDetails(
@@ -70,6 +107,42 @@ Future<void> startupMigration(
   } finally {
     tempContainer?.dispose();
   }
+}
+
+void scheduleDeferredStartupMigration({
+  required Database db,
+  required SharedPreferences prefs,
+  StartupMigrationHooks? hooks,
+  Future<void> Function(Database db)? migrateLegacyHistoryRecordsFn,
+  void Function(FlutterErrorDetails details)? reportError,
+}) {
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    unawaited(
+      startupMigration(
+        db,
+        prefs: prefs,
+        hooks: hooks,
+        migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecordsFn,
+        reportError: reportError,
+      ).catchError((_) {
+        // startupMigration already reports via reportError before rethrowing.
+      }),
+    );
+  });
+}
+
+Future<void> _runVersionedMigration({
+  required SharedPreferences? preferences,
+  required String key,
+  required int version,
+  required Future<void> Function() migration,
+}) async {
+  if (preferences?.getInt(key) == version) {
+    return;
+  }
+
+  await migration();
+  await preferences?.setInt(key, version);
 }
 
 Future<void> migrateLegacyHistoryRecords(Database db) async {
