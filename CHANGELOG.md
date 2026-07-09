@@ -3,6 +3,9 @@
 ### Added
 - Added interface settings to hide or show calculator controls, tabs, and pricing details.
 
+### Fixed
+- Fixed a crash that could occur when opening the app after an update.
+
 ## [3.1.1] - 2026-06-30
 
 ### Fixed

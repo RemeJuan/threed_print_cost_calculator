@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
@@ -25,6 +26,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
     FirebaseFunctions? functions,
     int? cloudProjectNumber,
     AppLogger? logger,
+    TargetPlatform? targetPlatform,
     Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
     decodeIntegrity,
   }) : _channel =
@@ -40,17 +42,23 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
              sink: const DebugPrintAppLogSink(),
              config: const AppLoggerConfig.defaults(),
            ),
+       _targetPlatform = targetPlatform ?? defaultTargetPlatform,
        _decodeIntegrity = decodeIntegrity;
 
   final MethodChannel _channel;
   final FirebaseFunctions? _functions;
   final int? _cloudProjectNumber;
   final AppLogger _logger;
+  final TargetPlatform _targetPlatform;
   final Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
   _decodeIntegrity;
 
   @override
   Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
+    if (_targetPlatform != TargetPlatform.android) {
+      return _unevaluatedAllowSnapshot;
+    }
+
     try {
       final nonce = _nonce();
       final token = await _channel
@@ -81,16 +89,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
         stackTrace: stackTrace,
       );
       await Sentry.captureException(error, stackTrace: stackTrace);
-      return const PlayIntegritySnapshot(
-        license: 'UNEVALUATED',
-        appIntegrity: 'UNEVALUATED',
-        deviceIntegrity: 'UNEVALUATED',
-        virtualIntegrity: 'UNEVALUATED',
-        recentDeviceActivity: 'UNEVALUATED',
-        playProtect: 'UNEVALUATED',
-        appAccessRisk: <String>[],
-        decision: PlayIntegrityDecisionLabel.allow,
-      );
+      return _unevaluatedAllowSnapshot;
     }
   }
 
@@ -113,4 +112,15 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
     final bytes = List<int>.generate(32, (_) => rng.nextInt(256));
     return base64UrlEncode(bytes).replaceAll('=', '');
   }
+
+  static const _unevaluatedAllowSnapshot = PlayIntegritySnapshot(
+    license: 'UNEVALUATED',
+    appIntegrity: 'UNEVALUATED',
+    deviceIntegrity: 'UNEVALUATED',
+    virtualIntegrity: 'UNEVALUATED',
+    recentDeviceActivity: 'UNEVALUATED',
+    playProtect: 'UNEVALUATED',
+    appAccessRisk: <String>[],
+    decision: PlayIntegrityDecisionLabel.allow,
+  );
 }
