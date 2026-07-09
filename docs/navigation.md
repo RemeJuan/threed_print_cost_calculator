@@ -16,8 +16,8 @@
 
 ## Primary app entry points
 
-- `lib/main.dart`: real app entry. Initializes Firebase, App Check, Crashlytics, RevenueCat, SharedPreferences, Sembast DB, then runs startup migrations before `ProviderScope`.
-- `lib/startup.dart`: startup migrations for history/printer indexes and legacy history records.
+- `lib/main.dart`: real app entry. Initializes Firebase, App Check, Crashlytics, RevenueCat, SharedPreferences, Sembast DB, then schedules deferred startup migrations after first frame.
+- `lib/startup.dart`: deferred startup migrations for history/printer indexes and legacy history records.
 - `lib/bootstrap.dart`: installs Bloc observer/logging and calls `runApp`.
 - `lib/app/app.dart`: root `MaterialApp`, theme, localization delegates, BotToast, RateMyApp.
 - `lib/app/app_page.dart`: main shell. Bottom-nav tabs and top-level page wiring.

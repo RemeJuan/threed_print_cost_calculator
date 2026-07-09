@@ -21,8 +21,8 @@
 - `main()` no longer waits on Sentry. It runs `_runApp()` first, then starts `initSentry()` as background work so monitoring never blocks launch.
 - Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart` (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), avoiding any `PackageInfo` dependency in the startup path.
 - On iOS debug builds, `configureSentryOptions()` disables native auto-init to avoid early `sentry_flutter` native channel failures during startup.
-- Startup migrations from `lib/startup.dart` run after those services are ready and before the root Riverpod `ProviderScope` is applied.
-- That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
+- Startup migrations from `lib/startup.dart` are deferred until after the first frame, so they no longer block launch. Each migration step is guarded by a persisted `SharedPreferences` version key and only reruns when its version changes.
+- That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, deferred Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
 
 ## Data persistence approach
 
@@ -40,7 +40,7 @@
   - `calculator_preferences_repository.dart`
 - Settings persist in the Sembast main store via `lib/database/repositories/settings_repository.dart`.
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
-- Startup migrations run in `lib/startup.dart` before `runApp`; current startup work rebuilds printer/history indexes and migrates legacy history material data.
+- Startup migrations run in `lib/startup.dart` after first frame; current startup work rebuilds printer/history indexes and migrates legacy history material data.
 - `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
 
 ## Premium gating approach
