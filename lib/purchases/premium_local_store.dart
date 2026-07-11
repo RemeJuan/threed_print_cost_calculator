@@ -35,11 +35,16 @@ class SharedPrefsPremiumLocalStore implements PremiumLocalStore {
 
   final SharedPreferences _prefs;
 
-  @override
-  String? readSync(String key) => _prefs.getString(key);
+  String? _readAsString(String key) {
+    final value = _prefs.get(key);
+    return value?.toString();
+  }
 
   @override
-  Future<String?> read(String key) async => _prefs.getString(key);
+  String? readSync(String key) => _readAsString(key);
+
+  @override
+  Future<String?> read(String key) async => _readAsString(key);
 
   @override
   Future<void> write(String key, String value) async {
@@ -55,7 +60,7 @@ class SharedPrefsPremiumLocalStore implements PremiumLocalStore {
   Future<Map<String, String>> readAll() async {
     final result = <String, String>{};
     for (final key in _knownKeys) {
-      final value = _prefs.getString(key);
+      final value = _readAsString(key);
       if (value != null) result[key] = value;
     }
     return Map<String, String>.unmodifiable(result);

@@ -1,1 +1,1 @@
-New interface settings let you hide unused controls, tabs, and pricing details for a cleaner custom view. Your chosen layout is also included in backup and restore.
+New interface settings let you hide unused controls, tabs, and pricing details for a cleaner custom view. Your chosen layout is also included in backup and restore. Fixed a crash that could occur when opening the app after an update.

@@ -12,6 +12,16 @@ void main() {
     store = SharedPrefsPremiumLocalStore(prefs);
   });
 
+  test('read methods normalize legacy int values', () async {
+    SharedPreferences.setMockInitialValues({'run_count': 0});
+    prefs = await SharedPreferences.getInstance();
+    store = SharedPrefsPremiumLocalStore(prefs);
+
+    expect(store.readSync('run_count'), '0');
+    expect(await store.read('run_count'), '0');
+    expect(await store.readAll(), {'run_count': '0'});
+  });
+
   test('write stores value in shared prefs', () async {
     await store.write('count', '1');
 
