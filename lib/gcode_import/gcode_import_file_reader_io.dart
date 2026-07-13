@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-Future<String> readGCodeTextFromPath(String path) =>
-    File(path).readAsString(encoding: const Utf8Codec(allowMalformed: true));
+Future<String> readGCodeTextFromPath(String path) async {
+  final bytes = await File(path).readAsBytes();
+  return utf8.decode(bytes, allowMalformed: true);
+}
 
 Future<Uint8List> readGCodeSampleFromPath(String path, int maxBytes) async {
   final bytes = BytesBuilder(copy: false);
