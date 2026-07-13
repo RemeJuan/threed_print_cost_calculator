@@ -1,5 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
@@ -67,6 +69,64 @@ void main() {
     expect(snapshot.playProtect, 'UNEVALUATED');
     expect(snapshot.appAccessRisk, isEmpty);
     expect(snapshot.decision, PlayIntegrityDecisionLabel.allow);
+  });
+
+  test('uses limited-use App Check token for callable decode', () {
+    expect(
+      DefaultPlayIntegrityService
+          .limitedUseAppCheckOptions
+          .limitedUseAppCheckToken,
+      isTrue,
+    );
+  });
+
+  test('rethrows unauthenticated decode failures', () async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          if (call.method == 'requestToken') return 'token';
+          return null;
+        });
+
+    final sentryEvents = <SentryEvent>[];
+    addTearDown(Sentry.close);
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = 'https://public@example.invalid/1';
+        options.beforeSend = (event, hint) {
+          sentryEvents.add(event);
+          return null;
+        };
+      },
+      appRunner: () async {
+        final captured = <AppLogEvent>[];
+        final service = DefaultPlayIntegrityService(
+          targetPlatform: TargetPlatform.android,
+          logger: AppLogger(
+            sink: _RecordingSink(captured),
+            config: const AppLoggerConfig(minLevel: AppLogLevel.debug),
+          ),
+          decodeIntegrity: (_, _) async {
+            throw FirebaseFunctionsException(
+              code: 'unauthenticated',
+              message: 'app check',
+            );
+          },
+        );
+
+        await expectLater(
+          () => service.evaluate(PlayIntegrityFlow.purchase),
+          throwsA(
+            isA<FirebaseFunctionsException>().having(
+              (error) => error.code,
+              'code',
+              'unauthenticated',
+            ),
+          ),
+        );
+        expect(captured, isEmpty);
+      },
+    );
+    expect(sentryEvents, isEmpty);
   });
 
   test('skips token request on non-Android platforms', () async {

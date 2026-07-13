@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod/misc.dart' show ProviderListenable;
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_decision.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provider.dart';
+import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
@@ -135,10 +137,24 @@ Future<void> _ensurePlayIntegrityAllowed({
   required ProviderReader read,
   required PlayIntegrityFlow flow,
 }) async {
-  final integrity = await read(playIntegrityServiceProvider).evaluate(flow);
+  final integrity = await _evaluatePlayIntegrity(read: read, flow: flow);
   if (isPlayIntegrityHardBlocked(integrity) ||
       isPlayIntegritySoftGated(integrity)) {
     throw const PlayIntegrityActionBlockedException();
+  }
+}
+
+Future<PlayIntegritySnapshot> _evaluatePlayIntegrity({
+  required ProviderReader read,
+  required PlayIntegrityFlow flow,
+}) async {
+  try {
+    return await read(playIntegrityServiceProvider).evaluate(flow);
+  } on FirebaseFunctionsException catch (error) {
+    if (error.code == 'unauthenticated') {
+      throw const PlayIntegrityActionBlockedException();
+    }
+    rethrow;
   }
 }
 

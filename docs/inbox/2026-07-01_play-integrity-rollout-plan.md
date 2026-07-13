@@ -1,8 +1,8 @@
 # Play Integrity Rollout Plan
 
 > ClickUp Task: TBD
-> Status: Draft
-> Scope: Planning only. No implementation yet.
+> Status: In progress
+> Scope: Planning + implementation notes. Flutter fix landed.
 > Related: `docs/architecture.md`
 
 ## Summary
@@ -75,6 +75,13 @@ Core rule:
   - allow app usage
   - log issue to Sentry
   - do not break calculator flow
+- If App Check rejects the callable with `unauthenticated`:
+  - app usage remains unaffected
+  - purchase/restore fails closed
+  - do not fall back to allow for premium-sensitive flows
+- If any other decode/token/infrastructure error occurs:
+  - app usage remains unaffected
+  - purchase/restore fails open to existing allow+log fallback
 
 ## Required Sentry Shape
 
@@ -360,11 +367,18 @@ Avoid:
 
 ### Verification
 
-- [ ] Add/extend unit tests for integrity parsing and decisions
-- [ ] Add/extend purchase action tests
+- [x] Add/extend unit tests for integrity parsing and decisions
+- [x] Add/extend purchase action tests
 - [ ] Run codegen if localization/generated files change
-- [ ] Run analyze
-- [ ] Run test suite relevant to touched areas
+- [x] Run analyze
+- [x] Run test suite relevant to touched areas
+
+### Implemented in Flutter
+
+- [x] Callable decode uses limited-use App Check token option
+- [x] App Check unauthenticated blocks purchase/restore flows
+- [x] Other token/decode failures still fail open with logging
+- [x] Unauthenticated failures are not captured to Sentry from the premium flow guard
 
 ### Documentation
 

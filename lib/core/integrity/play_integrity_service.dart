@@ -20,6 +20,10 @@ abstract class PlayIntegrityService {
 
 class DefaultPlayIntegrityService implements PlayIntegrityService {
   static const _requestTokenTimeout = Duration(seconds: 10);
+  @visibleForTesting
+  static final limitedUseAppCheckOptions = HttpsCallableOptions(
+    limitedUseAppCheckToken: true,
+  );
 
   DefaultPlayIntegrityService({
     MethodChannel? channel,
@@ -81,6 +85,10 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
       capturePlayIntegritySnapshot(snapshot);
       return snapshot;
     } catch (error, stackTrace) {
+      if (error is FirebaseFunctionsException &&
+          error.code == 'unauthenticated') {
+        rethrow;
+      }
       _logger.warn(
         AppLogCategory.billing,
         'Play Integrity fallback',
@@ -99,7 +107,10 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
   ) async {
     final callable =
         (_functions ?? FirebaseFunctions.instanceFor(region: 'europe-west1'))
-            .httpsCallable('decodePlayIntegrity');
+            .httpsCallable(
+              'decodePlayIntegrity',
+              options: limitedUseAppCheckOptions,
+            );
     final response = await callable.call(<String, Object?>{
       'integrityToken': token,
       'flow': flow.name,

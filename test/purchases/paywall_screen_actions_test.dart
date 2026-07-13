@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provider.dart';
@@ -15,6 +16,16 @@ class _FakeIntegrityService implements PlayIntegrityService {
   @override
   Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async =>
       snapshot;
+}
+
+class _ThrowingIntegrityService implements PlayIntegrityService {
+  _ThrowingIntegrityService(this.error);
+  final Object error;
+
+  @override
+  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
+    throw error;
+  }
 }
 
 class _NullOfferingGateway extends FakePremiumPurchaseGateway {
@@ -140,6 +151,69 @@ void main() {
     );
 
     expect(gateway.restorePurchasesCalls, 1);
+  });
+
+  test('purchase blocked when App Check unauthenticated', () async {
+    final gateway = FakePremiumPurchaseGateway();
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+        playIntegrityServiceProvider.overrideWithValue(
+          _ThrowingIntegrityService(
+            FirebaseFunctionsException(
+              code: 'unauthenticated',
+              message: 'app check',
+            ),
+          ),
+        ),
+      ],
+    );
+
+    addTearDown(container.dispose);
+
+    await expectLater(
+      () => completePaywallPurchase(
+        read: <T>(provider) => container.read(provider),
+        package: _makePackage(),
+        purchaseSource: 'source',
+        defaultEntryPoint: 'entry',
+        onSuccess: () {},
+      ),
+      throwsA(isA<PlayIntegrityActionBlockedException>()),
+    );
+
+    expect(gateway.purchasePackageCalls, 0);
+  });
+
+  test('restore blocked when App Check unauthenticated', () async {
+    final gateway = FakePremiumPurchaseGateway();
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+        playIntegrityServiceProvider.overrideWithValue(
+          _ThrowingIntegrityService(
+            FirebaseFunctionsException(
+              code: 'unauthenticated',
+              message: 'app check',
+            ),
+          ),
+        ),
+      ],
+    );
+
+    addTearDown(container.dispose);
+
+    await expectLater(
+      () => completePaywallRestore(
+        read: <T>(provider) => container.read(provider),
+        source: 'source',
+        defaultEntryPoint: 'entry',
+        onSuccess: () {},
+      ),
+      throwsA(isA<PlayIntegrityActionBlockedException>()),
+    );
+
+    expect(gateway.restorePurchasesCalls, 0);
   });
 
   test('load offerings maps missing offering to typed error', () async {
