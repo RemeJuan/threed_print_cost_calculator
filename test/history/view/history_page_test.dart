@@ -124,6 +124,25 @@ void main() {
     expect(find.text('More actions in ⋯'), findsNothing);
   });
 
+  testWidgets('does not throw when unmounted before deferred refresh', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(hasLoadedOnce: true, hasMore: false),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+    ]);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+
+    expect(tester.takeException(), isNull);
+    expect(notifier.refreshIfNeededCalls, 1);
+  });
+
   testWidgets('premium users see history items', (tester) async {
     final notifier = _FakeHistoryPagedNotifier(
       HistoryPagedState.initial().copyWith(

@@ -69,8 +69,9 @@ class HistoryPage extends HookConsumerWidget {
     useHistorySearchQuery(ref: ref, controller: controller);
 
     useEffect(() {
+      final notifier = ref.read(historyPagedProvider.notifier);
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(historyPagedProvider.notifier).refreshIfNeeded();
+        notifier.refreshIfNeeded();
       });
       return null;
     }, [appRefreshTick]);
