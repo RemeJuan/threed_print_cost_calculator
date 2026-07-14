@@ -44,6 +44,40 @@ void main() {
     expect((usages.first as Map)['weightGrams'], 120);
   });
 
+  test('migrates legacy history records with string weight', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final db = await databaseFactoryMemory.openDatabase('migration_string.db');
+    addTearDown(() => db.close());
+
+    final historyStore = stringMapStoreFactory.store('history');
+    final key = await historyStore.add(db, {
+      'name': 'Legacy string print',
+      'materialId': 'mat-1',
+      'weight': '120',
+      'source': 'Imported',
+      'printer': 'Printer A',
+      'keepMe': 'yes',
+    });
+
+    await startupMigration(
+      db,
+      prefs: prefs,
+      hooks: _FakeHooks([]),
+      migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecords,
+      reportError: (_) {},
+    );
+
+    final migrated =
+        await historyStore.record(key).get(db) as Map<String, dynamic>;
+    expect(migrated['keepMe'], 'yes');
+    final usages = migrated['materialUsages'] as List;
+    expect((usages.first as Map)['materialId'], 'mat-1');
+    expect((usages.first as Map)['materialName'], kUnassignedLabel);
+    expect((usages.first as Map)['costPerKg'], 0);
+    expect((usages.first as Map)['weightGrams'], 120);
+  });
+
   test('skips records that already have materialUsages', () async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
@@ -137,19 +171,40 @@ void main() {
     addTearDown(() => db.close());
 
     final reported = <FlutterErrorDetails>[];
+    late final Object thrown;
+    late final StackTrace thrownStack;
 
-    await expectLater(
-      startupMigration(
+    try {
+      await startupMigration(
         db,
         prefs: prefs,
         hooks: _ThrowingHooks(),
         reportError: reported.add,
-      ),
-      throwsStateError,
-    );
+      );
+      fail('Expected startupMigration to throw');
+    } catch (error, stack) {
+      thrown = error;
+      thrownStack = stack;
+      expect(error, isStateError);
+    }
 
     expect(reported, hasLength(1));
-    expect(reported.single.exception, isStateError);
+    expect(
+      prefs.getInt(printerIndexMigrationKey),
+      printerIndexMigrationVersion,
+    );
+    expect(prefs.getInt(searchFieldBackfillMigrationKey), isNull);
+    expect(prefs.getInt(historySearchRebuildMigrationKey), isNull);
+    expect(prefs.getInt(legacyHistoryMigrationKey), isNull);
+    expect(reported.single.library, 'startupMigration');
+    expect(
+      reported.single.context.toString(),
+      'History search/printer index rebuild / migration',
+    );
+    expect(reported.single.stack, isNotNull);
+    expect(reported.single.stack, same(thrownStack));
+    expect(reported.single.exception, isA<StateError>());
+    expect(reported.single.exception, same(thrown));
   });
 
   test('skips completed migration versions', () async {
