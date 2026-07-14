@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/history/components/history_export_preview_sheet.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
+import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
@@ -159,6 +161,112 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Benchy'), findsOneWidget);
+  });
+
+  testWidgets('history load callback propagates to item action', (
+    tester,
+  ) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: [_entry('1', 'Benchy', DateTime.utc(2024, 1, 2))],
+        hasMore: false,
+      ),
+    );
+    final fakeCalculator = FakeCalculatorNotifier();
+    var historyLoadedCalls = 0;
+
+    await tester.pumpApp(
+      HistoryPage(
+        mode: HistoryPageMode.full,
+        onHistoryLoaded: () async => historyLoadedCalls += 1,
+      ),
+      [
+        historyPagedProvider.overrideWith(() => notifier),
+        calculatorProvider.overrideWith(() => fakeCalculator),
+        isPremiumProvider.overrideWithValue(true),
+      ],
+    );
+
+    await tester.pumpAndSettle();
+    final l10n = AppLocalizations.of(tester.element(find.byType(HistoryPage)))!;
+
+    await tester.tap(
+      find.byKey(const ValueKey<String>('history.item.Benchy.menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.historyLoadAction));
+    await tester.pumpAndSettle();
+
+    expect(fakeCalculator.loadFromHistoryCalls, 1);
+    expect(fakeCalculator.lastLoadedHistory?.key, '1');
+
+    expect(historyLoadedCalls, 1);
+  });
+
+  testWidgets('paginates when scrolling near the end', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(
+        items: List.generate(
+          20,
+          (index) => _entry(
+            '$index',
+            'Item $index',
+            DateTime.utc(2024, 1, 1).add(Duration(days: index)),
+          ),
+        ),
+        hasMore: true,
+      ),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    await tester.pumpAndSettle();
+
+    final scrollable = find.byType(Scrollable).first;
+    await tester.scrollUntilVisible(
+      find.text('Item 19'),
+      200,
+      scrollable: scrollable,
+    );
+    await tester.pump();
+
+    expect(notifier.loadMoreCalls, 1);
+  });
+
+  testWidgets('shows loading spinner at top', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(isLoading: true, items: []),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+    ]);
+
+    await tester.pump();
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('history.search.input')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('shows error rendering at top', (tester) async {
+    final notifier = _FakeHistoryPagedNotifier(
+      HistoryPagedState.initial().copyWith(error: 'boom', items: []),
+    );
+
+    await tester.pumpApp(const HistoryPage(mode: HistoryPageMode.full), [
+      historyPagedProvider.overrideWith(() => notifier),
+    ]);
+
+    await tester.pumpAndSettle();
+    final l10n = AppLocalizations.of(tester.element(find.byType(HistoryPage)))!;
+
+    expect(find.text(l10n.historyLoadError('boom')), findsOneWidget);
   });
 
   testWidgets('shows overflow hint once and dismisses it after menu open', (
