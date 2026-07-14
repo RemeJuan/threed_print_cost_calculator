@@ -3,8 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/completed_costing_tracking_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
+import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -221,6 +224,107 @@ void main() {
 
     expect(premiumLocalStore.readSync(completedCostingCountPreferenceKey), '1');
     expect(container.read(completedCostingCountProvider), 1);
+  });
+
+  test('reset cancels pending completed costing tracking', () async {
+    final notifier = container.read(calculatorProvider.notifier);
+    seedMeaningfulCostingInputs(notifier);
+
+    notifier.submit(trackCompletedCosting: true);
+    await notifier.resetToDefaults();
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+
+    expect(
+      premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+      isNull,
+    );
+    expect(container.read(completedCostingCountProvider), 0);
+  });
+
+  test(
+    'container disposal cancels pending completed costing tracking',
+    () async {
+      final localContainer = ProviderContainer(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          premiumLocalStoreProvider.overrideWithValue(premiumLocalStore),
+          appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+          completedCostingTrackingDelayProvider.overrideWithValue(
+            const Duration(milliseconds: 10),
+          ),
+        ],
+      );
+      final notifier = localContainer.read(calculatorProvider.notifier);
+      seedMeaningfulCostingInputs(notifier);
+      notifier.submit(trackCompletedCosting: true);
+
+      await Future<void>.delayed(const Duration(milliseconds: 1));
+      localContainer.dispose();
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+
+      expect(
+        premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+        isNull,
+      );
+    },
+  );
+
+  test(
+    'deleted material cleanup cancels pending completed costing tracking',
+    () async {
+      final notifier = container.read(calculatorProvider.notifier);
+      seedMeaningfulCostingInputs(notifier);
+
+      notifier.submit(trackCompletedCosting: true);
+      await notifier.clearUsagesForDeletedMaterial('material-1');
+      await Future<void>.delayed(const Duration(milliseconds: 30));
+
+      expect(
+        premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+        isNull,
+      );
+      expect(container.read(completedCostingCountProvider), 0);
+    },
+  );
+
+  test('history load cancels pending completed costing tracking', () async {
+    final notifier = container.read(calculatorProvider.notifier);
+    seedMeaningfulCostingInputs(notifier);
+
+    notifier.submit(trackCompletedCosting: true);
+    await notifier.loadFromHistory(
+      HistoryEntry(
+        key: 'history-cancel',
+        model: HistoryModel(
+          name: 'Cancel',
+          totalCost: 1,
+          riskCost: 1,
+          filamentCost: 1,
+          electricityCost: 1,
+          labourCost: 1,
+          date: DateTime.utc(2024, 1, 1),
+          printer: 'Printer',
+          material: 'PLA',
+          weight: 10,
+          timeHours: '00:10',
+          materialUsages: [
+            {
+              'materialId': 'material-1',
+              'materialName': 'PLA',
+              'costPerKg': 20,
+              'weightGrams': 10,
+            },
+          ],
+        ),
+      ),
+    );
+    await Future<void>.delayed(const Duration(milliseconds: 30));
+
+    expect(
+      premiumLocalStore.readSync(completedCostingCountPreferenceKey),
+      isNull,
+    );
+    expect(container.read(completedCostingCountProvider), 0);
   });
 
   test(

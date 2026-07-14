@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_history_loader.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_materials_service.dart';
+import 'package:threed_print_cost_calculator/calculator/provider/completed_costing_tracking_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_settings_sync.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
@@ -30,14 +31,10 @@ final calculatorProvider =
       CalculatorProvider.new,
     );
 
-final completedCostingTrackingDelayProvider = Provider<Duration>(
-  (ref) => debounce7s,
-);
-
 class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
-  Timer? _completedCostingDebounce;
   StreamSubscription<GeneralSettingsModel>? _settingsSubscription;
+  CompletedCostingTrackingCoordinator? _completedCostingTrackingCoordinator;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
 
@@ -49,11 +46,13 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     ref.onDispose(() {
       _submitDebounce?.cancel();
       _submitDebounce = null;
-      _completedCostingDebounce?.cancel();
-      _completedCostingDebounce = null;
+      _completedCostingTrackingCoordinator?.cancel();
       _settingsSubscription?.cancel();
       _settingsSubscription = null;
     });
+
+    _completedCostingTrackingCoordinator ??=
+        CompletedCostingTrackingCoordinator(ref);
 
     _settingsSubscription ??= ref
         .read(settingsRepositoryProvider)
@@ -131,7 +130,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   Future<void> resetToDefaults() async {
     _submitDebounce?.cancel();
-    _cancelCompletedCostingTracking();
+    _completedCostingTrackingCoordinator?.cancel();
 
     final settings = await ref.read(settingsServiceProvider).get();
     state = await ref
@@ -142,7 +141,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   Future<bool> loadFromHistory(HistoryEntry entry) async {
     _submitDebounce?.cancel();
-    _cancelCompletedCostingTracking();
+    _completedCostingTrackingCoordinator?.cancel();
 
     if (entry.model.materialUsages.isEmpty) {
       _logger.warn(
@@ -643,9 +642,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     updatePricing(pricing);
 
     if (trackCompletedCosting) {
-      _scheduleCompletedCostingTracking(results);
+      _completedCostingTrackingCoordinator?.schedule(results);
     } else {
-      _cancelCompletedCostingTracking();
+      _completedCostingTrackingCoordinator?.cancel();
     }
 
     AppAnalytics.safeLog(
@@ -676,7 +675,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   Future<void> clearUsagesForDeletedMaterial(String materialId) async {
     _submitDebounce?.cancel();
     _submitDebounce = null;
-    _cancelCompletedCostingTracking();
+    _completedCostingTrackingCoordinator?.cancel();
     final usages = state.materialUsages;
     final filtered = usages.where((u) => u.materialId != materialId).toList();
     final removedUsage = filtered.length != usages.length;
@@ -735,27 +734,6 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       delay,
       () => submit(trackCompletedCosting: trackCompletedCosting),
     );
-  }
-
-  void _cancelCompletedCostingTracking() {
-    _completedCostingDebounce?.cancel();
-    _completedCostingDebounce = null;
-  }
-
-  void _scheduleCompletedCostingTracking(CalculationResult results) {
-    final hasMeaningfulCompletedCosting =
-        results.electricity > 0 && results.filament > 0;
-    if (!hasMeaningfulCompletedCosting) {
-      _cancelCompletedCostingTracking();
-      return;
-    }
-
-    _completedCostingDebounce?.cancel();
-    final delay = ref.read(completedCostingTrackingDelayProvider);
-    _completedCostingDebounce = Timer(delay, () {
-      _completedCostingDebounce = null;
-      unawaited(ref.read(appUsageServiceProvider).recordCompletedCosting());
-    });
   }
 
   String _selectedMaterialIdFor(List<MaterialUsageInput> usages) {
