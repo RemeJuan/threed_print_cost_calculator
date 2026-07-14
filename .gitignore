@@ -150,3 +150,6 @@ fastlane/test_output/
 
 # functions
 node_modules
+
+# Local orchestration state
+.slim/deepwork/
