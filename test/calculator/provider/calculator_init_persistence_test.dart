@@ -112,9 +112,9 @@ void main() {
       expect(state.labourRate.value, 30);
       expect(state.activePrinterId, 'printer-1');
       expect(state.selectedMaterialId, 'material-1');
+      expect(state.materialUsages, isEmpty);
       expect(state.markupPercentOverridden, isFalse);
       expect(state.hasHydratedDefaults, isTrue);
-      expect(state.materialUsages, isEmpty);
 
       final savedSettings = await container
           .read(settingsRepositoryProvider)
@@ -130,6 +130,43 @@ void main() {
       expect(await savedPrefs.getStringValue('spoolCost'), '19.99');
     },
   );
+
+  test('reset clears dirty import and history warning state', () async {
+    await StoreRef<String, Object?>.main()
+        .record(DBName.settings.name)
+        .put(
+          db,
+          GeneralSettingsModel(
+            electricityCost: '0.32',
+            wattage: '140',
+            activePrinter: 'printer-1',
+            selectedMaterial: 'material-1',
+            wearAndTear: '1.5',
+            failureRisk: '7.25',
+            labourRate: '22',
+          ).toMap(),
+        );
+
+    final notifier = container.read(calculatorProvider.notifier);
+    await notifier.resetToDefaults();
+
+    notifier.updateKwCost('0.41');
+    notifier.applyImportedValues(
+      estimatedDuration: const Duration(minutes: 1),
+      filamentWeightGrams: 12,
+    );
+    notifier.state = notifier.state.copyWith(
+      showHistoryLoadReplacementWarning: true,
+    );
+
+    await notifier.resetToDefaults();
+
+    final state = container.read(calculatorProvider);
+    expect(state.kwCost.value, 0.32);
+    expect(state.importedFromGcode, isFalse);
+    expect(state.showHistoryLoadReplacementWarning, isFalse);
+    expect(state.materialUsages, isEmpty);
+  });
 
   group('local-only override persistence', () {
     Future<void> seedCalculatorData() async {
@@ -429,5 +466,71 @@ void main() {
         expect(state.materialUsages, isEmpty);
       },
     );
+
+    test('cold init seeds initial usage from selected material only', () async {
+      await StoreRef<String, Object?>.main()
+          .record(DBName.settings.name)
+          .put(
+            db,
+            GeneralSettingsModel(
+              electricityCost: '0.50',
+              wattage: '100',
+              activePrinter: 'printer-1',
+              selectedMaterial: 'material-1',
+              wearAndTear: '1.50',
+              failureRisk: '5.00',
+              labourRate: '20',
+            ).toMap(),
+          );
+
+      await StoreRef<String, Object?>.main().record('spoolWeight').delete(db);
+      await StoreRef<String, Object?>.main().record('spoolCost').delete(db);
+
+      final coldContainer = ProviderContainer(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+        ],
+      );
+      addTearDown(coldContainer.dispose);
+
+      await stringMapStoreFactory
+          .store(DBName.printers.name)
+          .record('printer-1')
+          .put(
+            db,
+            const PrinterModel(
+              id: 'printer-1',
+              name: 'Test Printer',
+              bedSize: '250x210',
+              wattage: '100',
+              archived: false,
+            ).toMap(),
+          );
+
+      await stringMapStoreFactory
+          .store(DBName.materials.name)
+          .record('material-1')
+          .put(
+            db,
+            const MaterialModel(
+              id: 'material-1',
+              name: 'PLA',
+              cost: '25',
+              color: 'Red',
+              weight: '1000',
+              archived: false,
+            ).toMap(),
+          );
+
+      final notifier = coldContainer.read(calculatorProvider.notifier);
+      await notifier.init();
+
+      final state = coldContainer.read(calculatorProvider);
+      expect(state.materialUsages, hasLength(1));
+      expect(state.selectedMaterialId, 'material-1');
+      expect(state.spoolWeight.value, isNull);
+      expect(state.spoolCost.value, isNull);
+    });
   });
 }

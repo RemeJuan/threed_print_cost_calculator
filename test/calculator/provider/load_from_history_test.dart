@@ -18,6 +18,15 @@ import 'package:threed_print_cost_calculator/shared/services/electricity_resolve
 import '../../helpers/helpers.dart';
 import '../../helpers/lower_level_test_fakes.dart';
 
+class _ThrowingSaveSettingsRepository extends FakeSettingsRepository {
+  _ThrowingSaveSettingsRepository({required super.initialSettings});
+
+  @override
+  Future<void> saveSettings(GeneralSettingsModel settings) async {
+    throw StateError('boom');
+  }
+}
+
 void main() {
   group('CalculatorProvider.loadFromHistory', () {
     setUpAll(setupTest);
@@ -192,6 +201,10 @@ void main() {
         'printer-history',
       );
       expect(settingsRepository.lastSavedSettings?.selectedMaterial, 'mat-pla');
+      expect(
+        settingsRepository.lastSavedSettings?.selectedMaterial,
+        isNot('material-current'),
+      );
     });
 
     test(
@@ -361,6 +374,242 @@ void main() {
       },
     );
 
+    test('dismisses history replacement warning on request', () async {
+      final settingsRepository = FakeSettingsRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '0.32',
+          wattage: '180',
+          activePrinter: 'printer-current',
+          selectedMaterial: 'material-current',
+          wearAndTear: '1.5',
+          failureRisk: '10',
+          labourRate: '15',
+        ),
+      );
+      final printersRepository = FakePrintersRepository({
+        'printer-current': const PrinterModel(
+          id: 'printer-current',
+          name: 'Bambu X1C',
+          bedSize: '256x256',
+          wattage: '180',
+          archived: false,
+        ),
+      });
+      final materialsRepository = FakeMaterialsRepository({
+        'mat-pla': const MaterialModel(
+          id: 'mat-pla',
+          name: 'PLA Red',
+          cost: '25',
+          color: '#FF0000',
+          weight: '1000',
+          archived: false,
+        ),
+      });
+
+      final container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepository),
+          printersRepositoryProvider.overrideWithValue(printersRepository),
+          materialsRepositoryProvider.overrideWithValue(materialsRepository),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.loadFromHistory(
+        HistoryEntry(
+          key: 'history-warn',
+          model: HistoryModel(
+            name: 'Warn',
+            totalCost: 1,
+            riskCost: 1,
+            filamentCost: 1,
+            electricityCost: 1,
+            labourCost: 1,
+            date: DateTime.utc(2024, 1, 1),
+            printer: 'Missing Printer',
+            material: 'PLA Red',
+            weight: 10,
+            timeHours: '00:10',
+            materialUsages: const [
+              {
+                'materialId': 'mat-pla',
+                'materialName': 'PLA Red',
+                'costPerKg': 25,
+                'weightGrams': 10,
+              },
+            ],
+          ),
+        ),
+      );
+
+      expect(
+        container.read(calculatorProvider).showHistoryLoadReplacementWarning,
+        isTrue,
+      );
+
+      notifier.dismissHistoryLoadReplacementWarning();
+
+      expect(
+        container.read(calculatorProvider).showHistoryLoadReplacementWarning,
+        isFalse,
+      );
+    });
+
+    test('restores imported from gcode flag from history', () async {
+      final settingsRepository = FakeSettingsRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '0.32',
+          wattage: '180',
+          activePrinter: 'printer-current',
+          selectedMaterial: 'material-current',
+          wearAndTear: '1.5',
+          failureRisk: '10',
+          labourRate: '15',
+        ),
+      );
+      final printersRepository = FakePrintersRepository({
+        'printer-current': const PrinterModel(
+          id: 'printer-current',
+          name: 'Bambu X1C',
+          bedSize: '256x256',
+          wattage: '180',
+          archived: false,
+        ),
+      });
+      final materialsRepository = FakeMaterialsRepository({
+        'mat-pla': const MaterialModel(
+          id: 'mat-pla',
+          name: 'PLA Red',
+          cost: '25',
+          color: '#FF0000',
+          weight: '1000',
+          archived: false,
+        ),
+      });
+
+      final container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepository),
+          printersRepositoryProvider.overrideWithValue(printersRepository),
+          materialsRepositoryProvider.overrideWithValue(materialsRepository),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.loadFromHistory(
+        HistoryEntry(
+          key: 'history-gcode',
+          model: HistoryModel(
+            name: 'Gcode',
+            totalCost: 1,
+            riskCost: 1,
+            filamentCost: 1,
+            electricityCost: 1,
+            labourCost: 1,
+            date: DateTime.utc(2024, 1, 1),
+            printer: 'Bambu X1C',
+            material: 'PLA Red',
+            weight: 10,
+            timeHours: '00:10',
+            importedFromGcode: true,
+            materialUsages: const [
+              {
+                'materialId': 'mat-pla',
+                'materialName': 'PLA Red',
+                'costPerKg': 25,
+                'weightGrams': 10,
+              },
+            ],
+          ),
+        ),
+      );
+
+      expect(container.read(calculatorProvider).importedFromGcode, isTrue);
+    });
+
+    test('keeps unsaved material row ids when loading history', () async {
+      const syntheticMaterialId =
+          '${MaterialUsageInput.unsavedMaterialIdPrefix}1';
+      final settingsRepository = FakeSettingsRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '0.32',
+          wattage: '180',
+          activePrinter: 'printer-current',
+          selectedMaterial: 'material-current',
+          wearAndTear: '1.5',
+          failureRisk: '10',
+          labourRate: '15',
+        ),
+      );
+      final printersRepository = FakePrintersRepository({
+        'printer-current': const PrinterModel(
+          id: 'printer-current',
+          name: 'Bambu X1C',
+          bedSize: '256x256',
+          wattage: '180',
+          archived: false,
+        ),
+      });
+      final materialsRepository = FakeMaterialsRepository();
+
+      final container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepository),
+          printersRepositoryProvider.overrideWithValue(printersRepository),
+          materialsRepositoryProvider.overrideWithValue(materialsRepository),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final notifier = container.read(calculatorProvider.notifier);
+      await notifier.loadFromHistory(
+        HistoryEntry(
+          key: 'history-unsaved',
+          model: HistoryModel(
+            name: 'Unsaved',
+            totalCost: 1,
+            riskCost: 1,
+            filamentCost: 1,
+            electricityCost: 1,
+            labourCost: 1,
+            date: DateTime.utc(2024, 1, 1),
+            printer: 'Bambu X1C',
+            material: 'PLA Red',
+            weight: 10,
+            timeHours: '00:10',
+            materialUsages: [
+              {
+                'materialId': syntheticMaterialId,
+                'materialName': 'Unsaved Row',
+                'costPerKg': 25,
+                'weightGrams': 10,
+              },
+            ],
+          ),
+        ),
+      );
+
+      final state = container.read(calculatorProvider);
+      expect(
+        state.materialUsages.single.materialId,
+        syntheticMaterialId,
+      );
+      expect(
+        state.selectedMaterialId,
+        syntheticMaterialId,
+      );
+      expect(
+        settingsRepository.lastSavedSettings?.selectedMaterial,
+        'material-current',
+      );
+      expect(
+        settingsRepository.lastSavedSettings?.selectedMaterial,
+        isNot(syntheticMaterialId),
+      );
+    });
+
     test(
       'rejects empty or corrupted history snapshots without state churn',
       () async {
@@ -463,5 +712,100 @@ void main() {
         );
       },
     );
+
+    test('history load is atomic when settings persistence fails', () async {
+      final settingsRepository = _ThrowingSaveSettingsRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '0.32',
+          wattage: '180',
+          activePrinter: 'printer-current',
+          selectedMaterial: 'material-current',
+          wearAndTear: '1.5',
+          failureRisk: '10',
+          labourRate: '15',
+        ),
+      );
+      final printersRepository = FakePrintersRepository({
+        'printer-current': const PrinterModel(
+          id: 'printer-current',
+          name: 'Bambu X1C',
+          bedSize: '256x256',
+          wattage: '180',
+          archived: false,
+        ),
+        'printer-history': const PrinterModel(
+          id: 'printer-history',
+          name: 'Prusa MK4',
+          bedSize: '250x210',
+          wattage: '250',
+          archived: false,
+        ),
+      });
+      final materialsRepository = FakeMaterialsRepository({
+        'mat-pla': const MaterialModel(
+          id: 'mat-pla',
+          name: 'PLA Red',
+          cost: '25',
+          color: '#FF0000',
+          weight: '1000',
+          archived: false,
+        ),
+      });
+
+      final container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepository),
+          printersRepositoryProvider.overrideWithValue(printersRepository),
+          materialsRepositoryProvider.overrideWithValue(materialsRepository),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final notifier = container.read(calculatorProvider.notifier);
+      notifier.state = CalculatorState(
+        materialUsages: const [
+          MaterialUsageInput(
+            materialId: 'material-current',
+            materialName: 'Current',
+            costPerKg: 99,
+            weightGrams: 1,
+          ),
+        ],
+      );
+
+      final didLoad = await notifier.loadFromHistory(
+        HistoryEntry(
+          key: 'history-fail',
+          model: HistoryModel(
+            name: 'Fail',
+            totalCost: 1,
+            riskCost: 1,
+            filamentCost: 1,
+            electricityCost: 1,
+            labourCost: 1,
+            date: DateTime.utc(2024, 1, 1),
+            printer: 'Prusa MK4',
+            material: 'PLA Red',
+            weight: 10,
+            timeHours: '00:10',
+            materialUsages: const [
+              {
+                'materialId': 'mat-pla',
+                'materialName': 'PLA Red',
+                'costPerKg': 25,
+                'weightGrams': 10,
+              },
+            ],
+          ),
+        ),
+      );
+
+      expect(didLoad, isFalse);
+      expect(
+        container.read(calculatorProvider).materialUsages.single.materialId,
+        'material-current',
+      );
+      expect(settingsRepository.lastSavedSettings?.activePrinter, isNull);
+    });
   });
 }
