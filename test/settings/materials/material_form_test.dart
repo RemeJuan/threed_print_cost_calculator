@@ -394,6 +394,58 @@ void main() {
     );
   });
 
+  testWidgets('free edit keeps remaining weight visible when preloaded', (
+    tester,
+  ) async {
+    final material = const MaterialModel(
+      id: 'material-1',
+      name: 'PLA',
+      cost: '24.5',
+      color: 'Red',
+      weight: '1000',
+      archived: false,
+      autoDeductEnabled: true,
+      originalWeight: 1000,
+      remainingWeight: 725,
+    );
+    final repo = FakeMaterialsRepository();
+    repo.materialsById[material.id] = material;
+
+    final db = await tester.pumpApp(
+      _MaterialDialogHost(
+        onResult: (_) {},
+        builder: (_) => const MaterialForm(dbRef: 'material-1'),
+      ),
+      [
+        materialsRepositoryProvider.overrideWithValue(repo),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: false),
+        ),
+      ],
+    );
+    addTearDown(db.close);
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(
+        const ValueKey<String>('settings.materials.track_remaining.toggle'),
+      ),
+      findsNothing,
+    );
+    expect(_field('settings.materials.remaining_weight.input'), findsOneWidget);
+    expect(
+      tester
+          .widget<TextFormField>(
+            _field('settings.materials.remaining_weight.input'),
+          )
+          .controller!
+          .text,
+      '725.0',
+    );
+  });
+
   testWidgets('null save results keep the dialog open', (tester) async {
     final repo = FakeMaterialsRepository(
       useExplicitSaveResult: true,
