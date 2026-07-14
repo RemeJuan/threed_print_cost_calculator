@@ -12,6 +12,7 @@ import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -39,22 +40,32 @@ class IntegrationTestHarness {
   final PurchasesGateway purchasesGateway;
   final AnalyticsService previousAnalyticsService;
 
-  static Future<IntegrationTestHarness> free({IntegrationHarnessSeed? seed}) {
-    return _create(purchasesGateway: FakePurchasesGateway.free(), seed: seed);
+  static Future<IntegrationTestHarness> free({
+    IntegrationHarnessSeed? seed,
+    List<dynamic> overrides = const [],
+  }) {
+    return _create(
+      purchasesGateway: FakePurchasesGateway.free(),
+      seed: seed,
+      additionalOverrides: overrides,
+    );
   }
 
   static Future<IntegrationTestHarness> premium({
     IntegrationHarnessSeed? seed,
+    List<dynamic> overrides = const [],
   }) {
     return _create(
       purchasesGateway: FakePurchasesGateway.premium(),
       seed: seed,
+      additionalOverrides: overrides,
     );
   }
 
   static Future<IntegrationTestHarness> _create({
     required PurchasesGateway purchasesGateway,
     IntegrationHarnessSeed? seed,
+    List<dynamic> additionalOverrides = const [],
   }) async {
     SharedPreferences.setMockInitialValues({});
     SharedPreferencesAsyncPlatform.instance =
@@ -71,7 +82,11 @@ class IntegrationTestHarness {
       overrides: [
         databaseProvider.overrideWithValue(database),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        premiumLocalStoreProvider.overrideWithValue(
+          SharedPrefsPremiumLocalStore(sharedPreferences),
+        ),
         purchasesGatewayProvider.overrideWithValue(purchasesGateway),
+        ...additionalOverrides,
       ],
     );
 
