@@ -2,11 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import '../helpers/helpers.dart';
 import '../helpers/lower_level_test_fakes.dart';
@@ -79,6 +81,118 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(paywallPresenter.calls, 1);
+  });
+
+  testWidgets(
+    'free populated batch shows manual action and hides import labels',
+    (tester) async {
+      final item = BatchCostingItem.manual(
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 2,
+        printWeightG: 34.5,
+        printDuration: const Duration(hours: 1, minutes: 20),
+        sourceFileName: 'benchy.gcode',
+      );
+
+      await tester.pumpApp(const BatchCostingPage(), [
+        batchCostingProvider.overrideWith(
+          () => FakeBatchCostingNotifier([item]),
+        ),
+        isPremiumProvider.overrideWithValue(false),
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: false),
+        ),
+      ]);
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchCostingPage)),
+      )!;
+
+      expect(
+        find.text(l10n.batchCostingReviewAddManualItemButton),
+        findsOneWidget,
+      );
+      expect(find.text(l10n.batchCostingReviewImportGcodeButton), findsNothing);
+      expect(
+        find.text('${l10n.batchCostingReviewImportGcodeButton} (Premium)'),
+        findsNothing,
+      );
+    },
+  );
+
+  testWidgets(
+    'premium populated batch shows header import and manual actions',
+    (tester) async {
+      final item = BatchCostingItem.manual(
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 2,
+        printWeightG: 34.5,
+        printDuration: const Duration(hours: 1, minutes: 20),
+        sourceFileName: 'benchy.gcode',
+      );
+
+      await tester.pumpApp(const BatchCostingPage(), [
+        batchCostingProvider.overrideWith(
+          () => FakeBatchCostingNotifier([item]),
+        ),
+        isPremiumProvider.overrideWithValue(true),
+      ]);
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchCostingPage)),
+      )!;
+
+      expect(
+        find.text(l10n.batchCostingReviewAddManualItemButton),
+        findsOneWidget,
+      );
+      expect(
+        find.text(l10n.batchCostingReviewImportGcodeButton),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('footer disables continue when batch item missing fields', (
+    tester,
+  ) async {
+    final item = BatchCostingItem.fromGCodeImport(
+      id: 'item-1',
+      displayName: 'Benchy',
+      quantity: 2,
+      sourceFileName: 'benchy.gcode',
+      importResult: const GCodeImportResult(
+        slicer: GCodeSlicer.unknown,
+        estimatedDuration: Duration(hours: 1, minutes: 20),
+        filamentLengthMm: 1000,
+        filamentWeightG: null,
+        layerHeightMm: 0.2,
+        previewMetadata: null,
+        previewImageBytes: null,
+        warnings: <GCodeParseWarning>[],
+        rawExtractedValues: <String, String>{},
+      ),
+    );
+
+    await tester.pumpApp(const BatchCostingPage(), [
+      batchCostingProvider.overrideWith(() => FakeBatchCostingNotifier([item])),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchCostingPage)),
+    )!;
+
+    final continueButton = tester.widget<AppPrimaryButton>(
+      find.widgetWithText(
+        AppPrimaryButton,
+        l10n.batchCostingReviewContinueButton,
+      ),
+    );
+
+    expect(continueButton.onPressed, isNull);
   });
 
   testWidgets('start new batch resets stack and returns home', (tester) async {
