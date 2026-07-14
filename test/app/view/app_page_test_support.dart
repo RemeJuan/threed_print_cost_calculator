@@ -14,6 +14,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart'
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
@@ -71,20 +72,33 @@ Future<Database> pumpAppPage(
   FakePurchasesGateway gateway,
   FakeCalculatorNotifier calculatorNotifier, {
   PremiumLocalStore? premiumLocalStore,
+  FakeInterfaceSettingsRepository? interfaceSettingsRepository,
   List<Override> overrides = const [],
   bool useDefaultAnnouncementOverride = true,
 }) async {
-  final db = await tester.pumpApp(const AppPage(), [
-    calculatorProvider.overrideWith(() => calculatorNotifier),
-    settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
-    purchasesGatewayProvider.overrideWithValue(gateway),
-    materialsStreamProvider.overrideWith(
-      (ref) => Stream.value(const <MaterialModel>[]),
-    ),
-    if (useDefaultAnnouncementOverride)
-      currentAnnouncementProvider.overrideWith((ref) async => null),
-    ...overrides,
-  ], premiumLocalStore);
+  final fakeInterfaceSettingsRepository =
+      interfaceSettingsRepository ?? FakeInterfaceSettingsRepository();
+  final db = await tester.pumpApp(
+    const AppPage(),
+    [
+      calculatorProvider.overrideWith(() => calculatorNotifier),
+      settingsRepositoryProvider.overrideWithValue(FakeSettingsRepository()),
+      purchasesGatewayProvider.overrideWithValue(gateway),
+      materialsStreamProvider.overrideWith(
+        (ref) => Stream.value(const <MaterialModel>[]),
+      ),
+      interfaceSettingsRepositoryProvider.overrideWithValue(
+        fakeInterfaceSettingsRepository,
+      ),
+      if (useDefaultAnnouncementOverride)
+        currentAnnouncementProvider.overrideWith((ref) async => null),
+      ...overrides,
+    ],
+    premiumLocalStore,
+    [],
+    false,
+  );
+  addTearDown(fakeInterfaceSettingsRepository.dispose);
   addTearDown(db.close);
   addTearDown(gateway.dispose);
   return db;

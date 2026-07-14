@@ -55,6 +55,7 @@ extension PumpApp on WidgetTester {
     List<Override> overrides = const [],
     PremiumLocalStore? premiumLocalStore,
     List<NavigatorObserver> observers = const [],
+    bool includeDefaultInterfaceSettingsOverride = true,
   ]) async {
     final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
     final db = await databaseFactoryMemory.openDatabase(name);
@@ -69,9 +70,10 @@ extension PumpApp on WidgetTester {
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
-      interfaceSettingsProvider.overrideWithValue(
-        const InterfaceSettingsModel(),
-      ),
+      if (includeDefaultInterfaceSettingsOverride)
+        interfaceSettingsProvider.overrideWithValue(
+          const InterfaceSettingsModel(),
+        ),
       ...overrides,
     ];
 
@@ -98,6 +100,7 @@ extension PumpApp on WidgetTester {
     List<Override> overrides = const [],
     PremiumLocalStore? premiumLocalStore,
     List<NavigatorObserver> observers = const [],
+    bool includeDefaultInterfaceSettingsOverride = true,
   }) async {
     final name = 'test_helpers_${DateTime.now().microsecondsSinceEpoch}.db';
     final db = await databaseFactoryMemory.openDatabase(name);
@@ -112,9 +115,10 @@ extension PumpApp on WidgetTester {
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
-      interfaceSettingsProvider.overrideWithValue(
-        const InterfaceSettingsModel(),
-      ),
+      if (includeDefaultInterfaceSettingsOverride)
+        interfaceSettingsProvider.overrideWithValue(
+          const InterfaceSettingsModel(),
+        ),
       ...overrides,
     ];
 

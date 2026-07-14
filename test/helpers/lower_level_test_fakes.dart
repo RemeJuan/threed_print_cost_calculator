@@ -13,6 +13,8 @@ import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
@@ -180,6 +182,52 @@ class FakeMaterialsRepository implements MaterialsRepository {
 
   @override
   Future<int> count() async => _materials.length;
+}
+
+class FakeInterfaceSettingsRepository implements InterfaceSettingsRepository {
+  FakeInterfaceSettingsRepository({InterfaceSettingsModel? initialSettings})
+    : _settings = initialSettings ?? const InterfaceSettingsModel(),
+      _controller = StreamController<InterfaceSettingsModel>.broadcast();
+
+  InterfaceSettingsModel _settings;
+  final StreamController<InterfaceSettingsModel> _controller;
+
+  @override
+  Ref get ref => throw UnimplementedError();
+
+  @override
+  Future<InterfaceSettingsModel> getSettings() async => _settings;
+
+  @override
+  Stream<InterfaceSettingsModel> watchSettings() => Stream.multi((multi) {
+    final subscription = _controller.stream.listen(
+      multi.add,
+      onError: multi.addError,
+      onDone: multi.close,
+    );
+    multi
+      ..add(_settings)
+      ..onCancel = subscription.cancel;
+  });
+
+  @override
+  Future<void> saveSettings(InterfaceSettingsModel settings) async {
+    _settings = settings;
+    if (!_controller.isClosed) {
+      _controller.add(settings);
+    }
+  }
+
+  @override
+  Future<void> updateSettings(
+    InterfaceSettingsModel Function(InterfaceSettingsModel current) updater,
+  ) async {
+    await saveSettings(updater(_settings));
+  }
+
+  Future<void> dispose() async {
+    await _controller.close();
+  }
 }
 
 class FakeCalculatorHelpers implements CalculatorHelpers {
