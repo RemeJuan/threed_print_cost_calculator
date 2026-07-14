@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_email_sender_platform_interface/flutter_email_sender_platform_interface.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
@@ -18,6 +22,8 @@ void main() {
     'plugins.flutter.io/url_launcher',
   );
   final launchCalls = <MethodCall>[];
+  final emailCalls = <Email>[];
+  final analyticsCalls = <Map<String, Object>>[];
 
   setUpAll(() async {
     await setupTest();
@@ -28,10 +34,20 @@ void main() {
       buildNumber: '42',
       buildSignature: 'sig',
     );
+    FlutterEmailSenderPlatform.instance = _FakeFlutterEmailSenderPlatform(
+      onSend: emailCalls.add,
+    );
+    AppAnalytics.service = _FakeAnalyticsService(
+      onLogEvent: (name, params) {
+        analyticsCalls.add({'name': name, ...?params});
+      },
+    );
   });
 
   setUp(() {
     launchCalls.clear();
+    emailCalls.clear();
+    analyticsCalls.clear();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(urlLauncherChannel, (call) async {
           launchCalls.add(call);
@@ -229,6 +245,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      expect(analyticsCalls, hasLength(1));
+      expect(analyticsCalls.single['name'], 'premium_feature_tapped');
+      expect(analyticsCalls.single['feature'], 'faq_premium_card');
+      expect(analyticsCalls.single['is_pro'], 0);
+      expect(analyticsCalls.single['source'], 'faq');
       expect(paywallPresenter.calls, 1);
       expect(paywallPresenter.lastOfferingId, 'pro');
       expect(paywallPresenter.lastTriggerFeature, 'faq_premium_card');
@@ -269,6 +290,64 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets('contact support sends email with app version and support id', (
+    tester,
+  ) async {
+    final db = await tester.pumpApp(const HelpSupportPage(), [
+      premiumStateProvider.overrideWith(
+        () => _FakePremiumStateNotifier(
+          const PremiumState(
+            isPremium: true,
+            isLoading: false,
+            userId: 'id-42',
+          ),
+        ),
+      ),
+    ]);
+    addTearDown(() => db.close());
+    await tester.pumpAndSettle();
+
+    final contactButton = find.byKey(
+      const ValueKey<String>('helpSupport.contact.button'),
+    );
+    await tester.ensureVisible(contactButton);
+    await tester.tap(contactButton);
+    await tester.pumpAndSettle();
+
+    expect(emailCalls, hasLength(1));
+    expect(emailCalls.single.recipients, ['3d@printcostcalc.app']);
+    expect(emailCalls.single.subject, '3D Print Cost Calculator Support');
+    expect(emailCalls.single.body, contains('Support ID: id-42'));
+    expect(emailCalls.single.body, contains('App version: 1.2.3'));
+  });
+}
+
+class _FakeFlutterEmailSenderPlatform extends FlutterEmailSenderPlatform {
+  _FakeFlutterEmailSenderPlatform({required this.onSend});
+
+  final void Function(Email email) onSend;
+
+  @override
+  Future<void> send(Email email) async {
+    onSend(email);
+  }
+
+  @override
+  Future<EmailCapabilities> getCapabilities() async {
+    return const EmailCapabilities.none();
+  }
+}
+
+class _FakeAnalyticsService implements AnalyticsService {
+  _FakeAnalyticsService({required this.onLogEvent});
+
+  final void Function(String name, Map<String, Object>? params) onLogEvent;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    onLogEvent(name, params);
+  }
 }
 
 class _FakePremiumStateNotifier extends PremiumStateNotifier {

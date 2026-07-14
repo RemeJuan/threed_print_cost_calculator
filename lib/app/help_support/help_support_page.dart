@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_contact_email.dart';
+import 'package:threed_print_cost_calculator/app/help_support/help_support_faq_entries.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_links.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:threed_print_cost_calculator/app/help_support/models/help_support_faq_entry.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_about_section.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_faq_tile.dart';
 import 'package:threed_print_cost_calculator/app/help_support/widgets/help_support_footer.dart';
@@ -23,7 +24,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.da
 class HelpSupportPage extends ConsumerStatefulWidget {
   const HelpSupportPage({super.key, this.initialFaqEntryId});
 
-  static const String premiumFaqEntryId = 'premium';
+  static const String premiumFaqEntryId = helpSupportPremiumFaqEntryId;
 
   final String? initialFaqEntryId;
 
@@ -54,7 +55,30 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
     final l10n = AppLocalizations.of(context)!;
     final supportId = ref.watch(premiumStateProvider).userId;
     final visibleSupportId = supportId.isEmpty ? '—' : supportId;
-    final faqEntries = _faqEntries(l10n);
+    final isPremium = ref.watch(isPremiumProvider);
+    final faqEntries = buildHelpSupportFaqEntries(
+      l10n,
+      isPremium: isPremium,
+      onPremiumActionTap: () {
+        AppAnalytics.safeLog(
+          () => AppAnalytics.premiumFeatureTapped(
+            'faq_premium_card',
+            isPro: isPremium,
+            source: 'faq',
+          ),
+        );
+        ref
+            .read(paywallPresenterProvider)
+            .present(
+              'pro',
+              triggerFeature: 'faq_premium_card',
+              purchaseSource: 'faq',
+              source: 'faq',
+            );
+      },
+      onPremiumLinkTap: () =>
+          openUrl(helpSupportPlansUrl, logger: ref.read(appLoggerProvider)),
+    );
 
     _scheduleInitialFaqReveal();
 
@@ -112,77 +136,6 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
         ],
       ),
     );
-  }
-
-  List<HelpSupportFaqEntry> _faqEntries(AppLocalizations l10n) {
-    final isPremium = ref.watch(isPremiumProvider);
-
-    return [
-      HelpSupportFaqEntry(
-        id: HelpSupportPage.premiumFaqEntryId,
-        question: l10n.helpSupportFaqPremiumQuestion,
-        answer: l10n.helpSupportFaqPremiumAnswer,
-        actionLabel: isPremium ? null : l10n.helpSupportFaqPremiumUpgradeCta,
-        onActionTap: isPremium
-            ? null
-            : () {
-                AppAnalytics.safeLog(
-                  () => AppAnalytics.premiumFeatureTapped(
-                    'faq_premium_card',
-                    isPro: isPremium,
-                    source: 'faq',
-                  ),
-                );
-                ref
-                    .read(paywallPresenterProvider)
-                    .present(
-                      'pro',
-                      triggerFeature: 'faq_premium_card',
-                      purchaseSource: 'faq',
-                      source: 'faq',
-                    );
-              },
-        linkLabel: l10n.helpSupportFaqPremiumComparisonCta,
-        onLinkTap: () =>
-            openUrl(helpSupportPlansUrl, logger: ref.read(appLoggerProvider)),
-      ),
-      HelpSupportFaqEntry(
-        id: 'weight',
-        question: l10n.helpSupportFaqWeightQuestion,
-        answer: l10n.helpSupportFaqWeightAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'electricity',
-        question: l10n.helpSupportFaqElectricityQuestion,
-        answer: l10n.helpSupportFaqElectricityAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'wattage',
-        question: l10n.helpSupportFaqWattageQuestion,
-        answer: l10n.helpSupportFaqWattageAnswer,
-      ),
-
-      HelpSupportFaqEntry(
-        id: 'risk',
-        question: l10n.helpSupportFaqRiskQuestion,
-        answer: l10n.helpSupportFaqRiskAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'labour',
-        question: l10n.helpSupportFaqLabourQuestion,
-        answer: l10n.helpSupportFaqLabourAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'markup',
-        question: l10n.helpSupportFaqMarkupQuestion,
-        answer: l10n.helpSupportFaqMarkupAnswer,
-      ),
-      HelpSupportFaqEntry(
-        id: 'setup',
-        question: l10n.helpSupportFaqSetupQuestion,
-        answer: l10n.helpSupportFaqSetupAnswer,
-      ),
-    ];
   }
 
   GlobalKey _faqKeyFor(String id) {
@@ -249,23 +202,16 @@ class _HelpSupportPageState extends ConsumerState<HelpSupportPage> {
       // Fallback to safe defaults if PackageInfo fetch fails
     }
 
-    final String emailBody;
-
-    if (supportId.isEmpty || supportId.trim().isEmpty) {
-      emailBody = l10n.helpSupportContactEmailBodyNoSupportId(
-        packageInfo?.version ?? '—',
-      );
-    } else {
-      emailBody = l10n.helpSupportContactEmailBody(
-        supportId,
-        packageInfo?.version ?? '—',
-      );
-    }
+    final email = buildHelpSupportContactEmail(
+      l10n,
+      supportId: supportId,
+      appVersion: packageInfo?.version,
+    );
 
     await _sendEmail(
-      recipient: l10n.supportEmail,
-      subject: l10n.helpSupportContactEmailSubject,
-      body: emailBody,
+      recipient: email.recipient,
+      subject: email.subject,
+      body: email.body,
     );
   }
 }
