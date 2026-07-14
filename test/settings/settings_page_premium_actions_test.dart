@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -10,6 +12,22 @@ import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import '../helpers/helpers.dart';
 import '../helpers/lower_level_test_fakes.dart' show FakePaywallPresenter;
 import 'settings_page_test_support.dart';
+
+class _FakeAnalyticsService implements AnalyticsService {
+  final List<_AnalyticsEvent> events = [];
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(_AnalyticsEvent(name, params));
+  }
+}
+
+class _AnalyticsEvent {
+  const _AnalyticsEvent(this.name, this.params);
+
+  final String name;
+  final Map<String, Object>? params;
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +41,10 @@ void main() {
   ) async {
     final settingsRepo = FakeSettingsRepository();
     final paywallPresenter = FakePaywallPresenter();
+    final analytics = _FakeAnalyticsService();
+    final originalAnalytics = AppAnalytics.service;
+    AppAnalytics.service = analytics;
+    addTearDown(() => AppAnalytics.service = originalAnalytics);
     final db = await tester.pumpApp(const SettingsPage(), [
       isPremiumProvider.overrideWithValue(false),
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
@@ -51,6 +73,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(paywallPresenter.calls, 1);
+    expect(analytics.events, hasLength(1));
+    expect(analytics.events.single.name, 'premium_feature_tapped');
+    expect(analytics.events.single.params, {
+      'feature': 'settings_premium_card',
+      'is_pro': 0,
+      'source': 'settings',
+    });
     expect(paywallPresenter.lastOfferingId, 'pro');
     expect(paywallPresenter.lastTriggerFeature, 'settings_premium_card');
     expect(paywallPresenter.lastPurchaseSource, 'settings');

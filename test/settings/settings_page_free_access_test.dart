@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
@@ -126,6 +128,81 @@ void main() {
       findsOneWidget,
     );
   });
+
+  testWidgets(
+    'printer section stays visible before stream emits and updates add state after data',
+    (tester) async {
+      final settingsRepo = FakeSettingsRepository();
+      final controller = StreamController<List<PrinterModel>>.broadcast();
+      final db = await tester.pumpApp(const SettingsPage(), [
+        isPremiumProvider.overrideWithValue(false),
+        settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        appLogSinkProvider.overrideWithValue(const NoopLogSink()),
+        printersStreamProvider.overrideWith((ref) {
+          ref.onDispose(() {
+            if (!controller.isClosed) {
+              controller.close();
+            }
+          });
+          return controller.stream;
+        }),
+      ]);
+      addTearDown(db.close);
+      addTearDown(settingsRepo.dispose);
+      addTearDown(() async {
+        if (!controller.isClosed) {
+          await controller.close();
+        }
+      });
+
+      settingsRepo.emit(GeneralSettingsModel.initial());
+
+      await tester.pump();
+
+      expect(
+        find.byKey(const ValueKey<String>('settings.printers.section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.printers.add.button')),
+        findsOneWidget,
+      );
+      expect(
+        tester
+            .widget<IconButton>(
+              find.byKey(
+                const ValueKey<String>('settings.printers.add.button'),
+              ),
+            )
+            .onPressed,
+        isNull,
+      );
+      expect(find.textContaining('unlimited printers'), findsNothing);
+
+      controller.add([
+        PrinterModel(
+          id: 'p1',
+          name: 'P1',
+          bedSize: '220 x 220',
+          wattage: '120',
+          archived: false,
+        ),
+      ]);
+      await tester.pump();
+
+      expect(
+        tester
+            .widget<IconButton>(
+              find.byKey(
+                const ValueKey<String>('settings.printers.add.button'),
+              ),
+            )
+            .onPressed,
+        isNotNull,
+      );
+      expect(find.textContaining('unlimited printers'), findsNothing);
+    },
+  );
 
   testWidgets(
     'premium users see printers and work cost sections but not materials',
