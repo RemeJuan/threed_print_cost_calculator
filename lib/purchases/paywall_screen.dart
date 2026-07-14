@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_comparison_table.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_plan_selector.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen_actions.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_screen_controller.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/widgets/paywall_bottom_bar.dart';
 import 'package:threed_print_cost_calculator/purchases/widgets/paywall_header.dart';
@@ -37,15 +37,17 @@ class PaywallScreen extends ConsumerStatefulWidget {
 }
 
 class _PaywallScreenState extends ConsumerState<PaywallScreen> {
-  Offering? _currentOffering;
-  Package? _selectedPackage;
-  bool _loadingOfferings = true;
-  PaywallOfferingsLoadError? _offeringsError;
-  bool _purchasing = false;
+  late final PaywallScreenControllerArgs _args;
 
   @override
   void initState() {
     super.initState();
+    _args = PaywallScreenControllerArgs(
+      offerId: widget.offeringId,
+      purchaseSource: widget.purchaseSource,
+      defaultEntryPoint: widget.defaultEntryPoint,
+      source: widget.source,
+    );
     AppAnalytics.safeLog(
       () => AppAnalytics.paywallShown(
         widget.triggerFeature,
@@ -54,68 +56,20 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
         launchCount: widget.launchCount,
       ),
     );
-    _loadOfferings();
   }
 
-  Future<void> _loadOfferings() async {
-    final result = await loadPaywallOfferings(
-      read: <T>(provider) => ref.read(provider),
-      offeringId: widget.offeringId,
-    );
+  Future<void> _handleOutcome(PaywallActionOutcome outcome) async {
     if (!mounted) return;
-    setState(() {
-      _currentOffering = result.offering;
-      _selectedPackage = preferredPackage(result.offering?.availablePackages);
-      _offeringsError = result.error;
-      _loadingOfferings = false;
-    });
-  }
-
-  Future<void> _purchase() async {
-    if (_selectedPackage == null || _purchasing) return;
-    setState(() => _purchasing = true);
-    try {
-      await completePaywallPurchase(
-        read: <T>(provider) => ref.read(provider),
-        package: _selectedPackage!,
-        purchaseSource: widget.purchaseSource,
-        defaultEntryPoint: widget.defaultEntryPoint,
-        onSuccess: () => Navigator.of(context).pop(),
-      );
-    } on PlayIntegrityActionBlockedException {
-      if (!mounted) return;
+    if (outcome is PaywallActionSuccess) {
+      Navigator.of(context).pop();
+    } else if (outcome is PaywallActionIntegrityBlocked) {
       showPlayIntegrityActionBlocked(context);
-    } catch (e) {
-      if (!mounted) return;
-      showPaywallPurchaseError(context);
-    } finally {
-      if (mounted) setState(() => _purchasing = false);
-    }
-  }
-
-  Future<void> _restore() async {
-    if (_purchasing) return;
-    setState(() => _purchasing = true);
-    try {
-      await completePaywallRestore(
-        read: <T>(provider) => ref.read(provider),
-        source: widget.source,
-        defaultEntryPoint: widget.defaultEntryPoint,
-        onSuccess: () => Navigator.of(context).pop(),
-      );
-    } on PlayIntegrityActionBlockedException {
-      if (!mounted) return;
-      showPlayIntegrityActionBlocked(context);
-    } catch (e, st) {
-      if (!mounted) return;
-      logPaywallRestoreFailure(
-        read: <T>(provider) => ref.read(provider),
-        error: e,
-        stackTrace: st,
-      );
-      showPaywallRestoreError(context);
-    } finally {
-      if (mounted) setState(() => _purchasing = false);
+    } else if (outcome is PaywallActionFailure) {
+      if (outcome.isRestore) {
+        showPaywallRestoreError(context);
+      } else {
+        showPaywallPurchaseError(context);
+      }
     }
   }
 
@@ -123,7 +77,11 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final policy = ref.read(premiumAccessPolicyProvider);
-    final packages = _currentOffering?.availablePackages ?? [];
+    final state = ref.watch(paywallScreenControllerProvider(_args));
+    final controller = ref.read(
+      paywallScreenControllerProvider(_args).notifier,
+    );
+    final packages = state.offering?.availablePackages ?? [];
 
     return Scaffold(
       body: SafeArea(
@@ -147,41 +105,38 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     const SizedBox(height: kAppSpace16),
                     PaywallPlanSelector(
                       packages: packages,
-                      selectedPackage: _selectedPackage,
-                      onSelectPackage: (pkg) =>
-                          setState(() => _selectedPackage = pkg),
+                      selectedPackage: state.selectedPackage,
+                      onSelectPackage: controller.selectPackage,
                     ),
                   ],
                 ),
               ),
             ),
-            if (_loadingOfferings)
+            if (state.loadingOfferings)
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: kAppSpace12),
                 child: Center(child: CircularProgressIndicator()),
               )
-            else if (_offeringsError != null)
-              PaywallOfferingError(l10n: l10n, onRetry: _retryOfferings)
+            else if (state.offeringsError != null)
+              PaywallOfferingError(
+                l10n: l10n,
+                onRetry: controller.retryOfferings,
+              )
             else
               PaywallBottomBar(
                 l10n: l10n,
-                selectedPackage: _selectedPackage,
-                purchasing: _purchasing,
-                onPurchase: _selectedPackage != null ? _purchase : null,
-                onRestore: _restore,
+                selectedPackage: state.selectedPackage,
+                purchasing: state.purchasing,
+                onPurchase: state.selectedPackage != null
+                    ? () async => _handleOutcome(await controller.purchase())
+                    : null,
+                onRestore: () async =>
+                    _handleOutcome(await controller.restore()),
                 logger: ref.read(appLoggerProvider),
               ),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _retryOfferings() async {
-    setState(() {
-      _loadingOfferings = true;
-      _offeringsError = null;
-    });
-    await _loadOfferings();
   }
 }

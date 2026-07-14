@@ -80,7 +80,6 @@ void main() {
       package: _makePackage(),
       purchaseSource: 'source',
       defaultEntryPoint: 'entry',
-      onSuccess: () {},
     );
 
     expect(gateway.purchasePackageCalls, 1);
@@ -100,7 +99,6 @@ void main() {
         read: <T>(provider) => container.read(provider),
         source: 'source',
         defaultEntryPoint: 'entry',
-        onSuccess: () {},
       ),
       throwsA(isA<PlayIntegrityActionBlockedException>()),
     );
@@ -125,7 +123,6 @@ void main() {
           package: _makePackage(),
           purchaseSource: 'source',
           defaultEntryPoint: 'entry',
-          onSuccess: () {},
         ),
         throwsA(isA<PlayIntegrityActionBlockedException>()),
       );
@@ -147,7 +144,6 @@ void main() {
       read: <T>(provider) => container.read(provider),
       source: 'source',
       defaultEntryPoint: 'entry',
-      onSuccess: () {},
     );
 
     expect(gateway.restorePurchasesCalls, 1);
@@ -177,7 +173,6 @@ void main() {
         package: _makePackage(),
         purchaseSource: 'source',
         defaultEntryPoint: 'entry',
-        onSuccess: () {},
       ),
       throwsA(isA<PlayIntegrityActionBlockedException>()),
     );
@@ -208,7 +203,6 @@ void main() {
         read: <T>(provider) => container.read(provider),
         source: 'source',
         defaultEntryPoint: 'entry',
-        onSuccess: () {},
       ),
       throwsA(isA<PlayIntegrityActionBlockedException>()),
     );

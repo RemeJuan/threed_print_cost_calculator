@@ -70,7 +70,6 @@ Future<void> completePaywallPurchase({
   required Package package,
   required String purchaseSource,
   required String defaultEntryPoint,
-  required VoidCallback onSuccess,
 }) async {
   await _ensurePlayIntegrityAllowed(
     read: read,
@@ -84,14 +83,12 @@ Future<void> completePaywallPurchase({
       defaultEntryPoint: defaultEntryPoint,
     ),
   );
-  onSuccess();
 }
 
 Future<void> completePaywallRestore({
   required ProviderReader read,
   required String source,
   required String defaultEntryPoint,
-  required VoidCallback onSuccess,
 }) async {
   await _ensurePlayIntegrityAllowed(
     read: read,
@@ -105,7 +102,6 @@ Future<void> completePaywallRestore({
       defaultEntryPoint: defaultEntryPoint,
     ),
   );
-  onSuccess();
 }
 
 void logPaywallRestoreFailure({
@@ -116,6 +112,19 @@ void logPaywallRestoreFailure({
   read(appLoggerProvider).warn(
     AppLogCategory.billing,
     'Restore failed',
+    error: error,
+    stackTrace: stackTrace,
+  );
+}
+
+void logPaywallPurchaseFailure({
+  required ProviderReader read,
+  required Object error,
+  required StackTrace stackTrace,
+}) {
+  read(appLoggerProvider).warn(
+    AppLogCategory.billing,
+    'Purchase failed',
     error: error,
     stackTrace: stackTrace,
   );

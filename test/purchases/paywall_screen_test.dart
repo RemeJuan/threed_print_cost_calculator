@@ -399,6 +399,29 @@ void main() {
     expect(gateway.purchasePackageCalls, 1);
   });
 
+  testWidgets('purchase success dismisses paywall', (tester) async {
+    final gateway = FakePremiumPurchaseGateway(
+      currentOffering: Offering('test_offering', 'Test Offering', {}, [
+        Package(
+          'test_pkg',
+          PackageType.monthly,
+          StoreProduct('test_sku', 'desc', 'Plan', 9.99, '\$9.99', 'USD'),
+          PresentedOfferingContext('test_offering', null, null),
+        ),
+      ]),
+    );
+    await pumpPaywall(tester, gateway: gateway);
+
+    await tester.tap(find.byType(AppPrimaryButton));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(
+      find.text(lookupAppLocalizations(const Locale('en')).paywallTitle),
+      findsNothing,
+    );
+  });
+
   testWidgets('restore calls gateway when restore tapped', (tester) async {
     final gateway = FakePremiumPurchaseGateway();
     await pumpPaywall(tester, gateway: gateway);
@@ -421,6 +444,10 @@ void main() {
     await pumpPaywall(tester);
     expect(fakeAnalytics.lastName, 'paywall_viewed');
     expect(fakeAnalytics.lastParams?['source'], 'custom_paywall_preview');
+    expect(
+      fakeAnalytics.events.where((e) => e.key == 'paywall_viewed').length,
+      1,
+    );
   });
 
   testWidgets('analytics purchase_completed on purchase', (tester) async {
@@ -447,8 +474,8 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(
-      fakeAnalytics.events.any((e) => e.key == 'purchase_completed'),
-      true,
+      fakeAnalytics.events.where((e) => e.key == 'purchase_completed').length,
+      1,
     );
   });
 
@@ -460,7 +487,10 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
 
-    expect(fakeAnalytics.events.any((e) => e.key == 'restore_completed'), true);
+    expect(
+      fakeAnalytics.events.where((e) => e.key == 'restore_completed').length,
+      1,
+    );
   });
 
   testWidgets('previewCustomPaywall button exists in test tools dialog', (
