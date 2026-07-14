@@ -176,15 +176,11 @@ void main() {
       var state = container.read(historyPagedProvider);
       expect(state.items.length, 25);
       expect(state.hasMore, isTrue);
-      expect(state.debugQueryCount, 2);
-      expect(state.debugUsedFallbackScan, isFalse);
 
       await container.read(historyPagedProvider.notifier).loadMore();
       state = container.read(historyPagedProvider);
       expect(state.items.length, 30);
       expect(state.hasMore, isFalse);
-      expect(state.debugQueryCount, 2);
-      expect(state.debugUsedFallbackScan, isFalse);
 
       expect(
         state.items.every((entry) => entry.model.printer == 'Prusa'),
@@ -199,8 +195,6 @@ void main() {
     final state = container.read(historyPagedProvider);
     expect(state.items.length, 2);
     expect(state.hasMore, isFalse);
-    expect(state.debugQueryCount, 2);
-    expect(state.debugUsedFallbackScan, isFalse);
     expect(
       state.items.map((entry) => entry.model.name).toList(),
       containsAll(['Prusa Item 12', 'Ender Item 12']),
@@ -213,12 +207,10 @@ void main() {
     final state = container.read(historyPagedProvider);
     expect(state.items.length, 25);
     expect(state.hasMore, isFalse);
-    expect(state.debugQueryCount, 2);
-    expect(state.debugUsedFallbackScan, isFalse);
   });
 
   test(
-    'indexed search keeps constant query count for large datasets',
+    'indexed search returns correct first page for large datasets',
     () async {
       final largeDbName =
           'test_large_paged_${DateTime.now().microsecondsSinceEpoch}.db';
@@ -262,8 +254,6 @@ void main() {
         final state = largeContainer.read(historyPagedProvider);
         expect(state.items.length, 25);
         expect(state.hasMore, isTrue);
-        expect(state.debugQueryCount, 2);
-        expect(state.debugUsedFallbackScan, isFalse);
 
         final allRecords = await largeStore.find(
           largeDb,
@@ -294,7 +284,7 @@ void main() {
     },
   );
 
-  test('non-index misses do not trigger a full-table fallback scan', () async {
+  test('search miss returns an empty terminal page', () async {
     await container
         .read(historyPagedProvider.notifier)
         .setQuery('NoSuchPrinter');
@@ -302,8 +292,6 @@ void main() {
     final state = container.read(historyPagedProvider);
     expect(state.items, isEmpty);
     expect(state.hasMore, isFalse);
-    expect(state.debugQueryCount, 2);
-    expect(state.debugUsedFallbackScan, isFalse);
   });
 
   test('stale indexed keys do not overcount partial search hits', () async {
@@ -339,8 +327,6 @@ void main() {
     final state = container.read(historyPagedProvider);
     expect(state.items, isEmpty);
     expect(state.hasMore, isFalse);
-    expect(state.debugQueryCount, 2);
-    expect(state.debugUsedFallbackScan, isFalse);
   });
 
   test('explicit refresh still reloads page 1', () async {
@@ -506,7 +492,6 @@ void main() {
         final state = legacyContainer.read(historyPagedProvider);
         expect(state.items.length, 1);
         expect(state.items.first.model.name, 'Legacy Gear');
-        expect(state.debugUsedFallbackScan, isFalse);
 
         final storedRecord = (await legacyStore.find(legacyDb)).single.value;
         expect(storedRecord[kHistorySearchNameField], 'legacy gear');

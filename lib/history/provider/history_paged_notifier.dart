@@ -13,8 +13,6 @@ class HistoryPagedState {
   final String? error;
   final String query;
   final int page;
-  final int debugQueryCount;
-  final bool debugUsedFallbackScan;
   final bool hasLoadedOnce;
   final bool isStale;
 
@@ -25,8 +23,6 @@ class HistoryPagedState {
     this.error,
     required this.query,
     required this.page,
-    required this.debugQueryCount,
-    required this.debugUsedFallbackScan,
     required this.hasLoadedOnce,
     required this.isStale,
   });
@@ -38,8 +34,6 @@ class HistoryPagedState {
     error: null,
     query: '',
     page: 0,
-    debugQueryCount: 0,
-    debugUsedFallbackScan: false,
     hasLoadedOnce: false,
     isStale: false,
   );
@@ -51,8 +45,6 @@ class HistoryPagedState {
     String? error,
     String? query,
     int? page,
-    int? debugQueryCount,
-    bool? debugUsedFallbackScan,
     bool? hasLoadedOnce,
     bool? isStale,
   }) {
@@ -63,9 +55,6 @@ class HistoryPagedState {
       error: error,
       query: query ?? this.query,
       page: page ?? this.page,
-      debugQueryCount: debugQueryCount ?? this.debugQueryCount,
-      debugUsedFallbackScan:
-          debugUsedFallbackScan ?? this.debugUsedFallbackScan,
       hasLoadedOnce: hasLoadedOnce ?? this.hasLoadedOnce,
       isStale: isStale ?? this.isStale,
     );
@@ -174,8 +163,6 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         nextPage: nextPage,
         totalCount: totalCount,
         pageEntries: pageEntries,
-        queryCount: 2,
-        usedFallbackScan: false,
         hasQuery: false,
       );
     }
@@ -189,8 +176,6 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       nextPage: nextPage,
       totalCount: searchPage.totalCount,
       pageEntries: searchPage.items,
-      queryCount: 2,
-      usedFallbackScan: false,
       hasQuery: true,
     );
   }
@@ -209,8 +194,6 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
       isLoading: false,
       hasMore: hasMore,
       page: request.nextPage,
-      debugQueryCount: request.queryCount,
-      debugUsedFallbackScan: request.usedFallbackScan,
       hasLoadedOnce: true,
       isStale: false,
     );
@@ -233,16 +216,12 @@ class _HistoryPageRequest {
   final int nextPage;
   final int totalCount;
   final List<HistoryEntry> pageEntries;
-  final int queryCount;
-  final bool usedFallbackScan;
   final bool hasQuery;
 
   const _HistoryPageRequest({
     required this.nextPage,
     required this.totalCount,
     required this.pageEntries,
-    required this.queryCount,
-    required this.usedFallbackScan,
     required this.hasQuery,
   });
 }
