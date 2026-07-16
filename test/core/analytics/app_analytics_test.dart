@@ -598,6 +598,22 @@ void main() {
     ).called(1);
   });
 
+  test(
+    'interface visibility analytics wrapper uses expected payload',
+    () async {
+      final fake = _FakeAnalytics();
+      AppAnalytics.service = fake;
+
+      await AppAnalytics.interfaceVisibilityChanged(
+        setting: 'printer_select',
+        visible: true,
+      );
+
+      expect(fake.lastName, 'interface_visibility_changed');
+      expect(fake.lastParams, {'setting': 'printer_select', 'visible': 1});
+    },
+  );
+
   test('update prompt analytics wrappers use expected payloads', () async {
     final fake = _FakeAnalytics();
     AppAnalytics.service = fake;

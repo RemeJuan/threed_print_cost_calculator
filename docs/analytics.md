@@ -298,6 +298,12 @@
 
 ### Settings
 
+- `interface_visibility_changed`
+  - params: [`setting`, `visible`]
+  - triggered_from: [`lib/settings/interface_settings/interface_settings_page.dart`]
+  - feature: Settings
+  - notes: fired only after the interface setting persistence succeeds; `setting` uses stable snake_case IDs (`printer_select`, `batch_button`, `history_tab`, `materials_tab`, `gcode_action`, `advanced_breakdown`, `labour_fields`, `failure_risk`, `wear_and_tear`, `markup`, `currency`); `visible` is `0`/`1`
+
 - `printer_profile_created`
   - params: []
   - triggered_from: [`lib/settings/providers/printers_notifier.dart`]

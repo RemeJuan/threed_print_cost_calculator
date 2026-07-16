@@ -256,6 +256,16 @@ class AppAnalytics {
     );
   }
 
+  static Future<void> interfaceVisibilityChanged({
+    required String setting,
+    required bool visible,
+  }) {
+    return log(
+      'interface_visibility_changed',
+      params: {'setting': setting, 'visible': visible ? 1 : 0},
+    );
+  }
+
   /// Multi-material usage
   static Future<void> multiMaterialUsed(int materialCount) {
     return log(
