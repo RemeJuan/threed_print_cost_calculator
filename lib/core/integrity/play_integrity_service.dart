@@ -19,7 +19,7 @@ abstract class PlayIntegrityService {
 }
 
 class DefaultPlayIntegrityService implements PlayIntegrityService {
-  static const _requestTokenTimeout = Duration(seconds: 10);
+  static const _requestTokenTimeout = Duration(seconds: 5);
   @visibleForTesting
   static final limitedUseAppCheckOptions = HttpsCallableOptions(
     limitedUseAppCheckToken: true,
@@ -31,6 +31,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
     int? cloudProjectNumber,
     AppLogger? logger,
     TargetPlatform? targetPlatform,
+    Duration requestTokenTimeout = _requestTokenTimeout,
     Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
     decodeIntegrity,
   }) : _channel =
@@ -47,6 +48,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
              config: const AppLoggerConfig.defaults(),
            ),
        _targetPlatform = targetPlatform ?? defaultTargetPlatform,
+       _requestTokenTimeoutDuration = requestTokenTimeout,
        _decodeIntegrity = decodeIntegrity;
 
   final MethodChannel _channel;
@@ -54,6 +56,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
   final int? _cloudProjectNumber;
   final AppLogger _logger;
   final TargetPlatform _targetPlatform;
+  final Duration _requestTokenTimeoutDuration;
   final Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
   _decodeIntegrity;
 
@@ -65,12 +68,22 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
 
     try {
       final nonce = _nonce();
-      final token = await _channel
-          .invokeMethod<String>('requestToken', {
-            'nonce': nonce,
-            'cloudProjectNumber': _cloudProjectNumber,
-          })
-          .timeout(_requestTokenTimeout);
+      final String? token;
+      try {
+        token = await _channel
+            .invokeMethod<String>('requestToken', {
+              'nonce': nonce,
+              'cloudProjectNumber': _cloudProjectNumber,
+            })
+            .timeout(_requestTokenTimeoutDuration);
+      } on TimeoutException catch (error, stackTrace) {
+        return _fallback(
+          flow: flow,
+          error: error,
+          stackTrace: stackTrace,
+          reportToSentry: false,
+        );
+      }
       if (token == null || token.isEmpty) {
         throw StateError('Play Integrity token unavailable');
       }
@@ -89,16 +102,27 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
           error.code == 'unauthenticated') {
         rethrow;
       }
-      _logger.warn(
-        AppLogCategory.billing,
-        'Play Integrity fallback',
-        context: {'flow': flow.name},
-        error: error,
-        stackTrace: stackTrace,
-      );
-      await Sentry.captureException(error, stackTrace: stackTrace);
-      return _unevaluatedAllowSnapshot;
+      return _fallback(flow: flow, error: error, stackTrace: stackTrace);
     }
+  }
+
+  Future<PlayIntegritySnapshot> _fallback({
+    required PlayIntegrityFlow flow,
+    required Object error,
+    required StackTrace stackTrace,
+    bool reportToSentry = true,
+  }) async {
+    _logger.warn(
+      AppLogCategory.billing,
+      'Play Integrity fallback',
+      context: {'flow': flow.name},
+      error: error,
+      stackTrace: stackTrace,
+    );
+    if (reportToSentry) {
+      await Sentry.captureException(error, stackTrace: stackTrace);
+    }
+    return _unevaluatedAllowSnapshot;
   }
 
   Future<dynamic> _decodePlayIntegrityViaCloudFunction(

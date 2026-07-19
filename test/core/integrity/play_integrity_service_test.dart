@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -69,6 +70,87 @@ void main() {
     expect(snapshot.playProtect, 'UNEVALUATED');
     expect(snapshot.appAccessRisk, isEmpty);
     expect(snapshot.decision, PlayIntegrityDecisionLabel.allow);
+  });
+
+  test(
+    'falls back on request token timeout without reporting to sentry',
+    () async {
+      final sentryEvents = <SentryEvent>[];
+      final tokenRequest = Completer<String>();
+      addTearDown(Sentry.close);
+
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'requestToken') {
+              return tokenRequest.future;
+            }
+            return null;
+          });
+
+      await SentryFlutter.init(
+        (options) {
+          options.dsn = 'https://public@example.invalid/1';
+          options.beforeSend = (event, hint) {
+            sentryEvents.add(event);
+            return null;
+          };
+        },
+        appRunner: () async {
+          final captured = <AppLogEvent>[];
+          final service = DefaultPlayIntegrityService(
+            targetPlatform: TargetPlatform.android,
+            requestTokenTimeout: const Duration(milliseconds: 1),
+            logger: AppLogger(
+              sink: _RecordingSink(captured),
+              config: const AppLoggerConfig(minLevel: AppLogLevel.debug),
+            ),
+          );
+
+          final snapshot = await service.evaluate(PlayIntegrityFlow.purchase);
+
+          expect(snapshot.license, 'UNEVALUATED');
+          expect(snapshot.decision, PlayIntegrityDecisionLabel.allow);
+          expect(captured.single.message, 'Play Integrity fallback');
+          expect(captured.single.error, isA<TimeoutException>());
+        },
+      );
+
+      expect(sentryEvents, isEmpty);
+    },
+  );
+
+  test('reports non-timeout token request failures to sentry', () async {
+    final sentryEvents = <SentryEvent>[];
+    addTearDown(Sentry.close);
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          if (call.method == 'requestToken') {
+            throw PlatformException(code: 'fail', message: 'token');
+          }
+          return null;
+        });
+
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = 'https://public@example.invalid/1';
+        options.beforeSend = (event, hint) {
+          sentryEvents.add(event);
+          return null;
+        };
+      },
+      appRunner: () async {
+        final service = DefaultPlayIntegrityService(
+          targetPlatform: TargetPlatform.android,
+        );
+
+        final snapshot = await service.evaluate(PlayIntegrityFlow.purchase);
+
+        expect(snapshot.decision, PlayIntegrityDecisionLabel.allow);
+      },
+    );
+
+    expect(sentryEvents, hasLength(1));
   });
 
   test('uses limited-use App Check token for callable decode', () {
