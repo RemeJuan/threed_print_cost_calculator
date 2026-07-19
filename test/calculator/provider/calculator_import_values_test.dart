@@ -74,7 +74,9 @@ void main() {
 
       final before = container.read(calculatorProvider).pricing.finalPrice;
 
-      notifier.applyImportedValues(estimatedDuration: const Duration(minutes: 5));
+      notifier.applyImportedValues(
+        estimatedDuration: const Duration(minutes: 5),
+      );
 
       final state = container.read(calculatorProvider);
       expect(state.importedFromGcode, isTrue);
@@ -84,9 +86,9 @@ void main() {
       expect(state.materialUsages.first.weightGrams, 10);
       expect(state.pricing.finalPrice, isNot(before));
       expect(
-        container.read(premiumLocalStoreProvider).readSync(
-          hasUsedGcodeImportPreferenceKey,
-        ),
+        container
+            .read(premiumLocalStoreProvider)
+            .readSync(hasUsedGcodeImportPreferenceKey),
         'true',
       );
     });

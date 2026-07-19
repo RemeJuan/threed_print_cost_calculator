@@ -592,14 +592,8 @@ void main() {
       );
 
       final state = container.read(calculatorProvider);
-      expect(
-        state.materialUsages.single.materialId,
-        syntheticMaterialId,
-      );
-      expect(
-        state.selectedMaterialId,
-        syntheticMaterialId,
-      );
+      expect(state.materialUsages.single.materialId, syntheticMaterialId);
+      expect(state.selectedMaterialId, syntheticMaterialId);
       expect(
         settingsRepository.lastSavedSettings?.selectedMaterial,
         'material-current',

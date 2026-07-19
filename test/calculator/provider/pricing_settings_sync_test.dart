@@ -58,52 +58,50 @@ void main() {
   setUpAll(setupTest);
 
   group('CalculatorProvider pricing settings sync', () {
-    test(
-      'ignores pricing settings events before defaults hydrate',
-      () async {
-        final settingsRepo = _ControllableSettingsRepository(
-          initial: GeneralSettingsModel.initial().copyWith(
-            pricingMarkupPercent: '10',
-            pricingSetupFee: '5',
-            pricingRoundingMode: 'none',
-          ),
-        );
-        final db = await databaseFactoryMemory.openDatabase(
-          'pricing_settings_sync.db',
-        );
+    test('ignores pricing settings events before defaults hydrate', () async {
+      final settingsRepo = _ControllableSettingsRepository(
+        initial: GeneralSettingsModel.initial().copyWith(
+          pricingMarkupPercent: '10',
+          pricingSetupFee: '5',
+          pricingRoundingMode: 'none',
+        ),
+      );
+      final db = await databaseFactoryMemory.openDatabase(
+        'pricing_settings_sync.db',
+      );
 
-        final container = ProviderContainer(
-          overrides: [
-            databaseProvider.overrideWithValue(db),
-            settingsRepositoryProvider.overrideWithValue(settingsRepo),
-          ],
-        );
-        addTearDown(container.dispose);
-        addTearDown(db.close);
-        addTearDown(settingsRepo.dispose);
+      final container = ProviderContainer(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          settingsRepositoryProvider.overrideWithValue(settingsRepo),
+        ],
+      );
+      addTearDown(container.dispose);
+      addTearDown(db.close);
+      addTearDown(settingsRepo.dispose);
 
-        final sub = container.listen<CalculatorState>(calculatorProvider, (
-          previous,
-          next,
-        ) {}, fireImmediately: false);
-        addTearDown(sub.close);
+      final sub = container.listen<CalculatorState>(
+        calculatorProvider,
+        (previous, next) {},
+        fireImmediately: false,
+      );
+      addTearDown(sub.close);
 
-        await settingsRepo.watchSubscribed.future;
-        settingsRepo.emit(
-          GeneralSettingsModel.initial().copyWith(
-            pricingMarkupPercent: '20',
-            pricingSetupFee: '7',
-            pricingRoundingMode: '.99',
-          ),
-        );
+      await settingsRepo.watchSubscribed.future;
+      settingsRepo.emit(
+        GeneralSettingsModel.initial().copyWith(
+          pricingMarkupPercent: '20',
+          pricingSetupFee: '7',
+          pricingRoundingMode: '.99',
+        ),
+      );
 
-        final preHydration = container.read(calculatorProvider);
-        expect(preHydration.hasHydratedDefaults, isFalse);
-        expect(preHydration.markupPercent.value, isNull);
-        expect(preHydration.setupFee.value, isNull);
-        expect(preHydration.roundingMode, PricingRoundingMode.none);
-      },
-    );
+      final preHydration = container.read(calculatorProvider);
+      expect(preHydration.hasHydratedDefaults, isFalse);
+      expect(preHydration.markupPercent.value, isNull);
+      expect(preHydration.setupFee.value, isNull);
+      expect(preHydration.roundingMode, PricingRoundingMode.none);
+    });
 
     test(
       'syncs pricing inputs from settings and recalculates final price',
