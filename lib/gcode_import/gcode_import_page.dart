@@ -93,8 +93,17 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     final policy = ref.read(premiumAccessPolicyProvider);
     if (policy.batchGcodeImport().allowed) {
       final files = await ref.read(gcodeImportFilePickerProvider).pickMany();
-      if (!mounted || files.isEmpty) return;
+      if (!mounted) return;
+      if (files.isEmpty) {
+        AppAnalytics.safeLog(
+          () => AppAnalytics.gcodePickerCancelled(source: widget.source),
+        );
+        return;
+      }
       if (files.length > 1) {
+        AppAnalytics.safeLog(
+          () => AppAnalytics.gcodeFlowDivertedToBatch(source: widget.source),
+        );
         setState(() {
           _multiMode = true;
           _multiFiles = files;
@@ -106,7 +115,13 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
     }
 
     final file = await ref.read(gcodeImportFilePickerProvider).pick();
-    if (!mounted || file == null) return;
+    if (!mounted) return;
+    if (file == null) {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodePickerCancelled(source: widget.source),
+      );
+      return;
+    }
     await controller.parsePickedFile(file);
   }
 

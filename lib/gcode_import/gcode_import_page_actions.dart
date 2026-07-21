@@ -34,11 +34,11 @@ class GCodeImportPageActions {
     required String parseStatus,
   }) {
     AppAnalytics.safeLog(
-      () => AppAnalytics.gcodeImportSuccess(
-        hasPrintTime: result.estimatedDuration != null,
-        hasFilamentUsage:
-            result.filamentWeightG != null || result.filamentLengthMm != null,
+      () => AppAnalytics.gcodeApplyToCalculator(
+        slicer: result.slicer.name,
         hasPreview: result.hasPreviewMetadata,
+        fileSizeBytes: fileSizeBytes,
+        parseStatus: parseStatus,
       ),
     );
     ref
@@ -47,6 +47,14 @@ class GCodeImportPageActions {
           estimatedDuration: result.estimatedDuration,
           filamentWeightGrams: result.filamentWeightG,
         );
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodeImportSuccess(
+        hasPrintTime: result.estimatedDuration != null,
+        hasFilamentUsage:
+            result.filamentWeightG != null || result.filamentLengthMm != null,
+        hasPreview: result.hasPreviewMetadata,
+      ),
+    );
     AppAnalytics.safeLog(
       () => AppAnalytics.gcodeFlowCompleted(
         slicer: result.slicer.name,

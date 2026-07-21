@@ -160,6 +160,9 @@ class BatchGCodeImportHandler {
       }
 
       if (files.isEmpty) {
+        AppAnalytics.safeLog(
+          () => AppAnalytics.gcodePickerCancelled(source: 'batch_gcode_import'),
+        );
         setState(() => pageState.loading = false);
         return;
       }
