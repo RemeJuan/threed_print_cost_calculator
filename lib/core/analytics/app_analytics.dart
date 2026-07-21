@@ -47,6 +47,10 @@ class AppAnalytics {
     _gcodeImportFileSizeBucket = 'unknown';
   }
 
+  static void _clearGcodeImportFlowTracking() {
+    _gcodeImportOpenedAt = null;
+  }
+
   static String fileSizeBucket(int bytes) {
     if (bytes < 1 * 1024 * 1024) return '<1MB';
     if (bytes < 5 * 1024 * 1024) return '1-5MB';
@@ -651,6 +655,30 @@ class AppAnalytics {
       fileSizeBucket: fileSizeBucket(fileSizeBytes),
     );
     return log('gcode_preview_viewed', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodePreviewAvailable({
+    required String slicer,
+    required bool hasPreview,
+    required int fileSizeBytes,
+    required String parseStatus,
+  }) {
+    _setGcodeContext(
+      slicer: slicerValue(slicer),
+      hasPreview: hasPreview,
+      parseStatus: parseStatus,
+      fileSizeBucket: fileSizeBucket(fileSizeBytes),
+    );
+    return log('gcode_preview_available', params: _gcodeImportParams());
+  }
+
+  static Future<void> gcodePickerCancelled({required String source}) {
+    return log('gcode_picker_cancelled', params: {'source': source});
+  }
+
+  static Future<void> gcodeFlowDivertedToBatch({required String source}) {
+    _clearGcodeImportFlowTracking();
+    return log('gcode_flow_diverted_to_batch', params: {'source': source});
   }
 
   static Future<void> gcodeApplyToCalculator({
