@@ -90,27 +90,45 @@
 
 - `gcode_preview_viewed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
-  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
+  - triggered_from: [`lib/gcode_import/widgets/gcode_import_preview_section.dart`]
   - feature: G-code import
   - notes: fired before preview dialog opens
 
-- `gcode_apply_to_calculator`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
+- `gcode_preview_available`
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`]
+  - triggered_from: [`lib/gcode_import/widgets/gcode_import_preview_section.dart`]
+  - feature: G-code import
+  - notes: fired once when safe preview content is actually renderable; low-res shows inline image, high-res shows View action; distinct from `gcode_preview_viewed`
+
+- `gcode_picker_cancelled`
+  - params: [`source`]
+  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`, `lib/batch_costing/providers/batch_gcode_import_handler.dart`]
+  - feature: G-code import
+  - notes: fired once per cancelled picker invocation when picker returns null/empty; low-cardinality only
+
+- `gcode_flow_diverted_to_batch`
+  - params: [`source`]
   - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
   - feature: G-code import
-  - notes: helper exists in analytics code, but current page flow does not emit this event; it is stale unless a future intermediate funnel step is wired in
+  - notes: fired once when a single import selection intentionally switches to batch flow; does not replace `batch_started`
+
+- `gcode_apply_to_calculator`
+  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
+  - triggered_from: [`lib/gcode_import/gcode_import_page_actions.dart`]
+  - feature: G-code import
+  - notes: emitted from the primary apply action handler immediately before calculator values are applied; carries full funnel context (`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`)
 
 - `gcode_flow_completed`
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`]
-  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
+  - triggered_from: [`lib/gcode_import/gcode_import_page_actions.dart`]
   - feature: G-code import
-  - notes: fired only after the calculator apply CTA; clears open-flow timer state immediately, which suppresses later abandon logging for the same session
+  - notes: fired only after the calculator apply CTA succeeds; clears open-flow timer state immediately, which suppresses later abandon logging for the same session
 
 - `gcode_import_success`
   - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
-  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
+  - triggered_from: [`lib/gcode_import/gcode_import_page_actions.dart`]
   - feature: G-code import
-  - notes: success milestone when parsed values are applied to calculator; does not carry `slicer`, `parse_status`, or `file_size_bucket`, so it cannot stand alone as a funnel context event
+  - notes: success milestone after calculator state updates; only carries apply result flags, not funnel context (`slicer`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`)
 
 ### Calculator usage
 
@@ -353,7 +371,10 @@
 - file select: yes — `gcode_file_selected`
 - parse success/fail: yes — `gcode_parse_success`, `gcode_parse_partial`, `gcode_parse_failed`
 - import diagnostics: yes — `gcode_import_breadcrumb` plus mirrored Crashlytics breadcrumb logs
-- estimate applied: no — helper exists but current import flow does not emit `gcode_apply_to_calculator`
+- estimate applied: yes — `gcode_apply_to_calculator`
+- preview available: yes — `gcode_preview_available`
+- picker cancelled: yes — `gcode_picker_cancelled`
+- diverted to batch: yes — `gcode_flow_diverted_to_batch`
 - calculator success: yes — `gcode_import_success`
 - flow completed: yes — `gcode_flow_completed`
 - upgrade entry: partial — G-code open/start attribution exists, but the current UI does not route free users into G-code import; header access is premium-only
@@ -362,8 +383,13 @@
 
 Notes:
 
-- `gcode_import_success` and `gcode_flow_completed` are emitted from the same apply CTA handler, after parse/preview has already succeeded.
+- `gcode_apply_to_calculator` logs before calculator state mutation and carries full funnel context.
+- `gcode_import_success` logs after calculator state mutation succeeds and only carries apply result flags.
+- `gcode_flow_completed` logs after success, from the same handler, and carries full funnel context.
+- `gcode_preview_available` logs when safe preview content can render; low-resolution previews render inline and high-resolution previews expose the View action. `gcode_preview_viewed` logs dialog intent.
 - `gcode_import_abandoned` is dispose-driven and only fires if the flow timer is still open; it should not follow a completed apply path.
+- `gcode_picker_cancelled` logs once per picker invocation returning null or empty, for both single and batch flows.
+- `gcode_flow_diverted_to_batch` marks the intentional single-to-batch switch, atomically terminates single-flow timing, and suppresses a later single-flow abandonment event. `batch_started` remains separate.
 - Android and iOS share the same analytics sequence after file selection; only the picker metadata source differs.
 
 ### Materials

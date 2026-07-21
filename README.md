@@ -19,10 +19,17 @@ This app logs only feature-level events through `AppAnalytics` (see `lib/core/an
 During development you can enable Firebase Analytics DebugView:
 
 ```bash
+# Android
 adb shell setprop debug.firebase.analytics.app <package_name>
 ```
 
-Note: events can appear quickly in DebugView, but standard Firebase Analytics dashboards may take several hours to update.
+For iOS, add `-FIRDebugEnabled` as an Xcode scheme launch argument.
+
+Debug builds in this repo deliberately use noop analytics and disable collection, so platform flags alone will not show app events.
+
+Use a profile or release build with Firebase config present to see real events in DebugView.
+
+Note: standard Firebase Analytics dashboards may take several hours to update.
 
 ## Coverage
 
