@@ -290,6 +290,24 @@ void main() {
       ),
     ).called(1);
 
+    await AppAnalytics.gcodePreviewAvailable(
+      slicer: 'prusaSlicer',
+      hasPreview: true,
+      fileSizeBytes: 2 * 1024 * 1024,
+      parseStatus: 'partial',
+    );
+    verify(
+      () => mock.logEvent(
+        'gcode_preview_available',
+        params: {
+          'slicer': 'prusaSlicer',
+          'has_preview': 1,
+          'parse_status': 'partial',
+          'file_size_bucket': '1-5MB',
+        },
+      ),
+    ).called(1);
+
     await AppAnalytics.gcodeApplyToCalculator(
       slicer: 'prusaSlicer',
       hasPreview: true,
@@ -305,6 +323,22 @@ void main() {
             ).captured.single
             as Map<String, Object?>;
     expect(captured['gcode_time_to_value_ms'], isA<num>());
+
+    await AppAnalytics.gcodePickerCancelled(source: 'calculator');
+    verify(
+      () => mock.logEvent(
+        'gcode_picker_cancelled',
+        params: {'source': 'calculator'},
+      ),
+    ).called(1);
+
+    await AppAnalytics.gcodeFlowDivertedToBatch(source: 'calculator');
+    verify(
+      () => mock.logEvent(
+        'gcode_flow_diverted_to_batch',
+        params: {'source': 'calculator'},
+      ),
+    ).called(1);
 
     await AppAnalytics.gcodeImportSuccess(
       hasPrintTime: true,
