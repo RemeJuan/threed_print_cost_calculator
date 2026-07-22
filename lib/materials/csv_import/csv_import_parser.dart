@@ -26,6 +26,11 @@ class CsvImportError {
   final String? message;
 }
 
+class CsvImportHeaderException extends FormatException {
+  CsvImportHeaderException([String? message])
+    : super(message ?? 'Invalid CSV header');
+}
+
 const sampleRow1 =
     'foreign-1,PLA Pro+,Sunlu,PLA,Black,#000000,1000,950,24.99,true,false,Notes';
 const sampleRow2 =
@@ -191,16 +196,16 @@ ParsedCsvImportFile parseCsvImportFile(String content) {
   return ParsedCsvImportFile(header: header, rows: rows);
 }
 
-bool _parseBool(String value) {
-  if (value == 'true') return true;
-  if (value == 'false') return false;
-  throw FormatException('Invalid boolean');
+double? _parseNumOrNull(String value) {
+  final parsed = double.tryParse(value);
+  if (parsed == null || !parsed.isFinite) return null;
+  return parsed;
 }
 
-double _parseRequiredNum(String value) {
-  final parsed = double.tryParse(value);
-  if (parsed == null) throw FormatException('Invalid number');
-  return parsed;
+bool? _parseBoolOrNull(String value) {
+  if (value == 'true') return true;
+  if (value == 'false') return false;
+  return null;
 }
 
 class CsvImportParser {
@@ -222,7 +227,7 @@ class CsvImportParser {
     required Map<String, bool> existingIds,
   }) {
     if (file.header.join(',') != materialsCsvHeader) {
-      throw const FormatException('Invalid CSV header');
+      throw CsvImportHeaderException();
     }
     final rows = file.rows.map((record) {
       final raw = _raw(record.values);
@@ -241,64 +246,74 @@ class CsvImportParser {
       final archivedStr = trim('archived');
       final notes = raw('notes');
 
-      late final double spoolWeight;
-      late final double remainingWeight;
-      late final double cost;
-      late final bool trackRemaining;
-      late final bool archived;
-      try {
-        if (name.trim().isEmpty) {
-          errors.add(
-            CsvImportError(CsvImportErrorCode.requiredName, field: 'name'),
-          );
-        }
-        if (color.trim().isEmpty) {
-          errors.add(
-            CsvImportError(CsvImportErrorCode.requiredColor, field: 'color'),
-          );
-        }
-        spoolWeight = _parseRequiredNum(spoolWeightStr);
-        remainingWeight = _parseRequiredNum(remainingWeightStr);
-        cost = _parseRequiredNum(costStr);
-        trackRemaining = _parseBool(trackRemainingStr);
-        archived = _parseBool(archivedStr);
-        if (!spoolWeight.isFinite) {
-          errors.add(
-            CsvImportError(
-              CsvImportErrorCode.invalidSpoolWeight,
-              field: 'spool_weight_g',
-            ),
-          );
-        }
-        if (!remainingWeight.isFinite) {
-          errors.add(
-            CsvImportError(
-              CsvImportErrorCode.invalidRemainingWeight,
-              field: 'remaining_weight_g',
-            ),
-          );
-        }
-        if (!cost.isFinite) {
-          errors.add(
-            CsvImportError(CsvImportErrorCode.invalidCost, field: 'spool_cost'),
-          );
-        }
-        if (spoolWeight <= 0) {
-          errors.add(
-            CsvImportError(
-              CsvImportErrorCode.requiredSpoolWeight,
-              field: 'spool_weight_g',
-            ),
-          );
-        }
-        if (cost <= 0) {
-          errors.add(
-            CsvImportError(
-              CsvImportErrorCode.requiredCost,
-              field: 'spool_cost',
-            ),
-          );
-        }
+      if (name.trim().isEmpty) {
+        errors.add(
+          CsvImportError(CsvImportErrorCode.requiredName, field: 'name'),
+        );
+      }
+      if (color.trim().isEmpty) {
+        errors.add(
+          CsvImportError(CsvImportErrorCode.requiredColor, field: 'color'),
+        );
+      }
+      final spoolWeight = _parseNumOrNull(spoolWeightStr);
+      if (spoolWeight == null) {
+        errors.add(
+          CsvImportError(
+            CsvImportErrorCode.invalidSpoolWeight,
+            field: 'spool_weight_g',
+          ),
+        );
+      } else if (spoolWeight <= 0) {
+        errors.add(
+          CsvImportError(
+            CsvImportErrorCode.requiredSpoolWeight,
+            field: 'spool_weight_g',
+          ),
+        );
+      }
+
+      final remainingWeight = _parseNumOrNull(remainingWeightStr);
+      if (remainingWeight == null) {
+        errors.add(
+          CsvImportError(
+            CsvImportErrorCode.invalidRemainingWeight,
+            field: 'remaining_weight_g',
+          ),
+        );
+      }
+
+      final cost = _parseNumOrNull(costStr);
+      if (cost == null) {
+        errors.add(
+          CsvImportError(CsvImportErrorCode.invalidCost, field: 'spool_cost'),
+        );
+      } else if (cost <= 0) {
+        errors.add(
+          CsvImportError(CsvImportErrorCode.requiredCost, field: 'spool_cost'),
+        );
+      }
+
+      final trackRemaining = _parseBoolOrNull(trackRemainingStr);
+      if (trackRemaining == null) {
+        errors.add(
+          CsvImportError(
+            CsvImportErrorCode.invalidTrackRemaining,
+            field: 'track_remaining',
+          ),
+        );
+      }
+
+      final archived = _parseBoolOrNull(archivedStr);
+      if (archived == null) {
+        errors.add(
+          CsvImportError(CsvImportErrorCode.invalidArchived, field: 'archived'),
+        );
+      }
+
+      final safeSpoolWeight = spoolWeight ?? 0;
+      final safeRemainingWeight = remainingWeight ?? 0;
+      if (spoolWeight != null && remainingWeight != null) {
         if (remainingWeight < 0 || remainingWeight > spoolWeight) {
           errors.add(
             CsvImportError(
@@ -307,24 +322,6 @@ class CsvImportParser {
             ),
           );
         }
-      } on FormatException {
-        return CsvImportRow(
-          lineNumber: record.startLine,
-          kind: CsvImportRowKind.invalid,
-          sourceId: sourceId,
-          name: name,
-          brand: brand,
-          materialType: materialType,
-          color: color,
-          colorHex: colorHex,
-          spoolWeight: 0,
-          remainingWeight: 0,
-          cost: 0,
-          trackRemaining: false,
-          archived: false,
-          notes: notes,
-          errors: [CsvImportError(CsvImportErrorCode.malformedCsv)],
-        );
       }
       final kind = errors.isNotEmpty
           ? CsvImportRowKind.invalid
@@ -340,11 +337,11 @@ class CsvImportParser {
         materialType: materialType,
         color: color,
         colorHex: colorHex,
-        spoolWeight: spoolWeight,
-        remainingWeight: remainingWeight,
-        cost: cost,
-        trackRemaining: trackRemaining,
-        archived: archived,
+        spoolWeight: safeSpoolWeight,
+        remainingWeight: safeRemainingWeight,
+        cost: cost ?? 0,
+        trackRemaining: trackRemaining ?? false,
+        archived: archived ?? false,
         notes: notes,
         errors: errors,
       );

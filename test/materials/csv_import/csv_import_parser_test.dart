@@ -21,7 +21,7 @@ void main() {
     final file = parseCsvImportFile('bad,header\n');
     expect(
       () => const CsvImportParser().classify(file: file, existingIds: const {}),
-      throwsFormatException,
+      throwsA(isA<CsvImportHeaderException>()),
     );
   });
 
@@ -86,6 +86,27 @@ void main() {
     expect(
       row.errors.any((e) => e.code == CsvImportErrorCode.invalidSpoolWeight),
       isTrue,
+    );
+  });
+
+  test('keeps field specific errors when multiple validations fail', () {
+    final classified = const CsvImportParser().classify(
+      file: parseCsvImportFile(
+        '$materialsCsvHeader\n, ,Brand,PLA,Red,#ff0000,1000,-1,12.5,maybe,maybe,Notes\n',
+      ),
+      existingIds: const {},
+    );
+
+    final row = classified.rows.single;
+    expect(row.kind, CsvImportRowKind.invalid);
+    expect(
+      row.errors.map((e) => e.code),
+      containsAll([
+        CsvImportErrorCode.requiredName,
+        CsvImportErrorCode.invalidRemainingWeight,
+        CsvImportErrorCode.invalidTrackRemaining,
+        CsvImportErrorCode.invalidArchived,
+      ]),
     );
   });
 }
