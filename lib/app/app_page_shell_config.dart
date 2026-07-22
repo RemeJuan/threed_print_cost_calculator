@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -156,7 +154,6 @@ Future<void> _exportMaterialsCsv(
   BuildContext context,
   AppLocalizations l10n,
 ) async {
-  String? filePath;
   try {
     final container = ProviderScope.containerOf(context, listen: false);
     if (!container.read(premiumAccessPolicyProvider).stockTracking().allowed) {
@@ -166,7 +163,8 @@ Future<void> _exportMaterialsCsv(
     final csv = await container
         .read(materialsCsvExportServiceProvider)
         .buildCsv();
-    filePath = await writeCsvToFile(
+    await cleanupStaleMaterialExportFiles();
+    final filePath = await writeCsvToFile(
       csv,
       fileName: 'materials_${DateTime.now().millisecondsSinceEpoch}.csv',
     );
@@ -178,14 +176,5 @@ Future<void> _exportMaterialsCsv(
     );
   } catch (_) {
     BotToast.showText(text: l10n.materialsCsvExportError);
-  } finally {
-    if (filePath != null) {
-      try {
-        final file = File(filePath);
-        if (await file.exists()) {
-          await file.delete();
-        }
-      } catch (_) {}
-    }
   }
 }
