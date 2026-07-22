@@ -191,4 +191,40 @@ void main() {
     expect(after.single.originalWeight, 1000);
     expect(after.single.remainingWeight, 1000);
   });
+
+  test('existingIds uses batch lookup and preserves missing ids', () async {
+    final db = await databaseFactoryMemory.openDatabase(
+      'materials_existing_${DateTime.now().microsecondsSinceEpoch}.db',
+    );
+    final container = ProviderContainer(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+        appLoggerConfigProvider.overrideWithValue(
+          const AppLoggerConfig(minLevel: AppLogLevel.debug),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+    addTearDown(() async => db.close());
+
+    final repo = container.read(materialsRepositoryProvider);
+    await repo.saveMaterial(
+      const MaterialModel(
+        id: '',
+        name: 'Seed',
+        cost: '10',
+        color: 'Black',
+        weight: '1000',
+        archived: false,
+        autoDeductEnabled: false,
+        originalWeight: 1000,
+        remainingWeight: 1000,
+      ),
+    );
+    final existing = (await repo.getMaterials()).single;
+
+    final found = await repo.existingIds({existing.id, 'missing'});
+    expect(found, {existing.id: true, 'missing': false});
+  });
 }

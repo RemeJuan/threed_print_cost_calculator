@@ -66,9 +66,11 @@ class MaterialsRepository {
 
   Future<Map<String, bool>> existingIds(Set<String> ids) async {
     if (ids.isEmpty) return const {};
-    final found = <String, bool>{};
-    for (final id in ids) {
-      found[id] = await _store.record(id).exists(_db);
+    final snapshots = await _store.records(ids).getSnapshots(_db);
+    final found = <String, bool>{for (final id in ids) id: false};
+    for (final snapshot
+        in snapshots.whereType<RecordSnapshot<Object?, Object?>>()) {
+      found[snapshot.key.toString()] = true;
     }
     return found;
   }
