@@ -38,6 +38,15 @@ class RecordingImportService extends CsvImportService {
   }
 }
 
+class ThrowingImportService extends CsvImportService {
+  ThrowingImportService(super.ref);
+
+  @override
+  Future<CsvImportResult> importRows(List<CsvImportRow> rows) {
+    throw StateError('save failed');
+  }
+}
+
 ClassifiedCsvImport _review() {
   final csv = [
     materialsCsvHeader,
@@ -71,6 +80,18 @@ void main() {
       expect(find.text(l10n.csvImportIntro), findsOneWidget);
       expect(find.text(l10n.csvSelectFileButton), findsOneWidget);
       expect(find.text(l10n.csvTemplateButton), findsOneWidget);
+    });
+
+    test('maps header and read failures to distinct localized messages', () {
+      final l10n = lookupAppLocalizations(const Locale('en'));
+      expect(
+        csvImportFileErrorMessage(l10n, CsvImportHeaderException()),
+        l10n.csvInvalidHeaderError,
+      );
+      expect(
+        csvImportFileErrorMessage(l10n, StateError('read')),
+        l10n.csvReadError,
+      );
     });
 
     testWidgets(
@@ -143,6 +164,26 @@ void main() {
             .called,
         isTrue,
       );
+    });
+
+    testWidgets('uses save error feedback for import failures', (tester) async {
+      final db = await tester.pumpApp(CsvImportPage(initialReview: _review()), [
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true),
+        ),
+        csvImportServiceProvider.overrideWith(
+          (ref) => ThrowingImportService(ref),
+        ),
+      ]);
+      addTearDown(db.close);
+      await tester.tap(
+        find.byKey(const ValueKey<String>('csv_import.apply.button')),
+      );
+      await tester.pumpAndSettle();
+
+      final l10n = lookupAppLocalizations(const Locale('en'));
+      expect(find.text(l10n.csvImportSaveError), findsOneWidget);
+      expect(find.text(l10n.csvReadError), findsNothing);
     });
   });
 }

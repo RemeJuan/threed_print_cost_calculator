@@ -18,6 +18,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_expansion_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
+import 'package:threed_print_cost_calculator/shared/utils/csv_file_export.dart';
 
 class CsvImportPage extends ConsumerStatefulWidget {
   const CsvImportPage({super.key, this.filePicker, this.initialReview});
@@ -31,6 +32,12 @@ class CsvImportPage extends ConsumerStatefulWidget {
   @override
   ConsumerState<CsvImportPage> createState() => _CsvImportPageState();
 }
+
+@visibleForTesting
+String csvImportFileErrorMessage(AppLocalizations l10n, Object error) =>
+    error is CsvImportHeaderException
+    ? l10n.csvInvalidHeaderError
+    : l10n.csvReadError;
 
 class _CsvImportPageState extends ConsumerState<CsvImportPage> {
   final _parser = const CsvImportParser();
@@ -53,6 +60,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     setState(() => _downloadingTemplate = true);
     try {
       final tempDir = await getTemporaryDirectory();
+      await cleanupStaleMaterialTemplateFiles();
       tempFile = File(
         '${tempDir.path}/material_template_${DateTime.now().microsecondsSinceEpoch}.csv',
       );
@@ -66,13 +74,6 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     } catch (_) {
       if (mounted) BotToast.showText(text: l10n.csvTemplateError);
     } finally {
-      if (tempFile != null) {
-        try {
-          if (await tempFile.exists()) {
-            await tempFile.delete();
-          }
-        } catch (_) {}
-      }
       if (mounted) {
         setState(() => _downloadingTemplate = false);
       }
@@ -105,8 +106,10 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       AppAnalytics.safeLog(AppAnalytics.csvImportStarted);
       if (!mounted) return;
       setState(() => _review = classified);
-    } catch (_) {
-      if (mounted) BotToast.showText(text: l10n.csvReadError);
+    } catch (error) {
+      if (mounted) {
+        BotToast.showText(text: csvImportFileErrorMessage(l10n, error));
+      }
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -142,7 +145,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       );
       setState(() => _result = result);
     } catch (_) {
-      if (mounted) BotToast.showText(text: l10n.csvReadError);
+      if (mounted) BotToast.showText(text: l10n.csvImportSaveError);
     } finally {
       if (mounted) setState(() => _confirming = false);
     }
