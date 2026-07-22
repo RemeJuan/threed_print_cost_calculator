@@ -5,10 +5,12 @@ import 'package:share_plus/share_plus.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_generation.dart';
 
-Future<String> writeCsvToFile(String csv) async {
+Future<String> writeCsvToFile(String csv, {String? fileName}) async {
   final directory = await getTemporaryDirectory();
   final timestamp = DateTime.now().millisecondsSinceEpoch;
-  final file = File('${directory.path}/3d_print_history_$timestamp.csv');
+  final file = File(
+    '${directory.path}/${fileName ?? '3d_print_history_$timestamp.csv'}',
+  );
   await file.writeAsString(csv);
   return file.path;
 }
