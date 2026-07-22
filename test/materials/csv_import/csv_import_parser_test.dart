@@ -1,198 +1,91 @@
-import 'dart:ui' show Locale;
-
 import 'package:flutter_test/flutter_test.dart';
-import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/materials_csv_schema.dart';
 
 void main() {
-  final l10n = lookupAppLocalizations(const Locale('en'));
+  test('parses BOM CRLF quoted multiline CSV and preserves start lines', () {
+    final file = parseCsvImportFile(
+      '\ufeff$materialsCsvHeader\r\n'
+      'id-1,PLA,Brand,PLA,Red,#ff0000,1000,900,12.5,true,false,"Line 1\nLine 2"\r\n'
+      ',PETG,Brand2,PETG,Blue,#0000ff,2000,2000,13.5,false,true,Notes\r\n',
+    );
 
-  group('parseCsvLine', () {
-    test('splits basic comma-separated values', () {
-      expect(parseCsvLine('a,b,c'), ['a', 'b', 'c']);
-    });
-
-    test('handles quoted fields', () {
-      expect(parseCsvLine('"a b",c'), ['a b', 'c']);
-    });
-
-    test('handles escaped quotes inside quoted fields', () {
-      expect(parseCsvLine('"a ""b""",c'), ['a "b"', 'c']);
-    });
-
-    test('handles empty fields', () {
-      expect(parseCsvLine('a,,c'), ['a', '', 'c']);
-    });
-
-    test('handles trailing comma', () {
-      expect(parseCsvLine('a,'), ['a', '']);
-    });
-
-    test('handles single value', () {
-      expect(parseCsvLine('hello'), ['hello']);
-    });
+    expect(file.header, materialsCsvHeaders);
+    expect(file.rows, hasLength(2));
+    expect(file.rows.first.startLine, 2);
+    expect(file.rows.first.values.last, 'Line 1\nLine 2');
+    expect(file.rows.last.startLine, 3);
   });
 
-  group('parseImportRow', () {
-    final validColIndex = <String, int>{
-      'name': 0,
-      'brand': 1,
-      'material_type': 2,
-      'color': 3,
-      'color_hex': 4,
-      'spool_weight': 5,
-      'remaining_weight': 6,
-      'spool_cost': 7,
-      'notes': 8,
-    };
-
-    ImportRow parse(List<String> values, {int line = 1}) {
-      return parseImportRow(values, validColIndex, line, l10n);
-    }
-
-    test('parses valid row without errors', () {
-      final values = [
-        'PLA Pro+',
-        'Sunlu',
-        'PLA',
-        'Black',
-        '',
-        '1000',
-        '950',
-        '24.99',
-        'test notes',
-      ];
-      final row = parse(values);
-      expect(row.lineNumber, 1);
-      expect(row.name, 'PLA Pro+');
-      expect(row.brand, 'Sunlu');
-      expect(row.materialType, 'PLA');
-      expect(row.color, 'Black');
-      expect(row.colorHex, '');
-      expect(row.spoolWeight, 1000);
-      expect(row.remainingWeight, 950);
-      expect(row.cost, 24.99);
-      expect(row.notes, 'test notes');
-      expect(row.errors, isEmpty);
-    });
-
-    test('reports error when name is empty', () {
-      final values = ['', 'Sunlu', '', 'Black', '', '1000', '', '24.99', ''];
-      final row = parse(values);
-      expect(row.errors, contains(l10n.csvNameRequiredError));
-    });
-
-    test('reports error when color is empty', () {
-      final values = ['PLA', 'Sunlu', '', '', '', '1000', '', '24.99', ''];
-      final row = parse(values);
-      expect(row.errors, contains(l10n.csvColorRequiredError));
-    });
-
-    test('reports error when spool weight is empty', () {
-      final values = ['PLA', 'Sunlu', '', 'Black', '', '', '', '24.99', ''];
-      final row = parse(values);
-      expect(row.errors, contains(l10n.csvSpoolWeightRequiredError));
-    });
-
-    test('reports error when spool weight is not positive', () {
-      final values = ['PLA', 'Sunlu', '', 'Black', '', '0', '', '24.99', ''];
-      final row = parse(values);
-      expect(row.errors, contains(l10n.csvSpoolWeightPositiveError));
-    });
-
-    test('reports error when cost is empty', () {
-      final values = ['PLA', 'Sunlu', '', 'Black', '', '1000', '', '', ''];
-      final row = parse(values);
-      expect(row.errors, contains(l10n.csvCostRequiredError));
-    });
-
-    test('reports error when cost is not positive', () {
-      final values = ['PLA', 'Sunlu', '', 'Black', '', '1000', '', '0', ''];
-      final row = parse(values);
-      expect(row.errors, contains(l10n.csvCostPositiveError));
-    });
-
-    test('defaults remaining weight to spool weight when empty', () {
-      final values = ['PLA', 'Sunlu', '', 'Black', '', '1000', '', '24.99', ''];
-      final row = parse(values);
-      expect(row.remainingWeight, 1000);
-    });
-
-    test('handles column index not found gracefully', () {
-      final colIndex = <String, int>{'name': 0};
-      // Accessing column beyond values length
-      final row = parseImportRow(['PLA'], colIndex, 1, l10n);
-      expect(row.name, 'PLA');
-      expect(row.brand, '');
-    });
-
-    test('trims whitespace from values', () {
-      final values = [
-        ' PLA ',
-        ' Sunlu ',
-        '',
-        ' Black ',
-        '',
-        '1000',
-        '',
-        '24.99',
-        '',
-      ];
-      final row = parse(values);
-      expect(row.name, 'PLA');
-      expect(row.brand, 'Sunlu');
-      expect(row.color, 'Black');
-    });
+  test('rejects header mismatch', () {
+    final file = parseCsvImportFile('bad,header\n');
+    expect(
+      () => const CsvImportParser().classify(file: file, existingIds: const {}),
+      throwsFormatException,
+    );
   });
 
-  group('parseCsvContent', () {
-    test('parses header and data rows', () {
-      final content =
-          'name,brand,material_type,color,color_hex,spool_weight,remaining_weight,spool_cost,notes\n'
-          'PLA Pro+,Sunlu,PLA,Black,,1000,950,24.99,\n'
-          'PETG,Overture,PETG,White,,1000,1000,29.99,';
-      final rows = parseCsvContent(content, l10n);
-      expect(rows.length, 2);
-      expect(rows[0].name, 'PLA Pro+');
-      expect(rows[0].errors, isEmpty);
-      expect(rows[1].name, 'PETG');
-      expect(rows[1].errors, isEmpty);
-    });
+  test('rejects malformed unclosed quote csv', () {
+    expect(
+      () => parseCsvImportFile('$materialsCsvHeader\n"bad, row'),
+      throwsFormatException,
+    );
+  });
 
-    test('returns empty list for empty content', () {
-      expect(parseCsvContent('', l10n), isEmpty);
-    });
+  test('skips blank records throughout', () {
+    final file = parseCsvImportFile(
+      '$materialsCsvHeader\n\n\nid-1,PLA,Brand,PLA,Red,#ff0000,1000,900,12.5,true,false,Notes\n\n',
+    );
 
-    test('returns empty list for whitespace-only content', () {
-      expect(parseCsvContent('  \n  ', l10n), isEmpty);
-    });
+    expect(file.rows, hasLength(1));
+    expect(file.rows.single.startLine, 4);
+  });
 
-    test('returns empty list for header-only content', () {
-      final content =
-          'name,brand,material_type,color,color_hex,spool_weight,remaining_weight,spool_cost,notes';
-      final rows = parseCsvContent(content, l10n);
-      expect(rows, isEmpty);
-    });
+  test(
+    'preserves whitespace in text fields and trims only validation inputs',
+    () {
+      final classified = const CsvImportParser().classify(
+        file: parseCsvImportFile(
+          '$materialsCsvHeader\n,  name  ,  brand  ,PLA,  color  ,#fff,1000,900,12.5,true,false,  note  \n',
+        ),
+        existingIds: const {},
+      );
 
-    test('handles flexible column order', () {
-      final content =
-          'spool_cost,name,color\n'
-          '24.99,PLA Pro+,Black';
-      final rows = parseCsvContent(content, l10n);
-      expect(rows.length, 1);
-      expect(rows[0].name, 'PLA Pro+');
-      expect(rows[0].cost, 24.99);
-      expect(rows[0].color, 'Black');
-    });
+      final row = classified.rows.single;
+      expect(row.name, '  name  ');
+      expect(row.brand, '  brand  ');
+      expect(row.color, '  color  ');
+      expect(row.notes, '  note  ');
+      expect(row.kind, CsvImportRowKind.create);
+    },
+  );
 
-    test('preserves line numbers starting from 1', () {
-      final content =
-          'name,brand,material_type,color,color_hex,spool_weight,remaining_weight,spool_cost,notes\n'
-          'First,Sunlu,PLA,Black,,1000,950,24.99,\n'
-          'Second,Overture,PETG,White,,1000,1000,29.99,';
-      final rows = parseCsvContent(content, l10n);
-      expect(rows[0].lineNumber, 1);
-      expect(rows[1].lineNumber, 2);
-    });
+  test('marks validation errors invalid before update or create', () {
+    final classified = const CsvImportParser().classify(
+      file: parseCsvImportFile(
+        '$materialsCsvHeader\nexisting-id, ,Brand,PLA,Red,#ff0000,1000,900,12.5,true,false,Notes\n',
+      ),
+      existingIds: const {'existing-id': true},
+    );
+
+    final row = classified.rows.single;
+    expect(row.kind, CsvImportRowKind.invalid);
+    expect(row.errors.single.code, CsvImportErrorCode.requiredName);
+  });
+
+  test('rejects non-finite numeric values', () {
+    final classified = const CsvImportParser().classify(
+      file: parseCsvImportFile(
+        '$materialsCsvHeader\n,PLA,Brand,PLA,Red,#ff0000,Infinity,900,12.5,true,false,Notes\n',
+      ),
+      existingIds: const {},
+    );
+
+    final row = classified.rows.single;
+    expect(row.kind, CsvImportRowKind.invalid);
+    expect(
+      row.errors.any((e) => e.code == CsvImportErrorCode.invalidSpoolWeight),
+      isTrue,
+    );
   });
 }
