@@ -1262,6 +1262,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvImportTitle => 'Impor material';
 
   @override
+  String get materialsCsvExportTitle => 'Ekspor material';
+
+  @override
+  String get materialsCsvExportShareText => 'Ekspor CSV material';
+
+  @override
+  String get materialsCsvExportError => 'Material tidak dapat diekspor.';
+
+  @override
   String get csvTemplateButton => 'Template';
 
   @override
@@ -1271,7 +1280,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvTemplateError => 'Tidak dapat membagikan template.';
 
   @override
-  String get csvImportIntro => 'Impor material dari file CSV.';
+  String get csvImportIntro =>
+      'Ekspor material saat ini, edit CSV, lalu impor kembali. Baris yang cocok akan diperbarui; ID baru atau yang tidak cocok akan membuat material lokal.';
 
   @override
   String get csvSelectFileButton => 'Pilih file CSV';
@@ -1304,6 +1314,31 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvCostPositiveError => 'Biaya harus > 0';
 
   @override
+  String get csvInvalidSpoolWeightError =>
+      'Berat spool harus berupa angka yang valid.';
+
+  @override
+  String get csvInvalidRemainingWeightError =>
+      'Berat tersisa harus berupa angka valid dan tidak boleh melebihi berat spool.';
+
+  @override
+  String get csvInvalidCostError => 'Biaya harus berupa angka yang valid.';
+
+  @override
+  String get csvInvalidTrackRemainingError =>
+      'Pelacakan tersisa harus true atau false.';
+
+  @override
+  String get csvInvalidArchivedError => 'Diarsipkan harus true atau false.';
+
+  @override
+  String get csvInvalidHeaderError =>
+      'Header CSV tidak cocok dengan ekspor material.';
+
+  @override
+  String get csvMalformedError => 'CSV berisi data yang tidak valid.';
+
+  @override
   String csvImportSuccessMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1328,6 +1363,102 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(kosong)';
+
+  @override
+  String csvImportReviewSummary(
+    Object creating,
+    Object invalid,
+    Object rows,
+    Object updating,
+  ) {
+    return 'Baris ditemukan: $rows · Diperbarui: $updating · Dibuat: $creating · Perlu diperbaiki: $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(Object count) {
+    return 'Memperbarui ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(Object count) {
+    return 'Membuat ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(Object count) {
+    return 'Perlu diperbaiki ($count)';
+  }
+
+  @override
+  String csvImportRowLine(Object line) {
+    return 'Baris $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => 'Perbarui material yang ada';
+
+  @override
+  String get csvImportCreatingStatus => 'Buat material lokal';
+
+  @override
+  String get csvImportNeedsFixingStatus => 'Dilewati sampai diperbaiki';
+
+  @override
+  String csvImportApplyButton(num creates, num updates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Terapkan $updates pembaruan dan buat $creates material',
+      one: 'Terapkan $updates pembaruan dan buat 1 material',
+      zero: 'Terapkan $updates pembaruan',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Terapkan 1 pembaruan dan buat $creates material',
+      one: 'Terapkan 1 pembaruan dan buat 1 material',
+      zero: 'Terapkan 1 pembaruan',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Buat $creates material',
+      one: 'Buat 1 material',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'Impor selesai';
+
+  @override
+  String csvImportResultUpdated(Object count) {
+    return 'Material diperbarui: $count';
+  }
+
+  @override
+  String csvImportResultCreated(Object count) {
+    return 'Material dibuat: $count';
+  }
+
+  @override
+  String csvImportResultSkipped(Object count) {
+    return 'Baris dilewati: $count';
+  }
+
+  @override
+  String get csvImportReturnButton => 'Kembali ke material';
+
+  @override
+  String get csvImportAccessError =>
+      'Akses pelacakan stok diperlukan untuk mengimpor material.';
 
   @override
   String get editButton => 'Sunting';

@@ -1301,6 +1301,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get csvImportTitle => 'Importer des matériaux';
 
   @override
+  String get materialsCsvExportTitle => 'Exporter les matériaux';
+
+  @override
+  String get materialsCsvExportShareText => 'Export CSV des matériaux';
+
+  @override
+  String get materialsCsvExportError => 'Impossible d\'exporter les matériaux.';
+
+  @override
   String get csvTemplateButton => 'Modèle';
 
   @override
@@ -1310,7 +1319,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get csvTemplateError => 'Impossible de partager le modèle.';
 
   @override
-  String get csvImportIntro => 'Importez des matériaux depuis un fichier CSV.';
+  String get csvImportIntro =>
+      'Exportez vos matériaux actuels, modifiez le CSV, puis réimportez-le. Les lignes correspondantes sont mises à jour ; les nouveaux ID ou ID inconnus créent des matériaux locaux.';
 
   @override
   String get csvSelectFileButton => 'Choisir un fichier CSV';
@@ -1345,6 +1355,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get csvCostPositiveError => 'Le coût doit être > 0';
 
   @override
+  String get csvInvalidSpoolWeightError =>
+      'Le poids de la bobine doit être un nombre valide.';
+
+  @override
+  String get csvInvalidRemainingWeightError =>
+      'Le poids restant doit être un nombre valide et ne pas dépasser le poids de la bobine.';
+
+  @override
+  String get csvInvalidCostError => 'Le coût doit être un nombre valide.';
+
+  @override
+  String get csvInvalidTrackRemainingError =>
+      'Le suivi restant doit être true ou false.';
+
+  @override
+  String get csvInvalidArchivedError => 'Archivé doit être true ou false.';
+
+  @override
+  String get csvInvalidHeaderError =>
+      'L\'en-tête CSV ne correspond pas à l\'export des matériaux.';
+
+  @override
+  String get csvMalformedError => 'Le CSV contient des données mal formées.';
+
+  @override
   String csvImportSuccessMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1369,6 +1404,102 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(vide)';
+
+  @override
+  String csvImportReviewSummary(
+    Object creating,
+    Object invalid,
+    Object rows,
+    Object updating,
+  ) {
+    return 'Lignes trouvées : $rows · Mise à jour : $updating · Création : $creating · À corriger : $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(Object count) {
+    return 'Mise à jour ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(Object count) {
+    return 'Création ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(Object count) {
+    return 'À corriger ($count)';
+  }
+
+  @override
+  String csvImportRowLine(Object line) {
+    return 'Ligne $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => 'Mettre à jour le matériau existant';
+
+  @override
+  String get csvImportCreatingStatus => 'Créer un matériau local';
+
+  @override
+  String get csvImportNeedsFixingStatus => 'Ignorée jusqu\'à correction';
+
+  @override
+  String csvImportApplyButton(num creates, num updates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Appliquer $updates mises à jour et créer $creates matériaux',
+      one: 'Appliquer $updates mises à jour et créer 1 matériau',
+      zero: 'Appliquer $updates mises à jour',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Appliquer 1 mise à jour et créer $creates matériaux',
+      one: 'Appliquer 1 mise à jour et créer 1 matériau',
+      zero: 'Appliquer 1 mise à jour',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Créer $creates matériaux',
+      one: 'Créer 1 matériau',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'Importation terminée';
+
+  @override
+  String csvImportResultUpdated(Object count) {
+    return 'Matériaux mis à jour : $count';
+  }
+
+  @override
+  String csvImportResultCreated(Object count) {
+    return 'Matériaux créés : $count';
+  }
+
+  @override
+  String csvImportResultSkipped(Object count) {
+    return 'Lignes ignorées : $count';
+  }
+
+  @override
+  String get csvImportReturnButton => 'Retour aux matériaux';
+
+  @override
+  String get csvImportAccessError =>
+      'L\'accès au suivi des stocks est requis pour importer des matériaux.';
 
   @override
   String get editButton => 'Modifier';

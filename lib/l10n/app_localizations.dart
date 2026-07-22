@@ -2393,6 +2393,24 @@ abstract class AppLocalizations {
   /// **'Import materials'**
   String get csvImportTitle;
 
+  /// No description provided for @materialsCsvExportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export materials'**
+  String get materialsCsvExportTitle;
+
+  /// No description provided for @materialsCsvExportShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Material CSV export'**
+  String get materialsCsvExportShareText;
+
+  /// No description provided for @materialsCsvExportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not export materials.'**
+  String get materialsCsvExportError;
+
   /// No description provided for @csvTemplateButton.
   ///
   /// In en, this message translates to:
@@ -2414,7 +2432,7 @@ abstract class AppLocalizations {
   /// No description provided for @csvImportIntro.
   ///
   /// In en, this message translates to:
-  /// **'Import materials from a CSV file.'**
+  /// **'Export your current materials, edit the CSV, then re-import it. Matching rows update; new or unmatched IDs create local materials.'**
   String get csvImportIntro;
 
   /// No description provided for @csvSelectFileButton.
@@ -2477,6 +2495,48 @@ abstract class AppLocalizations {
   /// **'Cost must be > 0'**
   String get csvCostPositiveError;
 
+  /// No description provided for @csvInvalidSpoolWeightError.
+  ///
+  /// In en, this message translates to:
+  /// **'Spool weight must be a valid number.'**
+  String get csvInvalidSpoolWeightError;
+
+  /// No description provided for @csvInvalidRemainingWeightError.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining weight must be a valid number and cannot exceed spool weight.'**
+  String get csvInvalidRemainingWeightError;
+
+  /// No description provided for @csvInvalidCostError.
+  ///
+  /// In en, this message translates to:
+  /// **'Cost must be a valid number.'**
+  String get csvInvalidCostError;
+
+  /// No description provided for @csvInvalidTrackRemainingError.
+  ///
+  /// In en, this message translates to:
+  /// **'Track remaining must be true or false.'**
+  String get csvInvalidTrackRemainingError;
+
+  /// No description provided for @csvInvalidArchivedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived must be true or false.'**
+  String get csvInvalidArchivedError;
+
+  /// No description provided for @csvInvalidHeaderError.
+  ///
+  /// In en, this message translates to:
+  /// **'The CSV header does not match the materials export.'**
+  String get csvInvalidHeaderError;
+
+  /// No description provided for @csvMalformedError.
+  ///
+  /// In en, this message translates to:
+  /// **'The CSV contains malformed data.'**
+  String get csvMalformedError;
+
   /// No description provided for @csvImportSuccessMessage.
   ///
   /// In en, this message translates to:
@@ -2506,6 +2566,101 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'(empty)'**
   String get csvEmptyNamePlaceholder;
+
+  /// No description provided for @csvImportReviewSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows found: {rows} · Updating: {updating} · Creating: {creating} · Need fixing: {invalid}'**
+  String csvImportReviewSummary(
+    Object creating,
+    Object invalid,
+    Object rows,
+    Object updating,
+  );
+
+  /// No description provided for @csvImportUpdatingSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating ({count})'**
+  String csvImportUpdatingSection(Object count);
+
+  /// No description provided for @csvImportCreatingSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating ({count})'**
+  String csvImportCreatingSection(Object count);
+
+  /// No description provided for @csvImportNeedsFixingSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs fixing ({count})'**
+  String csvImportNeedsFixingSection(Object count);
+
+  /// No description provided for @csvImportRowLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Line {line}'**
+  String csvImportRowLine(Object line);
+
+  /// No description provided for @csvImportUpdatingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Update existing material'**
+  String get csvImportUpdatingStatus;
+
+  /// No description provided for @csvImportCreatingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Create local material'**
+  String get csvImportCreatingStatus;
+
+  /// No description provided for @csvImportNeedsFixingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped until fixed'**
+  String get csvImportNeedsFixingStatus;
+
+  /// No description provided for @csvImportApplyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'{updates, plural, =0{{creates, plural, one{Create 1 material} other{Create {creates} materials}}} one{{creates, plural, =0{Apply 1 update} one{Apply 1 update and create 1 material} other{Apply 1 update and create {creates} materials}}} other{{creates, plural, =0{Apply {updates} updates} one{Apply {updates} updates and create 1 material} other{Apply {updates} updates and create {creates} materials}}}}'**
+  String csvImportApplyButton(num creates, num updates);
+
+  /// No description provided for @csvImportResultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import complete'**
+  String get csvImportResultTitle;
+
+  /// No description provided for @csvImportResultUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials updated: {count}'**
+  String csvImportResultUpdated(Object count);
+
+  /// No description provided for @csvImportResultCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Materials created: {count}'**
+  String csvImportResultCreated(Object count);
+
+  /// No description provided for @csvImportResultSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Rows skipped: {count}'**
+  String csvImportResultSkipped(Object count);
+
+  /// No description provided for @csvImportReturnButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to materials'**
+  String get csvImportReturnButton;
+
+  /// No description provided for @csvImportAccessError.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock tracking access is required to import materials.'**
+  String get csvImportAccessError;
 
   /// Label for edit action on material items
   ///

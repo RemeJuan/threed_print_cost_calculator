@@ -1241,6 +1241,15 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvImportTitle => '材料をインポート';
 
   @override
+  String get materialsCsvExportTitle => '材料をエクスポート';
+
+  @override
+  String get materialsCsvExportShareText => '材料CSVエクスポート';
+
+  @override
+  String get materialsCsvExportError => '材料をエクスポートできませんでした。';
+
+  @override
   String get csvTemplateButton => 'テンプレート';
 
   @override
@@ -1250,7 +1259,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvTemplateError => 'テンプレートを共有できませんでした。';
 
   @override
-  String get csvImportIntro => 'CSVファイルから材料をインポートします。';
+  String get csvImportIntro =>
+      '現在の材料をエクスポートし、CSVを編集して再インポートします。一致する行は更新され、新しいIDまたは一致しないIDはローカル材料として作成されます。';
 
   @override
   String get csvSelectFileButton => 'CSVファイルを選択';
@@ -1283,6 +1293,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvCostPositiveError => 'コストは0より大きい必要があります';
 
   @override
+  String get csvInvalidSpoolWeightError => 'スプール重量は有効な数値である必要があります。';
+
+  @override
+  String get csvInvalidRemainingWeightError => '残量は有効な数値で、スプール重量を超えない必要があります。';
+
+  @override
+  String get csvInvalidCostError => 'コストは有効な数値である必要があります。';
+
+  @override
+  String get csvInvalidTrackRemainingError => '残量追跡はtrueまたはfalseである必要があります。';
+
+  @override
+  String get csvInvalidArchivedError => 'アーカイブ済みはtrueまたはfalseである必要があります。';
+
+  @override
+  String get csvInvalidHeaderError => 'CSVヘッダーが材料エクスポートと一致しません。';
+
+  @override
+  String get csvMalformedError => 'CSVに不正なデータが含まれています。';
+
+  @override
   String csvImportSuccessMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1306,6 +1337,101 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(空白)';
+
+  @override
+  String csvImportReviewSummary(
+    Object creating,
+    Object invalid,
+    Object rows,
+    Object updating,
+  ) {
+    return '見つかった行: $rows · 更新: $updating · 作成: $creating · 要修正: $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(Object count) {
+    return '更新 ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(Object count) {
+    return '作成 ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(Object count) {
+    return '要修正 ($count)';
+  }
+
+  @override
+  String csvImportRowLine(Object line) {
+    return '行 $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => '既存の材料を更新';
+
+  @override
+  String get csvImportCreatingStatus => 'ローカル材料を作成';
+
+  @override
+  String get csvImportNeedsFixingStatus => '修正されるまでスキップ';
+
+  @override
+  String csvImportApplyButton(num creates, num updates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: '更新$updates件を適用し、材料を$creates件作成',
+      one: '更新$updates件を適用し、材料を1件作成',
+      zero: '更新$updates件を適用',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: '更新1件を適用し、材料を$creates件作成',
+      one: '更新1件を適用し、材料を1件作成',
+      zero: '更新1件を適用',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: '材料を$creates件作成',
+      one: '材料を1件作成',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'インポート完了';
+
+  @override
+  String csvImportResultUpdated(Object count) {
+    return '更新した材料: $count';
+  }
+
+  @override
+  String csvImportResultCreated(Object count) {
+    return '作成した材料: $count';
+  }
+
+  @override
+  String csvImportResultSkipped(Object count) {
+    return 'スキップした行: $count';
+  }
+
+  @override
+  String get csvImportReturnButton => '材料に戻る';
+
+  @override
+  String get csvImportAccessError => '材料をインポートするには在庫追跡へのアクセスが必要です。';
 
   @override
   String get editButton => '編集';

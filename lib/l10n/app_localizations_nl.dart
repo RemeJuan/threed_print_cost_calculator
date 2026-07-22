@@ -1285,6 +1285,16 @@ class AppLocalizationsNl extends AppLocalizations {
   String get csvImportTitle => 'Materialen importeren';
 
   @override
+  String get materialsCsvExportTitle => 'Materialen exporteren';
+
+  @override
+  String get materialsCsvExportShareText => 'CSV-export van materialen';
+
+  @override
+  String get materialsCsvExportError =>
+      'Materialen konden niet worden geëxporteerd.';
+
+  @override
   String get csvTemplateButton => 'Sjabloon';
 
   @override
@@ -1294,7 +1304,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get csvTemplateError => 'Kon het sjabloon niet delen.';
 
   @override
-  String get csvImportIntro => 'Importeer materialen uit een CSV-bestand.';
+  String get csvImportIntro =>
+      'Exporteer uw huidige materialen, bewerk de CSV en importeer deze opnieuw. Overeenkomende rijen worden bijgewerkt; nieuwe of niet-overeenkomende ID\'s maken lokale materialen aan.';
 
   @override
   String get csvSelectFileButton => 'Kies CSV-bestand';
@@ -1328,6 +1339,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get csvCostPositiveError => 'Kosten moeten > 0 zijn';
 
   @override
+  String get csvInvalidSpoolWeightError =>
+      'Spoelgewicht moet een geldig getal zijn.';
+
+  @override
+  String get csvInvalidRemainingWeightError =>
+      'Resterend gewicht moet een geldig getal zijn en mag het spoelgewicht niet overschrijden.';
+
+  @override
+  String get csvInvalidCostError => 'Kosten moeten een geldig getal zijn.';
+
+  @override
+  String get csvInvalidTrackRemainingError =>
+      'Voorraad volgen moet true of false zijn.';
+
+  @override
+  String get csvInvalidArchivedError => 'Gearchiveerd moet true of false zijn.';
+
+  @override
+  String get csvInvalidHeaderError =>
+      'De CSV-kop komt niet overeen met de materiaalsexport.';
+
+  @override
+  String get csvMalformedError => 'De CSV bevat ongeldige gegevens.';
+
+  @override
   String csvImportSuccessMessage(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1352,6 +1388,102 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(leeg)';
+
+  @override
+  String csvImportReviewSummary(
+    Object creating,
+    Object invalid,
+    Object rows,
+    Object updating,
+  ) {
+    return 'Gevonden rijen: $rows · Bijwerken: $updating · Maken: $creating · Moet worden hersteld: $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(Object count) {
+    return 'Bijwerken ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(Object count) {
+    return 'Maken ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(Object count) {
+    return 'Moet worden hersteld ($count)';
+  }
+
+  @override
+  String csvImportRowLine(Object line) {
+    return 'Regel $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => 'Bestaand materiaal bijwerken';
+
+  @override
+  String get csvImportCreatingStatus => 'Lokaal materiaal maken';
+
+  @override
+  String get csvImportNeedsFixingStatus => 'Overgeslagen tot herstel';
+
+  @override
+  String csvImportApplyButton(num creates, num updates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: '$updates updates toepassen en $creates materialen maken',
+      one: '$updates updates toepassen en 1 materiaal maken',
+      zero: '$updates updates toepassen',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: '1 update toepassen en $creates materialen maken',
+      one: '1 update toepassen en 1 materiaal maken',
+      zero: '1 update toepassen',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: '$creates materialen maken',
+      one: '1 materiaal maken',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'Import voltooid';
+
+  @override
+  String csvImportResultUpdated(Object count) {
+    return 'Materialen bijgewerkt: $count';
+  }
+
+  @override
+  String csvImportResultCreated(Object count) {
+    return 'Materialen gemaakt: $count';
+  }
+
+  @override
+  String csvImportResultSkipped(Object count) {
+    return 'Rijen overgeslagen: $count';
+  }
+
+  @override
+  String get csvImportReturnButton => 'Terug naar materialen';
+
+  @override
+  String get csvImportAccessError =>
+      'Toegang tot voorraadtracking is vereist om materialen te importeren.';
 
   @override
   String get editButton => 'Bewerken';
