@@ -171,9 +171,7 @@ class FakeMaterialsRepository implements MaterialsRepository {
     }
 
     for (final row in creates) {
-      final id = row.sourceId.isNotEmpty
-          ? row.sourceId
-          : 'material_${materialsById.length + created + 1}';
+      final id = 'material_${materialsById.length + created + 1}';
       final material = mapRow(row, id);
       materialsById[id] = material;
       savedMaterials.add(material);

@@ -218,9 +218,7 @@ class FakeMaterialsRepository implements MaterialsRepository {
     }
 
     for (final row in creates) {
-      final key = row.sourceId.isNotEmpty
-          ? row.sourceId
-          : 'material_${_materials.length + created + 1}';
+      final key = 'material_${_materials.length + created + 1}';
       _materials[key] = MaterialModel(
         id: key,
         name: row.name,
