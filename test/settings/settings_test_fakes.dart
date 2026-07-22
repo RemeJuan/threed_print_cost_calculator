@@ -1,6 +1,7 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
@@ -113,6 +114,11 @@ class FakeMaterialsRepository implements MaterialsRepository {
   }
 
   @override
+  Future<Map<String, bool>> existingIds(Set<String> ids) async {
+    return {for (final id in ids) id: materialsById.containsKey(id)};
+  }
+
+  @override
   Future<Object?> saveMaterial(MaterialModel material, {String? id}) async {
     savedMaterials.add(material);
 
@@ -123,6 +129,63 @@ class FakeMaterialsRepository implements MaterialsRepository {
     }
 
     return useExplicitSaveResult ? saveResult : (id ?? material.id);
+  }
+
+  @override
+  Future<MaterialsUpsertResult> upsertMaterials({
+    required List<CsvImportRow> creates,
+    required List<CsvImportRow> updates,
+    Future<void> Function(CsvImportRow row)? onBeforeWrite,
+  }) async {
+    final skippedRows = <CsvImportRow>[];
+    var created = 0;
+    var updated = 0;
+
+    MaterialModel mapRow(CsvImportRow row, String id) {
+      return MaterialModel(
+        id: id,
+        name: row.name,
+        cost: row.cost.toString(),
+        color: row.color,
+        weight: row.spoolWeight.toString(),
+        archived: row.archived,
+        autoDeductEnabled: row.trackRemaining,
+        originalWeight: row.spoolWeight,
+        remainingWeight: row.remainingWeight,
+        brand: row.brand,
+        materialType: row.materialType,
+        colorHex: row.colorHex,
+        notes: row.notes,
+      );
+    }
+
+    for (final row in updates) {
+      if (!materialsById.containsKey(row.sourceId)) {
+        skippedRows.add(row);
+        continue;
+      }
+      final material = mapRow(row, row.sourceId);
+      materialsById[row.sourceId] = material;
+      savedMaterials.add(material);
+      updated += 1;
+    }
+
+    for (final row in creates) {
+      final id = row.sourceId.isNotEmpty
+          ? row.sourceId
+          : 'material_${materialsById.length + created + 1}';
+      final material = mapRow(row, id);
+      materialsById[id] = material;
+      savedMaterials.add(material);
+      created += 1;
+    }
+
+    return MaterialsUpsertResult(
+      created: created,
+      updated: updated,
+      skippedRows: skippedRows,
+      saveFailures: const [],
+    );
   }
 
   @override
