@@ -1,14 +1,22 @@
+import 'dart:io';
+
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/header_actions.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
 import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/materials_csv_export_service.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/utils/csv_file_export.dart';
+import 'package:share_plus/share_plus.dart';
 
 enum AppPageTab { calculator, materials, history, settings }
 
@@ -75,8 +83,9 @@ List<AppPageShellTab> buildAppPageShellTabs({
           page: const MaterialsPage(),
           title: l10n.materialsAppBarTitle,
           actions: [
-            if (policy.csvMaterialImport().allowed)
+            if (policy.stockTracking().allowed) ...[
               IconButton(
+                key: const ValueKey<String>('materials.import.button'),
                 tooltip: l10n.csvImportTitle,
                 onPressed: () {
                   Navigator.of(context).push(
@@ -87,6 +96,16 @@ List<AppPageShellTab> buildAppPageShellTabs({
                 },
                 icon: const Icon(Icons.file_upload_outlined, color: ICON_MUTED),
               ),
+              IconButton(
+                key: const ValueKey<String>('materials.export.button'),
+                tooltip: l10n.materialsCsvExportTitle,
+                onPressed: () => _exportMaterialsCsv(context, l10n),
+                icon: const Icon(
+                  Icons.file_download_outlined,
+                  color: ICON_MUTED,
+                ),
+              ),
+            ],
           ],
           navigationItem: BottomNavigationBarItem(
             icon: const Icon(
@@ -131,4 +150,42 @@ List<AppPageShellTab> buildAppPageShellTabs({
   }
 
   return tabOrder.map(buildTab).toList();
+}
+
+Future<void> _exportMaterialsCsv(
+  BuildContext context,
+  AppLocalizations l10n,
+) async {
+  String? filePath;
+  try {
+    final container = ProviderScope.containerOf(context, listen: false);
+    if (!container.read(premiumAccessPolicyProvider).stockTracking().allowed) {
+      BotToast.showText(text: l10n.csvImportAccessError);
+      return;
+    }
+    final csv = await container
+        .read(materialsCsvExportServiceProvider)
+        .buildCsv();
+    filePath = await writeCsvToFile(
+      csv,
+      fileName: 'materials_${DateTime.now().millisecondsSinceEpoch}.csv',
+    );
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [XFile(filePath)],
+        text: l10n.materialsCsvExportShareText,
+      ),
+    );
+  } catch (_) {
+    BotToast.showText(text: l10n.materialsCsvExportError);
+  } finally {
+    if (filePath != null) {
+      try {
+        final file = File(filePath);
+        if (await file.exists()) {
+          await file.delete();
+        }
+      } catch (_) {}
+    }
+  }
 }
