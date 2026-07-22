@@ -1293,6 +1293,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvReadError => 'File yang dipilih tidak dapat dibaca.';
 
   @override
+  String get csvImportSaveError =>
+      'Material yang diimpor tidak dapat disimpan. Coba lagi.';
+
+  @override
   String get csvFileTypeError => 'Pilih file .csv';
 
   @override
@@ -1366,31 +1370,31 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String csvImportReviewSummary(
-    Object creating,
-    Object invalid,
-    Object rows,
-    Object updating,
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
   ) {
     return 'Baris ditemukan: $rows · Diperbarui: $updating · Dibuat: $creating · Perlu diperbaiki: $invalid';
   }
 
   @override
-  String csvImportUpdatingSection(Object count) {
+  String csvImportUpdatingSection(int count) {
     return 'Memperbarui ($count)';
   }
 
   @override
-  String csvImportCreatingSection(Object count) {
+  String csvImportCreatingSection(int count) {
     return 'Membuat ($count)';
   }
 
   @override
-  String csvImportNeedsFixingSection(Object count) {
+  String csvImportNeedsFixingSection(int count) {
     return 'Perlu diperbaiki ($count)';
   }
 
   @override
-  String csvImportRowLine(Object line) {
+  String csvImportRowLine(int line) {
     return 'Baris $line';
   }
 
@@ -1404,7 +1408,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvImportNeedsFixingStatus => 'Dilewati sampai diperbaiki';
 
   @override
-  String csvImportApplyButton(num creates, num updates) {
+  String csvImportApplyButton(int updates, int creates) {
     String _temp0 = intl.Intl.pluralLogic(
       creates,
       locale: localeName,
@@ -1439,17 +1443,17 @@ class AppLocalizationsId extends AppLocalizations {
   String get csvImportResultTitle => 'Impor selesai';
 
   @override
-  String csvImportResultUpdated(Object count) {
+  String csvImportResultUpdated(int count) {
     return 'Material diperbarui: $count';
   }
 
   @override
-  String csvImportResultCreated(Object count) {
+  String csvImportResultCreated(int count) {
     return 'Material dibuat: $count';
   }
 
   @override
-  String csvImportResultSkipped(Object count) {
+  String csvImportResultSkipped(int count) {
     return 'Baris dilewati: $count';
   }
 
@@ -1458,7 +1462,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get csvImportAccessError =>
-      'Akses pelacakan stok diperlukan untuk mengimpor material.';
+      'Akses pelacakan stok diperlukan untuk tindakan material ini.';
 
   @override
   String get editButton => 'Sunting';

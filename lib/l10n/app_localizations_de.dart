@@ -1323,6 +1323,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die ausgewählte Datei konnte nicht gelesen werden.';
 
   @override
+  String get csvImportSaveError =>
+      'Importierte Materialien konnten nicht gespeichert werden. Bitte erneut versuchen.';
+
+  @override
   String get csvFileTypeError => 'Bitte wählen Sie eine .csv-Datei';
 
   @override
@@ -1396,31 +1400,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String csvImportReviewSummary(
-    Object creating,
-    Object invalid,
-    Object rows,
-    Object updating,
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
   ) {
     return 'Gefundene Zeilen: $rows · Aktualisieren: $updating · Erstellen: $creating · Zu beheben: $invalid';
   }
 
   @override
-  String csvImportUpdatingSection(Object count) {
+  String csvImportUpdatingSection(int count) {
     return 'Aktualisieren ($count)';
   }
 
   @override
-  String csvImportCreatingSection(Object count) {
+  String csvImportCreatingSection(int count) {
     return 'Erstellen ($count)';
   }
 
   @override
-  String csvImportNeedsFixingSection(Object count) {
+  String csvImportNeedsFixingSection(int count) {
     return 'Zu beheben ($count)';
   }
 
   @override
-  String csvImportRowLine(Object line) {
+  String csvImportRowLine(int line) {
     return 'Zeile $line';
   }
 
@@ -1434,7 +1438,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get csvImportNeedsFixingStatus => 'Bis zur Korrektur übersprungen';
 
   @override
-  String csvImportApplyButton(num creates, num updates) {
+  String csvImportApplyButton(int updates, int creates) {
     String _temp0 = intl.Intl.pluralLogic(
       creates,
       locale: localeName,
@@ -1470,17 +1474,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get csvImportResultTitle => 'Import abgeschlossen';
 
   @override
-  String csvImportResultUpdated(Object count) {
+  String csvImportResultUpdated(int count) {
     return 'Materialien aktualisiert: $count';
   }
 
   @override
-  String csvImportResultCreated(Object count) {
+  String csvImportResultCreated(int count) {
     return 'Materialien erstellt: $count';
   }
 
   @override
-  String csvImportResultSkipped(Object count) {
+  String csvImportResultSkipped(int count) {
     return 'Übersprungene Zeilen: $count';
   }
 
@@ -1489,7 +1493,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get csvImportAccessError =>
-      'Für den Materialimport ist Lagerbestandsverfolgung erforderlich.';
+      'Für diese Materialaktion ist Lagerbestandsverfolgung erforderlich.';
 
   @override
   String get editButton => 'Bearbeiten';

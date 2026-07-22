@@ -1293,6 +1293,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvReadError => 'ไม่สามารถอ่านไฟล์ที่เลือกได้';
 
   @override
+  String get csvImportSaveError =>
+      'ไม่สามารถบันทึกวัสดุที่นำเข้าได้ โปรดลองอีกครั้ง';
+
+  @override
   String get csvFileTypeError => 'กรุณาเลือกไฟล์ .csv';
 
   @override
@@ -1365,31 +1369,31 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String csvImportReviewSummary(
-    Object creating,
-    Object invalid,
-    Object rows,
-    Object updating,
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
   ) {
     return 'พบแถว: $rows · อัปเดต: $updating · สร้าง: $creating · ต้องแก้ไข: $invalid';
   }
 
   @override
-  String csvImportUpdatingSection(Object count) {
+  String csvImportUpdatingSection(int count) {
     return 'กำลังอัปเดต ($count)';
   }
 
   @override
-  String csvImportCreatingSection(Object count) {
+  String csvImportCreatingSection(int count) {
     return 'กำลังสร้าง ($count)';
   }
 
   @override
-  String csvImportNeedsFixingSection(Object count) {
+  String csvImportNeedsFixingSection(int count) {
     return 'ต้องแก้ไข ($count)';
   }
 
   @override
-  String csvImportRowLine(Object line) {
+  String csvImportRowLine(int line) {
     return 'บรรทัด $line';
   }
 
@@ -1403,7 +1407,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvImportNeedsFixingStatus => 'ข้ามจนกว่าจะแก้ไข';
 
   @override
-  String csvImportApplyButton(num creates, num updates) {
+  String csvImportApplyButton(int updates, int creates) {
     String _temp0 = intl.Intl.pluralLogic(
       creates,
       locale: localeName,
@@ -1438,17 +1442,17 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvImportResultTitle => 'นำเข้าเสร็จสิ้น';
 
   @override
-  String csvImportResultUpdated(Object count) {
+  String csvImportResultUpdated(int count) {
     return 'อัปเดตวัสดุ: $count';
   }
 
   @override
-  String csvImportResultCreated(Object count) {
+  String csvImportResultCreated(int count) {
     return 'สร้างวัสดุ: $count';
   }
 
   @override
-  String csvImportResultSkipped(Object count) {
+  String csvImportResultSkipped(int count) {
     return 'ข้ามแถว: $count';
   }
 
@@ -1456,7 +1460,8 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvImportReturnButton => 'กลับไปยังวัสดุ';
 
   @override
-  String get csvImportAccessError => 'ต้องมีสิทธิ์ติดตามสต็อกเพื่อนำเข้าวัสดุ';
+  String get csvImportAccessError =>
+      'ต้องมีสิทธิ์ติดตามสต็อกสำหรับการดำเนินการกับวัสดุนี้';
 
   @override
   String get editButton => 'แก้ไข';

@@ -1272,6 +1272,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvReadError => '選択されたファイルを読み取れませんでした。';
 
   @override
+  String get csvImportSaveError => 'インポートした材料を保存できませんでした。もう一度お試しください。';
+
+  @override
   String get csvFileTypeError => '.csvファイルを選択してください';
 
   @override
@@ -1340,31 +1343,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String csvImportReviewSummary(
-    Object creating,
-    Object invalid,
-    Object rows,
-    Object updating,
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
   ) {
     return '見つかった行: $rows · 更新: $updating · 作成: $creating · 要修正: $invalid';
   }
 
   @override
-  String csvImportUpdatingSection(Object count) {
+  String csvImportUpdatingSection(int count) {
     return '更新 ($count)';
   }
 
   @override
-  String csvImportCreatingSection(Object count) {
+  String csvImportCreatingSection(int count) {
     return '作成 ($count)';
   }
 
   @override
-  String csvImportNeedsFixingSection(Object count) {
+  String csvImportNeedsFixingSection(int count) {
     return '要修正 ($count)';
   }
 
   @override
-  String csvImportRowLine(Object line) {
+  String csvImportRowLine(int line) {
     return '行 $line';
   }
 
@@ -1378,7 +1381,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvImportNeedsFixingStatus => '修正されるまでスキップ';
 
   @override
-  String csvImportApplyButton(num creates, num updates) {
+  String csvImportApplyButton(int updates, int creates) {
     String _temp0 = intl.Intl.pluralLogic(
       creates,
       locale: localeName,
@@ -1413,17 +1416,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvImportResultTitle => 'インポート完了';
 
   @override
-  String csvImportResultUpdated(Object count) {
+  String csvImportResultUpdated(int count) {
     return '更新した材料: $count';
   }
 
   @override
-  String csvImportResultCreated(Object count) {
+  String csvImportResultCreated(int count) {
     return '作成した材料: $count';
   }
 
   @override
-  String csvImportResultSkipped(Object count) {
+  String csvImportResultSkipped(int count) {
     return 'スキップした行: $count';
   }
 
@@ -1431,7 +1434,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvImportReturnButton => '材料に戻る';
 
   @override
-  String get csvImportAccessError => '材料をインポートするには在庫追跡へのアクセスが必要です。';
+  String get csvImportAccessError => 'この材料操作には在庫追跡へのアクセスが必要です。';
 
   @override
   String get editButton => '編集';

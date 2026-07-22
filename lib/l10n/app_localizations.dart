@@ -2453,6 +2453,12 @@ abstract class AppLocalizations {
   /// **'Could not read the selected file.'**
   String get csvReadError;
 
+  /// No description provided for @csvImportSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save imported materials. Please try again.'**
+  String get csvImportSaveError;
+
   /// No description provided for @csvFileTypeError.
   ///
   /// In en, this message translates to:
@@ -2572,35 +2578,35 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rows found: {rows} · Updating: {updating} · Creating: {creating} · Need fixing: {invalid}'**
   String csvImportReviewSummary(
-    Object creating,
-    Object invalid,
-    Object rows,
-    Object updating,
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
   );
 
   /// No description provided for @csvImportUpdatingSection.
   ///
   /// In en, this message translates to:
   /// **'Updating ({count})'**
-  String csvImportUpdatingSection(Object count);
+  String csvImportUpdatingSection(int count);
 
   /// No description provided for @csvImportCreatingSection.
   ///
   /// In en, this message translates to:
   /// **'Creating ({count})'**
-  String csvImportCreatingSection(Object count);
+  String csvImportCreatingSection(int count);
 
   /// No description provided for @csvImportNeedsFixingSection.
   ///
   /// In en, this message translates to:
   /// **'Needs fixing ({count})'**
-  String csvImportNeedsFixingSection(Object count);
+  String csvImportNeedsFixingSection(int count);
 
   /// No description provided for @csvImportRowLine.
   ///
   /// In en, this message translates to:
   /// **'Line {line}'**
-  String csvImportRowLine(Object line);
+  String csvImportRowLine(int line);
 
   /// No description provided for @csvImportUpdatingStatus.
   ///
@@ -2624,7 +2630,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{updates, plural, =0{{creates, plural, one{Create 1 material} other{Create {creates} materials}}} one{{creates, plural, =0{Apply 1 update} one{Apply 1 update and create 1 material} other{Apply 1 update and create {creates} materials}}} other{{creates, plural, =0{Apply {updates} updates} one{Apply {updates} updates and create 1 material} other{Apply {updates} updates and create {creates} materials}}}}'**
-  String csvImportApplyButton(num creates, num updates);
+  String csvImportApplyButton(int updates, int creates);
 
   /// No description provided for @csvImportResultTitle.
   ///
@@ -2636,19 +2642,19 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Materials updated: {count}'**
-  String csvImportResultUpdated(Object count);
+  String csvImportResultUpdated(int count);
 
   /// No description provided for @csvImportResultCreated.
   ///
   /// In en, this message translates to:
   /// **'Materials created: {count}'**
-  String csvImportResultCreated(Object count);
+  String csvImportResultCreated(int count);
 
   /// No description provided for @csvImportResultSkipped.
   ///
   /// In en, this message translates to:
   /// **'Rows skipped: {count}'**
-  String csvImportResultSkipped(Object count);
+  String csvImportResultSkipped(int count);
 
   /// No description provided for @csvImportReturnButton.
   ///
@@ -2659,7 +2665,7 @@ abstract class AppLocalizations {
   /// No description provided for @csvImportAccessError.
   ///
   /// In en, this message translates to:
-  /// **'Stock tracking access is required to import materials.'**
+  /// **'Stock tracking access is required for this materials action.'**
   String get csvImportAccessError;
 
   /// Label for edit action on material items
