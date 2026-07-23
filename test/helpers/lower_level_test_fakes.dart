@@ -218,7 +218,11 @@ class FakeMaterialsRepository implements MaterialsRepository {
     }
 
     for (final row in creates) {
-      final key = 'material_${_materials.length + created + 1}';
+      var nextId = _materials.length + created + 1;
+      while (_materials.containsKey('material_$nextId')) {
+        nextId += 1;
+      }
+      final key = 'material_$nextId';
       _materials[key] = MaterialModel(
         id: key,
         name: row.name,
