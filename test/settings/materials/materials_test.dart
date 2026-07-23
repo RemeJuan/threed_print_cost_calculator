@@ -355,4 +355,36 @@ void main() {
       expect(repo.materialsById.keys.single, isNot('foreign-id'));
     },
   );
+
+  test('fake materials repo skips sparse occupied material ids', () async {
+    final repo = FakeMaterialsRepository();
+    repo.materialsById['material_2'] = _material();
+
+    await repo.upsertMaterials(
+      creates: [
+        CsvImportRow(
+          lineNumber: 2,
+          kind: CsvImportRowKind.create,
+          sourceId: 'foreign-id',
+          name: 'Next',
+          brand: '',
+          materialType: '',
+          color: 'Green',
+          colorHex: '',
+          spoolWeight: 500,
+          remainingWeight: 500,
+          cost: 5,
+          trackRemaining: false,
+          archived: false,
+          notes: '',
+          errors: const [],
+        ),
+      ],
+      updates: const [],
+    );
+
+    expect(repo.materialsById.containsKey('material_2'), isTrue);
+    expect(repo.materialsById.containsKey('material_3'), isTrue);
+    expect(repo.materialsById['material_3']!.name, 'Next');
+  });
 }
