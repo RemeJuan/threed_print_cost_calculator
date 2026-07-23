@@ -149,7 +149,7 @@ void main() {
     expect(gateway.restorePurchasesCalls, 1);
   });
 
-  test('purchase blocked when App Check unauthenticated', () async {
+  test('purchase blocked when service unauthenticated', () async {
     final gateway = FakePremiumPurchaseGateway();
     final container = ProviderContainer(
       overrides: [
@@ -180,7 +180,7 @@ void main() {
     expect(gateway.purchasePackageCalls, 0);
   });
 
-  test('restore blocked when App Check unauthenticated', () async {
+  test('restore blocked when service unauthenticated', () async {
     final gateway = FakePremiumPurchaseGateway();
     final container = ProviderContainer(
       overrides: [

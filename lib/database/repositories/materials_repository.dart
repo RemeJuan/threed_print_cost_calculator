@@ -3,6 +3,7 @@ import 'package:sembast/sembast.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
@@ -63,6 +64,60 @@ class MaterialsRepository {
         .insertRecord(material.toMap());
   }
 
+  Future<Map<String, bool>> existingIds(Set<String> ids) async {
+    if (ids.isEmpty) return const {};
+    final snapshots = await _store.records(ids).getSnapshots(_db);
+    final found = <String, bool>{for (final id in ids) id: false};
+    for (final snapshot
+        in snapshots.whereType<RecordSnapshot<Object?, Object?>>()) {
+      found[snapshot.key.toString()] = true;
+    }
+    return found;
+  }
+
+  Future<MaterialsUpsertResult> upsertMaterials({
+    required List<CsvImportRow> creates,
+    required List<CsvImportRow> updates,
+    Future<void> Function(CsvImportRow row)? onBeforeWrite,
+  }) async {
+    final saveFailures = <CsvImportRow>[];
+    var created = 0;
+    var updated = 0;
+    final skippedRows = <CsvImportRow>[];
+
+    final store =
+        stringMapStoreFactory.store(DBName.materials.name)
+            as StoreRef<Object?, Map<String, Object?>>;
+
+    await _db.transaction((txn) async {
+      for (final row in updates) {
+        if (onBeforeWrite != null) {
+          await onBeforeWrite(row);
+        }
+        if (!await store.record(row.sourceId).exists(txn)) {
+          skippedRows.add(row);
+          continue;
+        }
+        await store.record(row.sourceId).update(txn, _toMaterialMap(row));
+        updated++;
+      }
+      for (final row in creates) {
+        if (onBeforeWrite != null) {
+          await onBeforeWrite(row);
+        }
+        final key = await store.add(txn, _toMaterialMap(row));
+        if (key != null) created++;
+      }
+    });
+
+    return MaterialsUpsertResult(
+      created: created,
+      updated: updated,
+      skippedRows: skippedRows,
+      saveFailures: saveFailures,
+    );
+  }
+
   Future<void> deleteMaterial(String id) {
     return ref.read(dbHelpersProvider(DBName.materials)).deleteRecord(id);
   }
@@ -95,6 +150,38 @@ class MaterialsRepository {
   List<MaterialModel> _mapSnapshots(
     List<RecordSnapshot<Object?, Object?>> snapshots,
   ) => snapshots.map(_mapSnapshot).whereType<MaterialModel>().toList();
+
+  Map<String, dynamic> _toMaterialMap(CsvImportRow row) {
+    return MaterialModel(
+      id: '',
+      name: row.name,
+      cost: row.cost.toString(),
+      color: row.color,
+      weight: row.spoolWeight.toString(),
+      archived: row.archived,
+      autoDeductEnabled: row.trackRemaining,
+      originalWeight: row.spoolWeight,
+      remainingWeight: row.remainingWeight,
+      brand: row.brand,
+      materialType: row.materialType,
+      colorHex: row.colorHex,
+      notes: row.notes,
+    ).toMap();
+  }
+}
+
+class MaterialsUpsertResult {
+  const MaterialsUpsertResult({
+    required this.created,
+    required this.updated,
+    required this.skippedRows,
+    required this.saveFailures,
+  });
+
+  final int created;
+  final int updated;
+  final List<CsvImportRow> skippedRows;
+  final List<CsvImportRow> saveFailures;
 }
 
 final materialsStreamProvider = StreamProvider<List<MaterialModel>>((ref) {

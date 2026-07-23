@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/calculator/state/calculator_state.d
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
@@ -175,6 +176,77 @@ class FakeMaterialsRepository implements MaterialsRepository {
       _materials[key] = material.copyWith(id: key);
     }
     return key;
+  }
+
+  @override
+  Future<Map<String, bool>> existingIds(Set<String> ids) async {
+    return {for (final id in ids) id: _materials.containsKey(id)};
+  }
+
+  @override
+  Future<MaterialsUpsertResult> upsertMaterials({
+    required List<CsvImportRow> creates,
+    required List<CsvImportRow> updates,
+    Future<void> Function(CsvImportRow row)? onBeforeWrite,
+  }) async {
+    final skippedRows = <CsvImportRow>[];
+    var created = 0;
+    var updated = 0;
+
+    for (final row in updates) {
+      if (!_materials.containsKey(row.sourceId)) {
+        skippedRows.add(row);
+        continue;
+      }
+
+      _materials[row.sourceId] = MaterialModel(
+        id: row.sourceId,
+        name: row.name,
+        cost: row.cost.toString(),
+        color: row.color,
+        weight: row.spoolWeight.toString(),
+        archived: row.archived,
+        autoDeductEnabled: row.trackRemaining,
+        originalWeight: row.spoolWeight,
+        remainingWeight: row.remainingWeight,
+        brand: row.brand,
+        materialType: row.materialType,
+        colorHex: row.colorHex,
+        notes: row.notes,
+      );
+      updated += 1;
+    }
+
+    for (final row in creates) {
+      var nextId = _materials.length + created + 1;
+      while (_materials.containsKey('material_$nextId')) {
+        nextId += 1;
+      }
+      final key = 'material_$nextId';
+      _materials[key] = MaterialModel(
+        id: key,
+        name: row.name,
+        cost: row.cost.toString(),
+        color: row.color,
+        weight: row.spoolWeight.toString(),
+        archived: row.archived,
+        autoDeductEnabled: row.trackRemaining,
+        originalWeight: row.spoolWeight,
+        remainingWeight: row.remainingWeight,
+        brand: row.brand,
+        materialType: row.materialType,
+        colorHex: row.colorHex,
+        notes: row.notes,
+      );
+      created += 1;
+    }
+
+    return MaterialsUpsertResult(
+      created: created,
+      updated: updated,
+      skippedRows: skippedRows,
+      saveFailures: const [],
+    );
   }
 
   @override

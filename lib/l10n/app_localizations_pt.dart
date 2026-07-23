@@ -1293,6 +1293,16 @@ class AppLocalizationsPt extends AppLocalizations {
   String get csvImportTitle => 'Importar materiais';
 
   @override
+  String get materialsCsvExportTitle => 'Exportar materiais';
+
+  @override
+  String get materialsCsvExportShareText => 'Exportação CSV de materiais';
+
+  @override
+  String get materialsCsvExportError =>
+      'Não foi possível exportar os materiais.';
+
+  @override
   String get csvTemplateButton => 'Modelo';
 
   @override
@@ -1302,7 +1312,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get csvTemplateError => 'Não foi possível compartilhar o modelo.';
 
   @override
-  String get csvImportIntro => 'Importe materiais de um arquivo CSV.';
+  String get csvImportIntro =>
+      'Exporte os materiais atuais, edite o CSV e importe-o novamente. As linhas correspondentes são atualizadas; IDs novos ou sem correspondência criam materiais locais.';
 
   @override
   String get csvSelectFileButton => 'Escolher arquivo CSV';
@@ -1312,6 +1323,10 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get csvReadError => 'Não foi possível ler o arquivo selecionado.';
+
+  @override
+  String get csvImportSaveError =>
+      'Não foi possível salvar os materiais importados. Tente novamente.';
 
   @override
   String get csvFileTypeError => 'Selecione um arquivo .csv';
@@ -1333,6 +1348,31 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get csvCostPositiveError => 'Custo deve ser > 0';
+
+  @override
+  String get csvInvalidSpoolWeightError =>
+      'O peso do carretel deve ser um número válido.';
+
+  @override
+  String get csvInvalidRemainingWeightError =>
+      'O peso restante deve ser um número válido e não pode exceder o peso do carretel.';
+
+  @override
+  String get csvInvalidCostError => 'O custo deve ser um número válido.';
+
+  @override
+  String get csvInvalidTrackRemainingError =>
+      'O controle restante deve ser true ou false.';
+
+  @override
+  String get csvInvalidArchivedError => 'Arquivado deve ser true ou false.';
+
+  @override
+  String get csvInvalidHeaderError =>
+      'O cabeçalho CSV não corresponde à exportação de materiais.';
+
+  @override
+  String get csvMalformedError => 'O CSV contém dados malformados.';
 
   @override
   String csvImportSuccessMessage(int count) {
@@ -1359,6 +1399,102 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(vazio)';
+
+  @override
+  String csvImportReviewSummary(
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
+  ) {
+    return 'Linhas encontradas: $rows · Atualizando: $updating · Criando: $creating · Precisam de correção: $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(int count) {
+    return 'Atualizando ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(int count) {
+    return 'Criando ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(int count) {
+    return 'Precisam de correção ($count)';
+  }
+
+  @override
+  String csvImportRowLine(int line) {
+    return 'Linha $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => 'Atualizar material existente';
+
+  @override
+  String get csvImportCreatingStatus => 'Criar material local';
+
+  @override
+  String get csvImportNeedsFixingStatus => 'Ignorada até ser corrigida';
+
+  @override
+  String csvImportApplyButton(int updates, int creates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Aplicar $updates atualizações e criar $creates materiais',
+      one: 'Aplicar $updates atualizações e criar 1 material',
+      zero: 'Aplicar $updates atualizações',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Aplicar 1 atualização e criar $creates materiais',
+      one: 'Aplicar 1 atualização e criar 1 material',
+      zero: 'Aplicar 1 atualização',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Criar $creates materiais',
+      one: 'Criar 1 material',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'Importação concluída';
+
+  @override
+  String csvImportResultUpdated(int count) {
+    return 'Materiais atualizados: $count';
+  }
+
+  @override
+  String csvImportResultCreated(int count) {
+    return 'Materiais criados: $count';
+  }
+
+  @override
+  String csvImportResultSkipped(int count) {
+    return 'Linhas ignoradas: $count';
+  }
+
+  @override
+  String get csvImportReturnButton => 'Voltar aos materiais';
+
+  @override
+  String get csvImportAccessError =>
+      'O acesso ao controle de estoque é necessário para esta ação de materiais.';
 
   @override
   String get editButton => 'Editar';

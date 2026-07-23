@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
 import 'package:threed_print_cost_calculator/settings/materials/materials.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
@@ -319,5 +320,71 @@ void main() {
     expect(savedResult, isNull);
     expect(repo.savedMaterials, hasLength(1));
     expect(find.byType(Dialog), findsOneWidget);
+  });
+
+  test(
+    'fake materials repo creates fresh ids for foreign source ids',
+    () async {
+      final repo = FakeMaterialsRepository();
+
+      final result = await repo.upsertMaterials(
+        creates: [
+          CsvImportRow(
+            lineNumber: 2,
+            kind: CsvImportRowKind.create,
+            sourceId: 'foreign-id',
+            name: 'New',
+            brand: '',
+            materialType: '',
+            color: 'Blue',
+            colorHex: '',
+            spoolWeight: 500,
+            remainingWeight: 500,
+            cost: 5,
+            trackRemaining: false,
+            archived: false,
+            notes: '',
+            errors: const [],
+          ),
+        ],
+        updates: const [],
+      );
+
+      expect(result.created, 1);
+      expect(repo.materialsById.keys.single, startsWith('material_'));
+      expect(repo.materialsById.keys.single, isNot('foreign-id'));
+    },
+  );
+
+  test('fake materials repo skips sparse occupied material ids', () async {
+    final repo = FakeMaterialsRepository();
+    repo.materialsById['material_2'] = _material();
+
+    await repo.upsertMaterials(
+      creates: [
+        CsvImportRow(
+          lineNumber: 2,
+          kind: CsvImportRowKind.create,
+          sourceId: 'foreign-id',
+          name: 'Next',
+          brand: '',
+          materialType: '',
+          color: 'Green',
+          colorHex: '',
+          spoolWeight: 500,
+          remainingWeight: 500,
+          cost: 5,
+          trackRemaining: false,
+          archived: false,
+          notes: '',
+          errors: const [],
+        ),
+      ],
+      updates: const [],
+    );
+
+    expect(repo.materialsById.containsKey('material_2'), isTrue);
+    expect(repo.materialsById.containsKey('material_3'), isTrue);
+    expect(repo.materialsById['material_3']!.name, 'Next');
   });
 }
