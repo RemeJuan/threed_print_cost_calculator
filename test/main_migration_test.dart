@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -144,6 +146,50 @@ void main() {
     expect((usages.first as Map)['weightGrams'], 0);
   });
 
+  test(
+    'migrates legacy records without overwriting concurrent edits',
+    () async {
+      final db = await databaseFactoryMemory.openDatabase(
+        'migration_concurrent.db',
+      );
+      addTearDown(() => db.close());
+
+      final historyStore = stringMapStoreFactory.store('history');
+      for (var i = 0; i < legacyHistoryMigrationBatchSize; i++) {
+        await historyStore.add(db, {
+          'name': 'Seed $i',
+          'material': 'PLA',
+          'weight': 10,
+        });
+      }
+
+      final targetKey = await historyStore.add(db, {
+        'name': 'Legacy target',
+        'material': 'Old Material',
+        'weight': 40,
+        'keepMe': 'before',
+      });
+
+      final migrationFuture = migrateLegacyHistoryRecords(db);
+
+      await historyStore.record(targetKey).put(db, {
+        'name': 'Legacy target',
+        'material': 'New Material',
+        'weight': 75,
+        'keepMe': 'after',
+      });
+
+      await migrationFuture;
+
+      final migrated =
+          await historyStore.record(targetKey).get(db) as Map<String, dynamic>;
+      expect(migrated['keepMe'], 'after');
+      final usages = migrated['materialUsages'] as List;
+      expect((usages.first as Map)['materialName'], 'New Material');
+      expect((usages.first as Map)['weightGrams'], 75);
+    },
+  );
+
   test('runs startup tasks in order', () async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
@@ -162,6 +208,30 @@ void main() {
     );
 
     expect(calls, ['printer', 'search_backfill', 'search_rebuild', 'migrate']);
+  });
+
+  test('yields before starting scheduled startup migrations', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final db = await databaseFactoryMemory.openDatabase('startup_yield.db');
+    addTearDown(() => db.close());
+
+    final calls = <String>[];
+    unawaited(
+      startupMigration(
+        db,
+        prefs: prefs,
+        hooks: _FakeHooks(calls),
+        migrateLegacyHistoryRecordsFn: (_) async {
+          calls.add('migrate');
+        },
+        reportError: (_) {},
+      ),
+    );
+
+    expect(calls, isEmpty);
+    await Future<void>.delayed(Duration.zero);
+    expect(calls, ['printer']);
   });
 
   test('reports and rethrows startup failures', () async {
@@ -254,7 +324,7 @@ void main() {
     expect(calls, isEmpty);
 
     await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 1));
 
     expect(calls, ['printer', 'search_backfill', 'search_rebuild', 'migrate']);
   });

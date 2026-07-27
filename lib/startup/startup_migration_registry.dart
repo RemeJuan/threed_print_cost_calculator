@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import 'legacy_history_records_migrator.dart';
+
+const _startupPhaseYield = Duration.zero;
 
 const printerIndexMigrationVersion = 1;
 const searchFieldBackfillMigrationVersion = 1;
@@ -66,6 +69,12 @@ Future<void> startupMigration(
       migrateLegacyHistoryRecordsFn ?? migrateLegacyHistoryRecords;
   final errorReporter = reportError ?? FlutterError.reportError;
 
+  final transaction = Sentry.startTransaction(
+    'startup_migration',
+    'task',
+    bindToScope: true,
+  );
+
   try {
     await _runVersionedMigration(
       preferences: prefs,
@@ -92,6 +101,8 @@ Future<void> startupMigration(
       migration: () => migrateFn(db),
     );
   } catch (e, st) {
+    transaction.throwable = e;
+    transaction.status = const SpanStatus.internalError();
     errorReporter(
       FlutterErrorDetails(
         exception: e,
@@ -104,6 +115,7 @@ Future<void> startupMigration(
     );
     rethrow;
   } finally {
+    await transaction.finish();
     tempContainer?.dispose();
   }
 }
@@ -117,16 +129,23 @@ void scheduleDeferredStartupMigration({
 }) {
   WidgetsBinding.instance.addPostFrameCallback((_) {
     unawaited(
-      startupMigration(
-        db,
-        prefs: prefs,
-        hooks: hooks,
-        migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecordsFn,
-        reportError: reportError,
-      ).catchError((_) {}),
+      Future<void>.delayed(_startupPhaseYield)
+          .then((_) {
+            return startupMigration(
+              db,
+              prefs: prefs,
+              hooks: hooks,
+              migrateLegacyHistoryRecordsFn: migrateLegacyHistoryRecordsFn,
+              reportError: reportError,
+            );
+          })
+          .catchError((_) {}),
     );
   });
 }
+
+Future<void> _yieldBetweenStartupPhases() =>
+    Future<void>.delayed(_startupPhaseYield);
 
 Future<void> _runVersionedMigration({
   required SharedPreferences? preferences,
@@ -138,6 +157,7 @@ Future<void> _runVersionedMigration({
     return;
   }
 
+  await _yieldBetweenStartupPhases();
   await migration();
   await preferences?.setInt(key, version);
 }
