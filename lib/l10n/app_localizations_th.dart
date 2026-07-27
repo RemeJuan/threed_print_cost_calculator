@@ -1262,6 +1262,15 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvImportTitle => 'นำเข้าวัสดุ';
 
   @override
+  String get materialsCsvExportTitle => 'ส่งออกวัสดุ';
+
+  @override
+  String get materialsCsvExportShareText => 'ส่งออก CSV วัสดุ';
+
+  @override
+  String get materialsCsvExportError => 'ไม่สามารถส่งออกวัสดุได้';
+
+  @override
   String get csvTemplateButton => 'เทมเพลต';
 
   @override
@@ -1271,7 +1280,8 @@ class AppLocalizationsTh extends AppLocalizations {
   String get csvTemplateError => 'ไม่สามารถแชร์เทมเพลตได้';
 
   @override
-  String get csvImportIntro => 'นำเข้าวัสดุจากไฟล์ CSV';
+  String get csvImportIntro =>
+      'ส่งออกวัสดุปัจจุบัน แก้ไข CSV แล้วนำเข้ากลับ แถวที่ตรงกันจะอัปเดต ส่วน ID ใหม่หรือไม่ตรงกันจะสร้างวัสดุในเครื่อง';
 
   @override
   String get csvSelectFileButton => 'เลือกไฟล์ CSV';
@@ -1281,6 +1291,10 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get csvReadError => 'ไม่สามารถอ่านไฟล์ที่เลือกได้';
+
+  @override
+  String get csvImportSaveError =>
+      'ไม่สามารถบันทึกวัสดุที่นำเข้าได้ โปรดลองอีกครั้ง';
 
   @override
   String get csvFileTypeError => 'กรุณาเลือกไฟล์ .csv';
@@ -1302,6 +1316,30 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get csvCostPositiveError => 'ต้นทุนต้องมากกว่า 0';
+
+  @override
+  String get csvInvalidSpoolWeightError =>
+      'น้ำหนักสปูลต้องเป็นตัวเลขที่ถูกต้อง';
+
+  @override
+  String get csvInvalidRemainingWeightError =>
+      'น้ำหนักคงเหลือต้องเป็นตัวเลขที่ถูกต้องและไม่เกินน้ำหนักสปูล';
+
+  @override
+  String get csvInvalidCostError => 'ต้นทุนต้องเป็นตัวเลขที่ถูกต้อง';
+
+  @override
+  String get csvInvalidTrackRemainingError =>
+      'การติดตามคงเหลือต้องเป็น true หรือ false';
+
+  @override
+  String get csvInvalidArchivedError => 'เก็บถาวรต้องเป็น true หรือ false';
+
+  @override
+  String get csvInvalidHeaderError => 'ส่วนหัว CSV ไม่ตรงกับการส่งออกวัสดุ';
+
+  @override
+  String get csvMalformedError => 'CSV มีข้อมูลรูปแบบไม่ถูกต้อง';
 
   @override
   String csvImportSuccessMessage(int count) {
@@ -1328,6 +1366,102 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(ว่าง)';
+
+  @override
+  String csvImportReviewSummary(
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
+  ) {
+    return 'พบแถว: $rows · อัปเดต: $updating · สร้าง: $creating · ต้องแก้ไข: $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(int count) {
+    return 'กำลังอัปเดต ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(int count) {
+    return 'กำลังสร้าง ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(int count) {
+    return 'ต้องแก้ไข ($count)';
+  }
+
+  @override
+  String csvImportRowLine(int line) {
+    return 'บรรทัด $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => 'อัปเดตวัสดุที่มีอยู่';
+
+  @override
+  String get csvImportCreatingStatus => 'สร้างวัสดุในเครื่อง';
+
+  @override
+  String get csvImportNeedsFixingStatus => 'ข้ามจนกว่าจะแก้ไข';
+
+  @override
+  String csvImportApplyButton(int updates, int creates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'ใช้อัปเดต $updates รายการและสร้างวัสดุ $creates รายการ',
+      one: 'ใช้อัปเดต $updates รายการและสร้างวัสดุ 1 รายการ',
+      zero: 'ใช้อัปเดต $updates รายการ',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'ใช้การอัปเดต 1 รายการและสร้างวัสดุ $creates รายการ',
+      one: 'ใช้การอัปเดต 1 รายการและสร้างวัสดุ 1 รายการ',
+      zero: 'ใช้การอัปเดต 1 รายการ',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'สร้างวัสดุ $creates รายการ',
+      one: 'สร้างวัสดุ 1 รายการ',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'นำเข้าเสร็จสิ้น';
+
+  @override
+  String csvImportResultUpdated(int count) {
+    return 'อัปเดตวัสดุ: $count';
+  }
+
+  @override
+  String csvImportResultCreated(int count) {
+    return 'สร้างวัสดุ: $count';
+  }
+
+  @override
+  String csvImportResultSkipped(int count) {
+    return 'ข้ามแถว: $count';
+  }
+
+  @override
+  String get csvImportReturnButton => 'กลับไปยังวัสดุ';
+
+  @override
+  String get csvImportAccessError =>
+      'ต้องมีสิทธิ์ติดตามสต็อกสำหรับการดำเนินการกับวัสดุนี้';
 
   @override
   String get editButton => 'แก้ไข';

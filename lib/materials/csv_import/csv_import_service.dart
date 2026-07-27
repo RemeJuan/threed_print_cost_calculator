@@ -3,92 +3,142 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
-import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 class CsvImportResult {
-  final int imported;
-  final int preValidatedFailures;
-  final List<ImportRow> saveFailures;
-  final bool quotaExceeded;
-  final int? quotaLimit;
-
   const CsvImportResult({
-    required this.imported,
-    required this.preValidatedFailures,
+    required this.created,
+    required this.updated,
+    required this.invalidRows,
+    required this.skippedRows,
     required this.saveFailures,
     this.quotaExceeded = false,
     this.quotaLimit,
   });
+
+  final int created;
+  final int updated;
+  final List<CsvImportRow> invalidRows;
+  final List<CsvImportRow> skippedRows;
+  final List<CsvImportRow> saveFailures;
+  final bool quotaExceeded;
+  final int? quotaLimit;
+
+  int get imported => created + updated;
+
+  int get preValidatedFailures => invalidRows.length;
 }
 
 class CsvImportService {
   CsvImportService(this.ref);
+
   final Ref ref;
 
-  Future<CsvImportResult> importRows(List<ImportRow> rows) async {
-    final valid = rows.where((r) => r.errors.isEmpty).toList();
-    final preValidatedFailures = rows.length - valid.length;
-    if (valid.isEmpty) {
-      return CsvImportResult(
-        imported: 0,
-        preValidatedFailures: preValidatedFailures,
-        saveFailures: [],
-      );
-    }
-
+  Future<CsvImportResult> importRows(List<CsvImportRow> rows) async {
     final repo = ref.read(materialsRepositoryProvider);
-    final logger = ref.read(appLoggerProvider);
     final policy = ref.read(premiumAccessPolicyProvider);
-    final currentCount = await repo.count();
+    final logger = ref.read(appLoggerProvider);
+
+    final valid = rows.where((r) => r.errors.isEmpty).toList();
+    final invalid = rows.where((r) => r.errors.isNotEmpty).toList();
+    final existingIds = await repo.existingIds(
+      valid.map((e) => e.sourceId).where((id) => id.isNotEmpty).toSet(),
+    );
+    final classified = valid.map((row) {
+      if (row.sourceId.isNotEmpty && existingIds[row.sourceId] == true) {
+        return row.kind == CsvImportRowKind.update
+            ? row
+            : CsvImportRow(
+                lineNumber: row.lineNumber,
+                kind: CsvImportRowKind.update,
+                sourceId: row.sourceId,
+                name: row.name,
+                brand: row.brand,
+                materialType: row.materialType,
+                color: row.color,
+                colorHex: row.colorHex,
+                spoolWeight: row.spoolWeight,
+                remainingWeight: row.remainingWeight,
+                cost: row.cost,
+                trackRemaining: row.trackRemaining,
+                archived: row.archived,
+                notes: row.notes,
+                errors: row.errors,
+              );
+      }
+      return CsvImportRow(
+        lineNumber: row.lineNumber,
+        kind: CsvImportRowKind.create,
+        sourceId: row.sourceId,
+        name: row.name,
+        brand: row.brand,
+        materialType: row.materialType,
+        color: row.color,
+        colorHex: row.colorHex,
+        spoolWeight: row.spoolWeight,
+        remainingWeight: row.remainingWeight,
+        cost: row.cost,
+        trackRemaining: row.trackRemaining,
+        archived: row.archived,
+        notes: row.notes,
+        errors: row.errors,
+      );
+    }).toList();
+
+    final creates = classified
+        .where((r) => r.kind == CsvImportRowKind.create)
+        .toList();
+    final updates = classified
+        .where((r) => r.kind == CsvImportRowKind.update)
+        .toList();
+
     final limit = policy.materialLimit;
-    if (limit != null && currentCount + valid.length > limit) {
+    if (limit != null && await repo.count() + creates.length > limit) {
       return CsvImportResult(
-        imported: 0,
-        preValidatedFailures: preValidatedFailures,
-        saveFailures: [],
+        created: 0,
+        updated: 0,
+        invalidRows: invalid,
+        skippedRows: [],
+        saveFailures: const [],
         quotaExceeded: true,
         quotaLimit: limit,
       );
     }
 
-    var imported = 0;
-    final failedRows = <ImportRow>[];
-
-    for (final row in valid) {
-      final material = MaterialModel(
-        id: '',
-        name: row.name,
-        cost: row.cost.toString(),
-        color: row.color,
-        weight: row.spoolWeight.toString(),
-        archived: false,
-        autoDeductEnabled:
-            row.remainingWeight > 0 && row.remainingWeight != row.spoolWeight,
-        originalWeight: row.spoolWeight,
-        remainingWeight: row.remainingWeight,
-        brand: row.brand,
-        materialType: row.materialType,
-        colorHex: row.colorHex,
-        notes: row.notes,
+    if (!policy.stockTracking().allowed) {
+      return CsvImportResult(
+        created: 0,
+        updated: 0,
+        invalidRows: invalid,
+        skippedRows: const [],
+        saveFailures: const [],
+        quotaExceeded: false,
+        quotaLimit: limit,
       );
-      try {
-        await repo.saveMaterial(material);
-        imported++;
-      } catch (error, stackTrace) {
-        failedRows.add(row);
+    }
+
+    final result = await repo.upsertMaterials(
+      creates: creates,
+      updates: updates,
+    );
+
+    if (result.saveFailures.isNotEmpty) {
+      for (final failure in result.saveFailures) {
         logger.error(
           AppLogCategory.db,
-          'CSV import failed for row ${row.lineNumber} (name: ${row.name})',
-          error: error,
-          stackTrace: stackTrace,
+          'CSV import save failure',
+          context: {'line': failure.lineNumber},
         );
       }
     }
 
     return CsvImportResult(
-      imported: imported,
-      preValidatedFailures: preValidatedFailures,
-      saveFailures: failedRows,
+      created: result.created,
+      updated: result.updated,
+      invalidRows: invalid,
+      skippedRows: result.skippedRows,
+      saveFailures: result.saveFailures,
+      quotaExceeded: false,
+      quotaLimit: limit,
     );
   }
 }

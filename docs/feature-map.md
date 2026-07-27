@@ -78,6 +78,8 @@
   - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
   - `lib/materials/csv_import/csv_import_page.dart`
+  - `lib/materials/csv_import/materials_csv_schema.dart` — canonical materials CSV headers/schema
+  - `lib/materials/csv_import/materials_csv_export_service.dart` — repository-backed export service for full-material CSV export
   - `lib/settings/materials/materials.dart` — settings page list (separate, uses `SettingsSlidableItem`)
   - `lib/settings/materials/material_form.dart`
 - Material list item behavior:
@@ -101,6 +103,8 @@
 - Repositories/services:
   - `lib/database/repositories/materials_repository.dart`
   - `lib/database/services/material_stock_service.dart`
+  - `lib/materials/csv_import/csv_import_parser.dart` — strict current-schema CSV parser/classifier for create/update import rows
+  - `lib/materials/csv_import/csv_import_service.dart` — premium-gated CSV upsert core with create/update split and quota checks on creates only
 - Models:
   - `lib/settings/model/material_model.dart`
   - `lib/materials/model/stock_status.dart`
@@ -113,7 +117,7 @@
 - Analytics events:
   - `materials_view_opened` — tab opens on first frame (`lib/app/app_page.dart`)
   - `material_created` / `material_edited` — params: `has_tracking`, optional `material_type`, `brand` (`lib/settings/providers/materials_notifier.dart`)
-  - `csv_import_started` / `csv_import_completed` — params: `rows_success`, `rows_failed` (`lib/materials/csv_import/csv_import_page.dart`)
+  - `csv_import_started` / `csv_import_completed` — params: `rows_success`, `rows_failed` (`lib/materials/csv_import/csv_import_page.dart`); CSV import/export actions are premium-gated by `stockTracking()`
   - `material_selected_in_calculator` — params: `has_tracking`, optional `material_type`, `brand` (`lib/calculator/provider/calculator_notifier.dart`)
 - Common search terms:
   - `MaterialsPage`

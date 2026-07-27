@@ -1272,6 +1272,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get csvImportTitle => 'Import materials';
 
   @override
+  String get materialsCsvExportTitle => 'Export materials';
+
+  @override
+  String get materialsCsvExportShareText => 'Material CSV export';
+
+  @override
+  String get materialsCsvExportError => 'Could not export materials.';
+
+  @override
   String get csvTemplateButton => 'Template';
 
   @override
@@ -1281,7 +1290,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get csvTemplateError => 'Could not share the template.';
 
   @override
-  String get csvImportIntro => 'Import materials from a CSV file.';
+  String get csvImportIntro =>
+      'Export your current materials, edit the CSV, then re-import it. Matching rows update; new or unmatched IDs create local materials.';
 
   @override
   String get csvSelectFileButton => 'Choose CSV file';
@@ -1291,6 +1301,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get csvReadError => 'Could not read the selected file.';
+
+  @override
+  String get csvImportSaveError =>
+      'Could not save imported materials. Please try again.';
 
   @override
   String get csvFileTypeError => 'Please select a .csv file';
@@ -1312,6 +1326,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get csvCostPositiveError => 'Cost must be > 0';
+
+  @override
+  String get csvInvalidSpoolWeightError =>
+      'Spool weight must be a valid number.';
+
+  @override
+  String get csvInvalidRemainingWeightError =>
+      'Remaining weight must be a valid number and cannot exceed spool weight.';
+
+  @override
+  String get csvInvalidCostError => 'Cost must be a valid number.';
+
+  @override
+  String get csvInvalidTrackRemainingError =>
+      'Track remaining must be true or false.';
+
+  @override
+  String get csvInvalidArchivedError => 'Archived must be true or false.';
+
+  @override
+  String get csvInvalidHeaderError =>
+      'The CSV header does not match the materials export.';
+
+  @override
+  String get csvMalformedError => 'The CSV contains malformed data.';
 
   @override
   String csvImportSuccessMessage(int count) {
@@ -1338,6 +1377,102 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get csvEmptyNamePlaceholder => '(empty)';
+
+  @override
+  String csvImportReviewSummary(
+    int rows,
+    int updating,
+    int creating,
+    int invalid,
+  ) {
+    return 'Rows found: $rows · Updating: $updating · Creating: $creating · Need fixing: $invalid';
+  }
+
+  @override
+  String csvImportUpdatingSection(int count) {
+    return 'Updating ($count)';
+  }
+
+  @override
+  String csvImportCreatingSection(int count) {
+    return 'Creating ($count)';
+  }
+
+  @override
+  String csvImportNeedsFixingSection(int count) {
+    return 'Needs fixing ($count)';
+  }
+
+  @override
+  String csvImportRowLine(int line) {
+    return 'Line $line';
+  }
+
+  @override
+  String get csvImportUpdatingStatus => 'Update existing material';
+
+  @override
+  String get csvImportCreatingStatus => 'Create local material';
+
+  @override
+  String get csvImportNeedsFixingStatus => 'Skipped until fixed';
+
+  @override
+  String csvImportApplyButton(int updates, int creates) {
+    String _temp0 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Apply $updates updates and create $creates materials',
+      one: 'Apply $updates updates and create 1 material',
+      zero: 'Apply $updates updates',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Apply 1 update and create $creates materials',
+      one: 'Apply 1 update and create 1 material',
+      zero: 'Apply 1 update',
+    );
+    String _temp2 = intl.Intl.pluralLogic(
+      creates,
+      locale: localeName,
+      other: 'Create $creates materials',
+      one: 'Create 1 material',
+    );
+    String _temp3 = intl.Intl.pluralLogic(
+      updates,
+      locale: localeName,
+      other: '$_temp0',
+      one: '$_temp1',
+      zero: '$_temp2',
+    );
+    return '$_temp3';
+  }
+
+  @override
+  String get csvImportResultTitle => 'Import complete';
+
+  @override
+  String csvImportResultUpdated(int count) {
+    return 'Materials updated: $count';
+  }
+
+  @override
+  String csvImportResultCreated(int count) {
+    return 'Materials created: $count';
+  }
+
+  @override
+  String csvImportResultSkipped(int count) {
+    return 'Rows skipped: $count';
+  }
+
+  @override
+  String get csvImportReturnButton => 'Return to materials';
+
+  @override
+  String get csvImportAccessError =>
+      'Stock tracking access is required for this materials action.';
 
   @override
   String get editButton => 'Edit';

@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/history/history_page.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/materials/csv_import/materials_csv_export_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import '../../helpers/lower_level_test_fakes.dart';
@@ -14,6 +15,16 @@ import '../../../test_support/fake_purchases_gateway.dart';
 import 'app_page_test_support.dart';
 
 PageView _pageView(WidgetTester tester) => tester.widget(find.byType(PageView));
+
+class RecordingMaterialsCsvExportService extends MaterialsCsvExportService {
+  bool called = false;
+
+  @override
+  Future<String> buildCsv() async {
+    called = true;
+    return 'header\n';
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -236,4 +247,66 @@ void main() {
     );
     expect(_pageView(tester).controller!.page, 0);
   });
+
+  testWidgets('free policy hides materials import and export actions', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({'run_count': 0});
+    final calculatorNotifier = FakeCalculatorNotifier();
+    final gateway = FakePurchasesGateway(freeUser());
+
+    await pumpAppPage(tester, gateway, calculatorNotifier);
+    await settleAppPage(tester);
+    await tester.tap(
+      find.byKey(const ValueKey<String>('nav.materials.button')),
+    );
+    await settleAppPage(tester);
+
+    expect(
+      find.byKey(const ValueKey<String>('materials.import.button')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('materials.export.button')),
+      findsNothing,
+    );
+  });
+
+  testWidgets(
+    'stock tracking policy shows and invokes both materials actions',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({'run_count': 0});
+      final calculatorNotifier = FakeCalculatorNotifier();
+      final gateway = FakePurchasesGateway(premiumUser());
+      final exportService = RecordingMaterialsCsvExportService();
+
+      await pumpAppPage(
+        tester,
+        gateway,
+        calculatorNotifier,
+        overrides: [
+          materialsCsvExportServiceProvider.overrideWithValue(exportService),
+        ],
+      );
+      await settleAppPage(tester);
+      await tester.tap(
+        find.byKey(const ValueKey<String>('nav.materials.button')),
+      );
+      await settleAppPage(tester);
+
+      expect(
+        find.byKey(const ValueKey<String>('materials.import.button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('materials.export.button')),
+        findsOneWidget,
+      );
+      await tester.tap(
+        find.byKey(const ValueKey<String>('materials.export.button')),
+      );
+      await tester.pumpAndSettle();
+      expect(exportService.called, isTrue);
+    },
+  );
 }
