@@ -20,6 +20,9 @@ void configureSentryOptions(SentryFlutterOptions options) {
       'https://05f1c49136e3510a42d66d4fd9b511d5@o4511607690756096.ingest.de.sentry.io/4511607696326736';
   options.sendDefaultPii = false;
   options.environment = kReleaseMode ? 'release' : 'debug';
+  if (kReleaseMode) {
+    options.tracesSampleRate = 0.1;
+  }
   options.beforeSend = _beforeSend;
   if (!kReleaseMode && options.platform.isIOS) {
     options.autoInitializeNativeSdk = false;
