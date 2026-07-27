@@ -17,6 +17,8 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 /// - record key: normalized printer name (lowercased, trimmed)
 /// - record value: `Map<String, dynamic>{ 'keys': [<recordKey>...] }`
 class PrinterIndexHelpers {
+  static const int _rebuildBatchSize = 64;
+
   // Internal untyped read function to avoid Riverpod generic type issues in
   // tests and builds. We cast results where needed.
   final dynamic Function(dynamic provider) _read;
@@ -66,7 +68,13 @@ class PrinterIndexHelpers {
 
     final records = await _historyStore.find(_db);
 
+    var index = 0;
     for (final r in records) {
+      if (index > 0 && index % _rebuildBatchSize == 0) {
+        await Future<void>.delayed(Duration.zero);
+      }
+      index++;
+
       final value = _recordValueMap(r.value, r.key);
       if (value == null) continue;
       final printer = (value['printer']?.toString() ?? '').trim();
