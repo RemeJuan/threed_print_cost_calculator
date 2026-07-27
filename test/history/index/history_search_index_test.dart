@@ -102,6 +102,46 @@ void main() {
     expect(normalized[kHistorySearchTextField], 'gear fix mk4 mini');
   });
 
+  test(
+    'backfillSearchFields preserves concurrent updates between batches',
+    () async {
+      final helperStore = StoreRef<Object?, Map<String, Object?>>('history');
+
+      for (var i = 0; i < 40; i++) {
+        await helperStore.add(db, {
+          'name': 'Seed $i',
+          'printer': 'Printer $i',
+          'date': DateTime.now().toIso8601String(),
+        });
+      }
+
+      final targetKey = await helperStore.add(db, {
+        'name': 'Legacy Name',
+        'printer': 'Legacy Printer',
+        'keepMe': 'before',
+        'date': DateTime.now().toIso8601String(),
+      });
+
+      final helpers = HistorySearchIndexHelpers.fromContainer(container);
+      final backfillFuture = helpers.backfillSearchFields();
+
+      await helperStore.record(targetKey).put(db, {
+        'name': 'Updated Name',
+        'printer': 'Updated Printer',
+        'keepMe': 'after',
+        'date': DateTime.now().toIso8601String(),
+      });
+
+      await backfillFuture;
+
+      final updated = await helperStore.record(targetKey).get(db);
+      expect(updated?['keepMe'], 'after');
+      expect(updated?[kHistorySearchNameField], 'updated name');
+      expect(updated?[kHistorySearchPrinterField], 'updated printer');
+      expect(updated?[kHistorySearchTextField], 'updated name updated printer');
+    },
+  );
+
   test('updateRecord and removeRecord keep index tokens in sync', () async {
     final helperStore = StoreRef<Object?, Map<String, Object?>>('history');
     final key = await helperStore.add(db, {
@@ -189,5 +229,39 @@ void main() {
     // Search with single char prefix still works
     final results = await helpers.getKeysMatchingQuery('a');
     expect(results, contains(key));
+  });
+
+  test('rebuildIndex preserves late index mutations during rebuild', () async {
+    for (var i = 0; i < 70; i++) {
+      await store.add(db, {
+        'name': 'Bulk $i',
+        'printer': 'Worker $i',
+        'date': DateTime.now().toIso8601String(),
+      });
+    }
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+
+    final rebuildFuture = helpers.rebuildIndex();
+    final lateKey = await db.transaction((txn) async {
+      final key = await store.add(txn, {
+        'name': 'Late Widget',
+        'printer': 'Late Printer',
+        'date': DateTime.now().toIso8601String(),
+      });
+      await helpers.addRecordInTransaction(
+        txn: txn,
+        name: 'Late Widget',
+        printer: 'Late Printer',
+        recordKey: key,
+      );
+      return key;
+    });
+
+    await rebuildFuture;
+
+    final results = await helpers.getKeysMatchingQuery('late');
+    expect(results, contains(lateKey));
   });
 }

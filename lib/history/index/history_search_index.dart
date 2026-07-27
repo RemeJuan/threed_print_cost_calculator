@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
@@ -52,6 +54,13 @@ Map<String, dynamic> withHistorySearchFields(Map<String, dynamic> data) {
 /// - record key: `<field>:<normalized token or token substring>`
 /// - record value: `{ 'keys': [<historyRecordKeyAsString>...] }`
 class HistorySearchIndexHelpers {
+  static const int _rebuildBatchSize = 64;
+  static const int _backfillBatchSize = 32;
+
+  Future<void> _rebuildQueue = Future<void>.value();
+  bool _rebuildInProgress = false;
+  bool _rebuildDirty = false;
+
   final Database _database;
   final AppLogger _logger;
 
@@ -175,49 +184,70 @@ class HistorySearchIndexHelpers {
   }
 
   Future<void> rebuildIndex() async {
-    final map = <String, Set<String>>{};
-    final records = await _historyStore.find(_db);
+    final rebuild = _rebuildQueue.then((_) async {
+      try {
+        do {
+          _rebuildInProgress = true;
+          _rebuildDirty = false;
 
-    for (final record in records) {
-      final value = _recordValueMap(
-        record.value,
-        record.key,
-        'history search rebuild',
-      );
-      if (value == null) continue;
-      final searchName =
-          value[kHistorySearchNameField]?.toString() ??
-          normalizeHistorySearchValue(value['name']?.toString() ?? '');
-      final searchPrinter =
-          value[kHistorySearchPrinterField]?.toString() ??
-          normalizeHistorySearchValue(value['printer']?.toString() ?? '');
-      final recordTokens = _recordTokensByField(
-        name: searchName,
-        printer: searchPrinter,
-      );
+          final map = <String, Set<String>>{};
+          final records = await _historyStore.find(_db);
 
-      final key = record.key.toString();
-      for (final entry in recordTokens.entries) {
-        for (final token in entry.value) {
-          map
-              .putIfAbsent(_indexKey(entry.key, token), () => <String>{})
-              .add(key);
-        }
-      }
-    }
+          var index = 0;
+          for (final record in records) {
+            if (index > 0 && index % _rebuildBatchSize == 0) {
+              await Future<void>.delayed(Duration.zero);
+            }
+            index++;
 
-    await _db.transaction((txn) async {
-      final existing = await _indexStore.find(txn);
-      for (final entry in existing) {
-        await _indexStore.record(entry.key.toString()).delete(txn);
-      }
+            final value = _recordValueMap(
+              record.value,
+              record.key,
+              'history search rebuild',
+            );
+            if (value == null) continue;
+            final searchName =
+                value[kHistorySearchNameField]?.toString() ??
+                normalizeHistorySearchValue(value['name']?.toString() ?? '');
+            final searchPrinter =
+                value[kHistorySearchPrinterField]?.toString() ??
+                normalizeHistorySearchValue(value['printer']?.toString() ?? '');
+            final recordTokens = _recordTokensByField(
+              name: searchName,
+              printer: searchPrinter,
+            );
 
-      for (final entry in map.entries) {
-        await _indexStore.record(entry.key).put(txn, {
-          'keys': entry.value.toList(),
-        });
+            final key = record.key.toString();
+            for (final entry in recordTokens.entries) {
+              for (final token in entry.value) {
+                map
+                    .putIfAbsent(_indexKey(entry.key, token), () => <String>{})
+                    .add(key);
+              }
+            }
+          }
+
+          await _db.transaction((txn) async {
+            final existing = await _indexStore.find(txn);
+            for (final entry in existing) {
+              await _indexStore.record(entry.key.toString()).delete(txn);
+            }
+
+            for (final entry in map.entries) {
+              await _indexStore.record(entry.key).put(txn, {
+                'keys': entry.value.toList(),
+              });
+            }
+          });
+        } while (_rebuildDirty);
+      } finally {
+        _rebuildInProgress = false;
+        _rebuildDirty = false;
       }
     });
+
+    _rebuildQueue = rebuild.catchError((_) {});
+    await rebuild;
   }
 
   Future<void> addRecordInTransaction({
@@ -226,6 +256,8 @@ class HistorySearchIndexHelpers {
     required String printer,
     required dynamic recordKey,
   }) async {
+    _markRebuildDirty();
+
     final recordTokens = _recordTokensByField(name: name, printer: printer);
     final hasTokens = recordTokens.values.any((tokens) => tokens.isNotEmpty);
     if (!hasTokens) return;
@@ -248,6 +280,8 @@ class HistorySearchIndexHelpers {
     required String newPrinter,
     required dynamic recordKey,
   }) async {
+    _markRebuildDirty();
+
     final oldTokens = _recordTokensByField(name: oldName, printer: oldPrinter);
     final newTokens = _recordTokensByField(name: newName, printer: newPrinter);
     final key = recordKey.toString();
@@ -276,6 +310,8 @@ class HistorySearchIndexHelpers {
     required String printer,
     required dynamic recordKey,
   }) async {
+    _markRebuildDirty();
+
     final recordTokens = _recordTokensByField(name: name, printer: printer);
     final hasTokens = recordTokens.values.any((tokens) => tokens.isNotEmpty);
     if (!hasTokens) return;
@@ -293,27 +329,52 @@ class HistorySearchIndexHelpers {
   Future<int> backfillSearchFields() async {
     var updatedCount = 0;
 
-    await _db.transaction((txn) async {
-      final records = await _historyStore.find(txn);
+    final recordKeys = (await _historyStore.findKeys(
+      _db,
+    )).toList(growable: false);
 
-      for (final record in records) {
-        final value = _recordValueMap(
-          record.value,
-          record.key,
-          'history search backfill',
-        );
-        if (value == null) continue;
-        final updated = withHistorySearchFields(value);
-        if (mapEquals(value, updated)) {
-          continue;
-        }
-
-        await _historyStore.record(record.key).put(txn, updated);
-        updatedCount++;
+    for (
+      var start = 0;
+      start < recordKeys.length;
+      start += _backfillBatchSize
+    ) {
+      if (start > 0) {
+        await Future<void>.delayed(Duration.zero);
       }
-    });
+
+      final batchKeys = recordKeys
+          .skip(start)
+          .take(_backfillBatchSize)
+          .toList(growable: false);
+
+      await _db.transaction((txn) async {
+        for (final key in batchKeys) {
+          final current = await _historyStore.record(key).get(txn);
+          final value = _recordValueMap(
+            current,
+            key,
+            'history search backfill',
+          );
+          if (value == null) continue;
+
+          final updated = withHistorySearchFields(value);
+          if (mapEquals(value, updated)) {
+            continue;
+          }
+
+          await _historyStore.record(key).put(txn, updated);
+          updatedCount++;
+        }
+      });
+    }
 
     return updatedCount;
+  }
+
+  void _markRebuildDirty() {
+    if (_rebuildInProgress) {
+      _rebuildDirty = true;
+    }
   }
 
   Future<bool> _isLikelyUninitialized() async {
