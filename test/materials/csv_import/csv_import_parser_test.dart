@@ -25,6 +25,21 @@ void main() {
     );
   });
 
+  test('accepts harmless header transformations', () {
+    final file = parseCsvImportFile(
+      '\ufeff ID , NAME , BRAND , MATERIAL_TYPE , COLOR , COLOR_HEX , SPOOL_WEIGHT_G , REMAINING_WEIGHT_G , SPOOL_COST , TRACK_REMAINING , ARCHIVED , NOTES \n'
+      'id-1,PLA,Brand,PLA,Red,#ff0000,1000,900,12.5,TRUE,FALSE,Notes\n',
+    );
+
+    final classified = const CsvImportParser().classify(
+      file: file,
+      existingIds: const {},
+    );
+
+    expect(classified.rows.single.trackRemaining, isTrue);
+    expect(classified.rows.single.archived, isFalse);
+  });
+
   test('rejects malformed unclosed quote csv', () {
     expect(
       () => parseCsvImportFile('$materialsCsvHeader\n"bad, row'),
@@ -87,6 +102,20 @@ void main() {
       row.errors.any((e) => e.code == CsvImportErrorCode.invalidSpoolWeight),
       isTrue,
     );
+  });
+
+  test('allows zero spool weight for legacy exported materials', () {
+    final classified = const CsvImportParser().classify(
+      file: parseCsvImportFile(
+        '$materialsCsvHeader\n,PLA,Brand,PLA,Red,#ff0000,0,0,12.5,true,false,Notes\n',
+      ),
+      existingIds: const {},
+    );
+
+    final row = classified.rows.single;
+    expect(row.kind, CsvImportRowKind.create);
+    expect(row.spoolWeight, 0);
+    expect(row.errors, isEmpty);
   });
 
   test('keeps field specific errors when multiple validations fail', () {

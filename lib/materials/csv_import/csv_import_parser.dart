@@ -203,10 +203,13 @@ double? _parseNumOrNull(String value) {
 }
 
 bool? _parseBoolOrNull(String value) {
-  if (value == 'true') return true;
-  if (value == 'false') return false;
+  final normalized = value.trim().toLowerCase();
+  if (normalized == 'true') return true;
+  if (normalized == 'false') return false;
   return null;
 }
+
+String _normalizeHeaderCell(String value) => value.trim().toLowerCase();
 
 class CsvImportParser {
   const CsvImportParser();
@@ -226,7 +229,13 @@ class CsvImportParser {
     required ParsedCsvImportFile file,
     required Map<String, bool> existingIds,
   }) {
-    if (file.header.join(',') != materialsCsvHeader) {
+    if (file.header.length != materialsCsvHeaders.length ||
+        !List.generate(
+          materialsCsvHeaders.length,
+          (index) =>
+              _normalizeHeaderCell(file.header[index]) ==
+              materialsCsvHeaders[index],
+        ).every((match) => match)) {
       throw CsvImportHeaderException();
     }
     final rows = file.rows.map((record) {
@@ -261,13 +270,6 @@ class CsvImportParser {
         errors.add(
           CsvImportError(
             CsvImportErrorCode.invalidSpoolWeight,
-            field: 'spool_weight_g',
-          ),
-        );
-      } else if (spoolWeight <= 0) {
-        errors.add(
-          CsvImportError(
-            CsvImportErrorCode.requiredSpoolWeight,
             field: 'spool_weight_g',
           ),
         );
