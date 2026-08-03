@@ -44,11 +44,17 @@ Instructions:
 6. Include:
    - new features
    - user-visible improvements
-   - bug fixes with user impact
+   - bug fixes for existing, already released functionality with user impact
    - settings or UI changes users would notice
    - behavior changes that affect app usage
 
-7. Exclude:
+7. Classify feature-development corrections accurately:
+   - Do not add a `Fixed` item for a defect discovered and corrected while implementing, integrating, or testing a new feature in this release.
+   - Treat those corrections as part of the feature; describe them under `Added` or `Changed` only when users need that context.
+   - Use `Fixed` only for regressions or bugs in functionality that was available in a prior release and is unrelated to the feature being introduced.
+   - Example: while adding CSV import, correcting a header mismatch found during CSV-import development is part of `Added`, not a separate `Fixed` item.
+
+8. Exclude:
    - refactors with no user-visible effect
    - internal tooling
    - CI/CD
@@ -57,7 +63,7 @@ Instructions:
    - tests
    - dependency or maintenance work unless it clearly changed user experience
 
-8. Write the new changelog entry in the existing `CHANGELOG.md` style.
+9. Write the new changelog entry in the existing `CHANGELOG.md` style.
    - Preserve the existing structure if the file already has one.
    - If no clear structure exists, use:
 
@@ -74,7 +80,7 @@ Instructions:
 
    - If the changelog uses reference-style version compare links, preserve that convention.
 
-9. Writing rules:
+10. Writing rules:
    - user-facing
    - concise
    - slightly more descriptive than store notes
@@ -82,16 +88,16 @@ Instructions:
    - group related items together
    - do not invent features or claim impact that is not supported by the diff
 
-10. Placement:
+11. Placement:
     - Insert the new version entry at the top of the changelog entries
     - Do not overwrite previous history
 
-11. Version formatting:
+12. Version formatting:
     - Never write build metadata in the changelog heading.
     - If the selected git tag is `2.7.0+3`, the heading must be `## [2.7.0] - YYYY-MM-DD`.
     - Build metadata may only affect which commits are included, not the displayed version.
 
-12. Compare link references:
+13. Compare link references:
     - Check whether `CHANGELOG.md` uses reference-style version links such as `[2.9.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.9.1...2.9.2`.
     - If it does, add a matching compare link reference for the new changelog version.
     - Use the normalized base release versions without build metadata in the compare URL.
@@ -100,7 +106,7 @@ Instructions:
     - Do not duplicate an existing link reference.
     - If the changelog does not use version link references, do not introduce this convention.
 
-13. Final output:
+14. Final output:
     - state the documented version found
     - state the newer tag selected
     - state the git range used
