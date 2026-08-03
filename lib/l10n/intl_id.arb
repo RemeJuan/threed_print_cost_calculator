@@ -667,7 +667,7 @@
   "csvImportUpdatingStatus": "Perbarui material yang ada",
   "csvImportCreatingStatus": "Buat material lokal",
   "csvImportNeedsFixingStatus": "Dilewati sampai diperbaiki",
-  "csvImportApplyButton": "{updates, plural, =0{{creates, plural, one{Buat 1 material} other{Buat {creates} material}}} one{{creates, plural, =0{Terapkan 1 pembaruan} one{Terapkan 1 pembaruan dan buat 1 material} other{Terapkan 1 pembaruan dan buat {creates} material}}} other{{creates, plural, =0{Terapkan {updates} pembaruan} one{Terapkan {updates} pembaruan dan buat 1 material} other{Terapkan {updates} pembaruan dan buat {creates} material}}}}",
+  "csvImportApplyButton": "Impor material",
   "csvImportResultTitle": "Impor selesai",
   "csvImportResultUpdated": "Material diperbarui: {count}",
   "csvImportResultCreated": "Material dibuat: {count}",

@@ -1381,36 +1381,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get csvImportNeedsFixingStatus => '修正されるまでスキップ';
 
   @override
-  String csvImportApplyButton(int updates, int creates) {
-    String _temp0 = intl.Intl.pluralLogic(
-      creates,
-      locale: localeName,
-      other: '更新$updates件を適用し、材料を$creates件作成',
-      one: '更新$updates件を適用し、材料を1件作成',
-      zero: '更新$updates件を適用',
-    );
-    String _temp1 = intl.Intl.pluralLogic(
-      creates,
-      locale: localeName,
-      other: '更新1件を適用し、材料を$creates件作成',
-      one: '更新1件を適用し、材料を1件作成',
-      zero: '更新1件を適用',
-    );
-    String _temp2 = intl.Intl.pluralLogic(
-      creates,
-      locale: localeName,
-      other: '材料を$creates件作成',
-      one: '材料を1件作成',
-    );
-    String _temp3 = intl.Intl.pluralLogic(
-      updates,
-      locale: localeName,
-      other: '$_temp0',
-      one: '$_temp1',
-      zero: '$_temp2',
-    );
-    return '$_temp3';
-  }
+  String get csvImportApplyButton => '材料をインポート';
 
   @override
   String get csvImportResultTitle => 'インポート完了';

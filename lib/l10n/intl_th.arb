@@ -668,7 +668,7 @@
   "csvImportUpdatingStatus": "อัปเดตวัสดุที่มีอยู่",
   "csvImportCreatingStatus": "สร้างวัสดุในเครื่อง",
   "csvImportNeedsFixingStatus": "ข้ามจนกว่าจะแก้ไข",
-  "csvImportApplyButton": "{updates, plural, =0{{creates, plural, one{สร้างวัสดุ 1 รายการ} other{สร้างวัสดุ {creates} รายการ}}} one{{creates, plural, =0{ใช้การอัปเดต 1 รายการ} one{ใช้การอัปเดต 1 รายการและสร้างวัสดุ 1 รายการ} other{ใช้การอัปเดต 1 รายการและสร้างวัสดุ {creates} รายการ}}} other{{creates, plural, =0{ใช้อัปเดต {updates} รายการ} one{ใช้อัปเดต {updates} รายการและสร้างวัสดุ 1 รายการ} other{ใช้อัปเดต {updates} รายการและสร้างวัสดุ {creates} รายการ}}}}",
+  "csvImportApplyButton": "นำเข้าวัสดุ",
   "csvImportResultTitle": "นำเข้าเสร็จสิ้น",
   "csvImportResultUpdated": "อัปเดตวัสดุ: {count}",
   "csvImportResultCreated": "สร้างวัสดุ: {count}",

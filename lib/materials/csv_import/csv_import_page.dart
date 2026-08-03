@@ -266,10 +266,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
                 onPressed: _confirming ? null : _confirmImport,
                 loading: _confirming,
                 icon: const Icon(Icons.check),
-                label: l10n.csvImportApplyButton(
-                  creates.length,
-                  updates.length,
-                ),
+                label: l10n.csvImportApplyButton,
               ),
             ),
           ),

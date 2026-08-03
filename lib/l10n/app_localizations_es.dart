@@ -1448,36 +1448,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get csvImportNeedsFixingStatus => 'Omitida hasta corregirla';
 
   @override
-  String csvImportApplyButton(int updates, int creates) {
-    String _temp0 = intl.Intl.pluralLogic(
-      creates,
-      locale: localeName,
-      other: 'Aplicar $updates actualizaciones y crear $creates materiales',
-      one: 'Aplicar $updates actualizaciones y crear 1 material',
-      zero: 'Aplicar $updates actualizaciones',
-    );
-    String _temp1 = intl.Intl.pluralLogic(
-      creates,
-      locale: localeName,
-      other: 'Aplicar 1 actualización y crear $creates materiales',
-      one: 'Aplicar 1 actualización y crear 1 material',
-      zero: 'Aplicar 1 actualización',
-    );
-    String _temp2 = intl.Intl.pluralLogic(
-      creates,
-      locale: localeName,
-      other: 'Crear $creates materiales',
-      one: 'Crear 1 material',
-    );
-    String _temp3 = intl.Intl.pluralLogic(
-      updates,
-      locale: localeName,
-      other: '$_temp0',
-      one: '$_temp1',
-      zero: '$_temp2',
-    );
-    return '$_temp3';
-  }
+  String get csvImportApplyButton => 'Importar materiales';
 
   @override
   String get csvImportResultTitle => 'Importación completada';

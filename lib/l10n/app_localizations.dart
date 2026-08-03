@@ -2629,8 +2629,8 @@ abstract class AppLocalizations {
   /// No description provided for @csvImportApplyButton.
   ///
   /// In en, this message translates to:
-  /// **'{updates, plural, =0{{creates, plural, one{Create 1 material} other{Create {creates} materials}}} one{{creates, plural, =0{Apply 1 update} one{Apply 1 update and create 1 material} other{Apply 1 update and create {creates} materials}}} other{{creates, plural, =0{Apply {updates} updates} one{Apply {updates} updates and create 1 material} other{Apply {updates} updates and create {creates} materials}}}}'**
-  String csvImportApplyButton(int updates, int creates);
+  /// **'Import materials'**
+  String get csvImportApplyButton;
 
   /// No description provided for @csvImportResultTitle.
   ///

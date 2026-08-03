@@ -667,7 +667,7 @@
   "csvImportUpdatingStatus": "Vorhandenes Material aktualisieren",
   "csvImportCreatingStatus": "Lokales Material erstellen",
   "csvImportNeedsFixingStatus": "Bis zur Korrektur übersprungen",
-  "csvImportApplyButton": "{updates, plural, =0{{creates, plural, one{1 Material erstellen} other{{creates} Materialien erstellen}}} one{{creates, plural, =0{1 Aktualisierung anwenden} one{1 Aktualisierung anwenden und 1 Material erstellen} other{1 Aktualisierung anwenden und {creates} Materialien erstellen}}} other{{creates, plural, =0{{updates} Aktualisierungen anwenden} one{{updates} Aktualisierungen anwenden und 1 Material erstellen} other{{updates} Aktualisierungen anwenden und {creates} Materialien erstellen}}}}",
+  "csvImportApplyButton": "Materialien importieren",
   "csvImportResultTitle": "Import abgeschlossen",
   "csvImportResultUpdated": "Materialien aktualisiert: {count}",
   "csvImportResultCreated": "Materialien erstellt: {count}",

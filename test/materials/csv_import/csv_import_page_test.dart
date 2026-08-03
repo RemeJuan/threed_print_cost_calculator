@@ -119,7 +119,13 @@ void main() {
         expect(find.text(l10n.csvImportCreatingSection(1)), findsOneWidget);
         expect(find.text(l10n.csvEmptyNamePlaceholder), findsOneWidget);
         expect(find.text(l10n.csvNameRequiredError), findsOneWidget);
-        expect(find.text(l10n.csvImportApplyButton(1, 1)), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byKey(const ValueKey<String>('csv_import.apply.button')),
+            matching: find.text(l10n.csvImportApplyButton),
+          ),
+          findsOneWidget,
+        );
       },
     );
 
