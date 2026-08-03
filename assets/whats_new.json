@@ -1,62 +1,62 @@
 {
-  "wn_id": "interface_settings_2026_07",
+  "wn_id": "materials_csv_export_2026_07",
   "en": {
-    "title": "New: Interface Settings",
-    "body": "Choose which controls, tabs, and pricing details stay visible in the app. Switch between the default view and a cleaner custom view from Settings.",
+    "title": "New: Materials CSV Export",
+    "body": "Export your materials to CSV, edit them outside the app, then import the file back to update existing rows or add new ones with review before saving.",
     "cta": "Got it",
     "unlock_pro_cta": "Start free trial"
   },
   "de": {
-    "title": "Neu: Interface-Einstellungen",
-    "body": "Wähle aus, welche Steuerelemente, Tabs und Preisdetails in der App sichtbar bleiben. Wechsle in den Einstellungen zwischen Standardansicht und einer klareren benutzerdefinierten Ansicht.",
+    "title": "Neu: Material-CSV-Export",
+    "body": "Exportiere deine Materialien als CSV, bearbeite sie außerhalb der App und importiere die Datei dann wieder, um vorhandene Zeilen zu aktualisieren oder neue mit Prüfung vor dem Speichern hinzuzufügen.",
     "cta": "Verstanden",
     "unlock_pro_cta": "Kostenlose Testversion starten"
   },
   "es": {
-    "title": "Nuevo: ajustes de interfaz",
-    "body": "Elige qué controles, pestañas y detalles de precios siguen visibles en la app. Cambia entre la vista predeterminada y una vista personalizada más limpia desde Ajustes.",
+    "title": "Nuevo: exportación CSV de materiales",
+    "body": "Exporta tus materiales a CSV, edítalos fuera de la app y luego vuelve a importar el archivo para actualizar filas existentes o añadir nuevas con revisión antes de guardar.",
     "cta": "Entendido",
     "unlock_pro_cta": "Iniciar prueba gratuita"
   },
   "fr": {
-    "title": "Nouveau : réglages d'interface",
-    "body": "Choisissez quels contrôles, onglets et détails de prix restent visibles dans l'app. Passez de l'affichage par défaut à une vue personnalisée plus épurée depuis les réglages.",
+    "title": "Nouveau : export CSV des matériaux",
+    "body": "Exportez vos matériaux en CSV, modifiez-les hors de l'app, puis réimportez le fichier pour mettre à jour les lignes existantes ou en ajouter de nouvelles avec vérification avant l'enregistrement.",
     "cta": "Compris",
     "unlock_pro_cta": "Commencer l'essai gratuit"
   },
   "id": {
-    "title": "Baru: Pengaturan Antarmuka",
-    "body": "Pilih kontrol, tab, dan detail harga mana yang tetap terlihat di aplikasi. Beralih antara tampilan bawaan dan tampilan kustom yang lebih rapi dari Pengaturan.",
+    "title": "Baru: Ekspor CSV Material",
+    "body": "Ekspor material Anda ke CSV, edit di luar aplikasi, lalu impor kembali file tersebut untuk memperbarui baris yang ada atau menambahkan yang baru dengan peninjauan sebelum menyimpan.",
     "cta": "Mengerti",
     "unlock_pro_cta": "Mulai uji coba gratis"
   },
   "it": {
-    "title": "Novità: impostazioni interfaccia",
-    "body": "Scegli quali controlli, schede e dettagli di prezzo restano visibili nell'app. Passa dalla vista predefinita a una vista personalizzata più pulita dalle Impostazioni.",
+    "title": "Novità: esportazione CSV materiali",
+    "body": "Esporta i tuoi materiali in CSV, modificali fuori dall'app e poi reimporta il file per aggiornare le righe esistenti o aggiungerne di nuove con revisione prima del salvataggio.",
     "cta": "Capito",
     "unlock_pro_cta": "Inizia la prova gratuita"
   },
   "ja": {
-    "title": "新機能: インターフェース設定",
-    "body": "アプリに表示する操作、タブ、価格詳細を選べます。設定から、標準表示とすっきりしたカスタム表示を切り替えられます。",
+    "title": "新機能: 材料CSVエクスポート",
+    "body": "材料をCSVに書き出してアプリ外で編集し、そのファイルを再インポートして既存の行を更新したり、新しい行を保存前の確認付きで追加したりできます。",
     "cta": "了解",
     "unlock_pro_cta": "無料トライアルを開始"
   },
   "nl": {
-    "title": "Nieuw: interface-instellingen",
-    "body": "Kies welke bedieningselementen, tabbladen en prijsdetails zichtbaar blijven in de app. Schakel in Instellingen tussen de standaardweergave en een schonere aangepaste weergave.",
+    "title": "Nieuw: materialen CSV-export",
+    "body": "Exporteer je materialen naar CSV, bewerk ze buiten de app en importeer het bestand daarna opnieuw om bestaande rijen bij te werken of nieuwe toe te voegen met controle vóór het opslaan.",
     "cta": "Begrepen",
     "unlock_pro_cta": "Start gratis proefperiode"
   },
   "pt": {
-    "title": "Novo: configurações da interface",
-    "body": "Escolha quais controles, abas e detalhes de preço continuam visíveis no app. Alterne entre a vista padrão e uma vista personalizada mais limpa em Configurações.",
+    "title": "Novo: exportação CSV de materiais",
+    "body": "Exporte seus materiais para CSV, edite fora do app e depois importe o arquivo novamente para atualizar linhas existentes ou adicionar novas com revisão antes de salvar.",
     "cta": "Entendi",
     "unlock_pro_cta": "Iniciar teste gratuito"
   },
   "th": {
-    "title": "ใหม่: การตั้งค่าอินเทอร์เฟซ",
-    "body": "เลือกว่าปุ่ม แท็บ และรายละเอียดราคาใดจะยังแสดงในแอป สลับระหว่างมุมมองเริ่มต้นกับมุมมองกำหนดเองที่เรียบขึ้นได้จากการตั้งค่า",
+    "title": "ใหม่: ส่งออกวัสดุเป็น CSV",
+    "body": "ส่งออกวัสดุของคุณเป็น CSV แก้ไขนอกแอป แล้วนำไฟล์กลับเข้าอีกครั้งเพื่ออัปเดตแถวเดิมหรือเพิ่มแถวใหม่พร้อมตรวจสอบก่อนบันทึก",
     "cta": "เข้าใจแล้ว",
     "unlock_pro_cta": "เริ่มทดลองใช้ฟรี"
   }
