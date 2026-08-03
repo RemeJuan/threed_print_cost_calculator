@@ -300,7 +300,19 @@
   - params: []
   - triggered_from: [`lib/materials/csv_import/csv_import_page.dart`]
   - feature: Materials
-  - notes: fired after successful file read, before CSV parse
+  - notes: fired immediately when Select file is tapped, before picker opens
+
+- `csv_import_cancelled`
+  - params: [`reason`]
+  - triggered_from: [`lib/materials/csv_import/csv_import_page.dart`]
+  - feature: Materials
+  - notes: fired when picker returns no file; `reason` is stable `cancelled`
+
+- `csv_import_failed`
+  - params: [`reason`]
+  - triggered_from: [`lib/materials/csv_import/csv_import_page.dart`]
+  - feature: Materials
+  - notes: fired for hard failures only; `reason` uses stable values: `parse_failed`, `read_failed`, `access_denied`, `quota_exceeded`, `save_failed`, `import_failed`, `unknown`
 
 - `csv_import_completed`
   - params: [`rows_success`, `rows_failed`]

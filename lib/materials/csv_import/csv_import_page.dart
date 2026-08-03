@@ -83,6 +83,7 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
   Future<void> _pickFile() async {
     if (_loading) return;
     final l10n = AppLocalizations.of(context)!;
+    AppAnalytics.safeLog(AppAnalytics.csvImportStarted);
     setState(() {
       _loading = true;
       _review = null;
@@ -90,9 +91,17 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     });
     try {
       final result = await (widget.filePicker?.call() ?? openFile());
-      if (result == null) return;
+      if (result == null) {
+        AppAnalytics.safeLog(AppAnalytics.csvImportCancelled);
+        return;
+      }
       if (!result.name.toLowerCase().endsWith('.csv')) {
         if (mounted) BotToast.showText(text: l10n.csvFileTypeError);
+        AppAnalytics.safeLog(
+          () => AppAnalytics.csvImportFailed(
+            reason: CsvImportFailureReason.parseFailed,
+          ),
+        );
         return;
       }
 
@@ -103,13 +112,18 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
         lookupIds: (ids) =>
             ref.read(materialsRepositoryProvider).existingIds(ids),
       );
-      AppAnalytics.safeLog(AppAnalytics.csvImportStarted);
       if (!mounted) return;
       setState(() => _review = classified);
     } catch (error) {
       if (mounted) {
         BotToast.showText(text: csvImportFileErrorMessage(l10n, error));
       }
+      final reason = error is CsvImportHeaderException
+          ? CsvImportFailureReason.parseFailed
+          : error is FileSystemException
+          ? CsvImportFailureReason.readFailed
+          : CsvImportFailureReason.unknown;
+      AppAnalytics.safeLog(() => AppAnalytics.csvImportFailed(reason: reason));
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -121,6 +135,11 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
     final l10n = AppLocalizations.of(context)!;
     if (!ref.read(premiumAccessPolicyProvider).stockTracking().allowed) {
       BotToast.showText(text: l10n.csvImportAccessError);
+      AppAnalytics.safeLog(
+        () => AppAnalytics.csvImportFailed(
+          reason: CsvImportFailureReason.accessDenied,
+        ),
+      );
       return;
     }
 
@@ -129,8 +148,13 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
       final result = await ref
           .read(csvImportServiceProvider)
           .importRows(review.rows);
-      if (!mounted) return;
       if (result.quotaExceeded) {
+        AppAnalytics.safeLog(
+          () => AppAnalytics.csvImportFailed(
+            reason: CsvImportFailureReason.quotaExceeded,
+          ),
+        );
+        if (!mounted) return;
         BotToast.showText(text: l10n.csvImportQuotaExceededError);
         return;
       }
@@ -143,9 +167,15 @@ class _CsvImportPageState extends ConsumerState<CsvImportPage> {
               result.saveFailures.length,
         ),
       );
+      if (!mounted) return;
       setState(() => _result = result);
     } catch (_) {
       if (mounted) BotToast.showText(text: l10n.csvImportSaveError);
+      AppAnalytics.safeLog(
+        () => AppAnalytics.csvImportFailed(
+          reason: CsvImportFailureReason.saveFailed,
+        ),
+      );
     } finally {
       if (mounted) setState(() => _confirming = false);
     }

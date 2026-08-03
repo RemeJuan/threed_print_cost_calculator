@@ -197,6 +197,25 @@ void main() {
     });
   });
 
+  test('csv import analytics wrappers use stable payloads', () async {
+    final fake = _FakeAnalytics();
+    AppAnalytics.service = fake;
+
+    await AppAnalytics.csvImportStarted();
+    expect(fake.lastName, 'csv_import_started');
+    expect(fake.lastParams, isNull);
+
+    await AppAnalytics.csvImportCancelled();
+    expect(fake.lastName, 'csv_import_cancelled');
+    expect(fake.lastParams, {'reason': 'cancelled'});
+
+    await AppAnalytics.csvImportFailed(
+      reason: CsvImportFailureReason.parseFailed,
+    );
+    expect(fake.lastName, 'csv_import_failed');
+    expect(fake.lastParams, {'reason': 'parse_failed'});
+  });
+
   test('gcode import analytics carry funnel context', () async {
     when(
       () => mock.logEvent(any(), params: any(named: 'params')),

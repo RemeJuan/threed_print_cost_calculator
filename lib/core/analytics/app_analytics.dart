@@ -18,6 +18,18 @@ class GCodeFailureReason {
   static const String unknown = 'unknown';
 }
 
+class CsvImportFailureReason {
+  CsvImportFailureReason._();
+  static const String parseFailed = 'parse_failed';
+  static const String readFailed = 'read_failed';
+  static const String accessDenied = 'access_denied';
+  static const String quotaExceeded = 'quota_exceeded';
+  static const String saveFailed = 'save_failed';
+  static const String importFailed = 'import_failed';
+  static const String cancelled = 'cancelled';
+  static const String unknown = 'unknown';
+}
+
 class AppAnalytics {
   static AppLogger logger = AppLogger(
     sink: const DebugPrintAppLogSink(),
@@ -320,6 +332,17 @@ class AppAnalytics {
 
   static Future<void> csvImportStarted() {
     return log('csv_import_started');
+  }
+
+  static Future<void> csvImportCancelled() {
+    return log(
+      'csv_import_cancelled',
+      params: {'reason': CsvImportFailureReason.cancelled},
+    );
+  }
+
+  static Future<void> csvImportFailed({required String reason}) {
+    return log('csv_import_failed', params: {'reason': reason});
   }
 
   static Future<void> csvImportCompleted({

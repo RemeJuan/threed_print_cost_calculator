@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_page.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_service.dart';
@@ -38,6 +40,24 @@ class RecordingImportService extends CsvImportService {
   }
 }
 
+class FailingImportService extends CsvImportService {
+  FailingImportService(super.ref);
+
+  @override
+  Future<CsvImportResult> importRows(List<CsvImportRow> rows) async {
+    throw StateError('import failed');
+  }
+}
+
+class _FakeAnalytics implements AnalyticsService {
+  final events = <Map<String, Object>?>[];
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add({'name': name, 'params': params ?? {}});
+  }
+}
+
 class ThrowingImportService extends CsvImportService {
   ThrowingImportService(super.ref);
 
@@ -68,6 +88,10 @@ void main() {
   });
 
   group('CsvImportPage', () {
+    setUp(() {
+      AppAnalytics.service = _FakeAnalytics();
+    });
+
     testWidgets('shows intro state with upload button', (tester) async {
       final db = await tester.pumpApp(const CsvImportPage());
       await tester.pumpAndSettle();
@@ -190,6 +214,60 @@ void main() {
       final l10n = lookupAppLocalizations(const Locale('en'));
       expect(find.text(l10n.csvImportSaveError), findsOneWidget);
       expect(find.text(l10n.csvReadError), findsNothing);
+    });
+
+    testWidgets('logs started and cancelled around file picker', (
+      tester,
+    ) async {
+      final analytics = _FakeAnalytics();
+      AppAnalytics.service = analytics;
+      final db = await tester.pumpApp(
+        CsvImportPage(filePicker: () async => null),
+      );
+      addTearDown(db.close);
+      await tester.tap(
+        find.byKey(const ValueKey<String>('csv_import.select_file.button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(analytics.events, [
+        {'name': 'csv_import_started', 'params': {}},
+        {
+          'name': 'csv_import_cancelled',
+          'params': {'reason': 'cancelled'},
+        },
+      ]);
+    });
+
+    testWidgets('logs failure once for save errors', (tester) async {
+      final analytics = _FakeAnalytics();
+      AppAnalytics.service = analytics;
+      final db = await tester.pumpApp(CsvImportPage(initialReview: _review()), [
+        premiumAccessPolicyProvider.overrideWithValue(
+          DefaultPremiumAccessPolicy(isPremium: true),
+        ),
+        csvImportServiceProvider.overrideWith(
+          (ref) => FailingImportService(ref),
+        ),
+      ]);
+      addTearDown(db.close);
+      await tester.tap(
+        find.byKey(const ValueKey<String>('csv_import.apply.button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        analytics.events
+            .where((event) => event?['name'] == 'csv_import_failed')
+            .length,
+        1,
+      );
+      expect(
+        analytics.events
+            .where((event) => event?['name'] == 'csv_import_completed')
+            .length,
+        0,
+      );
     });
   });
 }
