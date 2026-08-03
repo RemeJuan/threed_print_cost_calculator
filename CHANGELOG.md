@@ -1,3 +1,31 @@
+## [3.3.0] - 2026-07-27
+
+### Added
+- Added materials CSV export so you can download your current materials, edit them, and re-import the changes.
+- Added a reviewed CSV import flow that shows which rows will update existing materials, create new ones, or need fixing before anything is saved.
+
+## [3.2.2] - 2026-07-13
+
+### Fixed
+- Fixed some G-code imports failing when selected files contained malformed text encoding.
+- Improved premium purchase and restore reliability on Android when device verification cannot be completed cleanly.
+- Fixed a history page refresh issue that could occur after leaving the screen.
+
+## [3.2.1] - 2026-07-11
+
+### Changed
+- Moved startup maintenance work to run after launch for a smoother app open after updates.
+- Clarified interface settings labels for batch costing, G-code import, and pricing controls.
+
+### Fixed
+- Fixed a crash that could occur when opening the app after an update.
+
+## [3.2.0] - 2026-07-06
+
+### Added
+- Added interface settings to hide or show calculator controls, tabs, and pricing details.
+- Added Android device-integrity checks before premium purchase and restore actions.
+
 ## [3.1.2] - 2026-07-06
 
 ### Added
@@ -240,6 +268,10 @@
 ### Added
 - Added in-app update checker
 
+[3.3.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.2...3.3.0
+[3.2.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.1...3.2.2
+[3.2.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.0...3.2.1
+[3.2.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.1.1...3.2.0
 [3.1.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/2.11.0...3.0.0
