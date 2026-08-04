@@ -36,12 +36,12 @@ android {
     ndkVersion "28.2.13676358"
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 
     sourceSets {
@@ -123,6 +123,7 @@ android {
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -140,6 +141,6 @@ flutter {
 
 dependencies {
     implementation "com.google.android.play:integrity:1.5.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.4.0"
     androidTestUtil "androidx.test:orchestrator:1.5.1"
 }
