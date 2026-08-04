@@ -20,6 +20,7 @@ import 'package:threed_print_cost_calculator/settings/interface_settings/interfa
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
 
 void safeBotToastCleanAll() {
   try {
@@ -70,6 +71,12 @@ extension PumpApp on WidgetTester {
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
+      updateAvailabilityLookupProvider.overrideWithValue(
+        ({
+          required String currentVersion,
+          required TargetPlatform platform,
+        }) async => const UpdateAvailabilityResult.unknown(),
+      ),
       if (includeDefaultInterfaceSettingsOverride)
         interfaceSettingsProvider.overrideWithValue(
           const InterfaceSettingsModel(),
@@ -115,6 +122,12 @@ extension PumpApp on WidgetTester {
       databaseProvider.overrideWithValue(db),
       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       premiumLocalStoreProvider.overrideWithValue(effectivePremiumLocalStore),
+      updateAvailabilityLookupProvider.overrideWithValue(
+        ({
+          required String currentVersion,
+          required TargetPlatform platform,
+        }) async => const UpdateAvailabilityResult.unknown(),
+      ),
       if (includeDefaultInterfaceSettingsOverride)
         interfaceSettingsProvider.overrideWithValue(
           const InterfaceSettingsModel(),

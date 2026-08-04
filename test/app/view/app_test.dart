@@ -21,6 +21,7 @@ import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dar
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/helpers.dart';
@@ -58,6 +59,12 @@ void main() {
           databaseProvider.overrideWithValue(db),
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           calculatorProvider.overrideWith(() => mockCalculatorProvider),
+          updateAvailabilityLookupProvider.overrideWithValue(
+            ({
+              required String currentVersion,
+              required TargetPlatform platform,
+            }) async => const UpdateAvailabilityResult.unknown(),
+          ),
           currentAnnouncementProvider.overrideWith((ref) async => null),
         ],
         child: MaterialApp(
@@ -91,6 +98,12 @@ void main() {
             premiumLocalStore ?? InMemoryPremiumLocalStore(),
           ),
           calculatorProvider.overrideWith(() => mockCalculatorProvider),
+          updateAvailabilityLookupProvider.overrideWithValue(
+            ({
+              required String currentVersion,
+              required TargetPlatform platform,
+            }) async => const UpdateAvailabilityResult.unknown(),
+          ),
           currentAnnouncementProvider.overrideWith((ref) async => null),
         ],
         child: const App(),
