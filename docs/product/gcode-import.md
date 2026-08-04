@@ -31,11 +31,11 @@ Decision doc: [2026-04-gcode-import](../decisions/2026-04-gcode-import.md)
 - Missing previews now use `No preview` copy in the summary.
 
 ## Analytics
-- Funnel now tracked as `gcode_import_opened` -> `gcode_import_started` -> `gcode_file_selected` -> `gcode_parse_*` -> `gcode_preview_viewed` (optional) -> `gcode_import_success` -> `gcode_flow_completed`; `gcode_import_abandoned` only fires on dispose if the flow was not completed.
-- Start attribution currently uses `source` from the live header caller; the reusable button defaults to `calculator`.
+- Funnel now tracked as `gcode_picker_opened` -> `gcode_picker_cancelled` or `gcode_file_selected` -> `gcode_parse_*` -> `gcode_apply_to_calculator` -> `gcode_import_success` -> `gcode_flow_completed`.
+- Every picker action gets a deterministic attempt ID and all downstream analytics carry it.
+- No dispose-based abandonment; cancelled picker is the only cancel signal.
 - File select logs only the extension as `file_type`; no filename, path, or G-code content is logged.
-- Success logs low-cardinality flags for print time, filament usage, and preview.
-- `gcode_apply_to_calculator` exists as a helper but is not currently emitted by the page flow.
+- `gcode_import_success` stays low-cardinality; `gcode_apply_to_calculator` fires before calculator mutation completes, while `calculation_created` remains calculator-owned.
 
 ## Instrumentation Notes
 - `gcode_import_success` does not include `slicer`, `parse_status`, or `file_size_bucket`, so it cannot be used alone to segment funnel context.

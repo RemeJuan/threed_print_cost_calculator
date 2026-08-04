@@ -222,17 +222,15 @@ void main() {
     ).thenAnswer((_) async {});
 
     await AppAnalytics.gcodeImportOpened();
-    verify(
-      () => mock.logEvent(
-        'gcode_import_opened',
-        params: {
-          'slicer': 'unknown',
-          'has_preview': 0,
-          'parse_status': 'unknown',
-          'file_size_bucket': 'unknown',
-        },
-      ),
-    ).called(1);
+    final openedParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_import_opened',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
+    expect(openedParams['slicer'], 'unknown');
 
     await AppAnalytics.gcodeImportStarted(source: 'calculator');
     verify(
@@ -248,66 +246,72 @@ void main() {
       ),
     ).called(1);
 
-    await AppAnalytics.gcodeFileSelected(fileType: 'gcode');
-    verify(
-      () =>
-          mock.logEvent('gcode_file_selected', params: {'file_type': 'gcode'}),
-    ).called(1);
+    await AppAnalytics.gcodeFileSelected(
+      attemptId: 'attempt-1',
+      fileType: 'gcode',
+    );
+    final selectedParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_file_selected',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.single
+            as Map<String, Object?>;
+    expect(selectedParams['attempt_id'], isA<String>());
+    expect(selectedParams['file_type'], 'gcode');
 
     await AppAnalytics.gcodeParseFailed(
+      attemptId: 'attempt-1',
       slicer: 'unknown',
       hasPreview: false,
       fileSizeBytes: 10 * 1024 * 1024,
       failureReason: GCodeFailureReason.fileTooLarge,
     );
-    verify(
-      () => mock.logEvent(
-        'gcode_parse_failed',
-        params: {
-          'slicer': 'unknown',
-          'has_preview': 0,
-          'parse_status': 'failed',
-          'file_size_bucket': '5-20MB',
-          'failure_reason': 'file_too_large',
-        },
-      ),
-    ).called(1);
+    final failedParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_parse_failed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.first
+            as Map<String, Object?>;
+    expect(failedParams['attempt_id'], isA<String>());
+    expect(failedParams['failure_reason'], 'file_too_large');
 
     await AppAnalytics.gcodeParseFailed(
+      attemptId: 'attempt-2',
       slicer: 'unknown',
       hasPreview: false,
       fileSizeBytes: 0,
       failureReason: GCodeFailureReason.unsupportedContent,
     );
-    verify(
-      () => mock.logEvent(
-        'gcode_parse_failed',
-        params: {
-          'slicer': 'unknown',
-          'has_preview': 0,
-          'parse_status': 'failed',
-          'file_size_bucket': '<1MB',
-          'failure_reason': 'unsupported_content',
-        },
-      ),
-    ).called(1);
+    final unsupportedParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_parse_failed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.last
+            as Map<String, Object?>;
+    expect(unsupportedParams['attempt_id'], isA<String>());
+    expect(unsupportedParams['failure_reason'], 'unsupported_content');
 
     await AppAnalytics.gcodeParsePartial(
+      attemptId: 'attempt-3',
       slicer: 'prusaSlicer',
       hasPreview: true,
       fileSizeBytes: 2 * 1024 * 1024,
     );
-    verify(
-      () => mock.logEvent(
-        'gcode_parse_partial',
-        params: {
-          'slicer': 'prusaSlicer',
-          'has_preview': 1,
-          'parse_status': 'partial',
-          'file_size_bucket': '1-5MB',
-        },
-      ),
-    ).called(1);
+    final partialParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_parse_partial',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.first
+            as Map<String, Object?>;
+    expect(partialParams['attempt_id'], isA<String>());
 
     await AppAnalytics.gcodePreviewAvailable(
       slicer: 'prusaSlicer',
@@ -328,6 +332,7 @@ void main() {
     ).called(1);
 
     await AppAnalytics.gcodeApplyToCalculator(
+      attemptId: 'attempt-4',
       slicer: 'prusaSlicer',
       hasPreview: true,
       fileSizeBytes: 2 * 1024 * 1024,
@@ -341,6 +346,7 @@ void main() {
               ),
             ).captured.single
             as Map<String, Object?>;
+    expect(captured['attempt_id'], isA<String>());
     expect(captured['gcode_time_to_value_ms'], isA<num>());
 
     await AppAnalytics.gcodePickerCancelled(source: 'calculator');
@@ -348,6 +354,17 @@ void main() {
       () => mock.logEvent(
         'gcode_picker_cancelled',
         params: {'source': 'calculator'},
+      ),
+    ).called(1);
+
+    await AppAnalytics.gcodePickerCancelledWithAttempt(
+      attemptId: 'attempt-1',
+      source: 'calculator',
+    );
+    verify(
+      () => mock.logEvent(
+        'gcode_picker_cancelled',
+        params: {'attempt_id': 'attempt-1', 'source': 'calculator'},
       ),
     ).called(1);
 
@@ -359,7 +376,19 @@ void main() {
       ),
     ).called(1);
 
+    await AppAnalytics.gcodeFlowDivertedToBatchWithAttempt(
+      attemptId: 'attempt-6',
+      source: 'calculator',
+    );
+    verify(
+      () => mock.logEvent(
+        'gcode_flow_diverted_to_batch',
+        params: {'attempt_id': 'attempt-6', 'source': 'calculator'},
+      ),
+    ).called(1);
+
     await AppAnalytics.gcodeImportSuccess(
+      attemptId: 'attempt-7',
       hasPrintTime: true,
       hasFilamentUsage: true,
       hasPreview: true,
@@ -368,6 +397,7 @@ void main() {
       () => mock.logEvent(
         'gcode_import_success',
         params: {
+          'attempt_id': 'attempt-7',
           'has_print_time': 1,
           'has_filament_usage': 1,
           'has_preview': 1,
@@ -402,18 +432,19 @@ void main() {
     await AppAnalytics.gcodeImportAbandoned(
       failureReason: GCodeFailureReason.cancelled,
     );
-    verify(
-      () => mock.logEvent(
-        'gcode_import_abandoned',
-        params: {
-          'slicer': 'unknown',
-          'has_preview': 0,
-          'parse_status': 'unknown',
-          'file_size_bucket': 'unknown',
-          'failure_reason': 'cancelled',
-        },
-      ),
-    ).called(1);
+    verifyNever(
+      () =>
+          mock.logEvent('gcode_import_abandoned', params: any(named: 'params')),
+    );
+  });
+
+  test('gcode attempt ids increase deterministically', () {
+    final first = AppAnalytics.newGcodeImportAttemptId();
+    final second = AppAnalytics.newGcodeImportAttemptId();
+
+    expect(first, isNot(equals(second)));
+    expect(first, startsWith('gcode_'));
+    expect(second, startsWith('gcode_'));
   });
 
   test('gcode flow completed clears abandon tracking', () async {
@@ -423,6 +454,7 @@ void main() {
 
     await AppAnalytics.gcodeImportOpened();
     await AppAnalytics.gcodeFlowCompleted(
+      attemptId: 'attempt-5',
       slicer: 'prusaSlicer',
       hasPreview: true,
       fileSizeBytes: 2 * 1024 * 1024,

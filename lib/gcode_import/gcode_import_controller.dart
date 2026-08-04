@@ -211,6 +211,8 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     }
   }
 
+  bool _isActiveAttempt(String attemptId) => state.activeAttemptId == attemptId;
+
   String _fileTypeFromName(String name) {
     final dotIndex = name.lastIndexOf('.');
     if (dotIndex < 0 || dotIndex == name.length - 1) return 'unknown';
@@ -223,6 +225,7 @@ enum GCodeImportStatus { idle, loading, success, failure }
 class GCodeImportState {
   const GCodeImportState({
     this.status = GCodeImportStatus.idle,
+    this.activeAttemptId,
     this.selectedFileName,
     this.selectedFilePath,
     this.selectedFileSizeBytes,
@@ -231,23 +234,27 @@ class GCodeImportState {
   });
 
   const GCodeImportState.loading({
+    required String attemptId,
     required String selectedFileName,
     String? selectedFilePath,
     required int selectedFileSizeBytes,
   }) : this(
          status: GCodeImportStatus.loading,
+         activeAttemptId: attemptId,
          selectedFileName: selectedFileName,
          selectedFilePath: selectedFilePath,
          selectedFileSizeBytes: selectedFileSizeBytes,
        );
 
   const GCodeImportState.success({
+    required String attemptId,
     required String selectedFileName,
     String? selectedFilePath,
     required int selectedFileSizeBytes,
     required GCodeImportResult result,
   }) : this(
          status: GCodeImportStatus.success,
+         activeAttemptId: attemptId,
          selectedFileName: selectedFileName,
          selectedFilePath: selectedFilePath,
          selectedFileSizeBytes: selectedFileSizeBytes,
@@ -255,12 +262,14 @@ class GCodeImportState {
        );
 
   const GCodeImportState.failure({
+    required String attemptId,
     required String selectedFileName,
     String? selectedFilePath,
     required int selectedFileSizeBytes,
     required GCodeImportError error,
   }) : this(
          status: GCodeImportStatus.failure,
+         activeAttemptId: attemptId,
          selectedFileName: selectedFileName,
          selectedFilePath: selectedFilePath,
          selectedFileSizeBytes: selectedFileSizeBytes,
@@ -268,6 +277,7 @@ class GCodeImportState {
        );
 
   final GCodeImportStatus status;
+  final String? activeAttemptId;
   final String? selectedFileName;
   final String? selectedFilePath;
   final int? selectedFileSizeBytes;

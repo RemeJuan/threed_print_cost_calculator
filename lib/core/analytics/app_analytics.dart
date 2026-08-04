@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
@@ -45,6 +46,7 @@ class AppAnalytics {
 
   static bool _gcodeImportTriggeredThisSession = false;
   static DateTime? _gcodeImportOpenedAt;
+  static int _gcodeImportAttemptCounter = 0;
   static String _gcodeImportSlicer = 'unknown';
   static bool _gcodeImportHasPreview = false;
   static String _gcodeImportParseStatus = 'unknown';
@@ -53,6 +55,7 @@ class AppAnalytics {
   static void resetGcodeImportTrackingForTests() {
     _gcodeImportTriggeredThisSession = false;
     _gcodeImportOpenedAt = null;
+    _gcodeImportAttemptCounter = 0;
     _gcodeImportSlicer = 'unknown';
     _gcodeImportHasPreview = false;
     _gcodeImportParseStatus = 'unknown';
@@ -112,6 +115,12 @@ class AppAnalytics {
       'file_size_bucket': _gcodeImportFileSizeBucket,
       ...?(entryPoint == null ? null : {'entry_point': entryPoint}),
     };
+  }
+
+  static String newGcodeImportAttemptId() {
+    _gcodeImportAttemptCounter += 1;
+    final suffix = Random().nextInt(1 << 32).toRadixString(16).padLeft(8, '0');
+    return 'gcode_${DateTime.now().microsecondsSinceEpoch}_$_gcodeImportAttemptCounter$suffix';
   }
 
   static void _setGcodeContext({
@@ -615,11 +624,28 @@ class AppAnalytics {
     );
   }
 
-  static Future<void> gcodeFileSelected({required String fileType}) {
-    return log('gcode_file_selected', params: {'file_type': fileType});
+  static Future<void> gcodePickerOpened({
+    required String attemptId,
+    required String source,
+  }) {
+    return log(
+      'gcode_picker_opened',
+      params: {'attempt_id': attemptId, 'source': source},
+    );
+  }
+
+  static Future<void> gcodeFileSelected({
+    required String attemptId,
+    required String fileType,
+  }) {
+    return log(
+      'gcode_file_selected',
+      params: {'attempt_id': attemptId, 'file_type': fileType},
+    );
   }
 
   static Future<void> gcodeParseSuccess({
+    required String attemptId,
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
@@ -630,10 +656,14 @@ class AppAnalytics {
       parseStatus: 'success',
       fileSizeBucket: fileSizeBucket(fileSizeBytes),
     );
-    return log('gcode_parse_success', params: _gcodeImportParams());
+    return log(
+      'gcode_parse_success',
+      params: {'attempt_id': attemptId, ..._gcodeImportParams()},
+    );
   }
 
   static Future<void> gcodeParsePartial({
+    required String attemptId,
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
@@ -644,10 +674,14 @@ class AppAnalytics {
       parseStatus: 'partial',
       fileSizeBucket: fileSizeBucket(fileSizeBytes),
     );
-    return log('gcode_parse_partial', params: _gcodeImportParams());
+    return log(
+      'gcode_parse_partial',
+      params: {'attempt_id': attemptId, ..._gcodeImportParams()},
+    );
   }
 
   static Future<void> gcodeParseFailed({
+    required String attemptId,
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
@@ -661,7 +695,11 @@ class AppAnalytics {
     );
     return log(
       'gcode_parse_failed',
-      params: {..._gcodeImportParams(), 'failure_reason': failureReason},
+      params: {
+        'attempt_id': attemptId,
+        ..._gcodeImportParams(),
+        'failure_reason': failureReason,
+      },
     );
   }
 
@@ -699,12 +737,34 @@ class AppAnalytics {
     return log('gcode_picker_cancelled', params: {'source': source});
   }
 
+  static Future<void> gcodePickerCancelledWithAttempt({
+    required String attemptId,
+    required String source,
+  }) {
+    return log(
+      'gcode_picker_cancelled',
+      params: {'attempt_id': attemptId, 'source': source},
+    );
+  }
+
   static Future<void> gcodeFlowDivertedToBatch({required String source}) {
     _clearGcodeImportFlowTracking();
     return log('gcode_flow_diverted_to_batch', params: {'source': source});
   }
 
+  static Future<void> gcodeFlowDivertedToBatchWithAttempt({
+    required String attemptId,
+    required String source,
+  }) {
+    _clearGcodeImportFlowTracking();
+    return log(
+      'gcode_flow_diverted_to_batch',
+      params: {'attempt_id': attemptId, 'source': source},
+    );
+  }
+
   static Future<void> gcodeApplyToCalculator({
+    required String attemptId,
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
@@ -720,6 +780,7 @@ class AppAnalytics {
     return log(
       'gcode_apply_to_calculator',
       params: {
+        'attempt_id': attemptId,
         ..._gcodeImportParams(),
         ...?(timeToValueMs == null
             ? null
@@ -729,6 +790,7 @@ class AppAnalytics {
   }
 
   static Future<void> gcodeFlowCompleted({
+    required String attemptId,
     required String slicer,
     required bool hasPreview,
     required int fileSizeBytes,
@@ -743,6 +805,7 @@ class AppAnalytics {
     );
     final params = <String, Object?>{
       ..._gcodeImportParams(),
+      'attempt_id': attemptId,
       ...?(timeToValueMs == null
           ? null
           : {'gcode_time_to_value_ms': timeToValueMs}),
@@ -751,19 +814,11 @@ class AppAnalytics {
     return log('gcode_flow_completed', params: params);
   }
 
-  static Future<void> gcodeImportAbandoned({String? failureReason}) {
-    if (_gcodeImportOpenedAt == null) return Future.value();
-    final trimmed = failureReason?.trim();
-    final reason = (trimmed == null || trimmed.isEmpty) ? null : trimmed;
-    final params = <String, Object?>{
-      ..._gcodeImportParams(),
-      ...?(reason == null ? null : {'failure_reason': reason}),
-    };
-    _gcodeImportOpenedAt = null;
-    return log('gcode_import_abandoned', params: params);
-  }
+  static Future<void> gcodeImportAbandoned({String? failureReason}) =>
+      Future.value();
 
   static Future<void> gcodeImportSuccess({
+    required String attemptId,
     required bool hasPrintTime,
     required bool hasFilamentUsage,
     required bool hasPreview,
@@ -771,6 +826,7 @@ class AppAnalytics {
     return log(
       'gcode_import_success',
       params: {
+        'attempt_id': attemptId,
         'has_print_time': hasPrintTime ? 1 : 0,
         'has_filament_usage': hasFilamentUsage ? 1 : 0,
         'has_preview': hasPreview ? 1 : 0,
