@@ -104,6 +104,7 @@ GCodeImportState successState({
   bool hasSafePreview = false,
 }) {
   return GCodeImportState.success(
+    attemptId: 'attempt-test',
     selectedFileName: 'preview.gcode',
     selectedFileSizeBytes: selectedFileSizeBytes,
     result: GCodeImportResult(

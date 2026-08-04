@@ -30,11 +30,13 @@ class GCodeImportPageActions {
     WidgetRef ref,
     AppLocalizations l10n, {
     required GCodeImportResult result,
+    required String attemptId,
     required int fileSizeBytes,
     required String parseStatus,
   }) {
     AppAnalytics.safeLog(
       () => AppAnalytics.gcodeApplyToCalculator(
+        attemptId: attemptId,
         slicer: result.slicer.name,
         hasPreview: result.hasPreviewMetadata,
         fileSizeBytes: fileSizeBytes,
@@ -49,6 +51,7 @@ class GCodeImportPageActions {
         );
     AppAnalytics.safeLog(
       () => AppAnalytics.gcodeImportSuccess(
+        attemptId: attemptId,
         hasPrintTime: result.estimatedDuration != null,
         hasFilamentUsage:
             result.filamentWeightG != null || result.filamentLengthMm != null,
@@ -57,6 +60,7 @@ class GCodeImportPageActions {
     );
     AppAnalytics.safeLog(
       () => AppAnalytics.gcodeFlowCompleted(
+        attemptId: attemptId,
         slicer: result.slicer.name,
         hasPreview: result.hasPreviewMetadata,
         fileSizeBytes: fileSizeBytes,

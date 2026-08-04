@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_diagnostics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_page_actions.dart';
 import 'package:threed_print_cost_calculator/gcode_import/widgets/gcode_import_single_file_content.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -25,6 +26,7 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
   bool _multiMode = false;
   bool _hasLoggedImportStarted = false;
   List<GCodePickedFile> _multiFiles = const [];
+  String? _activeAttemptId;
 
   @override
   void initState() {
@@ -34,9 +36,6 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
 
   @override
   void dispose() {
-    if (!_multiMode) {
-      AppAnalytics.safeLog(() => AppAnalytics.gcodeImportAbandoned());
-    }
     super.dispose();
   }
 
@@ -80,6 +79,9 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
                         ref,
                         l10n,
                         result: state.result!,
+                        attemptId:
+                            _activeAttemptId ??
+                            AppAnalytics.newGcodeImportAttemptId(),
                         fileSizeBytes: fileSizeBytes,
                         parseStatus: parseStatus,
                       ),
@@ -90,39 +92,77 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
 
   Future<void> _pickFiles(GCodeImportController controller) async {
     _logImportStartedIfNeeded();
+    final attemptId = AppAnalytics.newGcodeImportAttemptId();
+    _activeAttemptId = attemptId;
+    AppAnalytics.safeLog(
+      () => AppAnalytics.gcodePickerOpened(
+        attemptId: attemptId,
+        source: widget.source,
+      ),
+    );
     final policy = ref.read(premiumAccessPolicyProvider);
-    if (policy.batchGcodeImport().allowed) {
-      final files = await ref.read(gcodeImportFilePickerProvider).pickMany();
-      if (!mounted) return;
-      if (files.isEmpty) {
-        AppAnalytics.safeLog(
-          () => AppAnalytics.gcodePickerCancelled(source: widget.source),
-        );
+    try {
+      if (policy.batchGcodeImport().allowed) {
+        final files = await ref.read(gcodeImportFilePickerProvider).pickMany();
+        if (!mounted) return;
+        if (files.isEmpty) {
+          AppAnalytics.safeLog(
+            () => AppAnalytics.gcodePickerCancelledWithAttempt(
+              attemptId: attemptId,
+              source: widget.source,
+            ),
+          );
+          return;
+        }
+        if (files.length > 1) {
+          AppAnalytics.safeLog(
+            () => AppAnalytics.gcodeFlowDivertedToBatchWithAttempt(
+              attemptId: attemptId,
+              source: widget.source,
+            ),
+          );
+          _activeAttemptId = null;
+          setState(() {
+            _multiMode = true;
+            _multiFiles = files;
+          });
+          return;
+        }
+        await controller.parsePickedFile(files.single, attemptId: attemptId);
         return;
       }
-      if (files.length > 1) {
-        AppAnalytics.safeLog(
-          () => AppAnalytics.gcodeFlowDivertedToBatch(source: widget.source),
-        );
-        setState(() {
-          _multiMode = true;
-          _multiFiles = files;
-        });
-        return;
-      }
-      await controller.parsePickedFile(files.single);
-      return;
-    }
 
-    final file = await ref.read(gcodeImportFilePickerProvider).pick();
-    if (!mounted) return;
-    if (file == null) {
-      AppAnalytics.safeLog(
-        () => AppAnalytics.gcodePickerCancelled(source: widget.source),
+      final file = await ref.read(gcodeImportFilePickerProvider).pick();
+      if (!mounted) return;
+      if (file == null) {
+        AppAnalytics.safeLog(
+          () => AppAnalytics.gcodePickerCancelledWithAttempt(
+            attemptId: attemptId,
+            source: widget.source,
+          ),
+        );
+        _activeAttemptId = null;
+        return;
+      }
+      await controller.parsePickedFile(file, attemptId: attemptId);
+    } catch (error, stackTrace) {
+      await captureGCodeImportFailure(
+        stage: 'picker',
+        error: error,
+        stackTrace: stackTrace,
+        category: 'picker_exception',
       );
-      return;
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodeParseFailed(
+          attemptId: attemptId,
+          slicer: 'unknown',
+          hasPreview: false,
+          fileSizeBytes: 0,
+          failureReason: GCodeFailureReason.readFailed,
+        ),
+      );
+      _activeAttemptId = null;
     }
-    await controller.parsePickedFile(file);
   }
 
   void _logImportStartedIfNeeded() {

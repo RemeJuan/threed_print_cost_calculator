@@ -30,7 +30,9 @@ void main() {
     expect(analytics.eventNames, contains('gcode_import_opened'));
   });
 
-  testWidgets('logs started once and abandoned on dispose', (tester) async {
+  testWidgets('logs started once without abandonment on dispose', (
+    tester,
+  ) async {
     final analytics = RecordingAnalytics();
     final originalService = AppAnalytics.service;
     AppAnalytics.service = analytics;
@@ -62,7 +64,7 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
 
-    expect(analytics.eventNames, contains('gcode_import_abandoned'));
+    expect(analytics.eventNames, isNot(contains('gcode_import_abandoned')));
   });
 
   testWidgets('logs picker cancelled when single picker returns null', (
@@ -91,7 +93,7 @@ void main() {
       analytics.events
           .singleWhere((event) => event.name == 'gcode_picker_cancelled')
           .params,
-      {'source': 'calculator'},
+      containsPair('source', 'calculator'),
     );
   });
 
@@ -127,7 +129,7 @@ void main() {
       analytics.events
           .singleWhere((event) => event.name == 'gcode_flow_diverted_to_batch')
           .params,
-      {'source': 'calculator'},
+      contains('attempt_id'),
     );
 
     await tester.pumpWidget(const SizedBox.shrink());

@@ -69,6 +69,12 @@ void main() {
     expect(applyEvent.params, containsPair('slicer', 'prusaSlicer'));
     expect(applyEvent.params, containsPair('parse_status', 'success'));
     expect(applyEvent.params, containsPair('file_size_bucket', '<1MB'));
+    expect(applyEvent.params, contains('attempt_id'));
+
+    final successEvent = analytics.events.firstWhere(
+      (event) => event.name == 'gcode_import_success',
+    );
+    expect(successEvent.params, contains('attempt_id'));
 
     expect(fakeCalculator.calls, hasLength(1));
     expect(
