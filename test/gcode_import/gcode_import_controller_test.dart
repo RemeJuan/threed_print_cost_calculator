@@ -167,7 +167,10 @@ void main() {
       serviceResult: _result,
       onImportAsync: () => bService.future,
     );
-    container.listen(gcodeImportControllerProvider, (_, next) => states.add(next));
+    container.listen(
+      gcodeImportControllerProvider,
+      (_, next) => states.add(next),
+    );
 
     final controller = container.read(gcodeImportControllerProvider.notifier);
     final attemptA = controller.parsePickedFile(
@@ -185,8 +188,14 @@ void main() {
     bService.complete(_result);
     await attemptB;
 
-    expect(container.read(gcodeImportControllerProvider).activeAttemptId, 'attempt-b');
-    expect(container.read(gcodeImportControllerProvider).status, GCodeImportStatus.success);
+    expect(
+      container.read(gcodeImportControllerProvider).activeAttemptId,
+      'attempt-b',
+    );
+    expect(
+      container.read(gcodeImportControllerProvider).status,
+      GCodeImportStatus.success,
+    );
 
     aBytes.complete(_gcodeBytes());
     await attemptA;
@@ -296,7 +305,12 @@ final _emptyResult = GCodeImportResult(
 );
 
 class _FakeService extends GCodeImportService {
-  _FakeService(this.result, {this.onImport, this.onImportAsync, this.shouldThrow = false});
+  _FakeService(
+    this.result, {
+    this.onImport,
+    this.onImportAsync,
+    this.shouldThrow = false,
+  });
 
   final GCodeImportResult result;
   final int Function()? onImport;

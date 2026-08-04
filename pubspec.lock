@@ -1396,34 +1396,38 @@ packages:
   update_available:
     dependency: "direct main"
     description:
-      name: update_available
-      sha256: e7f637e8367f85ff4f66efb67334d1173f081651edfdedbcba6ee429f1e5d285
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.1"
+      path: update_available
+      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      url: "https://github.com/mateusfccp/update_available.git"
+    source: git
+    version: "3.3.0"
   update_available_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: update_available_android
-      sha256: a49c366d48b46e057b67ac51688313fb8c4210c866d437599e8dd5edcdfeaf34
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0+1"
+      path: update_available_android
+      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      url: "https://github.com/mateusfccp/update_available.git"
+    source: git
+    version: "3.3.0"
   update_available_ios:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: update_available_ios
-      sha256: "29c0fa22592b806c4e6fe7580b2b52319f5d0bacf76b98ebdea0d2fc4b130830"
-      url: "https://pub.dev"
-    source: hosted
+      path: update_available_ios
+      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      url: "https://github.com/mateusfccp/update_available.git"
+    source: git
     version: "3.1.1"
   update_available_platform_interface:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
-      name: update_available_platform_interface
-      sha256: "587b049759e3210feaf4401f506d1dd8bcf6d60a3629dca66e6f72f8d6efd485"
-      url: "https://pub.dev"
-    source: hosted
+      path: update_available_platform_interface
+      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
+      url: "https://github.com/mateusfccp/update_available.git"
+    source: git
     version: "4.1.1"
   url_launcher:
     dependency: "direct main"
