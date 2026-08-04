@@ -37,16 +37,11 @@ dependencies:
   riverpod: ^3.4.1
   sembast: ^3.8.9+1
   shared_preferences: 2.5.5
-  share_plus: ^12.0.2
+  share_plus: ^13.3.0
   flutter_email_sender: ^10.0.1
   sentry_flutter: ^9.25.0
   url_launcher: 6.3.2
   shorebird_code_push: ^2.0.7
-  update_available:
-    git:
-      url: https://github.com/mateusfccp/update_available.git
-      ref: 6f8c5180e26e151308ec5c6103fce631dce484b8
-      path: update_available
   hugeicons: 1.1.7
   excel: ^4.0.6
   flutter_secure_storage: 10.3.1
@@ -115,20 +110,3 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   background_color_ios: "#ffffff"
   min_sdk_android: 21
-
-dependency_overrides:
-  update_available_android:
-    git:
-      url: https://github.com/mateusfccp/update_available.git
-      ref: 6f8c5180e26e151308ec5c6103fce631dce484b8
-      path: update_available_android
-  update_available_ios:
-    git:
-      url: https://github.com/mateusfccp/update_available.git
-      ref: 6f8c5180e26e151308ec5c6103fce631dce484b8
-      path: update_available_ios
-  update_available_platform_interface:
-    git:
-      url: https://github.com/mateusfccp/update_available.git
-      ref: 6f8c5180e26e151308ec5c6103fce631dce484b8
-      path: update_available_platform_interface

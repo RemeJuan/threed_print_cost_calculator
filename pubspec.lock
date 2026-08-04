@@ -696,7 +696,7 @@ packages:
     source: hosted
     version: "3.4.1"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "87721a4a50b19c7f1d49001e51409bddc46303966ce89a65af4f4e6004896412"
@@ -1393,42 +1393,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  update_available:
-    dependency: "direct main"
-    description:
-      path: update_available
-      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      url: "https://github.com/mateusfccp/update_available.git"
-    source: git
-    version: "3.3.0"
-  update_available_android:
-    dependency: "direct overridden"
-    description:
-      path: update_available_android
-      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      url: "https://github.com/mateusfccp/update_available.git"
-    source: git
-    version: "3.3.0"
-  update_available_ios:
-    dependency: "direct overridden"
-    description:
-      path: update_available_ios
-      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      url: "https://github.com/mateusfccp/update_available.git"
-    source: git
-    version: "3.1.1"
-  update_available_platform_interface:
-    dependency: "direct overridden"
-    description:
-      path: update_available_platform_interface
-      ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      resolved-ref: "6f8c5180e26e151308ec5c6103fce631dce484b8"
-      url: "https://github.com/mateusfccp/update_available.git"
-    source: git
-    version: "4.1.1"
   url_launcher:
     dependency: "direct main"
     description:
