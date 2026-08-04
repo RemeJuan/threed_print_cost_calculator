@@ -152,6 +152,38 @@ void main() {
     expect((savedResult.single as MaterialModel).id, 'material-1');
   });
 
+  testWidgets('uses Dialog keyboard inset handling without nested padding', (
+    tester,
+  ) async {
+    final db = await tester.pumpApp(
+      _MaterialDialogHost(
+        onResult: (_) {},
+        builder: (_) => const MaterialForm(),
+      ),
+      [
+        materialsRepositoryProvider.overrideWithValue(
+          FakeMaterialsRepository(),
+        ),
+      ],
+    );
+    addTearDown(db.close);
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byType(Dialog),
+        matching: find.byType(AnimatedPadding),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      tester.widget<Dialog>(find.byType(Dialog)).child,
+      isA<SingleChildScrollView>(),
+    );
+  });
+
   testWidgets('cost input shows currency prefix when configured', (
     tester,
   ) async {

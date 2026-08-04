@@ -75,6 +75,7 @@ class MaterialForm extends HookConsumerWidget {
     final isFormValid = notifier.isValidForSubmit;
 
     return Dialog(
+      // Dialog owns viewInsets animation and removes them from this subtree.
       child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         physics: const ClampingScrollPhysics(),

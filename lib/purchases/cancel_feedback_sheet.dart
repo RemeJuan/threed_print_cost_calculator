@@ -60,81 +60,86 @@ class _CancelFeedbackSheetState extends State<CancelFeedbackSheet> {
     final l10n = AppLocalizations.of(context)!;
 
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.cancelFeedbackPromptTitle,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            RadioGroup<CancelFeedbackReason>(
-              groupValue: _selectedReason,
-              onChanged: _isSubmitting
-                  ? (_) {}
-                  : (value) {
-                      setState(() {
-                        _selectedReason = value;
-                      });
-                    },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: CancelFeedbackReason.values
-                    .map(
-                      (reason) => RadioListTile<CancelFeedbackReason>(
-                        value: reason,
-                        selected: _selectedReason == reason,
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(_labelForReason(l10n, reason)),
-                      ),
-                    )
-                    .toList(),
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.viewInsetsOf(context).bottom,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.cancelFeedbackPromptTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: AppSecondaryButton(
-                    onPressed: _isSubmitting
-                        ? null
-                        : () => Navigator.of(context).pop(),
-                    label: l10n.closeButton,
-                  ),
+              const SizedBox(height: 16),
+              RadioGroup<CancelFeedbackReason>(
+                groupValue: _selectedReason,
+                onChanged: _isSubmitting
+                    ? (_) {}
+                    : (value) {
+                        setState(() {
+                          _selectedReason = value;
+                        });
+                      },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: CancelFeedbackReason.values
+                      .map(
+                        (reason) => RadioListTile<CancelFeedbackReason>(
+                          value: reason,
+                          selected: _selectedReason == reason,
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(_labelForReason(l10n, reason)),
+                        ),
+                      )
+                      .toList(),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: AppPrimaryButton(
-                    onPressed: _isSubmitting || _selectedReason == null
-                        ? null
-                        : () async {
-                            setState(() {
-                              _isSubmitting = true;
-                            });
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppSecondaryButton(
+                      onPressed: _isSubmitting
+                          ? null
+                          : () => Navigator.of(context).pop(),
+                      label: l10n.closeButton,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: AppPrimaryButton(
+                      onPressed: _isSubmitting || _selectedReason == null
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isSubmitting = true;
+                              });
 
-                            try {
-                              await widget.onSubmitted(_selectedReason!);
-                              if (!context.mounted) return;
-                              Navigator.of(context).pop();
-                            } finally {
-                              if (mounted) {
-                                setState(() {
-                                  _isSubmitting = false;
-                                });
+                              try {
+                                await widget.onSubmitted(_selectedReason!);
+                                if (!context.mounted) return;
+                                Navigator.of(context).pop();
+                              } finally {
+                                if (mounted) {
+                                  setState(() {
+                                    _isSubmitting = false;
+                                  });
+                                }
                               }
-                            }
-                          },
-                    label: l10n.feedbackSubmitButton,
+                            },
+                      label: l10n.feedbackSubmitButton,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

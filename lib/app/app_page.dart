@@ -93,11 +93,14 @@ class AppPage extends HookConsumerWidget {
           color: SHELL_BACKGROUND,
           border: Border(top: BorderSide(color: SHELL_BORDER)),
         ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: controller.selectedIndex,
-          onTap: controller.onNavigationTap,
-          items: shellTabs.map((tab) => tab.navigationItem).toList(),
+        child: SafeArea(
+          top: false,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: controller.selectedIndex,
+            onTap: controller.onNavigationTap,
+            items: shellTabs.map((tab) => tab.navigationItem).toList(),
+          ),
         ),
       ),
     );

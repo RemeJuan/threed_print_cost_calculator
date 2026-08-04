@@ -38,70 +38,77 @@ class PaywallBottomBar extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: SHELL_BORDER)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 4),
-            child: Text(
-              l10n.paywallTrustLine,
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Text(
+                l10n.paywallTrustLine,
+                textAlign: TextAlign.center,
+                style: mutedStyle,
+              ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: AppPrimaryButton(
+                onPressed: onPurchase,
+                label: ctaLabel(l10n, selectedPackage),
+                loading: purchasing,
+              ),
+            ),
+            const SizedBox(height: 4),
+            AppInlineButton(
+              onPressed: onRestore,
+              label: l10n.paywallRestore,
+              foregroundColor: TEXT_TERTIARY,
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              minHeight: 32,
               textAlign: TextAlign.center,
-              style: mutedStyle,
             ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: AppPrimaryButton(
-              onPressed: onPurchase,
-              label: ctaLabel(l10n, selectedPackage),
-              loading: purchasing,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: AppInlineButton(
+                    onPressed: () =>
+                        openUrl(helpSupportPrivacyUrl, logger: logger),
+                    label: l10n.helpSupportPrivacyPolicyLabel,
+                    foregroundColor: TEXT_TERTIARY,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    minHeight: 32,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 6,
+                  ),
+                  child: Text(l10n.separator, style: mutedStyle),
+                ),
+                Flexible(
+                  child: AppInlineButton(
+                    onPressed: () =>
+                        openUrl(helpSupportTermsUrl, logger: logger),
+                    label: l10n.helpSupportTermsOfUseLabel,
+                    foregroundColor: TEXT_TERTIARY,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    minHeight: 32,
+                    maxLines: 2,
+                    overflow: TextOverflow.visible,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 4),
-          AppInlineButton(
-            onPressed: onRestore,
-            label: l10n.paywallRestore,
-            foregroundColor: TEXT_TERTIARY,
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            minHeight: 32,
-            textAlign: TextAlign.center,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                child: AppInlineButton(
-                  onPressed: () =>
-                      openUrl(helpSupportPrivacyUrl, logger: logger),
-                  label: l10n.helpSupportPrivacyPolicyLabel,
-                  foregroundColor: TEXT_TERTIARY,
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  minHeight: 32,
-                  maxLines: 2,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-                child: Text(l10n.separator, style: mutedStyle),
-              ),
-              Flexible(
-                child: AppInlineButton(
-                  onPressed: () => openUrl(helpSupportTermsUrl, logger: logger),
-                  label: l10n.helpSupportTermsOfUseLabel,
-                  foregroundColor: TEXT_TERTIARY,
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  minHeight: 32,
-                  maxLines: 2,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

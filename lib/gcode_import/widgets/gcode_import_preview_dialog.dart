@@ -19,8 +19,18 @@ class GCodeImportPreviewDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
-    final maxWidth = math.max(0.0, mediaQuery.size.width - (kAppSpace16 * 2));
-    final maxHeight = math.max(0.0, mediaQuery.size.height - (kAppSpace16 * 2));
+    final maxWidth = math.max(
+      0.0,
+      mediaQuery.size.width -
+          mediaQuery.viewPadding.horizontal -
+          (kAppSpace16 * 2),
+    );
+    final maxHeight = math.max(
+      0.0,
+      mediaQuery.size.height -
+          mediaQuery.viewPadding.vertical -
+          (kAppSpace16 * 2),
+    );
 
     return Dialog(
       backgroundColor: PREVIEW_BACKDROP,

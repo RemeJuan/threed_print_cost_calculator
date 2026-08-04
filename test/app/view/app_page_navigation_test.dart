@@ -41,6 +41,13 @@ void main() {
       find.text(lookupAppLocalizations(const Locale('en')).settingsNavLabel),
       findsOneWidget,
     );
+    expect(
+      find.ancestor(
+        of: find.byType(BottomNavigationBar),
+        matching: find.byType(SafeArea),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('does not show whats new when app page route is not current', (
