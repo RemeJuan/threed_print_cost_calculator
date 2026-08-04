@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -156,12 +157,52 @@ void main() {
     expect(state.status, GCodeImportStatus.failure);
     expect(state.error, GCodeImportError.unsupportedFile);
   });
+
+  test('ignores stale overlapping attempt completion', () async {
+    final aBytes = Completer<Uint8List>();
+    final bService = Completer<GCodeImportResult>();
+    final states = <GCodeImportState>[];
+    final container = _container(
+      file: _fileAsync('part-a.gcode', aBytes.future),
+      serviceResult: _result,
+      onImportAsync: () => bService.future,
+    );
+    container.listen(gcodeImportControllerProvider, (_, next) => states.add(next));
+
+    final controller = container.read(gcodeImportControllerProvider.notifier);
+    final attemptA = controller.parsePickedFile(
+      _fileAsync('part-a.gcode', aBytes.future),
+      attemptId: 'attempt-a',
+    );
+
+    await Future<void>.delayed(Duration.zero);
+
+    final attemptB = controller.parsePickedFile(
+      _file('part-b.gcode', _gcodeBytes()),
+      attemptId: 'attempt-b',
+    );
+
+    bService.complete(_result);
+    await attemptB;
+
+    expect(container.read(gcodeImportControllerProvider).activeAttemptId, 'attempt-b');
+    expect(container.read(gcodeImportControllerProvider).status, GCodeImportStatus.success);
+
+    aBytes.complete(_gcodeBytes());
+    await attemptA;
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.status, GCodeImportStatus.success);
+    expect(state.activeAttemptId, 'attempt-b');
+    expect(states.last.activeAttemptId, 'attempt-b');
+  });
 }
 
 ProviderContainer _container({
   required GCodePickedFile file,
   required GCodeImportResult serviceResult,
   int Function()? onImport,
+  Future<GCodeImportResult> Function()? onImportAsync,
   bool shouldThrow = false,
 }) {
   return ProviderContainer(
@@ -171,6 +212,7 @@ ProviderContainer _container({
         _FakeService(
           serviceResult,
           onImport: onImport,
+          onImportAsync: onImportAsync,
           shouldThrow: shouldThrow,
         ),
       ),
@@ -195,6 +237,22 @@ GCodePickedFile _file(
       onRead?.call();
       return bytes;
     },
+  );
+}
+
+GCodePickedFile _fileAsync(
+  String name,
+  Future<Uint8List> bytes, {
+  String? originalName,
+  String? mimeType,
+  int? size,
+}) {
+  return GCodePickedFile(
+    name: name,
+    originalName: originalName,
+    mimeType: mimeType,
+    size: size,
+    readAsBytes: () async => bytes,
   );
 }
 
@@ -238,16 +296,18 @@ final _emptyResult = GCodeImportResult(
 );
 
 class _FakeService extends GCodeImportService {
-  _FakeService(this.result, {this.onImport, this.shouldThrow = false});
+  _FakeService(this.result, {this.onImport, this.onImportAsync, this.shouldThrow = false});
 
   final GCodeImportResult result;
   final int Function()? onImport;
+  final Future<GCodeImportResult> Function()? onImportAsync;
   final bool shouldThrow;
 
   @override
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
     if (shouldThrow) throw Exception('service error');
     onImport?.call();
+    if (onImportAsync != null) return onImportAsync!();
     return result;
   }
 }
