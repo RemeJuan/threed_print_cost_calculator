@@ -1,1 +1,1 @@
-precio impresion 3d,costo impresion,filamento,gcode,presupuesto,precios,maker,bobina
+precio impresion 3d,costo impresion,filamento,gcode,presupuesto,precios,maker,bobina,csv

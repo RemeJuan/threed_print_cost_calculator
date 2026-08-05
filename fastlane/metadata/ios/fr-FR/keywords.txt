@@ -1,1 +1,1 @@
-prix impression 3d,cout impression,filament,gcode,devis,tarification,maker,bobine
+prix impression 3d,cout impression,filament,gcode,devis,tarification,maker,bobine,csv
