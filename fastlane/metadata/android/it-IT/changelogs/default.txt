@@ -1,1 +1,1 @@
-Le nuove impostazioni dell'interfaccia ti permettono di nascondere controlli, schede e dettagli di prezzo non usati per una vista personalizzata più pulita. Il layout scelto è incluso anche nel backup e ripristino.
+Esporta i materiali in CSV, modificali e poi importali con un’anteprima che mostra aggiornamenti, nuovi materiali e righe da correggere.

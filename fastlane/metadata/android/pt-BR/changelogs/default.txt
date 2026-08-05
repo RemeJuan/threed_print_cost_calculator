@@ -1,1 +1,1 @@
-As novas configurações da interface permitem ocultar controles, abas e detalhes de preço que você não usa para uma visualização personalizada mais limpa. O layout escolhido também é incluído em backup e restauração.
+Exporte materiais para CSV, edite-os e importe com uma prévia mostrando atualizações, novos materiais e linhas que precisam de correção.

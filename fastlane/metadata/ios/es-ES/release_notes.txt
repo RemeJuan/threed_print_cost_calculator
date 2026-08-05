@@ -1,1 +1,1 @@
-Los nuevos ajustes de interfaz te permiten ocultar controles, pestañas y detalles de precios que no uses para tener una vista personalizada más limpia. El diseño elegido también se incluye en copia de seguridad y restauración.
+Exporte materiales a CSV, edítelos y luego impórtelos con una vista previa que muestre actualizaciones, materiales nuevos y filas que necesitan corrección.

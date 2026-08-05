@@ -1,1 +1,1 @@
-Les nouveaux réglages d’interface vous permettent de masquer les contrôles, onglets et détails de prix inutilisés pour une vue personnalisée plus épurée. La disposition choisie est aussi incluse dans la sauvegarde et la restauration.
+Exportez les matériaux en CSV, modifiez-les, puis importez-les avec un aperçu montrant les mises à jour, les nouveaux matériaux et les lignes à corriger.

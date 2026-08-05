@@ -1,1 +1,1 @@
-Neue Interface-Einstellungen lassen Sie ungenutzte Bedienelemente, Tabs und Preisdetails für eine übersichtlichere benutzerdefinierte Ansicht ausblenden. Ihr gewähltes Layout wird auch in Sichern und Wiederherstellen übernommen.
+Materialien als CSV exportieren, bearbeiten und dann mit einer Vorschau importieren, die Aktualisierungen, neue Materialien und Zeilen zeigt, die korrigiert werden müssen.
