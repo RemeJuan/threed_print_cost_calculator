@@ -44,7 +44,7 @@ Unlock:
 • Setup fees
 • Rounding rules
 • Detailed cost breakdowns
-• Material import
+• Materials CSV export and reviewed import
 • Filament inventory and remaining spool tracking
 • Advanced configuration
 

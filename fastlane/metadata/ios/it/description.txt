@@ -40,7 +40,7 @@ Premium aggiunge strumenti per più volume, più controllo sui prezzi e flussi d
 • Commissioni di configurazione
 • Regole di arrotondamento
 • Ripartizioni dettagliate dei costi
-• Importazione dei materiali
+• Esportazione dei materiali in CSV e importazione rivista
 • Inventario del filamento e monitoraggio della bobina residua
 • Configurazione avanzata
 

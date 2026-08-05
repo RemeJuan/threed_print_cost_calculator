@@ -44,7 +44,7 @@ Freischalten:
 • Einrichtungsgebühren
 • Rundungsregeln
 • Detaillierte Kostenaufschlüsselungen
-• Materialimport
+• CSV-Export für Materialien und geprüfter Import
 • Filamentinventar und Restspulenverfolgung
 • Erweiterte Konfiguration
 

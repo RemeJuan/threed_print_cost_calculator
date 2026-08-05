@@ -42,7 +42,7 @@ Débloquez :
 • Frais de configuration
 • Règles d'arrondi
 • Répartition détaillée des coûts
-• Import de matériaux
+• Export des matériaux en CSV et import révisé
 • Inventaire du filament et suivi de la bobine restante
 • Configuration avancée
 

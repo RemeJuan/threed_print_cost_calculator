@@ -40,7 +40,7 @@ Premium adds tools for scale, pricing control, and faster workflows:
 • Setup fees
 • Rounding rules
 • Detailed cost breakdowns
-• Material import
+• Materials CSV export and reviewed import
 • Filament inventory and remaining spool tracking
 • Advanced configuration
 
