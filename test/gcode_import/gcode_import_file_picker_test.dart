@@ -1,8 +1,12 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_android_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_file_validator.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   test('iOS picker accepts generic data files', () {
     final groups = gCodeAcceptedTypeGroups(TargetPlatform.iOS);
 
@@ -26,5 +30,25 @@ void main() {
     expect(hasSupportedGCodeExtension('benchy.gco'), isTrue);
     expect(hasSupportedGCodeExtension('benchy.nc'), isTrue);
     expect(hasSupportedGCodeExtension('cache.bin'), isTrue);
+  });
+
+  test('android picker sends max size to native channel', () async {
+    final picker = AndroidGCodeImportFilePicker();
+    final channel = const MethodChannel('com.threed_print_calculator/gcode_import_picker');
+    Object? capturedArgs;
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+      capturedArgs = call.arguments;
+      return null;
+    });
+
+    final picked = await picker.pick();
+
+    expect(picked, isNull);
+    expect(capturedArgs, <String, Object>{'maxBytes': maxGCodeImportBytes});
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, null);
   });
 }

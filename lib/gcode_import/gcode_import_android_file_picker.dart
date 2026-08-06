@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 
+import 'gcode_file_validator.dart';
 import 'model/gcode_import_file.dart';
 
 class AndroidGCodeImportFilePicker {
@@ -12,7 +13,10 @@ class AndroidGCodeImportFilePicker {
   Future<GCodePickedFile?> pick() async {
     Object? payload;
     try {
-      payload = await _channel.invokeMethod<Object?>('pickGCodeFile');
+      payload = await _channel.invokeMethod<Object?>(
+        'pickGCodeFile',
+        <String, Object>{'maxBytes': maxGCodeImportBytes},
+      );
     } on PlatformException {
       return null;
     } catch (e) {
@@ -40,7 +44,10 @@ class AndroidGCodeImportFilePicker {
   Future<List<GCodePickedFile>> pickMany() async {
     Object? payload;
     try {
-      payload = await _channel.invokeMethod<Object?>('pickGCodeFiles');
+      payload = await _channel.invokeMethod<Object?>(
+        'pickGCodeFiles',
+        <String, Object>{'maxBytes': maxGCodeImportBytes},
+      );
     } on PlatformException {
       return const <GCodePickedFile>[];
     } catch (e) {

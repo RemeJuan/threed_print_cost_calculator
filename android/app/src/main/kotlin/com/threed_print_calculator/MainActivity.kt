@@ -14,16 +14,26 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicBoolean
 
 class MainActivity : FlutterFragmentActivity() {
+    private companion object {
+        const val MAX_GCODE_IMPORT_BYTES = 50L * 1024L * 1024L
+    }
+
     private var pendingPickerResult: MethodChannel.Result? = null
+    private var pendingPickerMaxBytes: Long = MAX_GCODE_IMPORT_BYTES
     private val playIntegrityChannelName = "com.threed_print_calculator/play_integrity"
 
     private val gcodePickerLauncher =
             registerForActivityResult(OpenDocument()) { uri ->
                 val result = pendingPickerResult
+                val maxBytes = pendingPickerMaxBytes
                 pendingPickerResult = null
+                pendingPickerMaxBytes = MAX_GCODE_IMPORT_BYTES
 
                 if (result == null) {
                     return@registerForActivityResult
@@ -41,7 +51,7 @@ class MainActivity : FlutterFragmentActivity() {
                     )
                 }
 
-                runCatching { result.success(buildPickerPayload(uri)) }.onFailure { error ->
+                runCatching { result.success(buildPickerPayload(uri, maxBytes)) }.onFailure { error ->
                     result.error("gcode_picker_failed", error.message, null)
                 }
             }
@@ -49,7 +59,9 @@ class MainActivity : FlutterFragmentActivity() {
     private val gcodeMultiPickerLauncher =
             registerForActivityResult(OpenMultipleDocuments()) { uris ->
                 val result = pendingPickerResult
+                val maxBytes = pendingPickerMaxBytes
                 pendingPickerResult = null
+                pendingPickerMaxBytes = MAX_GCODE_IMPORT_BYTES
 
                 if (result == null) return@registerForActivityResult
                 if (uris.isNullOrEmpty()) {
@@ -64,7 +76,7 @@ class MainActivity : FlutterFragmentActivity() {
                                 uri,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION,
                         )
-                        success.add(buildPickerPayload(uri))
+                        success.add(buildPickerPayload(uri, maxBytes))
                     }
                 }
 
@@ -98,6 +110,7 @@ class MainActivity : FlutterFragmentActivity() {
                                 return@setMethodCallHandler
                             }
 
+                            pendingPickerMaxBytes = parseMaxBytes(call.arguments)
                             pendingPickerResult = result
                             gcodePickerLauncher.launch(arrayOf("*/*"))
                         }
@@ -111,6 +124,7 @@ class MainActivity : FlutterFragmentActivity() {
                                 return@setMethodCallHandler
                             }
 
+                            pendingPickerMaxBytes = parseMaxBytes(call.arguments)
                             pendingPickerResult = result
                             gcodeMultiPickerLauncher.launch(arrayOf("*/*"))
                         }
@@ -176,12 +190,12 @@ class MainActivity : FlutterFragmentActivity() {
                 }
     }
 
-    private fun buildPickerPayload(uri: Uri): Map<String, Any?> {
+    private fun buildPickerPayload(uri: Uri, maxBytes: Long): Map<String, Any?> {
         val metadata = queryMetadata(uri)
         val displayName =
                 metadata.displayName?.takeIf { it.isNotBlank() }
                         ?: "gcode-import-${System.currentTimeMillis()}"
-        val cachedFile = copyUriToCache(uri, displayName)
+        val cachedFile = copyUriToCache(uri, displayName, metadata.size, maxBytes)
 
         return mapOf(
                 "displayName" to displayName,
@@ -227,7 +241,13 @@ class MainActivity : FlutterFragmentActivity() {
         )
     }
 
-    private fun copyUriToCache(uri: Uri, displayName: String): File {
+    private fun copyUriToCache(uri: Uri, displayName: String, knownSize: Long?, maxBytes: Long): File {
+        val boundedMaxBytes = clampMaxBytes(maxBytes)
+
+        if (knownSize != null && knownSize > boundedMaxBytes) {
+            error("Selected file is too large.")
+        }
+
         val sanitizedName = displayName.replace(Regex("[^A-Za-z0-9._-]"), "_")
         val prefix =
                 sanitizedName.substringBeforeLast('.', sanitizedName).take(32).let {
@@ -236,14 +256,60 @@ class MainActivity : FlutterFragmentActivity() {
         val suffix = sanitizedName.substringAfterLast('.', "tmp").let { ".${it.take(16)}" }
         val target = File.createTempFile(prefix, suffix, cacheDir)
 
-        contentResolver.openInputStream(uri)?.use { input ->
-            target.outputStream().buffered().use { output -> input.copyTo(output) }
+        try {
+            contentResolver.openInputStream(uri)?.use { input ->
+                target.outputStream().buffered().use { output ->
+                    copyWithLimit(input, output, boundedMaxBytes)
+                }
+            }
+                    ?: error("Unable to open selected file.")
+        } catch (_: OversizedFileException) {
+            target.delete()
+            error("Selected file is too large.")
+        } catch (error: Exception) {
+            target.delete()
+            throw error
         }
-                ?: error("Unable to open selected file.")
+
+        if (target.length() > boundedMaxBytes) {
+            target.delete()
+            error("Selected file is too large.")
+        }
 
         return target
     }
+
+    private fun copyWithLimit(input: InputStream, output: OutputStream, maxBytes: Long) {
+        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+        var total = 0L
+
+        while (true) {
+            val read = input.read(buffer)
+            if (read < 0) return
+            total += read
+            if (total > maxBytes) {
+                throw OversizedFileException()
+            }
+            output.write(buffer, 0, read)
+        }
+    }
+
+    private fun parseMaxBytes(arguments: Any?): Long {
+        val requested =
+                when (arguments) {
+                    is Map<*, *> -> (arguments["maxBytes"] as? Number)?.toLong()
+                    else -> null
+                }
+
+        return clampMaxBytes(requested ?: MAX_GCODE_IMPORT_BYTES)
+    }
+
+    private fun clampMaxBytes(requestedMaxBytes: Long): Long {
+        return requestedMaxBytes.coerceIn(1L, MAX_GCODE_IMPORT_BYTES)
+    }
 }
+
+private class OversizedFileException : IOException()
 
 private data class PickedFileMetadata(
         val displayName: String?,
