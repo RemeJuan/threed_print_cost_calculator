@@ -17,8 +17,9 @@
 
 ## Bootstrap sequence
 
-- `lib/main.dart` initializes app services in a fixed order: Firebase, App Check, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, Sembast DB, then best-effort Sentry init.
+- `lib/main.dart` initializes app services in a fixed order: orientation lock, Firebase, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, Sembast DB, then best-effort Sentry init.
 - `main()` no longer waits on Sentry. It runs `_runApp()` first, then starts `initSentry()` as background work so monitoring never blocks launch.
+- Firebase Analytics collection enablement and Firebase App Check activation now run in a one-shot post-first-frame helper so launch does not wait on either call.
 - Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart` (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), avoiding any `PackageInfo` dependency in the startup path.
 - On iOS debug builds, `configureSentryOptions()` disables native auto-init to avoid early `sentry_flutter` native channel failures during startup.
 - Startup migrations from `lib/startup.dart` are deferred until after the first frame, so they no longer block launch. Each migration step is guarded by a persisted `SharedPreferences` version key and only reruns when its version changes.
@@ -42,6 +43,7 @@
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
 - Startup migrations run in `lib/startup.dart` after first frame; current startup work rebuilds printer/history indexes and migrates legacy history material data.
 - `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
+- Android Auto Backup rules currently include the app-private root for cloud and device transfer. Keep them unchanged until a destructive backup/restore test verifies which persisted data must survive; classify databases, preferences, secure values, and rebuildable files before narrowing scope.
 
 ## Premium gating approach
 

@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/bootstrap.dart';
+import 'package:threed_print_cost_calculator/startup/post_first_frame_startup.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_migration.dart';
 import 'package:threed_print_cost_calculator/startup.dart';
@@ -40,13 +41,6 @@ Future<void> _runApp() async {
   ]);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
-
-  await FirebaseAppCheck.instance.activate(
-    // ignore: deprecated_member_use
-    androidProvider: AndroidProvider.playIntegrity,
-    providerApple: AppleAppAttestProvider(),
-  );
 
   await revenueCat();
   final prefs = await SharedPreferences.getInstance();
@@ -71,6 +65,22 @@ Future<void> _runApp() async {
   );
 
   scheduleDeferredStartupMigration(db: db, prefs: prefs);
+
+  schedulePostFirstFrameStartupTasks(
+    enableAnalyticsCollection: () async {
+      await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(
+        !kDebugMode,
+      );
+    },
+    activateAppCheck: () async {
+      await FirebaseAppCheck.instance.activate(
+        // ignore: deprecated_member_use
+        androidProvider: AndroidProvider.playIntegrity,
+        providerApple: AppleAppAttestProvider(),
+      );
+    },
+    reportError: FlutterError.reportError,
+  );
 
   unawaited(initSentry());
 }
