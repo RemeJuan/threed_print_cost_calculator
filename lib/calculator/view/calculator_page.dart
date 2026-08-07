@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 import 'calculator_results.dart';
+import 'calculator_banner_ad.dart';
 import 'components/history_load_warning_banner.dart';
 import 'components/job_pricing_overrides_section.dart';
 import 'components/materials_selection/materials_section.dart';
@@ -163,6 +164,7 @@ class CalculatorPage extends HookConsumerWidget {
                 showSave: showSave,
               ),
             const SizedBox(height: 32),
+            const CalculatorBannerAd(),
           ],
         ),
       ),
