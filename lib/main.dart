@@ -25,6 +25,7 @@ import 'package:threed_print_cost_calculator/firebase_options.dart';
 import 'package:threed_print_cost_calculator/core/monitoring/sentry_monitoring.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/ads/mobile_ads_initializer.dart';
 
 import 'app/app.dart';
 import 'database/database.dart';
@@ -39,6 +40,12 @@ Future<void> _runApp() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  unawaited(
+    ensureMobileAdsInitialized(
+      reportError: _reportMobileAdsInitializationError,
+    ),
+  );
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -83,6 +90,17 @@ Future<void> _runApp() async {
   );
 
   unawaited(initSentry());
+}
+
+void _reportMobileAdsInitializationError(Object error, StackTrace stackTrace) {
+  FlutterError.reportError(
+    FlutterErrorDetails(
+      exception: error,
+      stack: stackTrace,
+      library: 'google_mobile_ads',
+      context: ErrorDescription('while initializing Google Mobile Ads'),
+    ),
+  );
 }
 
 Future<void> revenueCat() async {

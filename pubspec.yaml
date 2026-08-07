@@ -23,6 +23,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cloud_functions: ^6.3.6
+  google_mobile_ads: ^9.0.0
   flutter_riverpod: ^3.4.1
   flutter_slidable: 4.0.3
   hooks_riverpod: ^3.4.1

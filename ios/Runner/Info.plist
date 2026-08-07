@@ -19,6 +19,10 @@
 		<string>en</string>
 		<string>es</string>
 	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-5128251160825100~7730385740</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleName</key>
 	<string>3D PC Calc</string>
 	<key>CFBundlePackageType</key>
