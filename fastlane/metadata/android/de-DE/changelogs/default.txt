@@ -1,1 +1,1 @@
-Materialien als CSV exportieren, bearbeiten und dann mit einer Vorschau importieren, die Aktualisierungen, neue Materialien und Zeilen zeigt, die korrigiert werden müssen.
+Ein Problem behoben, durch das Abonnements nicht abgeschlossen werden konnten.

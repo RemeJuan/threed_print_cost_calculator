@@ -1,1 +1,1 @@
-Exportez les matériaux en CSV, modifiez-les, puis importez-les avec un aperçu montrant les mises à jour, les nouveaux matériaux et les lignes à corriger.
+Correction d’un problème pouvant empêcher la finalisation des abonnements.

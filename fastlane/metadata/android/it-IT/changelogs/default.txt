@@ -1,1 +1,1 @@
-Esporta i materiali in CSV, modificali e poi importali con un’anteprima che mostra aggiornamenti, nuovi materiali e righe da correggere.
+Corretto un problema che poteva impedire il completamento degli abbonamenti.

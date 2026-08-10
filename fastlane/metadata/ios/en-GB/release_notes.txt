@@ -1,1 +1,1 @@
-Export materials to CSV, edit them, then import with a preview showing updates, new materials, and rows that need fixing.
+Fixed an issue that could prevent subscriptions from completing.

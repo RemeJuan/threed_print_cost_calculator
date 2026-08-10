@@ -1,1 +1,1 @@
-Exporte materiales a CSV, edítelos y luego impórtelos con una vista previa que muestre actualizaciones, materiales nuevos y filas que necesitan corrección.
+Se corrigió un problema que podía impedir completar las suscripciones.

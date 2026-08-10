@@ -1,1 +1,1 @@
-Exporte materiais para CSV, edite-os e importe com uma prévia mostrando atualizações, novos materiais e linhas que precisam de correção.
+Corrigimos um problema que podia impedir a conclusão das assinaturas.
