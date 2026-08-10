@@ -1,3 +1,8 @@
+## [Unreleased]
+
+### Fixed
+- Fixed an issue that could prevent subscriptions from completing.
+
 ## [3.3.0] - 2026-07-27
 
 ### Added
