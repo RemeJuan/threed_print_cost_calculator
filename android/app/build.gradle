@@ -140,6 +140,12 @@ flutter {
 }
 
 dependencies {
+    constraints {
+        implementation("androidx.work:work-runtime:2.11.2") {
+            because "Mitigate AndroidX Startup WorkManager init crash on targetSdk 36"
+        }
+    }
+
     implementation "com.google.android.play:integrity:1.5.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.4.0"
     androidTestUtil "androidx.test:orchestrator:1.5.1"
