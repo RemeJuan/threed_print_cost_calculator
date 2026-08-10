@@ -136,8 +136,6 @@ class PaywallScreenController extends Notifier<PaywallScreenState> {
         defaultEntryPoint: arg.defaultEntryPoint,
       );
       return const PaywallActionSuccess();
-    } on PlayIntegrityActionBlockedException {
-      return const PaywallActionIntegrityBlocked();
     } catch (error, st) {
       logPaywallPurchaseFailure(read: ref.read, error: error, stackTrace: st);
       return const PaywallActionFailure.purchase();
@@ -160,8 +158,6 @@ class PaywallScreenController extends Notifier<PaywallScreenState> {
         defaultEntryPoint: arg.defaultEntryPoint,
       );
       return const PaywallActionSuccess();
-    } on PlayIntegrityActionBlockedException {
-      return const PaywallActionIntegrityBlocked();
     } catch (error, st) {
       logPaywallRestoreFailure(read: ref.read, error: error, stackTrace: st);
       return const PaywallActionFailure.restore();
@@ -205,10 +201,6 @@ sealed class PaywallActionOutcome {
 
 class PaywallActionSuccess extends PaywallActionOutcome {
   const PaywallActionSuccess();
-}
-
-class PaywallActionIntegrityBlocked extends PaywallActionOutcome {
-  const PaywallActionIntegrityBlocked();
 }
 
 class PaywallActionFailure extends PaywallActionOutcome {

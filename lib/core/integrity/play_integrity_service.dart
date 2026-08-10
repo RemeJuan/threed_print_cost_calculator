@@ -19,7 +19,10 @@ abstract class PlayIntegrityService {
 }
 
 class DefaultPlayIntegrityService implements PlayIntegrityService {
-  static const _requestTokenTimeout = Duration(seconds: 5);
+  static const _requestTokenTimeout = Duration(seconds: 17);
+  static const _throttleCooldownInitial = Duration(seconds: 60);
+  static const _throttleCooldownEscalated = Duration(minutes: 5);
+  static const _throttleCooldownSevere = Duration(minutes: 15);
   @visibleForTesting
   static final limitedUseAppCheckOptions = HttpsCallableOptions(
     limitedUseAppCheckToken: true,
@@ -32,6 +35,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
     AppLogger? logger,
     TargetPlatform? targetPlatform,
     Duration requestTokenTimeout = _requestTokenTimeout,
+    DateTime Function()? now,
     Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
     decodeIntegrity,
   }) : _channel =
@@ -49,6 +53,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
            ),
        _targetPlatform = targetPlatform ?? defaultTargetPlatform,
        _requestTokenTimeoutDuration = requestTokenTimeout,
+       _now = now ?? DateTime.now,
        _decodeIntegrity = decodeIntegrity;
 
   final MethodChannel _channel;
@@ -57,8 +62,14 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
   final AppLogger _logger;
   final TargetPlatform _targetPlatform;
   final Duration _requestTokenTimeoutDuration;
+  late final DateTime Function() _now;
   final Future<dynamic> Function(String token, PlayIntegrityFlow flow)?
   _decodeIntegrity;
+
+  Future<PlayIntegritySnapshot>? _inFlight;
+  DateTime? _throttleCooldownUntil;
+  DateTime? _lastThrottleAt;
+  int _throttleCount = 0;
 
   @override
   Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
@@ -66,6 +77,28 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
       return _unevaluatedAllowSnapshot;
     }
 
+    final cooldownUntil = _throttleCooldownUntil;
+    if (cooldownUntil != null && _now().isBefore(cooldownUntil)) {
+      return _unevaluatedAllowSnapshot;
+    }
+
+    final inFlight = _inFlight;
+    if (inFlight != null) return inFlight;
+
+    final evaluation = _evaluateInternal(flow);
+    _inFlight = evaluation;
+    try {
+      return await evaluation;
+    } finally {
+      if (identical(_inFlight, evaluation)) {
+        _inFlight = null;
+      }
+    }
+  }
+
+  Future<PlayIntegritySnapshot> _evaluateInternal(
+    PlayIntegrityFlow flow,
+  ) async {
     try {
       final nonce = _nonce();
       final String? token;
@@ -97,13 +130,42 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
       );
       capturePlayIntegritySnapshot(snapshot);
       return snapshot;
+    } on PlatformException catch (error, stackTrace) {
+      if (_isThrottleError(error)) {
+        _recordThrottle();
+        return _unevaluatedAllowSnapshot;
+      }
+      return _fallback(flow: flow, error: error, stackTrace: stackTrace);
     } catch (error, stackTrace) {
       if (error is FirebaseFunctionsException &&
           error.code == 'unauthenticated') {
-        rethrow;
+        return _unevaluatedAllowSnapshot;
       }
       return _fallback(flow: flow, error: error, stackTrace: stackTrace);
     }
+  }
+
+  bool _isThrottleError(PlatformException error) {
+    final details = error.details;
+    final errorCode = details is Map ? details['errorCode'] : null;
+    return error.code == 'play_integrity_in_flight' || errorCode == -8;
+  }
+
+  void _recordThrottle() {
+    final now = _now();
+    final lastThrottleAt = _lastThrottleAt;
+    if (lastThrottleAt == null ||
+        now.difference(lastThrottleAt) > _throttleCooldownSevere) {
+      _throttleCount = 0;
+    }
+    _throttleCount += 1;
+    final cooldown = switch (_throttleCount) {
+      1 => _throttleCooldownInitial,
+      2 => _throttleCooldownEscalated,
+      _ => _throttleCooldownSevere,
+    };
+    _lastThrottleAt = now;
+    _throttleCooldownUntil = now.add(cooldown);
   }
 
   Future<PlayIntegritySnapshot> _fallback({

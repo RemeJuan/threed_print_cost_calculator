@@ -34,14 +34,16 @@ void main() {
 
   test('android picker sends max size to native channel', () async {
     final picker = AndroidGCodeImportFilePicker();
-    final channel = const MethodChannel('com.threed_print_calculator/gcode_import_picker');
+    final channel = const MethodChannel(
+      'com.threed_print_calculator/gcode_import_picker',
+    );
     Object? capturedArgs;
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {
-      capturedArgs = call.arguments;
-      return null;
-    });
+          capturedArgs = call.arguments;
+          return null;
+        });
 
     final picked = await picker.pick();
 

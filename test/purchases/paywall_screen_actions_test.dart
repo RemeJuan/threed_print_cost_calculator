@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -26,6 +28,16 @@ class _ThrowingIntegrityService implements PlayIntegrityService {
   Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
     throw error;
   }
+}
+
+class _DelayingIntegrityService implements PlayIntegrityService {
+  _DelayingIntegrityService(this.completer);
+
+  final Completer<PlayIntegritySnapshot> completer;
+
+  @override
+  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) =>
+      completer.future;
 }
 
 class _NullOfferingGateway extends FakePremiumPurchaseGateway {
@@ -85,7 +97,7 @@ void main() {
     expect(gateway.purchasePackageCalls, 1);
   });
 
-  test('restore blocked on soft gate', () async {
+  test('restore proceeds on soft gate', () async {
     final gateway = FakePremiumPurchaseGateway();
     final container = _makeContainer(
       gateway: gateway,
@@ -94,41 +106,38 @@ void main() {
 
     addTearDown(container.dispose);
 
-    await expectLater(
-      () => completePaywallRestore(
-        read: <T>(provider) => container.read(provider),
-        source: 'source',
-        defaultEntryPoint: 'entry',
-      ),
-      throwsA(isA<PlayIntegrityActionBlockedException>()),
+    await completePaywallRestore(
+      read: <T>(provider) => container.read(provider),
+      source: 'source',
+      defaultEntryPoint: 'entry',
     );
 
-    expect(gateway.restorePurchasesCalls, 0);
+    expect(gateway.restorePurchasesCalls, 1);
   });
 
-  test('purchase blocked on non-allow integrity decisions', () async {
-    for (final decision in [
-      PlayIntegrityDecisionLabel.softGatePremium,
-      PlayIntegrityDecisionLabel.blockTampered,
-      PlayIntegrityDecisionLabel.blockUnlicensed,
-    ]) {
-      final gateway = FakePremiumPurchaseGateway();
-      final container = _makeContainer(gateway: gateway, decision: decision);
-
-      addTearDown(container.dispose);
-
-      await expectLater(
-        () => completePaywallPurchase(
-          read: <T>(provider) => container.read(provider),
-          package: _makePackage(),
-          purchaseSource: 'source',
-          defaultEntryPoint: 'entry',
+  test('purchase does not wait for integrity evaluation', () async {
+    final completer = Completer<PlayIntegritySnapshot>();
+    final gateway = FakePremiumPurchaseGateway();
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+        playIntegrityServiceProvider.overrideWithValue(
+          _DelayingIntegrityService(completer),
         ),
-        throwsA(isA<PlayIntegrityActionBlockedException>()),
-      );
+      ],
+    );
 
-      expect(gateway.purchasePackageCalls, 0);
-    }
+    addTearDown(container.dispose);
+
+    await completePaywallPurchase(
+      read: <T>(provider) => container.read(provider),
+      package: _makePackage(),
+      purchaseSource: 'source',
+      defaultEntryPoint: 'entry',
+    );
+
+    expect(gateway.purchasePackageCalls, 1);
+    expect(completer.isCompleted, false);
   });
 
   test('restore proceeds on allow', () async {
@@ -149,17 +158,14 @@ void main() {
     expect(gateway.restorePurchasesCalls, 1);
   });
 
-  test('purchase blocked when service unauthenticated', () async {
+  test('purchase proceeds when service throttled', () async {
     final gateway = FakePremiumPurchaseGateway();
     final container = ProviderContainer(
       overrides: [
         premiumPurchaseGatewayProvider.overrideWithValue(gateway),
         playIntegrityServiceProvider.overrideWithValue(
           _ThrowingIntegrityService(
-            FirebaseFunctionsException(
-              code: 'unauthenticated',
-              message: 'app check',
-            ),
+            FirebaseFunctionsException(code: 'throttle', message: 'x'),
           ),
         ),
       ],
@@ -167,20 +173,40 @@ void main() {
 
     addTearDown(container.dispose);
 
-    await expectLater(
-      () => completePaywallPurchase(
-        read: <T>(provider) => container.read(provider),
-        package: _makePackage(),
-        purchaseSource: 'source',
-        defaultEntryPoint: 'entry',
-      ),
-      throwsA(isA<PlayIntegrityActionBlockedException>()),
+    await completePaywallPurchase(
+      read: <T>(provider) => container.read(provider),
+      package: _makePackage(),
+      purchaseSource: 'source',
+      defaultEntryPoint: 'entry',
     );
 
-    expect(gateway.purchasePackageCalls, 0);
+    expect(gateway.purchasePackageCalls, 1);
   });
 
-  test('restore blocked when service unauthenticated', () async {
+  test('purchase proceeds when integrity evaluator throws', () async {
+    final gateway = FakePremiumPurchaseGateway();
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+        playIntegrityServiceProvider.overrideWithValue(
+          _ThrowingIntegrityService(StateError('boom')),
+        ),
+      ],
+    );
+
+    addTearDown(container.dispose);
+
+    await completePaywallPurchase(
+      read: <T>(provider) => container.read(provider),
+      package: _makePackage(),
+      purchaseSource: 'source',
+      defaultEntryPoint: 'entry',
+    );
+
+    expect(gateway.purchasePackageCalls, 1);
+  });
+
+  test('purchase proceeds when service unauthenticated', () async {
     final gateway = FakePremiumPurchaseGateway();
     final container = ProviderContainer(
       overrides: [
@@ -198,16 +224,41 @@ void main() {
 
     addTearDown(container.dispose);
 
-    await expectLater(
-      () => completePaywallRestore(
-        read: <T>(provider) => container.read(provider),
-        source: 'source',
-        defaultEntryPoint: 'entry',
-      ),
-      throwsA(isA<PlayIntegrityActionBlockedException>()),
+    await completePaywallPurchase(
+      read: <T>(provider) => container.read(provider),
+      package: _makePackage(),
+      purchaseSource: 'source',
+      defaultEntryPoint: 'entry',
     );
 
-    expect(gateway.restorePurchasesCalls, 0);
+    expect(gateway.purchasePackageCalls, 1);
+  });
+
+  test('restore proceeds when service unauthenticated', () async {
+    final gateway = FakePremiumPurchaseGateway();
+    final container = ProviderContainer(
+      overrides: [
+        premiumPurchaseGatewayProvider.overrideWithValue(gateway),
+        playIntegrityServiceProvider.overrideWithValue(
+          _ThrowingIntegrityService(
+            FirebaseFunctionsException(
+              code: 'unauthenticated',
+              message: 'app check',
+            ),
+          ),
+        ),
+      ],
+    );
+
+    addTearDown(container.dispose);
+
+    await completePaywallRestore(
+      read: <T>(provider) => container.read(provider),
+      source: 'source',
+      defaultEntryPoint: 'entry',
+    );
+
+    expect(gateway.restorePurchasesCalls, 1);
   });
 
   test('load offerings maps missing offering to typed error', () async {

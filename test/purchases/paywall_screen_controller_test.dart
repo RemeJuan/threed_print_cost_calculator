@@ -88,6 +88,22 @@ class _BlockingGateway extends FakePremiumPurchaseGateway {
   }
 }
 
+class _AllowIntegrityService implements PlayIntegrityService {
+  @override
+  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
+    return const PlayIntegritySnapshot(
+      license: 'LICENSED',
+      appIntegrity: 'PLAY_RECOGNIZED',
+      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
+      virtualIntegrity: 'UNEVALUATED',
+      recentDeviceActivity: 'UNEVALUATED',
+      playProtect: 'NO_ISSUES',
+      appAccessRisk: <String>[],
+      decision: PlayIntegrityDecisionLabel.allow,
+    );
+  }
+}
+
 class _CountingLogger implements AppLogger {
   int purchaseWarnings = 0;
   int restoreWarnings = 0;
@@ -128,40 +144,52 @@ class _CountingLogger implements AppLogger {
   }
 }
 
-class _AllowIntegrityService implements PlayIntegrityService {
-  @override
-  Future<PlayIntegritySnapshot> evaluate(PlayIntegrityFlow flow) async {
-    return const PlayIntegritySnapshot(
-      license: 'LICENSED',
-      appIntegrity: 'PLAY_RECOGNIZED',
-      deviceIntegrity: 'MEETS_DEVICE_INTEGRITY',
-      virtualIntegrity: 'UNEVALUATED',
-      recentDeviceActivity: 'UNEVALUATED',
-      playProtect: 'NO_ISSUES',
-      appAccessRisk: <String>[],
-      decision: PlayIntegrityDecisionLabel.allow,
-    );
-  }
-}
-
 void main() {
   setUp(() async => setupTest());
 
   ProviderContainer makeContainer({
     required PremiumPurchaseGateway gateway,
-    PlayIntegrityService? integrity,
     AppLogger? logger,
   }) {
     return ProviderContainer(
       overrides: [
         premiumPurchaseGatewayProvider.overrideWithValue(gateway),
         playIntegrityServiceProvider.overrideWithValue(
-          integrity ?? _AllowIntegrityService(),
+          _AllowIntegrityService(),
         ),
         if (logger != null) appLoggerProvider.overrideWithValue(logger),
       ],
     );
   }
+
+  test('purchase and restore do not wait on integrity evaluation', () async {
+    final purchaseCompleter = Completer<void>();
+    final restoreCompleter = Completer<void>();
+    final gateway = _BlockingGateway(
+      currentOffering: Offering('pro', 'Pro', {}, [_pkg()]),
+      purchaseCompleter: purchaseCompleter,
+      restoreCompleter: restoreCompleter,
+    );
+    final container = makeContainer(gateway: gateway);
+    addTearDown(container.dispose);
+    final args = _controllerArgs;
+    container.listen(paywallScreenControllerProvider(args), (_, _) {});
+    final controller = container.read(
+      paywallScreenControllerProvider(args).notifier,
+    );
+    controller.selectPackage(_pkg());
+
+    final purchaseFuture = controller.purchase();
+    expect(gateway.purchasePackageCalls, 1);
+    expect(await controller.purchase(), isA<PaywallActionIgnored>());
+    purchaseCompleter.complete();
+    await purchaseFuture;
+
+    final restoreFuture = controller.restore();
+    expect(gateway.restorePurchasesCalls, 1);
+    restoreCompleter.complete();
+    await restoreFuture;
+  });
 
   test('delayed load ignores stale retry result', () async {
     final first = Completer<Offering?>();

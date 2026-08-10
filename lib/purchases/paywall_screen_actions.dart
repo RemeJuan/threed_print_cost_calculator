@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod/misc.dart' show ProviderListenable;
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
-import 'package:threed_print_cost_calculator/core/integrity/play_integrity_decision.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provider.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
@@ -12,10 +13,6 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
 
 typedef ProviderReader = T Function<T>(ProviderListenable<T> provider);
-
-class PlayIntegrityActionBlockedException implements Exception {
-  const PlayIntegrityActionBlockedException();
-}
 
 class PaywallOfferingsLoadResult {
   const PaywallOfferingsLoadResult({
@@ -71,7 +68,7 @@ Future<void> completePaywallPurchase({
   required String purchaseSource,
   required String defaultEntryPoint,
 }) async {
-  await _ensurePlayIntegrityAllowed(
+  _startPlayIntegrityShadowEvaluation(
     read: read,
     flow: PlayIntegrityFlow.purchase,
   );
@@ -90,7 +87,7 @@ Future<void> completePaywallRestore({
   required String source,
   required String defaultEntryPoint,
 }) async {
-  await _ensurePlayIntegrityAllowed(
+  _startPlayIntegrityShadowEvaluation(
     read: read,
     flow: PlayIntegrityFlow.restore,
   );
@@ -142,17 +139,6 @@ void showPaywallRestoreError(BuildContext context) {
   );
 }
 
-Future<void> _ensurePlayIntegrityAllowed({
-  required ProviderReader read,
-  required PlayIntegrityFlow flow,
-}) async {
-  final integrity = await _evaluatePlayIntegrity(read: read, flow: flow);
-  if (isPlayIntegrityHardBlocked(integrity) ||
-      isPlayIntegritySoftGated(integrity)) {
-    throw const PlayIntegrityActionBlockedException();
-  }
-}
-
 Future<PlayIntegritySnapshot> _evaluatePlayIntegrity({
   required ProviderReader read,
   required PlayIntegrityFlow flow,
@@ -160,17 +146,29 @@ Future<PlayIntegritySnapshot> _evaluatePlayIntegrity({
   try {
     return await read(playIntegrityServiceProvider).evaluate(flow);
   } on FirebaseFunctionsException catch (error) {
-    if (error.code == 'unauthenticated') {
-      throw const PlayIntegrityActionBlockedException();
-    }
-    rethrow;
+    if (error.code == 'unauthenticated') return _unevaluatedAllowSnapshot;
+    return _unevaluatedAllowSnapshot;
   }
 }
 
-void showPlayIntegrityActionBlocked(BuildContext context) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(AppLocalizations.of(context)!.playIntegrityActionBlocked),
-    ),
-  );
+const _unevaluatedAllowSnapshot = PlayIntegritySnapshot(
+  license: 'UNEVALUATED',
+  appIntegrity: 'UNEVALUATED',
+  deviceIntegrity: 'UNEVALUATED',
+  virtualIntegrity: 'UNEVALUATED',
+  recentDeviceActivity: 'UNEVALUATED',
+  playProtect: 'UNEVALUATED',
+  appAccessRisk: <String>[],
+  decision: PlayIntegrityDecisionLabel.allow,
+);
+
+void _startPlayIntegrityShadowEvaluation({
+  required ProviderReader read,
+  required PlayIntegrityFlow flow,
+}) {
+  unawaited(() async {
+    try {
+      await _evaluatePlayIntegrity(read: read, flow: flow);
+    } catch (_) {}
+  }());
 }

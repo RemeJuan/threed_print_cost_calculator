@@ -62,8 +62,6 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
     if (!mounted) return;
     if (outcome is PaywallActionSuccess) {
       Navigator.of(context).pop();
-    } else if (outcome is PaywallActionIntegrityBlocked) {
-      showPlayIntegrityActionBlocked(context);
     } else if (outcome is PaywallActionFailure) {
       if (outcome.isRestore) {
         showPaywallRestoreError(context);

@@ -8,7 +8,9 @@ import android.os.Looper
 import android.provider.OpenableColumns
 import androidx.activity.result.contract.ActivityResultContracts.OpenDocument
 import androidx.activity.result.contract.ActivityResultContracts.OpenMultipleDocuments
+import com.google.android.play.core.integrity.IntegrityManager
 import com.google.android.play.core.integrity.IntegrityManagerFactory
+import com.google.android.play.core.integrity.IntegrityServiceException
 import com.google.android.play.core.integrity.IntegrityTokenRequest
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -27,6 +29,8 @@ class MainActivity : FlutterFragmentActivity() {
     private var pendingPickerResult: MethodChannel.Result? = null
     private var pendingPickerMaxBytes: Long = MAX_GCODE_IMPORT_BYTES
     private val playIntegrityChannelName = "com.threed_print_calculator/play_integrity"
+    private val integrityManager by lazy { IntegrityManagerFactory.create(applicationContext) }
+    @Volatile private var playIntegrityRequestInFlight = AtomicBoolean(false)
 
     private val gcodePickerLauncher =
             registerForActivityResult(OpenDocument()) { uri ->
@@ -154,7 +158,11 @@ class MainActivity : FlutterFragmentActivity() {
     }
 
     private fun requestPlayIntegrityToken(nonce: String, cloudProjectNumber: Long, result: MethodChannel.Result) {
-        val integrityManager = IntegrityManagerFactory.create(applicationContext)
+        if (!playIntegrityRequestInFlight.compareAndSet(false, true)) {
+            result.error("play_integrity_in_flight", "Play Integrity request already active.", mapOf("errorCode" to -8))
+            return
+        }
+
         val tokenRequest =
                 IntegrityTokenRequest.builder()
                         .setNonce(nonce)
@@ -177,17 +185,32 @@ class MainActivity : FlutterFragmentActivity() {
 
         integrityManager.requestIntegrityToken(tokenRequest)
                 .addOnSuccessListener { response ->
+                    timeoutHandler.removeCallbacks(timeoutRunnable)
+                    playIntegrityRequestInFlight.set(false)
                     if (isResolved.compareAndSet(false, true)) {
-                        timeoutHandler.removeCallbacks(timeoutRunnable)
                         result.success(response.token())
                     }
                 }
                 .addOnFailureListener { error ->
+                    timeoutHandler.removeCallbacks(timeoutRunnable)
+                    playIntegrityRequestInFlight.set(false)
                     if (isResolved.compareAndSet(false, true)) {
-                        timeoutHandler.removeCallbacks(timeoutRunnable)
-                        result.error("play_integrity_failed", error.message, null)
+                        result.error(
+                                "play_integrity_failed",
+                                error.message,
+                                playIntegrityErrorDetails(error),
+                        )
                     }
                 }
+    }
+
+
+    private fun playIntegrityErrorDetails(error: Exception): Map<String, Any?>? {
+        return if (error is IntegrityServiceException) {
+            mapOf("errorCode" to error.errorCode)
+        } else {
+            null
+        }
     }
 
     private fun buildPickerPayload(uri: Uri, maxBytes: Long): Map<String, Any?> {
