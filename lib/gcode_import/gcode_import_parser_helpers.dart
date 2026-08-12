@@ -11,6 +11,9 @@ GCodeSlicer _detectSlicerFromLine(String line) {
   if (lower.contains('bambustudio') || lower.contains('bambu studio')) {
     return GCodeSlicer.bambuStudio;
   }
+  if (lower.contains('creality print') || lower.contains('cxengine')) {
+    return GCodeSlicer.crealityPrint;
+  }
   if (lower.contains('cura_steamengine') ||
       lower.contains('generated with cura')) {
     return GCodeSlicer.cura;
@@ -128,12 +131,21 @@ List<double> _parseUnitList(
 }) {
   final text = raw.toLowerCase();
   final matches = RegExp(
-    r'(-?\d+(?:[\.,]\d+)?)\s*(mm|cm|m|g|kg)?',
+    r'(?<![a-z])(-?\d+(?:[\.,]\d+)?)\s*(mm|cm|m|g|kg)?',
   ).allMatches(text);
   final out = <double>[];
   for (final match in matches) {
+    final start = match.start;
+    if (start > 0) {
+      final previous = text.codeUnitAt(start - 1);
+      if ((previous >= 97 && previous <= 122) ||
+          previous == '-'.codeUnitAt(0)) {
+        continue;
+      }
+    }
     final value = _parseNumber(match.group(1));
     if (value == null) continue;
+    if (value < 0) continue;
     final foundUnit = match.group(2) ?? sourceUnit;
     out.add(_normalizeValue(value, foundUnit, targetUnit));
   }

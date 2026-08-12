@@ -1,12 +1,20 @@
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 
-enum GCodeSlicer { prusaSlicer, orcaSlicer, bambuStudio, cura, unknown }
+enum GCodeSlicer {
+  prusaSlicer,
+  orcaSlicer,
+  bambuStudio,
+  crealityPrint,
+  cura,
+  unknown,
+}
 
 extension GCodeSlicerX on GCodeSlicer {
   String label(AppLocalizations l10n) => switch (this) {
     GCodeSlicer.prusaSlicer => l10n.slicerPrusaSlicer,
     GCodeSlicer.orcaSlicer => l10n.slicerOrcaSlicer,
     GCodeSlicer.bambuStudio => l10n.slicerBambuStudio,
+    GCodeSlicer.crealityPrint => l10n.slicerCrealityPrint,
     GCodeSlicer.cura => l10n.slicerCura,
     GCodeSlicer.unknown => l10n.slicerUnknown,
   };

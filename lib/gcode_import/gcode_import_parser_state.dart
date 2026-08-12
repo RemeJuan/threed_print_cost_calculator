@@ -17,6 +17,8 @@ class _StreamingParseState {
   bool _hasFilamentLengthCm = false;
   double _filamentLengthMTotal = 0;
   bool _hasFilamentLengthM = false;
+  double _crealityFilamentLengthMTotal = 0;
+  bool _hasCrealityFilamentLengthM = false;
   double _filamentWeightGTotal = 0;
   bool _hasFilamentWeightG = false;
 
@@ -87,6 +89,15 @@ class _StreamingParseState {
     );
     _addSummedValue(
       line,
+      _crealityFilamentLengthMPatterns,
+      unit: 'm',
+      apply: (value) {
+        _crealityFilamentLengthMTotal += value;
+        _hasCrealityFilamentLengthM = true;
+      },
+    );
+    _addSummedValue(
+      line,
       _filamentWeightPatterns,
       unit: 'g',
       apply: (value) {
@@ -112,6 +123,8 @@ class _StreamingParseState {
         ? _filamentLengthCmTotal
         : _hasFilamentLengthM
         ? _filamentLengthMTotal
+        : _hasCrealityFilamentLengthM
+        ? _crealityFilamentLengthMTotal
         : null;
     final filamentWeightG = _hasFilamentWeightG ? _filamentWeightGTotal : null;
 

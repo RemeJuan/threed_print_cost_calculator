@@ -8,6 +8,7 @@ final List<RegExp> _layerHeightPatterns = [
 
 final List<RegExp> _durationPatterns = [
   RegExp(r'^;\s*total estimated time\s*=\s*(.+?)\s*$', caseSensitive: false),
+  RegExp(r'^;\s*print time\s*[:=]\s*(.+?)\s*$', caseSensitive: false),
   RegExp(
     r'^;\s*estimated printing time \(normal mode\)\s*=\s*(.+?)\s*$',
     caseSensitive: false,
@@ -40,11 +41,16 @@ final List<RegExp> _filamentLengthMPatterns = [
   ),
 ];
 
+final List<RegExp> _crealityFilamentLengthMPatterns = [
+  RegExp(r'^;\s*Filament Length\s*:\s*(.+?)\s*$', caseSensitive: false),
+];
+
 final List<RegExp> _filamentWeightPatterns = [
   RegExp(
     r'^;\s*total filament weight \[g\]\s*=\s*(.+?)\s*$',
     caseSensitive: false,
   ),
+  RegExp(r'^;\s*Filament Weight\s*:\s*(.+?)\s*$', caseSensitive: false),
   RegExp(r'^;\s*filament used \[g\]\s*=\s*(.+?)\s*$', caseSensitive: false),
 ];
 
