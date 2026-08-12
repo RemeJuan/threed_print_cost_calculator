@@ -385,7 +385,6 @@
 - flow completed: yes — `gcode_flow_completed`
 - upgrade entry: partial — G-code open/start attribution exists, but the current UI does not route free users into G-code import; header access is premium-only
 - preview viewed: yes — `gcode_preview_viewed`
-- abandon: yes — `gcode_import_abandoned`
 
 Notes:
 
@@ -393,7 +392,6 @@ Notes:
 - `gcode_import_success` logs after calculator state mutation succeeds and only carries apply result flags.
 - `gcode_flow_completed` logs after success, from the same handler, and carries full funnel context.
 - `gcode_preview_available` logs when safe preview content can render; low-resolution previews render inline and high-resolution previews expose the View action. `gcode_preview_viewed` logs dialog intent.
-- `gcode_import_abandoned` is dispose-driven and only fires if the flow timer is still open; it should not follow a completed apply path.
 - `gcode_picker_cancelled` logs once per picker invocation returning null or empty, for both single and batch flows.
 - `gcode_flow_diverted_to_batch` marks the intentional single-to-batch switch, atomically terminates single-flow timing, and suppresses a later single-flow abandonment event. `batch_started` remains separate.
 - Android and iOS share the same analytics sequence after file selection; only the picker metadata source differs.

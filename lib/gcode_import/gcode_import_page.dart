@@ -158,7 +158,7 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: 0,
-          failureReason: GCodeFailureReason.readFailed,
+          failureReason: GCodeFailureReason.pickerException,
         ),
       );
       _activeAttemptId = null;

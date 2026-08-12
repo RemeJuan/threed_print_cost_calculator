@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod/riverpod.dart';
 
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+
 import 'gcode_import_diagnostics.dart';
 import 'model/gcode_import_file.dart';
 import 'gcode_import_file_reader.dart';
@@ -26,16 +28,11 @@ class GCodeImportService {
         final wire = await compute(_parsePathInBackground, file.path!);
         return GCodeImportResult.fromWireMap(wire);
       } catch (error, stackTrace) {
-        unawaited(
-          captureGCodeImportFailure(
-            stage: 'metadata_parse',
-            error: error,
-            stackTrace: stackTrace,
-            file: file,
-            category: 'path_parse_exception',
-          ),
-        );
-        rethrow;
+        final failure = error is FormatException
+            ? GCodeImportFailure.parse(error, stackTrace, file: file)
+            : GCodeImportFailure.read(error, stackTrace, file: file);
+        unawaited(_captureFailure(failure));
+        throw failure;
       }
     }
 
@@ -43,16 +40,10 @@ class GCodeImportService {
       final bytes = await file.readAsBytesOrThrow();
       return importPickedBytes(bytes);
     } catch (error, stackTrace) {
-      unawaited(
-        captureGCodeImportFailure(
-          stage: 'file_read',
-          error: error,
-          stackTrace: stackTrace,
-          file: file,
-          category: 'byte_read_exception',
-        ),
-      );
-      rethrow;
+      if (error is GCodeImportFailure) rethrow;
+      final failure = GCodeImportFailure.read(error, stackTrace, file: file);
+      unawaited(_captureFailure(failure));
+      throw failure;
     }
   }
 
@@ -63,18 +54,79 @@ class GCodeImportService {
       final wire = await compute(_parseInBackground, text);
       return GCodeImportResult.fromWireMap(wire);
     } catch (error, stackTrace) {
-      unawaited(
-        captureGCodeImportFailure(
-          stage: 'decode',
-          error: error,
-          stackTrace: stackTrace,
-          category: 'decode_or_parse_exception',
-          lineCount: text == null ? null : _estimateLineCount(text),
-        ),
-      );
-      rethrow;
+      final failure = error is FormatException
+          ? GCodeImportFailure.parse(
+              error,
+              stackTrace,
+              lineCount: text == null ? null : _estimateLineCount(text),
+            )
+          : GCodeImportFailure.read(
+              error,
+              stackTrace,
+              lineCount: text == null ? null : _estimateLineCount(text),
+            );
+      unawaited(_captureFailure(failure));
+      throw failure;
     }
   }
+}
+
+class GCodeImportFailure implements Exception {
+  const GCodeImportFailure._(
+    this.stage,
+    this.error,
+    this.stackTrace, {
+    this.file,
+    this.lineCount,
+  });
+
+  factory GCodeImportFailure.read(
+    Object error,
+    StackTrace stackTrace, {
+    GCodePickedFile? file,
+    int? lineCount,
+  }) => GCodeImportFailure._(
+    GCodeImportFailureStage.read,
+    error,
+    stackTrace,
+    file: file,
+    lineCount: lineCount,
+  );
+
+  factory GCodeImportFailure.parse(
+    Object error,
+    StackTrace stackTrace, {
+    GCodePickedFile? file,
+    int? lineCount,
+  }) => GCodeImportFailure._(
+    GCodeImportFailureStage.parse,
+    error,
+    stackTrace,
+    file: file,
+    lineCount: lineCount,
+  );
+
+  final GCodeImportFailureStage stage;
+  final Object error;
+  final StackTrace stackTrace;
+  final GCodePickedFile? file;
+  final int? lineCount;
+}
+
+enum GCodeImportFailureStage { read, parse }
+
+Future<void> _captureFailure(GCodeImportFailure failure) {
+  final failureReason = failure.stage == GCodeImportFailureStage.parse
+      ? GCodeFailureReason.parseException
+      : GCodeFailureReason.readFailed;
+  return captureGCodeImportFailure(
+    stage: failure.stage.name,
+    error: failure.error,
+    stackTrace: failure.stackTrace,
+    file: failure.file,
+    category: failureReason,
+    lineCount: failure.lineCount,
+  );
 }
 
 int _estimateLineCount(String text) => '\n'.allMatches(text).length + 1;

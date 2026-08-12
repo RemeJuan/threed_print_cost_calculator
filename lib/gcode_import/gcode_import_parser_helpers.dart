@@ -131,7 +131,7 @@ List<double> _parseUnitList(
 }) {
   final text = raw.toLowerCase();
   final matches = RegExp(
-    r'(?<![a-z])(-?\d+(?:[\.,]\d+)?)\s*(mm|cm|m|g|kg)?',
+    r'(?<![a-z])(-?\d+(?:[\.,]\d+)?)\s*(mm|cm|m|g|kg)?(?![a-z-])',
   ).allMatches(text);
   final out = <double>[];
   for (final match in matches) {

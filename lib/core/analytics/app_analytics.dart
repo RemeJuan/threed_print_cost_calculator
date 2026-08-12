@@ -818,9 +818,6 @@ class AppAnalytics {
     return log('gcode_flow_completed', params: params);
   }
 
-  static Future<void> gcodeImportAbandoned({String? failureReason}) =>
-      Future.value();
-
   static Future<void> gcodeImportSuccess({
     required String attemptId,
     required bool hasPrintTime,
