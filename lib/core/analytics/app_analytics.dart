@@ -10,9 +10,13 @@ import 'firebase_analytics_service.dart';
 
 class GCodeFailureReason {
   GCodeFailureReason._();
+  static const String pickerException = 'picker_exception';
+  static const String metadataResolutionFailed = 'metadata_resolution_failed';
   static const String fileTooLarge = 'file_too_large';
   static const String invalidExtension = 'invalid_extension';
   static const String unsupportedContent = 'unsupported_content';
+  static const String noMetadata = 'no_metadata';
+  static const String parseException = 'parse_exception';
   static const String readFailed = 'read_failed';
   static const String parseError = 'parse_error';
   static const String cancelled = 'cancelled';

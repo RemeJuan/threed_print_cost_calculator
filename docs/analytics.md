@@ -52,12 +52,6 @@
   - feature: G-code import
   - notes: entry attribution for calculator/header; emitted on import flow open
 
-- `gcode_import_abandoned`
-  - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`?]
-  - triggered_from: [`lib/gcode_import/gcode_import_page.dart`]
-  - feature: G-code import
-  - notes: fired on page dispose if import flow opened and not completed; `failure_reason` is `cancelled` when user abandons the flow; only present when a meaningful reason exists
-
 - `gcode_file_selected`
   - params: [`file_type`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
@@ -80,7 +74,7 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: `parse_status=failed`; `failure_reason` is a `GCodeFailureReason` constant (`file_too_large`, `unsupported_content`, `parse_error`, `read_failed`, or `unknown`); no filenames, raw errors, or stack traces
+  - notes: `parse_status=failed`; `failure_reason` is a low-cardinality `GCodeFailureReason` constant (`picker_exception`, `metadata_resolution_failed`, `file_too_large`, `invalid_extension`, `unsupported_content`, `no_metadata`, `parse_exception`, `read_failed`, or `unknown`); no filenames, paths, raw line content, raw errors, or stack traces
 
 - `gcode_import_breadcrumb`
   - params: [`stage`, `file_name`?, `original_file_name`?, `mime_type`?, `file_size_bytes`?, `reason`?]

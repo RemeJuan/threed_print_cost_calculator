@@ -30,9 +30,7 @@ void main() {
     expect(analytics.eventNames, contains('gcode_import_opened'));
   });
 
-  testWidgets('logs started once without abandonment on dispose', (
-    tester,
-  ) async {
+  testWidgets('logs started once on first picker intent', (tester) async {
     final analytics = RecordingAnalytics();
     final originalService = AppAnalytics.service;
     AppAnalytics.service = analytics;
@@ -60,9 +58,6 @@ void main() {
           .params!['source'],
       'calculator',
     );
-
-    await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pumpAndSettle();
 
     expect(analytics.eventNames, isNot(contains('gcode_import_abandoned')));
   });
@@ -134,23 +129,6 @@ void main() {
 
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
-    expect(analytics.eventNames, isNot(contains('gcode_import_abandoned')));
-  });
-
-  testWidgets('diverted flow clears abandon tracking in analytics facade', (
-    tester,
-  ) async {
-    final analytics = RecordingAnalytics();
-    final originalService = AppAnalytics.service;
-    AppAnalytics.service = analytics;
-    addTearDown(() => AppAnalytics.service = originalService);
-
-    AppAnalytics.resetGcodeImportTrackingForTests();
-    await AppAnalytics.gcodeImportOpened();
-    await AppAnalytics.gcodeFlowDivertedToBatch(source: 'calculator');
-    await AppAnalytics.gcodeImportAbandoned();
-
-    expect(analytics.eventNames, contains('gcode_flow_diverted_to_batch'));
     expect(analytics.eventNames, isNot(contains('gcode_import_abandoned')));
   });
 

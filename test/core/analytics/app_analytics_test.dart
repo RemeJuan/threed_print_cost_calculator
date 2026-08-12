@@ -278,6 +278,7 @@ void main() {
             as Map<String, Object?>;
     expect(failedParams['attempt_id'], isA<String>());
     expect(failedParams['failure_reason'], 'file_too_large');
+    expect(failedParams['parse_status'], 'failed');
 
     await AppAnalytics.gcodeParseFailed(
       attemptId: 'attempt-2',
@@ -296,6 +297,23 @@ void main() {
             as Map<String, Object?>;
     expect(unsupportedParams['attempt_id'], isA<String>());
     expect(unsupportedParams['failure_reason'], 'unsupported_content');
+
+    await AppAnalytics.gcodeParseFailed(
+      attemptId: 'attempt-3',
+      slicer: 'unknown',
+      hasPreview: false,
+      fileSizeBytes: 0,
+      failureReason: GCodeFailureReason.noMetadata,
+    );
+    final noMetadataParams =
+        verify(
+              () => mock.logEvent(
+                'gcode_parse_failed',
+                params: captureAny(named: 'params'),
+              ),
+            ).captured.last
+            as Map<String, Object?>;
+    expect(noMetadataParams['failure_reason'], 'no_metadata');
 
     await AppAnalytics.gcodeParsePartial(
       attemptId: 'attempt-3',
@@ -426,16 +444,6 @@ void main() {
             ).captured.single
             as Map<String, Object?>;
     expect(captured3['entry_point'], 'gcode_import');
-
-    AppAnalytics.resetGcodeImportTrackingForTests();
-    await AppAnalytics.gcodeImportOpened();
-    await AppAnalytics.gcodeImportAbandoned(
-      failureReason: GCodeFailureReason.cancelled,
-    );
-    verifyNever(
-      () =>
-          mock.logEvent('gcode_import_abandoned', params: any(named: 'params')),
-    );
   });
 
   test('gcode attempt ids increase deterministically', () {
@@ -460,10 +468,6 @@ void main() {
       fileSizeBytes: 2 * 1024 * 1024,
       parseStatus: 'success',
     );
-    await AppAnalytics.gcodeImportAbandoned(
-      failureReason: GCodeFailureReason.cancelled,
-    );
-
     final flowCompletedParams =
         verify(
               () => mock.logEvent(
@@ -477,10 +481,6 @@ void main() {
     expect(flowCompletedParams['parse_status'], 'success');
     expect(flowCompletedParams['file_size_bucket'], '1-5MB');
     expect(flowCompletedParams['gcode_time_to_value_ms'], isA<num>());
-    verifyNever(
-      () =>
-          mock.logEvent('gcode_import_abandoned', params: any(named: 'params')),
-    );
   });
 
   group('batch costing analytics', () {

@@ -150,7 +150,7 @@ class _GCodeImportPageState extends ConsumerState<GCodeImportPage> {
         stage: 'picker',
         error: error,
         stackTrace: stackTrace,
-        category: 'picker_exception',
+        category: GCodeFailureReason.pickerException,
       );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(

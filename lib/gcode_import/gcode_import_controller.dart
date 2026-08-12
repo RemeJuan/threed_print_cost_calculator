@@ -72,7 +72,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         error: error,
         stackTrace: stackTrace,
         file: pickedFile,
-        category: 'metadata_exception',
+        category: GCodeFailureReason.metadataResolutionFailed,
       );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
@@ -80,7 +80,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: 0,
-          failureReason: GCodeFailureReason.readFailed,
+          failureReason: GCodeFailureReason.metadataResolutionFailed,
         ),
       );
       return;
@@ -175,7 +175,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
             slicer: result.slicer.name,
             hasPreview: result.hasPreviewMetadata,
             fileSizeBytes: fileSizeBytes,
-            failureReason: GCodeFailureReason.parseError,
+            failureReason: GCodeFailureReason.noMetadata,
           ),
         );
         state = GCodeImportState.failure(
@@ -241,7 +241,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: fileSizeBytes,
-          failureReason: GCodeFailureReason.readFailed,
+          failureReason: GCodeFailureReason.parseException,
         ),
       );
       state = GCodeImportState.failure(
