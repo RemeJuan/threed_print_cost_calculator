@@ -193,7 +193,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
             slicer: result.slicer.name,
             hasPreview: result.hasPreviewMetadata,
             fileSizeBytes: fileSizeBytes,
-            failureReason: GCodeFailureReason.parseException,
+            failureReason: GCodeFailureReason.noMetadata,
           ),
         );
         state = GCodeImportState.failure(
@@ -261,15 +261,17 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           failureReason: analyticsReason,
         ),
       );
-      await captureGCodeImportFailure(
-        stage: failure.stage == GCodeImportFailureStage.parse
-            ? 'command_parse'
-            : 'metadata_parse',
-        error: failure.error,
-        stackTrace: failure.stackTrace,
-        file: pickedFile,
-        category: analyticsReason,
-      );
+      if (error is! GCodeImportFailure) {
+        await captureGCodeImportFailure(
+          stage: failure.stage == GCodeImportFailureStage.parse
+              ? 'command_parse'
+              : 'metadata_parse',
+          error: failure.error,
+          stackTrace: failure.stackTrace,
+          file: pickedFile,
+          category: analyticsReason,
+        );
+      }
       state = GCodeImportState.failure(
         attemptId: attemptId,
         selectedFileName: pickedFile.name,

@@ -221,6 +221,41 @@ void main() {
     expect(events.single['failure_reason'], GCodeFailureReason.parseException);
   });
 
+  test('metadata-empty result emits noMetadata analytics', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _emptyResult,
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.single['failure_reason'], GCodeFailureReason.noMetadata);
+  });
+
+  test('typed service failure does not duplicate capture', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _result,
+      failure: GCodeImportFailure.read(
+        Exception('read error'),
+        StackTrace.current,
+      ),
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.length, 1);
+    expect(events.single['failure_reason'], GCodeFailureReason.readFailed);
+  });
+
   test('handles metadata-empty result as unsupportedFile', () async {
     final container = _container(
       file: _file('part.gcode', _gcodeBytes()),
