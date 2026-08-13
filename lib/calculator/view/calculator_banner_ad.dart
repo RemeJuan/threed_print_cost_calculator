@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/shared/ads/mobile_ads_initializer.dart';
 import 'package:threed_print_cost_calculator/shared/ads/revenuecat_ad_revenue_tracker.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
@@ -49,12 +48,6 @@ class _CalculatorBannerAdState extends ConsumerState<CalculatorBannerAd> {
 
   @override
   Widget build(BuildContext context) {
-    final premiumState = ref.watch(premiumStateProvider);
-    if (premiumState.isLoading || premiumState.isPremium) {
-      _disposeAd(resetRequest: true);
-      return const SizedBox.shrink();
-    }
-
     final orientation = MediaQuery.orientationOf(context);
     return LayoutBuilder(
       builder: (context, constraints) {
