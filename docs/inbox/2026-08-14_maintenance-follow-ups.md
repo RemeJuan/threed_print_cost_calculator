@@ -35,7 +35,7 @@ Earlier maintenance work is tracked in `2026-07-14_project-maintenance-execution
 - [x] Split `lib/batch_costing/helpers/batch_quote_save_service.dart`: persistence mapping/service, analytics, quote-name dialog, and success-dialog/navigation actions. Keep UI out of save core.
 - [x] Split `lib/history/provider/history_paged_notifier.dart`: state model, repository paging/fetch logic, and thin notifier. Preserve stale-generation guard exactly.
 - [x] Split `lib/purchases/premium_local_store.dart` by interface and implementation: shared preferences, secure storage, cached wrapper, in-memory store. Preserve iOS keychain workaround behavior.
-- [ ] Decouple `lib/purchases/paywall_screen_controller.dart` from `paywall_plan_selector.dart`; move package-selection logic below widget layer. Consider separate controller state/outcome model files.
+- [x] Decouple `lib/purchases/paywall_screen_controller.dart` from `paywall_plan_selector.dart`; move package-selection logic below widget layer. Consider separate controller state/outcome model files.
 - [ ] Split `lib/batch_costing/widgets/batch_allocation_picker_dialog.dart` into dialog composition, entry model/state, search, and validation pieces without changing allocation semantics.
 
 ### Later cleanup candidates
