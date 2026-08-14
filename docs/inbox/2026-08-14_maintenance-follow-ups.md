@@ -25,10 +25,10 @@ Earlier maintenance work is tracked in `2026-07-14_project-maintenance-execution
 
 ### Product instrumentation follow-up
 
-- [ ] Add review-prompt analytics for existing `RateMyApp` flow in `lib/app/app.dart` and `lib/core/analytics/app_analytics.dart`. Preserve native review support; do not rewrite dialog UX.
-- [ ] Track coarse native-capable funnel: eligibility check reached, prompt request attempted, custom dialog shown when fallback path used, custom dialog action (`rate|later|no`), and dismiss without action.
-- [ ] Document limits in `docs/analytics.md`: native review outcome and submitted store rating cannot be observed reliably.
-- [ ] Add regression tests for analytics wrappers and `RateMyApp` wiring in `test/core/analytics/app_analytics_test.dart` and `test/app/view/app_test.dart` or focused review-prompt tests.
+- [x] Add review-prompt analytics for existing `RateMyApp` flow in `lib/app/app.dart` and `lib/core/analytics/app_analytics.dart`. Preserve native review support; do not rewrite dialog UX.
+- [x] Track coarse native-capable funnel: eligibility check reached, prompt request attempted, custom dialog shown when fallback path used, custom dialog action (`rate|later|no`), and dismiss without action.
+- [x] Document limits in `docs/analytics.md`: native review outcome and submitted store rating cannot be observed reliably.
+- [x] Add regression tests for analytics wrappers and `RateMyApp` wiring in `test/core/analytics/app_analytics_test.dart` and `test/app/view/app_test.dart` or focused review-prompt tests.
 
 ### Careful refactors
 

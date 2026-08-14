@@ -216,6 +216,39 @@ void main() {
     expect(fake.lastParams, {'reason': 'parse_failed'});
   });
 
+  test('review prompt analytics wrappers use expected payloads', () async {
+    final fake = _FakeAnalytics();
+    AppAnalytics.service = fake;
+
+    await AppAnalytics.reviewPromptEligibilityChecked(eligible: true);
+    expect(fake.lastName, 'review_prompt_eligibility_checked');
+    expect(fake.lastParams, {'eligible': 1});
+
+    await AppAnalytics.reviewPromptEligibilityResult(eligible: false);
+    expect(fake.lastName, 'review_prompt_eligibility_result');
+    expect(fake.lastParams, {'eligible': 0});
+
+    await AppAnalytics.reviewPromptRequestAttempted(nativeSupported: true);
+    expect(fake.lastName, 'review_prompt_request_attempted');
+    expect(fake.lastParams, {'native_supported': 1});
+
+    await AppAnalytics.reviewPromptRequestAttempted();
+    expect(fake.lastName, 'review_prompt_request_attempted');
+    expect(fake.lastParams, isEmpty);
+
+    await AppAnalytics.reviewPromptCustomDialogShown();
+    expect(fake.lastName, 'review_prompt_custom_dialog_shown');
+    expect(fake.lastParams, isNull);
+
+    await AppAnalytics.reviewPromptCustomDialogAction(action: 'rate');
+    expect(fake.lastName, 'review_prompt_custom_dialog_action');
+    expect(fake.lastParams, {'action': 'rate'});
+
+    await AppAnalytics.reviewPromptCustomDialogDismissed();
+    expect(fake.lastName, 'review_prompt_custom_dialog_dismissed');
+    expect(fake.lastParams, isNull);
+  });
+
   test('gcode import analytics carry funnel context', () async {
     when(
       () => mock.logEvent(any(), params: any(named: 'params')),

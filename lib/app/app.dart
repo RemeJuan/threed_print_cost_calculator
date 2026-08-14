@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +17,79 @@ class App extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<App> createState() => _AppState();
+}
+
+@visibleForTesting
+Future<void> showRateMyAppPrompt({
+  required BuildContext context,
+  required RateMyApp rateMyApp,
+  required bool isEligible,
+  required AppLogger logger,
+}) async {
+  final shouldOpenDialog = rateMyApp.shouldOpenDialog;
+
+  await AppAnalytics.reviewPromptEligibilityChecked(eligible: isEligible);
+  await AppAnalytics.reviewPromptEligibilityResult(
+    eligible: isEligible && shouldOpenDialog,
+  );
+
+  if (!isEligible || !shouldOpenDialog) {
+    return;
+  }
+
+  bool? nativeSupported;
+  try {
+    nativeSupported = await rateMyApp.isNativeReviewDialogSupported;
+  } catch (e, st) {
+    logger.warn(
+      AppLogCategory.ui,
+      'Rate prompt native capability check failed',
+      error: e,
+      stackTrace: st,
+    );
+  }
+
+  if (!context.mounted) {
+    return;
+  }
+
+  await AppAnalytics.reviewPromptRequestAttempted(
+    nativeSupported: nativeSupported,
+  );
+
+  if (nativeSupported != true) {
+    await AppAnalytics.reviewPromptCustomDialogShown();
+  }
+
+  if (!context.mounted) {
+    return;
+  }
+
+  var customDialogActionTaken = false;
+  try {
+    await rateMyApp.showRateDialog(
+      context,
+      listener: (button) {
+        customDialogActionTaken = true;
+        unawaited(
+          AppAnalytics.reviewPromptCustomDialogAction(action: button.name),
+        );
+        return true;
+      },
+      onDismissed: () {
+        if (!customDialogActionTaken) {
+          unawaited(AppAnalytics.reviewPromptCustomDialogDismissed());
+        }
+      },
+    );
+  } catch (e, st) {
+    logger.warn(
+      AppLogCategory.ui,
+      'Rate dialog failed to open',
+      error: e,
+      stackTrace: st,
+    );
+  }
 }
 
 class _AppState extends ConsumerState<App> {
@@ -53,17 +128,12 @@ class _AppState extends ConsumerState<App> {
             appStoreIdentifier: '6444106268',
           ),
           onInitialized: (context, rateMyApp) async {
-            if (isRateMyAppEligible && rateMyApp.shouldOpenDialog) {
-              try {
-                rateMyApp.showRateDialog(context);
-              } catch (e) {
-                logger.warn(
-                  AppLogCategory.ui,
-                  'Rate dialog failed to open',
-                  error: e,
-                );
-              }
-            }
+            await showRateMyAppPrompt(
+              context: context,
+              rateMyApp: rateMyApp,
+              isEligible: isRateMyAppEligible,
+              logger: logger,
+            );
           },
           builder: (_) => const AppPage(),
         ),
