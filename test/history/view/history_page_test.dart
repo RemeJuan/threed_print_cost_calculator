@@ -504,6 +504,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(HistoryExportPreviewSheet), findsOneWidget);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HistoryPage)))!;
+    final expectedPreview = generateSampleCsvPreview(
+      csvHeader: l10n.historyCsvHeader,
+    );
+    expect(find.text(expectedPreview), findsOneWidget);
     expect(paywallPresenter.calls, 1);
 
     await tester.tap(
