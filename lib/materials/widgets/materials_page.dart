@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/materials/materials_page_actions.da
 import 'package:threed_print_cost_calculator/materials/providers/materials_providers.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_card.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/material_filters.dart';
+import 'package:threed_print_cost_calculator/materials/widgets/materials_swipe_hint_controller.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
@@ -37,13 +38,15 @@ class MaterialsPage extends HookConsumerWidget {
     );
 
     final prefs = ref.read(sharedPreferencesProvider);
-    final showSwipeHint = useState(
-      !(prefs.getBool(materialsSwipeHintShownPreferenceKey) ?? false),
+    final swipeHintController = useMemoized(
+      () => MaterialsSwipeHintController(
+        shown: prefs.getBool(materialsSwipeHintShownPreferenceKey) ?? false,
+        store: SharedPreferencesMaterialsSwipeHintStore(prefs),
+      ),
+      [prefs],
     );
-
-    void dismissSwipeHint() {
-      actions.dismissSwipeHint(showSwipeHint: showSwipeHint, prefs: prefs);
-    }
+    useEffect(() => swipeHintController.dispose, [swipeHintController]);
+    useListenable(swipeHintController);
 
     return Scaffold(
       body: Column(
@@ -64,11 +67,11 @@ class MaterialsPage extends HookConsumerWidget {
               ),
             ),
           ),
-          if (showSwipeHint.value)
+          if (swipeHintController.isVisible)
             Dismissible(
               key: const ValueKey<String>('materials.swipe_hint'),
               direction: DismissDirection.endToStart,
-              onDismissed: (_) => dismissSwipeHint(),
+              onDismissed: (_) => swipeHintController.dismiss(),
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.symmetric(
@@ -93,7 +96,7 @@ class MaterialsPage extends HookConsumerWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: dismissSwipeHint,
+                      onTap: swipeHintController.dismiss,
                       child: Icon(
                         Icons.close,
                         size: 16,
