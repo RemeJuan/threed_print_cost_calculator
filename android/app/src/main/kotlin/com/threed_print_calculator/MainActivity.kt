@@ -172,7 +172,8 @@ class MainActivity : FlutterFragmentActivity() {
         val isResolved = AtomicBoolean(false)
         val timeoutHandler = Handler(Looper.getMainLooper())
         val timeoutRunnable = Runnable {
-            if (isResolved.compareAndSet(false, true)) {
+            if (completePlayIntegrityRequest(isResolved)) {
+                playIntegrityRequestInFlight.set(false)
                 result.error(
                         "play_integrity_timeout",
                         "Play Integrity request timed out.",
@@ -185,16 +186,16 @@ class MainActivity : FlutterFragmentActivity() {
 
         integrityManager.requestIntegrityToken(tokenRequest)
                 .addOnSuccessListener { response ->
-                    timeoutHandler.removeCallbacks(timeoutRunnable)
-                    playIntegrityRequestInFlight.set(false)
-                    if (isResolved.compareAndSet(false, true)) {
+                    if (completePlayIntegrityRequest(isResolved)) {
+                        timeoutHandler.removeCallbacks(timeoutRunnable)
+                        playIntegrityRequestInFlight.set(false)
                         result.success(response.token())
                     }
                 }
                 .addOnFailureListener { error ->
-                    timeoutHandler.removeCallbacks(timeoutRunnable)
-                    playIntegrityRequestInFlight.set(false)
-                    if (isResolved.compareAndSet(false, true)) {
+                    if (completePlayIntegrityRequest(isResolved)) {
+                        timeoutHandler.removeCallbacks(timeoutRunnable)
+                        playIntegrityRequestInFlight.set(false)
                         result.error(
                                 "play_integrity_failed",
                                 error.message,
@@ -202,6 +203,10 @@ class MainActivity : FlutterFragmentActivity() {
                         )
                     }
                 }
+    }
+
+    private fun completePlayIntegrityRequest(isResolved: AtomicBoolean): Boolean {
+        return isResolved.compareAndSet(false, true)
     }
 
 

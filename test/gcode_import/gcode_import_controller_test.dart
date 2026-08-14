@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_picker.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
@@ -131,11 +133,14 @@ void main() {
     expect(state.error, GCodeImportError.unsupportedType);
   });
 
-  test('handles service exception as readFailed', () async {
+  test('handles service read failure as readFailed', () async {
     final container = _container(
       file: _file('part.gcode', _gcodeBytes()),
       serviceResult: _result,
-      shouldThrow: true,
+      failure: GCodeImportFailure.read(
+        Exception('read error'),
+        StackTrace.current,
+      ),
     );
 
     await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
@@ -143,6 +148,112 @@ void main() {
     final state = container.read(gcodeImportControllerProvider);
     expect(state.status, GCodeImportStatus.failure);
     expect(state.error, GCodeImportError.readFailed);
+  });
+
+  test('handles service parse failure as unsupportedFile', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _result,
+      failure: GCodeImportFailure.parse(
+        FormatException('bad parse'),
+        StackTrace.current,
+      ),
+    );
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.status, GCodeImportStatus.failure);
+    expect(state.error, GCodeImportError.unsupportedFile);
+  });
+
+  test('picker exception emits pickerException parse failure', () async {
+    final container = ProviderContainer(
+      overrides: [
+        gcodeImportFilePickerProvider.overrideWithValue(_ThrowingPicker()),
+      ],
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.single['failure_reason'], GCodeFailureReason.pickerException);
+  });
+
+  test('service exception emits readFailed parse failure', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _result,
+      failure: GCodeImportFailure.read(
+        Exception('read error'),
+        StackTrace.current,
+      ),
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.single['failure_reason'], GCodeFailureReason.readFailed);
+  });
+
+  test('service parse failure emits parseException parse failure', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _result,
+      failure: GCodeImportFailure.parse(
+        FormatException('bad parse'),
+        StackTrace.current,
+      ),
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.single['failure_reason'], GCodeFailureReason.parseException);
+  });
+
+  test('metadata-empty result emits noMetadata analytics', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _emptyResult,
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.single['failure_reason'], GCodeFailureReason.noMetadata);
+  });
+
+  test('typed service failure does not duplicate capture', () async {
+    final container = _container(
+      file: _file('part.gcode', _gcodeBytes()),
+      serviceResult: _result,
+      failure: GCodeImportFailure.read(
+        Exception('read error'),
+        StackTrace.current,
+      ),
+    );
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = _CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container.read(gcodeImportControllerProvider.notifier).pickAndParse();
+
+    expect(events.length, 1);
+    expect(events.single['failure_reason'], GCodeFailureReason.readFailed);
   });
 
   test('handles metadata-empty result as unsupportedFile', () async {
@@ -213,6 +324,7 @@ ProviderContainer _container({
   int Function()? onImport,
   Future<GCodeImportResult> Function()? onImportAsync,
   bool shouldThrow = false,
+  Object? failure,
 }) {
   return ProviderContainer(
     overrides: [
@@ -223,6 +335,7 @@ ProviderContainer _container({
           onImport: onImport,
           onImportAsync: onImportAsync,
           shouldThrow: shouldThrow,
+          failure: failure,
         ),
       ),
     ],
@@ -310,18 +423,43 @@ class _FakeService extends GCodeImportService {
     this.onImport,
     this.onImportAsync,
     this.shouldThrow = false,
+    this.failure,
   });
 
   final GCodeImportResult result;
   final int Function()? onImport;
   final Future<GCodeImportResult> Function()? onImportAsync;
   final bool shouldThrow;
+  final Object? failure;
 
   @override
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
+    if (failure != null) throw failure!;
     if (shouldThrow) throw Exception('service error');
     onImport?.call();
     if (onImportAsync != null) return onImportAsync!();
     return result;
+  }
+}
+
+class _ThrowingPicker extends GCodeImportFilePicker {
+  @override
+  Future<GCodePickedFile?> pick() async => throw Exception('picker failed');
+
+  @override
+  Future<List<GCodePickedFile>> pickMany() async =>
+      throw Exception('picker failed');
+}
+
+class _CaptureAnalytics implements AnalyticsService {
+  _CaptureAnalytics(this.events);
+
+  final List<Map<String, Object?>> events;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    if (name == 'gcode_parse_failed' && params != null) {
+      events.add(Map<String, Object?>.from(params));
+    }
   }
 }

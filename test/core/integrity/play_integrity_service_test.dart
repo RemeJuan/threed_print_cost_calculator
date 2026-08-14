@@ -268,6 +268,54 @@ void main() {
     expect(sentryEvents, hasLength(1));
   });
 
+  test(
+    'falls back on play integrity timeout without reporting to sentry',
+    () async {
+      final sentryEvents = <SentryEvent>[];
+      addTearDown(Sentry.close);
+
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'requestToken') {
+              throw PlatformException(
+                code: 'play_integrity_timeout',
+                message: 'token',
+              );
+            }
+            return null;
+          });
+
+      await SentryFlutter.init(
+        (options) {
+          options.dsn = 'https://public@example.invalid/1';
+          options.beforeSend = (event, hint) {
+            sentryEvents.add(event);
+            return null;
+          };
+        },
+        appRunner: () async {
+          final captured = <AppLogEvent>[];
+          final service = DefaultPlayIntegrityService(
+            targetPlatform: TargetPlatform.android,
+            logger: AppLogger(
+              sink: _RecordingSink(captured),
+              config: const AppLoggerConfig(minLevel: AppLogLevel.debug),
+            ),
+          );
+
+          final snapshot = await service.evaluate(PlayIntegrityFlow.purchase);
+
+          expect(snapshot.license, 'UNEVALUATED');
+          expect(snapshot.decision, PlayIntegrityDecisionLabel.allow);
+          expect(captured.single.message, 'Play Integrity fallback');
+          expect(captured.single.error, isA<PlatformException>());
+        },
+      );
+
+      expect(sentryEvents, isEmpty);
+    },
+  );
+
   test('uses limited-use App Check token for callable decode', () {
     expect(
       DefaultPlayIntegrityService

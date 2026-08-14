@@ -135,6 +135,14 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
         _recordThrottle();
         return _unevaluatedAllowSnapshot;
       }
+      if (error.code == 'play_integrity_timeout') {
+        return _fallback(
+          flow: flow,
+          error: error,
+          stackTrace: stackTrace,
+          reportToSentry: false,
+        );
+      }
       return _fallback(flow: flow, error: error, stackTrace: stackTrace);
     } catch (error, stackTrace) {
       if (error is FirebaseFunctionsException &&

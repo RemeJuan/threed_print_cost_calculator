@@ -22,12 +22,30 @@ class GCodeImportController extends Notifier<GCodeImportState> {
   GCodeImportState build() => const GCodeImportState();
 
   Future<void> pickAndParse() async {
-    final pickedFile = await ref.read(gcodeImportFilePickerProvider).pick();
-    if (pickedFile == null) return;
-    await parsePickedFile(
-      pickedFile,
-      attemptId: AppAnalytics.newGcodeImportAttemptId(),
-    );
+    try {
+      final pickedFile = await ref.read(gcodeImportFilePickerProvider).pick();
+      if (pickedFile == null) return;
+      await parsePickedFile(
+        pickedFile,
+        attemptId: AppAnalytics.newGcodeImportAttemptId(),
+      );
+    } catch (error, stackTrace) {
+      await captureGCodeImportFailure(
+        stage: 'picker',
+        error: error,
+        stackTrace: stackTrace,
+        category: GCodeFailureReason.pickerException,
+      );
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodeParseFailed(
+          attemptId: AppAnalytics.newGcodeImportAttemptId(),
+          slicer: 'unknown',
+          hasPreview: false,
+          fileSizeBytes: 0,
+          failureReason: GCodeFailureReason.pickerException,
+        ),
+      );
+    }
   }
 
   Future<void> parsePickedFile(
@@ -72,7 +90,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         error: error,
         stackTrace: stackTrace,
         file: pickedFile,
-        category: 'metadata_exception',
+        category: GCodeFailureReason.readFailed,
       );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
@@ -175,7 +193,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
             slicer: result.slicer.name,
             hasPreview: result.hasPreviewMetadata,
             fileSizeBytes: fileSizeBytes,
-            failureReason: GCodeFailureReason.parseError,
+            failureReason: GCodeFailureReason.noMetadata,
           ),
         );
         state = GCodeImportState.failure(
@@ -220,20 +238,19 @@ class GCodeImportController extends Notifier<GCodeImportState> {
       );
     } catch (error, stackTrace) {
       if (!_isActiveAttempt(attemptId)) return;
+      final failure = error is GCodeImportFailure
+          ? error
+          : GCodeImportFailure.parse(error, stackTrace, file: pickedFile);
+      final analyticsReason = failure.stage == GCodeImportFailureStage.parse
+          ? GCodeFailureReason.parseException
+          : GCodeFailureReason.readFailed;
       logGCodeImportBreadcrumb(
         'parse_failed',
         fileName: pickedFile.name,
         originalFileName: pickedFile.originalName,
         mimeType: pickedFile.mimeType,
         fileSizeBytes: fileSizeBytes,
-        reason: 'exception',
-      );
-      await captureGCodeImportFailure(
-        stage: 'command_parse',
-        error: error,
-        stackTrace: stackTrace,
-        file: pickedFile,
-        category: 'import_exception',
+        reason: analyticsReason,
       );
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
@@ -241,15 +258,28 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           slicer: 'unknown',
           hasPreview: false,
           fileSizeBytes: fileSizeBytes,
-          failureReason: GCodeFailureReason.readFailed,
+          failureReason: analyticsReason,
         ),
       );
+      if (error is! GCodeImportFailure) {
+        await captureGCodeImportFailure(
+          stage: failure.stage == GCodeImportFailureStage.parse
+              ? 'command_parse'
+              : 'metadata_parse',
+          error: failure.error,
+          stackTrace: failure.stackTrace,
+          file: pickedFile,
+          category: analyticsReason,
+        );
+      }
       state = GCodeImportState.failure(
         attemptId: attemptId,
         selectedFileName: pickedFile.name,
         selectedFilePath: pickedFile.path,
         selectedFileSizeBytes: fileSizeBytes,
-        error: GCodeImportError.readFailed,
+        error: failure.stage == GCodeImportFailureStage.parse
+            ? GCodeImportError.unsupportedFile
+            : GCodeImportError.readFailed,
       );
     }
   }
