@@ -426,6 +426,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(l10n.batchCostingNewBatchDialogTitle), findsWidgets);
+      expect(container.read(batchCostingProvider).items, isNotEmpty);
 
       await tester.tap(
         find
