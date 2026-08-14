@@ -19,7 +19,7 @@ Earlier maintenance work is tracked in `2026-07-14_project-maintenance-execution
 
 ### Characterize before refactor
 
-- [ ] Add or confirm regression coverage for `HistoryPagedNotifier`: query reset, paging, stale-generation suppression, error state, and refresh behavior.
+- [x] Add or confirm regression coverage for `HistoryPagedNotifier`: query reset, paging, stale-generation suppression, error state, and refresh behavior.
 - [ ] Add or confirm regression coverage for premium local storage: cache behavior, secure-storage fallback, and local override expiry cleanup.
 - [ ] Add or confirm regression coverage for batch quote save: history persistence, usage tracking, analytics, error handling, and navigation outcomes.
 

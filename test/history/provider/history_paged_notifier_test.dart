@@ -422,6 +422,88 @@ void main() {
     },
   );
 
+  test(
+    'stale earlier async loadMore cannot overwrite newer refresh result',
+    () async {
+      final staleContainer = ProviderContainer(
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          historyRepositoryProvider.overrideWith(
+            (ref) => _DeferredHistoryRepository(ref),
+          ),
+        ],
+      );
+      addTearDown(staleContainer.dispose);
+
+      final deferredRepo =
+          staleContainer.read(historyRepositoryProvider)
+              as _DeferredHistoryRepository;
+      final notifier = staleContainer.read(historyPagedProvider.notifier);
+
+      final initialLoad = notifier.refresh();
+      expect(staleContainer.read(historyPagedProvider).isLoading, isTrue);
+      expect(deferredRepo.countGates.length, 1);
+      expect(deferredRepo.pageGates, isEmpty);
+
+      deferredRepo.countGates.single.complete();
+      await pumpEventQueue();
+      expect(deferredRepo.pageGates.length, 1);
+
+      deferredRepo.pageGates.single.complete();
+      await initialLoad;
+
+      final staleLoadMore = notifier.loadMore();
+      expect(staleContainer.read(historyPagedProvider).isLoading, isTrue);
+      expect(deferredRepo.countGates.length, 2);
+
+      deferredRepo.countGates[1].complete();
+      await pumpEventQueue();
+      expect(deferredRepo.pageGates.length, 2);
+
+      await store.add(db, {
+        'name': 'Newest Refresh Record',
+        'totalCost': 999.0,
+        'riskCost': 0.0,
+        'filamentCost': 0.0,
+        'electricityCost': 0.0,
+        'labourCost': 0.0,
+        'date': DateTime.now()
+            .toUtc()
+            .add(const Duration(days: 1))
+            .toIso8601String(),
+        'printer': 'Prusa',
+        'material': 'PLA',
+        'weight': 10,
+        'timeHours': '01:00',
+        kHistorySearchNameField: 'newest refresh record',
+        kHistorySearchPrinterField: 'prusa',
+      });
+
+      notifier.markStale();
+      final refresh = notifier.refresh();
+
+      expect(deferredRepo.countGates.length, 3);
+      deferredRepo.countGates[2].complete();
+      await pumpEventQueue();
+      expect(deferredRepo.pageGates.length, 3);
+      deferredRepo.pageGates[2].complete();
+      await refresh;
+
+      var state = staleContainer.read(historyPagedProvider);
+      expect(state.items.length, 25);
+      expect(state.page, 0);
+      expect(state.items.first.model.name, 'Newest Refresh Record');
+
+      deferredRepo.pageGates[1].complete();
+      await staleLoadMore;
+
+      state = staleContainer.read(historyPagedProvider);
+      expect(state.items.length, 25);
+      expect(state.page, 0);
+      expect(state.items.first.model.name, 'Newest Refresh Record');
+    },
+  );
+
   test('stale state refreshes on demand after history changes', () async {
     final notifier = container.read(historyPagedProvider.notifier);
 
