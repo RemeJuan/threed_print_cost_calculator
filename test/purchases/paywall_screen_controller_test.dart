@@ -12,7 +12,7 @@ import 'package:threed_print_cost_calculator/purchases/paywall_screen_controller
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
 
 import '../helpers/helpers.dart';
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/purchases_test_fakes.dart';
 
 class _DelayedGateway implements PremiumPurchaseGateway {
   _DelayedGateway(this.offeringCompleter);

@@ -12,7 +12,7 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 
 class _ControllableSettingsRepository implements SettingsRepository {
   _ControllableSettingsRepository({required GeneralSettingsModel initial})

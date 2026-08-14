@@ -9,7 +9,7 @@ import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provi
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen_actions.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/purchases_test_fakes.dart';
 
 class _FakeIntegrityService implements PlayIntegrityService {
   _FakeIntegrityService(this.snapshot);

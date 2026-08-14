@@ -13,7 +13,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import '../helpers/helpers.dart';
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/settings_test_fakes.dart';
 import 'history_regression_test_support.dart';
 
 void main() {

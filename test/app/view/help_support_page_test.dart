@@ -14,7 +14,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/purchases_test_fakes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

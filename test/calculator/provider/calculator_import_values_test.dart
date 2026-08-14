@@ -5,7 +5,7 @@ import 'package:threed_print_cost_calculator/calculator/provider/calculator_noti
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import '../../helpers/lower_level_test_fakes.dart' show FakeSettingsRepository;
+import '../../helpers/settings_test_fakes.dart';
 
 void main() {
   group('CalculatorProvider.applyImportedValues', () {

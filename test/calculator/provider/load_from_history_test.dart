@@ -16,7 +16,7 @@ import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 
 class _ThrowingSaveSettingsRepository extends FakeSettingsRepository {
   _ThrowingSaveSettingsRepository({required super.initialSettings});

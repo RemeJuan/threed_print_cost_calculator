@@ -20,7 +20,8 @@ import 'package:threed_print_cost_calculator/shared/models/whats_new_announcemen
 import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
 
 class FakeAnalytics implements AnalyticsService {

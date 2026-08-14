@@ -29,7 +29,8 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_providers.
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 import '../helpers/helpers.dart';
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/calculator_test_fakes.dart';
+import '../helpers/settings_test_fakes.dart';
 
 const historyCsvHeader =
     'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Pricing Markup %,Pricing Markup,Pricing Setup Fee,Pricing Rounding,Pricing Subtotal,Pricing Rounding Adjustment,Final Price';

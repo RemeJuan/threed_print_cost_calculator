@@ -10,7 +10,8 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/materials_csv_export_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
 import 'app_page_test_support.dart';
 

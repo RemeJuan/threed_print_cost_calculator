@@ -13,7 +13,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_tools_dialog.dart';
 
 import '../helpers/helpers.dart';
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/purchases_test_fakes.dart';
 
 class _FakeAnalytics implements AnalyticsService {
   final List<MapEntry<String, Map<String, Object>?>> events = [];

@@ -11,7 +11,7 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
 
 class _RecordingLogSink extends AppLogSink {
   final List<AppLogEvent> events = [];

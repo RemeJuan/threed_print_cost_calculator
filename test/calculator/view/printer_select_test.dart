@@ -9,7 +9,8 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
