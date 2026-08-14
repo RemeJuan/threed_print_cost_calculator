@@ -12,17 +12,21 @@ Future<void> handleBatchQuoteSuccessAction(
   BuildContext context,
   BatchQuoteSuccessAction action,
 ) async {
-  if (action == BatchQuoteSuccessAction.history) {
-    ref
-        .read(pendingTabNavigationProvider.notifier)
-        .navigate(AppPageTab.history);
-    Navigator.of(context).popUntil((route) => route.isFirst);
-  } else if (action == BatchQuoteSuccessAction.returnToCalculator) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
-  } else {
-    final confirmed = await showStartNewBatchDialog(context);
-    if (!confirmed || !context.mounted) return;
-    ref.read(batchCostingProvider.notifier).reset();
-    Navigator.of(context).popUntil((route) => route.isFirst);
+  switch (action) {
+    case BatchQuoteSuccessAction.history:
+      ref
+          .read(pendingTabNavigationProvider.notifier)
+          .navigate(AppPageTab.history);
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      return;
+    case BatchQuoteSuccessAction.returnToCalculator:
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      return;
+    case BatchQuoteSuccessAction.startNewBatch:
+      final confirmed = await showStartNewBatchDialog(context);
+      if (!confirmed || !context.mounted) return;
+      ref.read(batchCostingProvider.notifier).reset();
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      return;
   }
 }

@@ -21,12 +21,18 @@ class SharedPrefsPremiumLocalStore implements PremiumLocalStore {
 
   @override
   Future<void> write(String key, String value) async {
-    await _prefs.setString(key, value);
+    final persisted = await _prefs.setString(key, value);
+    if (!persisted) {
+      throw StateError('Failed to persist premium local store value.');
+    }
   }
 
   @override
   Future<void> delete(String key) async {
-    await _prefs.remove(key);
+    final persisted = await _prefs.remove(key);
+    if (!persisted) {
+      throw StateError('Failed to persist premium local store value.');
+    }
   }
 
   @override

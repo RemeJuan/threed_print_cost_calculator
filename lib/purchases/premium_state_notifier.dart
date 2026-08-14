@@ -156,6 +156,13 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
           }
         }
         shouldRefresh = !_disposed;
+        if (shouldRefresh) {
+          state = PremiumState(
+            isPremium: false,
+            isLoading: false,
+            userId: state.userId,
+          );
+        }
       } finally {
         _scheduledExpiredOverrideCleanup = false;
         if (shouldRefresh) {

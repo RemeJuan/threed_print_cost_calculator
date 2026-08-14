@@ -103,7 +103,7 @@ class CalculatorPage extends HookConsumerWidget {
                 ),
                 if (policy.saveToHistory().allowed) ...[
                   if (!showSave.value) ...[
-                    const SizedBox(width: 12),
+                    const SizedBox(width: kAppSpace12),
                     SaveActionsRow(
                       isVisible: true,
                       onOpenSave: () {

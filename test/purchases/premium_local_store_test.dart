@@ -1,9 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_cached.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_shared_prefs.dart';
+
+import '../helpers/mocks.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +34,26 @@ void main() {
     await store.write('count', '1');
 
     expect(prefs.getString('count'), '1');
+  });
+
+  test('write fails when shared prefs rejects persistence', () async {
+    final mockedPrefs = MockSharedPreferences();
+    when(() => mockedPrefs.get(any())).thenReturn(null);
+    when(
+      () => mockedPrefs.setString(any(), any()),
+    ).thenAnswer((_) async => false);
+    store = SharedPrefsPremiumLocalStore(mockedPrefs);
+
+    await expectLater(store.write('count', '1'), throwsStateError);
+  });
+
+  test('delete fails when shared prefs rejects persistence', () async {
+    final mockedPrefs = MockSharedPreferences();
+    when(() => mockedPrefs.get(any())).thenReturn('1');
+    when(() => mockedPrefs.remove(any())).thenAnswer((_) async => false);
+    store = SharedPrefsPremiumLocalStore(mockedPrefs);
+
+    await expectLater(store.delete('count'), throwsStateError);
   });
 
   test('readAll returns known shared pref keys only', () async {

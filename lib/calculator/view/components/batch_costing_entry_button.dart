@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchCostingEntryButton extends StatelessWidget {
@@ -27,7 +28,7 @@ class BatchCostingEntryButton extends StatelessWidget {
           icon: const Icon(Icons.inventory_2_outlined),
           label: l10n.batchCostingEntryButton,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: kAppSpace12),
       ],
     );
   }

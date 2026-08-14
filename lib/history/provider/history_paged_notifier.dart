@@ -87,16 +87,13 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
     required bool reset,
     required HistoryPagedPageRequest request,
   }) {
-    final combined = reset
-        ? request.pageEntries
-        : [...state.items, ...request.pageEntries];
-    final hasMore = combined.length < request.totalCount;
     state = state.applyPageResult(
       reset: reset,
       pageEntries: request.pageEntries,
       totalCount: request.totalCount,
       nextPage: request.nextPage,
     );
+    final totalLoaded = reset ? request.pageEntries.length : state.items.length;
     _logger.debug(
       AppLogCategory.provider,
       'History page load completed',
@@ -104,8 +101,8 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         'reset': reset,
         'page': request.nextPage,
         'itemCount': request.pageEntries.length,
-        'totalLoaded': combined.length,
-        'hasMore': hasMore,
+        'totalLoaded': totalLoaded,
+        'hasMore': state.hasMore,
         'hasQuery': request.hasQuery,
       },
     );

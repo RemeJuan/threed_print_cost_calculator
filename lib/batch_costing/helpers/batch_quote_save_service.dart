@@ -25,10 +25,10 @@ class BatchQuoteSaveService {
     BatchCostingState state,
     BatchSummaryResult summary,
   ) async {
-    final l10n = AppLocalizations.of(context)!;
-
     final quoteName = await showBatchQuoteNameDialog(context);
     if (quoteName == null || !context.mounted) return;
+
+    final l10n = AppLocalizations.of(context)!;
 
     final model = mapBatchQuoteHistoryModel(
       name: quoteName,
@@ -39,7 +39,6 @@ class BatchQuoteSaveService {
 
     try {
       await _ref.read(historyRepositoryProvider).saveHistory(model);
-      await _ref.read(appUsageServiceProvider).recordCompletedCosting();
     } catch (e, st) {
       _logger.warn(
         AppLogCategory.db,
@@ -52,6 +51,17 @@ class BatchQuoteSaveService {
         BotToast.showText(text: l10n.batchCostingSummarySaveErrorMessage);
       }
       return;
+    }
+
+    try {
+      await _ref.read(appUsageServiceProvider).recordCompletedCosting();
+    } catch (e, st) {
+      _logger.warn(
+        AppLogCategory.db,
+        'batch_quote_save_service.recordCompletedCosting failed',
+        error: e,
+        stackTrace: st,
+      );
     }
 
     recordBatchQuoteSaveOutcome(analytics.copyWith(outcome: 'success'));

@@ -57,6 +57,15 @@ class _CapturingUsageService extends AppUsageService {
   }
 }
 
+class _ThrowingUsageService extends AppUsageService {
+  _ThrowingUsageService(super.ref);
+
+  @override
+  Future<void> recordCompletedCosting() async {
+    throw Exception('Simulated usage failure');
+  }
+}
+
 class _DelayedHistoryRepository extends HistoryRepository {
   _DelayedHistoryRepository(super.ref);
 
@@ -125,7 +134,12 @@ class _SaveBatchNotifier extends BatchCostingNotifier {
 
 void main() {
   setUpAll(setupTest);
+  late AnalyticsService originalAnalytics;
   late _CapturingAnalyticsService analytics;
+
+  setUp(() {
+    originalAnalytics = AppAnalytics.service;
+  });
 
   group('BatchQuoteSaveService provider wiring', () {
     test('batchQuoteSaveServiceProvider resolves', () {
@@ -163,6 +177,7 @@ void main() {
       final premiumLocalStore = InMemoryPremiumLocalStore();
       analytics = _CapturingAnalyticsService();
       AppAnalytics.service = analytics;
+      addTearDown(() => AppAnalytics.service = originalAnalytics);
       final container = await tester.pumpAppWithContainer(
         const BatchSummaryPage(),
         overrides: [
@@ -210,6 +225,7 @@ void main() {
       final premiumLocalStore = InMemoryPremiumLocalStore();
       analytics = _CapturingAnalyticsService();
       AppAnalytics.service = analytics;
+      addTearDown(() => AppAnalytics.service = originalAnalytics);
       final container = await tester.pumpAppWithContainer(
         const BatchSummaryPage(),
         overrides: [
@@ -284,6 +300,7 @@ void main() {
       final premiumLocalStore = InMemoryPremiumLocalStore();
       analytics = _CapturingAnalyticsService();
       AppAnalytics.service = analytics;
+      addTearDown(() => AppAnalytics.service = originalAnalytics);
       await tester.pumpAppWithContainer(
         const BatchSummaryPage(),
         overrides: [
@@ -328,6 +345,7 @@ void main() {
         final premiumLocalStore = InMemoryPremiumLocalStore();
         analytics = _CapturingAnalyticsService();
         AppAnalytics.service = analytics;
+        addTearDown(() => AppAnalytics.service = originalAnalytics);
         final container = await tester.pumpAppWithContainer(
           const BatchSummaryPage(),
           overrides: [
@@ -448,6 +466,7 @@ void main() {
       final premiumLocalStore = InMemoryPremiumLocalStore();
       analytics = _CapturingAnalyticsService();
       AppAnalytics.service = analytics;
+      addTearDown(() => AppAnalytics.service = originalAnalytics);
       final container = await tester.pumpAppWithContainer(
         const BatchSummaryPage(),
         overrides: [
@@ -499,6 +518,62 @@ void main() {
         isTrue,
       );
       expect(sink.events.any((e) => e.category == AppLogCategory.db), isTrue);
+    });
+
+    testWidgets('still saves when usage tracking fails after repository save', (
+      tester,
+    ) async {
+      final sink = _CapturingLogSink();
+      final premiumLocalStore = InMemoryPremiumLocalStore();
+      analytics = _CapturingAnalyticsService();
+      AppAnalytics.service = analytics;
+      addTearDown(() => AppAnalytics.service = originalAnalytics);
+      final container = await tester.pumpAppWithContainer(
+        const BatchSummaryPage(),
+        overrides: [
+          batchCostingProvider.overrideWith(() => _SaveBatchNotifier()),
+          isPremiumProvider.overrideWithValue(true),
+          appLogSinkProvider.overrideWithValue(sink),
+          appLoggerConfigProvider.overrideWithValue(
+            const AppLoggerConfig(minLevel: AppLogLevel.debug),
+          ),
+          appUsageServiceProvider.overrideWith(
+            (ref) => _ThrowingUsageService(ref),
+          ),
+          historyRepositoryProvider.overrideWith(
+            (ref) => _CapturingHistoryRepository(ref),
+          ),
+        ],
+        premiumLocalStore: premiumLocalStore,
+      );
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchSummaryPage)),
+      )!;
+
+      await tester.scrollUntilVisible(
+        find.text(l10n.batchCostingSummarySaveButton),
+        200,
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(l10n.batchCostingSummarySaveButton));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text(l10n.saveButton));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(l10n.batchCostingSummarySaveSuccessTitle),
+        findsOneWidget,
+      );
+      expect(analytics.lastName, 'batch_quote_saved');
+      expect(analytics.lastParams?['outcome'], 'success');
+      expect(find.text(l10n.batchCostingSummarySaveErrorMessage), findsNothing);
+      expect(
+        sink.events.any((e) => e.message.contains('recordCompletedCosting')),
+        isTrue,
+      );
+      expect(container.read(pendingTabNavigationProvider), isNull);
     });
   });
 

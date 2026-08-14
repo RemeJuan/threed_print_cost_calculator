@@ -188,6 +188,14 @@ void main() {
 
     expect(container.read(premiumStateProvider).isLoading, isTrue);
 
+    final states = <PremiumState>[];
+    final sub = container.listen(
+      premiumStateProvider,
+      (_, next) => states.add(next),
+      fireImmediately: true,
+    );
+    addTearDown(sub.close);
+
     for (var i = 0; i < 20; i++) {
       await Future<void>.delayed(Duration.zero);
       if (container.read(premiumStateProvider).isLoading == false) break;
@@ -195,8 +203,16 @@ void main() {
 
     expect(testDataService.purgeCalls, 1);
 
-    await Future<void>.delayed(Duration.zero);
+    for (var i = 0; i < 20; i++) {
+      await Future<void>.delayed(const Duration(milliseconds: 1));
+      final state = container.read(premiumStateProvider);
+      if (!state.isLoading && !state.isPremium) break;
+    }
     expect(testDataService.purgeCalls, 1);
+    expect(container.read(premiumStateProvider).isPremium, isFalse);
+    expect(container.read(premiumStateProvider).isLoading, isFalse);
+    expect(states.last.isPremium, isFalse);
+    expect(states.last.isLoading, isFalse);
   });
 }
 

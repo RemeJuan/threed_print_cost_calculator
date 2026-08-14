@@ -51,4 +51,17 @@ void main() {
     expect(second.hasMore, isFalse);
     expect(second.isStale, isFalse);
   });
+
+  test(
+    'copyWith preserves error when omitted and clears when explicit null',
+    () {
+      final state = HistoryPagedState.initial().copyWith(error: 'boom');
+
+      final preserved = state.copyWith(isLoading: true);
+      final cleared = state.copyWith(error: null);
+
+      expect(preserved.error, 'boom');
+      expect(cleared.error, isNull);
+    },
+  );
 }

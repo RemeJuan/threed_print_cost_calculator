@@ -1,6 +1,8 @@
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 
 class HistoryPagedState {
+  static const Object _errorSentinel = Object();
+
   final List<HistoryEntry> items;
   final bool hasMore;
   final bool isLoading;
@@ -36,17 +38,20 @@ class HistoryPagedState {
     List<HistoryEntry>? items,
     bool? hasMore,
     bool? isLoading,
-    String? error,
+    Object? error = _errorSentinel,
     String? query,
     int? page,
     bool? hasLoadedOnce,
     bool? isStale,
   }) {
+    final nextError = identical(error, _errorSentinel)
+        ? this.error
+        : error as String?;
     return HistoryPagedState(
       items: items ?? this.items,
       hasMore: hasMore ?? this.hasMore,
       isLoading: isLoading ?? this.isLoading,
-      error: error,
+      error: nextError,
       query: query ?? this.query,
       page: page ?? this.page,
       hasLoadedOnce: hasLoadedOnce ?? this.hasLoadedOnce,

@@ -38,12 +38,13 @@ class MaterialsPage extends HookConsumerWidget {
     );
 
     final prefs = ref.read(sharedPreferencesProvider);
+    final swipeHintStore = SharedPreferencesMaterialsSwipeHintStore(prefs);
     final swipeHintController = useMemoized(
       () => MaterialsSwipeHintController(
-        shown: prefs.getBool(materialsSwipeHintShownPreferenceKey) ?? false,
-        store: SharedPreferencesMaterialsSwipeHintStore(prefs),
+        shown: swipeHintStore.shown,
+        store: swipeHintStore,
       ),
-      [prefs],
+      [swipeHintStore],
     );
     useEffect(() => swipeHintController.dispose, [swipeHintController]);
     useListenable(swipeHintController);

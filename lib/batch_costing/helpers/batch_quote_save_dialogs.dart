@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 enum BatchQuoteSuccessAction { history, returnToCalculator, startNewBatch }
@@ -84,8 +85,8 @@ class _BatchQuoteNameDialogState extends State<_BatchQuoteNameDialog> {
 Future<BatchQuoteSuccessAction?> showBatchQuoteSuccessDialog(
   BuildContext context,
 ) async {
-  final l10n = AppLocalizations.of(context)!;
   if (!context.mounted) return null;
+  final l10n = AppLocalizations.of(context)!;
   return showDialog<BatchQuoteSuccessAction>(
     context: context,
     builder: (_) => AlertDialog(
@@ -95,7 +96,7 @@ Future<BatchQuoteSuccessAction?> showBatchQuoteSuccessDialog(
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          spacing: 8,
+          spacing: kAppSpace8,
           children: [
             AppPrimaryButton(
               onPressed: () =>
