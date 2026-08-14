@@ -4,21 +4,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/printer_select.dart';
 import 'package:threed_print_cost_calculator/calculator/view/save_form.dart';
-import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
-import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 import 'calculator_results.dart';
 import 'calculator_banner_ad.dart';
+import 'components/batch_costing_entry_button.dart';
 import 'components/history_load_warning_banner.dart';
 import 'components/job_pricing_overrides_section.dart';
 import 'components/materials_selection/materials_section.dart';
+import 'components/reset_calculation_button.dart';
+import 'components/save_actions_row.dart';
 import 'components/time_section.dart';
-import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 
 class CalculatorPage extends HookConsumerWidget {
   const CalculatorPage({super.key});
@@ -30,7 +30,6 @@ class CalculatorPage extends HookConsumerWidget {
 
     final state = ref.watch(calculatorProvider);
     final notifier = ref.read(calculatorProvider.notifier);
-    final l10n = AppLocalizations.of(context)!;
     final policy = ref.watch(premiumAccessPolicyProvider);
     final interfaceSettings = ref.watch(interfaceSettingsProvider);
 
@@ -88,72 +87,30 @@ class CalculatorPage extends HookConsumerWidget {
               ),
             CalculatorResults(results: state.results, pricing: state.pricing),
             const SizedBox(height: kAppSpace8),
-            if (policy.batchCosting().allowed &&
-                interfaceSettings.showBatchButton) ...[
-              AppSecondaryButton(
-                key: const ValueKey<String>(
-                  'calculator.batch_costing.open.button',
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => const BatchCostingPage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.inventory_2_outlined),
-                label: l10n.batchCostingEntryButton,
-              ),
-              const SizedBox(height: kAppSpace12),
-            ],
+            BatchCostingEntryButton(
+              isVisible:
+                  policy.batchCosting().allowed &&
+                  interfaceSettings.showBatchButton,
+            ),
             Row(
               children: [
                 Expanded(
-                  child: AppSecondaryButton(
-                    key: const ValueKey<String>('calculator.reset.button'),
-                    onPressed: () async {
-                      final shouldReset = await showDialog<bool>(
-                        context: context,
-                        builder: (dialogContext) => AlertDialog(
-                          title: Text(l10n.resetCalculationTitle),
-                          content: Text(l10n.resetCalculationBody),
-                          actions: [
-                            AppTertiaryButton(
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(false),
-                              label: l10n.cancelButton,
-                            ),
-                            AppPrimaryButton(
-                              onPressed: () =>
-                                  Navigator.of(dialogContext).pop(true),
-                              label: l10n.resetButtonLabel,
-                            ),
-                          ],
-                        ),
-                      );
-
-                      if (shouldReset != true) return;
+                  child: ResetCalculationButton(
+                    onResetRequested: () {
                       showSave.value = false;
-                      await notifier.resetToDefaults();
                     },
-                    icon: const Icon(Icons.refresh),
-                    label: l10n.resetButtonLabel,
                   ),
                 ),
-                if (policy.saveToHistory().allowed && !showSave.value) ...[
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: AppPrimaryButton(
-                      key: const ValueKey<String>(
-                        'calculator.save.open.button',
-                      ),
-                      onPressed: () {
+                if (policy.saveToHistory().allowed) ...[
+                  if (!showSave.value) ...[
+                    const SizedBox(width: 12),
+                    SaveActionsRow(
+                      isVisible: true,
+                      onOpenSave: () {
                         showSave.value = true;
                       },
-                      icon: const Icon(Icons.save),
-                      label: l10n.savePrintButton,
                     ),
-                  ),
+                  ],
                 ],
               ],
             ),

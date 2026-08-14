@@ -41,7 +41,7 @@ Earlier maintenance work is tracked in `2026-07-14_project-maintenance-execution
 ### Later cleanup candidates
 
 - [x] Extract swipe-hint preference access from `lib/materials/widgets/materials_page.dart` into an injected notifier/service.
-- [ ] Extract reset dialog, save section, and batch-entry area from `lib/calculator/view/calculator_page.dart`; preserve init/submit timing.
+- [x] Extract reset dialog, save section, and batch-entry area from `lib/calculator/view/calculator_page.dart`; preserve init/submit timing.
 - [ ] Split oversized test files by behavioral domain: batch G-code import, G-code controller, materials page, and Play Integrity service.
 
 ## Delivery rules
