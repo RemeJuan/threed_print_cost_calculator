@@ -93,6 +93,23 @@ void main() {
     expect(csv, contains('"\'@hex"'));
   });
 
+  test('neutralizes formulas after leading whitespace and control chars', () {
+    final csv = service.generateCsv([
+      const MaterialModel(
+        id: ' =cmd',
+        name: '\t+sum',
+        cost: '12.5',
+        color: '\n-red',
+        weight: '1000',
+        archived: false,
+      ),
+    ]);
+
+    expect(csv, contains('"\' =cmd"'));
+    expect(csv, contains('"\'\t+sum"'));
+    expect(csv, contains('"\'\n-red"'));
+  });
+
   test('exports all materials', () {
     final csv = service.generateCsv([
       const MaterialModel(

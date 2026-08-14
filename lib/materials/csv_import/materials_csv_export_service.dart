@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/materials_csv_schema.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/shared/utils/csv_generation.dart';
 
 class MaterialsCsvExportService {
   MaterialsCsvExportService([this.ref]);
@@ -20,18 +21,26 @@ class MaterialsCsvExportService {
     for (final material in materials) {
       buffer.writeln(
         [
-          _quote(material.id),
-          _quote(material.name),
-          _quote(material.brand),
-          _quote(material.materialType),
-          _quote(material.color),
-          _quote(material.colorHex),
-          _quote(material.originalWeight),
-          _quote(material.remainingWeight),
-          _quote(material.cost),
-          _quote(material.autoDeductEnabled),
-          _quote(material.archived),
-          _quote(material.notes),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.id)),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.name)),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.brand)),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.materialType)),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.color)),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.colorHex)),
+          quoteCsvCell(
+            sanitizeCsvSpreadsheetCell(material.originalWeight.toString()),
+          ),
+          quoteCsvCell(
+            sanitizeCsvSpreadsheetCell(material.remainingWeight.toString()),
+          ),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.cost)),
+          quoteCsvCell(
+            sanitizeCsvSpreadsheetCell(material.autoDeductEnabled.toString()),
+          ),
+          quoteCsvCell(
+            sanitizeCsvSpreadsheetCell(material.archived.toString()),
+          ),
+          quoteCsvCell(sanitizeCsvSpreadsheetCell(material.notes)),
         ].join(','),
       );
     }
@@ -44,10 +53,3 @@ final materialsCsvExportServiceProvider = Provider<MaterialsCsvExportService>((
 ) {
   return MaterialsCsvExportService(ref);
 });
-
-String _quote(Object? value) {
-  final text = value?.toString() ?? '';
-  final spreadsheetSafe = RegExp(r'^[=+\-@]').hasMatch(text) ? "'$text" : text;
-  final escaped = spreadsheetSafe.replaceAll('"', '""');
-  return '"$escaped"';
-}

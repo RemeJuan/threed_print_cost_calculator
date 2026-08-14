@@ -59,6 +59,30 @@ void main() {
     });
   });
 
+  group('csv_generation helpers', () {
+    test('quotes every cell and escapes quotes', () {
+      expect(quoteCsvCell(''), '""');
+      expect(quoteCsvCell('7'), '"7"');
+      expect(quoteCsvCell('He said "Hi"'), '"He said ""Hi"""');
+    });
+
+    test(
+      'neutralizes spreadsheet formulas with leading control or space chars',
+      () {
+        expect(sanitizeCsvSpreadsheetCell('=x'), "'=x");
+        expect(sanitizeCsvSpreadsheetCell('+x'), "'+x");
+        expect(sanitizeCsvSpreadsheetCell('-x'), "'-x");
+        expect(sanitizeCsvSpreadsheetCell('@x'), "'@x");
+        expect(sanitizeCsvSpreadsheetCell(' =x'), "' =x");
+        expect(sanitizeCsvSpreadsheetCell('\t+x'), "'\t+x");
+      },
+    );
+
+    test('leaves safe text unchanged', () {
+      expect(sanitizeCsvSpreadsheetCell('plain'), 'plain');
+    });
+  });
+
   group('CsvUtils.queryHistory', () {
     late Database db;
     late ProviderContainer container;

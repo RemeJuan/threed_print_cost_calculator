@@ -64,11 +64,7 @@ class HistoryPageActions {
     );
 
     final l10n = AppLocalizations.of(context)!;
-    final csvPreview = [
-      l10n.historyCsvHeader,
-      '"Benchy",19.25,12.50,3.00,2.50,123,06:20',
-      '"Prusa MK4S",24.10,15.75,3.40,2.75,142,05:10',
-    ].join('\n');
+    final csvPreview = generateSampleCsvPreview(csvHeader: l10n.historyCsvHeader);
 
     if (!context.mounted) return;
 
