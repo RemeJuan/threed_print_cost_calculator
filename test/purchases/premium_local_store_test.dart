@@ -2,7 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_cached.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_shared_prefs.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
