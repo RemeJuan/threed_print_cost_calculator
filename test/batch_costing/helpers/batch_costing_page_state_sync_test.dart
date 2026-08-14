@@ -33,8 +33,10 @@ void main() {
     sync.sync([a, b]);
 
     final aController = sync.controllerFor(a);
+    final bController = sync.controllerFor(b);
     sync.sync([a.copyWith(quantity: 5)]);
     expect(aController.text, '5');
+    expect(() => bController.addListener(() {}), throwsFlutterError);
   });
 
   test('expanded pruning, default expansion, setExpanded, dispose', () {
