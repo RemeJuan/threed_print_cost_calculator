@@ -36,6 +36,28 @@ void main() {
     expect(prefs.getString('orphan'), 'x');
   });
 
+  test('migrateFromSecureToSharedPrefs stops on readAll failure', () async {
+    var deleteAllCalls = 0;
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          if (call.method == 'readAll') {
+            throw PlatformException(code: 'boom');
+          }
+          if (call.method == 'deleteAll') {
+            deleteAllCalls++;
+            return null;
+          }
+          return null;
+        });
+
+    final prefs = await SharedPreferences.getInstance();
+
+    await migrateFromSecureToSharedPrefs(sharedPreferences: prefs);
+
+    expect(prefs.getKeys(), isEmpty);
+    expect(deleteAllCalls, 0);
+  });
+
   test('cleanupSecureStorage ignores deleteAll errors', () async {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (call) async {

@@ -9,6 +9,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
+import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
 
 import '../../test_support/fake_purchases_gateway.dart';
 
@@ -163,6 +164,39 @@ void main() {
       expect(state.isPremium, isFalse);
     },
   );
+
+  test('expired local premium override cleans up once and refreshes', () async {
+    final store = _CountingStore({
+      testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01',
+    });
+    late final _NoopTestDataService testDataService;
+    final gateway = FakePurchasesGateway(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
+    final container = ProviderContainer(
+      overrides: [
+        purchasesGatewayProvider.overrideWithValue(gateway),
+        premiumLocalStoreProvider.overrideWithValue(store),
+        testDataServiceProvider.overrideWith((ref) {
+          testDataService = _NoopTestDataService(ref, store);
+          return testDataService;
+        }),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    expect(container.read(premiumStateProvider).isLoading, isTrue);
+
+    for (var i = 0; i < 20; i++) {
+      await Future<void>.delayed(Duration.zero);
+      if (container.read(premiumStateProvider).isLoading == false) break;
+    }
+
+    expect(testDataService.purgeCalls, 1);
+
+    await Future<void>.delayed(Duration.zero);
+    expect(testDataService.purgeCalls, 1);
+  });
 }
 
 class _FailingGateway implements PurchasesGateway {
@@ -208,4 +242,56 @@ class _ControllableGateway implements PurchasesGateway {
       _fetch.complete(const PremiumState(isPremium: false, isLoading: false));
     }
   }
+}
+
+class _CountingStore implements PremiumLocalStore {
+  _CountingStore(Map<String, String> values) : _values = {...values};
+
+  final Map<String, String> _values;
+  int deleteCalls = 0;
+
+  @override
+  String? readSync(String key) => _values[key];
+
+  @override
+  Future<String?> read(String key) async => _values[key];
+
+  @override
+  Future<void> write(String key, String value) async {
+    _values[key] = value;
+  }
+
+  @override
+  Future<void> delete(String key) async {
+    deleteCalls++;
+    _values.remove(key);
+  }
+
+  @override
+  Future<Map<String, String>> readAll() async =>
+      Map<String, String>.unmodifiable(_values);
+}
+
+class _NoopTestDataService extends TestDataService {
+  _NoopTestDataService(super.ref, this._store)
+    : super(loader: const _NoopSeedLoader());
+
+  final PremiumLocalStore _store;
+
+  int purgeCalls = 0;
+
+  @override
+  Future<TestDataOperationResult> purge() async {
+    purgeCalls++;
+    await _store.delete(testPremiumOverrideEnabledOnPreferenceKey);
+    return const TestDataOperationResult.success();
+  }
+}
+
+class _NoopSeedLoader implements SeedLoader {
+  const _NoopSeedLoader();
+
+  @override
+  Future<SeedDataBundle> load({String subdirectory = 'free'}) async =>
+      throw UnimplementedError();
 }

@@ -1,8 +1,12 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   late SharedPreferences prefs;
   late SharedPrefsPremiumLocalStore store;
 
@@ -37,4 +41,82 @@ void main() {
     expect(values['calculation_count'], '1');
     expect(values.containsKey('other'), isFalse);
   });
+
+  test(
+    'cached write tolerates duplicate keychain item and serves cache',
+    () async {
+      final calls = <MethodCall>[];
+      var writeAttempts = 0;
+      final channel = MethodChannel(
+        'plugins.it_nomads.com/flutter_secure_storage',
+      );
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            calls.add(call);
+            if (call.method == 'readAll') return <String, String>{};
+            if (call.method == 'write') {
+              writeAttempts++;
+              throw PlatformException(code: '-25299');
+            }
+            if (call.method == 'delete') return null;
+            return null;
+          });
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, null);
+      });
+
+      final storage = const FlutterSecureStorage();
+      final cache = CachedPremiumLocalStore(storage);
+      await cache.preload();
+
+      await cache.write('count', '9');
+
+      expect(cache.readSync('count'), '9');
+      expect(await cache.read('count'), '9');
+      expect(await cache.readAll(), {'count': '9'});
+      expect(writeAttempts, 2);
+      expect(calls.where((call) => call.method == 'delete'), hasLength(1));
+    },
+  );
+
+  test(
+    'cached write retries after delete on duplicate keychain item',
+    () async {
+      final channel = MethodChannel(
+        'plugins.it_nomads.com/flutter_secure_storage',
+      );
+      var writeAttempts = 0;
+      var deleteAttempts = 0;
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'readAll') return <String, String>{};
+            if (call.method == 'write') {
+              writeAttempts++;
+              if (writeAttempts == 1) {
+                throw PlatformException(code: '-25299');
+              }
+              return null;
+            }
+            if (call.method == 'delete') {
+              deleteAttempts++;
+              return null;
+            }
+            return null;
+          });
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, null);
+      });
+
+      final cache = CachedPremiumLocalStore(const FlutterSecureStorage());
+      await cache.preload();
+
+      await cache.write('count', '10');
+
+      expect(writeAttempts, 2);
+      expect(deleteAttempts, 1);
+      expect(cache.readSync('count'), '10');
+    },
+  );
 }
