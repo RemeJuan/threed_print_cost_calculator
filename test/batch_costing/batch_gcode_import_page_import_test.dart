@@ -35,6 +35,13 @@ void main() {
     expect(find.text('two.gcode'), findsOneWidget);
     expect(find.text(l10n.batchGcodeImportReadyLabel), findsNWidgets(2));
     expect(find.text(l10n.batchGcodeImportContinueButton), findsOneWidget);
+
+    await tester.tap(find.text(l10n.batchGcodeImportContinueButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BatchCostingPage), findsOneWidget);
+    expect(find.text('one.gcode'), findsOneWidget);
+    expect(find.text('two.gcode'), findsOneWidget);
   });
 
   testWidgets('moves single-file import into batch review on confirm', (
@@ -162,10 +169,11 @@ void main() {
   ) async {
     final files = [_file('one.gcode'), _file('two.gcode')];
     final paywallPresenter = FakePaywallPresenter();
+    final service = _FakeService(successResult);
 
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
-      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      gcodeImportServiceProvider.overrideWithValue(service),
       paywallPresenterProvider.overrideWithValue(paywallPresenter),
       isPremiumProvider.overrideWithValue(false),
     ]);
@@ -178,6 +186,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(paywallPresenter.calls, 1);
+    expect(service.importCalls, 0);
     expect(find.text('one.gcode'), findsNothing);
     expect(find.text('two.gcode'), findsNothing);
     expect(find.byType(BatchCostingPage), findsNothing);
@@ -262,8 +271,10 @@ class _FakePicker extends GCodeImportFilePicker {
 class _FakeService extends GCodeImportService {
   _FakeService(this.result);
   final GCodeImportResult? result;
+  var importCalls = 0;
   @override
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
+    importCalls += 1;
     if (result == null) throw StateError('fail');
     return result!;
   }
