@@ -141,11 +141,20 @@ void main() {
       '5.0',
     );
     await tester.pump();
-
-    await tester.tap(find.text(l10n.batchGcodeImportApply));
+    await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pumpAndSettle();
 
-    expect(find.text(l10n.batchGcodeImportAddButton), findsOneWidget);
+    final addButton = find.widgetWithText(
+      ElevatedButton,
+      l10n.batchGcodeImportAddButton,
+    );
+    await tester.ensureVisible(addButton);
+    await tester.pumpAndSettle();
+    expect(tester.widget<ElevatedButton>(addButton).onPressed, isNotNull);
+    await tester.tap(addButton, warnIfMissed: false);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BatchCostingPage), findsOneWidget);
   });
 
   testWidgets('free users cannot start multi-file batch import', (

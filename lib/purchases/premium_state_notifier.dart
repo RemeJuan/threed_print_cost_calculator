@@ -73,6 +73,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
 
       ref.onDispose(() {
         _disposed = true;
+        _initialized = false;
         unawaited(_subscription?.cancel());
       });
 
@@ -156,13 +157,6 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
           }
         }
         shouldRefresh = !_disposed;
-        if (shouldRefresh) {
-          state = PremiumState(
-            isPremium: false,
-            isLoading: false,
-            userId: state.userId,
-          );
-        }
       } finally {
         _scheduledExpiredOverrideCleanup = false;
         if (shouldRefresh) {

@@ -244,11 +244,11 @@ void main() {
         ],
         premiumLocalStore: premiumLocalStore,
       );
-      final usage =
-          container.read(appUsageServiceProvider) as _CapturingUsageService;
       final repo =
           container.read(historyRepositoryProvider)
               as _CapturingHistoryRepository;
+      final usage =
+          container.read(appUsageServiceProvider) as _CapturingUsageService;
 
       final l10n = AppLocalizations.of(
         tester.element(find.byType(BatchSummaryPage)),
@@ -546,6 +546,9 @@ void main() {
         ],
         premiumLocalStore: premiumLocalStore,
       );
+      final repo =
+          container.read(historyRepositoryProvider)
+              as _CapturingHistoryRepository;
 
       final l10n = AppLocalizations.of(
         tester.element(find.byType(BatchSummaryPage)),
@@ -566,6 +569,8 @@ void main() {
         find.text(l10n.batchCostingSummarySaveSuccessTitle),
         findsOneWidget,
       );
+      expect(repo.savedModel, isNotNull);
+      expect(repo.savedModel!.batchQuoteItems.length, 1);
       expect(analytics.lastName, 'batch_quote_saved');
       expect(analytics.lastParams?['outcome'], 'success');
       expect(find.text(l10n.batchCostingSummarySaveErrorMessage), findsNothing);

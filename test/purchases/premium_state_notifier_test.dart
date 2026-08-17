@@ -171,9 +171,7 @@ void main() {
       testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01',
     });
     late final _NoopTestDataService testDataService;
-    final gateway = FakePurchasesGateway(
-      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
-    );
+    final gateway = _ControllableGateway();
     final container = ProviderContainer(
       overrides: [
         purchasesGatewayProvider.overrideWithValue(gateway),
@@ -196,23 +194,41 @@ void main() {
     );
     addTearDown(sub.close);
 
-    for (var i = 0; i < 20; i++) {
-      await Future<void>.delayed(Duration.zero);
-      if (container.read(premiumStateProvider).isLoading == false) break;
-    }
+    expect(gateway.fetchCalls, 1);
+
+    await gateway.waitForFetchCall(1);
+
+    await gateway.completeFetch(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
 
     expect(testDataService.purgeCalls, 1);
+    expect(gateway.fetchCalls, 2);
 
-    for (var i = 0; i < 20; i++) {
-      await Future<void>.delayed(const Duration(milliseconds: 1));
-      final state = container.read(premiumStateProvider);
-      if (!state.isLoading && !state.isPremium) break;
-    }
+    await gateway.waitForFetchCall(2);
+
+    final finalState = Completer<PremiumState>();
+    final finalSub = container.listen(premiumStateProvider, (_, next) {
+      if (!next.isLoading && next.isPremium && next.userId == 'pro-1') {
+        if (!finalState.isCompleted) finalState.complete(next);
+      }
+    }, fireImmediately: false);
+    addTearDown(finalSub.close);
+
+    await gateway.completeFetch(
+      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
+    );
+
+    final state = await finalState.future;
+
     expect(testDataService.purgeCalls, 1);
-    expect(container.read(premiumStateProvider).isPremium, isFalse);
-    expect(container.read(premiumStateProvider).isLoading, isFalse);
-    expect(states.last.isPremium, isFalse);
-    expect(states.last.isLoading, isFalse);
+    expect(
+      states.any((state) => !state.isLoading && !state.isPremium),
+      isFalse,
+    );
+    expect(state.isPremium, isTrue);
+    expect(state.isLoading, isFalse);
+    expect(state.userId, 'pro-1');
   });
 }
 
@@ -232,31 +248,52 @@ class _FailingGateway implements PurchasesGateway {
 
 class _ControllableGateway implements PurchasesGateway {
   final _controller = StreamController<PremiumState>.broadcast();
-  final Completer<PremiumState> _fetch = Completer<PremiumState>();
+  final Map<int, Completer<void>> _fetchSignals = {};
+  final List<Completer<PremiumState>> _fetches = [
+    Completer<PremiumState>(),
+    Completer<PremiumState>(),
+  ];
+  int fetchCalls = 0;
 
   @override
-  Future<PremiumState> fetchPremiumState() => _fetch.future;
+  Future<PremiumState> fetchPremiumState() {
+    fetchCalls++;
+    final signal = _fetchSignals.putIfAbsent(
+      fetchCalls,
+      () => Completer<void>(),
+    );
+    if (!signal.isCompleted) signal.complete();
+    return _fetches[fetchCalls - 1].future;
+  }
 
   @override
   Stream<PremiumState> watchPremiumState() => _controller.stream;
 
   void emit(PremiumState state) {
-    if (!_controller.isClosed) {
-      _controller.add(state);
-    }
+    if (!_controller.isClosed) _controller.add(state);
   }
 
-  void completeFetch(PremiumState state) {
-    if (!_fetch.isCompleted) {
-      _fetch.complete(state);
+  Future<void> completeFetch(PremiumState state) async {
+    final index = fetchCalls - 1;
+    if (!_fetches[index].isCompleted) {
+      _fetches[index].complete(state);
     }
+    if (!_controller.isClosed) _controller.add(state);
+    await Future<void>.delayed(Duration.zero);
   }
+
+  Future<void> waitForFetchCall(int callNumber) =>
+      _fetchSignals.putIfAbsent(callNumber, () => Completer<void>()).future;
 
   @override
   void dispose() {
     _controller.close();
-    if (!_fetch.isCompleted) {
-      _fetch.complete(const PremiumState(isPremium: false, isLoading: false));
+    for (var i = 0; i < _fetches.length; i++) {
+      if (!_fetches[i].isCompleted) {
+        _fetches[i].complete(
+          const PremiumState(isPremium: false, isLoading: false),
+        );
+      }
     }
   }
 }
