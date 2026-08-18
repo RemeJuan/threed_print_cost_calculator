@@ -136,7 +136,6 @@ void main() {
     const expectedElectricityCost = 0.90;
     const expectedFilamentCost = 30.00;
     const expectedDisplayedLabourCost = 14.00;
-    const expectedHistoryLabourCost = 12.50;
     const expectedRiskCost = 4.34;
     const expectedTotalCost = 49.24;
 
@@ -160,26 +159,21 @@ void main() {
     expect(find.byKey(patrolKey('calculator.save.name.input')), findsNothing);
 
     await $.tapByKey('nav.history.button');
-    await expectHistoryVisibleAnywhere($, savedPrintName);
-
-    final itemKeyPrefix = 'history.item.$savedPrintName';
-
-    expect(find.byKey(historyCardKey(savedPrintName)), findsOneWidget);
-    expect($.textFromKey('$itemKeyPrefix.name'), savedPrintName);
-    expectHistoryItemCostValues(
-      $,
-      savedPrintName,
-      electricityCost: expectedElectricityCost,
-      filamentCost: expectedFilamentCost,
-      labourCost: expectedHistoryLabourCost,
-      riskCost: expectedRiskCost,
-      totalCost: expectedTotalCost,
+    await $.tester.scrollUntilVisible(
+      find.text(savedPrintName),
+      200,
+      scrollable: find.byType(Scrollable).first,
     );
 
-    final summary = $.textFromKey('$itemKeyPrefix.summary');
-    expect(summary, contains('0.15 kg'));
-    expect(summary, contains('2h 30m'));
-    expect(summary, contains(targetPrinterName));
-    expect(summary, contains(materialName));
+    expect(find.text(savedPrintName), findsOneWidget);
+    expect(find.text('0.90'), findsOneWidget);
+    expect(find.text('30.00'), findsOneWidget);
+    expect(find.text('12.50'), findsOneWidget);
+    expect(find.text('4.34'), findsOneWidget);
+    expect(find.text('49.24'), findsOneWidget);
+    expect(find.textContaining('0.15 kg'), findsOneWidget);
+    expect(find.textContaining('2h 30m'), findsOneWidget);
+    expect(find.textContaining(targetPrinterName), findsOneWidget);
+    expect(find.textContaining(materialName), findsOneWidget);
   });
 }

@@ -68,6 +68,7 @@ extension IntegrationTestUiWidgetTesterX on WidgetTester {
 
   Future<void> enterTextByKey(String key, String value) async {
     final deadline = DateTime.now().add(const Duration(seconds: 5));
+    TestFailure? lastFailure;
 
     while (DateTime.now().isBefore(deadline)) {
       final finder = _firstVisibleKeyFinder(key);
@@ -85,13 +86,18 @@ extension IntegrationTestUiWidgetTesterX on WidgetTester {
         await enterText(finder, value);
         await _settleTransientOverlays();
         return;
-      } catch (_) {
+      } catch (error) {
+        lastFailure = error is TestFailure
+            ? error
+            : TestFailure(error.toString());
         await _settleTransientOverlays();
         await pump(const Duration(milliseconds: 100));
       }
     }
 
-    fail('Unable to enter text for visible widget with key "$key".');
+    fail(
+      'Unable to enter text for visible widget with key "$key"${lastFailure == null ? '.' : ': ${lastFailure.message}'}',
+    );
   }
 
   Future<void> selectDropdownValueByKey(
@@ -99,11 +105,7 @@ extension IntegrationTestUiWidgetTesterX on WidgetTester {
     String optionKey,
   ) async {
     await _tapVisible(dropdownKey);
-    final optionFinder = find.byKey(ValueKey<String>(optionKey)).hitTestable();
-    await ensureVisible(optionFinder);
-    await pump();
-    await tap(optionFinder);
-    await _settleTransientOverlays();
+    await _tapVisible(optionKey);
   }
 
   Future<void> scrollUntilKeyVisible(String key, {double delta = 150}) async {
@@ -150,22 +152,16 @@ extension IntegrationTestUiWidgetTesterX on WidgetTester {
         continue;
       }
 
-      try {
-        for (final scrollable in scrollableFinders) {
-          try {
-            await scrollUntilVisible(finder, delta, scrollable: scrollable);
-            await _settleTransientOverlays();
-            return;
-          } catch (error) {
-            lastFailure = error is TestFailure
-                ? error
-                : TestFailure(error.toString());
-          }
+      for (final candidate in scrollableFinders) {
+        try {
+          await scrollUntilVisible(finder, delta, scrollable: candidate);
+          await _settleTransientOverlays();
+          return;
+        } catch (error) {
+          lastFailure = error is TestFailure
+              ? error
+              : TestFailure(error.toString());
         }
-      } catch (error) {
-        lastFailure = error is TestFailure
-            ? error
-            : TestFailure(error.toString());
       }
 
       await _settleTransientOverlays();
@@ -231,19 +227,19 @@ extension IntegrationTestUiWidgetTesterX on WidgetTester {
   }
 }
 
-String historyItemKey(String name, String suffix) {
-  return 'history.item.$name.$suffix';
+String historyItemKey(String historyId, String suffix) {
+  return 'history.item.$historyId.$suffix';
 }
 
-ValueKey<String> historyCardKey(String name) {
-  return ValueKey<String>(historyItemKey(name, 'card'));
+ValueKey<String> historyCardKey(String historyId) {
+  return ValueKey<String>(historyItemKey(historyId, 'card'));
 }
 
 Future<void> expectHistoryVisibleAnywhere(
   WidgetTester tester,
-  String name,
+  String historyId,
 ) async {
-  final finder = find.byKey(historyCardKey(name));
+  final finder = find.byKey(historyCardKey(historyId));
   final historyScrollable = find
       .ancestor(
         of: find.byKey(const ValueKey<String>('history.list')),
@@ -252,6 +248,22 @@ Future<void> expectHistoryVisibleAnywhere(
       .first;
   await tester.scrollUntilVisible(finder, 200, scrollable: historyScrollable);
   expect(finder, findsOneWidget);
+}
+
+Future<void> waitForKeyEventually(
+  WidgetTester tester,
+  String key, {
+  Duration timeout = const Duration(seconds: 5),
+}) async {
+  final deadline = DateTime.now().add(timeout);
+  final finder = find.byKey(ValueKey<String>(key));
+
+  while (DateTime.now().isBefore(deadline)) {
+    if (finder.evaluate().isNotEmpty) return;
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+
+  fail('Timed out waiting for key "$key".');
 }
 
 Future<void> scrollHistoryToTop(WidgetTester tester) async {

@@ -74,12 +74,16 @@ class MaterialCard extends ConsumerWidget {
           content: Text(l10n.deleteDialogContent),
           actions: [
             AppTertiaryButton(
-              key: const ValueKey<String>('materials.delete.cancel.button'),
+              key: ValueKey<String>(
+                'materials.delete.cancel.button.${material.id}',
+              ),
               onPressed: () => Navigator.pop(dialogContext, false),
               label: l10n.cancelButton,
             ),
             AppTertiaryButton(
-              key: const ValueKey<String>('materials.delete.confirm.button'),
+              key: ValueKey<String>(
+                'materials.delete.confirm.button.${material.id}',
+              ),
               onPressed: () => Navigator.pop(dialogContext, true),
               label: l10n.deleteButton,
             ),
@@ -105,7 +109,7 @@ class MaterialCard extends ConsumerWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => onEdit(),
-              key: const ValueKey<String>('materials.edit.button'),
+              key: ValueKey<String>('materials.edit.button.${material.id}'),
               backgroundColor: LIGHT_BLUE,
               foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
@@ -121,7 +125,9 @@ class MaterialCard extends ConsumerWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => onDuplicate(),
-              key: const ValueKey<String>('materials.duplicate.button'),
+              key: ValueKey<String>(
+                'materials.duplicate.button.${material.id}',
+              ),
               backgroundColor: ACTION_DUPLICATE,
               foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
@@ -135,7 +141,7 @@ class MaterialCard extends ConsumerWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => confirmDelete(),
-              key: const ValueKey<String>('materials.delete.button'),
+              key: ValueKey<String>('materials.delete.button.${material.id}'),
               backgroundColor: STATUS_ERROR,
               foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,

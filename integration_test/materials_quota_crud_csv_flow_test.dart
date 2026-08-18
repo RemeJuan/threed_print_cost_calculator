@@ -24,7 +24,7 @@ class RecordingMaterialsCsvExportService extends MaterialsCsvExportService {
   @override
   Future<String> buildCsv() async {
     called = true;
-    return 'id,name,brand,materialType,color,colorHex,originalWeight,remainingWeight,cost,autoDeductEnabled,archived,notes\n';
+    return materialsCsvHeader;
   }
 }
 
@@ -101,7 +101,9 @@ void main() {
     expect(find.text(l10n.materialLimitReachedMessage), findsOneWidget);
     expect(
       tester
-          .widget<FloatingActionButton>(find.byType(FloatingActionButton))
+          .widget<FloatingActionButton>(
+            find.byKey(const ValueKey<String>('materials.create.button')),
+          )
           .onPressed,
       isNull,
     );
@@ -129,7 +131,9 @@ void main() {
     await tester.drag(find.text(originalName), const Offset(-500, 0));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.tap(
-      find.byKey(const ValueKey<String>('materials.edit.button')),
+      find.byKey(
+        const ValueKey<String>('materials.edit.button.free-material-0'),
+      ),
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.enterTextByKey('settings.materials.name.input', updatedName);
@@ -140,11 +144,17 @@ void main() {
     await tester.drag(find.text(updatedName), const Offset(-500, 0));
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.tap(
-      find.byKey(const ValueKey<String>('materials.delete.button')),
+      find.byKey(
+        const ValueKey<String>('materials.delete.button.free-material-0'),
+      ),
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.tap(
-      find.byKey(const ValueKey<String>('materials.delete.confirm.button')),
+      find.byKey(
+        const ValueKey<String>(
+          'materials.delete.confirm.button.free-material-0',
+        ),
+      ),
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     expect(find.text(updatedName), findsNothing);
@@ -210,12 +220,13 @@ void main() {
   testWidgets('premium materials export seam is callable from tab', (
     tester,
   ) async {
-    late RecordingMaterialsCsvExportService exportService;
+    RecordingMaterialsCsvExportService? exportService;
     final harness = await IntegrationTestHarness.premium(
       overrides: [
         materialsCsvExportServiceProvider.overrideWith((ref) {
-          exportService = RecordingMaterialsCsvExportService(ref);
-          return exportService;
+          final service = RecordingMaterialsCsvExportService(ref);
+          exportService = service;
+          return service;
         }),
       ],
     );
@@ -228,6 +239,6 @@ void main() {
     );
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-    expect(exportService.called, isTrue);
+    expect(exportService?.called, isTrue);
   });
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -50,22 +49,12 @@ void main() {
 
     await scrollHistoryToTop(tester);
 
-    expect(
-      tester.textFromKey('history.item.History Beta.summary'),
-      contains('PETG White'),
-    );
-    expect(
-      find.byKey(const ValueKey<String>('history.item.History Beta.summary')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('history.item.History Alpha.summary')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('history.item.History Gamma.summary')),
-      findsNothing,
-    );
+    expect(find.text('History Beta'), findsOneWidget);
+    expect(find.text('History Alpha'), findsNothing);
+    expect(find.text('History Gamma'), findsNothing);
+    expect(find.textContaining('PETG White'), findsOneWidget);
+    expect(find.textContaining('PLA Black'), findsNothing);
+    expect(find.textContaining('ABS Red'), findsNothing);
 
     await tester.tapByKey('history.search.clear.button');
     await tester.settleDebounce();
@@ -77,21 +66,11 @@ void main() {
 
     await scrollHistoryToTop(tester);
 
-    expect(
-      tester.textFromKey('history.item.History Gamma.summary'),
-      contains('ABS Red'),
-    );
-    expect(
-      find.byKey(const ValueKey<String>('history.item.History Gamma.summary')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('history.item.History Alpha.summary')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const ValueKey<String>('history.item.History Beta.summary')),
-      findsNothing,
-    );
+    expect(find.text('History Gamma'), findsOneWidget);
+    expect(find.text('History Alpha'), findsNothing);
+    expect(find.text('History Beta'), findsNothing);
+    expect(find.textContaining('ABS Red'), findsOneWidget);
+    expect(find.textContaining('PLA Black'), findsNothing);
+    expect(find.textContaining('PETG White'), findsNothing);
   });
 }

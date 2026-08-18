@@ -590,16 +590,16 @@ Future<Map<String, String>> pumpHistoryItemView(
   HistoryModel model, {
   Map<String, MaterialModel> materials = const {},
 }) async {
-  final db = await tester
-      .pumpApp(HistoryItem(dbKey: 'history-1', data: model), [
-        materialsRepositoryProvider.overrideWithValue(
-          FakeMaterialsRepository(materials),
-        ),
-      ]);
+  const historyId = 'history-1';
+  final db = await tester.pumpApp(HistoryItem(dbKey: historyId, data: model), [
+    materialsRepositoryProvider.overrideWithValue(
+      FakeMaterialsRepository(materials),
+    ),
+  ]);
 
   try {
     await tester.pump();
-    final prefix = 'history.item.${model.name}';
+    final prefix = 'history.item.$historyId';
     return {
       'electricity': _textByKey(
         tester,
