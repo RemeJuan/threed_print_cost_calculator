@@ -10,7 +10,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/settings_page.dart';
 
 import '../helpers/helpers.dart';
-import '../helpers/lower_level_test_fakes.dart' show FakePaywallPresenter;
+import '../helpers/purchases_test_fakes.dart';
 import 'settings_page_test_support.dart';
 
 class _FakeAnalyticsService implements AnalyticsService {

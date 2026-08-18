@@ -15,7 +15,8 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
+import '../../helpers/purchases_test_fakes.dart';
 
 class _FakeHistoryPagedNotifier extends HistoryPagedNotifier {
   _FakeHistoryPagedNotifier(this._initialState);
@@ -190,9 +191,7 @@ void main() {
     await tester.pumpAndSettle();
     final l10n = AppLocalizations.of(tester.element(find.byType(HistoryPage)))!;
 
-    await tester.tap(
-      find.byKey(const ValueKey<String>('history.item.Benchy.menu')),
-    );
+    await tester.tap(find.byKey(const ValueKey<String>('history.item.1.menu')));
     await tester.pumpAndSettle();
     await tester.tap(find.text(l10n.historyLoadAction));
     await tester.pumpAndSettle();
@@ -290,9 +289,7 @@ void main() {
 
     expect(find.text('More actions in ⋯'), findsOneWidget);
 
-    await tester.tap(
-      find.byKey(const ValueKey<String>('history.item.Benchy.menu')),
-    );
+    await tester.tap(find.byKey(const ValueKey<String>('history.item.1.menu')));
     await tester.pumpAndSettle();
 
     expect(find.text('More actions in ⋯'), findsNothing);
@@ -441,7 +438,7 @@ void main() {
     expect(find.text('Item 1'), findsOneWidget);
     expect(find.text('Item 8'), findsNothing);
     expect(
-      find.byKey(const ValueKey<String>('history.item.Item 8.menu')),
+      find.byKey(const ValueKey<String>('history.item.8.menu')),
       findsNothing,
     );
 
@@ -503,6 +500,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(HistoryExportPreviewSheet), findsOneWidget);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HistoryPage)))!;
+    final expectedPreview = generateSampleCsvPreview(
+      csvHeader: l10n.historyCsvHeader,
+    );
+    expect(find.text(expectedPreview), findsOneWidget);
     expect(paywallPresenter.calls, 1);
 
     await tester.tap(

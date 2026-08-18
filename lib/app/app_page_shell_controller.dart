@@ -67,14 +67,21 @@ AppPageShellController useAppPageShellController({
   }, [renderedTab]);
 
   useEffect(() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!isMounted()) return;
-      if (!pageController.hasClients) return;
-      if (tapNavigationTargetIndex.value != null) return;
-      if (pageController.page?.round() != selectedIndex) {
-        pageController.jumpToPage(selectedIndex);
-      }
-    });
+    void reconcile() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!isMounted()) return;
+        if (!pageController.hasClients) {
+          reconcile();
+          return;
+        }
+        if (tapNavigationTargetIndex.value != null) return;
+        if (pageController.page?.round() != selectedIndex) {
+          pageController.jumpToPage(selectedIndex);
+        }
+      });
+    }
+
+    reconcile();
     return null;
   }, [selectedIndex, tapNavigationTargetIndex.value]);
 
@@ -89,8 +96,13 @@ AppPageShellController useAppPageShellController({
 
   void onNavigationTap(int index) {
     if (index == selectedIndex) return;
-    tapNavigationTargetIndex.value = index;
     selectedTab.value = tabs[index];
+    if (!pageController.hasClients) {
+      tapNavigationTargetIndex.value = null;
+      return;
+    }
+
+    tapNavigationTargetIndex.value = index;
     pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 500),
@@ -99,9 +111,14 @@ AppPageShellController useAppPageShellController({
   }
 
   void returnToCalculator() {
-    tapNavigationTargetIndex.value = 0;
     selectedTab.value = AppPageTab.calculator;
-    if (pageController.hasClients) pageController.jumpToPage(0);
+    if (!pageController.hasClients) {
+      tapNavigationTargetIndex.value = null;
+      return;
+    }
+
+    tapNavigationTargetIndex.value = 0;
+    pageController.jumpToPage(0);
   }
 
   return AppPageShellController(

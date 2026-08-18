@@ -10,7 +10,7 @@ import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/shared/components/whats_new_sheet.dart';
 import 'package:threed_print_cost_calculator/shared/models/whats_new_announcement.dart';
 
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/purchases_test_fakes.dart';
 
 class _FakeAnalytics implements AnalyticsService {
   String? lastName;

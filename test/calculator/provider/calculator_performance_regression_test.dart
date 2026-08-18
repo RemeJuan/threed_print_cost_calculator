@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/calculator/model/material_usage_inp
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import '../../helpers/lower_level_test_fakes.dart' show FakeSettingsRepository;
+import '../../helpers/settings_test_fakes.dart';
 
 MaterialUsageInput _usage(int i) => MaterialUsageInput(
   materialId: 'mat-$i',

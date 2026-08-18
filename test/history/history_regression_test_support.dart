@@ -29,7 +29,8 @@ import 'package:threed_print_cost_calculator/purchases/premium_access_providers.
 import 'package:threed_print_cost_calculator/shared/utils/csv_utils.dart';
 
 import '../helpers/helpers.dart';
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/calculator_test_fakes.dart';
+import '../helpers/settings_test_fakes.dart';
 
 const historyCsvHeader =
     'Date,Printer,Material,Materials,Weight (g),Time,Electricity,Filament,Labour,Risk,Total,Pricing Markup %,Pricing Markup,Pricing Setup Fee,Pricing Rounding,Pricing Subtotal,Pricing Rounding Adjustment,Final Price';
@@ -589,16 +590,16 @@ Future<Map<String, String>> pumpHistoryItemView(
   HistoryModel model, {
   Map<String, MaterialModel> materials = const {},
 }) async {
-  final db = await tester
-      .pumpApp(HistoryItem(dbKey: 'history-1', data: model), [
-        materialsRepositoryProvider.overrideWithValue(
-          FakeMaterialsRepository(materials),
-        ),
-      ]);
+  const historyId = 'history-1';
+  final db = await tester.pumpApp(HistoryItem(dbKey: historyId, data: model), [
+    materialsRepositoryProvider.overrideWithValue(
+      FakeMaterialsRepository(materials),
+    ),
+  ]);
 
   try {
     await tester.pump();
-    final prefix = 'history.item.${model.name}';
+    final prefix = 'history.item.$historyId';
     return {
       'electricity': _textByKey(
         tester,

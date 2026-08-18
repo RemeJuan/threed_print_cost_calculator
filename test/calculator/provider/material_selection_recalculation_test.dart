@@ -10,7 +10,7 @@ import 'package:threed_print_cost_calculator/settings/model/general_settings_mod
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 
 class _FakeAnalytics implements AnalyticsService {
   final events = <String>[];

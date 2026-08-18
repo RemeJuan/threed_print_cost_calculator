@@ -43,6 +43,7 @@
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
 - Startup migrations run in `lib/startup.dart` after first frame; current startup work rebuilds printer/history indexes and migrates legacy history material data.
 - `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
+- `PremiumLocalStore.write` and `PremiumLocalStore.delete` throw `StateError` when SharedPreferences persistence fails; callers must handle those failures.
 - Android Auto Backup rules currently include the app-private root for cloud and device transfer. Keep them unchanged until a destructive backup/restore test verifies which persisted data must survive; classify databases, preferences, secure values, and rebuildable files before narrowing scope.
 
 ## Premium gating approach

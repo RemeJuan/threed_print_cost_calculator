@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
-import '../../helpers/lower_level_test_fakes.dart' show FakeSettingsRepository;
+import '../../helpers/settings_test_fakes.dart';
 
 void main() {
   group('CalculatorProvider localized parsing', () {

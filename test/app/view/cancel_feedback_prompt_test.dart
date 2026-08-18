@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/core/analytics/analytics_service.da
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 
 import '../../../test_support/fake_purchases_gateway.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
 import 'app_page_test_support.dart';
 
 class _AnalyticsEvent {

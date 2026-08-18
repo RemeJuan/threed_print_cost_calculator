@@ -11,7 +11,7 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
 
 class _MaterialRowSummaryHarness extends StatefulWidget {

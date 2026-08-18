@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
 
-import '../helpers/lower_level_test_fakes.dart';
+import '../helpers/purchases_test_fakes.dart';
 
 class _FakeAnalytics implements AnalyticsService {
   final List<MapEntry<String, Map<String, Object>?>> events = [];

@@ -14,11 +14,14 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
+import 'package:threed_print_cost_calculator/shared/providers/update_checker_provider.dart';
+import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider.dart';
 
 import '../../test_support/fake_purchases_gateway.dart';
 
@@ -86,6 +89,14 @@ class IntegrationTestHarness {
           SharedPrefsPremiumLocalStore(sharedPreferences),
         ),
         purchasesGatewayProvider.overrideWithValue(purchasesGateway),
+        paywallPresenterProvider.overrideWithValue(_NoopPaywallPresenter()),
+        currentAnnouncementProvider.overrideWith((ref) async => null),
+        updateAvailabilityLookupProvider.overrideWithValue(
+          ({
+            required String currentVersion,
+            required TargetPlatform platform,
+          }) async => const UpdateAvailabilityResult.unavailable(),
+        ),
         ...additionalOverrides,
       ],
     );
@@ -117,6 +128,7 @@ class IntegrationTestHarness {
   Future<void> launchApp(WidgetTester tester) async {
     await tester.pumpWidget(buildApp());
     await settleApp(tester);
+    await waitForPremiumStateReady(tester);
   }
 
   Widget buildApp() {
@@ -125,7 +137,24 @@ class IntegrationTestHarness {
 
   Future<void> settleApp(WidgetTester tester) async {
     await tester.pump();
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+  }
+
+  Future<void> waitForPremiumStateReady(WidgetTester tester) async {
+    const timeout = Duration(seconds: 5);
+    final deadline = DateTime.now().add(timeout);
+
+    while (DateTime.now().isBefore(deadline)) {
+      if (!container.read(premiumStateProvider).isLoading) {
+        return;
+      }
+
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+
+    fail(
+      'Timed out waiting for premiumStateProvider to leave loading state after ${timeout.inSeconds}s.',
+    );
   }
 
   Future<void> seedSettings(GeneralSettingsModel settings) async {
@@ -157,6 +186,18 @@ class IntegrationTestHarness {
 class _NoopAnalyticsService implements AnalyticsService {
   @override
   Future<void> logEvent(String name, {Map<String, Object>? params}) async {}
+}
+
+class _NoopPaywallPresenter implements PaywallPresenter {
+  @override
+  Future<void> present(
+    String offeringId, {
+    required String triggerFeature,
+    required String purchaseSource,
+    String defaultEntryPoint = 'manual',
+    String source = 'unknown',
+    int? launchCount,
+  }) async {}
 }
 
 extension IntegrationHarnessWidgetTesterX on WidgetTester {

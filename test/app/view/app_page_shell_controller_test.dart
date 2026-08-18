@@ -10,7 +10,8 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/materials_csv_export_service.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 import '../../../test_support/fake_purchases_gateway.dart';
 import 'app_page_test_support.dart';
 
@@ -53,14 +54,33 @@ void main() {
     await settleAppPage(tester);
 
     expect(appProviderContainer!.read(pendingTabNavigationProvider), isNull);
-    expect(
-      tester
-          .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
-          .currentIndex,
-      1,
-    );
     expect(_pageView(tester).controller!.page, 1);
   });
+
+  testWidgets(
+    'pending tab navigation before attach syncs after PageView attaches',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({'run_count': 0});
+      final calculatorNotifier = FakeCalculatorNotifier();
+      final gateway = FakePurchasesGateway(premiumUser());
+
+      await pumpAppPage(tester, gateway, calculatorNotifier);
+      appProviderContainer!
+          .read(pendingTabNavigationProvider.notifier)
+          .navigate(AppPageTab.materials);
+      await tester.pump();
+      await settleAppPage(tester);
+
+      expect(appProviderContainer!.read(pendingTabNavigationProvider), isNull);
+      expect(
+        tester
+            .widget<BottomNavigationBar>(find.byType(BottomNavigationBar))
+            .currentIndex,
+        1,
+      );
+      expect(_pageView(tester).controller!.page, 1);
+    },
+  );
 
   testWidgets('unavailable pending tab consumes then falls back', (
     tester,

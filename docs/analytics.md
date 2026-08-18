@@ -10,6 +10,7 @@
   - `AppAnalytics.logger` injected from `lib/app/app.dart`
 - Send path: app code calls `AppAnalytics.*` helpers or `AppAnalytics.log(...)`; only `FirebaseAnalyticsService.logEvent(...)` calls `FirebaseAnalytics.instance.logEvent(...)` directly
 - Approach: minimal, feature-level tracking only. Params sanitized to strings/numbers before send. Tests replace analytics with no-op implementations.
+- Native review limit: request invocation is observable, but whether the OS dialog displayed, user interaction happened, or a store rating submitted is not reliably observable.
 
 ## Tools used
 

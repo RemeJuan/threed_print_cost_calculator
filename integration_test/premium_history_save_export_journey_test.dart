@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/history/components/history_export_options_sheet.dart';
-import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/shared/utils/csv_history_export_service.dart';
 
 import 'helpers/integration_test_harness.dart';
@@ -28,22 +26,6 @@ class _SpyCsvUtils extends CsvUtils {
   }
 }
 
-class _CountingPaywallPresenter implements PaywallPresenter {
-  var calls = 0;
-
-  @override
-  Future<void> present(
-    String offeringId, {
-    required String triggerFeature,
-    required String purchaseSource,
-    String defaultEntryPoint = 'manual',
-    String source = 'unknown',
-    int? launchCount,
-  }) async {
-    calls += 1;
-  }
-}
-
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -52,12 +34,10 @@ void main() {
   ) async {
     const savedName = 'Saved Export Entry';
 
-    final paywallPresenter = _CountingPaywallPresenter();
     late _SpyCsvUtils csvUtils;
 
     final harness = await IntegrationTestHarness.premium(
       overrides: [
-        paywallPresenterProvider.overrideWithValue(paywallPresenter),
         csvUtilsProvider.overrideWith((ref) {
           csvUtils = _SpyCsvUtils(ref);
           return csvUtils;
@@ -87,18 +67,12 @@ void main() {
     expect(savedRecord.riskCost, 0);
 
     await tester.tapByKey('nav.history.button');
-    expect(find.byKey(historyCardKey(savedName)), findsOneWidget);
+    await tester.pumpAndSettle();
+    await expectHistoryVisibleAnywhere(tester, savedName);
 
     await tester.tapByKey('history.export.button');
     await tester.pumpAndSettle();
-    await tester.tap(
-      find
-          .descendant(
-            of: find.byType(HistoryExportOptionsSheet),
-            matching: find.byType(ListTile),
-          )
-          .first,
-    );
+    await tester.tap(find.byKey(HistoryExportOptionsSheet.allRangeKey));
     await tester.pumpAndSettle();
 
     expect(csvUtils.exportMixedHistoryForRangeCalls, 1);
@@ -113,6 +87,5 @@ void main() {
     expect(csvUtils.lastHistory!.single.electricityCost, 0);
     expect(csvUtils.lastHistory!.single.labourCost, 0);
     expect(csvUtils.lastHistory!.single.riskCost, 0);
-    expect(paywallPresenter.calls, 0);
   });
 }

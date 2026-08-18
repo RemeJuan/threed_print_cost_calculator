@@ -65,12 +65,17 @@ void main() {
       await tester.launchHarnessApp(harness);
 
       await tester.tapByKey('nav.calculator.button');
+      await tester.scrollUntilKeyVisible('calculator.printer.select');
       await tester.selectDropdownValueByKey(
         'calculator.printer.select',
         'calculator.printer.option.$printerName',
       );
 
+      await tester.scrollUntilKeyVisible('calculator.materials.add.button');
       await tester.tapByKey('calculator.materials.add.button');
+      await tester.scrollUntilKeyVisible(
+        'calculator.materialPicker.item.$pricedMaterialName',
+      );
       await tester.tapByKey(
         'calculator.materialPicker.item.$pricedMaterialName',
       );
@@ -78,7 +83,9 @@ void main() {
         'calculator.materials.item.0.weight.input',
         printWeightGrams.toString(),
       );
+      await tester.scrollUntilKeyVisible('calculator.duration.button');
       await tester.tapByKey('calculator.duration.button');
+      await tester.scrollUntilKeyVisible('calculator.duration.hours.input');
       await tester.enterTextByKey(
         'calculator.duration.hours.input',
         durationHours.toString(),
@@ -102,6 +109,9 @@ void main() {
       );
 
       await tester.tapByKey('calculator.materials.item.0.pick.button');
+      await tester.scrollUntilKeyVisible(
+        'calculator.materialPicker.item.$zeroCostMaterialName',
+      );
       await tester.tapByKey(
         'calculator.materialPicker.item.$zeroCostMaterialName',
       );
@@ -117,6 +127,9 @@ void main() {
       );
 
       await tester.tapByKey('calculator.materials.item.0.pick.button');
+      await tester.scrollUntilKeyVisible(
+        'calculator.materialPicker.item.$pricedMaterialName',
+      );
       await tester.tapByKey(
         'calculator.materialPicker.item.$pricedMaterialName',
       );

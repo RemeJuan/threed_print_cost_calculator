@@ -1,7 +1,6 @@
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 
 String formatPricingSummary(
   String value,
@@ -17,12 +16,7 @@ String formatPricingSummary(
 
   if (isPercent) {
     final formattedValue = '$value%';
-    final formattedImpact = formatCurrencyValue(
-      monetaryImpact,
-      currencySymbol: currencySettings.currencySymbol,
-      currencyPosition: currencySettings.currencyPosition,
-      currencySpacing: currencySettings.currencySpacing,
-    );
+    final formattedImpact = monetaryImpact.toStringAsFixed(2);
     if (scope == BatchPricingScope.batch) {
       return '$formattedValue → $formattedImpact';
     }
@@ -32,21 +26,11 @@ String formatPricingSummary(
     );
   }
 
-  final formattedValue = formatCurrencyValue(
-    parsed,
-    currencySymbol: currencySettings.currencySymbol,
-    currencyPosition: currencySettings.currencyPosition,
-    currencySpacing: currencySettings.currencySpacing,
-  );
+  final formattedValue = parsed.toStringAsFixed(2);
   if (scope == BatchPricingScope.batch) return formattedValue;
 
   final lineTotalValue = parsed * totalQuantity;
-  final formattedLineTotal = formatCurrencyValue(
-    lineTotalValue,
-    currencySymbol: currencySettings.currencySymbol,
-    currencyPosition: currencySettings.currencyPosition,
-    currencySpacing: currencySettings.currencySpacing,
-  );
+  final formattedLineTotal = lineTotalValue.toStringAsFixed(2);
   return l10n.batchCostingSummaryPricingItemScopeFormat(
     formattedLineTotal,
     formattedValue,

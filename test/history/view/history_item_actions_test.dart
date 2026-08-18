@@ -14,7 +14,8 @@ import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.da
 import 'package:threed_print_cost_calculator/shared/utils/csv_history_export_service.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
+import '../../helpers/purchases_test_fakes.dart';
 
 class _FakeCsvUtils extends CsvUtils {
   _FakeCsvUtils(super.ref);

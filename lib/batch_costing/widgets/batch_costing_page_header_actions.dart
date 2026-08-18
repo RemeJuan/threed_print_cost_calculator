@@ -33,6 +33,7 @@ class BatchCostingPageHeaderActions extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           AppTertiaryButton(
+            key: const ValueKey<String>('batch-costing-add-manual-button'),
             onPressed: onAddManual,
             label: addManualLabel,
             icon: const Icon(Icons.add),
@@ -42,6 +43,7 @@ class BatchCostingPageHeaderActions extends StatelessWidget {
             Opacity(
               opacity: batchImportAllowed ? 1 : 0.55,
               child: AppTertiaryButton(
+                key: const ValueKey<String>('batch-costing-import-button'),
                 onPressed: onImport,
                 label: importLabel,
                 icon: const Icon(Icons.upload_file),

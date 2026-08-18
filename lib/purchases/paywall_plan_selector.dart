@@ -163,14 +163,6 @@ class _PlanCard extends StatelessWidget {
   }
 }
 
-Package? preferredPackage(List<Package>? packages) {
-  if (packages == null || packages.isEmpty) return null;
-  return packages.firstWhere(
-    (pkg) => pkg.packageType == PackageType.annual,
-    orElse: () => packages.first,
-  );
-}
-
 String planTitle(Package pkg, AppLocalizations l10n) {
   return switch (pkg.packageType) {
     PackageType.monthly => l10n.paywallPlanMonthly,

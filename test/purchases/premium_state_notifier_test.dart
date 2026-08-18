@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:threed_print_cost_calculator/purchases/premium_local_store.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_memory.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_local_store_api.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_keys.dart';
 import 'package:threed_print_cost_calculator/purchases/purchases_gateway.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
+import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart';
 
 import '../../test_support/fake_purchases_gateway.dart';
 
@@ -163,6 +165,73 @@ void main() {
       expect(state.isPremium, isFalse);
     },
   );
+
+  test('expired local premium override cleans up once and refreshes', () async {
+    final store = _CountingStore({
+      testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01',
+    });
+    late final _NoopTestDataService testDataService;
+    final gateway = _ControllableGateway();
+    final container = ProviderContainer(
+      overrides: [
+        purchasesGatewayProvider.overrideWithValue(gateway),
+        premiumLocalStoreProvider.overrideWithValue(store),
+        testDataServiceProvider.overrideWith((ref) {
+          testDataService = _NoopTestDataService(ref, store);
+          return testDataService;
+        }),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    expect(container.read(premiumStateProvider).isLoading, isTrue);
+
+    final states = <PremiumState>[];
+    final sub = container.listen(
+      premiumStateProvider,
+      (_, next) => states.add(next),
+      fireImmediately: true,
+    );
+    addTearDown(sub.close);
+
+    expect(gateway.fetchCalls, 1);
+
+    await gateway.waitForFetchCall(1);
+
+    await gateway.completeFetch(
+      const PremiumState(isPremium: false, isLoading: false, userId: 'free-1'),
+    );
+
+    expect(testDataService.purgeCalls, 1);
+    expect(gateway.fetchCalls, 2);
+
+    await gateway.waitForFetchCall(2);
+
+    final finalState = Completer<PremiumState>();
+    final finalSub = container.listen(premiumStateProvider, (_, next) {
+      if (!next.isLoading && next.isPremium && next.userId == 'pro-1') {
+        if (!finalState.isCompleted) finalState.complete(next);
+      }
+    }, fireImmediately: false);
+    addTearDown(finalSub.close);
+
+    await gateway.completeFetch(
+      const PremiumState(isPremium: true, isLoading: false, userId: 'pro-1'),
+    );
+
+    final state = await finalState.future;
+    expect(state.isLoading, isFalse);
+    expect(state.isPremium, isTrue);
+
+    expect(testDataService.purgeCalls, 1);
+    expect(
+      states.any((state) => !state.isLoading && !state.isPremium),
+      isFalse,
+    );
+    expect(state.isPremium, isTrue);
+    expect(state.isLoading, isFalse);
+    expect(state.userId, 'pro-1');
+  });
 }
 
 class _FailingGateway implements PurchasesGateway {
@@ -181,31 +250,104 @@ class _FailingGateway implements PurchasesGateway {
 
 class _ControllableGateway implements PurchasesGateway {
   final _controller = StreamController<PremiumState>.broadcast();
-  final Completer<PremiumState> _fetch = Completer<PremiumState>();
+  final Map<int, Completer<void>> _fetchSignals = {};
+  final List<Completer<PremiumState>> _fetches = [
+    Completer<PremiumState>(),
+    Completer<PremiumState>(),
+  ];
+  int fetchCalls = 0;
 
   @override
-  Future<PremiumState> fetchPremiumState() => _fetch.future;
+  Future<PremiumState> fetchPremiumState() {
+    fetchCalls++;
+    final signal = _fetchSignals.putIfAbsent(
+      fetchCalls,
+      () => Completer<void>(),
+    );
+    if (!signal.isCompleted) signal.complete();
+    return _fetches[fetchCalls - 1].future;
+  }
 
   @override
   Stream<PremiumState> watchPremiumState() => _controller.stream;
 
   void emit(PremiumState state) {
-    if (!_controller.isClosed) {
-      _controller.add(state);
-    }
+    if (!_controller.isClosed) _controller.add(state);
   }
 
-  void completeFetch(PremiumState state) {
-    if (!_fetch.isCompleted) {
-      _fetch.complete(state);
+  Future<void> completeFetch(PremiumState state) async {
+    final index = fetchCalls - 1;
+    if (!_fetches[index].isCompleted) {
+      _fetches[index].complete(state);
     }
+    if (!_controller.isClosed) _controller.add(state);
+    await Future<void>.delayed(Duration.zero);
   }
+
+  Future<void> waitForFetchCall(int callNumber) =>
+      _fetchSignals.putIfAbsent(callNumber, () => Completer<void>()).future;
 
   @override
   void dispose() {
     _controller.close();
-    if (!_fetch.isCompleted) {
-      _fetch.complete(const PremiumState(isPremium: false, isLoading: false));
+    for (var i = 0; i < _fetches.length; i++) {
+      if (!_fetches[i].isCompleted) {
+        _fetches[i].complete(
+          const PremiumState(isPremium: false, isLoading: false),
+        );
+      }
     }
   }
+}
+
+class _CountingStore implements PremiumLocalStore {
+  _CountingStore(Map<String, String> values) : _values = {...values};
+
+  final Map<String, String> _values;
+  int deleteCalls = 0;
+
+  @override
+  String? readSync(String key) => _values[key];
+
+  @override
+  Future<String?> read(String key) async => _values[key];
+
+  @override
+  Future<void> write(String key, String value) async {
+    _values[key] = value;
+  }
+
+  @override
+  Future<void> delete(String key) async {
+    deleteCalls++;
+    _values.remove(key);
+  }
+
+  @override
+  Future<Map<String, String>> readAll() async =>
+      Map<String, String>.unmodifiable(_values);
+}
+
+class _NoopTestDataService extends TestDataService {
+  _NoopTestDataService(super.ref, this._store)
+    : super(loader: const _NoopSeedLoader());
+
+  final PremiumLocalStore _store;
+
+  int purgeCalls = 0;
+
+  @override
+  Future<TestDataOperationResult> purge() async {
+    purgeCalls++;
+    await _store.delete(testPremiumOverrideEnabledOnPreferenceKey);
+    return const TestDataOperationResult.success();
+  }
+}
+
+class _NoopSeedLoader implements SeedLoader {
+  const _NoopSeedLoader();
+
+  @override
+  Future<SeedDataBundle> load({String subdirectory = 'free'}) async =>
+      throw UnimplementedError();
 }

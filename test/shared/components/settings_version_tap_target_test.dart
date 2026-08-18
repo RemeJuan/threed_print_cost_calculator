@@ -17,7 +17,7 @@ import 'package:threed_print_cost_calculator/shared/test_tools/seed_loader.dart'
 import 'package:threed_print_cost_calculator/shared/test_tools/test_data_service.dart';
 
 import '../../helpers/helpers.dart';
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/calculator_test_fakes.dart';
 
 class _NoopAssetBundle extends CachingAssetBundle {
   @override

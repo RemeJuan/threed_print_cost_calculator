@@ -4,7 +4,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/services/settings_service.dart';
 
-import '../../helpers/lower_level_test_fakes.dart';
+import '../../helpers/settings_test_fakes.dart';
 
 void main() {
   test('delegates get and saves transformed settings on update', () async {

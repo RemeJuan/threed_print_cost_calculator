@@ -1,12 +1,12 @@
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 
-String _quote(Object? value) {
+String quoteCsvCell(Object? value) {
   final s = value?.toString() ?? '';
   final escaped = s.replaceAll('"', '""');
   return '"$escaped"';
 }
 
-String _sanitizeForCsv(String input) {
+String sanitizeCsvSpreadsheetCell(String input) {
   if (input.isEmpty) return input;
   var firstIndex = 0;
   while (firstIndex < input.length) {
@@ -34,32 +34,32 @@ String generateCsv(List<HistoryModel> items, String csvHeader) {
               usage['materialName']?.toString() ??
               usage['materialId']?.toString() ??
               'Material';
-          final name = _sanitizeForCsv(rawName);
-          final weight = _sanitizeForCsv(
+          final name = sanitizeCsvSpreadsheetCell(rawName);
+          final weight = sanitizeCsvSpreadsheetCell(
             usage['weightGrams']?.toString() ?? '0',
           );
           return '$name:${weight}g';
         })
         .join('; ');
     buffer.writeln(
-      '${_quote(_sanitizeForCsv(item.date.toIso8601String()))},'
-      '${_quote(_sanitizeForCsv(item.printer))},'
-      '${_quote(_sanitizeForCsv(item.material))},'
-      '${_quote(materialsFlattened)},'
-      '${_quote(item.weight)},'
-      '${_quote(item.timeHours)},'
-      '${_quote(item.electricityCost)},'
-      '${_quote(item.filamentCost)},'
-      '${_quote(item.labourCost)},'
-      '${_quote(item.riskCost)},'
-      '${_quote(item.totalCost)},'
-      '${_quote(item.pricingMarkupPercent?.toString() ?? '')},'
-      '${_quote(item.pricingMarkupAmount?.toString() ?? '')},'
-      '${_quote(item.pricingSetupFee?.toString() ?? '')},'
-      '${_quote(_sanitizeForCsv(item.pricingRoundingMode ?? ''))},'
-      '${_quote(item.pricingSubtotalBeforeRounding?.toString() ?? '')},'
-      '${_quote(item.pricingRoundingAdjustment?.toString() ?? '')},'
-      '${_quote(item.finalPrice?.toString() ?? '')}',
+      '${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.date.toIso8601String()))},'
+      '${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.printer))},'
+      '${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.material))},'
+      '${quoteCsvCell(materialsFlattened)},'
+      '${quoteCsvCell(item.weight)},'
+      '${quoteCsvCell(item.timeHours)},'
+      '${quoteCsvCell(item.electricityCost)},'
+      '${quoteCsvCell(item.filamentCost)},'
+      '${quoteCsvCell(item.labourCost)},'
+      '${quoteCsvCell(item.riskCost)},'
+      '${quoteCsvCell(item.totalCost)},'
+      '${quoteCsvCell(item.pricingMarkupPercent?.toString() ?? '')},'
+      '${quoteCsvCell(item.pricingMarkupAmount?.toString() ?? '')},'
+      '${quoteCsvCell(item.pricingSetupFee?.toString() ?? '')},'
+      '${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.pricingRoundingMode ?? ''))},'
+      '${quoteCsvCell(item.pricingSubtotalBeforeRounding?.toString() ?? '')},'
+      '${quoteCsvCell(item.pricingRoundingAdjustment?.toString() ?? '')},'
+      '${quoteCsvCell(item.finalPrice?.toString() ?? '')}',
     );
   }
   return buffer.toString();
@@ -126,8 +126,10 @@ String generateBatchQuoteCsv(HistoryModel item) {
     throw ArgumentError('HistoryModel is not a batch quote');
   }
   final buffer = StringBuffer()..writeln(batchQuoteCsvHeader);
-  final quoteName = _quote(_sanitizeForCsv(item.name));
-  final createdDate = _quote(_sanitizeForCsv(item.date.toIso8601String()));
+  final quoteName = quoteCsvCell(sanitizeCsvSpreadsheetCell(item.name));
+  final createdDate = quoteCsvCell(
+    sanitizeCsvSpreadsheetCell(item.date.toIso8601String()),
+  );
   final summary = item.batchQuoteSummary ?? const <String, dynamic>{};
   final totalPrintTime = _formatDurationFromMinutes(
     summary['totalPrintDurationMinutes'],
@@ -135,99 +137,99 @@ String generateBatchQuoteCsv(HistoryModel item) {
   final quoteId = '';
   buffer.writeln(
     [
-      _quote('summary'),
-      _quote(quoteId),
+      quoteCsvCell('summary'),
+      quoteCsvCell(quoteId),
       quoteName,
       createdDate,
-      _quote((summary['itemCount'] as num?)?.toInt() ?? 0),
-      _quote((summary['totalQuantity'] as num?)?.toInt() ?? 0),
-      _quote((summary['totalWeightG'] as num?)?.toDouble() ?? 0.0),
-      _quote(totalPrintTime),
-      _quote((summary['finalTotal'] as num?)?.toString() ?? ''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
-      _quote(''),
+      quoteCsvCell((summary['itemCount'] as num?)?.toInt() ?? 0),
+      quoteCsvCell((summary['totalQuantity'] as num?)?.toInt() ?? 0),
+      quoteCsvCell((summary['totalWeightG'] as num?)?.toDouble() ?? 0.0),
+      quoteCsvCell(totalPrintTime),
+      quoteCsvCell((summary['finalTotal'] as num?)?.toString() ?? ''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
+      quoteCsvCell(''),
     ].join(','),
   );
   final pricing = summary['pricing'];
   if (pricing is Map) {
     buffer.writeln(
       [
-        _quote('pricing'),
-        _quote(quoteId),
+        quoteCsvCell('pricing'),
+        quoteCsvCell(quoteId),
         quoteName,
         createdDate,
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(_pricingFieldValue(pricing, 'labourRate')),
-        _quote(_pricingFieldValue(pricing, 'failureRisk')),
-        _quote(_pricingFieldValue(pricing, 'markupPercent')),
-        _quote(_pricingFieldValue(pricing, 'setupFee')),
-        _quote(''),
-        _quote(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(_pricingFieldValue(pricing, 'labourRate')),
+        quoteCsvCell(_pricingFieldValue(pricing, 'failureRisk')),
+        quoteCsvCell(_pricingFieldValue(pricing, 'markupPercent')),
+        quoteCsvCell(_pricingFieldValue(pricing, 'setupFee')),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
       ].join(','),
     );
   }
   for (final batchItem in item.batchQuoteItems) {
-    final itemName = _quote(
-      _sanitizeForCsv(batchItem['name']?.toString() ?? ''),
+    final itemName = quoteCsvCell(
+      sanitizeCsvSpreadsheetCell(batchItem['name']?.toString() ?? ''),
     );
     final quantity = batchItem['quantity']?.toString() ?? '0';
-    final source = _quote(
+    final source = quoteCsvCell(
       batchItem['id']?.toString().startsWith('manual_') == true
           ? 'Manual'
           : 'G-code',
     );
     buffer.writeln(
       [
-        _quote('item'),
-        _quote(quoteId),
+        quoteCsvCell('item'),
+        quoteCsvCell(quoteId),
         quoteName,
         createdDate,
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
         itemName,
-        _quote(quantity),
+        quoteCsvCell(quantity),
         source,
-        _quote(batchItem['printerId']?.toString() ?? ''),
-        _quote(batchItem['materialId']?.toString() ?? ''),
-        _quote(batchItem['baseCost']?.toString() ?? ''),
-        _quote(batchItem['additionalCost']?.toString() ?? ''),
-        _quote(batchItem['finalTotal']?.toString() ?? ''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
-        _quote(''),
+        quoteCsvCell(batchItem['printerId']?.toString() ?? ''),
+        quoteCsvCell(batchItem['materialId']?.toString() ?? ''),
+        quoteCsvCell(batchItem['baseCost']?.toString() ?? ''),
+        quoteCsvCell(batchItem['additionalCost']?.toString() ?? ''),
+        quoteCsvCell(batchItem['finalTotal']?.toString() ?? ''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
+        quoteCsvCell(''),
       ].join(','),
     );
   }
@@ -237,60 +239,60 @@ String generateBatchQuoteCsv(HistoryModel item) {
     if (printerMode == 'perItem') {
       buffer.writeln(
         [
-          _quote('allocation'),
-          _quote(quoteId),
+          quoteCsvCell('allocation'),
+          quoteCsvCell(quoteId),
           quoteName,
           createdDate,
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote('Printer split (per-item)'),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote('per-item'),
-          _quote(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell('Printer split (per-item)'),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell('per-item'),
+          quoteCsvCell(''),
         ].join(','),
       );
     }
     if (materialMode == 'perItem') {
       buffer.writeln(
         [
-          _quote('allocation'),
-          _quote(quoteId),
+          quoteCsvCell('allocation'),
+          quoteCsvCell(quoteId),
           quoteName,
           createdDate,
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote('Material split (per-item)'),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote(''),
-          _quote('per-item'),
-          _quote(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell('Material split (per-item)'),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell(''),
+          quoteCsvCell('per-item'),
+          quoteCsvCell(''),
         ].join(','),
       );
     }
@@ -314,20 +316,22 @@ String generateMixedHistoryCsv(List<HistoryModel> items) {
 
 void _writeSinglePrintRow(StringBuffer buffer, HistoryModel item) {
   buffer.writeln(
-    'single_print,${_quote(_sanitizeForCsv(item.date.toIso8601String()))},${_quote(_sanitizeForCsv(item.name))},${_quote(_sanitizeForCsv(item.printer))},${_quote(_sanitizeForCsv(item.material))},${_quote(item.weight)},${_quote(item.timeHours)},${_quote(item.totalCost)},${_quote(item.pricingMarkupPercent?.toString() ?? '')},${_quote(item.pricingSetupFee?.toString() ?? '')},${_quote(item.finalPrice?.toString() ?? '')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')}',
+    'single_print,${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.date.toIso8601String()))},${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.name))},${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.printer))},${quoteCsvCell(sanitizeCsvSpreadsheetCell(item.material))},${quoteCsvCell(item.weight)},${quoteCsvCell(item.timeHours)},${quoteCsvCell(item.totalCost)},${quoteCsvCell(item.pricingMarkupPercent?.toString() ?? '')},${quoteCsvCell(item.pricingSetupFee?.toString() ?? '')},${quoteCsvCell(item.finalPrice?.toString() ?? '')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')}',
   );
 }
 
 void _writeBatchQuoteRows(StringBuffer buffer, HistoryModel item) {
-  final dateStr = _quote(_sanitizeForCsv(item.date.toIso8601String()));
-  final quoteName = _quote(_sanitizeForCsv(item.name));
+  final dateStr = quoteCsvCell(
+    sanitizeCsvSpreadsheetCell(item.date.toIso8601String()),
+  );
+  final quoteName = quoteCsvCell(sanitizeCsvSpreadsheetCell(item.name));
   final summary = item.batchQuoteSummary ?? const <String, dynamic>{};
   buffer.writeln(
-    'batch_quote,$dateStr,$quoteName,${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote(item.totalCost)},${_quote('')},${_quote('')},${_quote((summary['finalTotal'] as num?)?.toString() ?? '')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')}',
+    'batch_quote,$dateStr,$quoteName,${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell(item.totalCost)},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell((summary['finalTotal'] as num?)?.toString() ?? '')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')}',
   );
   for (final batchItem in item.batchQuoteItems) {
     buffer.writeln(
-      'batch_item,$dateStr,$quoteName,${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote(_sanitizeForCsv(batchItem['name']?.toString() ?? ''))},${_quote(batchItem['quantity']?.toString() ?? '0')},${_quote(batchItem['id']?.toString().startsWith('manual_') == true ? 'Manual' : 'G-code')},${_quote(batchItem['baseCost']?.toString() ?? '')},${_quote(batchItem['finalTotal']?.toString() ?? '')},${_quote('')},${_quote('')}',
+      'batch_item,$dateStr,$quoteName,${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell(sanitizeCsvSpreadsheetCell(batchItem['name']?.toString() ?? ''))},${quoteCsvCell(batchItem['quantity']?.toString() ?? '0')},${quoteCsvCell(batchItem['id']?.toString().startsWith('manual_') == true ? 'Manual' : 'G-code')},${quoteCsvCell(batchItem['baseCost']?.toString() ?? '')},${quoteCsvCell(batchItem['finalTotal']?.toString() ?? '')},${quoteCsvCell('')},${quoteCsvCell('')}',
     );
   }
   final printerMode = summary['printerAssignmentMode']?.toString();
@@ -335,12 +339,12 @@ void _writeBatchQuoteRows(StringBuffer buffer, HistoryModel item) {
   if (printerMode == 'perItem' || materialMode == 'perItem') {
     if (printerMode == 'perItem') {
       buffer.writeln(
-        'batch_allocation,$dateStr,$quoteName,${_quote('printer split')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('per-item')},${_quote('')}',
+        'batch_allocation,$dateStr,$quoteName,${quoteCsvCell('printer split')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('per-item')},${quoteCsvCell('')}',
       );
     }
     if (materialMode == 'perItem') {
       buffer.writeln(
-        'batch_allocation,$dateStr,$quoteName,${_quote('')},${_quote('material split')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('')},${_quote('per-item')},${_quote('')}',
+        'batch_allocation,$dateStr,$quoteName,${quoteCsvCell('')},${quoteCsvCell('material split')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('')},${quoteCsvCell('per-item')},${quoteCsvCell('')}',
       );
     }
   }
