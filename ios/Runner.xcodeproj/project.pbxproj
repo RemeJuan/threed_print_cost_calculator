@@ -780,7 +780,6 @@
 		};
 		A4E5C2E52E6C4B51A8C0E001 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B8E436CB001722A90374557 /* Pods-Runner-RunnerUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				USES_XCTRUNNER = YES;
@@ -806,7 +805,6 @@
 		};
 		A4E5C2E72E6C4B51A8C0E001 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D627D0896CAA85AA7CABB46 /* Pods-Runner-RunnerUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				USES_XCTRUNNER = YES;

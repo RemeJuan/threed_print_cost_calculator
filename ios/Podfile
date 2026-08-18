@@ -43,7 +43,11 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
 
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.6'
+      current_target = Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] || '0')
+      desired_target = Gem::Version.new('15.6')
+      if current_target < desired_target
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.6'
+      end
 
       config.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
     end
@@ -52,7 +56,11 @@ post_install do |installer|
   installer.aggregate_targets.each do |aggregate_target|
     aggregate_target.user_project.native_targets.each do |native_target|
       native_target.build_configurations.each do |config|
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.6'
+        current_target = Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] || '0')
+        desired_target = Gem::Version.new('15.6')
+        if current_target < desired_target
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.6'
+        end
         config.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
       end
     end
