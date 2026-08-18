@@ -164,6 +164,10 @@ void main() {
       const ValueKey<String>('gcode_import.preview.button'),
     );
     final previewImage = find.byType(Image);
+    expect(
+      previewButton.evaluate().isNotEmpty || previewImage.evaluate().isNotEmpty,
+      isTrue,
+    );
     if (previewButton.evaluate().isNotEmpty) {
       await tester.tap(previewButton);
       await tester.pumpAndSettle(const Duration(seconds: 1));

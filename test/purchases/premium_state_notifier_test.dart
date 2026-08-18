@@ -220,6 +220,8 @@ void main() {
     );
 
     final state = await finalState.future;
+    expect(state.isLoading, isFalse);
+    expect(state.isPremium, isTrue);
 
     expect(testDataService.purgeCalls, 1);
     expect(

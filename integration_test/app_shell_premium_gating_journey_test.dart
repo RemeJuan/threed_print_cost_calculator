@@ -85,6 +85,10 @@ void main() {
       await tester.tapByKey('nav.history.button');
       await tester.pumpAndSettle(const Duration(milliseconds: 300));
       expect(
+        find.byKey(const ValueKey<String>('history.list')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const ValueKey<String>('history.teaser.state')),
         findsNothing,
       );

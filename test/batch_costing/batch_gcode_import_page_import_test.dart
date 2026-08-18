@@ -19,9 +19,10 @@ void main() {
 
   testWidgets('imports multiple files and seeds batch items', (tester) async {
     final files = [_file('one.gcode'), _file('two.gcode')];
+    final service = _FakeService(successResult);
     await tester.pumpApp(const BatchGCodeImportPage(), [
       gcodeImportFilePickerProvider.overrideWithValue(_FakePicker(files)),
-      gcodeImportServiceProvider.overrideWithValue(_FakeService(successResult)),
+      gcodeImportServiceProvider.overrideWithValue(service),
       isPremiumProvider.overrideWithValue(true),
     ]);
 
@@ -40,6 +41,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(BatchCostingPage), findsOneWidget);
+    expect(service.importCalls, 2);
     expect(find.text('one.gcode'), findsOneWidget);
     expect(find.text('two.gcode'), findsOneWidget);
   });

@@ -570,7 +570,10 @@ void main() {
         findsOneWidget,
       );
       expect(repo.savedModel, isNotNull);
-      expect(repo.savedModel!.batchQuoteItems.length, 1);
+      final savedModel = repo.savedModel;
+      expect(savedModel, isNotNull);
+      expect(savedModel, same(repo.savedModel));
+      expect(savedModel!.batchQuoteItems.length, 1);
       expect(analytics.lastName, 'batch_quote_saved');
       expect(analytics.lastParams?['outcome'], 'success');
       expect(find.text(l10n.batchCostingSummarySaveErrorMessage), findsNothing);

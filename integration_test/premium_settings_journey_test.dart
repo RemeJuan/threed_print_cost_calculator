@@ -20,20 +20,6 @@ void main() {
   const wearAndTear = '1.50';
   const failureRisk = '10.00';
   const labourRate = '25.00';
-  final settingsList = find.byKey(const ValueKey<String>('settings.list'));
-
-  Future<void> waitForKey(WidgetTester tester, String key) async {
-    final deadline = DateTime.now().add(const Duration(seconds: 5));
-    final finder = find.byKey(ValueKey<String>(key));
-
-    while (DateTime.now().isBefore(deadline)) {
-      if (finder.evaluate().isNotEmpty) return;
-      await tester.pump(const Duration(milliseconds: 100));
-    }
-
-    fail('Timed out waiting for key "$key".');
-  }
-
   testWidgets('premium user can configure premium settings', (tester) async {
     final harness = await IntegrationTestHarness.premium();
     addTearDown(harness.dispose);
@@ -41,6 +27,7 @@ void main() {
     await tester.launchHarnessApp(harness);
     await tester.tapByKey('nav.settings.button');
     await tester.pump();
+    final settingsList = find.byKey(const ValueKey<String>('settings.list'));
     await tester.scrollUntilKeyVisibleInScrollable(
       'settings.electricityCost.input',
       scrollable: settingsList,
@@ -130,7 +117,7 @@ void main() {
 
     await tester.tapByKey('nav.settings.button');
     await tester.pumpAndSettle(const Duration(seconds: 3));
-    await waitForKey(tester, 'settings.general.section');
+    await waitForKeyEventually(tester, 'settings.general.section');
     await tester.scrollUntilKeyVisible('settings.printers.section');
     await tester.scrollUntilKeyVisible('settings.printers.add.button');
     await tester.tapByKey('settings.printers.add.button');
@@ -156,7 +143,7 @@ void main() {
       find.byKey(const ValueKey<String>('settings.printers.item.0')),
       const Offset(-300, 0),
     );
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.tap(
       find.byKey(
         const ValueKey<String>('settings.printers.item.0.edit.button'),
@@ -192,7 +179,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 100));
     await tester.tapByKey('nav.settings.button');
     await tester.pumpAndSettle(const Duration(milliseconds: 300));
-    await waitForKey(tester, 'settings.general.section');
+    await waitForKeyEventually(tester, 'settings.general.section');
     await tester.scrollUntilKeyVisible('settings.printers.section');
     await tester.scrollUntilKeyVisible('settings.printers.item.0.name');
     expect(
@@ -204,7 +191,7 @@ void main() {
       find.byKey(const ValueKey<String>('settings.printers.item.0')),
       const Offset(-300, 0),
     );
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
     final printerItemFinder = find.byKey(
       const ValueKey<String>('settings.printers.item.0'),
     );
@@ -216,7 +203,7 @@ void main() {
           )
           .first,
     );
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
     expect(find.byType(AlertDialog), findsOneWidget);
     final printerDeleteDialog = find.byType(AlertDialog);
     await tester.tap(
