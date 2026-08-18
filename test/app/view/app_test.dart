@@ -12,9 +12,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:rate_my_app/rate_my_app.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
 import 'package:threed_print_cost_calculator/app/app_page.dart';
 import 'package:threed_print_cost_calculator/app/app.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_page.dart';
@@ -26,6 +29,60 @@ import 'package:threed_print_cost_calculator/shared/providers/whats_new_provider
 
 import '../../helpers/helpers.dart';
 import '../../helpers/mocks.dart';
+
+class _FakeRateMyApp extends RateMyApp {
+  _FakeRateMyApp({
+    required this.nativeSupported,
+    required this.shouldOpen,
+    this.action,
+  }) : super.customConditions(conditions: const []);
+
+  final bool? nativeSupported;
+  final bool shouldOpen;
+  final RateMyAppDialogButton? action;
+
+  @override
+  bool get shouldOpenDialog => shouldOpen;
+
+  @override
+  Future<bool?> get isNativeReviewDialogSupported async => nativeSupported;
+
+  @override
+  Future<void> showRateDialog(
+    BuildContext context, {
+    String title = 'Rate this app',
+    String message =
+        'If you like this app, please take a little bit of your time to review it !\nIt really helps us and it shouldn\'t take you more than one minute.',
+    DialogContentBuilder? contentBuilder,
+    DialogActionsBuilder? actionsBuilder,
+    String rateButton = 'Rate',
+    String noButton = 'No thanks',
+    String laterButton = 'Maybe later',
+    RateMyAppDialogButtonClickListener? listener,
+    bool ignoreNativeDialog = false,
+    DialogStyle dialogStyle = const DialogStyle(),
+    VoidCallback? onDismissed,
+    bool barrierDismissible = true,
+    String barrierLabel = '',
+    DialogTransition dialogTransition = const DialogTransition(),
+  }) async {
+    final action = this.action;
+    if (action != null) {
+      listener?.call(action);
+    }
+    onDismissed?.call();
+  }
+}
+
+class _TestAnalyticsService implements AnalyticsService {
+  _TestAnalyticsService(this.events);
+  final List<String> events;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(name);
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +103,7 @@ void main() {
   setUp(() {
     mockCalculatorProvider = MockCalculatorNotifier();
     SharedPreferences.setMockInitialValues({});
+    AppAnalytics.service = const NoopAnalyticsService();
   });
 
   Future<Database> pumpAppShell(WidgetTester tester, Widget widget) async {
@@ -163,6 +221,89 @@ void main() {
 
       expect(find.byType(AppPage), findsOneWidget);
       expect(find.byType(RateMyAppBuilder), findsOneWidget);
+    });
+
+    testWidgets('rate prompt wiring logs fallback action and dismissal', (
+      tester,
+    ) async {
+      final events = <String>[];
+      AppAnalytics.service = _TestAnalyticsService(events);
+
+      final name =
+          'app_prompt_test_${DateTime.now().microsecondsSinceEpoch}.db';
+      final db = await databaseFactoryMemory.openDatabase(name);
+      final sharedPreferences = await SharedPreferences.getInstance();
+      addTearDown(() => db.close());
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+            premiumLocalStoreProvider.overrideWithValue(
+              InMemoryPremiumLocalStore({
+                completedCostingCountPreferenceKey: '11',
+              }),
+            ),
+            calculatorProvider.overrideWith(() => mockCalculatorProvider),
+            updateAvailabilityLookupProvider.overrideWithValue(
+              ({
+                required String currentVersion,
+                required TargetPlatform platform,
+              }) async => const UpdateAvailabilityResult.unknown(),
+            ),
+            currentAnnouncementProvider.overrideWith((ref) async => null),
+          ],
+          child: Builder(builder: (context) => const SizedBox.shrink()),
+        ),
+      );
+
+      await showRateMyAppPrompt(
+        context: tester.element(find.byType(SizedBox)),
+        rateMyApp: _FakeRateMyApp(
+          nativeSupported: false,
+          shouldOpen: true,
+          action: RateMyAppDialogButton.rate,
+        ),
+        isEligible: true,
+        logger: AppLogger(
+          sink: const DebugPrintAppLogSink(),
+          config: const AppLoggerConfig.defaults(),
+        ),
+      );
+
+      expect(
+        events,
+        containsAllInOrder([
+          'review_prompt_eligibility_checked',
+          'review_prompt_eligibility_result',
+          'review_prompt_request_attempted',
+          'review_prompt_custom_dialog_shown',
+          'review_prompt_custom_dialog_action',
+        ]),
+      );
+
+      events.clear();
+      await showRateMyAppPrompt(
+        context: tester.element(find.byType(SizedBox)),
+        rateMyApp: _FakeRateMyApp(nativeSupported: false, shouldOpen: true),
+        isEligible: true,
+        logger: AppLogger(
+          sink: const DebugPrintAppLogSink(),
+          config: const AppLoggerConfig.defaults(),
+        ),
+      );
+
+      expect(
+        events,
+        containsAllInOrder([
+          'review_prompt_eligibility_checked',
+          'review_prompt_eligibility_result',
+          'review_prompt_request_attempted',
+          'review_prompt_custom_dialog_shown',
+          'review_prompt_custom_dialog_dismissed',
+        ]),
+      );
     });
   });
 }

@@ -21,16 +21,20 @@ void main() {
     addTearDown(harness.dispose);
 
     await tester.launchHarnessApp(harness);
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
     expect(
       find.byKey(const ValueKey<String>('nav.calculator.button')),
       findsOneWidget,
     );
     expect(
+      find.byKey(const ValueKey<String>('nav.history.button')),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const ValueKey<String>('nav.settings.button')),
       findsOneWidget,
     );
-    expect(find.text('History'), findsNothing);
   });
 
   testWidgets('launches the app as a premium user via the shared harness', (
@@ -40,8 +44,12 @@ void main() {
     addTearDown(harness.dispose);
 
     await tester.launchHarnessApp(harness);
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-    expect(find.text('History'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey<String>('nav.history.button')),
+      findsOneWidget,
+    );
   });
 
   testWidgets(
@@ -57,7 +65,10 @@ void main() {
       addTearDown(harness.dispose);
 
       await tester.launchHarnessApp(harness);
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       await tester.tapByKey('nav.settings.button');
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.scrollUntilKeyVisible('settings.electricityCost.input');
 
       final settings = await harness.container
           .read(settingsRepositoryProvider)
@@ -74,6 +85,24 @@ void main() {
         '3.00',
       );
       expect(tester.focusSafeFieldText('settings.generalWattage.input'), '120');
+      expect(
+        find.byKey(const ValueKey<String>('settings.general.section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.interface.section')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings.workCost.section')),
+        findsOneWidget,
+      );
+      await tester.tapByKey('nav.history.button');
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      expect(
+        find.byKey(const ValueKey<String>('history.export.button')),
+        findsOneWidget,
+      );
       expect(settings, IntegrationFixtures.settings);
       expect(printers.single.name, IntegrationFixtures.printerA.name);
       expect(materials.single.name, IntegrationFixtures.materialPlaBlack.name);

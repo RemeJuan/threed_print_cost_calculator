@@ -73,6 +73,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
 
       ref.onDispose(() {
         _disposed = true;
+        _initialized = false;
         unawaited(_subscription?.cancel());
       });
 

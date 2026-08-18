@@ -1,13 +1,10 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
-
-const materialsSwipeHintShownPreferenceKey = 'materials_swipe_hint_shown';
 
 class MaterialsPageActions {
   MaterialsPageActions({
@@ -27,15 +24,6 @@ class MaterialsPageActions {
         .read(materialsStreamProvider)
         .maybeWhen(data: (items) => items.length, orElse: () => null);
     return currentMaterials ?? materialsRepository.count();
-  }
-
-  void dismissSwipeHint({
-    required ValueNotifier<bool> showSwipeHint,
-    required SharedPreferences prefs,
-  }) {
-    if (!showSwipeHint.value) return;
-    showSwipeHint.value = false;
-    prefs.setBool(materialsSwipeHintShownPreferenceKey, true);
   }
 
   Future<void> deleteMaterial({

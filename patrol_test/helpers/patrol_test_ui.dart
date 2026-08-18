@@ -81,19 +81,19 @@ extension PatrolIntegrationTesterUiX on PatrolIntegrationTester {
   }
 }
 
-String historyItemKey(String name, String suffix) {
-  return 'history.item.$name.$suffix';
+String historyItemKey(String historyId, String suffix) {
+  return 'history.item.$historyId.$suffix';
 }
 
-ValueKey<String> historyCardKey(String name) {
-  return ValueKey<String>(historyItemKey(name, 'card'));
+ValueKey<String> historyCardKey(String historyId) {
+  return ValueKey<String>(historyItemKey(historyId, 'card'));
 }
 
 Future<void> expectHistoryVisibleAnywhere(
   PatrolIntegrationTester $,
-  String name,
+  String historyId,
 ) async {
-  final finder = find.byKey(historyCardKey(name));
+  final finder = find.byKey(historyCardKey(historyId));
   await $.tester.scrollUntilVisible(
     finder,
     200,
@@ -127,7 +127,7 @@ void expectCalculatorResultValues(
 
 void expectHistoryItemCostValues(
   PatrolIntegrationTester $,
-  String name, {
+  String historyId, {
   double? electricityCost,
   double? filamentCost,
   double? labourCost,
@@ -140,7 +140,7 @@ void expectHistoryItemCostValues(
     }
 
     expect(
-      $.numberFromTextKey(historyItemKey(name, suffix)),
+      $.numberFromTextKey(historyItemKey(historyId, suffix)),
       closeTo(expectedValue, 0.01),
     );
   }

@@ -41,35 +41,36 @@ void main() {
 
     await tester.launchHarnessApp(harness);
     await tester.tapByKey('nav.history.button');
-
-    await expectHistoryVisibleAnywhere(tester, 'History Alpha');
-    await expectHistoryVisibleAnywhere(tester, 'History Beta');
-    await expectHistoryVisibleAnywhere(tester, 'History Gamma');
-    await scrollHistoryToTop(tester);
+    await tester.pumpAndSettle();
 
     await tester.enterTextByKey('history.search.input', 'Printer B');
     await tester.settleDebounce();
+    await tester.pumpAndSettle();
 
-    expect(find.byKey(historyCardKey('History Alpha')), findsNothing);
-    expect(find.byKey(historyCardKey('History Beta')), findsOneWidget);
-    expect(find.byKey(historyCardKey('History Gamma')), findsNothing);
-    expect(
-      tester.textFromKey('history.item.History Beta.summary'),
-      contains('PETG White'),
-    );
+    await scrollHistoryToTop(tester);
+
+    expect(find.text('History Beta'), findsOneWidget);
+    expect(find.text('History Alpha'), findsNothing);
+    expect(find.text('History Gamma'), findsNothing);
+    expect(find.textContaining('PETG White'), findsOneWidget);
+    expect(find.textContaining('PLA Black'), findsNothing);
+    expect(find.textContaining('ABS Red'), findsNothing);
 
     await tester.tapByKey('history.search.clear.button');
     await tester.settleDebounce();
+    await tester.pumpAndSettle();
 
     await tester.enterTextByKey('history.search.input', 'History Gamma');
     await tester.settleDebounce();
+    await tester.pumpAndSettle();
 
-    expect(find.byKey(historyCardKey('History Alpha')), findsNothing);
-    expect(find.byKey(historyCardKey('History Beta')), findsNothing);
-    expect(find.byKey(historyCardKey('History Gamma')), findsOneWidget);
-    expect(
-      tester.textFromKey('history.item.History Gamma.summary'),
-      contains('ABS Red'),
-    );
+    await scrollHistoryToTop(tester);
+
+    expect(find.text('History Gamma'), findsOneWidget);
+    expect(find.text('History Alpha'), findsNothing);
+    expect(find.text('History Beta'), findsNothing);
+    expect(find.textContaining('ABS Red'), findsOneWidget);
+    expect(find.textContaining('PLA Black'), findsNothing);
+    expect(find.textContaining('PETG White'), findsNothing);
   });
 }

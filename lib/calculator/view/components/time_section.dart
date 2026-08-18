@@ -37,6 +37,7 @@ class TimeSection extends HookConsumerWidget {
                 Expanded(
                   child: _durationButton(
                     context: ctx,
+                    key: const ValueKey<String>('calculator.duration.button'),
                     label: printingTimeLabel,
                     value: _formatDuration(currentHours, currentMinutes),
                     onTap: () async {
@@ -66,6 +67,9 @@ class TimeSection extends HookConsumerWidget {
                   Expanded(
                     child: _durationButton(
                       context: ctx,
+                      key: const ValueKey<String>(
+                        'calculator.labour.duration.button',
+                      ),
                       label: l10n.labourTimeLabel,
                       value: _formatDurationFromDecimal(
                         state.labourTime.value ?? 0,
@@ -109,11 +113,13 @@ class TimeSection extends HookConsumerWidget {
 
   Widget _durationButton({
     required BuildContext context,
+    required Key key,
     required String label,
     required String value,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
+      key: key,
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.fromLTRB(0, 4, 0, 12),

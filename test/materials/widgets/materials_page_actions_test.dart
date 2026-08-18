@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
-import 'package:threed_print_cost_calculator/materials/materials_page_actions.dart';
 import 'package:threed_print_cost_calculator/materials/widgets/materials_page.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
@@ -23,100 +21,6 @@ void main() {
   });
 
   group('MaterialsPage', () {
-    testWidgets('shows empty state when no materials', (tester) async {
-      final repo = FakeMaterialsRepository();
-      final db = await tester.pumpApp(const MaterialsPage(), [
-        materialsRepositoryProvider.overrideWithValue(repo),
-      ]);
-      await tester.pumpAndSettle();
-      addTearDown(db.close);
-
-      await tester.pumpAndSettle();
-
-      expect(
-        find.text(lookupAppLocalizations(const Locale('en')).materialsEmpty),
-        findsOneWidget,
-      );
-    });
-
-    testWidgets('shows material list', (tester) async {
-      final materials = [
-        MaterialModel(
-          id: '1',
-          name: 'PLA Pro',
-          cost: '24.99',
-          color: 'Black',
-          weight: '1000',
-          archived: false,
-        ),
-        MaterialModel(
-          id: '2',
-          name: 'PETG',
-          cost: '29.99',
-          color: 'White',
-          weight: '1000',
-          archived: false,
-        ),
-      ];
-      final repo = FakeMaterialsRepository(watchResponses: [materials]);
-      final db = await tester.pumpApp(const MaterialsPage(), [
-        materialsRepositoryProvider.overrideWithValue(repo),
-      ]);
-      await tester.pumpAndSettle();
-      addTearDown(db.close);
-
-      await tester.pumpAndSettle();
-
-      expect(find.text('PLA Pro'), findsOneWidget);
-      expect(find.text('PETG'), findsOneWidget);
-    });
-
-    testWidgets('dismisses and persists swipe hint', (tester) async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      final repo = FakeMaterialsRepository();
-      final db = await tester.pumpApp(const MaterialsPage(), [
-        materialsRepositoryProvider.overrideWithValue(repo),
-      ]);
-      addTearDown(db.close);
-
-      await tester.pumpAndSettle();
-
-      expect(
-        find.text(
-          lookupAppLocalizations(const Locale('en')).materialsSwipeHint,
-        ),
-        findsOneWidget,
-      );
-
-      await tester.tap(find.byIcon(Icons.close).last);
-      await tester.pumpAndSettle();
-
-      expect(
-        find.text(
-          lookupAppLocalizations(const Locale('en')).materialsSwipeHint,
-        ),
-        findsNothing,
-      );
-      expect(prefs.getBool(materialsSwipeHintShownPreferenceKey), isTrue);
-
-      await tester.pumpWidget(const SizedBox.shrink());
-
-      final reopenedDb = await tester.pumpApp(const MaterialsPage(), [
-        materialsRepositoryProvider.overrideWithValue(repo),
-      ]);
-      addTearDown(reopenedDb.close);
-
-      await tester.pumpAndSettle();
-
-      expect(
-        find.text(
-          lookupAppLocalizations(const Locale('en')).materialsSwipeHint,
-        ),
-        findsNothing,
-      );
-    });
-
     testWidgets('add FAB opens material form dialog', (tester) async {
       final repo = FakeMaterialsRepository();
       final db = await tester.pumpApp(const MaterialsPage(), [

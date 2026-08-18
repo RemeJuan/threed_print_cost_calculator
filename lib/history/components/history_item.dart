@@ -36,7 +36,7 @@ class HistoryItem extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final materialsById = ref.watch(materialsByIdProvider);
-    final itemKeyPrefix = 'history.item.${data.name}';
+    final itemKeyPrefix = 'history.item.$dbKey';
     final actionsController = HistoryItemActionsController(
       dbKey: dbKey,
       data: data,
@@ -62,6 +62,7 @@ class HistoryItem extends HookConsumerWidget {
               ),
             )
           : AppSurfaceCard(
+              key: ValueKey<String>('$itemKeyPrefix.card'),
               padding: const EdgeInsets.all(kAppSpace8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -64,7 +64,9 @@ class HistoryPageActions {
     );
 
     final l10n = AppLocalizations.of(context)!;
-    final csvPreview = generateSampleCsvPreview(csvHeader: l10n.historyCsvHeader);
+    final csvPreview = generateSampleCsvPreview(
+      csvHeader: l10n.historyCsvHeader,
+    );
 
     if (!context.mounted) return;
 

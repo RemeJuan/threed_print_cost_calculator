@@ -27,6 +27,7 @@ class SettingsPage extends ConsumerWidget {
       context,
     ).textTheme.titleLarge?.copyWith(color: TEXT_PRIMARY);
     return ListView(
+      key: const ValueKey<String>('settings.list'),
       padding: const EdgeInsets.all(kAppSpace16),
       physics: const ClampingScrollPhysics(),
       children: [

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:threed_print_cost_calculator/purchases/paywall_plan_selector.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_package_selection.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen_actions.dart';
 
 class PaywallScreenControllerArgs {
@@ -183,7 +183,9 @@ class PaywallScreenController extends Notifier<PaywallScreenState> {
       state = state.copyWith(
         loadingOfferings: false,
         offering: result.offering,
-        selectedPackage: preferredPackage(result.offering?.availablePackages),
+        selectedPackage: preferredPaywallPackage(
+          result.offering?.availablePackages,
+        ),
         offeringsError: result.error,
       );
     } finally {

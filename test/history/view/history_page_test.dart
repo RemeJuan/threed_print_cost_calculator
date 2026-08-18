@@ -191,9 +191,7 @@ void main() {
     await tester.pumpAndSettle();
     final l10n = AppLocalizations.of(tester.element(find.byType(HistoryPage)))!;
 
-    await tester.tap(
-      find.byKey(const ValueKey<String>('history.item.Benchy.menu')),
-    );
+    await tester.tap(find.byKey(const ValueKey<String>('history.item.1.menu')));
     await tester.pumpAndSettle();
     await tester.tap(find.text(l10n.historyLoadAction));
     await tester.pumpAndSettle();
@@ -291,9 +289,7 @@ void main() {
 
     expect(find.text('More actions in ⋯'), findsOneWidget);
 
-    await tester.tap(
-      find.byKey(const ValueKey<String>('history.item.Benchy.menu')),
-    );
+    await tester.tap(find.byKey(const ValueKey<String>('history.item.1.menu')));
     await tester.pumpAndSettle();
 
     expect(find.text('More actions in ⋯'), findsNothing);
@@ -442,7 +438,7 @@ void main() {
     expect(find.text('Item 1'), findsOneWidget);
     expect(find.text('Item 8'), findsNothing);
     expect(
-      find.byKey(const ValueKey<String>('history.item.Item 8.menu')),
+      find.byKey(const ValueKey<String>('history.item.8.menu')),
       findsNothing,
     );
 

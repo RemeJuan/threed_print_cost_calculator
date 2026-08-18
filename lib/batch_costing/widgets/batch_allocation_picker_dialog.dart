@@ -6,17 +6,12 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/shared/utils/text_input_normalizers.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
-class BatchAllocationPickerOption {
-  const BatchAllocationPickerOption({
-    required this.id,
-    required this.title,
-    this.subtitle,
-  });
+import 'batch_allocation_picker_entry.dart';
+import 'batch_allocation_picker_option.dart';
+import 'batch_allocation_picker_search.dart';
+import 'batch_allocation_picker_validation.dart';
 
-  final String id;
-  final String title;
-  final String? subtitle;
-}
+export 'batch_allocation_picker_option.dart';
 
 class BatchAllocationPickerDialog extends StatefulWidget {
   const BatchAllocationPickerDialog({
@@ -41,53 +36,28 @@ class _BatchAllocationPickerDialogState
     extends State<BatchAllocationPickerDialog> {
   final _searchController = TextEditingController();
   final Set<String> _selectedIds = {};
-  late List<_AllocationEntry> _entries;
+  late List<BatchAllocationPickerEntry> _entries;
   String? _errorText;
 
   @override
   void initState() {
     super.initState();
-    _entries = _buildEntries();
-  }
-
-  List<_AllocationEntry> _buildEntries() {
-    final entries = <_AllocationEntry>[];
-    for (final allocation in widget.allocations) {
-      if (allocation.targetId.isEmpty) continue;
-      _selectedIds.add(allocation.targetId);
-      final option = widget.options.firstWhere(
-        (option) => option.id == allocation.targetId,
-        orElse: () => BatchAllocationPickerOption(
-          id: allocation.targetId,
-          title: allocation.targetId,
-        ),
-      );
-      entries.add(
-        _AllocationEntry(
-          option: option,
-          controller: TextEditingController(
-            text: allocation.quantity.toString(),
-          ),
-        ),
-      );
-    }
-    return entries;
+    _entries = buildBatchAllocationPickerEntries(
+      allocations: widget.allocations,
+      options: widget.options,
+      selectedIds: _selectedIds,
+    );
   }
 
   List<BatchAllocationPickerOption> get _filteredOptions {
-    final query = _searchController.text.trim().toLowerCase();
-    return widget.options.where((option) {
-      if (_selectedIds.contains(option.id)) return false;
-      if (query.isEmpty) return true;
-      return option.title.toLowerCase().contains(query) ||
-          (option.subtitle?.toLowerCase().contains(query) ?? false);
-    }).toList();
+    return filterBatchAllocationPickerOptions(
+      options: widget.options,
+      selectedIds: _selectedIds,
+      query: _searchController.text,
+    );
   }
 
-  int get _total => _entries.fold<int>(
-    0,
-    (sum, entry) => sum + (int.tryParse(entry.controller.text) ?? 0),
-  );
+  int get _total => totalBatchAllocationPickerQuantity(_entries);
 
   void _validate() {
     setState(() {
@@ -105,7 +75,7 @@ class _BatchAllocationPickerDialogState
     setState(() {
       _selectedIds.add(option.id);
       _entries.add(
-        _AllocationEntry(
+        BatchAllocationPickerEntry(
           option: option,
           controller: TextEditingController(text: '0'),
         ),
@@ -275,10 +245,4 @@ class _BatchAllocationPickerDialogState
       ],
     );
   }
-}
-
-class _AllocationEntry {
-  _AllocationEntry({required this.option, required this.controller});
-  final BatchAllocationPickerOption option;
-  final TextEditingController controller;
 }

@@ -173,6 +173,7 @@ class _GCodeImportPreviewSectionState extends State<GCodeImportPreviewSection> {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton.icon(
+        key: const ValueKey<String>('gcode_import.preview.button'),
         onPressed: onPreviewTap,
         icon: const Icon(Icons.launch),
         label: Text(

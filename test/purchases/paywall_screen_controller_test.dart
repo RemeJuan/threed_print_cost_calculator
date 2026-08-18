@@ -7,6 +7,7 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_models.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_provider.dart';
 import 'package:threed_print_cost_calculator/core/integrity/play_integrity_service.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_package_selection.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen_actions.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_screen_controller.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_purchase_gateway.dart';
@@ -246,6 +247,18 @@ void main() {
 
     final state = container.read(paywallScreenControllerProvider(args));
     expect(state.selectedPackage?.packageType, PackageType.annual);
+  });
+
+  test('preferred package picks annual otherwise first', () {
+    final annual = _pkgAnnual();
+    final monthly = _pkgMonthly();
+
+    expect(
+      preferredPaywallPackage([monthly, annual])?.identifier,
+      annual.identifier,
+    );
+    expect(preferredPaywallPackage([monthly])?.identifier, monthly.identifier);
+    expect(preferredPaywallPackage(null), isNull);
   });
 
   test('unavailable load retry sets typed error', () async {

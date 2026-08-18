@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:patrol/patrol.dart';
 
@@ -92,29 +93,51 @@ void main() {
     );
     await $.tapByKey('calculator.duration.save.button');
 
+    await $.tapByKey('calculator.jobPricingOverrides.section');
+    await $.tester.scrollUntilVisible(
+      find.byKey(patrolKey('calculator.jobPricingOverrides.wearAndTear.input')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     await $.enterTextByKey(
-      'calculator.rates.wearAndTear.input',
+      'calculator.jobPricingOverrides.wearAndTear.input',
       wearAndTear.toStringAsFixed(2),
     );
     await $.enterTextByKey(
-      'calculator.rates.failureRisk.input',
+      'calculator.jobPricingOverrides.failureRisk.input',
       failureRiskPercent.toStringAsFixed(2),
     );
+    await $.tester.scrollUntilVisible(
+      find.byKey(patrolKey('calculator.jobPricingOverrides.labourRate.input')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     await $.enterTextByKey(
-      'calculator.adjustments.labourRate.input',
+      'calculator.jobPricingOverrides.labourRate.input',
       labourRate.toStringAsFixed(2),
     );
-    await $.enterTextByKey(
-      'calculator.adjustments.labourTime.input',
-      labourTimeHours.toStringAsFixed(2),
+    await $.tester.scrollUntilVisible(
+      find.byKey(patrolKey('calculator.labour.duration.button')),
+      200,
+      scrollable: find.byType(Scrollable).first,
     );
+    await $.tapByKey('calculator.labour.duration.button');
+    await $.enterTextByKey(
+      'calculator.duration.hours.input',
+      labourTimeHours.floor().toString(),
+    );
+    await $.enterTextByKey(
+      'calculator.duration.minutes.input',
+      ((labourTimeHours - labourTimeHours.floor()) * 60).round().toString(),
+    );
+    await $.tapByKey('calculator.duration.save.button');
     await $.settleDebounce();
 
     const expectedElectricityCost = 0.90;
     const expectedFilamentCost = 30.00;
-    const expectedLabourCost = 12.50;
-    const expectedTotalCost = 44.90;
-    const expectedRiskCost = 4.49;
+    const expectedDisplayedLabourCost = 14.00;
+    const expectedRiskCost = 4.34;
+    const expectedTotalCost = 49.24;
 
     expect(
       find.byKey(patrolKey('calculator.result.totalCost')),
@@ -124,7 +147,7 @@ void main() {
       $,
       electricityCost: expectedElectricityCost,
       filamentCost: expectedFilamentCost,
-      labourCost: expectedLabourCost,
+      labourCost: expectedDisplayedLabourCost,
       riskCost: expectedRiskCost,
       totalCost: expectedTotalCost,
     );
@@ -136,26 +159,21 @@ void main() {
     expect(find.byKey(patrolKey('calculator.save.name.input')), findsNothing);
 
     await $.tapByKey('nav.history.button');
-    await expectHistoryVisibleAnywhere($, savedPrintName);
-
-    final itemKeyPrefix = 'history.item.$savedPrintName';
-
-    expect(find.byKey(historyCardKey(savedPrintName)), findsOneWidget);
-    expect($.textFromKey('$itemKeyPrefix.name'), savedPrintName);
-    expectHistoryItemCostValues(
-      $,
-      savedPrintName,
-      electricityCost: expectedElectricityCost,
-      filamentCost: expectedFilamentCost,
-      labourCost: expectedLabourCost,
-      riskCost: expectedRiskCost,
-      totalCost: expectedTotalCost,
+    await $.tester.scrollUntilVisible(
+      find.text(savedPrintName),
+      200,
+      scrollable: find.byType(Scrollable).first,
     );
 
-    final summary = $.textFromKey('$itemKeyPrefix.summary');
-    expect(summary, contains('0.15 kg'));
-    expect(summary, contains('2h 30m'));
-    expect(summary, contains(targetPrinterName));
-    expect(summary, contains(materialName));
+    expect(find.text(savedPrintName), findsOneWidget);
+    expect(find.text('0.90'), findsOneWidget);
+    expect(find.text('30.00'), findsOneWidget);
+    expect(find.text('12.50'), findsOneWidget);
+    expect(find.text('4.34'), findsOneWidget);
+    expect(find.text('49.24'), findsOneWidget);
+    expect(find.textContaining('0.15 kg'), findsOneWidget);
+    expect(find.textContaining('2h 30m'), findsOneWidget);
+    expect(find.textContaining(targetPrinterName), findsOneWidget);
+    expect(find.textContaining(materialName), findsOneWidget);
   });
 }

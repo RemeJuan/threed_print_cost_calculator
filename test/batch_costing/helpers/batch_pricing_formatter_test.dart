@@ -19,7 +19,7 @@ void main() {
     wearAndTear: '',
     failureRisk: '',
     labourRate: '',
-    currencySymbol: 'R',
+    currencySymbol: '',
     currencyPosition: 'before',
     currencySpacing: false,
   );
@@ -41,7 +41,7 @@ void main() {
     );
     expect(
       formatPricingSummary('bad', BatchPricingScope.batch, 1, l10n, settings),
-      'R0.00',
+      '0.00',
     );
   });
 
@@ -58,11 +58,11 @@ void main() {
 
     expect(
       formatPricingSummary('12,5', BatchPricingScope.batch, 3, l10n, settings),
-      'R12.50',
+      '12.50',
     );
     expect(
       formatPricingSummary('12,5', BatchPricingScope.item, 3, l10n, settings),
-      'R12.50 each → R37.50 total',
+      '12.50 each → 37.50 total',
     );
     expect(
       formatPricingSummary(
@@ -74,7 +74,7 @@ void main() {
         isPercent: true,
         monetaryImpact: 7.5,
       ),
-      '10% → R7.50',
+      '10% → 7.50',
     );
     expect(
       formatPricingSummary(
@@ -86,7 +86,7 @@ void main() {
         isPercent: true,
         monetaryImpact: 7.5,
       ),
-      '10% each → R7.50 total',
+      '10% each → 7.50 total',
     );
   });
 }

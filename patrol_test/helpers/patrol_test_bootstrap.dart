@@ -31,6 +31,7 @@ Future<IntegrationTestHarness> _launchPatrolApp(
   addTearDown(harness.dispose);
 
   await $.pumpWidgetAndSettle(harness.buildApp());
+  await harness.waitForPremiumStateReady($.tester);
 
   return harness;
 }

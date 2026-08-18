@@ -566,6 +566,46 @@ class AppAnalytics {
     );
   }
 
+  static Future<void> reviewPromptEligibilityChecked({required bool eligible}) {
+    return log(
+      'review_prompt_eligibility_checked',
+      params: {'eligible': eligible ? 1 : 0},
+    );
+  }
+
+  static Future<void> reviewPromptEligibilityResult({required bool eligible}) {
+    return log(
+      'review_prompt_eligibility_result',
+      params: {'eligible': eligible ? 1 : 0},
+    );
+  }
+
+  static Future<void> reviewPromptRequestAttempted({bool? nativeSupported}) {
+    return log(
+      'review_prompt_request_attempted',
+      params: {
+        ...?(nativeSupported == null
+            ? null
+            : {'native_supported': nativeSupported ? 1 : 0}),
+      },
+    );
+  }
+
+  static Future<void> reviewPromptCustomDialogShown() {
+    return log('review_prompt_custom_dialog_shown');
+  }
+
+  static Future<void> reviewPromptCustomDialogAction({required String action}) {
+    return log(
+      'review_prompt_custom_dialog_action',
+      params: {'action': action},
+    );
+  }
+
+  static Future<void> reviewPromptCustomDialogDismissed() {
+    return log('review_prompt_custom_dialog_dismissed');
+  }
+
   static Future<void> trialCancelFeedbackSubmitted({
     required String reason,
     required String platform,
