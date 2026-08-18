@@ -26,12 +26,14 @@ class BatchCostingPageFooterActions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppPrimaryButton(
+            key: const ValueKey<String>('batch-costing-continue-button'),
             onPressed: continueEnabled ? onContinue : null,
             icon: const Icon(Icons.arrow_forward),
             label: continueLabel,
           ),
           const SizedBox(height: kAppSpace12),
           AppSecondaryButton(
+            key: const ValueKey<String>('batch-costing-start-new-batch-button'),
             onPressed: onStartNewBatch,
             label: startNewBatchLabel,
           ),

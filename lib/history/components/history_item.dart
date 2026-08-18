@@ -62,6 +62,7 @@ class HistoryItem extends HookConsumerWidget {
               ),
             )
           : AppSurfaceCard(
+              key: ValueKey<String>('$itemKeyPrefix.card'),
               padding: const EdgeInsets.all(kAppSpace8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

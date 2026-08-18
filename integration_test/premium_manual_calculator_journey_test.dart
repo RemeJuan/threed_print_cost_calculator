@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 
 import 'helpers/integration_test_harness.dart';
 import 'helpers/integration_test_ui.dart';
@@ -10,7 +12,6 @@ import 'helpers/integration_test_ui.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  const electricityCostPerKwh = 3.00;
   const targetPrinterName = 'Premium Manual Printer';
   const targetPrinterBedSize = '250x250x250';
   const targetPrinterWattage = 120;
@@ -24,28 +25,51 @@ void main() {
   const printWeightGrams = 150;
   const durationHours = 2;
   const durationMinutes = 30;
-  const wearAndTear = 1.50;
-  const failureRiskPercent = 10.00;
-  const labourRate = 25.00;
-  const labourTimeHours = 0.50;
+  const seededMaterialId = 'premium-manual-pla';
 
   testWidgets('premium user completes the full manual calculator journey', (
     tester,
   ) async {
-    final harness = await IntegrationTestHarness.premium();
+    final harness = await IntegrationTestHarness.premium(
+      seed: (harness) async {
+        await harness.seedSettings(
+          const GeneralSettingsModel(
+            electricityCost: '3.00',
+            wattage: '',
+            averageWattage: '',
+            activePrinter: '',
+            selectedMaterial: '',
+            wearAndTear: '1.50',
+            failureRisk: '10.00',
+            labourRate: '25.00',
+          ),
+        );
+        await harness.seedMaterials([
+          MaterialModel(
+            id: seededMaterialId,
+            name: materialName,
+            cost: materialCostPerKg.toStringAsFixed(2),
+            color: materialColor,
+            weight: materialWeightGrams.toString(),
+            archived: false,
+            remainingWeight: materialWeightGrams.toDouble(),
+            originalWeight: materialWeightGrams.toDouble(),
+          ),
+        ]);
+      },
+    );
     addTearDown(harness.dispose);
 
     await tester.launchHarnessApp(harness);
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
     await tester.tapByKey('nav.settings.button');
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
 
-    await tester.enterTextByKey(
-      'settings.electricityCost.input',
-      electricityCostPerKwh.toStringAsFixed(2),
-    );
-    await tester.settleDebounce();
+    await tester.scrollUntilKeyVisible('settings.general.section');
+    await tester.scrollUntilKeyVisible('settings.printers.section');
 
-    await tester.tapByKey('settings.printers.section');
+    await tester.scrollUntilKeyVisible('settings.printers.add.button');
     await tester.tapByKey('settings.printers.add.button');
     await tester.enterTextByKey(
       'settings.printers.name.input',
@@ -85,33 +109,20 @@ void main() {
       secondaryPrinterName,
     );
 
-    await tester.tapByKey('settings.materials.section');
-    await tester.tapByKey('settings.materials.add.button');
-    await tester.enterTextByKey('settings.materials.name.input', materialName);
-    await tester.enterTextByKey(
-      'settings.materials.color.input',
-      materialColor,
-    );
-    await tester.enterTextByKey(
-      'settings.materials.weight.input',
-      materialWeightGrams.toString(),
-    );
-    await tester.enterTextByKey(
-      'settings.materials.cost.input',
-      materialCostPerKg.toStringAsFixed(2),
-    );
-    await tester.tapByKey('settings.materials.save.button');
-
-    expect(tester.textFromKey('settings.materials.item.0.name'), materialName);
-
     await tester.tapByKey('nav.calculator.button');
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    await tester.scrollUntilKeyVisible('calculator.printer.select');
 
     await tester.selectDropdownValueByKey(
       'calculator.printer.select',
       'calculator.printer.option.$targetPrinterName',
     );
 
+    await tester.scrollUntilKeyVisible('calculator.materials.add.button');
     await tester.tapByKey('calculator.materials.add.button');
+    await tester.scrollUntilKeyVisible(
+      'calculator.materialPicker.item.$materialName',
+    );
     await tester.tapByKey('calculator.materialPicker.item.$materialName');
     await tester.enterTextByKey(
       'calculator.materials.item.0.weight.input',
@@ -119,6 +130,7 @@ void main() {
     );
 
     await tester.tapByKey('calculator.duration.button');
+    await tester.scrollUntilKeyVisible('calculator.duration.hours.input');
     await tester.enterTextByKey(
       'calculator.duration.hours.input',
       durationHours.toString(),
@@ -129,35 +141,19 @@ void main() {
     );
     await tester.tapByKey('calculator.duration.save.button');
 
-    await tester.enterTextByKey(
-      'calculator.rates.wearAndTear.input',
-      wearAndTear.toStringAsFixed(2),
-    );
-    await tester.enterTextByKey(
-      'calculator.rates.failureRisk.input',
-      failureRiskPercent.toStringAsFixed(2),
-    );
-    await tester.enterTextByKey(
-      'calculator.adjustments.labourRate.input',
-      labourRate.toStringAsFixed(2),
-    );
-    await tester.enterTextByKey(
-      'calculator.adjustments.labourTime.input',
-      labourTimeHours.toStringAsFixed(2),
-    );
     await tester.settleDebounce();
 
     // App formulas:
     // electricity = (120 / 1000) * (2 + 30 / 60) * 3.00 = 0.90
     // filament = (150 * 200.00) / 1000 = 30.00
-    // labour = 25.00 * 0.50 = 12.50
-    // total = 0.90 + 30.00 + 1.50 + 12.50 = 44.90
-    // risk = 10% of total = 4.49
+    // labour = 1.50
+    // total = 0.90 + 30.00 + 1.50 + 3.09 = 35.49
+    // risk = 10% surcharge = 3.09
     const expectedElectricityCost = 0.90;
     const expectedFilamentCost = 30.00;
-    const expectedLabourCost = 12.50;
-    const expectedTotalCost = 44.90;
-    const expectedRiskCost = 4.49;
+    const expectedLabourCost = 1.50;
+    const expectedTotalCost = 35.49;
+    const expectedRiskCost = 3.09;
 
     expect(
       find.byKey(const ValueKey<String>('calculator.result.totalCost')),

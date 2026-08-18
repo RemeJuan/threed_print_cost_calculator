@@ -69,6 +69,9 @@ class GCodeImportPreviewDialog extends StatelessWidget {
                 bottom: false,
                 left: false,
                 child: IconButton(
+                  key: const ValueKey<String>(
+                    'gcode_import.preview.close.button',
+                  ),
                   tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
                   onPressed: () => Navigator.of(context).pop(),
                   icon: const Icon(Icons.close, color: ICON_PRIMARY),

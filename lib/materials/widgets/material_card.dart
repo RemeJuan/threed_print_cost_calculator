@@ -74,10 +74,12 @@ class MaterialCard extends ConsumerWidget {
           content: Text(l10n.deleteDialogContent),
           actions: [
             AppTertiaryButton(
+              key: const ValueKey<String>('materials.delete.cancel.button'),
               onPressed: () => Navigator.pop(dialogContext, false),
               label: l10n.cancelButton,
             ),
             AppTertiaryButton(
+              key: const ValueKey<String>('materials.delete.confirm.button'),
               onPressed: () => Navigator.pop(dialogContext, true),
               label: l10n.deleteButton,
             ),
@@ -103,6 +105,7 @@ class MaterialCard extends ConsumerWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => onEdit(),
+              key: const ValueKey<String>('materials.edit.button'),
               backgroundColor: LIGHT_BLUE,
               foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
@@ -118,6 +121,7 @@ class MaterialCard extends ConsumerWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => onDuplicate(),
+              key: const ValueKey<String>('materials.duplicate.button'),
               backgroundColor: ACTION_DUPLICATE,
               foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,
@@ -131,6 +135,7 @@ class MaterialCard extends ConsumerWidget {
             CustomSlidableAction(
               flex: 1,
               onPressed: (_) => confirmDelete(),
+              key: const ValueKey<String>('materials.delete.button'),
               backgroundColor: STATUS_ERROR,
               foregroundColor: TEXT_INVERSE,
               padding: EdgeInsets.zero,

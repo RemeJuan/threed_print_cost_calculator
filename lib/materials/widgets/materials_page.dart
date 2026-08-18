@@ -171,6 +171,7 @@ class MaterialsPage extends HookConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        key: const ValueKey<String>('materials.create.button'),
         heroTag: 'add_material',
         backgroundColor: materialAccess.allowed ? LIGHT_BLUE : TEXT_TERTIARY,
         onPressed: materialAccess.allowed

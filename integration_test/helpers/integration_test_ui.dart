@@ -3,46 +3,183 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
 
 extension IntegrationTestUiWidgetTesterX on WidgetTester {
+  Future<void> _settleTransientOverlays() async {
+    await pump();
+    await pump(const Duration(milliseconds: 50));
+    await pumpAndSettle(const Duration(milliseconds: 100));
+  }
+
+  Finder? _firstVisibleKeyFinder(String key) {
+    final rawFinder = find.byKey(ValueKey<String>(key)).hitTestable();
+    final candidates = rawFinder.evaluate();
+    if (candidates.isEmpty) {
+      return null;
+    }
+
+    return rawFinder;
+  }
+
+  Future<void> _tapVisible(
+    String key, {
+    Duration timeout = const Duration(seconds: 5),
+    Duration step = const Duration(milliseconds: 100),
+  }) async {
+    final deadline = DateTime.now().add(timeout);
+    TestFailure? lastFailure;
+
+    while (DateTime.now().isBefore(deadline)) {
+      final finder = _firstVisibleKeyFinder(key);
+      if (finder == null) {
+        await _settleTransientOverlays();
+        await pump(step);
+        continue;
+      }
+
+      try {
+        await ensureVisible(finder);
+        await pump();
+        final tapFinder = _firstVisibleKeyFinder(key);
+        if (tapFinder == null) {
+          await _settleTransientOverlays();
+          await pump(step);
+          continue;
+        }
+
+        await tap(tapFinder);
+        await _settleTransientOverlays();
+        return;
+      } catch (error) {
+        lastFailure = error is TestFailure
+            ? error
+            : TestFailure(error.toString());
+        await _settleTransientOverlays();
+        await pump(step);
+      }
+    }
+
+    fail(
+      'Unable to tap visible widget with key "$key" after ${timeout.inSeconds}s${lastFailure == null ? '.' : ': ${lastFailure.message}'}',
+    );
+  }
+
   Future<void> tapByKey(String key) async {
-    final finder = find.byKey(ValueKey<String>(key));
-    await ensureVisible(finder);
-    await tap(finder);
-    await pumpAndSettle();
+    await _tapVisible(key);
   }
 
   Future<void> enterTextByKey(String key, String value) async {
-    final finder = find.byKey(ValueKey<String>(key));
-    await ensureVisible(finder);
-    await tap(finder);
-    await pumpAndSettle();
-    await enterText(finder, value);
-    await pump();
+    final deadline = DateTime.now().add(const Duration(seconds: 5));
+
+    while (DateTime.now().isBefore(deadline)) {
+      final finder = _firstVisibleKeyFinder(key);
+      if (finder == null) {
+        await _settleTransientOverlays();
+        await pump(const Duration(milliseconds: 100));
+        continue;
+      }
+
+      try {
+        await ensureVisible(finder);
+        await pump();
+        await tap(finder);
+        await _settleTransientOverlays();
+        await enterText(finder, value);
+        await _settleTransientOverlays();
+        return;
+      } catch (_) {
+        await _settleTransientOverlays();
+        await pump(const Duration(milliseconds: 100));
+      }
+    }
+
+    fail('Unable to enter text for visible widget with key "$key".');
   }
 
   Future<void> selectDropdownValueByKey(
     String dropdownKey,
     String optionKey,
   ) async {
-    await tapByKey(dropdownKey);
-    final optionFinder = find.byKey(ValueKey<String>(optionKey)).last;
+    await _tapVisible(dropdownKey);
+    final optionFinder = find.byKey(ValueKey<String>(optionKey)).hitTestable();
     await ensureVisible(optionFinder);
+    await pump();
     await tap(optionFinder);
-    await pumpAndSettle();
+    await _settleTransientOverlays();
   }
 
   Future<void> scrollUntilKeyVisible(String key, {double delta = 150}) async {
+    await scrollUntilKeyVisibleInScrollable(key, delta: delta);
+  }
+
+  Future<void> scrollUntilKeyVisibleInScrollable(
+    String key, {
+    Finder? scrollable,
+    double delta = 150,
+  }) async {
     final finder = find.byKey(ValueKey<String>(key));
-    await scrollUntilVisible(
-      finder,
-      delta,
-      scrollable: find.byType(Scrollable).first,
+    const timeout = Duration(seconds: 5);
+    final deadline = DateTime.now().add(timeout);
+    TestFailure? lastFailure;
+
+    while (DateTime.now().isBefore(deadline)) {
+      final targetHitTestable = finder.hitTestable();
+      if (targetHitTestable.evaluate().isNotEmpty) {
+        await _settleTransientOverlays();
+        return;
+      }
+
+      final scrollableFinders = scrollable == null
+          ? <Finder>[
+              ...find
+                  .ancestor(of: finder, matching: find.byType(Scrollable))
+                  .evaluate()
+                  .map(
+                    (element) => find.byWidget(element.widget).hitTestable(),
+                  ),
+              ...find
+                  .byType(Scrollable)
+                  .evaluate()
+                  .map(
+                    (element) => find.byWidget(element.widget).hitTestable(),
+                  ),
+            ]
+          : <Finder>[scrollable.hitTestable()];
+
+      if (scrollableFinders.isEmpty) {
+        await _settleTransientOverlays();
+        await pump(const Duration(milliseconds: 100));
+        continue;
+      }
+
+      try {
+        for (final scrollable in scrollableFinders) {
+          try {
+            await scrollUntilVisible(finder, delta, scrollable: scrollable);
+            await _settleTransientOverlays();
+            return;
+          } catch (error) {
+            lastFailure = error is TestFailure
+                ? error
+                : TestFailure(error.toString());
+          }
+        }
+      } catch (error) {
+        lastFailure = error is TestFailure
+            ? error
+            : TestFailure(error.toString());
+      }
+
+      await _settleTransientOverlays();
+      await pump(const Duration(milliseconds: 100));
+    }
+
+    fail(
+      'Unable to scroll widget with key "$key" into view after ${timeout.inSeconds}s${lastFailure == null ? '.' : ': ${lastFailure.message}'}',
     );
-    await pumpAndSettle();
   }
 
   Future<void> settleDebounce() async {
     await pump(const Duration(milliseconds: 500));
-    await pumpAndSettle();
+    await _settleTransientOverlays();
   }
 
   Future<void> expectFieldTextEventually(
@@ -107,16 +244,23 @@ Future<void> expectHistoryVisibleAnywhere(
   String name,
 ) async {
   final finder = find.byKey(historyCardKey(name));
-  await tester.scrollUntilVisible(
-    finder,
-    200,
-    scrollable: find.byType(Scrollable).first,
-  );
+  final historyScrollable = find
+      .ancestor(
+        of: find.byKey(const ValueKey<String>('history.list')),
+        matching: find.byType(Scrollable),
+      )
+      .first;
+  await tester.scrollUntilVisible(finder, 200, scrollable: historyScrollable);
   expect(finder, findsOneWidget);
 }
 
 Future<void> scrollHistoryToTop(WidgetTester tester) async {
-  final scrollable = find.byType(Scrollable).first;
+  final scrollable = find
+      .ancestor(
+        of: find.byKey(const ValueKey<String>('history.list')),
+        matching: find.byType(Scrollable),
+      )
+      .first;
 
   for (var i = 0; i < 5; i++) {
     if (find

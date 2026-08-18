@@ -8,6 +8,10 @@ class HistoryExportOptionsSheet extends StatelessWidget {
 
   final Future<void> Function(ExportRange range) onExportSelected;
 
+  static const allRangeKey = ValueKey('history.export.range.all');
+  static const last7DaysRangeKey = ValueKey('history.export.range.last7Days');
+  static const last30DaysRangeKey = ValueKey('history.export.range.last30Days');
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -25,6 +29,7 @@ class HistoryExportOptionsSheet extends StatelessWidget {
             ),
           ),
           ListTile(
+            key: allRangeKey,
             title: Text(l10n.historyExportRangeAll),
             onTap: () async {
               Navigator.pop(context);
@@ -32,6 +37,7 @@ class HistoryExportOptionsSheet extends StatelessWidget {
             },
           ),
           ListTile(
+            key: last7DaysRangeKey,
             title: Text(l10n.historyExportRangeLast7Days),
             onTap: () async {
               Navigator.pop(context);
@@ -39,6 +45,7 @@ class HistoryExportOptionsSheet extends StatelessWidget {
             },
           ),
           ListTile(
+            key: last30DaysRangeKey,
             title: Text(l10n.historyExportRangeLast30Days),
             onTap: () async {
               Navigator.pop(context);

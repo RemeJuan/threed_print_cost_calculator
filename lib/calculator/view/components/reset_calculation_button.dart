@@ -27,6 +27,7 @@ class ResetCalculationButton extends ConsumerWidget {
                 label: l10n.cancelButton,
               ),
               AppPrimaryButton(
+                key: const ValueKey<String>('calculator.reset.confirm.button'),
                 onPressed: () => Navigator.of(dialogContext).pop(true),
                 label: l10n.resetButtonLabel,
               ),

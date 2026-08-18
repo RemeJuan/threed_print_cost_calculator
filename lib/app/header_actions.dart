@@ -26,6 +26,7 @@ class HeaderActions extends ConsumerWidget {
       margin: const EdgeInsets.only(right: 16),
       child: gcodeAllowed
           ? IconButton(
+              key: const ValueKey<String>('header.gcode_import.open.button'),
               tooltip: l10n.importGcodePageTitle,
               onPressed: () {
                 Navigator.of(context).push(

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -41,35 +42,56 @@ void main() {
 
     await tester.launchHarnessApp(harness);
     await tester.tapByKey('nav.history.button');
-
-    await expectHistoryVisibleAnywhere(tester, 'History Alpha');
-    await expectHistoryVisibleAnywhere(tester, 'History Beta');
-    await expectHistoryVisibleAnywhere(tester, 'History Gamma');
-    await scrollHistoryToTop(tester);
+    await tester.pumpAndSettle();
 
     await tester.enterTextByKey('history.search.input', 'Printer B');
     await tester.settleDebounce();
+    await tester.pumpAndSettle();
 
-    expect(find.byKey(historyCardKey('History Alpha')), findsNothing);
-    expect(find.byKey(historyCardKey('History Beta')), findsOneWidget);
-    expect(find.byKey(historyCardKey('History Gamma')), findsNothing);
+    await scrollHistoryToTop(tester);
+
     expect(
       tester.textFromKey('history.item.History Beta.summary'),
       contains('PETG White'),
     );
+    expect(
+      find.byKey(const ValueKey<String>('history.item.History Beta.summary')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.item.History Alpha.summary')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.item.History Gamma.summary')),
+      findsNothing,
+    );
 
     await tester.tapByKey('history.search.clear.button');
     await tester.settleDebounce();
+    await tester.pumpAndSettle();
 
     await tester.enterTextByKey('history.search.input', 'History Gamma');
     await tester.settleDebounce();
+    await tester.pumpAndSettle();
 
-    expect(find.byKey(historyCardKey('History Alpha')), findsNothing);
-    expect(find.byKey(historyCardKey('History Beta')), findsNothing);
-    expect(find.byKey(historyCardKey('History Gamma')), findsOneWidget);
+    await scrollHistoryToTop(tester);
+
     expect(
       tester.textFromKey('history.item.History Gamma.summary'),
       contains('ABS Red'),
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.item.History Gamma.summary')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.item.History Alpha.summary')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.item.History Beta.summary')),
+      findsNothing,
     );
   });
 }

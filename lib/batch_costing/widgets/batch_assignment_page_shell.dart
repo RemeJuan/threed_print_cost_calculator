@@ -69,6 +69,7 @@ class AssignmentModeHeader<T extends Enum> extends StatelessWidget {
         Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
         const SizedBox(height: kAppSpace16),
         SegmentedButton<T>(
+          key: const ValueKey<String>('batch-costing-assignment-mode-selector'),
           segments: segments,
           selected: selected,
           onSelectionChanged: onSelectionChanged,
@@ -99,9 +100,16 @@ class AssignmentNavRow extends StatelessWidget {
     return SafeArea(
       child: Row(
         children: [
-          AppTertiaryButton(onPressed: onPrevious, label: previousLabel),
+          AppTertiaryButton(
+            key: const ValueKey<String>(
+              'batch-costing-assignment-previous-button',
+            ),
+            onPressed: onPrevious,
+            label: previousLabel,
+          ),
           const Spacer(),
           AppPrimaryButton(
+            key: const ValueKey<String>('batch-costing-assignment-next-button'),
             onPressed: nextEnabled ? onNext : null,
             label: nextLabel,
           ),

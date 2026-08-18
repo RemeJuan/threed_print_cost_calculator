@@ -96,6 +96,7 @@ class HistoryFullPage extends HookConsumerWidget {
               !paged.isLoading;
 
           return CustomScrollView(
+            key: const ValueKey<String>('history.list'),
             controller: scrollController,
             slivers: [
               SliverToBoxAdapter(

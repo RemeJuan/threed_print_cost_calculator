@@ -29,45 +29,48 @@ void main() {
     );
   }
 
-  testWidgets(
-    'free shell gates history and keeps clean premium override state',
-    (tester) async {
-      final harness = await IntegrationTestHarness.free();
-      addTearDown(harness.dispose);
+  testWidgets('free shell shows history without teaser or export', (
+    tester,
+  ) async {
+    final harness = await IntegrationTestHarness.free();
+    addTearDown(harness.dispose);
 
-      await tester.launchHarnessApp(harness);
-      await expectNavShell(tester);
+    await tester.launchHarnessApp(harness);
+    await tester.pumpAndSettle(const Duration(milliseconds: 100));
+    await expectNavShell(tester);
 
-      await tester.tapByKey('nav.history.button');
-      expect(
-        find.byKey(const ValueKey<String>('history.teaser.state')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const ValueKey<String>('history.export.button')),
-        findsNothing,
-      );
+    await tester.tapByKey('nav.history.button');
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    expect(
+      find.byKey(const ValueKey<String>('history.teaser.state')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey<String>('history.export.button')),
+      findsNothing,
+    );
 
-      await tester.tapByKey('nav.settings.button');
-      expect(
-        find.byKey(const ValueKey<String>('settings.general.section')),
-        findsOneWidget,
-      );
+    await tester.tapByKey('nav.settings.button');
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    expect(
+      find.byKey(const ValueKey<String>('settings.general.section')),
+      findsOneWidget,
+    );
 
-      await tester.tapByKey('nav.calculator.button');
-      expect(
-        find.byKey(const ValueKey<String>('calculator.reset.button')),
-        findsOneWidget,
-      );
+    await tester.tapByKey('nav.calculator.button');
+    await tester.pumpAndSettle(const Duration(milliseconds: 300));
+    expect(
+      find.byKey(const ValueKey<String>('calculator.reset.button')),
+      findsOneWidget,
+    );
 
-      expect(
-        harness.container
-            .read(premiumLocalStoreProvider)
-            .readSync(testPremiumOverrideEnabledOnPreferenceKey),
-        isNull,
-      );
-    },
-  );
+    expect(
+      harness.container
+          .read(premiumLocalStoreProvider)
+          .readSync(testPremiumOverrideEnabledOnPreferenceKey),
+      isNull,
+    );
+  });
 
   testWidgets(
     'premium shell shows history export and keeps base surfaces reachable',
@@ -76,9 +79,11 @@ void main() {
       addTearDown(harness.dispose);
 
       await tester.launchHarnessApp(harness);
+      await tester.pumpAndSettle(const Duration(milliseconds: 100));
       await expectNavShell(tester);
 
       await tester.tapByKey('nav.history.button');
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
       expect(
         find.byKey(const ValueKey<String>('history.teaser.state')),
         findsNothing,
@@ -89,12 +94,14 @@ void main() {
       );
 
       await tester.tapByKey('nav.settings.button');
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
       expect(
         find.byKey(const ValueKey<String>('settings.general.section')),
         findsOneWidget,
       );
 
       await tester.tapByKey('nav.calculator.button');
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
       expect(
         find.byKey(const ValueKey<String>('calculator.reset.button')),
         findsOneWidget,

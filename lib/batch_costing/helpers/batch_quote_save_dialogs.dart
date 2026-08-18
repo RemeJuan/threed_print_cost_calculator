@@ -58,6 +58,7 @@ class _BatchQuoteNameDialogState extends State<_BatchQuoteNameDialog> {
     return AlertDialog(
       title: Text(widget.title),
       content: TextField(
+        key: const ValueKey<String>('batch-costing-quote-name-input'),
         controller: _controller,
         decoration: InputDecoration(
           hintText: widget.hintText,
@@ -71,6 +72,7 @@ class _BatchQuoteNameDialogState extends State<_BatchQuoteNameDialog> {
           label: widget.cancelLabel,
         ),
         AppPrimaryButton(
+          key: const ValueKey<String>('batch-costing-quote-save-button'),
           onPressed: () {
             final name = _controller.text.trim();
             Navigator.of(context).pop(name.isEmpty ? widget.hintText : name);
@@ -99,17 +101,26 @@ Future<BatchQuoteSuccessAction?> showBatchQuoteSuccessDialog(
           spacing: kAppSpace8,
           children: [
             AppPrimaryButton(
+              key: const ValueKey<String>(
+                'batch-costing-save-success-history-button',
+              ),
               onPressed: () =>
                   Navigator.of(context).pop(BatchQuoteSuccessAction.history),
               label: l10n.batchCostingSummaryViewHistoryButton,
             ),
             AppSecondaryButton(
+              key: const ValueKey<String>(
+                'batch-costing-save-success-return-button',
+              ),
               onPressed: () => Navigator.of(
                 context,
               ).pop(BatchQuoteSuccessAction.returnToCalculator),
               label: l10n.batchCostingSummaryReturnToCalculatorButton,
             ),
             AppTertiaryButton(
+              key: const ValueKey<String>(
+                'batch-costing-save-success-start-new-button',
+              ),
               onPressed: () => Navigator.of(
                 context,
               ).pop(BatchQuoteSuccessAction.startNewBatch),
