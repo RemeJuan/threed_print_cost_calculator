@@ -1,1 +1,1 @@
-Corrigimos um problema que podia impedir a conclusão das assinaturas.
+Manutenção geral e correções, além de importações de G-code aprimoradas.

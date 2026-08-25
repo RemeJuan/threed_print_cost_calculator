@@ -1,1 +1,1 @@
-Corretto un problema che poteva impedire il completamento degli abbonamenti.
+Manutenzione generale e correzioni, con importazioni G-code migliorate.

@@ -1,1 +1,1 @@
-Se corrigió un problema que podía impedir completar las suscripciones.
+Mantenimiento general y correcciones, además de mejores importaciones de G-code.

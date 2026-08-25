@@ -1,1 +1,1 @@
-Ein Problem behoben, durch das Abonnements nicht abgeschlossen werden konnten.
+Allgemeine Wartung und Fehlerbehebungen sowie verbesserte G-code-Importe.

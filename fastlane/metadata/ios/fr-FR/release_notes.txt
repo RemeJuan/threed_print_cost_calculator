@@ -1,1 +1,1 @@
-Correction d’un problème pouvant empêcher la finalisation des abonnements.
+Maintenance générale et corrections, avec de meilleurs imports de G-code.

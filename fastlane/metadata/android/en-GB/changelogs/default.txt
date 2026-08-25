@@ -1,1 +1,1 @@
-Fixed an issue that could prevent subscriptions from completing.
+General maintenance and fixes, plus improved G-code imports.
