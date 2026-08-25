@@ -1,7 +1,27 @@
-## [Unreleased]
+## [3.3.4] - 2026-08-24
 
 ### Fixed
+- General maintenance and fixes.
+
+## [3.3.3] - 2026-08-18
+
+### Fixed
+- Improved G-code import reliability.
+
+## [3.3.2] - 2026-08-10
+
+### Fixed
+- Fixed an app startup crash related to Android WorkManager.
 - Fixed an issue that could prevent subscriptions from completing.
+
+## [3.3.1] - 2026-08-10
+
+### Changed
+- Improved app startup performance and G-code import handling.
+- Updated Android purchase verification behaviour.
+
+### Added
+- Added calculator banner ads for free users.
 
 ## [3.3.0] - 2026-07-27
 
