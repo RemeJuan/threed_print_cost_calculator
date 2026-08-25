@@ -1,62 +1,62 @@
 {
   "wn_id": "materials_csv_export_2026_07",
   "en": {
-    "title": "New: Materials CSV Export",
-    "body": "Export your materials to CSV, edit them outside the app, then import the file back to update existing rows or add new ones with review before saving.",
+    "title": "G-code import update",
+    "body": "We’ve improved G-code import support. If you had trouble importing a file before, please give it another try. If you still run into issues, contact support.",
     "cta": "Got it",
     "unlock_pro_cta": "Start free trial"
   },
   "de": {
-    "title": "Neu: Material-CSV-Export",
-    "body": "Exportiere deine Materialien als CSV, bearbeite sie außerhalb der App und importiere die Datei dann wieder, um vorhandene Zeilen zu aktualisieren oder neue mit Prüfung vor dem Speichern hinzuzufügen.",
+    "title": "G-code-Import-Update",
+    "body": "Wir haben die Unterstützung für G-code-Importe verbessert. Wenn du vorher Probleme beim Importieren einer Datei hattest, probiere es bitte noch einmal. Wenn weiterhin Probleme auftreten, kontaktiere den Support.",
     "cta": "Verstanden",
     "unlock_pro_cta": "Kostenlose Testversion starten"
   },
   "es": {
-    "title": "Nuevo: exportación CSV de materiales",
-    "body": "Exporta tus materiales a CSV, edítalos fuera de la app y luego vuelve a importar el archivo para actualizar filas existentes o añadir nuevas con revisión antes de guardar.",
+    "title": "Actualización de importación de G-code",
+    "body": "Hemos mejorado la compatibilidad con la importación de G-code. Si antes tuviste problemas al importar un archivo, vuelve a intentarlo. Si sigues teniendo problemas, contacta con soporte.",
     "cta": "Entendido",
     "unlock_pro_cta": "Iniciar prueba gratuita"
   },
   "fr": {
-    "title": "Nouveau : export CSV des matériaux",
-    "body": "Exportez vos matériaux en CSV, modifiez-les hors de l'app, puis réimportez le fichier pour mettre à jour les lignes existantes ou en ajouter de nouvelles avec vérification avant l'enregistrement.",
+    "title": "Mise à jour de l'import G-code",
+    "body": "Nous avons amélioré la prise en charge de l'import G-code. Si vous avez eu des difficultés à importer un fichier auparavant, veuillez réessayer. Si le problème persiste, contactez l'assistance.",
     "cta": "Compris",
     "unlock_pro_cta": "Commencer l'essai gratuit"
   },
   "id": {
-    "title": "Baru: Ekspor CSV Material",
-    "body": "Ekspor material Anda ke CSV, edit di luar aplikasi, lalu impor kembali file tersebut untuk memperbarui baris yang ada atau menambahkan yang baru dengan peninjauan sebelum menyimpan.",
+    "title": "Pembaruan impor G-code",
+    "body": "Kami telah meningkatkan dukungan impor G-code. Jika sebelumnya Anda kesulitan mengimpor file, silakan coba lagi. Jika masih mengalami masalah, hubungi dukungan.",
     "cta": "Mengerti",
     "unlock_pro_cta": "Mulai uji coba gratis"
   },
   "it": {
-    "title": "Novità: esportazione CSV materiali",
-    "body": "Esporta i tuoi materiali in CSV, modificali fuori dall'app e poi reimporta il file per aggiornare le righe esistenti o aggiungerne di nuove con revisione prima del salvataggio.",
+    "title": "Aggiornamento importazione G-code",
+    "body": "Abbiamo migliorato il supporto all'importazione G-code. Se in passato hai avuto problemi a importare un file, riprova. Se continui ad avere problemi, contatta l'assistenza.",
     "cta": "Capito",
     "unlock_pro_cta": "Inizia la prova gratuita"
   },
   "ja": {
-    "title": "新機能: 材料CSVエクスポート",
-    "body": "材料をCSVに書き出してアプリ外で編集し、そのファイルを再インポートして既存の行を更新したり、新しい行を保存前の確認付きで追加したりできます。",
+    "title": "G-code取り込みの更新",
+    "body": "G-codeの取り込みサポートを改善しました。以前ファイルの取り込みで問題があった場合は、もう一度お試しください。それでも問題が続く場合は、サポートにお問い合わせください。",
     "cta": "了解",
     "unlock_pro_cta": "無料トライアルを開始"
   },
   "nl": {
-    "title": "Nieuw: materialen CSV-export",
-    "body": "Exporteer je materialen naar CSV, bewerk ze buiten de app en importeer het bestand daarna opnieuw om bestaande rijen bij te werken of nieuwe toe te voegen met controle vóór het opslaan.",
+    "title": "Update voor G-code-import",
+    "body": "We hebben de ondersteuning voor G-code-import verbeterd. Als je eerder problemen had met het importeren van een bestand, probeer het dan opnieuw. Als je nog steeds problemen hebt, neem dan contact op met support.",
     "cta": "Begrepen",
     "unlock_pro_cta": "Start gratis proefperiode"
   },
   "pt": {
-    "title": "Novo: exportação CSV de materiais",
-    "body": "Exporte seus materiais para CSV, edite fora do app e depois importe o arquivo novamente para atualizar linhas existentes ou adicionar novas com revisão antes de salvar.",
+    "title": "Atualização da importação de G-code",
+    "body": "Melhoramos o suporte à importação de G-code. Se você teve problemas para importar um arquivo antes, tente novamente. Se ainda houver problemas, entre em contato com o suporte.",
     "cta": "Entendi",
     "unlock_pro_cta": "Iniciar teste gratuito"
   },
   "th": {
-    "title": "ใหม่: ส่งออกวัสดุเป็น CSV",
-    "body": "ส่งออกวัสดุของคุณเป็น CSV แก้ไขนอกแอป แล้วนำไฟล์กลับเข้าอีกครั้งเพื่ออัปเดตแถวเดิมหรือเพิ่มแถวใหม่พร้อมตรวจสอบก่อนบันทึก",
+    "title": "อัปเดตการนำเข้า G-code",
+    "body": "เราได้ปรับปรุงการรองรับการนำเข้า G-code แล้ว หากก่อนหน้านี้คุณมีปัญหาในการนำเข้าไฟล์ โปรดลองอีกครั้ง หากยังพบปัญหาอยู่ โปรดติดต่อฝ่ายสนับสนุน",
     "cta": "เข้าใจแล้ว",
     "unlock_pro_cta": "เริ่มทดลองใช้ฟรี"
   }
