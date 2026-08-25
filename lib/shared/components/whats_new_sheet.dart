@@ -188,7 +188,10 @@ class _WhatsNewSheetState extends ConsumerState<WhatsNewSheet> {
                     await widget.onDismiss();
                     if (!context.mounted) return;
                     final presenter = ref.read(paywallPresenterProvider);
-                    Navigator.of(context).pop();
+                    final navigator = Navigator.of(context);
+                    if (navigator.canPop()) {
+                      navigator.pop();
+                    }
                     await presenter.present(
                       'pro',
                       triggerFeature: 'whats_new',
