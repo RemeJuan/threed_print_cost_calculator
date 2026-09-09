@@ -780,9 +780,9 @@
 		};
 		A4E5C2E52E6C4B51A8C0E001 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B8E436CB001722A90374557 /* Pods-Runner-RunnerUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				USES_XCTRUNNER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3HLPMRS6TC;
@@ -798,16 +798,17 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				TEST_TARGET_NAME = Runner;
 				SUPPORTS_MACCATALYST = NO;
+				TEST_TARGET_NAME = Runner;
+				USES_XCTRUNNER = YES;
 			};
 			name = Debug;
 		};
 		A4E5C2E72E6C4B51A8C0E001 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D627D0896CAA85AA7CABB46 /* Pods-Runner-RunnerUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				USES_XCTRUNNER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3HLPMRS6TC;
@@ -823,8 +824,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				TEST_TARGET_NAME = Runner;
 				SUPPORTS_MACCATALYST = NO;
+				TEST_TARGET_NAME = Runner;
+				USES_XCTRUNNER = YES;
 			};
 			name = Release;
 		};
@@ -833,7 +835,6 @@
 			baseConfigurationReference = 224DB6A21C64FE99EC547087 /* Pods-Runner-RunnerUITests.profile.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				USES_XCTRUNNER = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3HLPMRS6TC;
@@ -849,8 +850,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				TEST_TARGET_NAME = Runner;
 				SUPPORTS_MACCATALYST = NO;
+				TEST_TARGET_NAME = Runner;
+				USES_XCTRUNNER = YES;
 			};
 			name = Profile;
 		};
