@@ -226,4 +226,45 @@ void main() {
     );
     expect(sentryEvents, isEmpty);
   });
+
+  test(
+    'does not fall back on unauthenticated decode failures with casing',
+    () async {
+      final sentryEvents = <SentryEvent>[];
+      addTearDown(Sentry.close);
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'requestToken') return 'token';
+            return null;
+          });
+
+      await SentryFlutter.init(
+        (options) {
+          options.dsn = 'https://public@example.invalid/1';
+          options.beforeSend = (event, hint) {
+            sentryEvents.add(event);
+            return null;
+          };
+        },
+        appRunner: () async {
+          final captured = <AppLogEvent>[];
+          final service = DefaultPlayIntegrityService(
+            targetPlatform: TargetPlatform.android,
+            logger: recordingLogger(captured),
+            decodeIntegrity: (_, _) async {
+              throw FirebaseFunctionsException(
+                code: 'Unauthenticated',
+                message: 'app check',
+              );
+            },
+          );
+
+          final snapshot = await service.evaluate(PlayIntegrityFlow.purchase);
+          expect(snapshot.decision, PlayIntegrityDecisionLabel.allow);
+          expect(captured, isEmpty);
+        },
+      );
+      expect(sentryEvents, isEmpty);
+    },
+  );
 }

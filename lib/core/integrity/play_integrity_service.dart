@@ -146,11 +146,15 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
       return _fallback(flow: flow, error: error, stackTrace: stackTrace);
     } catch (error, stackTrace) {
       if (error is FirebaseFunctionsException &&
-          error.code == 'unauthenticated') {
+          _isUnauthenticatedFunctionsError(error.code)) {
         return _unevaluatedAllowSnapshot;
       }
       return _fallback(flow: flow, error: error, stackTrace: stackTrace);
     }
+  }
+
+  bool _isUnauthenticatedFunctionsError(String code) {
+    return code.trim().toLowerCase() == 'unauthenticated';
   }
 
   bool _isThrottleError(PlatformException error) {
