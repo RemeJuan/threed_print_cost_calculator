@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/help_support/help_support_page.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_data.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_page.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
@@ -15,6 +17,7 @@ import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
 import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class CalculatorResults extends ConsumerWidget {
   final CalculationResult results;
@@ -143,6 +146,27 @@ class CalculatorResults extends ConsumerWidget {
               currencySettings: currencySettings,
               key: const ValueKey<String>('calculator.result.finalPrice'),
               emphasize: true,
+            ),
+          ],
+          if (interfaceSettings.customerViewEnabled) ...[
+            const SizedBox(height: kAppSpace8),
+            AppSecondaryButton(
+              key: const ValueKey<String>('calculator.customer-view.button'),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => CustomerViewPage(
+                    data: CustomerViewData.fromCalculator(
+                      results: results,
+                      pricing: pricing,
+                      additionalCost: additionalCostAmount,
+                    ),
+                    settings: interfaceSettings,
+                    currencySettings: currencySettings,
+                  ),
+                ),
+              ),
+              label: l10n.customerViewOpenButton,
+              icon: const Icon(Icons.visibility_outlined),
             ),
           ],
         ],

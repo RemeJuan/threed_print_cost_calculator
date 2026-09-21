@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_data.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_flow_reset.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_pricing_formatter.dart';
@@ -15,6 +17,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
@@ -88,6 +91,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
     if (state.items.isEmpty) {
       return _emptyState(context, l10n);
     }
@@ -200,6 +204,39 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                   currencySettings,
                 ),
               ),
+            if (interfaceSettings.customerViewEnabled) ...[
+              AppSecondaryButton(
+                key: const ValueKey<String>(
+                  'batch-costing-summary.customer-view.button',
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => CustomerViewPage(
+                      data: CustomerViewData(
+                        finalPrice: summary.finalTotal,
+                        baseCost: summary.items.fold<num>(
+                          0,
+                          (sum, item) => sum + item.baseCost,
+                        ),
+                        items: [
+                          for (final item in summary.items)
+                            CustomerViewLineItem(
+                              name: item.item.displayName,
+                              quantity: item.totalQuantity,
+                              total: item.pricing.finalPrice,
+                            ),
+                        ],
+                      ),
+                      settings: interfaceSettings,
+                      currencySettings: currencySettings,
+                    ),
+                  ),
+                ),
+                label: l10n.customerViewOpenButton,
+                icon: const Icon(Icons.visibility_outlined),
+              ),
+              const SizedBox(height: 12),
+            ],
             const SizedBox(height: 24),
             _sectionTitle(context, l10n.batchCostingSummaryItemsTitle),
             const SizedBox(height: 8),
