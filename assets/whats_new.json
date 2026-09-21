@@ -1,62 +1,62 @@
 {
-  "wn_id": "materials_csv_export_2026_07",
+  "wn_id": "subscription_management_2026_09",
   "en": {
-    "title": "G-code import update",
-    "body": "We’ve improved G-code import support. If you had trouble importing a file before, please give it another try. If you still run into issues, contact support.",
+    "title": "Manage your subscription",
+    "body": "Manage your subscription and restore purchases from Settings > Manage purchases.",
     "cta": "Got it",
     "unlock_pro_cta": "Start free trial"
   },
   "de": {
-    "title": "G-code-Import-Update",
-    "body": "Wir haben die Unterstützung für G-code-Importe verbessert. Wenn du vorher Probleme beim Importieren einer Datei hattest, probiere es bitte noch einmal. Wenn weiterhin Probleme auftreten, kontaktiere den Support.",
+    "title": "Abonnement verwalten",
+    "body": "Verwalte dein Abonnement und stelle Käufe über Einstellungen > Käufe verwalten wieder her.",
     "cta": "Verstanden",
     "unlock_pro_cta": "Kostenlose Testversion starten"
   },
   "es": {
-    "title": "Actualización de importación de G-code",
-    "body": "Hemos mejorado la compatibilidad con la importación de G-code. Si antes tuviste problemas al importar un archivo, vuelve a intentarlo. Si sigues teniendo problemas, contacta con soporte.",
+    "title": "Gestiona tu suscripción",
+    "body": "Gestiona tu suscripción y restaura compras desde Ajustes > Gestionar compras.",
     "cta": "Entendido",
     "unlock_pro_cta": "Iniciar prueba gratuita"
   },
   "fr": {
-    "title": "Mise à jour de l'import G-code",
-    "body": "Nous avons amélioré la prise en charge de l'import G-code. Si vous avez eu des difficultés à importer un fichier auparavant, veuillez réessayer. Si le problème persiste, contactez l'assistance.",
+    "title": "Gérez votre abonnement",
+    "body": "Gérez votre abonnement et restaurez vos achats depuis Réglages > Gérer les achats.",
     "cta": "Compris",
     "unlock_pro_cta": "Commencer l'essai gratuit"
   },
   "id": {
-    "title": "Pembaruan impor G-code",
-    "body": "Kami telah meningkatkan dukungan impor G-code. Jika sebelumnya Anda kesulitan mengimpor file, silakan coba lagi. Jika masih mengalami masalah, hubungi dukungan.",
+    "title": "Kelola langganan",
+    "body": "Kelola langganan Anda dan pulihkan pembelian dari Pengaturan > Kelola pembelian.",
     "cta": "Mengerti",
     "unlock_pro_cta": "Mulai uji coba gratis"
   },
   "it": {
-    "title": "Aggiornamento importazione G-code",
-    "body": "Abbiamo migliorato il supporto all'importazione G-code. Se in passato hai avuto problemi a importare un file, riprova. Se continui ad avere problemi, contatta l'assistenza.",
+    "title": "Gestisci l'abbonamento",
+    "body": "Gestisci l'abbonamento e ripristina gli acquisti da Impostazioni > Gestisci acquisti.",
     "cta": "Capito",
     "unlock_pro_cta": "Inizia la prova gratuita"
   },
   "ja": {
-    "title": "G-code取り込みの更新",
-    "body": "G-codeの取り込みサポートを改善しました。以前ファイルの取り込みで問題があった場合は、もう一度お試しください。それでも問題が続く場合は、サポートにお問い合わせください。",
+    "title": "サブスクリプションを管理",
+    "body": "設定 > 購入を管理 からサブスクリプションを管理し、購入を復元できます。",
     "cta": "了解",
     "unlock_pro_cta": "無料トライアルを開始"
   },
   "nl": {
-    "title": "Update voor G-code-import",
-    "body": "We hebben de ondersteuning voor G-code-import verbeterd. Als je eerder problemen had met het importeren van een bestand, probeer het dan opnieuw. Als je nog steeds problemen hebt, neem dan contact op met support.",
+    "title": "Beheer je abonnement",
+    "body": "Beheer je abonnement en herstel aankopen via Instellingen > Aankopen beheren.",
     "cta": "Begrepen",
     "unlock_pro_cta": "Start gratis proefperiode"
   },
   "pt": {
-    "title": "Atualização da importação de G-code",
-    "body": "Melhoramos o suporte à importação de G-code. Se você teve problemas para importar um arquivo antes, tente novamente. Se ainda houver problemas, entre em contato com o suporte.",
+    "title": "Gerencie sua assinatura",
+    "body": "Gerencie sua assinatura e restaure compras em Configurações > Gerir compras.",
     "cta": "Entendi",
     "unlock_pro_cta": "Iniciar teste gratuito"
   },
   "th": {
-    "title": "อัปเดตการนำเข้า G-code",
-    "body": "เราได้ปรับปรุงการรองรับการนำเข้า G-code แล้ว หากก่อนหน้านี้คุณมีปัญหาในการนำเข้าไฟล์ โปรดลองอีกครั้ง หากยังพบปัญหาอยู่ โปรดติดต่อฝ่ายสนับสนุน",
+    "title": "จัดการการสมัครสมาชิก",
+    "body": "จัดการการสมัครสมาชิกและกู้คืนการซื้อได้จากการตั้งค่า > จัดการการซื้อ",
     "cta": "เข้าใจแล้ว",
     "unlock_pro_cta": "เริ่มทดลองใช้ฟรี"
   }

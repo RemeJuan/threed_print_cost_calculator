@@ -1,1 +1,1 @@
-Manutenzione generale e correzioni, con importazioni G-code migliorate.
+Gestisci l'abbonamento e ripristina gli acquisti da Impostazioni > Gestisci acquisti.

@@ -19,6 +19,14 @@
 
 ## Event catalogue
 
+### Subscription management
+
+- `customer_center_opened`
+  - params: [`source`]
+  - triggered_from: [`lib/settings/components/settings_customer_center_section.dart`]
+  - feature: Subscription management
+  - notes: fired immediately before native RevenueCat Customer Center presentation; `source=settings`
+
 ### What's New
 
 - `whats_new_shown`
