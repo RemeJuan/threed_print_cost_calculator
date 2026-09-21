@@ -9,6 +9,72 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
+  String get customerViewTitle => 'Vue client';
+
+  @override
+  String get customerViewPriceLabel => 'Prix';
+
+  @override
+  String get customerViewItemsLabel => 'Articles';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return 'Quantité : $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => 'Détail';
+
+  @override
+  String get customerViewSettingsHeader => 'Présentation client';
+
+  @override
+  String get customerViewEnabledLabel => 'Activer la vue client';
+
+  @override
+  String get customerViewCompanyNameLabel => 'Nom de l\'entreprise';
+
+  @override
+  String get customerViewDisplayStyleLabel => 'Style d\'affichage';
+
+  @override
+  String get customerViewDisplaySummaryLabel => 'Résumé';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => 'Détail';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'Afficher le détail des coûts';
+
+  @override
+  String get customerViewItemBreakdownLabel =>
+      'Afficher le détail des articles';
+
+  @override
+  String get customerViewBaseCostLabel => 'Coût de base';
+
+  @override
+  String get customerViewExitGestureLabel => 'Geste de sortie';
+
+  @override
+  String get customerViewExitSingleTapLabel => 'Appui simple';
+
+  @override
+  String get customerViewExitTripleTapLabel => 'Triple appui';
+
+  @override
+  String get customerViewExitLongPressLabel => 'Appui long';
+
+  @override
+  String get customerViewBackControlLabel => 'Afficher le retour';
+
+  @override
+  String get customerViewPreviewButton => 'Aperçu de la vue client';
+
+  @override
+  String get customerViewOpenButton => 'Vue client';
+
+  @override
   String get calculatorAppBarTitle => 'Calculateur d\'impression 3D';
 
   @override

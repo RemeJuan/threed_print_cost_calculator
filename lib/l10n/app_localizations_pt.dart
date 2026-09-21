@@ -9,6 +9,71 @@ class AppLocalizationsPt extends AppLocalizations {
   AppLocalizationsPt([String locale = 'pt']) : super(locale);
 
   @override
+  String get customerViewTitle => 'Vista do cliente';
+
+  @override
+  String get customerViewPriceLabel => 'Preço';
+
+  @override
+  String get customerViewItemsLabel => 'Itens';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return 'Quantidade: $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => 'Detalhamento';
+
+  @override
+  String get customerViewSettingsHeader => 'Apresentação ao cliente';
+
+  @override
+  String get customerViewEnabledLabel => 'Ativar vista do cliente';
+
+  @override
+  String get customerViewCompanyNameLabel => 'Nome do negócio';
+
+  @override
+  String get customerViewDisplayStyleLabel => 'Estilo de exibição';
+
+  @override
+  String get customerViewDisplaySummaryLabel => 'Resumo';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => 'Detalhamento';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'Mostrar detalhamento de custos';
+
+  @override
+  String get customerViewItemBreakdownLabel => 'Mostrar detalhamento de itens';
+
+  @override
+  String get customerViewBaseCostLabel => 'Custo base';
+
+  @override
+  String get customerViewExitGestureLabel => 'Gesto para sair';
+
+  @override
+  String get customerViewExitSingleTapLabel => 'Um toque';
+
+  @override
+  String get customerViewExitTripleTapLabel => 'Três toques';
+
+  @override
+  String get customerViewExitLongPressLabel => 'Toque longo';
+
+  @override
+  String get customerViewBackControlLabel => 'Mostrar controlo de voltar';
+
+  @override
+  String get customerViewPreviewButton => 'Pré-visualizar vista do cliente';
+
+  @override
+  String get customerViewOpenButton => 'Vista do cliente';
+
+  @override
   String get calculatorAppBarTitle => 'Calculadora de impressão 3D';
 
   @override

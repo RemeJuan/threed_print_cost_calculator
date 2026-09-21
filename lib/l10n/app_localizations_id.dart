@@ -9,6 +9,71 @@ class AppLocalizationsId extends AppLocalizations {
   AppLocalizationsId([String locale = 'id']) : super(locale);
 
   @override
+  String get customerViewTitle => 'Tampilan pelanggan';
+
+  @override
+  String get customerViewPriceLabel => 'Harga';
+
+  @override
+  String get customerViewItemsLabel => 'Item';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return 'Jumlah: $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => 'Rincian';
+
+  @override
+  String get customerViewSettingsHeader => 'Presentasi pelanggan';
+
+  @override
+  String get customerViewEnabledLabel => 'Aktifkan tampilan pelanggan';
+
+  @override
+  String get customerViewCompanyNameLabel => 'Nama bisnis';
+
+  @override
+  String get customerViewDisplayStyleLabel => 'Gaya tampilan';
+
+  @override
+  String get customerViewDisplaySummaryLabel => 'Ringkasan';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => 'Rincian';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'Tampilkan rincian biaya';
+
+  @override
+  String get customerViewItemBreakdownLabel => 'Tampilkan rincian item';
+
+  @override
+  String get customerViewBaseCostLabel => 'Biaya dasar';
+
+  @override
+  String get customerViewExitGestureLabel => 'Gerakan keluar';
+
+  @override
+  String get customerViewExitSingleTapLabel => 'Ketuk sekali';
+
+  @override
+  String get customerViewExitTripleTapLabel => 'Ketuk tiga kali';
+
+  @override
+  String get customerViewExitLongPressLabel => 'Tekan lama';
+
+  @override
+  String get customerViewBackControlLabel => 'Tampilkan kontrol kembali';
+
+  @override
+  String get customerViewPreviewButton => 'Pratinjau tampilan pelanggan';
+
+  @override
+  String get customerViewOpenButton => 'Tampilan pelanggan';
+
+  @override
   String get calculatorAppBarTitle => 'Kalkulator Cetak 3D';
 
   @override
