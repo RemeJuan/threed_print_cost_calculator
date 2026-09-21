@@ -1,1 +1,1 @@
-Allgemeine Wartung und Fehlerbehebungen sowie verbesserte G-code-Importe.
+Verwalte dein Abonnement und stelle Käufe über Einstellungen > Käufe verwalten wieder her.
