@@ -9,6 +9,71 @@ class AppLocalizationsTh extends AppLocalizations {
   AppLocalizationsTh([String locale = 'th']) : super(locale);
 
   @override
+  String get customerViewTitle => 'มุมมองลูกค้า';
+
+  @override
+  String get customerViewPriceLabel => 'ราคา';
+
+  @override
+  String get customerViewItemsLabel => 'รายการ';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return 'จำนวน: $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => 'รายละเอียด';
+
+  @override
+  String get customerViewSettingsHeader => 'การนำเสนอให้ลูกค้า';
+
+  @override
+  String get customerViewEnabledLabel => 'เปิดใช้มุมมองลูกค้า';
+
+  @override
+  String get customerViewCompanyNameLabel => 'ชื่อธุรกิจ';
+
+  @override
+  String get customerViewDisplayStyleLabel => 'รูปแบบการแสดงผล';
+
+  @override
+  String get customerViewDisplaySummaryLabel => 'สรุป';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => 'รายละเอียด';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'แสดงรายละเอียดต้นทุน';
+
+  @override
+  String get customerViewItemBreakdownLabel => 'แสดงรายละเอียดรายการ';
+
+  @override
+  String get customerViewBaseCostLabel => 'ต้นทุนพื้นฐาน';
+
+  @override
+  String get customerViewExitGestureLabel => 'ท่าทางออก';
+
+  @override
+  String get customerViewExitSingleTapLabel => 'แตะครั้งเดียว';
+
+  @override
+  String get customerViewExitTripleTapLabel => 'แตะสามครั้ง';
+
+  @override
+  String get customerViewExitLongPressLabel => 'กดค้าง';
+
+  @override
+  String get customerViewBackControlLabel => 'แสดงปุ่มย้อนกลับ';
+
+  @override
+  String get customerViewPreviewButton => 'ดูตัวอย่างมุมมองลูกค้า';
+
+  @override
+  String get customerViewOpenButton => 'มุมมองลูกค้า';
+
+  @override
   String get calculatorAppBarTitle => 'เครื่องคิดเลขการพิมพ์ 3 มิติ';
 
   @override

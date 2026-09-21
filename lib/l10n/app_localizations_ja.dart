@@ -9,6 +9,71 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
+  String get customerViewTitle => '顧客表示';
+
+  @override
+  String get customerViewPriceLabel => '価格';
+
+  @override
+  String get customerViewItemsLabel => '項目';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return '数量: $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => '内訳';
+
+  @override
+  String get customerViewSettingsHeader => '顧客向け表示';
+
+  @override
+  String get customerViewEnabledLabel => '顧客表示を有効にする';
+
+  @override
+  String get customerViewCompanyNameLabel => '事業名';
+
+  @override
+  String get customerViewDisplayStyleLabel => '表示スタイル';
+
+  @override
+  String get customerViewDisplaySummaryLabel => '概要';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => '内訳';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'コスト内訳を表示';
+
+  @override
+  String get customerViewItemBreakdownLabel => '項目内訳を表示';
+
+  @override
+  String get customerViewBaseCostLabel => '基本コスト';
+
+  @override
+  String get customerViewExitGestureLabel => '終了ジェスチャー';
+
+  @override
+  String get customerViewExitSingleTapLabel => '1回タップ';
+
+  @override
+  String get customerViewExitTripleTapLabel => '3回タップ';
+
+  @override
+  String get customerViewExitLongPressLabel => '長押し';
+
+  @override
+  String get customerViewBackControlLabel => '戻る操作を表示';
+
+  @override
+  String get customerViewPreviewButton => '顧客表示をプレビュー';
+
+  @override
+  String get customerViewOpenButton => '顧客表示';
+
+  @override
   String get calculatorAppBarTitle => '3Dプリント計算機';
 
   @override

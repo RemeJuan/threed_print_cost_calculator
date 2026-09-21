@@ -114,6 +114,132 @@ abstract class AppLocalizations {
     Locale('id'),
   ];
 
+  /// No description provided for @customerViewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer view'**
+  String get customerViewTitle;
+
+  /// No description provided for @customerViewPriceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get customerViewPriceLabel;
+
+  /// No description provided for @customerViewItemsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get customerViewItemsLabel;
+
+  /// No description provided for @customerViewQuantityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quantity: {quantity}'**
+  String customerViewQuantityLabel(int quantity);
+
+  /// No description provided for @customerViewBreakdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakdown'**
+  String get customerViewBreakdownLabel;
+
+  /// No description provided for @customerViewSettingsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer presentation'**
+  String get customerViewSettingsHeader;
+
+  /// No description provided for @customerViewEnabledLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable customer view'**
+  String get customerViewEnabledLabel;
+
+  /// No description provided for @customerViewCompanyNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Business name'**
+  String get customerViewCompanyNameLabel;
+
+  /// No description provided for @customerViewDisplayStyleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Display style'**
+  String get customerViewDisplayStyleLabel;
+
+  /// No description provided for @customerViewDisplaySummaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get customerViewDisplaySummaryLabel;
+
+  /// No description provided for @customerViewDisplayBreakdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakdown'**
+  String get customerViewDisplayBreakdownLabel;
+
+  /// No description provided for @customerViewCostBreakdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show cost breakdown'**
+  String get customerViewCostBreakdownLabel;
+
+  /// No description provided for @customerViewItemBreakdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show item breakdown'**
+  String get customerViewItemBreakdownLabel;
+
+  /// No description provided for @customerViewBaseCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Base cost'**
+  String get customerViewBaseCostLabel;
+
+  /// No description provided for @customerViewExitGestureLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit gesture'**
+  String get customerViewExitGestureLabel;
+
+  /// No description provided for @customerViewExitSingleTapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Single tap'**
+  String get customerViewExitSingleTapLabel;
+
+  /// No description provided for @customerViewExitTripleTapLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Triple tap'**
+  String get customerViewExitTripleTapLabel;
+
+  /// No description provided for @customerViewExitLongPressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Long press'**
+  String get customerViewExitLongPressLabel;
+
+  /// No description provided for @customerViewBackControlLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show back control'**
+  String get customerViewBackControlLabel;
+
+  /// No description provided for @customerViewPreviewButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview customer view'**
+  String get customerViewPreviewButton;
+
+  /// No description provided for @customerViewOpenButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer view'**
+  String get customerViewOpenButton;
+
   /// No description provided for @calculatorAppBarTitle.
   ///
   /// In en, this message translates to:

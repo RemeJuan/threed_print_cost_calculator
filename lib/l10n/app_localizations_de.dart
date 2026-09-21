@@ -9,6 +9,72 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
+  String get customerViewTitle => 'Kundenansicht';
+
+  @override
+  String get customerViewPriceLabel => 'Preis';
+
+  @override
+  String get customerViewItemsLabel => 'Artikel';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return 'Menge: $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => 'Aufschlüsselung';
+
+  @override
+  String get customerViewSettingsHeader => 'Kundenpräsentation';
+
+  @override
+  String get customerViewEnabledLabel => 'Kundenansicht aktivieren';
+
+  @override
+  String get customerViewCompanyNameLabel => 'Firmenname';
+
+  @override
+  String get customerViewDisplayStyleLabel => 'Anzeigestil';
+
+  @override
+  String get customerViewDisplaySummaryLabel => 'Zusammenfassung';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => 'Aufschlüsselung';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'Kostenaufschlüsselung anzeigen';
+
+  @override
+  String get customerViewItemBreakdownLabel =>
+      'Artikelaufschlüsselung anzeigen';
+
+  @override
+  String get customerViewBaseCostLabel => 'Grundkosten';
+
+  @override
+  String get customerViewExitGestureLabel => 'Geste zum Beenden';
+
+  @override
+  String get customerViewExitSingleTapLabel => 'Einmal tippen';
+
+  @override
+  String get customerViewExitTripleTapLabel => 'Dreimal tippen';
+
+  @override
+  String get customerViewExitLongPressLabel => 'Gedrückt halten';
+
+  @override
+  String get customerViewBackControlLabel => 'Zurück-Schaltfläche anzeigen';
+
+  @override
+  String get customerViewPreviewButton => 'Kundenansicht Vorschau';
+
+  @override
+  String get customerViewOpenButton => 'Kundenansicht';
+
+  @override
   String get calculatorAppBarTitle => '3D-Druck-Rechner';
 
   @override

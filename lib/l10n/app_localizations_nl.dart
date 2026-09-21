@@ -9,6 +9,71 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
+  String get customerViewTitle => 'Klantweergave';
+
+  @override
+  String get customerViewPriceLabel => 'Prijs';
+
+  @override
+  String get customerViewItemsLabel => 'Items';
+
+  @override
+  String customerViewQuantityLabel(int quantity) {
+    return 'Aantal: $quantity';
+  }
+
+  @override
+  String get customerViewBreakdownLabel => 'Uitsplitsing';
+
+  @override
+  String get customerViewSettingsHeader => 'Klantpresentatie';
+
+  @override
+  String get customerViewEnabledLabel => 'Klantweergave inschakelen';
+
+  @override
+  String get customerViewCompanyNameLabel => 'Bedrijfsnaam';
+
+  @override
+  String get customerViewDisplayStyleLabel => 'Weergavestijl';
+
+  @override
+  String get customerViewDisplaySummaryLabel => 'Samenvatting';
+
+  @override
+  String get customerViewDisplayBreakdownLabel => 'Uitsplitsing';
+
+  @override
+  String get customerViewCostBreakdownLabel => 'Kostenuitsplitsing tonen';
+
+  @override
+  String get customerViewItemBreakdownLabel => 'Itemuitsplitsing tonen';
+
+  @override
+  String get customerViewBaseCostLabel => 'Basiskosten';
+
+  @override
+  String get customerViewExitGestureLabel => 'Afsluitgebaar';
+
+  @override
+  String get customerViewExitSingleTapLabel => 'Eén tik';
+
+  @override
+  String get customerViewExitTripleTapLabel => 'Drie tikken';
+
+  @override
+  String get customerViewExitLongPressLabel => 'Lang indrukken';
+
+  @override
+  String get customerViewBackControlLabel => 'Terugknop tonen';
+
+  @override
+  String get customerViewPreviewButton => 'Klantweergave bekijken';
+
+  @override
+  String get customerViewOpenButton => 'Klantweergave';
+
+  @override
   String get calculatorAppBarTitle => '3D-printcalculator';
 
   @override
