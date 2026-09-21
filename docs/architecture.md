@@ -59,6 +59,7 @@
   - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
 - Printer management (settings) and calculator printer selection are both free-tier accessible, gated by a single `policy.printers()` gate. Free users are capped at 2 printers via `policy.canCreatePrinter(...)`. No separate `printersList()` gate exists.
 - Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
+- Mobile Settings exposes RevenueCat Customer Center through `CustomerCenterPresenter`. It is available to free and premium users independently of the app-owned paywall; Customer Center remains native and owns store-formatted billing prices. On successful return, Settings refreshes RevenueCat-backed premium state. Cancellation or refund-request actions do not locally revoke access.
 - Android premium-sensitive flows trigger Play Integrity shadow evaluation around purchase and restore via native token request in `android/app/src/main/kotlin/com/threed_print_calculator/MainActivity.kt` and Firebase callable decode in `functions/src/index.ts`. Service-level evaluations currently coalesce globally while a request is in flight; native token requests never overlap; quota throttling only suppresses repeat native requests.
 - `lib/core/integrity/` normalizes verdicts, tags Sentry with `play_integrity.*`, and keeps fallback behavior fail-open for infrastructure errors.
 - Commerce authority sits with Billing/RevenueCat. Play Integrity is shadow/telemetry-only for purchase and restore; verdicts, throttles, in-flight states, and unauthenticated errors do not block commerce. Basic calculator access remains available on risky or unknown verdicts.
@@ -81,7 +82,7 @@
 - `MaterialApp` wires localization through `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales` in `lib/app/app.dart`.
 - Do not edit generated localization files directly.
 - After ARB changes, run `fvm flutter gen-l10n` or project codegen workflow.
-- App is currency-agnostic: no currency symbols in user-facing output.
+- App is currency-agnostic: no currency symbols in user-facing output, except store-formatted values rendered inside RevenueCat's native Customer Center billing UI.
 
 ## Shared UI system
 

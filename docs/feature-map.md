@@ -71,6 +71,11 @@
   - `isDefaultView`
   - `isCustomView`
 
+## Purchases
+
+- Customer Center: `docs/product/revenuecat-customer-center.md` defines approved native subscription-management scope, dashboard configuration, currency exception, and verification evidence.
+- `lib/purchases/customer_center_presenter.dart` provides serialized native Customer Center presentation; Settings exposes its entry independently of premium upsell visibility.
+
 ## Materials
 
 - Main screens/widgets:
