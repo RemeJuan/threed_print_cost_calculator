@@ -75,7 +75,7 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: `parse_status=failed`; `failure_reason` is a low-cardinality `GCodeFailureReason` constant (`picker_exception`, `metadata_resolution_failed`, `file_too_large`, `invalid_extension`, `unsupported_content`, `no_metadata`, `parse_exception`, `read_failed`, or `unknown`); no filenames, paths, raw line content, raw errors, or stack traces
+  - notes: `parse_status=failed`; `failure_reason` is a low-cardinality `GCodeFailureReason` constant (`picker_exception`, `metadata_resolution_failed`, `file_too_large`, `invalid_extension`, `unsupported_content`, `no_metadata`, `parse_exception`, `read_failed`, or `unknown`); no filenames, paths, raw line content, raw errors, or stack traces. In-memory parser failures classify at parser boundary; streamed path parsing retains existing combined reader/parser isolate path, so non-FormatException boundary distinction remains deferred.
 
 - `gcode_import_breadcrumb`
   - params: [`stage`, `file_name`?, `original_file_name`?, `mime_type`?, `file_size_bytes`?, `reason`?]
