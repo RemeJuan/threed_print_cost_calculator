@@ -8,6 +8,7 @@ import 'package:threed_print_cost_calculator/settings/interface_settings/interfa
 import 'package:threed_print_cost_calculator/settings/general_settings_form.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_page.dart';
 import 'package:threed_print_cost_calculator/settings/components/settings_premium_card.dart';
+import 'package:threed_print_cost_calculator/settings/components/settings_customer_center_section.dart';
 import 'package:threed_print_cost_calculator/settings/components/settings_printers_section.dart';
 import 'package:threed_print_cost_calculator/settings/settings_section.dart';
 import 'package:threed_print_cost_calculator/settings/work_costs_form.dart';
@@ -71,6 +72,8 @@ class SettingsPage extends ConsumerWidget {
         ],
         const SizedBox(height: kAppSpace16),
         const BackupRestoreSection(),
+        const SizedBox(height: kAppSpace16),
+        const SettingsCustomerCenterSection(),
         if (!policy.isPremium) ...[
           const SizedBox(height: kAppSpace16),
           SettingsPremiumCard(policy: policy),

@@ -18,6 +18,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsAppBarTitle => 'การตั้งค่า';
 
   @override
+  String get managePurchasesLabel => 'จัดการการซื้อ';
+
+  @override
+  String get managePurchasesError =>
+      'ไม่สามารถเปิดการจัดการการซื้อได้ โปรดลองอีกครั้ง';
+
+  @override
   String get calculatorNavLabel => 'เครื่องคิดเลข';
 
   @override

@@ -71,6 +71,11 @@
   - `isDefaultView`
   - `isCustomView`
 
+## Purchases
+
+- Customer Center: `docs/product/revenuecat-customer-center.md` defines approved native subscription-management scope, dashboard configuration, currency exception, and verification evidence.
+- `lib/purchases/customer_center_presenter.dart` provides serialized native Customer Center presentation; Settings exposes its entry independently of premium upsell visibility.
+
 ## Materials
 
 - Main screens/widgets:
@@ -334,7 +339,7 @@
   - `lib/main.dart` runs `_runApp()` first, then starts `initSentry()` as best-effort background work.
   - Monitoring never blocks startup; Sentry init is detached from the critical launch path.
   - `lib/core/monitoring/sentry_monitoring.dart` holds DSN/environment config plus `_beforeSend` scrubbing logic.
-  - Release/dist are always set (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), so Sentry does not need `PackageInfo` in the startup path.
+  - Release/dist are always set. Explicit `FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` dart-defines override runtime metadata; otherwise `PackageInfo.fromPlatform()` supplies installed version/build, falling back to the existing `dev` identity if metadata fails or is empty. This corrects release grouping when CI exports version variables without passing dart-defines. Resolver fallback and Sentry option configuration are covered by monitoring tests.
   - iOS debug builds disable Sentry native auto-init to avoid early `sentry_flutter` method-channel failures.
   - Scrubbing logic in `_beforeSend` callback strips paths, file names, user data, and request info from events before transmission.
   - Bootstrap error hook in `lib/bootstrap.dart` chains to Sentry's `FlutterError.onError` handler and adds local logging via `log(...)`.

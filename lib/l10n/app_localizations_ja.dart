@@ -18,6 +18,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsAppBarTitle => '設定';
 
   @override
+  String get managePurchasesLabel => '購入を管理';
+
+  @override
+  String get managePurchasesError => '購入管理を開けませんでした。もう一度お試しください。';
+
+  @override
   String get calculatorNavLabel => '計算機';
 
   @override

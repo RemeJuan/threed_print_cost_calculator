@@ -18,6 +18,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAppBarTitle => 'Settings';
 
   @override
+  String get managePurchasesLabel => 'Manage purchases';
+
+  @override
+  String get managePurchasesError =>
+      'Could not open purchase management. Please try again.';
+
+  @override
   String get calculatorNavLabel => 'Calculator';
 
   @override

@@ -43,6 +43,8 @@
   "riskTotalPrefix": "Risikokosten:",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "Einstellungen",
+  "managePurchasesLabel": "Käufe verwalten",
+  "managePurchasesError": "Die Kaufverwaltung konnte nicht geöffnet werden. Bitte versuchen Sie es erneut.",
   "interfaceSettingsHeader": "Interface",
   "interfaceSettingsSubtitle": "Standardansicht vs. benutzerdefinierte Ansicht",
   "interfaceSettingsDefaultView": "Standardansicht",

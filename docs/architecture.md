@@ -20,7 +20,7 @@
 - `lib/main.dart` initializes app services in a fixed order: orientation lock, Firebase, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, Sembast DB, then best-effort Sentry init.
 - `main()` no longer waits on Sentry. It runs `_runApp()` first, then starts `initSentry()` as background work so monitoring never blocks launch.
 - Firebase Analytics collection enablement and Firebase App Check activation now run in a one-shot post-first-frame helper so launch does not wait on either call.
-- Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart` (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), avoiding any `PackageInfo` dependency in the startup path.
+- Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart`. Explicit `FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` dart-defines remain authoritative; missing defines now use runtime `PackageInfo` metadata, with the existing `dev` identity as safe fallback. This groups events by installed app version/build when Codemagic environment exports are not passed as dart-defines. Metadata lookup is best-effort; initialization remains guarded so monitoring cannot block startup.
 - On iOS debug builds, `configureSentryOptions()` disables native auto-init to avoid early `sentry_flutter` native channel failures during startup.
 - Startup migrations from `lib/startup.dart` are deferred until after the first frame, so they no longer block launch. Each migration step is guarded by a persisted `SharedPreferences` version key and only reruns when its version changes.
 - That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, deferred Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
@@ -59,6 +59,7 @@
   - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
 - Printer management (settings) and calculator printer selection are both free-tier accessible, gated by a single `policy.printers()` gate. Free users are capped at 2 printers via `policy.canCreatePrinter(...)`. No separate `printersList()` gate exists.
 - Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
+- Mobile Settings exposes RevenueCat Customer Center through `CustomerCenterPresenter`. It is available to free and premium users independently of the app-owned paywall; Customer Center remains native and owns store-formatted billing prices. On successful return, Settings refreshes RevenueCat-backed premium state. Cancellation or refund-request actions do not locally revoke access.
 - Android premium-sensitive flows trigger Play Integrity shadow evaluation around purchase and restore via native token request in `android/app/src/main/kotlin/com/threed_print_calculator/MainActivity.kt` and Firebase callable decode in `functions/src/index.ts`. Service-level evaluations currently coalesce globally while a request is in flight; native token requests never overlap; quota throttling only suppresses repeat native requests.
 - `lib/core/integrity/` normalizes verdicts, tags Sentry with `play_integrity.*`, and keeps fallback behavior fail-open for infrastructure errors.
 - Commerce authority sits with Billing/RevenueCat. Play Integrity is shadow/telemetry-only for purchase and restore; verdicts, throttles, in-flight states, and unauthenticated errors do not block commerce. Basic calculator access remains available on risky or unknown verdicts.
@@ -81,7 +82,7 @@
 - `MaterialApp` wires localization through `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales` in `lib/app/app.dart`.
 - Do not edit generated localization files directly.
 - After ARB changes, run `fvm flutter gen-l10n` or project codegen workflow.
-- App is currency-agnostic: no currency symbols in user-facing output.
+- App is currency-agnostic: no currency symbols in user-facing output, except store-formatted values rendered inside RevenueCat's native Customer Center billing UI.
 
 ## Shared UI system
 

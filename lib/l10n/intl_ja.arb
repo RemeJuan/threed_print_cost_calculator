@@ -43,6 +43,8 @@
   "riskTotalPrefix": "リスクコスト:",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "設定",
+  "managePurchasesLabel": "購入を管理",
+  "managePurchasesError": "購入管理を開けませんでした。もう一度お試しください。",
   "interfaceSettingsHeader": "Interface",
   "interfaceSettingsSubtitle": "デフォルト表示とカスタム表示",
   "interfaceSettingsDefaultView": "デフォルト表示",
