@@ -18,6 +18,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get settingsAppBarTitle => 'Instellingen';
 
   @override
+  String get managePurchasesLabel => 'Aankopen beheren';
+
+  @override
+  String get managePurchasesError =>
+      'Aankoopbeheer kon niet worden geopend. Probeer het opnieuw.';
+
+  @override
   String get calculatorNavLabel => 'Rekenmachine';
 
   @override

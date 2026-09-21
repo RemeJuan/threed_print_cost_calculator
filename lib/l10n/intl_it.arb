@@ -43,6 +43,8 @@
   "riskTotalPrefix": "Costo del rischio: ",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "Impostazioni",
+  "managePurchasesLabel": "Gestisci acquisti",
+  "managePurchasesError": "Impossibile aprire la gestione degli acquisti. Riprova.",
   "interfaceSettingsHeader": "Interface",
   "interfaceSettingsSubtitle": "Vista predefinita vs vista personalizzata",
   "interfaceSettingsDefaultView": "Vista predefinita",

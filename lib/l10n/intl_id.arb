@@ -43,6 +43,8 @@
   "riskTotalPrefix": "Biaya risiko: ",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "Pengaturan",
+  "managePurchasesLabel": "Kelola pembelian",
+  "managePurchasesError": "Pengelolaan pembelian tidak dapat dibuka. Coba lagi.",
   "interfaceSettingsHeader": "Interface",
   "interfaceSettingsSubtitle": "Tampilan bawaan vs tampilan kustom",
   "interfaceSettingsDefaultView": "Tampilan bawaan",

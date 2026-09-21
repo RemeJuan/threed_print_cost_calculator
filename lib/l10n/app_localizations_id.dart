@@ -18,6 +18,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsAppBarTitle => 'Pengaturan';
 
   @override
+  String get managePurchasesLabel => 'Kelola pembelian';
+
+  @override
+  String get managePurchasesError =>
+      'Pengelolaan pembelian tidak dapat dibuka. Coba lagi.';
+
+  @override
   String get calculatorNavLabel => 'Kalkulator';
 
   @override

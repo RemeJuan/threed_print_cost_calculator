@@ -132,6 +132,18 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsAppBarTitle;
 
+  /// No description provided for @managePurchasesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage purchases'**
+  String get managePurchasesLabel;
+
+  /// No description provided for @managePurchasesError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open purchase management. Please try again.'**
+  String get managePurchasesError;
+
   /// No description provided for @calculatorNavLabel.
   ///
   /// In en, this message translates to:

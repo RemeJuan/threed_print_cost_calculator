@@ -3,6 +3,8 @@
   "calculatorAppBarTitle": "3D Print Calculator",
   "historyAppBarTitle": "History",
   "settingsAppBarTitle": "Settings",
+  "managePurchasesLabel": "Manage purchases",
+  "managePurchasesError": "Could not open purchase management. Please try again.",
   "calculatorNavLabel": "Calculator",
   "historyNavLabel": "History",
   "settingsNavLabel": "Settings",
