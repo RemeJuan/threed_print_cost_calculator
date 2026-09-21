@@ -120,10 +120,10 @@
   - notes: fired only after the calculator apply CTA succeeds; clears open-flow timer state immediately, which suppresses later abandon logging for the same session
 
 - `gcode_import_success`
-  - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
+  - params: [`has_print_time`, `has_filament_usage`, `has_preview`, `parse_status`]
   - triggered_from: [`lib/gcode_import/gcode_import_page_actions.dart`]
   - feature: G-code import
-  - notes: success milestone after calculator state updates; only carries apply result flags, not funnel context (`slicer`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`)
+  - notes: success milestone after calculator state updates; `parse_status` is explicit result-derived `success` or `partial`. Does not carry other funnel context. Register `parse_status` and `failure_reason` as low-cardinality GA Admin custom dimensions; do not register `attempt_id`. Registration is nonretroactive. No filenames, paths, raw content, or errors.
 
 ### Calculator usage
 
