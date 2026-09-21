@@ -1,1 +1,1 @@
-General maintenance and fixes, plus improved G-code imports.
+Manage your subscription and restore purchases from Settings > Manage purchases.

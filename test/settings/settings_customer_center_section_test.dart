@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/core/analytics/analytics_service.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/purchases/customer_center_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
@@ -16,14 +18,16 @@ import '../helpers/helpers.dart';
 import 'settings_page_test_support.dart';
 
 class _FakeCustomerCenterPresenter implements CustomerCenterPresenter {
-  _FakeCustomerCenterPresenter({this.errorOnFirstCall = false});
+  _FakeCustomerCenterPresenter({this.errorOnFirstCall = false, this.timeline});
 
   final bool errorOnFirstCall;
   final calls = <void>[];
   final completer = Completer<void>();
+  final List<String>? timeline;
 
   @override
   Future<void> present() async {
+    timeline?.add('present');
     calls.add(null);
     if (errorOnFirstCall && calls.length == 1) {
       throw StateError('failed');
@@ -32,10 +36,49 @@ class _FakeCustomerCenterPresenter implements CustomerCenterPresenter {
   }
 }
 
+class _RecordingAnalytics implements AnalyticsService {
+  final events = <String>[];
+  final paramsByEvent = <String, Map<String, Object>?>{};
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    events.add(name);
+    paramsByEvent[name] = params;
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(setupTest);
+
+  testWidgets('logs customer center action before presentation', (
+    tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    final analytics = _RecordingAnalytics();
+    final original = AppAnalytics.service;
+    AppAnalytics.service = analytics;
+    addTearDown(() => AppAnalytics.service = original);
+    final timeline = <String>[];
+    final presenter = _FakeCustomerCenterPresenter(timeline: timeline);
+    AppAnalytics.service = _RecordingAnalyticsWithTimeline(analytics, timeline);
+    await tester.pumpApp(const SettingsCustomerCenterSection(), [
+      customerCenterPresenterProvider.overrideWithValue(presenter),
+    ]);
+    await tester.tap(
+      find.byKey(const ValueKey<String>('settings.customer-center.title')),
+    );
+    await tester.pump();
+    expect(timeline, ['customer_center_opened', 'present']);
+    expect(analytics.paramsByEvent['customer_center_opened'], {
+      'source': 'settings',
+    });
+    presenter.completer.complete();
+    await tester.pumpAndSettle();
+    debugDefaultTargetPlatformOverride = null;
+  });
 
   testWidgets('Settings page exposes entry for free users on mobile', (
     tester,
@@ -182,4 +225,16 @@ void main() {
     expect(container.read(appRefreshProvider), 1);
     debugDefaultTargetPlatformOverride = null;
   });
+}
+
+class _RecordingAnalyticsWithTimeline implements AnalyticsService {
+  _RecordingAnalyticsWithTimeline(this.delegate, this.timeline);
+  final _RecordingAnalytics delegate;
+  final List<String> timeline;
+
+  @override
+  Future<void> logEvent(String name, {Map<String, Object>? params}) async {
+    timeline.add(name);
+    await delegate.logEvent(name, params: params);
+  }
 }

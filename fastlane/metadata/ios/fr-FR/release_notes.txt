@@ -1,1 +1,1 @@
-Maintenance générale et corrections, avec de meilleurs imports de G-code.
+Gérez votre abonnement et restaurez vos achats depuis Réglages > Gérer les achats.

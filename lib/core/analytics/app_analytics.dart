@@ -863,6 +863,7 @@ class AppAnalytics {
     required bool hasPrintTime,
     required bool hasFilamentUsage,
     required bool hasPreview,
+    required String parseStatus,
   }) {
     return log(
       'gcode_import_success',
@@ -871,6 +872,7 @@ class AppAnalytics {
         'has_print_time': hasPrintTime ? 1 : 0,
         'has_filament_usage': hasFilamentUsage ? 1 : 0,
         'has_preview': hasPreview ? 1 : 0,
+        'parse_status': parseStatus,
       },
     );
   }

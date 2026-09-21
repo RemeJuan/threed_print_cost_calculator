@@ -19,6 +19,14 @@
 
 ## Event catalogue
 
+### Subscription management
+
+- `customer_center_opened`
+  - params: [`source`]
+  - triggered_from: [`lib/settings/components/settings_customer_center_section.dart`]
+  - feature: Subscription management
+  - notes: fired immediately before native RevenueCat Customer Center presentation; `source=settings`
+
 ### What's New
 
 - `whats_new_shown`
@@ -75,7 +83,7 @@
   - params: [`slicer`, `has_preview`, `parse_status`, `file_size_bucket`, `failure_reason`]
   - triggered_from: [`lib/gcode_import/gcode_import_controller.dart`]
   - feature: G-code import
-  - notes: `parse_status=failed`; `failure_reason` is a low-cardinality `GCodeFailureReason` constant (`picker_exception`, `metadata_resolution_failed`, `file_too_large`, `invalid_extension`, `unsupported_content`, `no_metadata`, `parse_exception`, `read_failed`, or `unknown`); no filenames, paths, raw line content, raw errors, or stack traces
+  - notes: `parse_status=failed`; `failure_reason` is a low-cardinality `GCodeFailureReason` constant (`picker_exception`, `metadata_resolution_failed`, `file_too_large`, `invalid_extension`, `unsupported_content`, `no_metadata`, `parse_exception`, `read_failed`, or `unknown`); no filenames, paths, raw line content, raw errors, or stack traces. In-memory parser failures classify at parser boundary; streamed path parsing retains existing combined reader/parser isolate path, so non-FormatException boundary distinction remains deferred.
 
 - `gcode_import_breadcrumb`
   - params: [`stage`, `file_name`?, `original_file_name`?, `mime_type`?, `file_size_bytes`?, `reason`?]
@@ -120,10 +128,10 @@
   - notes: fired only after the calculator apply CTA succeeds; clears open-flow timer state immediately, which suppresses later abandon logging for the same session
 
 - `gcode_import_success`
-  - params: [`has_print_time`, `has_filament_usage`, `has_preview`]
+  - params: [`has_print_time`, `has_filament_usage`, `has_preview`, `parse_status`]
   - triggered_from: [`lib/gcode_import/gcode_import_page_actions.dart`]
   - feature: G-code import
-  - notes: success milestone after calculator state updates; only carries apply result flags, not funnel context (`slicer`, `parse_status`, `file_size_bucket`, `gcode_time_to_value_ms`)
+  - notes: success milestone after calculator state updates; `parse_status` is explicit result-derived `success` or `partial`. Does not carry other funnel context. Register `parse_status` and `failure_reason` as low-cardinality GA Admin custom dimensions; do not register `attempt_id`. Registration is nonretroactive. No filenames, paths, raw content, or errors.
 
 ### Calculator usage
 
