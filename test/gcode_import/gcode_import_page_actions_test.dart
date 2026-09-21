@@ -75,6 +75,7 @@ void main() {
       (event) => event.name == 'gcode_import_success',
     );
     expect(successEvent.params, contains('attempt_id'));
+    expect(successEvent.params, containsPair('parse_status', 'success'));
 
     expect(fakeCalculator.calls, hasLength(1));
     expect(
@@ -146,6 +147,72 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
     await tester.pump();
   });
+
+  testWidgets(
+    'partial result success carries partial status and applied values',
+    (tester) async {
+      final timeline = <String>[];
+      final analytics = RecordingTimelineAnalytics(timeline);
+      final originalService = AppAnalytics.service;
+      AppAnalytics.service = analytics;
+      addTearDown(() => AppAnalytics.service = originalService);
+
+      final partial = GCodeImportState.success(
+        attemptId: 'attempt-partial',
+        selectedFileName: 'partial.gcode',
+        selectedFileSizeBytes: 1024,
+        result: GCodeImportResult(
+          slicer: GCodeSlicer.prusaSlicer,
+          estimatedDuration: const Duration(minutes: 4),
+          filamentLengthMm: 25,
+          filamentWeightG: 3.5,
+          layerHeightMm: null,
+          previewMetadata: null,
+          previewImageBytes: null,
+          warnings: const [
+            GCodeParseWarning(GCodeParseWarningCode.partialMetadata),
+          ],
+          rawExtractedValues: const {},
+        ),
+      );
+      final calculator = _FakeCalculatorProvider(timeline);
+      await tester.pumpApp(const GCodeImportPage(), [
+        isPremiumProvider.overrideWithValue(true),
+        gcodeImportControllerProvider.overrideWith(
+          () => FakeController(partial),
+        ),
+        calculatorProvider.overrideWith(() => calculator),
+      ]);
+      await tester.ensureVisible(
+        find.byKey(const ValueKey<String>('gcode_import.apply.button')),
+      );
+      await tester.tap(
+        find.byKey(const ValueKey<String>('gcode_import.apply.button')),
+      );
+      await tester.pump();
+
+      expect(
+        timeline,
+        containsAllInOrder([
+          'analytics:gcode_apply_to_calculator',
+          'calculator:applyImportedValues',
+          'analytics:gcode_import_success',
+          'analytics:gcode_flow_completed',
+        ]),
+      );
+      final success = analytics.events.firstWhere(
+        (event) => event.name == 'gcode_import_success',
+      );
+      expect(success.params, containsPair('parse_status', 'partial'));
+      expect(
+        calculator.calls.single.estimatedDuration,
+        const Duration(minutes: 4),
+      );
+      expect(calculator.calls.single.filamentWeightGrams, 3.5);
+      safeBotToastCleanAll();
+      await tester.pump(const Duration(seconds: 3));
+    },
+  );
 }
 
 class _FakeCalculatorProvider extends CalculatorProvider {
