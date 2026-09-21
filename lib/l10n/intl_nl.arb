@@ -43,6 +43,8 @@
   "riskTotalPrefix": "Risicokosten:",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "Instellingen",
+  "managePurchasesLabel": "Aankopen beheren",
+  "managePurchasesError": "Aankoopbeheer kon niet worden geopend. Probeer het opnieuw.",
   "interfaceSettingsHeader": "Interface",
   "interfaceSettingsSubtitle": "Standaardweergave vs aangepaste weergave",
   "interfaceSettingsDefaultView": "Standaardweergave",

@@ -43,6 +43,8 @@
   "riskTotalPrefix": "ต้นทุนความเสี่ยง: ",
   "@riskTotalPrefix": {},
   "settingsAppBarTitle": "การตั้งค่า",
+  "managePurchasesLabel": "จัดการการซื้อ",
+  "managePurchasesError": "ไม่สามารถเปิดการจัดการการซื้อได้ โปรดลองอีกครั้ง",
   "interfaceSettingsHeader": "Interface",
   "interfaceSettingsSubtitle": "มุมมองเริ่มต้น vs มุมมองกำหนดเอง",
   "interfaceSettingsDefaultView": "มุมมองเริ่มต้น",

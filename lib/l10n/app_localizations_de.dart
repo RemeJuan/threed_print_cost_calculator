@@ -18,6 +18,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsAppBarTitle => 'Einstellungen';
 
   @override
+  String get managePurchasesLabel => 'Käufe verwalten';
+
+  @override
+  String get managePurchasesError =>
+      'Die Kaufverwaltung konnte nicht geöffnet werden. Bitte versuchen Sie es erneut.';
+
+  @override
   String get calculatorNavLabel => 'Rechner';
 
   @override
