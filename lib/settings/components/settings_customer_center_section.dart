@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/customer_center_presenter.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
@@ -61,6 +62,12 @@ class _SettingsCustomerCenterSectionState
     setState(() => _isBusy = true);
 
     try {
+      AppAnalytics.safeLog(
+        () => AppAnalytics.log(
+          'customer_center_opened',
+          params: {'source': 'settings'},
+        ),
+      );
       await ref.read(customerCenterPresenterProvider).present();
       ref.read(appRefreshProvider.notifier).refresh();
     } catch (_) {
