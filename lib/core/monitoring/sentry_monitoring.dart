@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 const _sentryBuildName = String.fromEnvironment('FLUTTER_BUILD_NAME');
@@ -8,14 +9,20 @@ const _fallbackSentryDist = 'dev';
 
 Future<void> initSentry() async {
   try {
-    await SentryFlutter.init(configureSentryOptions);
+    final identity = await resolveSentryReleaseIdentity();
+    await SentryFlutter.init(
+      (options) => configureSentryOptions(options, identity: identity),
+    );
   } catch (_) {
     // Monitoring must never block or crash app startup.
   }
 }
 
 /// Configures Sentry with startup-safe defaults.
-void configureSentryOptions(SentryFlutterOptions options) {
+void configureSentryOptions(
+  SentryFlutterOptions options, {
+  SentryReleaseIdentity? identity,
+}) {
   options.dsn =
       'https://05f1c49136e3510a42d66d4fd9b511d5@o4511607690756096.ingest.de.sentry.io/4511607696326736';
   options.sendDefaultPii = false;
@@ -28,16 +35,54 @@ void configureSentryOptions(SentryFlutterOptions options) {
     options.autoInitializeNativeSdk = false;
   }
 
-  final buildName = _sentryBuildName.isEmpty ? 'dev' : _sentryBuildName;
-  final buildNumber = _sentryBuildNumber.isEmpty
-      ? _fallbackSentryDist
-      : _sentryBuildNumber;
-  final release = buildName == 'dev'
-      ? _fallbackSentryRelease
-      : 'threed_print_cost_calculator@$buildName+$buildNumber';
+  final resolved = identity ?? _compileTimeReleaseIdentity;
+  options.release = resolved.release;
+  options.dist = resolved.dist;
+}
 
-  options.release = release;
-  options.dist = buildNumber;
+class SentryReleaseIdentity {
+  const SentryReleaseIdentity(this.release, this.dist);
+
+  final String release;
+  final String dist;
+}
+
+const _compileTimeReleaseIdentity = SentryReleaseIdentity(
+  _sentryBuildName == ''
+      ? _fallbackSentryRelease
+      : 'threed_print_cost_calculator@$_sentryBuildName+'
+            '${_sentryBuildNumber == '' ? _fallbackSentryDist : _sentryBuildNumber}',
+  _sentryBuildNumber == '' ? _fallbackSentryDist : _sentryBuildNumber,
+);
+
+Future<SentryReleaseIdentity> resolveSentryReleaseIdentity({
+  Future<PackageInfo> Function()? loadPackageInfo,
+  String buildName = _sentryBuildName,
+  String buildNumber = _sentryBuildNumber,
+}) async {
+  if (buildName.isNotEmpty && buildNumber.isNotEmpty) {
+    return SentryReleaseIdentity(
+      'threed_print_cost_calculator@$buildName+$buildNumber',
+      buildNumber,
+    );
+  }
+
+  try {
+    final info = await (loadPackageInfo ?? PackageInfo.fromPlatform)();
+    final resolvedBuildName = buildName.isEmpty ? info.version : buildName;
+    final resolvedBuildNumber = buildNumber.isEmpty
+        ? info.buildNumber
+        : buildNumber;
+    if (resolvedBuildName.isEmpty || resolvedBuildNumber.isEmpty) {
+      return _compileTimeReleaseIdentity;
+    }
+    return SentryReleaseIdentity(
+      'threed_print_cost_calculator@$resolvedBuildName+$resolvedBuildNumber',
+      resolvedBuildNumber,
+    );
+  } catch (_) {
+    return _compileTimeReleaseIdentity;
+  }
 }
 
 SentryEvent? _beforeSend(SentryEvent event, Hint hint) {
