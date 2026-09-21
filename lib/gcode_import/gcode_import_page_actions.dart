@@ -56,6 +56,7 @@ class GCodeImportPageActions {
         hasFilamentUsage:
             result.filamentWeightG != null || result.filamentLengthMm != null,
         hasPreview: result.hasPreviewMetadata,
+        parseStatus: parseStatus,
       ),
     );
     AppAnalytics.safeLog(
