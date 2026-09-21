@@ -1,3 +1,11 @@
+## [3.4.0] - 2026-09-21
+
+### Added
+- Added in-app subscription management in Settings, including purchase restoration.
+
+### Fixed
+- Improved Android premium purchase and restore reliability when device-integrity checks report an authentication error.
+
 ## [3.3.4] - 2026-08-24
 
 ### Fixed
@@ -293,6 +301,7 @@
 ### Added
 - Added in-app update checker
 
+[3.4.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.3.4...3.4.0
 [3.3.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.2...3.3.0
 [3.2.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.1...3.2.2
 [3.2.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.0...3.2.1
