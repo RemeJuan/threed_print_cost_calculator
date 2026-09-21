@@ -37,6 +37,7 @@
 - Presentation gates:
   - `lib/calculator/view/calculator_page.dart` gates printer select, advanced pricing overrides, batch costing entry, and save form by policy and interface state.
   - `lib/calculator/view/calculator_results.dart` gates risk, labour, additional cost, and premium-only pricing rows by policy and active pricing state.
+  - `lib/calculator/view/calculator_results.dart` exposes Customer View only when enabled in interface settings; it presents the existing final price and does not save or create a quote.
 - Repositories/services:
   - `lib/database/repositories/calculator_preferences_repository.dart`
   - `lib/settings/services/settings_service.dart`
@@ -62,10 +63,15 @@
 - Main screens/widgets:
   - `lib/settings/settings_page.dart` — interface summary subtitle resolves to `Default view` or `Custom view` from `InterfaceSettingsModel`.
   - `lib/settings/interface_settings/interface_settings_page.dart` — interface settings card mirrors the same semantic subtitle.
+  - `lib/customer_view/customer_view_page.dart` — local presentation-only screen entered from live calculator results or Batch Costing final results; customer settings preview this same screen.
 - Providers/state:
   - `lib/settings/interface_settings/interface_settings_repository.dart` (`interfaceSettingsProvider`)
   - `lib/settings/interface_settings/interface_settings_service.dart`
   - `lib/settings/interface_settings/interface_settings_model.dart` (`isDefaultView`, `isCustomView`)
+- Customer View:
+  - Configuration persists with interface settings: enabled state, business name, summary/breakdown style, optional cost/item detail, exit gesture, and optional back control.
+  - Defaults hide internal detail and the back control; long press exits. The displayed price uses existing `PricingResult.finalPrice` when pricing is enabled, otherwise calculation total.
+  - Customer View has no quote, save, share, export, history, or calculator-write path.
 - Common search terms:
   - `interfaceSettingsProvider`
   - `isDefaultView`
