@@ -7,6 +7,44 @@ import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.da
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_service.dart';
 
 void main() {
+  test(
+    'non-FormatException from in-memory parser is classified as parse',
+    () async {
+      final service = GCodeImportService(
+        textParser: (_) async => throw StateError('parser failed'),
+      );
+
+      await expectLater(
+        service.importPickedBytes(Uint8List.fromList('G1 X1'.codeUnits)),
+        throwsA(
+          isA<GCodeImportFailure>().having(
+            (failure) => failure.stage,
+            'stage',
+            GCodeImportFailureStage.parse,
+          ),
+        ),
+      );
+    },
+  );
+
+  test('in-memory read failure is classified as read', () async {
+    final file = GCodePickedFile(
+      name: 'broken.gcode',
+      readAsBytes: () async => throw StateError('read failed'),
+    );
+
+    await expectLater(
+      const GCodeImportService().importPickedFile(file),
+      throwsA(
+        isA<GCodeImportFailure>().having(
+          (failure) => failure.stage,
+          'stage',
+          GCodeImportFailureStage.read,
+        ),
+      ),
+    );
+  });
+
   test('parses valid gcode from streamed file path', () async {
     final dir = await Directory.systemTemp.createTemp(
       'gcode_import_service_test',
