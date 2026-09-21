@@ -13,6 +13,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dar
 
 class InterfaceSettingsPage extends ConsumerWidget {
   const InterfaceSettingsPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;

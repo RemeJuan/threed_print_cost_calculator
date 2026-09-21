@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_settings_page.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/backup_restore/backup_restore_section.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
@@ -31,6 +32,21 @@ class SettingsPage extends ConsumerWidget {
       padding: const EdgeInsets.all(kAppSpace16),
       physics: const ClampingScrollPhysics(),
       children: [
+        SettingsSection(
+          headerKey: const ValueKey<String>('settings.customer-view.section'),
+          bodyKey: const ValueKey<String>('settings.customer-view.body'),
+          title: Text(l10n.customerViewSettingsHeader, style: style),
+          subtitle: Text(l10n.customerViewEnabledLabel),
+          action: _action(
+            context,
+            const CustomerViewSettingsPage(),
+            const Icon(Icons.visibility_outlined),
+            const ValueKey<String>('settings.customer-view.button'),
+          ),
+          childSpacing: false,
+          child: const SizedBox.shrink(),
+        ),
+        const SizedBox(height: kAppSpace16),
         SettingsSection(
           headerKey: const ValueKey<String>('settings.general.section'),
           bodyKey: const ValueKey<String>('settings.general.body'),
