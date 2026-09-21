@@ -20,7 +20,9 @@ final gcodeImportServiceProvider = Provider<GCodeImportService>((ref) {
 });
 
 class GCodeImportService {
-  const GCodeImportService();
+  const GCodeImportService({this.textParser});
+
+  final Future<Map<String, dynamic>> Function(String text)? textParser;
 
   Future<GCodeImportResult> importPickedFile(GCodePickedFile file) async {
     if (file.path != null) {
@@ -51,20 +53,16 @@ class GCodeImportService {
     String? text;
     try {
       text = utf8.decode(bytes, allowMalformed: true);
-      final wire = await compute(_parseInBackground, text);
+      final wire = textParser == null
+          ? await compute(_parseInBackground, text)
+          : await textParser!(text);
       return GCodeImportResult.fromWireMap(wire);
     } catch (error, stackTrace) {
-      final failure = error is FormatException
-          ? GCodeImportFailure.parse(
-              error,
-              stackTrace,
-              lineCount: text == null ? null : _estimateLineCount(text),
-            )
-          : GCodeImportFailure.read(
-              error,
-              stackTrace,
-              lineCount: text == null ? null : _estimateLineCount(text),
-            );
+      final failure = GCodeImportFailure.parse(
+        error,
+        stackTrace,
+        lineCount: text == null ? null : _estimateLineCount(text),
+      );
       unawaited(_captureFailure(failure));
       throw failure;
     }
@@ -136,8 +134,9 @@ Map<String, dynamic> _parseInBackground(String text) {
   return parser.parse(text).toWireMap();
 }
 
-Future<Map<String, dynamic>> _parsePathInBackground(String path) async {
+Future<Map<String, dynamic>> _parsePathInBackground(String path) {
   const parser = GCodeImportParser();
-  final result = await parser.parseLineStream(openGCodeLines(path));
-  return result.toWireMap();
+  return parser
+      .parseLineStream(openGCodeLines(path))
+      .then((result) => result.toWireMap());
 }
