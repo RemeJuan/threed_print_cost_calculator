@@ -281,6 +281,7 @@
   - Accepts `.gcode`, `.gco`, and `.nc` files directly when payload looks text-like.
   - Android no longer uses `file_selector` byte payloads. `MainActivity` opens SAF, resolves URI metadata, copies to cache, and returns metadata + cache path only.
   - Treats Android/file picker `.bin` and other unknown/octet-stream picks as sniffable input; reads up to 64 KiB for common G-code markers before rejecting.
+  - Parses decorated Kiri:Moto-style print-time and filament-length comments while keeping slicer unknown. Unknown-slicer input with actual G-code commands may import with null metadata and warnings; command-free missing-metadata content remains rejected.
   - Rejects clearly binary payloads before parsing and rejects files above the 50 MiB guard before parse work starts.
   - Parser/service now support path-backed streamed line reads for imports, avoiding full-file byte transfer across the Android platform channel.
   - Uses picked filename for validation/error UX instead of cached path aliases.
@@ -302,6 +303,7 @@
   - `lib/gcode_import/feedback/gcode_import_feedback_models.dart`
 - Tests:
   - `test/gcode_import/`
+  - `test/gcode_import/gcode_import_kiri_moto_test.dart` — command-evidence import gate and optional locally present full private fixture regression; never commit private fixture.
   - `docs/gcode/`
 - Common search terms:
   - `GCodeImport`
