@@ -114,9 +114,15 @@
 
 ## CI and release notes
 
+- Dependency maintenance (2026-10-17): Firebase Core 5 / Analytics 13 / App Check 0.5 / Functions 7 use Firebase Android BoM 35 and Apple SDK 13. Android already meets the required API 24 minimum; App Check startup uses `providerAndroid: AndroidPlayIntegrityProvider()`.
+- Android uses AGP 9.1.1, Gradle 9.3.1, and Kotlin 2.4.0. Keep `android.builtInKotlin=false` and `android.newDsl=false` with pinned Flutter 3.44.8. [Flutter's built-in Kotlin migration](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers) requires Flutter 3.47+ and compatible plugins; validate an Android build before enabling it.
+- The Android build's Kotlin compatibility check still flags `cloud_functions`, `firebase_analytics`, `firebase_app_check`, `firebase_core`, `patrol`, `purchases_ui_flutter`, and `sentry_flutter` after this dependency refresh. Recheck these plugins when revisiting built-in Kotlin.
+- Sentry remains on 9.x: version 10 requires Android API 26+ and removes CocoaPods support in favor of Swift Package Manager, which this app currently disables. Revisit alongside a deliberate Apple build migration and Android device-support decision. SDK and codegen constraints also leave some newer package releases unresolved; avoid transitive overrides.
+
 - GitHub Actions:
   - `.github/workflows/main.yaml`: checkout, `flutter pub get`, `flutter build web`, deploy `build/web` to `gh-pages`.
   - `.github/workflows/maintenance.yaml`: biweekly maintenance issue assigned to Copilot agent; runbook includes analyze, tests, upgrade, and patch version bump.
+  - `.github/workflows/unused-code-audit.yml`: manually triggered, advisory unused-code scan; publishes Markdown to workflow summary.
 - Codemagic release/publish pipeline lives in `codemagic.yaml`:
   - `android_release`, `ios_release`
   - `android_patch`, `ios_patch`
