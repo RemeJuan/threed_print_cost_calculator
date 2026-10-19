@@ -132,3 +132,7 @@
 - Current version source: `pubspec.yaml`.
 - Version bump helpers referenced in repo docs: `make bump_fix`, `make bump_feat`, `make bump_build`.
 - Android store release notes use `fastlane/metadata/android/<locale>/changelogs/default.txt` per locale, not per-version files.
+
+# Unused-code audit
+
+Install locally with `fvm dart pub global activate detect_unused_code 3.3.0`, then run `make unused_code_audit`. Initial audit reported 8 dead classes, 7 potentially unused packages, and 25 assets. After individually verified cleanup (see `docs/inbox/2026-10-18_unused-code-audit-review.md`), the report shows 0 dead classes, 3 tooling-only packages, and 7 configuration/build assets; keep those false positives. Findings exit with status 1 and are advisory. The audit does not delete files automatically and is not a pull-request gate.
