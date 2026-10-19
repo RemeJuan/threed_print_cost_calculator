@@ -1,3 +1,8 @@
+## [Unreleased]
+
+### Fixed
+- Updated the email integration to retain Android attachments while the mail app uploads them.
+
 ## [3.4.0] - 2026-09-21
 
 ### Added
