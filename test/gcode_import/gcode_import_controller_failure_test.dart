@@ -143,4 +143,21 @@ void main() {
     expect(state.status, GCodeImportStatus.failure);
     expect(state.error, GCodeImportError.unsupportedFile);
   });
+
+  test('metadata resolution exception reaches read failure state', () async {
+    final file = GCodePickedFile(
+      name: 'part.gcode',
+      readAsBytes: () async => throw Exception('metadata read failed'),
+    );
+    final container = makeContainer(file: file, serviceResult: result);
+
+    await container.read(gcodeImportControllerProvider.notifier).parsePickedFile(
+      file,
+      attemptId: 'metadata-failure',
+    );
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.status, GCodeImportStatus.failure);
+    expect(state.error, GCodeImportError.readFailed);
+  });
 }
