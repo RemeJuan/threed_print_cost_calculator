@@ -8,7 +8,7 @@ This is a Flutter mobile application (iOS, Android, Web, and Desktop) that helps
 - **State Management**: Riverpod 3.x (StateNotifierProvider, Provider)
 - **Database**: Sembast (NoSQL local database)
 - **Backend Services**: Firebase (Analytics, Crashlytics, App Check)
-- **Testing**: flutter_test, bloc_test, mocktail
+- **Testing**: flutter_test, mocktail
 - **UI Components**: Material Design with Google Fonts
 
 ## Code Style and Standards
@@ -89,7 +89,7 @@ class MyNotifier extends StateNotifier<MyState> {
 - Mirror the `lib/` structure in `test/` directory
 - Place shared test utilities in `test/helpers/`
 - Use `mocktail` for mocking dependencies
-- Use `bloc_test` for testing state notifiers
+- Test state notifiers with focused `flutter_test` cases and the project's existing fakes/mocks.
 
 ### Test Conventions
 ```dart
