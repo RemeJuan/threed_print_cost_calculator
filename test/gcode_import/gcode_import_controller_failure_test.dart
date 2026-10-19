@@ -151,10 +151,9 @@ void main() {
     );
     final container = makeContainer(file: file, serviceResult: result);
 
-    await container.read(gcodeImportControllerProvider.notifier).parsePickedFile(
-      file,
-      attemptId: 'metadata-failure',
-    );
+    await container
+        .read(gcodeImportControllerProvider.notifier)
+        .parsePickedFile(file, attemptId: 'metadata-failure');
 
     final state = container.read(gcodeImportControllerProvider);
     expect(state.status, GCodeImportStatus.failure);
