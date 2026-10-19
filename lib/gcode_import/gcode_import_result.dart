@@ -16,6 +16,7 @@ class GCodeImportResult {
     required this.warnings,
     required this.rawExtractedValues,
     this.hasSafePreview = false,
+    this.hasGCodeCommands = false,
   });
 
   final GCodeSlicer slicer;
@@ -28,6 +29,7 @@ class GCodeImportResult {
   final List<GCodeParseWarning> warnings;
   final Map<String, String> rawExtractedValues;
   final bool hasSafePreview;
+  final bool hasGCodeCommands;
 
   bool get hasPreviewMetadata => previewMetadata?.present ?? false;
 
@@ -65,6 +67,7 @@ class GCodeImportResult {
           .toList(growable: false),
       'rawExtractedValues': rawExtractedValues,
       'hasSafePreview': hasSafePreview,
+      'hasGCodeCommands': hasGCodeCommands,
     };
   }
 
@@ -103,6 +106,7 @@ class GCodeImportResult {
             )
           : const <String, String>{},
       hasSafePreview: map['hasSafePreview'] == true,
+      hasGCodeCommands: map['hasGCodeCommands'] == true,
     );
   }
 }
