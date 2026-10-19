@@ -442,7 +442,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get supportEmailPrefix => '問題がある場合は、次のアドレスまでメールしてください: ';
 
   @override
-  String get supportEmail => '3d@printcostcalc.app';
+  String get supportEmail => 'app@kinship.click';
 
   @override
   String get supportIdLabel => 'サポートIDを含めてください: ';

@@ -945,7 +945,7 @@ abstract class AppLocalizations {
   /// No description provided for @supportEmail.
   ///
   /// In en, this message translates to:
-  /// **'3d@printcostcalc.app'**
+  /// **'app@kinship.click'**
   String get supportEmail;
 
   /// No description provided for @supportIdLabel.

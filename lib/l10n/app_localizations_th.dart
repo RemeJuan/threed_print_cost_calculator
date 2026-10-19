@@ -451,7 +451,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get supportEmailPrefix => 'หากมีปัญหา กรุณาส่งอีเมลมาที่ ';
 
   @override
-  String get supportEmail => '3d@printcostcalc.app';
+  String get supportEmail => 'app@kinship.click';
 
   @override
   String get supportIdLabel => 'โปรดระบุรหัสสนับสนุนของคุณ: ';

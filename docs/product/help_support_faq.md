@@ -1,6 +1,6 @@
 ## Support
 - Website: https://printcostcalc.app
-- Support email: 3d@printcostcalc.app
+- Support email: app@kinship.click
 - Support ID: Provided in-app (from `premiumStateProvider`)
 - Roadmap: Opens `https://printcostcalc.app/roadmap` in browser
 - App version: Exposed via `SettingsVersionTapTarget`
