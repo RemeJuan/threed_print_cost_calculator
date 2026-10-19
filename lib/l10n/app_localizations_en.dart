@@ -454,7 +454,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get supportEmailPrefix => 'For any issues, please mail me at ';
 
   @override
-  String get supportEmail => 'app@kinship.click';
+  String get supportEmail => '3d@printcostcalc.app';
 
   @override
   String get supportIdLabel => 'Please include your Support ID: ';

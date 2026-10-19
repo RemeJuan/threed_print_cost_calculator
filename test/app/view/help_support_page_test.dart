@@ -316,7 +316,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(emailCalls, hasLength(1));
-    expect(emailCalls.single.recipients, ['app@kinship.click']);
+    expect(emailCalls.single.recipients, ['3d@printcostcalc.app']);
     expect(emailCalls.single.subject, '3D Print Cost Calculator Support');
     expect(emailCalls.single.body, contains('Support ID: id-42'));
     expect(emailCalls.single.body, contains('App version: 1.2.3'));

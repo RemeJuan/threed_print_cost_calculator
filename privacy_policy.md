@@ -78,4 +78,4 @@ We may update this policy from time to time. Material changes will be reflected 
 
 If you have questions about this privacy policy, contact:
 
-- app@kinship.click
+- 3d@printcostcalc.app
