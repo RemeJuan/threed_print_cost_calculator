@@ -1,5 +1,8 @@
 ## [Unreleased]
 
+### Added
+- Added hands-on labour costing for batch quotes, with setup time once per batch and per-item time scaled by quantity. Labour breakdowns appear in saved history and exports.
+
 ### Fixed
 - Updated the email integration to retain Android attachments while the mail app uploads them.
 

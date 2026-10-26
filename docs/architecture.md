@@ -41,6 +41,7 @@
   - `calculator_preferences_repository.dart`
 - Settings persist in the Sembast main store via `lib/database/repositories/settings_repository.dart`.
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
+- Batch quote labour inputs live in batch state (setup minutes) and item state (per-unit minutes); saved history snapshots preserve those inputs and the calculated labour breakdown. Missing labour keys in older snapshots read as zero without recomputing their stored totals. CSV/XLSX use distinct labour columns; their existing Setup Fee denotes fixed Additional cost, not setup labour time.
 - Startup migrations run in `lib/startup.dart` after first frame; current startup work rebuilds printer/history indexes and migrates legacy history material data.
 - `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
 - `PremiumLocalStore.write` and `PremiumLocalStore.delete` throw `StateError` when SharedPreferences persistence fails; callers must handle those failures.
