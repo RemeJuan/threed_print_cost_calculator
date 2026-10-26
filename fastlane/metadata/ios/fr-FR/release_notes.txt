@@ -1,1 +1,1 @@
-Gérez votre abonnement et restaurez vos achats depuis Réglages > Gérer les achats.
+La compatibilité de l’importation G-code a été améliorée, avec la prise en charge des fichiers G-code valides sans les métadonnées attendues.

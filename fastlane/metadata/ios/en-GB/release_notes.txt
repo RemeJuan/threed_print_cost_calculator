@@ -1,1 +1,1 @@
-Manage your subscription and restore purchases from Settings > Manage purchases.
+Improved G-code import compatibility, including support for valid G-code files with missing metadata.

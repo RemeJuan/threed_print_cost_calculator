@@ -1,1 +1,1 @@
-Gestiona tu suscripción y restaura compras desde Ajustes > Gestionar compras.
+Hemos mejorado la compatibilidad de la importación de G-code, incluido el soporte para archivos G-code válidos sin los metadatos esperados.

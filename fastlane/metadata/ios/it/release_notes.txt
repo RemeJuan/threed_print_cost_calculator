@@ -1,1 +1,1 @@
-Gestisci l'abbonamento e ripristina gli acquisti da Impostazioni > Gestisci acquisti.
+Abbiamo migliorato la compatibilità dell’importazione G-code, supportando anche file G-code validi privi dei metadati previsti.

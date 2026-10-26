@@ -1,1 +1,1 @@
-Verwalte dein Abonnement und stelle Käufe über Einstellungen > Käufe verwalten wieder her.
+Der G-Code-Import ist jetzt kompatibler und unterstützt auch gültige G-Code-Dateien ohne erwartete Metadaten.

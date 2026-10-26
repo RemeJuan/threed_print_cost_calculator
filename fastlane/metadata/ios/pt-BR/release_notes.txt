@@ -1,1 +1,1 @@
-Gerencie sua assinatura e restaure compras em Configurações > Gerir compras.
+Melhoramos a compatibilidade da importação de G-code, incluindo o suporte a arquivos G-code válidos sem os metadados esperados.
