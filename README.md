@@ -5,6 +5,7 @@ Static marketing site for the app, built with Eleventy and intended for GitHub P
 ## Structure
 
 - `index.njk` - landing page source
+- `markdown/index.md` - homepage Markdown representation; update alongside `index.njk` when product claims or links change
 - `privacy.njk` - privacy policy page source
 - `terms.njk` - terms page source
 - `changelog.njk` - changelog page source (renders `main` branch `CHANGELOG.md`)
@@ -49,3 +50,4 @@ Use the included GitHub Actions workflow.
 - Store badges and screenshots are local assets.
 - App pricing is intentionally omitted because it varies by region.
 - `CNAME` and `.nojekyll` are copied through to the final Pages artifact.
+- Eleventy copies `markdown/index.md` to `/index.md`. Cloudflare's URL Rewrite Rule serves it for homepage requests with `Accept: text/markdown`; other requests keep the HTML homepage. The rewrite matches only `/`, not other site pages.

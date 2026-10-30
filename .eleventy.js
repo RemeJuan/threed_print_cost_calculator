@@ -5,6 +5,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy(".nojekyll");
   eleventyConfig.addPassthroughCopy("app-ads.txt");
   eleventyConfig.addPassthroughCopy("robots.txt");
+  // Keep this Markdown source outside Eleventy's njk-only template inputs.
+  eleventyConfig.addPassthroughCopy({ "markdown/index.md": "index.md" });
 
   return {
     dir: {
