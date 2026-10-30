@@ -1,45 +1,60 @@
 User-agent: *
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 Sitemap: https://printcostcalc.app/sitemap.xml
 
 User-agent: OAI-SearchBot
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Claude-SearchBot
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: PerplexityBot
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Claude-Web
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: ChatGPT-User
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Claude-User
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Perplexity-User
 Allow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: GPTBot
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: ClaudeBot
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Google-Extended
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Applebot-Extended
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: CCBot
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Bytespider
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 User-agent: Amazonbot
 Disallow: /
+Content-Signal: ai-train=no, search=yes, ai-input=yes
