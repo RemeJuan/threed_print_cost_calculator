@@ -4,6 +4,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("CNAME");
   eleventyConfig.addPassthroughCopy(".nojekyll");
   eleventyConfig.addPassthroughCopy("app-ads.txt");
+  eleventyConfig.addPassthroughCopy("robots.txt");
 
   return {
     dir: {
