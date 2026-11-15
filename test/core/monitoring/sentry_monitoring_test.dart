@@ -5,6 +5,14 @@ import 'package:threed_print_cost_calculator/core/monitoring/sentry_monitoring.d
 
 void main() {
   group('resolveSentryReleaseIdentity', () {
+    const buildName = String.fromEnvironment('FLUTTER_BUILD_NAME');
+    const buildNumber = String.fromEnvironment('FLUTTER_BUILD_NUMBER');
+    final fallbackRelease = buildName.isEmpty
+        ? 'threed_print_cost_calculator@dev'
+        : 'threed_print_cost_calculator@$buildName+'
+              '${buildNumber.isEmpty ? 'dev' : buildNumber}';
+    final fallbackDist = buildNumber.isEmpty ? 'dev' : buildNumber;
+
     test('uses runtime version and build number', () async {
       PackageInfo.setMockInitialValues(
         appName: 'app',
@@ -14,9 +22,12 @@ void main() {
         buildSignature: '',
       );
 
-      final identity = await resolveSentryReleaseIdentity();
+      final identity = await resolveSentryReleaseIdentity(
+        buildName: '',
+        buildNumber: '',
+      );
 
-      expect(identity.release, 'threed_print_cost_calculator@3.4.2+256');
+      expect(identity.release, 'threed_print_cost_calculator@3.3.4+256');
       expect(identity.dist, '256');
     });
 
@@ -31,8 +42,8 @@ void main() {
 
       final identity = await resolveSentryReleaseIdentity();
 
-      expect(identity.release, 'threed_print_cost_calculator@3.4.2+dev');
-      expect(identity.dist, 'dev');
+      expect(identity.release, fallbackRelease);
+      expect(identity.dist, fallbackDist);
     });
 
     test('uses safe fallback when metadata lookup fails', () async {
@@ -40,8 +51,8 @@ void main() {
         loadPackageInfo: () async => throw StateError('unavailable'),
       );
 
-      expect(identity.release, 'threed_print_cost_calculator@3.4.2+dev');
-      expect(identity.dist, 'dev');
+      expect(identity.release, fallbackRelease);
+      expect(identity.dist, fallbackDist);
     });
 
     test('full compile overrides skip metadata lookup', () async {
@@ -57,6 +68,7 @@ void main() {
 
     test('partial compile override merges with runtime metadata', () async {
       final identity = await resolveSentryReleaseIdentity(
+        buildName: '',
         buildNumber: '9',
         loadPackageInfo: () async => PackageInfo(
           appName: 'app',
