@@ -82,6 +82,7 @@
 - Config: `l10n.yaml` points `arb-dir` to `lib/l10n`, template file to `intl_en.arb`, and output class to `AppLocalizations`.
 - `MaterialApp` wires localization through `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales` in `lib/app/app.dart`.
 - Do not edit generated localization files directly.
+- `l10n.yaml` adds a generated-file header suppressing `deprecated_member_use` while Flutter 3.50's localization template still references deprecated SDK delegates. Remove the header when the upstream generator migrates to the replacement packages; handwritten code remains checked.
 - After ARB changes, run `fvm flutter gen-l10n` or project codegen workflow.
 - App is currency-agnostic: no currency symbols in user-facing output, except store-formatted values rendered inside RevenueCat's native Customer Center billing UI.
 
