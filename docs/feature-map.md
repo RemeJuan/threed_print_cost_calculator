@@ -10,6 +10,7 @@
   - `lib/shared/widgets/app_filter_chip.dart` — shared filter chip used by batch costing source filters
   - `lib/shared/widgets/stock_status_badge.dart` — shared stock-state badge used for material availability/status display
 - Theme/system notes:
+  - `lib/app/app_page.dart` keeps shell content inside horizontal safe areas, allowing asymmetric outer-display cutouts while preserving full-width content when the display opens; AppBar and bottom navigation retain their own system-inset handling.
   - shared input styling is theme-driven in `lib/shared/theme.dart`
   - active/focused input accent stays `LIGHT_BLUE`
   - cards and grouped panels use `AppSurfaceCard` instead of ad-hoc `Material` wrappers

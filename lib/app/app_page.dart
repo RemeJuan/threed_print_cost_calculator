@@ -76,17 +76,21 @@ class AppPage extends HookConsumerWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const UpdatePromptBanner(),
-          Expanded(
-            child: PageView(
-              controller: controller.pageController,
-              onPageChanged: controller.onPageChanged,
-              children: shellTabs.map((tab) => tab.page).toList(),
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: Column(
+          children: [
+            const UpdatePromptBanner(),
+            Expanded(
+              child: PageView(
+                controller: controller.pageController,
+                onPageChanged: controller.onPageChanged,
+                children: shellTabs.map((tab) => tab.page).toList(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
