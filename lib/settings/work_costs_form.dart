@@ -257,6 +257,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                           key: const ValueKey<String>(
                             'settings.workCost.pricingRoundingMode.dropdown',
                           ),
+                          isExpanded: true,
                           initialValue: data.pricingRoundingMode,
                           decoration: InputDecoration(
                             labelText: l10n.pricingRoundingLabel,

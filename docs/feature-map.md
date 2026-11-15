@@ -62,6 +62,7 @@
 
 - Main screens/widgets:
   - `lib/settings/settings_page.dart` — interface summary subtitle resolves to `Default view` or `Custom view` from `InterfaceSettingsModel`.
+  - `lib/settings/work_costs_form.dart` — pricing-rounding selector contracts to narrow safe-area widths without overflowing.
   - `lib/settings/interface_settings/interface_settings_page.dart` — interface settings card mirrors the same semantic subtitle.
 - Providers/state:
   - `lib/settings/interface_settings/interface_settings_repository.dart` (`interfaceSettingsProvider`)
