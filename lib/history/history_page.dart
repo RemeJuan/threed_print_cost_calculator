@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/history/components/history_full_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';

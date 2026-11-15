@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 

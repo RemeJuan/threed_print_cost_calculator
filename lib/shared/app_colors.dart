@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Core brand colors retained from the original palette.
 const DARK_BLUE = Color(0xFF1A1C2B);
