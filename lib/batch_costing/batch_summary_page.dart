@@ -145,6 +145,47 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               l10n.batchCostingSummaryTotalDurationLabel,
               formatDuration(summary.totalPrintDuration),
             ),
+            const SizedBox(height: kAppSpace8),
+            AppSurfaceCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: kAppSpace8,
+                    runSpacing: kAppSpace8,
+                    children: [
+                      _costFactor(
+                        context,
+                        l10n.batchCostingSummaryTotalDurationLabel,
+                        formatDuration(summary.totalPrintDuration),
+                      ),
+                      const Text('×'),
+                      _costFactor(
+                        context,
+                        l10n.labourRateLabel,
+                        state.pricing.labourRate.value.isEmpty
+                            ? '0.00'
+                            : state.pricing.labourRate.value,
+                      ),
+                      const Text('='),
+                      _costFactor(
+                        context,
+                        l10n.labourCostLabel,
+                        summary.totalLabourCost.toStringAsFixed(2),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: kAppSpace12),
+                  _summaryRow(
+                    context,
+                    l10n.electricityCostLabel,
+                    summary.totalElectricityCost.toStringAsFixed(2),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: kAppSpace16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
             const SizedBox(height: kAppSpace8),
@@ -221,6 +262,16 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                       context,
                       l10n.batchCostingSummaryItemDurationLabel,
                       formatDuration(item.totalPrintDuration),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.labourCostLabel,
+                      item.labourCost.toStringAsFixed(2),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.electricityCostLabel,
+                      item.electricityCost.toStringAsFixed(2),
                     ),
                     _summaryRow(
                       context,
@@ -372,6 +423,16 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
   Widget _sectionTitle(BuildContext context, String text) {
     return Text(text, style: Theme.of(context).textTheme.titleMedium);
   }
+
+  Widget _costFactor(BuildContext context, String label, String value) =>
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(label, style: Theme.of(context).textTheme.bodySmall),
+          Text(value, style: Theme.of(context).textTheme.titleMedium),
+        ],
+      );
 
   Widget _pricingRow(
     BuildContext context, {

@@ -13,11 +13,13 @@ import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costi
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
+import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/database/repositories/settings_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import '../helpers/helpers.dart';
@@ -50,7 +52,7 @@ void main() {
     expect(find.text('1'), findsWidgets);
     expect(find.text('2'), findsWidgets);
     expect(find.text('20.00 g'), findsOneWidget);
-    expect(find.text('02:00'), findsOneWidget);
+    expect(find.text('02:00'), findsWidgets);
 
     await tester.scrollUntilVisible(find.text('27.00'), 200);
     await tester.pumpAndSettle();
@@ -104,8 +106,41 @@ void main() {
 
     await tester.pumpAndSettle();
 
+    await tester.scrollUntilVisible(find.text('0.60'), 200);
     expect(find.text('0.60'), findsOneWidget);
   });
+
+  testWidgets(
+    'shows print hours, labour cost and assigned printer electricity without adding to total twice',
+    (tester) async {
+      await tester.pumpApp(const BatchSummaryPage(), [
+        batchCostingProvider.overrideWith(() => _ElectricSummaryNotifier()),
+        isPremiumProvider.overrideWithValue(true),
+        printersRepositoryProvider.overrideWith(_SummaryPrintersRepository.new),
+        settingsStreamProvider.overrideWith(
+          (ref) => Stream.value(
+            GeneralSettingsModel.initial().copyWith(electricityCost: '2'),
+          ),
+        ),
+      ]);
+      await tester.pumpAndSettle();
+
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchSummaryPage)),
+      )!;
+      expect(
+        find.text(l10n.batchCostingSummaryTotalDurationLabel),
+        findsWidgets,
+      );
+      expect(find.text('02:00'), findsWidgets);
+      expect(find.text(l10n.labourCostLabel), findsOneWidget);
+      expect(find.text('20.00'), findsOneWidget);
+      expect(find.text(l10n.electricityCostLabel), findsOneWidget);
+      expect(find.text('0.40'), findsOneWidget);
+      await tester.scrollUntilVisible(find.text('20.40'), 200);
+      expect(find.text('20.40'), findsOneWidget);
+    },
+  );
 
   testWidgets('start new batch clears gcode stack and returns home', (
     tester,
@@ -289,4 +324,41 @@ class _FreeSummaryBatchCostingNotifier extends BatchCostingNotifier {
       batchMaterialId: 'mat-1',
     );
   }
+}
+
+class _ElectricSummaryNotifier extends BatchCostingNotifier {
+  @override
+  BatchCostingState build() => BatchCostingState(
+    items: [
+      BatchCostingItem.manual(
+        id: 'item-1',
+        displayName: 'Benchy',
+        quantity: 2,
+        printWeightG: 10,
+        printDuration: const Duration(hours: 1),
+      ),
+    ],
+    batchPrinterId: 'printer-1',
+    pricing: const BatchPricingState(
+      labourRate: BatchPricingFieldState(
+        value: '10',
+        scope: BatchPricingScope.item,
+      ),
+    ),
+  );
+}
+
+class _SummaryPrintersRepository extends PrintersRepository {
+  _SummaryPrintersRepository(super.ref);
+
+  @override
+  Future<List<PrinterModel>> getPrinters() async => [
+    const PrinterModel(
+      id: 'printer-1',
+      name: 'Printer',
+      bedSize: '220x220',
+      wattage: '100',
+      archived: false,
+    ),
+  ];
 }

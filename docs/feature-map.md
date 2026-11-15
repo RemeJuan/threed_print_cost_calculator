@@ -240,6 +240,8 @@
 
 - Main screens/widgets:
   - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals; manual add shows quota feedback instead of silently dropping capped free-tier items
+  - `lib/batch_costing/batch_printer_assignment_page.dart` and `batch_material_assignment_page.dart` — create missing printers/materials in-place through existing forms; successful creation selects new profile without clearing batch, cancellation preserves assignment, free-tier limits disable creation
+  - `lib/batch_costing/batch_summary_page.dart` and `helpers/batch_summary_calculator.dart` — show total print duration × hourly labour rate and labour cost, plus printer-wattage electricity cost at batch and item levels; split printer allocations contribute proportionally and costs remain inside base cost
   - `lib/batch_costing/batch_gcode_import_page.dart` — shell page for multi-file / single-file G-code import flow (447 LOC)
   - `lib/batch_costing/widgets/batch_gcode_import_body.dart` — body widget rendering file rows, single-import view, action buttons
   - `lib/batch_costing/widgets/batch_single_import_view.dart` — single-file import card with metadata + inline missing details form

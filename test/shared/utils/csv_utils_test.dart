@@ -604,6 +604,8 @@ BatchSummaryResult _testBatchSummary() {
         totalWeightG: 100.0,
         totalPrintDuration: const Duration(minutes: 225),
         baseCost: 5.0,
+        electricityCost: 0,
+        labourCost: 0,
         additionalCost: 0,
         pricing: const PricingResult(
           baseCost: 5.0,
@@ -622,6 +624,8 @@ BatchSummaryResult _testBatchSummary() {
         totalWeightG: 150.0,
         totalPrintDuration: const Duration(minutes: 270),
         baseCost: 10.0,
+        electricityCost: 0,
+        labourCost: 0,
         additionalCost: 0,
         pricing: const PricingResult(
           baseCost: 10.0,
@@ -649,6 +653,8 @@ BatchSummaryResult _testBatchSummary() {
       scope: BatchPricingScope.item,
     ),
     finalTotal: 15.0,
+    totalElectricityCost: 0,
+    totalLabourCost: 0,
     failureRiskMonetary: 0,
     markupPercentMonetary: 0,
   );
