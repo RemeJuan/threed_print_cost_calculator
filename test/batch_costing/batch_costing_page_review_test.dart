@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
@@ -16,6 +17,51 @@ import 'batch_costing_page_test_support.dart';
 
 void main() {
   setUpAll(setupTest);
+
+  testWidgets(
+    'G-code review edits hands-on minutes beside quantity without changing print time',
+    (tester) async {
+      final item = BatchCostingItem.fromGCodeImport(
+        id: 'gcode-1',
+        displayName: 'Benchy',
+        quantity: 2,
+        importResult: const GCodeImportResult(
+          slicer: GCodeSlicer.unknown,
+          estimatedDuration: Duration(hours: 2),
+          filamentLengthMm: 1000,
+          filamentWeightG: 20,
+          layerHeightMm: 0.2,
+          previewMetadata: null,
+          previewImageBytes: null,
+          warnings: <GCodeParseWarning>[],
+          rawExtractedValues: <String, String>{},
+        ),
+      );
+      final notifier = FakeBatchCostingNotifier([item]);
+      await tester.pumpApp(const BatchCostingPage(), [
+        batchCostingProvider.overrideWith(() => notifier),
+        isPremiumProvider.overrideWithValue(true),
+      ]);
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchCostingPage)),
+      )!;
+      final labour = find.byKey(const ValueKey('batch-item-labour-gcode-1'));
+      expect(notifier.state.items.single.itemLabourMinutes, 0);
+      expect(find.text(l10n.batchCostingReviewQuantityLabel), findsOneWidget);
+      expect(labour, findsOneWidget);
+      expect(tester.widget<TextFormField>(labour).controller!.text, isEmpty);
+
+      await tester.enterText(labour, '12,5');
+      await tester.pump();
+      expect(notifier.state.items.single.itemLabourMinutes, 12.5);
+      expect(
+        notifier.state.items.single.printDuration,
+        const Duration(hours: 2),
+      );
+      expect(notifier.state.items.single.quantity, 2);
+      expect(find.byType(AlertDialog), findsNothing);
+    },
+  );
 
   testWidgets('shows review items and removes them', (tester) async {
     final item = BatchCostingItem.manual(

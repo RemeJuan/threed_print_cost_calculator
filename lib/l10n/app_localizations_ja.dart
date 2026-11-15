@@ -133,6 +133,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get batchCostingHandsOnLabourHelp => '手作業の時間のみ。印刷時間は機械の稼働時間です。空欄はゼロ。';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'G-codeの印刷時間ではなく、1個あたりの手作業時間（分）を使用します。品目の確認時に入力してください。';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => '作業時間が入力されていません';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return '準備作業の費用: $cost';
+  }
+
+  @override
   String get labourTimeLabel => '処理時間';
 
   @override

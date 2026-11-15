@@ -43,6 +43,8 @@ void main() {
     expect(find.byType(BatchCostingPage), findsOneWidget);
     expect(service.importCalls, 2);
     expect(find.text('one.gcode'), findsOneWidget);
+    await tester.drag(find.byType(ListView).last, const Offset(0, -350));
+    await tester.pumpAndSettle();
     expect(find.text('two.gcode'), findsOneWidget);
   });
 

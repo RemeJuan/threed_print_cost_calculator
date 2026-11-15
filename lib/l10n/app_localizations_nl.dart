@@ -141,6 +141,18 @@ class AppLocalizationsNl extends AppLocalizations {
       'Alleen handwerk; printtijd is machinetijd. Leeg laten voor nul.';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'Gebruikt handwerkminuten per stuk, niet de G-code-printtijd. Vul minuten in bij de controle van items.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Geen arbeidstijd ingevuld';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Voorbereidingskosten: $cost';
+  }
+
+  @override
   String get labourTimeLabel => 'Verwerkingstijd';
 
   @override

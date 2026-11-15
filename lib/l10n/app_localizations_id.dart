@@ -141,6 +141,18 @@ class AppLocalizationsId extends AppLocalizations {
       'Hanya kerja langsung; waktu cetak adalah waktu mesin. Kosong berarti nol.';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'Menggunakan menit kerja langsung per unit, bukan waktu cetak G-code. Masukkan menit saat meninjau item.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Waktu kerja belum diisi';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Biaya persiapan: $cost';
+  }
+
+  @override
   String get labourTimeLabel => 'Waktu pengerjaan';
 
   @override

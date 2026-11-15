@@ -142,6 +142,19 @@ class AppLocalizationsIt extends AppLocalizations {
       'Solo lavoro manuale; il tempo di stampa è tempo macchina. Vuoto = zero.';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'Usa i minuti di lavoro manuale per unità, non il tempo di stampa G-code. Inseriscili durante la revisione.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered =>
+      'Nessun tempo di lavoro inserito';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Costo di preparazione: $cost';
+  }
+
+  @override
   String get labourTimeLabel => 'Tempo di elaborazione';
 
   @override

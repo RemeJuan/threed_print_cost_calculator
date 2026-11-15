@@ -23,6 +23,9 @@ labourCost = ((S + Σ(Lᵢ × Qᵢ)) / 60) × R
 - Remove the Item/Batch rate toggle; this model has one hourly rate applied to batch setup and item labour.
 - Add batch setup labour minutes, separate from the existing fixed Additional cost.
 - Add per-unit hands-on labour minutes to each item, including item editing.
+- Show editable per-unit hands-on labour minutes alongside quantity during G-code import review, so imported items do not require a later visit to the item editor to price labour.
+- Explain beside the hourly rate that it prices per-item hands-on minutes; when no item has hands-on minutes, indicate that item labour is zero until time is entered.
+- Keep batch setup minutes beside the hourly rate and preview their calculated cost as `setup minutes / 60 × hourly rate`, once per batch.
 - Explain distinction between print duration (machine time) and hands-on labour time.
 - Keep current visual style and existing batch costing flow.
 - Do not add a new fixed-fee input. Existing batch-scoped Additional cost remains the fixed-fee mechanism and is independent of setup minutes.
@@ -58,5 +61,7 @@ Add or update focused tests for:
 8. Values survive navigation and item edit/reopen.
 9. Legacy history maps missing labour fields to zero without changing stored totals.
 10. History detail and CSV/XLSX exports preserve the new inputs and breakdown without changing print-time fields.
+11. Imported items can set and retain hands-on minutes during review without copying G-code print duration into that field.
+12. Pricing shows the zero-time explanation and recalculates the batch setup preview when either rate or setup minutes changes.
 
 Update all supported locale ARBs for any new UI copy and regenerate localization with `fvm flutter gen-l10n`; do not edit generated localization files manually. Run model code generation if generated models change, then `fvm flutter analyze`, focused tests, and `make flutter_test`.

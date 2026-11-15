@@ -136,6 +136,18 @@ class AppLocalizationsTh extends AppLocalizations {
       'นับเฉพาะเวลาลงมือทำ เวลาพิมพ์เป็นเวลาเครื่อง เว้นว่างเท่ากับศูนย์';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'ใช้นาทีที่ลงมือทำต่อชิ้น ไม่ใช่เวลาพิมพ์จาก G-code กรอกนาทีเมื่อตรวจสอบรายการ';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'ยังไม่ได้กรอกเวลาทำงาน';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'ต้นทุนงานเตรียม: $cost';
+  }
+
+  @override
   String get labourTimeLabel => 'ระยะเวลาดำเนินการ';
 
   @override

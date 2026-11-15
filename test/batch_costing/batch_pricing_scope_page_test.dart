@@ -24,6 +24,60 @@ void main() {
     ),
   ];
 
+  testWidgets(
+    'pricing explains absent item labour and previews setup cost as rate changes',
+    (tester) async {
+      final notifier = _FakeBatchCostingNotifier(items);
+      await tester.pumpApp(const BatchPricingScopePage(), [
+        batchCostingProvider.overrideWith(() => notifier),
+        isPremiumProvider.overrideWithValue(true),
+      ]);
+      await tester.pumpAndSettle();
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(BatchPricingScopePage)),
+      )!;
+      expect(find.text(l10n.batchCostingLabourRateHelp), findsOneWidget);
+      expect(find.text(l10n.batchCostingNoLabourTimeEntered), findsOneWidget);
+      expect(
+        find.text(l10n.batchCostingSetupLabourCostPreview('0.00')),
+        findsOneWidget,
+      );
+      await tester.enterText(find.byType(EditableText).at(2), '60');
+      await tester.enterText(
+        find.byKey(const ValueKey('batch-setup-labour-minutes')),
+        '15',
+      );
+      await tester.pump();
+      expect(
+        find.text(l10n.batchCostingSetupLabourCostPreview('15.00')),
+        findsOneWidget,
+      );
+      await tester.enterText(find.byType(EditableText).at(2), '120');
+      await tester.pump();
+      expect(
+        find.text(l10n.batchCostingSetupLabourCostPreview('30.00')),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('pricing hides no-labour notice when item minutes exist', (
+    tester,
+  ) async {
+    final notifier = _FakeBatchCostingNotifier([
+      items.single.copyWith(itemLabourMinutes: 5),
+    ]);
+    await tester.pumpApp(const BatchPricingScopePage(), [
+      batchCostingProvider.overrideWith(() => notifier),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+    await tester.pumpAndSettle();
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPricingScopePage)),
+    )!;
+    expect(find.text(l10n.batchCostingNoLabourTimeEntered), findsNothing);
+  });
+
   testWidgets('defaults to expected pricing scopes', (tester) async {
     final notifier = _FakeBatchCostingNotifier(items);
 
@@ -92,7 +146,7 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(0), '120');
     await tester.enterText(find.byType(EditableText).at(1), '10');
     await tester.enterText(find.byType(EditableText).at(2), '10');
-    await tester.enterText(find.byType(EditableText).at(3), '10');
+    await tester.enterText(find.byType(EditableText).at(4), '10');
 
     await tester.ensureVisible(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
@@ -119,7 +173,7 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(0), '10');
     await tester.enterText(find.byType(EditableText).at(1), '20');
     await tester.enterText(find.byType(EditableText).at(2), '30');
-    await tester.enterText(find.byType(EditableText).at(3), '40');
+    await tester.enterText(find.byType(EditableText).at(4), '40');
     await tester.enterText(
       find.byKey(const ValueKey('batch-setup-labour-minutes')),
       '15',

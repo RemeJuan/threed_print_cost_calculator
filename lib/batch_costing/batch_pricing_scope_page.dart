@@ -16,6 +16,7 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.da
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/home_button.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 
 class BatchPricingScopePage extends ConsumerStatefulWidget {
   const BatchPricingScopePage({super.key});
@@ -217,7 +218,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        for (final f in fields)
+                        for (final f in fields) ...[
                           _pricingFieldCard(
                             context: context,
                             label: f.label,
@@ -233,31 +234,97 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                             scopeBatchLabel:
                                 l10n.batchCostingPricingScopeBatchMode,
                           ),
-                        AppSurfaceCard(
-                          margin: const EdgeInsets.only(bottom: kAppSpace12),
-                          child: TextFormField(
-                            key: const ValueKey('batch-setup-labour-minutes'),
-                            controller: _setupLabourController,
-                            focusNode: _setupLabourFocus,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
+                          if (f.controller == _labourRateController) ...[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: kAppSpace12,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    l10n.batchCostingLabourRateHelp,
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurfaceVariant,
+                                        ),
+                                  ),
+                                  if (state.items.every(
+                                    (item) => item.itemLabourMinutes == 0,
+                                  )) ...[
+                                    const SizedBox(height: kAppSpace8),
+                                    Text(
+                                      l10n.batchCostingNoLabourTimeEntered,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium
+                                          ?.copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onSurfaceVariant,
+                                          ),
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
-                            inputFormatters: localizedDecimalInputFormatters,
-                            decoration: InputDecoration(
-                              labelText:
-                                  l10n.batchCostingSetupLabourMinutesLabel,
-                              helperText: l10n.batchCostingHandsOnLabourHelp,
-                              helperMaxLines: 3,
+                            AppSurfaceCard(
+                              margin: const EdgeInsets.only(
+                                bottom: kAppSpace12,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  TextFormField(
+                                    key: const ValueKey(
+                                      'batch-setup-labour-minutes',
+                                    ),
+                                    controller: _setupLabourController,
+                                    focusNode: _setupLabourFocus,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                          decimal: true,
+                                        ),
+                                    inputFormatters:
+                                        localizedDecimalInputFormatters,
+                                    decoration: InputDecoration(
+                                      labelText: l10n
+                                          .batchCostingSetupLabourMinutesLabel,
+                                      helperText:
+                                          l10n.batchCostingHandsOnLabourHelp,
+                                      helperMaxLines: 3,
+                                    ),
+                                    validator: _amountValidator(l10n),
+                                    onChanged: (value) => ref
+                                        .read(batchCostingProvider.notifier)
+                                        .setSetupLabourMinutes(
+                                          double.tryParse(
+                                                value.replaceAll(',', '.'),
+                                              ) ??
+                                              0,
+                                        ),
+                                  ),
+                                  const SizedBox(height: kAppSpace8),
+                                  Text(
+                                    l10n.batchCostingSetupLabourCostPreview(
+                                      (state.setupLabourMinutes /
+                                              60 *
+                                              parseLocalizedNumOrFallback(
+                                                state.pricing.labourRate.value,
+                                              ))
+                                          .toStringAsFixed(2),
+                                    ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.labelLarge,
+                                  ),
+                                ],
+                              ),
                             ),
-                            validator: _amountValidator(l10n),
-                            onChanged: (value) => ref
-                                .read(batchCostingProvider.notifier)
-                                .setSetupLabourMinutes(
-                                  double.tryParse(value.replaceAll(',', '.')) ??
-                                      0,
-                                ),
-                          ),
-                        ),
+                          ],
+                        ],
                       ],
                     ),
                   ),

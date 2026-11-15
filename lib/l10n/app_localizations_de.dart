@@ -144,6 +144,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'Nur Handarbeit; Druckzeit ist Maschinenzeit. Leer lassen für null.';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'Verwendet Handarbeitsminuten pro Stück, nicht die G-Code-Druckzeit. Minuten bei der Artikelprüfung eingeben.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Keine Arbeitszeit eingegeben';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Einrichtungskosten: $cost';
+  }
+
+  @override
   String get labourTimeLabel => 'Bearbeitungszeit';
 
   @override

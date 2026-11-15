@@ -358,6 +358,24 @@ abstract class AppLocalizations {
   /// **'Hands-on work only; print time is machine time. Leave blank for zero.'**
   String get batchCostingHandsOnLabourHelp;
 
+  /// No description provided for @batchCostingLabourRateHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses hands-on minutes per item, not G-code print time. Enter minutes during item review.'**
+  String get batchCostingLabourRateHelp;
+
+  /// No description provided for @batchCostingNoLabourTimeEntered.
+  ///
+  /// In en, this message translates to:
+  /// **'No labour time entered'**
+  String get batchCostingNoLabourTimeEntered;
+
+  /// No description provided for @batchCostingSetupLabourCostPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup labour cost: {cost}'**
+  String batchCostingSetupLabourCostPreview(String cost);
+
   /// No description provided for @labourTimeLabel.
   ///
   /// In en, this message translates to:

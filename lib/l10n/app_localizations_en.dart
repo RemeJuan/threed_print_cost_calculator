@@ -139,6 +139,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Hands-on work only; print time is machine time. Leave blank for zero.';
 
   @override
+  String get batchCostingLabourRateHelp =>
+      'Uses hands-on minutes per item, not G-code print time. Enter minutes during item review.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'No labour time entered';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Setup labour cost: $cost';
+  }
+
+  @override
   String get labourTimeLabel => 'Work time';
 
   @override
