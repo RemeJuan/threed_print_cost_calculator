@@ -38,6 +38,9 @@ class PrintersNotifier extends Notifier<PrinterState> {
   }
 
   Future<void> init(String? key) async {
+    // Avoid notifying listeners synchronously while AddPrinter builds.
+    await Future<void>.value();
+    state = PrinterState();
     if (key != null) {
       final printer = await _printersRepository.getPrinterById(key);
       if (printer == null) return;
@@ -65,7 +68,7 @@ class PrintersNotifier extends Notifier<PrinterState> {
     state = state.copyWith(averageWattage: StringInput.dirty(value: value));
   }
 
-  Future<bool> submit(String? dbRef) async {
+  Future<bool> submit(String? dbRef, {void Function(String)? onCreated}) async {
     if (!isValidForSubmit) {
       return false;
     }
@@ -89,7 +92,8 @@ class PrintersNotifier extends Notifier<PrinterState> {
       archived: false,
     );
 
-    await _printersRepository.savePrinter(printer, id: dbRef);
+    final savedId = await _printersRepository.savePrinter(printer, id: dbRef);
+    if (dbRef == null && savedId != null) onCreated?.call(savedId.toString());
     AppAnalytics.safeLog(AppAnalytics.printerProfileCreated);
     return true;
   }

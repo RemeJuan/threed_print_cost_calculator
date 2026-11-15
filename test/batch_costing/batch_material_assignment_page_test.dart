@@ -12,6 +12,8 @@ import 'package:threed_print_cost_calculator/database/repositories/materials_rep
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 import '../helpers/helpers.dart';
@@ -54,6 +56,98 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(notifier.state.batchMaterialId, 'm1');
+  });
+
+  testWidgets(
+    'empty material step creates and selects material without losing batch',
+    (tester) async {
+      final notifier = _FakeBatchCostingNotifier(items);
+      await tester.pumpApp(const BatchMaterialAssignmentPage(), [
+        batchCostingProvider.overrideWith(() => notifier),
+        isPremiumProvider.overrideWithValue(false),
+      ]);
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('batch-create-material')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const ValueKey('batch-create-material')));
+      await tester.pumpAndSettle();
+      expect(find.byType(MaterialForm), findsOneWidget);
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(notifier.state.batchMaterialId, isNull);
+      expect(notifier.state.items.length, 2);
+
+      await tester.tap(find.byKey(const ValueKey('batch-create-material')));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.materials.name.input')),
+        'New PLA',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.materials.color.input')),
+        'Blue',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.materials.weight.input')),
+        '500',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.materials.cost.input')),
+        '20',
+      );
+      await tester.ensureVisible(
+        find.byKey(const ValueKey('settings.materials.save.button')),
+      );
+      await tester.tap(
+        find.byKey(const ValueKey('settings.materials.save.button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BatchMaterialAssignmentPage), findsOneWidget);
+      expect(find.text('New PLA'), findsOneWidget);
+      expect(notifier.state.batchMaterialId, isNotNull);
+      expect(notifier.state.items.map((item) => item.displayName), [
+        'Benchy',
+        'Cube',
+      ]);
+      expect(
+        notifier.state.itemMaterialAllocations['item-1']?.single.quantity,
+        2,
+      );
+    },
+  );
+
+  testWidgets('free material quota disables in-batch creation', (tester) async {
+    await tester.pumpApp(const BatchMaterialAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => _FakeBatchCostingNotifier(items)),
+      isPremiumProvider.overrideWithValue(false),
+      materialsStreamProvider.overrideWith(
+        (ref) => Stream.value([
+          for (var index = 0; index < 5; index++)
+            material(
+              'm$index',
+              'Material $index',
+              remainingWeight: 500,
+              autoDeductEnabled: false,
+            ),
+        ]),
+      ),
+    ]);
+    await tester.pumpAndSettle();
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchMaterialAssignmentPage)),
+    )!;
+    expect(find.text(l10n.materialLimitReachedMessage), findsOneWidget);
+    expect(
+      tester
+          .widget<AppSecondaryButton>(
+            find.byKey(const ValueKey('batch-create-material')),
+          )
+          .onPressed,
+      isNull,
+    );
   });
 
   testWidgets('per-item mode uses reusable picker', (tester) async {

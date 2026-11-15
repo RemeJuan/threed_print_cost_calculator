@@ -17,7 +17,10 @@ import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/materials/model/stock_status.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/materials/material_form.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/utils/weight_formatting.dart';
 
 class BatchMaterialAssignmentPage extends ConsumerWidget {
@@ -31,6 +34,10 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
 
     return materialsAsync.when(
       data: (materials) {
+        final canCreate = ref
+            .watch(premiumAccessPolicyProvider)
+            .canCreateMaterial(materials.length)
+            .allowed;
         final sortedMaterials = [...materials]
           ..sort((a, b) {
             final statusA = calculateStockStatus(a);
@@ -76,6 +83,59 @@ class BatchMaterialAssignmentPage extends ConsumerWidget {
                           .setMaterialAssignmentMode(selected.first);
                     },
                   ),
+                  const SizedBox(height: kAppSpace16),
+                  Row(
+                    children: [
+                      Text(l10n.materialsHeader),
+                      const Spacer(),
+                      AppSecondaryButton(
+                        key: const ValueKey<String>('batch-create-material'),
+                        onPressed: canCreate
+                            ? () async {
+                                final created = await showDialog<MaterialModel>(
+                                  context: context,
+                                  builder: (_) => const MaterialForm(),
+                                );
+                                if (created == null || !context.mounted) return;
+                                final batch = ref.read(batchCostingProvider);
+                                final notifier = ref.read(
+                                  batchCostingProvider.notifier,
+                                );
+                                if (batch.materialAssignmentMode ==
+                                    BatchMaterialAssignmentMode.batchWide) {
+                                  notifier.setBatchMaterialId(created.id);
+                                } else {
+                                  for (final item in batch.items) {
+                                    if (batch
+                                            .itemMaterialAllocations[item.id]
+                                            ?.isNotEmpty ==
+                                        true) {
+                                      continue;
+                                    }
+                                    notifier
+                                        .setItemMaterialAllocations(item.id, [
+                                          BatchAssignmentAllocation(
+                                            targetId: created.id,
+                                            quantity: item.quantity,
+                                          ),
+                                        ]);
+                                    break;
+                                  }
+                                }
+                              }
+                            : null,
+                        label: l10n.addMaterialButton,
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                  if (!canCreate)
+                    Text(
+                      l10n.materialLimitReachedMessage,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
+                    ),
                   const SizedBox(height: kAppSpace16),
                   Expanded(
                     child: sortedMaterials.isEmpty
