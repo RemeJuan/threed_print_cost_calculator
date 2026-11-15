@@ -113,6 +113,30 @@ class AppLocalizationsNl extends AppLocalizations {
   String get labourRateLabel => 'Uurtarief';
 
   @override
+  String get batchCostingHourlyLabourRateLabel => 'Arbeidstarief (per uur)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Voorbereiding (minuten per batch)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Handwerk (minuten per stuk)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Voorbereidingskosten';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Totale arbeidskosten';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Arbeidskosten per item';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Alleen handwerk; printtijd is machinetijd. Leeg laten voor nul.';
+
+  @override
   String get labourTimeLabel => 'Verwerkingstijd';
 
   @override

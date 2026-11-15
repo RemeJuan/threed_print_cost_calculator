@@ -108,6 +108,27 @@ class AppLocalizationsJa extends AppLocalizations {
   String get labourRateLabel => '時給';
 
   @override
+  String get batchCostingHourlyLabourRateLabel => '作業単価（1時間あたり）';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel => '準備作業（バッチあたりの分数）';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel => '手作業（1個あたりの分数）';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => '準備作業費';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => '作業費合計';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'アイテム作業費';
+
+  @override
+  String get batchCostingHandsOnLabourHelp => '手作業の時間のみ。印刷時間は機械の稼働時間です。空欄はゼロ。';
+
+  @override
   String get labourTimeLabel => '処理時間';
 
   @override

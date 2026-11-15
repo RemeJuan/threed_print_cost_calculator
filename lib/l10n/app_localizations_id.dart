@@ -112,6 +112,31 @@ class AppLocalizationsId extends AppLocalizations {
   String get labourRateLabel => 'Tarif per jam';
 
   @override
+  String get batchCostingHourlyLabourRateLabel =>
+      'Tarif tenaga kerja (per jam)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Persiapan (menit per batch)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Kerja langsung (menit per unit)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Biaya persiapan';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Total biaya tenaga kerja';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Biaya tenaga kerja item';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Hanya kerja langsung; waktu cetak adalah waktu mesin. Kosong berarti nol.';
+
+  @override
   String get labourTimeLabel => 'Waktu pengerjaan';
 
   @override

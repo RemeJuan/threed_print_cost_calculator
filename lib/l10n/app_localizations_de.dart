@@ -116,6 +116,30 @@ class AppLocalizationsDe extends AppLocalizations {
   String get labourRateLabel => 'Stundensatz';
 
   @override
+  String get batchCostingHourlyLabourRateLabel => 'Arbeitskosten (pro Stunde)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Einrichtung (Minuten pro Charge)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Handarbeit (Minuten pro Stück)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Einrichtungskosten';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Gesamte Arbeitskosten';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Arbeitskosten des Artikels';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Nur Handarbeit; Druckzeit ist Maschinenzeit. Leer lassen für null.';
+
+  @override
   String get labourTimeLabel => 'Bearbeitungszeit';
 
   @override

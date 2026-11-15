@@ -110,6 +110,28 @@ class AppLocalizationsTh extends AppLocalizations {
   String get labourRateLabel => 'อัตราชั่วโมง';
 
   @override
+  String get batchCostingHourlyLabourRateLabel => 'อัตราค่าแรง (ต่อชั่วโมง)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel => 'งานเตรียม (นาทีต่อชุด)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel => 'งานลงมือทำ (นาทีต่อชิ้น)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'ค่าแรงงานเตรียม';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'ค่าแรงรวม';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'ค่าแรงรายการ';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'นับเฉพาะเวลาลงมือทำ เวลาพิมพ์เป็นเวลาเครื่อง เว้นว่างเท่ากับศูนย์';
+
+  @override
   String get labourTimeLabel => 'ระยะเวลาดำเนินการ';
 
   @override

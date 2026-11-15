@@ -111,6 +111,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get labourRateLabel => 'Hourly rate';
 
   @override
+  String get batchCostingHourlyLabourRateLabel => 'Labour rate (per hour)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Setup labour (minutes per batch)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Hands-on labour (minutes per unit)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Setup labour cost';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Total labour cost';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Item labour cost';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Hands-on work only; print time is machine time. Leave blank for zero.';
+
+  @override
   String get labourTimeLabel => 'Work time';
 
   @override

@@ -312,6 +312,48 @@ abstract class AppLocalizations {
   /// **'Hourly rate'**
   String get labourRateLabel;
 
+  /// No description provided for @batchCostingHourlyLabourRateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour rate (per hour)'**
+  String get batchCostingHourlyLabourRateLabel;
+
+  /// No description provided for @batchCostingSetupLabourMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup labour (minutes per batch)'**
+  String get batchCostingSetupLabourMinutesLabel;
+
+  /// No description provided for @batchCostingItemLabourMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hands-on labour (minutes per unit)'**
+  String get batchCostingItemLabourMinutesLabel;
+
+  /// No description provided for @batchCostingSetupLabourCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup labour cost'**
+  String get batchCostingSetupLabourCostLabel;
+
+  /// No description provided for @batchCostingTotalLabourCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total labour cost'**
+  String get batchCostingTotalLabourCostLabel;
+
+  /// No description provided for @batchCostingItemLabourCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item labour cost'**
+  String get batchCostingItemLabourCostLabel;
+
+  /// No description provided for @batchCostingHandsOnLabourHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Hands-on work only; print time is machine time. Leave blank for zero.'**
+  String get batchCostingHandsOnLabourHelp;
+
   /// No description provided for @labourTimeLabel.
   ///
   /// In en, this message translates to:
