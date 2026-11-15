@@ -34,6 +34,7 @@ class BatchCostingState with FormzMixin {
   final String? batchMaterialId;
   final Map<String, List<BatchAssignmentAllocation>> itemMaterialAllocations;
   final BatchPricingState pricing;
+  final double setupLabourMinutes;
 
   BatchCostingState({
     List<BatchCostingItem>? items,
@@ -45,6 +46,7 @@ class BatchCostingState with FormzMixin {
     this.batchMaterialId,
     Map<String, List<BatchAssignmentAllocation>>? itemMaterialAllocations,
     this.pricing = const BatchPricingState(),
+    this.setupLabourMinutes = 0,
   }) : items = List.unmodifiable(items ?? const <BatchCostingItem>[]),
        itemPrinterIds = Map.unmodifiable(
          itemPrinterIds ?? const <String, String>{},
@@ -73,6 +75,7 @@ class BatchCostingState with FormzMixin {
     Map<String, List<BatchAssignmentAllocation>>? itemMaterialAllocations,
     bool clearItemMaterialAllocations = false,
     BatchPricingState? pricing,
+    double? setupLabourMinutes,
   }) {
     return BatchCostingState(
       items: items ?? this.items,
@@ -96,6 +99,7 @@ class BatchCostingState with FormzMixin {
           ? null
           : itemMaterialAllocations ?? this.itemMaterialAllocations,
       pricing: pricing ?? this.pricing,
+      setupLabourMinutes: setupLabourMinutes ?? this.setupLabourMinutes,
     );
   }
 

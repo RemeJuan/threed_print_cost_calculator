@@ -31,9 +31,9 @@ class _PricingField {
     required this.controller,
     required this.focusNode,
     required this.value,
-    required this.scope,
+    this.scope,
     required this.onValueChanged,
-    required this.onScopeChanged,
+    this.onScopeChanged,
     required this.validator,
   });
 
@@ -41,9 +41,9 @@ class _PricingField {
   final TextEditingController controller;
   final FocusNode focusNode;
   final String value;
-  final BatchPricingScope scope;
+  final BatchPricingScope? scope;
   final ValueChanged<String> onValueChanged;
-  final ValueChanged<BatchPricingScope> onScopeChanged;
+  final ValueChanged<BatchPricingScope>? onScopeChanged;
   final FormFieldValidator<String> validator;
 }
 
@@ -52,10 +52,12 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
   late final TextEditingController _failureRiskController;
   late final TextEditingController _markupPercentController;
   late final TextEditingController _labourRateController;
+  late final TextEditingController _setupLabourController;
   late final TextEditingController _additionalCostController;
   late final FocusNode _failureRiskFocus;
   late final FocusNode _markupPercentFocus;
   late final FocusNode _labourRateFocus;
+  late final FocusNode _setupLabourFocus;
   late final FocusNode _additionalCostFocus;
 
   @override
@@ -71,12 +73,18 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     _labourRateController = TextEditingController(
       text: state.pricing.labourRate.value,
     );
+    _setupLabourController = TextEditingController(
+      text: state.setupLabourMinutes == 0
+          ? ''
+          : state.setupLabourMinutes.toString(),
+    );
     _additionalCostController = TextEditingController(
       text: state.pricing.additionalCostAmount.value,
     );
     _failureRiskFocus = FocusNode();
     _markupPercentFocus = FocusNode();
     _labourRateFocus = FocusNode();
+    _setupLabourFocus = FocusNode();
     _additionalCostFocus = FocusNode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) => _loadDefaults());
@@ -88,6 +96,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
       _failureRiskController,
       _markupPercentController,
       _labourRateController,
+      _setupLabourController,
       _additionalCostController,
     ]) {
       c.dispose();
@@ -96,6 +105,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
       _failureRiskFocus,
       _markupPercentFocus,
       _labourRateFocus,
+      _setupLabourFocus,
       _additionalCostFocus,
     ]) {
       f.dispose();
@@ -162,15 +172,12 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         validator: _percentValidator(l10n),
       ),
       _PricingField(
-        label: l10n.labourRateLabel,
+        label: l10n.batchCostingHourlyLabourRateLabel,
         controller: _labourRateController,
         focusNode: _labourRateFocus,
         value: state.pricing.labourRate.value,
-        scope: state.pricing.labourRate.scope,
         onValueChanged: (v) =>
             ref.read(batchCostingProvider.notifier).setLabourRate(v),
-        onScopeChanged: (s) =>
-            ref.read(batchCostingProvider.notifier).setLabourRateScope(s),
         validator: _amountValidator(l10n),
       ),
       _PricingField(
@@ -226,6 +233,31 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                             scopeBatchLabel:
                                 l10n.batchCostingPricingScopeBatchMode,
                           ),
+                        AppSurfaceCard(
+                          margin: const EdgeInsets.only(bottom: kAppSpace12),
+                          child: TextFormField(
+                            key: const ValueKey('batch-setup-labour-minutes'),
+                            controller: _setupLabourController,
+                            focusNode: _setupLabourFocus,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            inputFormatters: localizedDecimalInputFormatters,
+                            decoration: InputDecoration(
+                              labelText:
+                                  l10n.batchCostingSetupLabourMinutesLabel,
+                              helperText: l10n.batchCostingHandsOnLabourHelp,
+                              helperMaxLines: 3,
+                            ),
+                            validator: _amountValidator(l10n),
+                            onChanged: (value) => ref
+                                .read(batchCostingProvider.notifier)
+                                .setSetupLabourMinutes(
+                                  double.tryParse(value.replaceAll(',', '.')) ??
+                                      0,
+                                ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -260,9 +292,9 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
     required TextEditingController controller,
     required FocusNode focusNode,
     required String value,
-    required BatchPricingScope scope,
+    BatchPricingScope? scope,
     required ValueChanged<String> onValueChanged,
-    required ValueChanged<BatchPricingScope> onScopeChanged,
+    ValueChanged<BatchPricingScope>? onScopeChanged,
     required FormFieldValidator<String> validator,
     required String scopeItemLabel,
     required String scopeBatchLabel,
@@ -273,7 +305,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
       child: Row(
         children: [
           Expanded(
-            flex: 48,
+            flex: scope == null ? 1 : 48,
             child: FocusSafeTextField(
               controller: controller,
               focusNode: focusNode,
@@ -296,25 +328,28 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
               onChanged: onValueChanged,
             ),
           ),
-          const Spacer(flex: 4),
-          Expanded(
-            flex: 48,
-            child: SegmentedButton<BatchPricingScope>(
-              showSelectedIcon: false,
-              segments: [
-                ButtonSegment(
-                  value: BatchPricingScope.item,
-                  label: Text(scopeItemLabel),
-                ),
-                ButtonSegment(
-                  value: BatchPricingScope.batch,
-                  label: Text(scopeBatchLabel),
-                ),
-              ],
-              selected: {scope},
-              onSelectionChanged: (selected) => onScopeChanged(selected.first),
+          if (scope != null && onScopeChanged != null) ...[
+            const Spacer(flex: 4),
+            Expanded(
+              flex: 48,
+              child: SegmentedButton<BatchPricingScope>(
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment(
+                    value: BatchPricingScope.item,
+                    label: Text(scopeItemLabel),
+                  ),
+                  ButtonSegment(
+                    value: BatchPricingScope.batch,
+                    label: Text(scopeBatchLabel),
+                  ),
+                ],
+                selected: {scope},
+                onSelectionChanged: (selected) =>
+                    onScopeChanged(selected.first),
+              ),
             ),
-          ),
+          ],
         ],
       ),
     );
@@ -356,7 +391,7 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         hasAdditionalCost: pricing.additionalCostAmount.value.isNotEmpty,
         riskScope: scopeLabel(pricing.failureRisk),
         markupScope: scopeLabel(pricing.markupPercent),
-        labourScope: scopeLabel(pricing.labourRate),
+        labourScope: 'batch',
         additionalCostScope: scopeLabel(pricing.additionalCostAmount),
       ),
     );

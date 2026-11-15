@@ -70,6 +70,7 @@ class BatchCostingPageActions {
             quantity: result.quantity,
             printWeightG: result.printWeightG,
             printDuration: result.printDuration,
+            itemLabourMinutes: result.itemLabourMinutes,
           ),
         );
 
@@ -116,6 +117,7 @@ class BatchCostingPageActions {
         initialQuantity: item.quantity,
         initialPrintWeightG: item.printWeightG,
         initialPrintDuration: item.printDuration,
+        initialItemLabourMinutes: item.itemLabourMinutes,
       ),
     );
 
@@ -127,6 +129,7 @@ class BatchCostingPageActions {
       quantity: result.quantity,
       printWeightG: result.printWeightG,
       printDuration: result.printDuration,
+      itemLabourMinutes: result.itemLabourMinutes,
     );
     final cleared = ref
         .read(batchCostingProvider.notifier)

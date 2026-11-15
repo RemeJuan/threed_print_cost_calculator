@@ -46,6 +46,7 @@ class BatchSummaryResult {
     required this.finalTotal,
     required this.totalElectricityCost,
     required this.totalLabourCost,
+    required this.setupLabourCost,
     required this.failureRiskMonetary,
     required this.markupPercentMonetary,
   });
@@ -62,6 +63,7 @@ class BatchSummaryResult {
   final num finalTotal;
   final num totalElectricityCost;
   final num totalLabourCost;
+  final num setupLabourCost;
   final num failureRiskMonetary;
   final num markupPercentMonetary;
 }
@@ -106,9 +108,7 @@ class BatchSummaryCalculator {
 
       final hours = itemDurationMin / 60;
       final itemLabourCost =
-          hours *
-          _scopeValue(state.pricing.labourRate, batchLabourRate) *
-          item.quantity;
+          item.itemLabourMinutes / 60 * batchLabourRate * item.quantity;
       final itemElectricityCost = _itemElectricityCost(
         state,
         item,
@@ -171,6 +171,10 @@ class BatchSummaryCalculator {
       batchSubtotal += pricing.finalPrice;
     }
 
+    final setupLabourCost = state.setupLabourMinutes / 60 * batchLabourRate;
+    batchSubtotal += setupLabourCost;
+    totalLabourCost += setupLabourCost;
+
     if (state.pricing.failureRisk.scope == BatchPricingScope.batch) {
       failureRiskMonetary = batchSubtotal * batchFailureRisk / 100;
     }
@@ -213,6 +217,7 @@ class BatchSummaryCalculator {
       finalTotal: finalTotal,
       totalElectricityCost: totalElectricityCost,
       totalLabourCost: totalLabourCost,
+      setupLabourCost: setupLabourCost,
       failureRiskMonetary: failureRiskMonetary,
       markupPercentMonetary: markupPercentMonetary,
     );

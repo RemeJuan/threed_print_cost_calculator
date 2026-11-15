@@ -73,6 +73,7 @@ class BatchCostingItem {
     this.printerId,
     this.materialId,
     this.pricingProfileId,
+    required this.itemLabourMinutes,
   }) : quantity = _validateQuantity(quantity);
 
   final String id;
@@ -86,6 +87,7 @@ class BatchCostingItem {
   final String? printerId;
   final String? materialId;
   final String? pricingProfileId;
+  final double itemLabourMinutes;
 
   factory BatchCostingItem.manual({
     required String id,
@@ -97,6 +99,7 @@ class BatchCostingItem {
     String? printerId,
     String? materialId,
     String? pricingProfileId,
+    double itemLabourMinutes = 0,
   }) {
     return BatchCostingItem._(
       id: id,
@@ -109,6 +112,7 @@ class BatchCostingItem {
       printerId: printerId,
       materialId: materialId,
       pricingProfileId: pricingProfileId,
+      itemLabourMinutes: itemLabourMinutes,
     );
   }
 
@@ -123,6 +127,7 @@ class BatchCostingItem {
     String? printerId,
     String? materialId,
     String? pricingProfileId,
+    double itemLabourMinutes = 0,
   }) {
     return BatchCostingItem._(
       id: id,
@@ -148,6 +153,7 @@ class BatchCostingItem {
       printerId: printerId,
       materialId: materialId,
       pricingProfileId: pricingProfileId,
+      itemLabourMinutes: itemLabourMinutes,
     );
   }
 
@@ -163,6 +169,7 @@ class BatchCostingItem {
     String? printerId,
     String? materialId,
     String? pricingProfileId,
+    double? itemLabourMinutes,
   }) {
     return BatchCostingItem._(
       id: id ?? this.id,
@@ -176,6 +183,7 @@ class BatchCostingItem {
       printerId: printerId ?? this.printerId,
       materialId: materialId ?? this.materialId,
       pricingProfileId: pricingProfileId ?? this.pricingProfileId,
+      itemLabourMinutes: itemLabourMinutes ?? this.itemLabourMinutes,
     );
   }
 

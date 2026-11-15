@@ -11,12 +11,14 @@ class BatchCostingItemEditorResult {
     required this.quantity,
     required this.printWeightG,
     required this.printDuration,
+    required this.itemLabourMinutes,
   });
 
   final String displayName;
   final int quantity;
   final double printWeightG;
   final Duration printDuration;
+  final double itemLabourMinutes;
 }
 
 class BatchCostingItemEditorDialog extends StatefulWidget {
@@ -26,6 +28,7 @@ class BatchCostingItemEditorDialog extends StatefulWidget {
     required this.initialQuantity,
     this.initialPrintWeightG,
     this.initialPrintDuration,
+    this.initialItemLabourMinutes = 0,
     super.key,
   });
 
@@ -34,6 +37,7 @@ class BatchCostingItemEditorDialog extends StatefulWidget {
   final int initialQuantity;
   final double? initialPrintWeightG;
   final Duration? initialPrintDuration;
+  final double initialItemLabourMinutes;
 
   @override
   State<BatchCostingItemEditorDialog> createState() =>
@@ -48,6 +52,7 @@ class _BatchCostingItemEditorDialogState
   late final TextEditingController _printWeightController;
   late final TextEditingController _durationHoursController;
   late final TextEditingController _durationMinutesController;
+  late final TextEditingController _itemLabourController;
   late final FocusNode _displayNameFocusNode;
   late final FocusNode _quantityFocusNode;
   late final FocusNode _printWeightFocusNode;
@@ -78,6 +83,11 @@ class _BatchCostingItemEditorDialogState
       text:
           widget.initialPrintDuration?.inMinutes.remainder(60).toString() ?? '',
     );
+    _itemLabourController = TextEditingController(
+      text: widget.initialItemLabourMinutes == 0
+          ? ''
+          : widget.initialItemLabourMinutes.toString(),
+    );
     _displayNameFocusNode = FocusNode();
     _quantityFocusNode = FocusNode();
     _printWeightFocusNode = FocusNode();
@@ -96,6 +106,7 @@ class _BatchCostingItemEditorDialogState
     _printWeightController.dispose();
     _durationHoursController.dispose();
     _durationMinutesController.dispose();
+    _itemLabourController.dispose();
     _displayNameFocusNode.dispose();
     _quantityFocusNode.dispose();
     _printWeightFocusNode.dispose();
@@ -250,6 +261,29 @@ class _BatchCostingItemEditorDialogState
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
+              TextFormField(
+                key: const ValueKey('batch-costing-item-labour-minutes'),
+                controller: _itemLabourController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[\d\.,]')),
+                ],
+                decoration: InputDecoration(
+                  labelText: l10n.batchCostingItemLabourMinutesLabel,
+                  helperText: l10n.batchCostingHandsOnLabourHelp,
+                  helperMaxLines: 3,
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return null;
+                  final minutes = _parseDouble(value);
+                  return minutes == null || minutes < 0
+                      ? l10n.invalidNumber
+                      : null;
+                },
+              ),
             ],
           ),
         ),
@@ -322,6 +356,7 @@ class _BatchCostingItemEditorDialogState
         quantity: quantity,
         printWeightG: printWeightG,
         printDuration: duration,
+        itemLabourMinutes: _parseDouble(_itemLabourController.text) ?? 0,
       ),
     );
   }
