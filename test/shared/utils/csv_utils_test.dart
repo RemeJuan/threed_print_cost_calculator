@@ -351,9 +351,98 @@ void main() {
         );
       }
     });
+
+    test('keeps appended labour columns ordered after existing columns', () {
+      final initialState = _testBatchState();
+      final state = initialState.copyWith(
+        setupLabourMinutes: 15,
+        pricing: initialState.pricing.copyWith(
+          additionalCostAmount: initialState.pricing.additionalCostAmount
+              .copyWith(value: '7'),
+        ),
+      );
+      final item = state.items.first.copyWith(itemLabourMinutes: 6);
+      final labourState = state.copyWith(items: [item, ...state.items.skip(1)]);
+      final saved = HistoryModel.batchQuote(
+        name: 'Labour',
+        date: DateTime.utc(2025),
+        state: labourState,
+        summary: BatchSummaryCalculator.calculate(labourState),
+      );
+      final rows = generateBatchQuoteCsv(
+        saved,
+      ).trim().split('\n').map((line) => line.split(',')).toList();
+      expect(rows.map((row) => row.length), everyElement(28));
+      expect(rows[1][7], '"08:15"');
+      expect(rows[1][24], '"15.0"');
+      expect(rows[1][25], '""');
+      expect(rows[1][26], '"0.0"');
+      final itemRow = rows.firstWhere((row) => row[0] == '"item"');
+      expect(itemRow[10], '"Benchy"');
+      expect(itemRow[23], '""');
+      expect(itemRow[24], '""');
+      expect(itemRow[25], '"6.0"');
+      expect(itemRow[26], '""');
+      expect(itemRow[27], '"0.0"');
+      final pricingRow = rows.firstWhere((row) => row[0] == '"pricing"');
+      expect(pricingRow[21], '"7"');
+      final legacy = HistoryModel(
+        name: 'Legacy',
+        totalCost: 1,
+        riskCost: 0,
+        filamentCost: 0,
+        electricityCost: 0,
+        labourCost: 0,
+        date: DateTime.utc(2025),
+        printer: '',
+        material: '',
+        weight: 0,
+        timeHours: '00:00',
+        batchQuote: true,
+      );
+      final legacyRow = generateBatchQuoteCsv(
+        legacy,
+      ).trim().split('\n')[1].split(',');
+      expect(legacyRow.sublist(24), ['"0"', '""', '"0"', '"0"']);
+    });
   });
 
   group('csv_utils.generateMixedHistoryCsv', () {
+    test(
+      'all row types have 23 columns with labour appended; legacy defaults zero',
+      () {
+        final state = _testBatchState().copyWith(setupLabourMinutes: 15);
+        final batch = HistoryModel.batchQuote(
+          name: 'Labour',
+          date: DateTime.utc(2025),
+          state: state,
+          summary: BatchSummaryCalculator.calculate(state),
+        );
+        final single = HistoryModel(
+          name: 'Legacy',
+          totalCost: 1,
+          riskCost: 0,
+          filamentCost: 0,
+          electricityCost: 0,
+          labourCost: 0,
+          date: DateTime.utc(2025),
+          printer: '',
+          material: '',
+          weight: 0,
+          timeHours: '02:00',
+        );
+        final rows = generateMixedHistoryCsv([
+          single,
+          batch,
+        ]).trim().split('\n').map((line) => line.split(',')).toList();
+        expect(rows.map((row) => row.length), everyElement(23));
+        expect(rows[1].sublist(19), ['"0"', '""', '"0"', '"0"']);
+        final batchRow = rows.firstWhere((row) => row[0] == 'batch_quote');
+        expect(batchRow[6], '""');
+        expect(batchRow[19], '"15.0"');
+        expect(batchRow[20], '""');
+      },
+    );
     test('includes both single-print and batch records', () {
       final singlePrint = HistoryModel(
         name: 'Single Print',
@@ -655,6 +744,7 @@ BatchSummaryResult _testBatchSummary() {
     finalTotal: 15.0,
     totalElectricityCost: 0,
     totalLabourCost: 0,
+    setupLabourCost: 0,
     failureRiskMonetary: 0,
     markupPercentMonetary: 0,
   );

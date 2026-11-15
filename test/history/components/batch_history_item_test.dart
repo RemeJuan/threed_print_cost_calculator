@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/history/components/history_item.dart';
 import 'package:threed_print_cost_calculator/history/components/batch_history_item.dart';
@@ -220,5 +221,24 @@ void main() {
     expect(find.textContaining('Part B × 6'), findsOneWidget);
     expect(find.textContaining(r'$15.00'), findsNWidgets(2));
     expect(find.textContaining(r'$27.50'), findsAtLeastNWidgets(1));
+  });
+
+  testWidgets('labour detail remains scrollable at narrow width', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(320, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await tester.pumpApp(
+      HistoryItem(dbKey: 'batch-1', data: _batchHistoryModel),
+      [
+        settingsStreamProvider.overrideWith(
+          (ref) => Stream.value(_usdSettings),
+        ),
+      ],
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
   });
 }

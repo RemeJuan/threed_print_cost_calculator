@@ -110,37 +110,60 @@ void main() {
     expect(find.text('0.60'), findsOneWidget);
   });
 
-  testWidgets(
-    'shows print hours, labour cost and assigned printer electricity without adding to total twice',
-    (tester) async {
-      await tester.pumpApp(const BatchSummaryPage(), [
-        batchCostingProvider.overrideWith(() => _ElectricSummaryNotifier()),
-        isPremiumProvider.overrideWithValue(true),
-        printersRepositoryProvider.overrideWith(_SummaryPrintersRepository.new),
-        settingsStreamProvider.overrideWith(
-          (ref) => Stream.value(
-            GeneralSettingsModel.initial().copyWith(electricityCost: '2'),
-          ),
-        ),
-      ]);
-      await tester.pumpAndSettle();
+  testWidgets('shows one setup labour charge alongside item labour', (
+    tester,
+  ) async {
+    await tester.pumpApp(const BatchSummaryPage(), [
+      batchCostingProvider.overrideWith(() => _SetupLabourSummaryNotifier()),
+      isPremiumProvider.overrideWithValue(true),
+    ]);
+    await tester.pumpAndSettle();
 
-      final l10n = AppLocalizations.of(
-        tester.element(find.byType(BatchSummaryPage)),
-      )!;
-      expect(
-        find.text(l10n.batchCostingSummaryTotalDurationLabel),
-        findsWidgets,
-      );
-      expect(find.text('02:00'), findsWidgets);
-      expect(find.text(l10n.labourCostLabel), findsOneWidget);
-      expect(find.text('20.00'), findsOneWidget);
-      expect(find.text(l10n.electricityCostLabel), findsOneWidget);
-      expect(find.text('0.40'), findsOneWidget);
-      await tester.scrollUntilVisible(find.text('20.40'), 200);
-      expect(find.text('20.40'), findsOneWidget);
-    },
-  );
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchSummaryPage)),
+    )!;
+    expect(find.text(l10n.batchCostingSetupLabourMinutesLabel), findsOneWidget);
+    expect(find.text(l10n.batchCostingSetupLabourCostLabel), findsOneWidget);
+    expect(find.text('30.00'), findsOneWidget);
+    expect(find.text(l10n.batchCostingTotalLabourCostLabel), findsOneWidget);
+    expect(find.text('90.00'), findsWidgets);
+
+    await tester.scrollUntilVisible(find.text('Benchy'), 150);
+    await tester.tap(find.text('Benchy'));
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.batchCostingItemLabourMinutesLabel), findsOneWidget);
+    expect(find.text(l10n.batchCostingItemLabourCostLabel), findsOneWidget);
+    expect(find.text('60.00'), findsWidgets);
+  });
+
+  testWidgets('shows print duration separately from setup and item labour', (
+    tester,
+  ) async {
+    await tester.pumpApp(const BatchSummaryPage(), [
+      batchCostingProvider.overrideWith(() => _ElectricSummaryNotifier()),
+      isPremiumProvider.overrideWithValue(true),
+      printersRepositoryProvider.overrideWith(_SummaryPrintersRepository.new),
+      settingsStreamProvider.overrideWith(
+        (ref) => Stream.value(
+          GeneralSettingsModel.initial().copyWith(electricityCost: '2'),
+        ),
+      ),
+    ]);
+    await tester.pumpAndSettle();
+
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchSummaryPage)),
+    )!;
+    expect(find.text(l10n.batchCostingSummaryTotalDurationLabel), findsWidgets);
+    expect(find.text('02:00'), findsWidgets);
+    expect(find.text(l10n.batchCostingSetupLabourCostLabel), findsOneWidget);
+    expect(find.text(l10n.batchCostingTotalLabourCostLabel), findsOneWidget);
+    expect(find.text('20.00'), findsOneWidget);
+    expect(find.text(l10n.electricityCostLabel), findsOneWidget);
+    expect(find.text('0.40'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('20.40'), 200);
+    expect(find.text('20.40'), findsOneWidget);
+  });
 
   testWidgets('start new batch clears gcode stack and returns home', (
     tester,
@@ -287,6 +310,7 @@ class _SummaryBatchCostingNotifier extends BatchCostingNotifier {
           quantity: 2,
           printWeightG: 10,
           printDuration: const Duration(hours: 1),
+          itemLabourMinutes: 60,
         ),
       ],
       pricing: const BatchPricingState(
@@ -326,6 +350,26 @@ class _FreeSummaryBatchCostingNotifier extends BatchCostingNotifier {
   }
 }
 
+class _SetupLabourSummaryNotifier extends BatchCostingNotifier {
+  @override
+  BatchCostingState build() => BatchCostingState(
+    setupLabourMinutes: 15,
+    items: [
+      BatchCostingItem.manual(
+        id: 'setup-item',
+        displayName: 'Benchy',
+        quantity: 3,
+        printWeightG: 10,
+        printDuration: const Duration(hours: 2),
+        itemLabourMinutes: 10,
+      ),
+    ],
+    pricing: const BatchPricingState(
+      labourRate: BatchPricingFieldState(value: '120'),
+    ),
+  );
+}
+
 class _ElectricSummaryNotifier extends BatchCostingNotifier {
   @override
   BatchCostingState build() => BatchCostingState(
@@ -336,6 +380,7 @@ class _ElectricSummaryNotifier extends BatchCostingNotifier {
         quantity: 2,
         printWeightG: 10,
         printDuration: const Duration(hours: 1),
+        itemLabourMinutes: 60,
       ),
     ],
     batchPrinterId: 'printer-1',

@@ -396,6 +396,14 @@ void main() {
   });
 
   group('pricing', () {
+    test('stores setup labour minutes', () {
+      final container = _createContainer();
+      addTearDown(container.dispose);
+      final notifier = container.read(batchCostingProvider.notifier);
+      expect(container.read(batchCostingProvider).setupLabourMinutes, 0);
+      notifier.setSetupLabourMinutes(12.5);
+      expect(container.read(batchCostingProvider).setupLabourMinutes, 12.5);
+    });
     test('sets and clears pricing fields', () {
       final container = _createContainer();
       addTearDown(container.dispose);
@@ -414,10 +422,8 @@ void main() {
       expect(pricing.markupPercent.scope, BatchPricingScope.item);
 
       notifier.setLabourRate('25');
-      notifier.setLabourRateScope(BatchPricingScope.batch);
       pricing = container.read(batchCostingProvider).pricing;
       expect(pricing.labourRate.value, '25');
-      expect(pricing.labourRate.scope, BatchPricingScope.batch);
 
       notifier.setAdditionalCostAmount('15');
       notifier.setAdditionalCostAmountScope(BatchPricingScope.item);

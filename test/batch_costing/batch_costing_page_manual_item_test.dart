@@ -49,6 +49,10 @@ void main() {
       find.byKey(const ValueKey<String>('batch-costing-item-duration-minutes')),
       '20',
     );
+    await tester.enterText(
+      find.byKey(const ValueKey<String>('batch-costing-item-labour-minutes')),
+      '12.5',
+    );
     await tester.tap(find.text(l10n.saveButton));
     await tester.pumpAndSettle();
 
@@ -56,6 +60,17 @@ void main() {
 
     await tester.tap(find.text(l10n.editButton).last);
     await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<TextFormField>(
+            find.byKey(
+              const ValueKey<String>('batch-costing-item-labour-minutes'),
+            ),
+          )
+          .controller!
+          .text,
+      '12.5',
+    );
 
     await tester.enterText(
       find.byKey(const ValueKey<String>('batch-costing-item-name')),
@@ -69,6 +84,27 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Benchy v2'), findsOneWidget);
+    await tester.tap(find.text(l10n.editButton).last);
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<TextFormField>(
+            find.byKey(
+              const ValueKey<String>('batch-costing-item-labour-minutes'),
+            ),
+          )
+          .controller!
+          .text,
+      '12.5',
+    );
+    await tester.tap(
+      find.text(
+        MaterialLocalizations.of(
+          tester.element(find.byType(AlertDialog)),
+        ).cancelButtonLabel,
+      ),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(find.text(l10n.batchCostingReviewRemoveButton));
     await tester.pumpAndSettle();

@@ -54,7 +54,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final scopeFields = find.byType(SegmentedButton<BatchPricingScope>);
-    expect(scopeFields, findsNWidgets(4));
+    expect(scopeFields, findsNWidgets(3));
 
     tester
         .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(0))
@@ -67,17 +67,12 @@ void main() {
     tester
         .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(2))
         .onSelectionChanged
-        ?.call({BatchPricingScope.batch});
-    tester
-        .widget<SegmentedButton<BatchPricingScope>>(scopeFields.at(3))
-        .onSelectionChanged
         ?.call({BatchPricingScope.item});
 
     await tester.pumpAndSettle();
 
     expect(notifier.state.pricing.failureRisk.scope, BatchPricingScope.batch);
     expect(notifier.state.pricing.markupPercent.scope, BatchPricingScope.batch);
-    expect(notifier.state.pricing.labourRate.scope, BatchPricingScope.batch);
     expect(
       notifier.state.pricing.additionalCostAmount.scope,
       BatchPricingScope.item,
@@ -125,6 +120,10 @@ void main() {
     await tester.enterText(find.byType(EditableText).at(1), '20');
     await tester.enterText(find.byType(EditableText).at(2), '30');
     await tester.enterText(find.byType(EditableText).at(3), '40');
+    await tester.enterText(
+      find.byKey(const ValueKey('batch-setup-labour-minutes')),
+      '15',
+    );
 
     await tester.ensureVisible(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
@@ -136,11 +135,16 @@ void main() {
     expect(notifier.state.pricing.markupPercent.value, '20');
     expect(notifier.state.pricing.labourRate.value, '30');
     expect(notifier.state.pricing.additionalCostAmount.value, '40');
+    expect(notifier.state.setupLabourMinutes, 15);
 
     await tester.pageBack();
     await tester.pumpAndSettle();
 
     expect(find.byType(BatchPricingScopePage), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('batch-setup-labour-minutes')),
+      findsOneWidget,
+    );
     expect(
       tester
           .widget<EditableText>(find.byType(EditableText).at(0))

@@ -42,10 +42,12 @@ void main() {
           printDuration: const Duration(hours: 1),
           printerId: 'printer-1',
           materialId: 'material-1',
+          itemLabourMinutes: 10,
         ),
       ],
       batchPrinterId: 'printer-1',
       batchMaterialId: 'material-1',
+      setupLabourMinutes: 15,
       pricing: const BatchPricingState(
         labourRate: BatchPricingFieldState(value: '10'),
       ),
@@ -65,5 +67,19 @@ void main() {
     expect(roundTrip.batchQuoteItems, hasLength(1));
     expect(roundTrip.batchQuoteSummary?['batchPrinterId'], 'printer-1');
     expect(roundTrip.totalCost, summary.finalTotal);
+    expect(roundTrip.batchQuoteSummary?['setupLabourMinutes'], 15);
+    expect(
+      roundTrip.batchQuoteSummary?['setupLabourCost'],
+      summary.setupLabourCost,
+    );
+    expect(roundTrip.batchQuoteItems.single['itemLabourMinutes'], 10);
+    expect(
+      roundTrip.batchQuoteItems.single['labourCost'],
+      summary.items.single.labourCost,
+    );
+    expect(
+      roundTrip.batchQuoteSummary?['totalLabourCost'],
+      summary.totalLabourCost,
+    );
   });
 }

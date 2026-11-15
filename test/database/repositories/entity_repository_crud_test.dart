@@ -83,16 +83,16 @@ void main() {
 
   test('materials repository updates and deletes records', () async {
     final repo = container.read(materialsRepositoryProvider);
-    await stringMapStoreFactory.store('materials').record('material-1').put(
-      db,
-      {
-        'name': 'PLA',
-        'cost': '25',
-        'color': 'Red',
-        'weight': '1000',
-        'archived': false,
-      },
-    );
+    await stringMapStoreFactory
+        .store('materials')
+        .record('material-1')
+        .put(db, {
+          'name': 'PLA',
+          'cost': '25',
+          'color': 'Red',
+          'weight': '1000',
+          'archived': false,
+        });
 
     await repo.saveMaterial(
       const MaterialModel(
