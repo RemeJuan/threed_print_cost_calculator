@@ -173,6 +173,9 @@ void _buildBatchQuotesSheet(Excel excel, List<HistoryModel> items) {
     'Total Weight (g)',
     'Total Print Time',
     'Final Total',
+    'Setup Labour Minutes',
+    'Setup Labour Cost',
+    'Total Labour Cost',
   ];
   _writeRow(sheet, 0, headers);
 
@@ -194,6 +197,9 @@ void _buildBatchQuotesSheet(Excel excel, List<HistoryModel> items) {
       (summary['totalWeightG'] as num?)?.toDouble() ?? 0.0,
       timeStr,
       (summary['finalTotal'] as num?)?.toDouble() ?? 0.0,
+      summary['setupLabourMinutes'] ?? 0,
+      summary['setupLabourCost'] ?? 0,
+      summary['totalLabourCost'] ?? 0,
     ]);
   }
 }
@@ -214,6 +220,8 @@ void _buildBatchItemsSheet(Excel excel, List<HistoryModel> items) {
     'Base Cost',
     'Additional Cost',
     'Item Total',
+    'Item Labour Minutes (per unit)',
+    'Labour Cost',
   ];
   _writeRow(sheet, 0, headers);
 
@@ -237,6 +245,8 @@ void _buildBatchItemsSheet(Excel excel, List<HistoryModel> items) {
         batchItem['baseCost']?.toString() ?? '',
         batchItem['additionalCost']?.toString() ?? '',
         batchItem['finalTotal']?.toString() ?? '',
+        batchItem['itemLabourMinutes'] ?? 0,
+        batchItem['labourCost'] ?? 0,
       ]);
       rowIndex++;
     }
@@ -337,6 +347,9 @@ void _buildSingleQuoteSummarySheet(Excel excel, HistoryModel item) {
     ['Total Weight (g)', (summary['totalWeightG'] as num?)?.toDouble() ?? 0.0],
     ['Total Print Time', timeStr],
     ['Final Total', (summary['finalTotal'] as num?)?.toDouble() ?? 0.0],
+    ['Setup Labour Minutes', summary['setupLabourMinutes'] ?? 0],
+    ['Setup Labour Cost', summary['setupLabourCost'] ?? 0],
+    ['Total Labour Cost', summary['totalLabourCost'] ?? 0],
   ];
 
   for (var i = 0; i < rows.length; i++) {
@@ -356,6 +369,8 @@ void _buildSingleQuoteItemsSheet(Excel excel, HistoryModel item) {
     'Base Cost',
     'Additional Cost',
     'Item Total',
+    'Item Labour Minutes (per unit)',
+    'Labour Cost',
   ];
   _writeRow(sheet, 0, headers);
 
@@ -374,6 +389,8 @@ void _buildSingleQuoteItemsSheet(Excel excel, HistoryModel item) {
       batchItem['baseCost']?.toString() ?? '',
       batchItem['additionalCost']?.toString() ?? '',
       batchItem['finalTotal']?.toString() ?? '',
+      batchItem['itemLabourMinutes'] ?? 0,
+      batchItem['labourCost'] ?? 0,
     ]);
   }
 }

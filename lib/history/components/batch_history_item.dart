@@ -40,145 +40,174 @@ class BatchHistoryItem extends HookConsumerWidget {
         : GeneralSettingsModel.initial();
     return Container(
       key: ValueKey<String>('$itemKeyPrefix.card'),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                key: ValueKey<String>('$itemKeyPrefix.name'),
-                data.name,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: TEXT_PRIMARY,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const Spacer(),
-              HistoryItemActions(
-                dbKey: dbKey,
-                data: data,
-                itemKeyPrefix: itemKeyPrefix,
-                onOverflowMenuOpened: onOverflowMenuOpened,
-                deleteHistoryEntry: deleteHistoryEntry,
-                exportCsv: exportCsv,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            l10n.batchHistorySummaryLine(
-              (summary?['itemCount'] as num?)?.toInt() ??
-                  items.map((e) => e['name']?.toString()).toSet().length,
-              (summary?['totalQuantity'] as num?)?.toInt() ??
-                  items.fold<int>(
-                    0,
-                    (sum, e) => sum + ((e['quantity'] as num?)?.toInt() ?? 0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  key: ValueKey<String>('$itemKeyPrefix.name'),
+                  data.name,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: TEXT_PRIMARY,
+                    fontWeight: FontWeight.w800,
                   ),
+                ),
+                const Spacer(),
+                HistoryItemActions(
+                  dbKey: dbKey,
+                  data: data,
+                  itemKeyPrefix: itemKeyPrefix,
+                  onOverflowMenuOpened: onOverflowMenuOpened,
+                  deleteHistoryEntry: deleteHistoryEntry,
+                  exportCsv: exportCsv,
+                ),
+              ],
             ),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          const SizedBox(height: 8),
-          _detailRow(
-            context,
-            l10n.batchCostingSummaryFinalTotalLabel,
-            _amountString(data.totalCost, currency),
-          ),
-          _detailRow(
-            context,
-            l10n.batchCostingSummaryTotalWeightLabel,
-            '${data.weight.toStringAsFixed(2)} ${l10n.gramsSuffix}',
-          ),
-          _detailRow(
-            context,
-            l10n.batchCostingSummaryTotalDurationLabel,
-            data.timeHours,
-          ),
-          const SizedBox(height: 8),
-          ExpansionTile(
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: const EdgeInsets.only(left: 4, right: 4),
-            title: Text(
-              l10n.batchCostingSummaryPricingTitle,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
-            ),
-            children: [
-              for (final entry in _pricingEntries(
-                l10n,
-                summary ?? const <String, dynamic>{},
-                currency,
-              ))
-                if (entry.value != null)
-                  _detailRow(context, entry.label, entry.value!),
-            ],
-          ),
-          const SizedBox(height: kAppSpace4),
-          ExpansionTile(
-            tilePadding: EdgeInsets.zero,
-            childrenPadding: const EdgeInsets.symmetric(horizontal: kAppSpace4),
-            title: Text(
-              l10n.batchHistoryItemsTitle,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
-            ),
-            children: [
-              for (final item in items)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: kAppSpace8),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: SURFACE_OVERLAY_SUBTLE,
-                      borderRadius: BorderRadius.circular(kAppSurfaceRadius),
+            const SizedBox(height: 8),
+            Text(
+              l10n.batchHistorySummaryLine(
+                (summary?['itemCount'] as num?)?.toInt() ??
+                    items.map((e) => e['name']?.toString()).toSet().length,
+                (summary?['totalQuantity'] as num?)?.toInt() ??
+                    items.fold<int>(
+                      0,
+                      (sum, e) => sum + ((e['quantity'] as num?)?.toInt() ?? 0),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(kAppSpace8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${item['name']?.toString() ?? ''} × ${item['quantity']?.toString() ?? '0'}',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(color: TEXT_PRIMARY),
-                          ),
-                          const SizedBox(height: kAppSpace4),
-                          _detailRow(
-                            context,
-                            l10n.batchCostingSummaryItemWeightLabel,
-                            '${item['totalWeightG']?.toString() ?? '0'} ${l10n.gramsSuffix}',
-                          ),
-                          _detailRow(
-                            context,
-                            l10n.batchCostingSummaryItemDurationLabel,
-                            _formatDurationFromMinutes(
-                              item['totalPrintDurationMinutes'],
+              ),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 8),
+            _detailRow(
+              context,
+              l10n.batchCostingSummaryFinalTotalLabel,
+              _amountString(data.totalCost, currency),
+            ),
+            _detailRow(
+              context,
+              l10n.batchCostingSummaryTotalWeightLabel,
+              '${data.weight.toStringAsFixed(2)} ${l10n.gramsSuffix}',
+            ),
+            _detailRow(
+              context,
+              l10n.batchCostingSummaryTotalDurationLabel,
+              data.timeHours,
+            ),
+            _detailRow(
+              context,
+              l10n.batchCostingSetupLabourMinutesLabel,
+              '${summary?['setupLabourMinutes'] ?? 0}',
+            ),
+            _detailRow(
+              context,
+              l10n.batchCostingSetupLabourCostLabel,
+              _amountString(summary?['setupLabourCost'] ?? 0, currency),
+            ),
+            _detailRow(
+              context,
+              l10n.batchCostingTotalLabourCostLabel,
+              _amountString(summary?['totalLabourCost'] ?? 0, currency),
+            ),
+            const SizedBox(height: 8),
+            ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.only(left: 4, right: 4),
+              title: Text(
+                l10n.batchCostingSummaryPricingTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
+              ),
+              children: [
+                for (final entry in _pricingEntries(
+                  l10n,
+                  summary ?? const <String, dynamic>{},
+                  currency,
+                ))
+                  if (entry.value != null)
+                    _detailRow(context, entry.label, entry.value!),
+              ],
+            ),
+            const SizedBox(height: kAppSpace4),
+            ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: const EdgeInsets.symmetric(
+                horizontal: kAppSpace4,
+              ),
+              title: Text(
+                l10n.batchHistoryItemsTitle,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: TEXT_SECONDARY),
+              ),
+              children: [
+                for (final item in items)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: kAppSpace8),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: SURFACE_OVERLAY_SUBTLE,
+                        borderRadius: BorderRadius.circular(kAppSurfaceRadius),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kAppSpace8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${item['name']?.toString() ?? ''} × ${item['quantity']?.toString() ?? '0'}',
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: TEXT_PRIMARY),
                             ),
-                          ),
-                          _detailRow(
-                            context,
-                            l10n.batchCostingSummaryItemBaseCostLabel,
-                            _amountString(item['baseCost'], currency),
-                          ),
-                          if ((item['additionalCost'] as num?) != 0)
+                            const SizedBox(height: kAppSpace4),
                             _detailRow(
                               context,
-                              l10n.batchCostingSummaryItemAdjustmentLabel,
-                              _amountString(item['additionalCost'], currency),
+                              l10n.batchCostingSummaryItemWeightLabel,
+                              '${item['totalWeightG']?.toString() ?? '0'} ${l10n.gramsSuffix}',
                             ),
-                          _detailRow(
-                            context,
-                            l10n.batchCostingSummaryItemTotalLabel,
-                            _amountString(item['finalTotal'], currency),
-                          ),
-                        ],
+                            _detailRow(
+                              context,
+                              l10n.batchCostingSummaryItemDurationLabel,
+                              _formatDurationFromMinutes(
+                                item['totalPrintDurationMinutes'],
+                              ),
+                            ),
+                            _detailRow(
+                              context,
+                              l10n.batchCostingItemLabourMinutesLabel,
+                              '${item['itemLabourMinutes'] ?? 0}',
+                            ),
+                            _detailRow(
+                              context,
+                              l10n.labourCostLabel,
+                              _amountString(item['labourCost'], currency),
+                            ),
+                            _detailRow(
+                              context,
+                              l10n.batchCostingSummaryItemBaseCostLabel,
+                              _amountString(item['baseCost'], currency),
+                            ),
+                            if ((item['additionalCost'] as num?) != 0)
+                              _detailRow(
+                                context,
+                                l10n.batchCostingSummaryItemAdjustmentLabel,
+                                _amountString(item['additionalCost'], currency),
+                              ),
+                            _detailRow(
+                              context,
+                              l10n.batchCostingSummaryItemTotalLabel,
+                              _amountString(item['finalTotal'], currency),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
