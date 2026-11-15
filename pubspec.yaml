@@ -59,9 +59,10 @@ dev_dependencies:
   patrol: ^4.9.0
   shared_preferences_platform_interface:
 
+dependency_overrides:
+  intl: ^0.20.3
+
 flutter:
-  config:
-    enable-swift-package-manager: false
   uses-material-design: true
   generate: true
   fonts:
