@@ -116,10 +116,9 @@
 ## CI and release notes
 
 - Dependency maintenance (2026-10-17): Firebase Core 5 / Analytics 13 / App Check 0.5 / Functions 7 use Firebase Android BoM 35 and Apple SDK 13. Android already meets the required API 24 minimum; App Check startup uses `providerAndroid: AndroidPlayIntegrityProvider()`.
-- Keep FlutterFire at `firebase_core` 5.0.0, `firebase_analytics` 13.0.0, `firebase_app_check` 0.5.0, and `cloud_functions` 7.0.0 in `pubspec.lock` for CocoaPods: their newer patch releases require `FirebaseAppCheck` 12.19.3, whose podspec is not published. Revisit together once that native pod resolves; `ios/Podfile.lock` is local/ignored.
-- Flutter is pinned to 3.47.8, with iOS deployment target 15.6. Android uses AGP 9.1.1, Gradle 9.3.1, and Kotlin 2.4.0. Keep `android.builtInKotlin=false` and `android.newDsl=false` until a separate [built-in Kotlin migration](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers) validates compatible plugins and an Android build.
+- Flutter is pinned to 3.50.0 in `.fvmrc`, with iOS deployment target 15.6. iOS plugin dependencies use Swift Package Manager; the generated local Flutter package and resolved Swift packages are wired through `ios/Runner.xcodeproj`. CocoaPods integration is removed. Android uses AGP 9.1.1, Gradle 9.3.1, and Kotlin 2.4.0. Keep `android.builtInKotlin=false` and `android.newDsl=false` until a separate [built-in Kotlin migration](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers) validates compatible plugins and an Android build.
 - The Android build's Kotlin compatibility check still flags `cloud_functions`, `firebase_analytics`, `firebase_app_check`, `firebase_core`, `patrol`, `purchases_ui_flutter`, and `sentry_flutter` after this dependency refresh. Recheck these plugins when revisiting built-in Kotlin.
-- Sentry remains on 9.x: version 10 requires Android API 26+ and removes CocoaPods support in favor of Swift Package Manager, which this app currently disables. Revisit alongside a deliberate Apple build migration and Android device-support decision. SDK and codegen constraints also leave some newer package releases unresolved; avoid transitive overrides.
+- Sentry Flutter is on 10.x, using Swift Package Manager on iOS. Check Android minimum device support before releasing changes that raise the required API level.
 
 - GitHub Actions:
   - `.github/workflows/main.yaml`: checkout, `flutter pub get`, `flutter build web`, deploy `build/web` to `gh-pages`.
@@ -130,6 +129,7 @@
   - `android_patch`, `ios_patch`
   - `patrol` Firebase Test Lab workflow
 - Releases use FVM-managed Flutter plus Shorebird for releases/patches.
+- Codemagic Shorebird release workflows still request Flutter 3.44.1 while `.fvmrc` selects 3.50.0; align them only after confirming Shorebird supports 3.50.0 and testing a signed iOS release. A patch always uses its original release's Flutter version.
 - `shorebird.yaml` stores Shorebird app configuration.
 - Current version source: `pubspec.yaml`.
 - Version bump helpers referenced in repo docs: `make bump_fix`, `make bump_feat`, `make bump_build`.
