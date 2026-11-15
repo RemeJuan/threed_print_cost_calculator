@@ -391,6 +391,7 @@
   - `lib/settings/printers/add_printer.dart`
 - Layout behavior:
   - Sections always visible (no accordion/collapse/chevrons)
+  - General settings electricity cost input requests a decimal keypad so fractional per-kWh costs can be entered and saved.
   - Order: General → Pricing & Work Costs → Printers (matches usage frequency)
   - Premium-gated sections/actions are controlled by `premiumAccessPolicyProvider` (policy-led); General settings remain available
   - Free users also see a compact Premium card after Printers; the CTA opens the app-owned paywall. Premium users do not see this card.

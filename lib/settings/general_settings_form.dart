@@ -175,7 +175,7 @@ class GeneralSettings extends HookConsumerWidget {
           controller: electricityController,
           externalText: data.electricityCost.toString(),
           focusNode: electricityFocus,
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
           inputNormalizer: normalizeLeadingZeroNumericInput,
           decoration: InputDecoration(
             labelText: l10n.electricityCostSettingsLabel,
