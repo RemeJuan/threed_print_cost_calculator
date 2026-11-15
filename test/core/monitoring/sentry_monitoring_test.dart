@@ -16,7 +16,7 @@ void main() {
 
       final identity = await resolveSentryReleaseIdentity();
 
-      expect(identity.release, 'threed_print_cost_calculator@3.3.4+256');
+      expect(identity.release, 'threed_print_cost_calculator@3.4.2+256');
       expect(identity.dist, '256');
     });
 
@@ -31,7 +31,7 @@ void main() {
 
       final identity = await resolveSentryReleaseIdentity();
 
-      expect(identity.release, 'threed_print_cost_calculator@dev');
+      expect(identity.release, 'threed_print_cost_calculator@3.4.2+dev');
       expect(identity.dist, 'dev');
     });
 
@@ -40,7 +40,7 @@ void main() {
         loadPackageInfo: () async => throw StateError('unavailable'),
       );
 
-      expect(identity.release, 'threed_print_cost_calculator@dev');
+      expect(identity.release, 'threed_print_cost_calculator@3.4.2+dev');
       expect(identity.dist, 'dev');
     });
 
@@ -61,13 +61,13 @@ void main() {
         loadPackageInfo: () async => PackageInfo(
           appName: 'app',
           packageName: 'package',
-          version: '3.3.4',
+          version: '3.4.2',
           buildNumber: '256',
           buildSignature: '',
         ),
       );
 
-      expect(identity.release, 'threed_print_cost_calculator@3.3.4+9');
+      expect(identity.release, 'threed_print_cost_calculator@3.4.2+9');
       expect(identity.dist, '9');
     });
 
