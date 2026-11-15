@@ -208,6 +208,27 @@ void main() {
       expect(find.byType(RateMyAppBuilder), findsOneWidget);
     });
 
+    testWidgets('bottom navigation renders for pt-BR device locale', (
+      tester,
+    ) async {
+      tester.binding.platformDispatcher.localesTestValue = const [
+        Locale('pt', 'BR'),
+      ];
+      addTearDown(tester.binding.platformDispatcher.clearLocalesTestValue);
+
+      await pumpRootApp(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      expect(
+        Localizations.localeOf(
+          tester.element(find.byType(BottomNavigationBar)),
+        ).languageCode,
+        'pt',
+      );
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('RateMyAppBuilder present when eligibility threshold met', (
       tester,
     ) async {

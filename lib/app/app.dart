@@ -116,7 +116,10 @@ class _AppState extends ConsumerState<App> {
         navigatorKey: appNavigatorKey,
         navigatorObservers: [BotToastNavigatorObserver()],
         theme: theme(),
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        localizationsDelegates: [
+          ...AppLocalizations.localizationsDelegates,
+          ...GlobalMaterialLocalizations.delegates,
+        ],
         supportedLocales: AppLocalizations.supportedLocales,
         home: RateMyAppBuilder(
           rateMyApp: RateMyApp(
