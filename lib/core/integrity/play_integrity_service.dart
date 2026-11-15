@@ -110,7 +110,7 @@ class DefaultPlayIntegrityService implements PlayIntegrityService {
             })
             .timeout(_requestTokenTimeoutDuration);
       } on TimeoutException catch (error, stackTrace) {
-        return _fallback(
+        return await _fallback(
           flow: flow,
           error: error,
           stackTrace: stackTrace,

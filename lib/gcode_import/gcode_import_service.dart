@@ -40,7 +40,7 @@ class GCodeImportService {
 
     try {
       final bytes = await file.readAsBytesOrThrow();
-      return importPickedBytes(bytes);
+      return await importPickedBytes(bytes);
     } catch (error, stackTrace) {
       if (error is GCodeImportFailure) rethrow;
       final failure = GCodeImportFailure.read(error, stackTrace, file: file);

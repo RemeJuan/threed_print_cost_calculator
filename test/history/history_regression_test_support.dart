@@ -536,7 +536,9 @@ Future<bool> tryLoadLegacy({
   );
 
   try {
-    return container.read(calculatorProvider.notifier).loadFromHistory(entry);
+    return await container
+        .read(calculatorProvider.notifier)
+        .loadFromHistory(entry);
   } finally {
     container.dispose();
     await db.close();
