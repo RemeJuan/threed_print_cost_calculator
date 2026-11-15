@@ -3,4 +3,10 @@
 
 export PATH="/opt/homebrew/bin:$PATH"
 
-fvm dart format lib test integration_test patrol_test test_support --set-exit-if-changed && fvm flutter analyze
+# Format staged Dart files without touching unrelated files.
+git diff --cached --name-only --diff-filter=ACM -z -- '*.dart' |
+  xargs -0 -r sh -c '
+    for file do
+      fvm dart format "$file" && git add -- "$file" || exit 1
+    done
+  ' sh && fvm flutter analyze
