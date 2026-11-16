@@ -56,9 +56,6 @@
 - Improved app startup performance and G-code import handling.
 - Updated Android purchase verification behaviour.
 
-### Added
-- Added calculator banner ads for free users.
-
 ## [3.3.0] - 2026-07-27
 
 ### Added
