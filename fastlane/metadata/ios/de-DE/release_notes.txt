@@ -1,1 +1,3 @@
-Der G-Code-Import ist jetzt kompatibler und unterstützt auch gültige G-Code-Dateien ohne erwartete Metadaten.
+Erfasse manuelle Arbeitskosten in Sammelangeboten; die Kosten werden im Verlauf gespeichert und in Exporte übernommen.
+Erstelle Drucker und Materialien direkt beim Erstellen eines Angebots und sieh eine klarere Aufschlüsselung der Arbeits- und Stromkosten.
+Verbesserter G-Code-Import, Dezimalwerte für Strompreise und Layouts auf kleinen Bildschirmen.

@@ -1,1 +1,3 @@
-Abbiamo migliorato la compatibilità dell’importazione G-code, supportando anche file G-code validi privi dei metadati previsti.
+Aggiungi i costi del lavoro manuale ai preventivi in batch: vengono salvati nella cronologia e inclusi nelle esportazioni.
+Crea stampanti e materiali mentre prepari un preventivo e consulta una ripartizione più chiara dei costi di lavoro ed elettricità.
+Migliorati l’importazione G-code, le tariffe elettriche decimali e il layout sugli schermi piccoli.

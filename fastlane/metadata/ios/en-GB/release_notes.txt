@@ -1,1 +1,3 @@
-Improved G-code import compatibility, including support for valid G-code files with missing metadata.
+Add hands-on labour costs to batch quotes, with costs saved in history and included in exports.
+Create printers and materials while building a quote, and see a clearer breakdown of labour and electricity costs.
+Improved G-code imports, decimal electricity rates and layouts on smaller screens.

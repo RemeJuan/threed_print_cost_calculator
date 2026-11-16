@@ -1,1 +1,3 @@
-Melhoramos a compatibilidade da importação de G-code, incluindo o suporte a arquivos G-code válidos sem os metadados esperados.
+Adicione custos de trabalho manual aos orçamentos em lote; eles ficam salvos no histórico e são incluídos nas exportações.
+Cadastre impressoras e materiais ao criar um orçamento e veja uma divisão mais clara dos custos de trabalho e eletricidade.
+Melhorias na importação de G-code, nas tarifas de eletricidade com decimais e no layout em telas pequenas.
