@@ -173,15 +173,6 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         validator: _percentValidator(l10n),
       ),
       _PricingField(
-        label: l10n.batchCostingHourlyLabourRateLabel,
-        controller: _labourRateController,
-        focusNode: _labourRateFocus,
-        value: state.pricing.labourRate.value,
-        onValueChanged: (v) =>
-            ref.read(batchCostingProvider.notifier).setLabourRate(v),
-        validator: _amountValidator(l10n),
-      ),
-      _PricingField(
         label: l10n.additionalCostLabel,
         controller: _additionalCostController,
         focusNode: _additionalCostFocus,
@@ -192,6 +183,15 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
         onScopeChanged: (s) => ref
             .read(batchCostingProvider.notifier)
             .setAdditionalCostAmountScope(s),
+        validator: _amountValidator(l10n),
+      ),
+      _PricingField(
+        label: l10n.batchCostingHourlyLabourRateLabel,
+        controller: _labourRateController,
+        focusNode: _labourRateFocus,
+        value: state.pricing.labourRate.value,
+        onValueChanged: (v) =>
+            ref.read(batchCostingProvider.notifier).setLabourRate(v),
         validator: _amountValidator(l10n),
       ),
     ];
@@ -271,6 +271,10 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                               ),
                             ),
                             AppSurfaceCard(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: kAppSpace8,
+                              ),
                               margin: const EdgeInsets.only(
                                 bottom: kAppSpace12,
                               ),
@@ -290,6 +294,12 @@ class _BatchPricingScopePageState extends ConsumerState<BatchPricingScopePage> {
                                     inputFormatters:
                                         localizedDecimalInputFormatters,
                                     decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 8,
+                                          ),
                                       labelText: l10n
                                           .batchCostingSetupLabourMinutesLabel,
                                       helperText:
