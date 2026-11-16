@@ -70,7 +70,8 @@
   - `lib/settings/interface_settings/interface_settings_repository.dart` (`interfaceSettingsProvider`)
   - `lib/settings/interface_settings/interface_settings_service.dart`
   - `lib/settings/interface_settings/interface_settings_model.dart` (`isDefaultView`, `isCustomView`)
-- Customer View:
+- Customer View (ClickUp Task: 86c9paerb):
+  - Presentation uses a prominent final-price surface, grouped cost rows and a separate item list. Content is bounded to 960 logical pixels; widths of at least 720 use two columns unless text is enlarged beyond 1.3x. Items follow the price before the cost breakdown; in two columns, price and items occupy the first column and costs occupy the second. Preview includes three sample items whose totals match the final price. Visibility and pricing inputs are unchanged.
   - Configuration persists with interface settings: enabled state, business name, summary/breakdown style, optional cost/item detail, exit gesture, and optional back control.
   - Defaults hide internal detail and the back control; long press exits. The displayed price uses existing `PricingResult.finalPrice` when pricing is enabled, otherwise calculation total.
   - Customer View has no quote, save, share, export, history, or calculator-write path.
