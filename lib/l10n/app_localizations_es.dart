@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -81,6 +85,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Ajustes';
+
+  @override
+  String get managePurchasesLabel => 'Gestionar compras';
+
+  @override
+  String get managePurchasesError =>
+      'No se pudo abrir la gestión de compras. Inténtalo de nuevo.';
 
   @override
   String get calculatorNavLabel => 'Calculadora';
@@ -171,6 +182,45 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Tarifa por hora';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel =>
+      'Tarifa de mano de obra (por hora)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Preparación (minutos por lote)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Trabajo manual (minutos por unidad)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Coste de preparación';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Coste total de mano de obra';
+
+  @override
+  String get batchCostingItemLabourCostLabel =>
+      'Coste de mano de obra del artículo';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Solo trabajo manual; el tiempo de impresión es tiempo de máquina. Vacío = cero.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Usa los minutos de trabajo manual por unidad, no el tiempo de impresión G-code. Introdúcelos al revisar los artículos.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered =>
+      'No se ha indicado tiempo de trabajo';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Coste de preparación: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Tiempo de procesamiento';

@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -82,6 +86,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Einstellungen';
+
+  @override
+  String get managePurchasesLabel => 'Käufe verwalten';
+
+  @override
+  String get managePurchasesError =>
+      'Die Kaufverwaltung konnte nicht geöffnet werden. Bitte versuchen Sie es erneut.';
 
   @override
   String get calculatorNavLabel => 'Rechner';
@@ -173,6 +184,42 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Stundensatz';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel => 'Arbeitskosten (pro Stunde)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Einrichtung (Minuten pro Charge)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Handarbeit (Minuten pro Stück)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Einrichtungskosten';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Gesamte Arbeitskosten';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Arbeitskosten des Artikels';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Nur Handarbeit; Druckzeit ist Maschinenzeit. Leer lassen für null.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Verwendet Handarbeitsminuten pro Stück, nicht die G-Code-Druckzeit. Minuten bei der Artikelprüfung eingeben.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Keine Arbeitszeit eingegeben';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Einrichtungskosten: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Bearbeitungszeit';

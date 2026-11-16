@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod/misc.dart' show ProviderListenable;

@@ -443,6 +443,7 @@ void main() {
       hasPrintTime: true,
       hasFilamentUsage: true,
       hasPreview: true,
+      parseStatus: 'success',
     );
     verify(
       () => mock.logEvent(
@@ -452,6 +453,7 @@ void main() {
           'has_print_time': 1,
           'has_filament_usage': 1,
           'has_preview': 1,
+          'parse_status': 'success',
         },
       ),
     ).called(1);

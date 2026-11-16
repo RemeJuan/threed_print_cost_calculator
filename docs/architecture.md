@@ -20,7 +20,7 @@
 - `lib/main.dart` initializes app services in a fixed order: orientation lock, Firebase, RevenueCat (`Purchases.configure(...)`), Localizely, `SharedPreferences`, secure storage preload, Sembast DB, then best-effort Sentry init.
 - `main()` no longer waits on Sentry. It runs `_runApp()` first, then starts `initSentry()` as background work so monitoring never blocks launch.
 - Firebase Analytics collection enablement and Firebase App Check activation now run in a one-shot post-first-frame helper so launch does not wait on either call.
-- Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart` (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), avoiding any `PackageInfo` dependency in the startup path.
+- Sentry release/dist are always set in `lib/core/monitoring/sentry_monitoring.dart`. Explicit `FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` dart-defines remain authoritative; missing defines now use runtime `PackageInfo` metadata, with the existing `dev` identity as safe fallback. This groups events by installed app version/build when Codemagic environment exports are not passed as dart-defines. Metadata lookup is best-effort; initialization remains guarded so monitoring cannot block startup.
 - On iOS debug builds, `configureSentryOptions()` disables native auto-init to avoid early `sentry_flutter` native channel failures during startup.
 - Startup migrations from `lib/startup.dart` are deferred until after the first frame, so they no longer block launch. Each migration step is guarded by a persisted `SharedPreferences` version key and only reruns when its version changes.
 - That order matters for downstream code: SharedPreferences-backed test overrides, secure-storage init, premium-local key migration, deferred Sembast migrations, premium gating in `lib/app/app_page.dart`, `PremiumStateNotifier` / `premiumStateProvider`, `RevenueCatPurchasesGateway.watchPremiumState()` / `fetchPremiumState()`, and `paywall_presenter` all assume those dependencies exist first.
@@ -41,6 +41,7 @@
   - `calculator_preferences_repository.dart`
 - Settings persist in the Sembast main store via `lib/database/repositories/settings_repository.dart`.
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
+- Batch quote labour inputs live in batch state (setup minutes) and item state (per-unit minutes); saved history snapshots preserve those inputs and the calculated labour breakdown. Missing labour keys in older snapshots read as zero without recomputing their stored totals. CSV/XLSX use distinct labour columns; their existing Setup Fee denotes fixed Additional cost, not setup labour time.
 - Startup migrations run in `lib/startup.dart` after first frame; current startup work rebuilds printer/history indexes and migrates legacy history material data.
 - `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
 - `PremiumLocalStore.write` and `PremiumLocalStore.delete` throw `StateError` when SharedPreferences persistence fails; callers must handle those failures.
@@ -59,6 +60,7 @@
   - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
 - Printer management (settings) and calculator printer selection are both free-tier accessible, gated by a single `policy.printers()` gate. Free users are capped at 2 printers via `policy.canCreatePrinter(...)`. No separate `printersList()` gate exists.
 - Paywall entry points are centralized in `lib/purchases/paywall_presenter.dart`, which pushes the app-owned `PaywallScreen` through `appNavigatorKey` (defined in `lib/shared/providers/app_providers.dart`) instead of the hosted RevenueCat paywall UI.
+- Mobile Settings exposes RevenueCat Customer Center through `CustomerCenterPresenter`. It is available to free and premium users independently of the app-owned paywall; Customer Center remains native and owns store-formatted billing prices. On successful return, Settings refreshes RevenueCat-backed premium state. Cancellation or refund-request actions do not locally revoke access.
 - Android premium-sensitive flows trigger Play Integrity shadow evaluation around purchase and restore via native token request in `android/app/src/main/kotlin/com/threed_print_calculator/MainActivity.kt` and Firebase callable decode in `functions/src/index.ts`. Service-level evaluations currently coalesce globally while a request is in flight; native token requests never overlap; quota throttling only suppresses repeat native requests.
 - `lib/core/integrity/` normalizes verdicts, tags Sentry with `play_integrity.*`, and keeps fallback behavior fail-open for infrastructure errors.
 - Commerce authority sits with Billing/RevenueCat. Play Integrity is shadow/telemetry-only for purchase and restore; verdicts, throttles, in-flight states, and unauthenticated errors do not block commerce. Basic calculator access remains available on risky or unknown verdicts.
@@ -78,10 +80,11 @@
 - ARB source of truth: `lib/l10n/intl_*.arb`.
 - Generated API: `lib/l10n/app_localizations.dart` and `lib/l10n/app_localizations_*.dart`.
 - Config: `l10n.yaml` points `arb-dir` to `lib/l10n`, template file to `intl_en.arb`, and output class to `AppLocalizations`.
-- `MaterialApp` wires localization through `AppLocalizations.localizationsDelegates` and `AppLocalizations.supportedLocales` in `lib/app/app.dart`.
+- `MaterialApp` wires localization through `AppLocalizations.localizationsDelegates`, `material_ui.GlobalMaterialLocalizations.delegates`, and `AppLocalizations.supportedLocales` in `lib/app/app.dart`. The separate `material_ui` delegates cover its Material and Cupertino widgets in non-English locales; Flutter's generated framework delegates do not supply those packages' localization types.
 - Do not edit generated localization files directly.
+- `l10n.yaml` adds a generated-file header suppressing `deprecated_member_use` while Flutter 3.50's localization template still references deprecated SDK delegates. Remove the header when the upstream generator migrates to the replacement packages; handwritten code remains checked.
 - After ARB changes, run `fvm flutter gen-l10n` or project codegen workflow.
-- App is currency-agnostic: no currency symbols in user-facing output.
+- App is currency-agnostic: no currency symbols in user-facing output, except store-formatted values rendered inside RevenueCat's native Customer Center billing UI.
 
 ## Shared UI system
 
@@ -113,15 +116,26 @@
 
 ## CI and release notes
 
+- Dependency maintenance (2026-10-17): Firebase Core 5 / Analytics 13 / App Check 0.5 / Functions 7 use Firebase Android BoM 35 and Apple SDK 13. Android already meets the required API 24 minimum; App Check startup uses `providerAndroid: AndroidPlayIntegrityProvider()`.
+- Flutter is pinned to 3.50.0 in `.fvmrc`, with iOS deployment target 15.6. iOS plugin dependencies use Swift Package Manager; the generated local Flutter package and resolved Swift packages are wired through `ios/Runner.xcodeproj`. CocoaPods integration is removed. Android uses AGP 9.1.1, Gradle 9.3.1, and Kotlin 2.4.0. Keep `android.builtInKotlin=false` and `android.newDsl=false` until a separate [built-in Kotlin migration](https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers) validates compatible plugins and an Android build.
+- The Android build's Kotlin compatibility check still flags `cloud_functions`, `firebase_analytics`, `firebase_app_check`, `firebase_core`, `patrol`, `purchases_ui_flutter`, and `sentry_flutter` after this dependency refresh. Recheck these plugins when revisiting built-in Kotlin.
+- Sentry Flutter is on 10.x, using Swift Package Manager on iOS. Check Android minimum device support before releasing changes that raise the required API level.
+
 - GitHub Actions:
   - `.github/workflows/main.yaml`: checkout, `flutter pub get`, `flutter build web`, deploy `build/web` to `gh-pages`.
   - `.github/workflows/maintenance.yaml`: biweekly maintenance issue assigned to Copilot agent; runbook includes analyze, tests, upgrade, and patch version bump.
+  - `.github/workflows/unused-code-audit.yml`: manually triggered, advisory unused-code scan; publishes Markdown to workflow summary.
 - Codemagic release/publish pipeline lives in `codemagic.yaml`:
   - `android_release`, `ios_release`
   - `android_patch`, `ios_patch`
   - `patrol` Firebase Test Lab workflow
 - Releases use FVM-managed Flutter plus Shorebird for releases/patches.
+- Codemagic Shorebird release workflows still request Flutter 3.44.1 while `.fvmrc` selects 3.50.0; align them only after confirming Shorebird supports 3.50.0 and testing a signed iOS release. A patch always uses its original release's Flutter version.
 - `shorebird.yaml` stores Shorebird app configuration.
 - Current version source: `pubspec.yaml`.
 - Version bump helpers referenced in repo docs: `make bump_fix`, `make bump_feat`, `make bump_build`.
 - Android store release notes use `fastlane/metadata/android/<locale>/changelogs/default.txt` per locale, not per-version files.
+
+# Unused-code audit
+
+Install locally with `fvm dart pub global activate detect_unused_code 3.3.0`, then run `make unused_code_audit`. Initial audit reported 8 dead classes, 7 potentially unused packages, and 25 assets. After individually verified cleanup (see `docs/inbox/2026-10-18_unused-code-audit-review.md`), the report shows 0 dead classes, 3 tooling-only packages, and 7 configuration/build assets; keep those false positives. Findings exit with status 1 and are advisory. The audit does not delete files automatically and is not a pull-request gate.

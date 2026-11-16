@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -82,6 +86,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Paramètres';
+
+  @override
+  String get managePurchasesLabel => 'Gérer les achats';
+
+  @override
+  String get managePurchasesError =>
+      'Impossible d’ouvrir la gestion des achats. Réessayez.';
 
   @override
   String get calculatorNavLabel => 'Calculatrice';
@@ -172,6 +183,44 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Taux horaire';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel =>
+      'Taux de main-d’œuvre (par heure)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Préparation (minutes par lot)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Travail manuel (minutes par unité)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Coût de préparation';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Coût total de main-d’œuvre';
+
+  @override
+  String get batchCostingItemLabourCostLabel =>
+      'Coût de main-d’œuvre de l’article';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Travail manuel uniquement ; le temps d’impression correspond à la machine. Vide = zéro.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Utilise les minutes de travail manuel par article, pas la durée d’impression G-code. Saisissez-les lors de la vérification.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Aucun temps de travail saisi';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Coût de préparation : $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Temps de traitement';

@@ -75,7 +75,6 @@ workflows:
     cache:
       cache_paths:
         - $HOME/.pub-cache
-        - $HOME/Library/Caches/CocoaPods
         - $HOME/Library/Developer/Xcode/DerivedData
     scripts:
       - name: Install FVM and Shorebird
@@ -200,7 +199,6 @@ workflows:
     cache:
       cache_paths:
         - $HOME/.pub-cache
-        - $HOME/Library/Caches/CocoaPods
         - $HOME/Library/Developer/Xcode/DerivedData
     scripts:
       - name: Install FVM and Shorebird

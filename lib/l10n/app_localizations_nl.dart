@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -81,6 +85,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Instellingen';
+
+  @override
+  String get managePurchasesLabel => 'Aankopen beheren';
+
+  @override
+  String get managePurchasesError =>
+      'Aankoopbeheer kon niet worden geopend. Probeer het opnieuw.';
 
   @override
   String get calculatorNavLabel => 'Rekenmachine';
@@ -169,6 +180,42 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Uurtarief';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel => 'Arbeidstarief (per uur)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Voorbereiding (minuten per batch)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Handwerk (minuten per stuk)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Voorbereidingskosten';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Totale arbeidskosten';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Arbeidskosten per item';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Alleen handwerk; printtijd is machinetijd. Leeg laten voor nul.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Gebruikt handwerkminuten per stuk, niet de G-code-printtijd. Vul minuten in bij de controle van items.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Geen arbeidstijd ingevuld';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Voorbereidingskosten: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Verwerkingstijd';

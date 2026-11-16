@@ -1,0 +1,32 @@
+name: Unused code audit
+
+on:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kuhnroyal/flutter-fvm-config-action@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: ${{ env.FLUTTER_CHANNEL }}
+      - run: flutter pub get
+      - run: dart pub global activate detect_unused_code 3.3.0
+      - name: Run unused-code audit
+        shell: bash
+        run: |
+          set +e
+          dart pub global run detect_unused_code:detect_unused_code --markdown --stdout > audit.md
+          status=$?
+          if [ -s audit.md ]; then
+            cat audit.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$status" -eq 1 ]; then
+            printf '\n> Audit found potential unused items (advisory; verify manually).\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$status" -gt 1 ]; then
+            exit "$status"
+          fi

@@ -85,6 +85,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         fileSizeBytes: fileSize,
       );
     } catch (error, stackTrace) {
+      if (!_isActiveAttempt(attemptId)) return;
       await captureGCodeImportFailure(
         stage: 'metadata_resolution',
         error: error,
@@ -92,6 +93,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
         file: pickedFile,
         category: GCodeFailureReason.readFailed,
       );
+      if (!_isActiveAttempt(attemptId)) return;
       AppAnalytics.safeLog(
         () => AppAnalytics.gcodeParseFailed(
           attemptId: attemptId,
@@ -101,10 +103,18 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           failureReason: GCodeFailureReason.readFailed,
         ),
       );
+      state = GCodeImportState.failure(
+        attemptId: attemptId,
+        selectedFileName: pickedFile.name,
+        selectedFilePath: pickedFile.path,
+        selectedFileSizeBytes: pickedFile.size ?? 0,
+        error: GCodeImportError.readFailed,
+      );
       return;
     }
 
     if (fileSize != null && fileSize > maxGCodeImportBytes) {
+      if (!_isActiveAttempt(attemptId)) return;
       logGCodeImportBreadcrumb(
         'file_rejected_size',
         fileName: pickedFile.name,
@@ -122,7 +132,6 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           failureReason: GCodeFailureReason.fileTooLarge,
         ),
       );
-      if (!_isActiveAttempt(attemptId)) return;
       state = GCodeImportState.failure(
         attemptId: attemptId,
         selectedFileName: pickedFile.name,
@@ -135,6 +144,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
 
     final fileSizeBytes = fileSize ?? 0;
     final validation = await validateGCodeFile(pickedFile);
+    if (!_isActiveAttempt(attemptId)) return;
     if (validation.error != null) {
       final error = validation.error!;
       final reason = error == GCodeImportError.tooLarge
@@ -162,7 +172,6 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           failureReason: analyticsReason,
         ),
       );
-      if (!_isActiveAttempt(attemptId)) return;
       state = GCodeImportState.failure(
         attemptId: attemptId,
         selectedFileName: pickedFile.name,
@@ -178,7 +187,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           .read(gcodeImportServiceProvider)
           .importPickedFile(pickedFile);
       if (!_isActiveAttempt(attemptId)) return;
-      if (!result.hasAnyExtractedMetadata) {
+      if (!result.hasAnyExtractedMetadata && !result.hasGCodeCommands) {
         logGCodeImportBreadcrumb(
           'parse_failed',
           fileName: pickedFile.name,
@@ -271,6 +280,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
           file: pickedFile,
           category: analyticsReason,
         );
+        if (!_isActiveAttempt(attemptId)) return;
       }
       state = GCodeImportState.failure(
         attemptId: attemptId,

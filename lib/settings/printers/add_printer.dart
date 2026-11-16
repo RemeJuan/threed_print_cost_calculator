@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
@@ -11,9 +11,10 @@ import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 
 class AddPrinter extends HookConsumerWidget {
-  const AddPrinter({this.dbRef, super.key});
+  const AddPrinter({this.dbRef, this.onCreated, super.key});
 
   final String? dbRef;
+  final ValueChanged<String>? onCreated;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -164,7 +165,10 @@ class AddPrinter extends HookConsumerWidget {
                             return;
                           }
 
-                          final didSave = await notifier.submit(dbRef);
+                          final didSave = await notifier.submit(
+                            dbRef,
+                            onCreated: onCreated,
+                          );
                           if (!didSave || !context.mounted) return;
                           Navigator.of(context, rootNavigator: true).pop();
                         }

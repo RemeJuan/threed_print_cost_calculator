@@ -90,3 +90,6 @@ metadata_diff_ios:
 
 metadata_diff_android:
 	./scripts/metadata_diff.sh android
+
+unused_code_audit:
+	fvm dart pub global run detect_unused_code:detect_unused_code --markdown --stdout

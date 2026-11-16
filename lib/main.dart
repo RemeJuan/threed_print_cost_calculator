@@ -81,8 +81,7 @@ Future<void> _runApp() async {
     },
     activateAppCheck: () async {
       await FirebaseAppCheck.instance.activate(
-        // ignore: deprecated_member_use
-        androidProvider: AndroidProvider.playIntegrity,
+        providerAndroid: const AndroidPlayIntegrityProvider(),
         providerApple: AppleAppAttestProvider(),
       );
     },

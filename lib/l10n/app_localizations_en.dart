@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -81,6 +85,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Settings';
+
+  @override
+  String get managePurchasesLabel => 'Manage purchases';
+
+  @override
+  String get managePurchasesError =>
+      'Could not open purchase management. Please try again.';
 
   @override
   String get calculatorNavLabel => 'Calculator';
@@ -167,6 +178,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Hourly rate';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel => 'Labour rate (per hour)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Setup labour (minutes per batch)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Hands-on labour (minutes per unit)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Setup labour cost';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Total labour cost';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Item labour cost';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Hands-on work only; print time is machine time. Leave blank for zero.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Uses hands-on minutes per item, not G-code print time. Enter minutes during item review.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'No labour time entered';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Setup labour cost: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Work time';

@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -258,6 +262,18 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsAppBarTitle;
 
+  /// No description provided for @managePurchasesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage purchases'**
+  String get managePurchasesLabel;
+
+  /// No description provided for @managePurchasesError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open purchase management. Please try again.'**
+  String get managePurchasesError;
+
   /// No description provided for @calculatorNavLabel.
   ///
   /// In en, this message translates to:
@@ -425,6 +441,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hourly rate'**
   String get labourRateLabel;
+
+  /// No description provided for @batchCostingHourlyLabourRateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour rate (per hour)'**
+  String get batchCostingHourlyLabourRateLabel;
+
+  /// No description provided for @batchCostingSetupLabourMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup labour (minutes per batch)'**
+  String get batchCostingSetupLabourMinutesLabel;
+
+  /// No description provided for @batchCostingItemLabourMinutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hands-on labour (minutes per unit)'**
+  String get batchCostingItemLabourMinutesLabel;
+
+  /// No description provided for @batchCostingSetupLabourCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup labour cost'**
+  String get batchCostingSetupLabourCostLabel;
+
+  /// No description provided for @batchCostingTotalLabourCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total labour cost'**
+  String get batchCostingTotalLabourCostLabel;
+
+  /// No description provided for @batchCostingItemLabourCostLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Item labour cost'**
+  String get batchCostingItemLabourCostLabel;
+
+  /// No description provided for @batchCostingHandsOnLabourHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Hands-on work only; print time is machine time. Leave blank for zero.'**
+  String get batchCostingHandsOnLabourHelp;
+
+  /// No description provided for @batchCostingLabourRateHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses hands-on minutes per item, not G-code print time. Enter minutes during item review.'**
+  String get batchCostingLabourRateHelp;
+
+  /// No description provided for @batchCostingNoLabourTimeEntered.
+  ///
+  /// In en, this message translates to:
+  /// **'No labour time entered'**
+  String get batchCostingNoLabourTimeEntered;
+
+  /// No description provided for @batchCostingSetupLabourCostPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Setup labour cost: {cost}'**
+  String batchCostingSetupLabourCostPreview(String cost);
 
   /// No description provided for @labourTimeLabel.
   ///

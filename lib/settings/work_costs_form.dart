@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/app/components/focus_safe_text_field.dart';
@@ -257,6 +257,7 @@ class WorkCostsSettings extends HookConsumerWidget {
                           key: const ValueKey<String>(
                             'settings.workCost.pricingRoundingMode.dropdown',
                           ),
+                          isExpanded: true,
                           initialValue: data.pricingRoundingMode,
                           decoration: InputDecoration(
                             labelText: l10n.pricingRoundingLabel,

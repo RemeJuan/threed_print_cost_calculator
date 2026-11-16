@@ -1,1 +1,1 @@
-Allgemeine Wartung und Fehlerbehebungen sowie verbesserte G-code-Importe.
+Der G-Code-Import ist jetzt kompatibler und unterstützt auch gültige G-Code-Dateien ohne erwartete Metadaten.

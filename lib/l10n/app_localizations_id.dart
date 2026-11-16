@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -81,6 +85,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Pengaturan';
+
+  @override
+  String get managePurchasesLabel => 'Kelola pembelian';
+
+  @override
+  String get managePurchasesError =>
+      'Pengelolaan pembelian tidak dapat dibuka. Coba lagi.';
 
   @override
   String get calculatorNavLabel => 'Kalkulator';
@@ -168,6 +179,43 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Tarif per jam';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel =>
+      'Tarif tenaga kerja (per jam)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Persiapan (menit per batch)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Kerja langsung (menit per unit)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Biaya persiapan';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Total biaya tenaga kerja';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Biaya tenaga kerja item';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Hanya kerja langsung; waktu cetak adalah waktu mesin. Kosong berarti nol.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Menggunakan menit kerja langsung per unit, bukan waktu cetak G-code. Masukkan menit saat meninjau item.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'Waktu kerja belum diisi';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Biaya persiapan: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Waktu pengerjaan';

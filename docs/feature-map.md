@@ -10,6 +10,7 @@
   - `lib/shared/widgets/app_filter_chip.dart` — shared filter chip used by batch costing source filters
   - `lib/shared/widgets/stock_status_badge.dart` — shared stock-state badge used for material availability/status display
 - Theme/system notes:
+  - `lib/app/app_page.dart` keeps shell content inside horizontal safe areas, allowing asymmetric outer-display cutouts while preserving full-width content when the display opens; AppBar and bottom navigation retain their own system-inset handling.
   - shared input styling is theme-driven in `lib/shared/theme.dart`
   - active/focused input accent stays `LIGHT_BLUE`
   - cards and grouped panels use `AppSurfaceCard` instead of ad-hoc `Material` wrappers
@@ -62,6 +63,7 @@
 
 - Main screens/widgets:
   - `lib/settings/settings_page.dart` — interface summary subtitle resolves to `Default view` or `Custom view` from `InterfaceSettingsModel`.
+  - `lib/settings/work_costs_form.dart` — pricing-rounding selector contracts to narrow safe-area widths without overflowing.
   - `lib/settings/interface_settings/interface_settings_page.dart` — interface settings card mirrors the same semantic subtitle.
   - `lib/customer_view/customer_view_page.dart` — local presentation-only screen entered from live calculator results or Batch Costing final results; customer settings preview this same screen.
 - Providers/state:
@@ -76,6 +78,11 @@
   - `interfaceSettingsProvider`
   - `isDefaultView`
   - `isCustomView`
+
+## Purchases
+
+- Customer Center: `docs/product/revenuecat-customer-center.md` defines approved native subscription-management scope, dashboard configuration, currency exception, and verification evidence.
+- `lib/purchases/customer_center_presenter.dart` provides serialized native Customer Center presentation; Settings exposes its entry independently of premium upsell visibility.
 
 ## Materials
 
@@ -239,6 +246,8 @@
 
 - Main screens/widgets:
   - `lib/batch_costing/batch_costing_page.dart` — main pricing table with items, material allocation, totals; manual add shows quota feedback instead of silently dropping capped free-tier items
+  - `lib/batch_costing/batch_printer_assignment_page.dart` and `batch_material_assignment_page.dart` — create missing printers/materials in-place through existing forms; successful creation selects new profile without clearing batch, cancellation preserves assignment, free-tier limits disable creation
+  - `lib/batch_costing/batch_summary_page.dart` and `helpers/batch_summary_calculator.dart` — labour uses batch setup minutes once plus per-item hands-on minutes × quantity at one hourly rate; print duration remains machine/electricity time only. Import review exposes hands-on minutes alongside quantity; pricing explains the rate/time dependency, warns when item time is zero, and previews setup cost. See [batch labour costing](product/batch-labour-costing.md). Printer-wattage electricity costs remain at batch and item levels; split printer allocations contribute proportionally and costs remain inside base cost
   - `lib/batch_costing/batch_gcode_import_page.dart` — shell page for multi-file / single-file G-code import flow (447 LOC)
   - `lib/batch_costing/widgets/batch_gcode_import_body.dart` — body widget rendering file rows, single-import view, action buttons
   - `lib/batch_costing/widgets/batch_single_import_view.dart` — single-file import card with metadata + inline missing details form
@@ -260,6 +269,8 @@
 - Providers/state:
   - `lib/batch_costing/providers/batch_costing_notifier.dart` (`batchCostingProvider`)
   - `lib/batch_costing/model/batch_costing_item.dart`
+  - `lib/batch_costing/state/batch_costing_state.dart` — batch setup labour minutes; each item stores per-unit labour minutes
+  - `lib/history/model/history_model.dart`, `lib/history/components/batch_history_item.dart`, `lib/shared/utils/csv_generation.dart`, and `lib/shared/utils/xlsx_export.dart` — snapshot and display/export labour inputs and cost breakdown without repurposing print duration or the Additional cost/Setup Fee field
   - `lib/batch_costing/model/batch_import_state.dart` — `BatchSingleImport`, `BatchImportRow`, `ImportStatus`
 - Tests:
   - `test/batch_costing/`
@@ -282,6 +293,7 @@
   - Accepts `.gcode`, `.gco`, and `.nc` files directly when payload looks text-like.
   - Android no longer uses `file_selector` byte payloads. `MainActivity` opens SAF, resolves URI metadata, copies to cache, and returns metadata + cache path only.
   - Treats Android/file picker `.bin` and other unknown/octet-stream picks as sniffable input; reads up to 64 KiB for common G-code markers before rejecting.
+  - Parses decorated Kiri:Moto-style print-time and filament-length comments while keeping slicer unknown. Unknown-slicer input with actual G-code commands may import with null metadata and warnings; command-free missing-metadata content remains rejected.
   - Rejects clearly binary payloads before parsing and rejects files above the 50 MiB guard before parse work starts.
   - Parser/service now support path-backed streamed line reads for imports, avoiding full-file byte transfer across the Android platform channel.
   - Uses picked filename for validation/error UX instead of cached path aliases.
@@ -303,6 +315,7 @@
   - `lib/gcode_import/feedback/gcode_import_feedback_models.dart`
 - Tests:
   - `test/gcode_import/`
+  - `test/gcode_import/gcode_import_kiri_moto_test.dart` — command-evidence import gate and optional locally present full private fixture regression; never commit private fixture.
   - `docs/gcode/`
 - Common search terms:
   - `GCodeImport`
@@ -340,7 +353,7 @@
   - `lib/main.dart` runs `_runApp()` first, then starts `initSentry()` as best-effort background work.
   - Monitoring never blocks startup; Sentry init is detached from the critical launch path.
   - `lib/core/monitoring/sentry_monitoring.dart` holds DSN/environment config plus `_beforeSend` scrubbing logic.
-  - Release/dist are always set (`FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` when available, `dev` fallback otherwise), so Sentry does not need `PackageInfo` in the startup path.
+  - Release/dist are always set. Explicit `FLUTTER_BUILD_NAME` / `FLUTTER_BUILD_NUMBER` dart-defines override runtime metadata; otherwise `PackageInfo.fromPlatform()` supplies installed version/build, falling back to the existing `dev` identity if metadata fails or is empty. This corrects release grouping when CI exports version variables without passing dart-defines. Resolver fallback and Sentry option configuration are covered by monitoring tests.
   - iOS debug builds disable Sentry native auto-init to avoid early `sentry_flutter` method-channel failures.
   - Scrubbing logic in `_beforeSend` callback strips paths, file names, user data, and request info from events before transmission.
   - Bootstrap error hook in `lib/bootstrap.dart` chains to Sentry's `FlutterError.onError` handler and adds local logging via `log(...)`.
@@ -386,6 +399,7 @@
   - `lib/settings/printers/add_printer.dart`
 - Layout behavior:
   - Sections always visible (no accordion/collapse/chevrons)
+  - General settings electricity cost input requests a decimal keypad so fractional per-kWh costs can be entered and saved.
   - Order: General → Pricing & Work Costs → Printers (matches usage frequency)
   - Premium-gated sections/actions are controlled by `premiumAccessPolicyProvider` (policy-led); General settings remain available
   - Free users also see a compact Premium card after Printers; the CTA opens the app-owned paywall. Premium users do not see this card.

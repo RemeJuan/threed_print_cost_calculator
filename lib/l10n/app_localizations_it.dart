@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -81,6 +85,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get settingsAppBarTitle => 'Impostazioni';
+
+  @override
+  String get managePurchasesLabel => 'Gestisci acquisti';
+
+  @override
+  String get managePurchasesError =>
+      'Impossibile aprire la gestione degli acquisti. Riprova.';
 
   @override
   String get calculatorNavLabel => 'Calcolatore';
@@ -170,6 +181,43 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'Tariffa oraria';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel => 'Tariffa manodopera (oraria)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel =>
+      'Preparazione (minuti per lotto)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel =>
+      'Lavoro manuale (minuti per unità)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'Costo preparazione';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'Costo totale manodopera';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'Costo manodopera articolo';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'Solo lavoro manuale; il tempo di stampa è tempo macchina. Vuoto = zero.';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'Usa i minuti di lavoro manuale per unità, non il tempo di stampa G-code. Inseriscili durante la revisione.';
+
+  @override
+  String get batchCostingNoLabourTimeEntered =>
+      'Nessun tempo di lavoro inserito';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'Costo di preparazione: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'Tempo di elaborazione';

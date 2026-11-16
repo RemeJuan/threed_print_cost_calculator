@@ -2,6 +2,10 @@ arb-dir: lib/l10n
 template-arb-file: intl_en.arb
 output-localization-file: app_localizations.dart
 output-class: AppLocalizations
+header: |
+  // Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+  // Remove this suppression when the generator uses the replacement packages.
+  // ignore_for_file: deprecated_member_use
 untranslated-messages-file: untranslated-messages.json
 preferred-supported-locales:
   - en

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
 import 'package:threed_print_cost_calculator/customer_view/customer_view_data.dart';
@@ -149,6 +149,35 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
               l10n.batchCostingSummaryTotalDurationLabel,
               formatDuration(summary.totalPrintDuration),
             ),
+            const SizedBox(height: kAppSpace8),
+            AppSurfaceCard(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _summaryRow(
+                    context,
+                    l10n.batchCostingSetupLabourMinutesLabel,
+                    state.setupLabourMinutes.toStringAsFixed(2),
+                  ),
+                  _summaryRow(
+                    context,
+                    l10n.batchCostingSetupLabourCostLabel,
+                    summary.setupLabourCost.toStringAsFixed(2),
+                  ),
+                  _summaryRow(
+                    context,
+                    l10n.batchCostingTotalLabourCostLabel,
+                    summary.totalLabourCost.toStringAsFixed(2),
+                  ),
+                  const SizedBox(height: kAppSpace12),
+                  _summaryRow(
+                    context,
+                    l10n.electricityCostLabel,
+                    summary.totalElectricityCost.toStringAsFixed(2),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: kAppSpace16),
             _sectionTitle(context, l10n.batchCostingSummaryPricingTitle),
             const SizedBox(height: kAppSpace8),
@@ -183,14 +212,8 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
             if (_showPricing(summary.labourRate.value))
               _pricingRow(
                 context,
-                label: l10n.labourRateLabel,
-                value: formatPricingSummary(
-                  summary.labourRate.value,
-                  summary.labourRate.scope,
-                  summary.totalQuantity,
-                  l10n,
-                  currencySettings,
-                ),
+                label: l10n.batchCostingHourlyLabourRateLabel,
+                value: summary.labourRate.value,
               ),
             if (_showPricing(state.pricing.additionalCostAmount.value))
               _pricingRow(
@@ -258,6 +281,21 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                       context,
                       l10n.batchCostingSummaryItemDurationLabel,
                       formatDuration(item.totalPrintDuration),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingItemLabourMinutesLabel,
+                      item.item.itemLabourMinutes.toStringAsFixed(2),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.batchCostingItemLabourCostLabel,
+                      item.labourCost.toStringAsFixed(2),
+                    ),
+                    _summaryRow(
+                      context,
+                      l10n.electricityCostLabel,
+                      item.electricityCost.toStringAsFixed(2),
                     ),
                     _summaryRow(
                       context,

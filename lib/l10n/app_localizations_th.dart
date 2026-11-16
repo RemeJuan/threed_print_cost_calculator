@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -83,6 +87,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsAppBarTitle => 'การตั้งค่า';
 
   @override
+  String get managePurchasesLabel => 'จัดการการซื้อ';
+
+  @override
+  String get managePurchasesError =>
+      'ไม่สามารถเปิดการจัดการการซื้อได้ โปรดลองอีกครั้ง';
+
+  @override
   String get calculatorNavLabel => 'เครื่องคิดเลข';
 
   @override
@@ -166,6 +177,40 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get labourRateLabel => 'อัตราชั่วโมง';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel => 'อัตราค่าแรง (ต่อชั่วโมง)';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel => 'งานเตรียม (นาทีต่อชุด)';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel => 'งานลงมือทำ (นาทีต่อชิ้น)';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => 'ค่าแรงงานเตรียม';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => 'ค่าแรงรวม';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'ค่าแรงรายการ';
+
+  @override
+  String get batchCostingHandsOnLabourHelp =>
+      'นับเฉพาะเวลาลงมือทำ เวลาพิมพ์เป็นเวลาเครื่อง เว้นว่างเท่ากับศูนย์';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'ใช้นาทีที่ลงมือทำต่อชิ้น ไม่ใช่เวลาพิมพ์จาก G-code กรอกนาทีเมื่อตรวจสอบรายการ';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => 'ยังไม่ได้กรอกเวลาทำงาน';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return 'ต้นทุนงานเตรียม: $cost';
+  }
 
   @override
   String get labourTimeLabel => 'ระยะเวลาดำเนินการ';

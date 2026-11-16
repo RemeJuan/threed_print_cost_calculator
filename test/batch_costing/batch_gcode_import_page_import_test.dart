@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_costing_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
@@ -43,6 +43,8 @@ void main() {
     expect(find.byType(BatchCostingPage), findsOneWidget);
     expect(service.importCalls, 2);
     expect(find.text('one.gcode'), findsOneWidget);
+    await tester.drag(find.byType(ListView).last, const Offset(0, -350));
+    await tester.pumpAndSettle();
     expect(find.text('two.gcode'), findsOneWidget);
   });
 

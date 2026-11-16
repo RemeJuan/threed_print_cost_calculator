@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_controller.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_import_result.dart';
 
@@ -54,5 +55,41 @@ void main() {
     expect(state.status, GCodeImportStatus.success);
     expect(state.activeAttemptId, 'attempt-b');
     expect(states.last.activeAttemptId, 'attempt-b');
+  });
+
+  test('stale metadata failure does not replace active attempt', () async {
+    final readA = Completer<Uint8List>();
+    final fileA = makeFileAsync('part-a.gcode', readA.future);
+    final container = makeContainer(file: fileA, serviceResult: result);
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+    final states = <GCodeImportState>[];
+    container.listen(
+      gcodeImportControllerProvider,
+      (_, next) => states.add(next),
+    );
+    final controller = container.read(gcodeImportControllerProvider.notifier);
+
+    final attemptA = controller.parsePickedFile(fileA, attemptId: 'attempt-a');
+    await Future<void>.delayed(Duration.zero);
+    final attemptB = controller.parsePickedFile(
+      makeFile('part-b.gcode', gcodeBytes()),
+      attemptId: 'attempt-b',
+    );
+    await attemptB;
+
+    readA.completeError(Exception('stale metadata failure'));
+    await attemptA;
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.activeAttemptId, 'attempt-b');
+    expect(state.status, GCodeImportStatus.success);
+    expect(
+      states.where((value) => value.status == GCodeImportStatus.failure),
+      isEmpty,
+    );
+    expect(events, isEmpty);
   });
 }

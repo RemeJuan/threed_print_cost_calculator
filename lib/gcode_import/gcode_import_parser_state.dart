@@ -3,6 +3,11 @@ part of 'gcode_import_parser.dart';
 class _StreamingParseState {
   _StreamingParseState(this.parser);
 
+  static final RegExp _gcodeCommandPattern = RegExp(
+    r'^\s*(?:N\d+\s*)?(?:G\d+(?:\.\d+)?|M\d+|T\d+)\b',
+    caseSensitive: false,
+  );
+
   final GCodeImportParser parser;
   final Map<String, String> raw = <String, String>{};
 
@@ -10,6 +15,7 @@ class _StreamingParseState {
   String? extractedDuration;
   double? layerHeightMm;
   bool mixedMaterials = false;
+  bool hasGCodeCommands = false;
 
   double _filamentLengthMmTotal = 0;
   bool _hasFilamentLengthMm = false;
@@ -33,6 +39,9 @@ class _StreamingParseState {
   bool hasSafePreview = false;
 
   void addLine(String line) {
+    if (!hasGCodeCommands && _gcodeCommandPattern.hasMatch(line)) {
+      hasGCodeCommands = true;
+    }
     if (slicer == GCodeSlicer.unknown) {
       final detected = parser.detectSlicerFromLine(line);
       if (detected != GCodeSlicer.unknown) {
@@ -180,6 +189,7 @@ class _StreamingParseState {
       warnings: List.unmodifiable(warnings),
       rawExtractedValues: Map.unmodifiable(raw),
       hasSafePreview: hasSafePreview,
+      hasGCodeCommands: hasGCodeCommands,
     );
   }
 

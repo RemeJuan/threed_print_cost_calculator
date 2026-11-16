@@ -1,3 +1,39 @@
+## [Unreleased]
+
+### Added
+- Added hands-on labour costing for batch quotes, with setup time once per batch and per-item time scaled by quantity. Labour breakdowns appear in saved history and exports.
+
+### Fixed
+- Updated the email integration to retain Android attachments while the mail app uploads them.
+
+## [3.4.4] - 2026-11-15
+
+### Added
+- Added hands-on labour costing for batch quotes, with setup time once per batch and per-item time scaled by quantity. Labour breakdowns appear in saved history and exports.
+- Added in-place printer and material creation to batch assignment.
+- Added clearer batch cost breakdowns for labour and printer electricity, including split printer allocations.
+
+### Changed
+- Improved G-code import compatibility, including support for files with valid G-code commands even when expected metadata is missing.
+- Allowed decimal electricity cost rates for more accurate pricing.
+- Improved app startup and asynchronous operation handling.
+
+### Fixed
+- Improved pricing and assignment layouts on narrow screens.
+
+## [3.4.2] - 2026-10-19
+
+### Changed
+- Improved G-code import compatibility, including support for files with valid G-code commands even when expected metadata is missing.
+
+## [3.4.0] - 2026-09-21
+
+### Added
+- Added in-app subscription management in Settings, including purchase restoration.
+
+### Fixed
+- Improved Android premium purchase and restore reliability when device-integrity checks report an authentication error.
+
 ## [3.3.4] - 2026-08-24
 
 ### Fixed
@@ -293,6 +329,9 @@
 ### Added
 - Added in-app update checker
 
+[3.4.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.4.0...3.4.2
+[3.4.4]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.4.2...3.4.4
+[3.4.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.3.4...3.4.0
 [3.3.0]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.2...3.3.0
 [3.2.2]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.1...3.2.2
 [3.2.1]: https://github.com/RemeJuan/threed_print_cost_calculator/compare/3.2.0...3.2.1

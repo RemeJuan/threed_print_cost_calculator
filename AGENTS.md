@@ -32,7 +32,7 @@
 - Root widget: `lib/app/app.dart`. Main shell: `lib/app/app_page.dart`.
 - Feature roots: `lib/calculator/`, `lib/history/`, `lib/settings/`, `lib/database/`, `lib/purchases/`, `lib/shared/`.
 - `HistoryPage` exists only for premium users; `AppPage` dynamically removes that tab for free users.
-- **Currency-agnostic**: All values are raw numbers. Do not show `$`, `€`, `£`, `¥`, or any currency symbol in labels, helpers, or UI surfaces.
+- **Currency-agnostic**: All values are raw numbers. Do not show `$`, `€`, `£`, `¥`, or any currency symbol in labels, helpers, or UI surfaces. Exception: store-formatted prices and symbols inside RevenueCat's native Customer Center billing UI are allowed.
 
 ## Shared UI rules
 - Prefer existing shared primitives before adding feature-local styling: `AppSurfaceCard`, `AppExpansionCard`, `AppSearchBar`, `AppPrimaryButton`, `AppSecondaryButton`, `AppTertiaryButton`, `AppFilterChip`, `StockStatusBadge`.

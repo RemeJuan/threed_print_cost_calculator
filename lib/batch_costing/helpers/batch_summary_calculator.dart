@@ -15,6 +15,8 @@ class BatchSummaryItemBreakdown {
     required this.totalWeightG,
     required this.totalPrintDuration,
     required this.baseCost,
+    required this.electricityCost,
+    required this.labourCost,
     required this.additionalCost,
     required this.pricing,
   });
@@ -24,6 +26,8 @@ class BatchSummaryItemBreakdown {
   final double totalWeightG;
   final Duration totalPrintDuration;
   final num baseCost;
+  final num electricityCost;
+  final num labourCost;
   final num additionalCost;
   final PricingResult pricing;
 }
@@ -40,6 +44,9 @@ class BatchSummaryResult {
     required this.markupPercent,
     required this.labourRate,
     required this.finalTotal,
+    required this.totalElectricityCost,
+    required this.totalLabourCost,
+    required this.setupLabourCost,
     required this.failureRiskMonetary,
     required this.markupPercentMonetary,
   });
@@ -54,6 +61,9 @@ class BatchSummaryResult {
   final BatchPricingFieldState markupPercent;
   final BatchPricingFieldState labourRate;
   final num finalTotal;
+  final num totalElectricityCost;
+  final num totalLabourCost;
+  final num setupLabourCost;
   final num failureRiskMonetary;
   final num markupPercentMonetary;
 }
@@ -86,6 +96,8 @@ class BatchSummaryCalculator {
     var failureRiskMonetary = 0.0;
     var markupPercentMonetary = 0.0;
     var batchSubtotal = 0.0;
+    num totalElectricityCost = 0;
+    num totalLabourCost = 0;
     for (final item in state.items) {
       final itemWeight = item.printWeightG ?? 0;
       final itemDurationMin = item.printDuration?.inMinutes ?? 0;
@@ -94,16 +106,22 @@ class BatchSummaryCalculator {
       totalWeightG += itemWeight * item.quantity;
       totalPrintMinutes += itemDurationMin * item.quantity;
 
-      final itemWattage = _resolveItemWattage(item, printersById);
-      final itemBaseCost = _itemBaseCost(
+      final hours = itemDurationMin / 60;
+      final itemLabourCost =
+          item.itemLabourMinutes / 60 * batchLabourRate * item.quantity;
+      final itemElectricityCost = _itemElectricityCost(
         state,
         item,
-        batchLabourRate,
-        state.pricing,
-        wattage: itemWattage,
-        materialsById: materialsById,
-        kwCost: kwCost,
+        printersById,
+        hours,
+        kwCost,
       );
+      final itemBaseCost =
+          itemLabourCost +
+          itemElectricityCost +
+          _itemMaterialCost(state, item, materialsById);
+      totalElectricityCost += itemElectricityCost;
+      totalLabourCost += itemLabourCost;
       if (state.pricing.failureRisk.scope == BatchPricingScope.item) {
         failureRiskMonetary += itemBaseCost * batchFailureRisk / 100;
       }
@@ -144,12 +162,18 @@ class BatchSummaryCalculator {
             minutes: itemDurationMin * item.quantity,
           ),
           baseCost: itemBaseCost,
+          electricityCost: itemElectricityCost,
+          labourCost: itemLabourCost,
           additionalCost: itemAdditionalCost,
           pricing: pricing,
         ),
       );
       batchSubtotal += pricing.finalPrice;
     }
+
+    final setupLabourCost = state.setupLabourMinutes / 60 * batchLabourRate;
+    batchSubtotal += setupLabourCost;
+    totalLabourCost += setupLabourCost;
 
     if (state.pricing.failureRisk.scope == BatchPricingScope.batch) {
       failureRiskMonetary = batchSubtotal * batchFailureRisk / 100;
@@ -191,26 +215,46 @@ class BatchSummaryCalculator {
       markupPercent: state.pricing.markupPercent,
       labourRate: state.pricing.labourRate,
       finalTotal: finalTotal,
+      totalElectricityCost: totalElectricityCost,
+      totalLabourCost: totalLabourCost,
+      setupLabourCost: setupLabourCost,
       failureRiskMonetary: failureRiskMonetary,
       markupPercentMonetary: markupPercentMonetary,
     );
   }
 
-  static num _itemBaseCost(
+  static num _itemElectricityCost(
     BatchCostingState state,
     BatchCostingItem item,
-    num batchLabourRate,
-    BatchPricingState pricing, {
-    num wattage = 0,
-    Map<String, MaterialModel>? materialsById,
-    num kwCost = 0,
-  }) {
-    final labourRate = _scopeValue(pricing.labourRate, batchLabourRate);
-    final hours = (item.printDuration?.inMinutes ?? 0) / 60;
-    final labour = hours * labourRate * item.quantity;
-    final electricity = (wattage / 1000) * hours * kwCost * item.quantity;
-    final material = _itemMaterialCost(state, item, materialsById);
-    return labour + electricity + material;
+    Map<String, PrinterModel>? printersById,
+    double hours,
+    num kwCost,
+  ) {
+    if (printersById == null) return 0;
+    final allocations = state.itemPrinterAllocations[item.id];
+    if (allocations != null && allocations.isNotEmpty) {
+      num total = 0;
+      for (final allocation in allocations) {
+        final printer = printersById[allocation.targetId];
+        if (printer == null) continue;
+        total +=
+            _resolver.resolveFromPrinter(printer).wattage /
+            1000 *
+            hours *
+            kwCost *
+            allocation.quantity;
+      }
+      return total;
+    }
+    final printerId =
+        item.printerId ?? state.itemPrinterIds[item.id] ?? state.batchPrinterId;
+    final printer = printersById[printerId];
+    if (printer == null) return 0;
+    return _resolver.resolveFromPrinter(printer).wattage /
+        1000 *
+        hours *
+        kwCost *
+        item.quantity;
   }
 
   static num _itemMaterialCost(
@@ -271,18 +315,6 @@ class BatchSummaryCalculator {
 
     final raw = (itemWeight / spoolWeight) * costPerSpool;
     return num.parse(raw.toStringAsFixed(2));
-  }
-
-  static num _resolveItemWattage(
-    BatchCostingItem item,
-    Map<String, PrinterModel>? printersById,
-  ) {
-    if (printersById == null) return 0;
-    final printerId = item.printerId;
-    if (printerId == null) return 0;
-    final printer = printersById[printerId];
-    if (printer == null) return 0;
-    return _resolver.resolveFromPrinter(printer).wattage;
   }
 
   static num _itemAdditionalCost(

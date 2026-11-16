@@ -49,6 +49,8 @@ Feature scope:
 3. Normalize units into app-friendly values.
 4. Fall back to partial import plus user confirmation when metadata missing or ambiguous.
 
+Decorated Kiri:Moto-style comment lines (for example, dashed `filament used: … mm` and `print time: …s`) are parsed as metadata without assigning a slicer identity; slicer remains unknown. Unknown-slicer files with actual G-code commands can still import when metadata is absent, with missing values left null and warnings shown. Comment-only or otherwise command-free files without metadata remain rejected.
+
 ## Doc map
 
 - [PrusaSlicer parser notes](./parsers/prusaslicer.md)

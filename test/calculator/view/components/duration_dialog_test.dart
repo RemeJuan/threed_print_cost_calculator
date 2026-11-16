@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/calculator/view/components/duration_dialog.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';

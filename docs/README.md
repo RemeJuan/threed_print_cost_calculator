@@ -1,6 +1,7 @@
 # Docs structure
 
 - `docs/product/`: feature behavior and user-facing logic.
+  - `docs/product/revenuecat-customer-center.md`: approved Customer Center behavior, dashboard setup, implementation contract, and verification.
 - `docs/architecture/`: system design, storage, and technical patterns.
 - `docs/decisions/`: decision records with rationale and tradeoffs.
 - `docs/dev/`: tooling, admin utilities, and developer workflows.

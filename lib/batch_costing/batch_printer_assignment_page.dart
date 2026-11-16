@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/batch_material_assignment_page.dart';
@@ -12,8 +12,11 @@ import 'package:threed_print_cost_calculator/batch_costing/widgets/batch_searcha
 import 'package:threed_print_cost_calculator/batch_costing/widgets/printer_allocation_card.dart';
 import 'package:threed_print_cost_calculator/database/repositories/printers_repository.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
+import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
-import 'package:threed_print_cost_calculator/shared/widgets/app_screen_header.dart';
+import 'package:threed_print_cost_calculator/shared/app_colors.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 class BatchPrinterAssignmentPage extends ConsumerWidget {
   const BatchPrinterAssignmentPage({super.key});
@@ -26,25 +29,10 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
 
     return printersAsync.when(
       data: (printers) {
-        if (printers.isEmpty) {
-          return Scaffold(
-            appBar: AppScreenHeader(
-              title: l10n.batchCostingPrinterAssignmentAppBarTitle,
-              leading: BackButton(onPressed: () => Navigator.of(context).pop()),
-            ),
-            body: SafeArea(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(kAppSpace16),
-                  child: Text(
-                    l10n.batchCostingPrinterAssignmentNoPrintersMessage,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
-          );
-        }
+        final canCreate = ref
+            .watch(premiumAccessPolicyProvider)
+            .canCreatePrinter(printers.length)
+            .allowed;
 
         return Scaffold(
           appBar: buildAssignmentPageAppBar(
@@ -80,6 +68,68 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                           .setPrinterAssignmentMode(selected.first);
                     },
                   ),
+                  const SizedBox(height: kAppSpace16),
+                  if (printers.isEmpty)
+                    Text(l10n.batchCostingPrinterAssignmentNoPrintersMessage),
+                  Row(
+                    children: [
+                      Text(l10n.printersHeader),
+                      const Spacer(),
+                      AppSecondaryButton(
+                        key: const ValueKey<String>('batch-create-printer'),
+                        onPressed: canCreate
+                            ? () => Navigator.of(context).push(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => AddPrinter(
+                                    onCreated: (id) {
+                                      final batch = ref.read(
+                                        batchCostingProvider,
+                                      );
+                                      final notifier = ref.read(
+                                        batchCostingProvider.notifier,
+                                      );
+                                      if (batch.printerAssignmentMode ==
+                                          BatchPrinterAssignmentMode
+                                              .batchWide) {
+                                        notifier.setBatchPrinterId(id);
+                                      } else {
+                                        for (final item in batch.items) {
+                                          if (batch
+                                                  .itemPrinterAllocations[item
+                                                      .id]
+                                                  ?.isNotEmpty ==
+                                              true) {
+                                            continue;
+                                          }
+                                          notifier.setItemPrinterAllocations(
+                                            item.id,
+                                            [
+                                              BatchAssignmentAllocation(
+                                                targetId: id,
+                                                quantity: item.quantity,
+                                              ),
+                                            ],
+                                          );
+                                          break;
+                                        }
+                                      }
+                                    },
+                                  ),
+                                ),
+                              )
+                            : null,
+                        label: l10n.batchCostingAllocationPickerAddButton,
+                        icon: const Icon(Icons.add),
+                      ),
+                    ],
+                  ),
+                  if (!canCreate)
+                    Text(
+                      l10n.printerLimitReachedMessage,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: TEXT_TERTIARY),
+                    ),
                   const SizedBox(height: kAppSpace16),
                   if (state.printerAssignmentMode ==
                       BatchPrinterAssignmentMode.batchWide)
@@ -134,7 +184,7 @@ class BatchPrinterAssignmentPage extends ConsumerWidget {
                     previousLabel:
                         l10n.batchCostingPrinterAssignmentPreviousButton,
                     nextLabel: l10n.batchCostingPrinterAssignmentNextButton,
-                    nextEnabled: _nextEnabled(state),
+                    nextEnabled: printers.isNotEmpty && _nextEnabled(state),
                     onPrevious: () => Navigator.of(context).pop(),
                     onNext: () => _continue(context, ref, state),
                   ),

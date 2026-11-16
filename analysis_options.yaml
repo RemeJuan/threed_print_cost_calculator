@@ -9,5 +9,9 @@ analyzer:
     - "**/*.freezed.dart"
     - "lib/generated/**"
     - "build/*"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
   errors:
     invalid_annotation_target: ignore

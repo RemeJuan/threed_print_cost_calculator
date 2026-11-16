@@ -5,6 +5,7 @@ import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_i
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_costing_state.dart';
 import 'package:threed_print_cost_calculator/batch_costing/state/batch_pricing_state.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
+import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 
 void main() {
   BatchCostingItem item({int quantity = 1, Duration? duration}) {
@@ -29,7 +30,7 @@ void main() {
   test('quantity 1 defaults calculate a single item', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item()],
+        items: [item().copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -44,10 +45,57 @@ void main() {
     expect(summary.finalTotal, 10);
   });
 
-  test('quantity greater than 1 multiplies totals', () {
+  test('hands-on labour ignores print duration and scales item quantity', () {
+    final summary = BatchSummaryCalculator.calculate(
+      BatchCostingState(
+        items: [
+          item(
+            quantity: 3,
+            duration: const Duration(minutes: 5),
+          ).copyWith(itemLabourMinutes: 10),
+        ],
+        pricing: const BatchPricingState(
+          labourRate: BatchPricingFieldState(value: '120'),
+        ),
+      ),
+    );
+    expect(summary.items.single.labourCost, 60);
+    expect(summary.totalLabourCost, 60);
+    expect(summary.totalPrintDuration, const Duration(minutes: 15));
+  });
+
+  test('setup labour counted once and receives batch risk and markup', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
         items: [item(quantity: 3)],
+        setupLabourMinutes: 15,
+        pricing: const BatchPricingState(
+          labourRate: BatchPricingFieldState(
+            value: '120',
+            scope: BatchPricingScope.item,
+          ),
+          failureRisk: BatchPricingFieldState(
+            value: '10',
+            scope: BatchPricingScope.batch,
+          ),
+          markupPercent: BatchPricingFieldState(
+            value: '20',
+            scope: BatchPricingScope.batch,
+          ),
+        ),
+      ),
+    );
+    expect(summary.setupLabourCost, 30);
+    expect(summary.totalLabourCost, 30);
+    expect(summary.failureRiskMonetary, 3);
+    expect(summary.markupPercentMonetary, 6.6);
+    expect(summary.finalTotal, closeTo(39.6, 0.0001));
+  });
+
+  test('quantity greater than 1 multiplies totals', () {
+    final summary = BatchSummaryCalculator.calculate(
+      BatchCostingState(
+        items: [item(quantity: 3).copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -64,7 +112,7 @@ void main() {
   test('item scoped additional cost applies per item', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item(quantity: 2)],
+        items: [item(quantity: 2).copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -85,7 +133,7 @@ void main() {
   test('batch scoped additional cost applies once', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item(quantity: 2)],
+        items: [item(quantity: 2).copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -105,7 +153,7 @@ void main() {
   test('item scoped risk and markup stack on each item', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item()],
+        items: [item().copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -129,7 +177,7 @@ void main() {
   test('batch scoped risk and markup apply after item totals', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item()],
+        items: [item().copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -153,7 +201,7 @@ void main() {
   test('mixed scopes keep per-item and batch adjustments separate', () {
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item(quantity: 2)],
+        items: [item(quantity: 2).copyWith(itemLabourMinutes: 60)],
         pricing: const BatchPricingState(
           labourRate: BatchPricingFieldState(
             value: '10',
@@ -196,7 +244,7 @@ void main() {
 
     final summary = BatchSummaryCalculator.calculate(
       BatchCostingState(
-        items: [item(quantity: 3)],
+        items: [item(quantity: 3).copyWith(itemLabourMinutes: 0)],
         itemMaterialAllocations: const {
           'item-1': [
             BatchAssignmentAllocation(targetId: 'mat-1', quantity: 1),
@@ -210,4 +258,49 @@ void main() {
     expect(summary.items.single.baseCost, 1.40);
     expect(summary.finalTotal, 1.40);
   });
+
+  test(
+    'split printer electricity and total hours costing are included once',
+    () {
+      const printers = {
+        'p1': PrinterModel(
+          id: 'p1',
+          name: 'A',
+          bedSize: '220',
+          wattage: '100',
+          archived: false,
+        ),
+        'p2': PrinterModel(
+          id: 'p2',
+          name: 'B',
+          bedSize: '220',
+          wattage: '200',
+          archived: false,
+        ),
+      };
+      final summary = BatchSummaryCalculator.calculate(
+        BatchCostingState(
+          items: [item(quantity: 3).copyWith(itemLabourMinutes: 60)],
+          itemPrinterAllocations: const {
+            'item-1': [
+              BatchAssignmentAllocation(targetId: 'p1', quantity: 1),
+              BatchAssignmentAllocation(targetId: 'p2', quantity: 2),
+            ],
+          },
+          pricing: const BatchPricingState(
+            labourRate: BatchPricingFieldState(
+              value: '10',
+              scope: BatchPricingScope.item,
+            ),
+          ),
+        ),
+        printersById: printers,
+        kwCost: 2,
+      );
+      expect(summary.totalPrintDuration, const Duration(hours: 3));
+      expect(summary.totalLabourCost, 30);
+      expect(summary.totalElectricityCost, closeTo(1, 0.0001));
+      expect(summary.finalTotal, closeTo(31, 0.0001));
+    },
+  );
 }

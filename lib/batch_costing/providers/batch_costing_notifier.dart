@@ -193,15 +193,8 @@ class BatchCostingNotifier extends Notifier<BatchCostingState> {
     );
   }
 
-  void setLabourRateScope(BatchPricingScope scope) {
-    if (!ref.read(premiumAccessPolicyProvider).labourPricing().allowed) {
-      return;
-    }
-    state = state.copyWith(
-      pricing: state.pricing.copyWith(
-        labourRate: state.pricing.labourRate.copyWith(scope: scope),
-      ),
-    );
+  void setSetupLabourMinutes(double value) {
+    state = state.copyWith(setupLabourMinutes: value);
   }
 
   void setAdditionalCostAmount(String value) {

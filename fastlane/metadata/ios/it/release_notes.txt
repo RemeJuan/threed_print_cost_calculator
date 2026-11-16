@@ -1,1 +1,1 @@
-Manutenzione generale e correzioni, con importazioni G-code migliorate.
+Abbiamo migliorato la compatibilità dell’importazione G-code, supportando anche file G-code validi privi dei metadati previsti.

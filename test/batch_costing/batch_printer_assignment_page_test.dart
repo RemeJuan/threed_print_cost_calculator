@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/batch_costing/batch_printer_assignment_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
@@ -9,6 +9,8 @@ import 'package:threed_print_cost_calculator/database/repositories/printers_repo
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/settings/printers/add_printer.dart';
+import 'package:threed_print_cost_calculator/shared/widgets/app_buttons.dart';
 
 import '../helpers/helpers.dart';
 
@@ -55,6 +57,89 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(notifier.state.batchPrinterId, 'p1');
+  });
+
+  testWidgets(
+    'empty printer step creates and selects printer without losing batch',
+    (tester) async {
+      final notifier = _FakeBatchCostingNotifier(items);
+      await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+        batchCostingProvider.overrideWith(() => notifier),
+        isPremiumProvider.overrideWithValue(false),
+      ]);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const ValueKey('batch-create-printer')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('batch-costing-assignment-next-button')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const ValueKey('batch-create-printer')));
+      await tester.pumpAndSettle();
+      expect(find.byType(AddPrinter), findsOneWidget);
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(notifier.state.batchPrinterId, isNull);
+      expect(notifier.state.items.length, 2);
+
+      await tester.tap(find.byKey(const ValueKey('batch-create-printer')));
+      await tester.pumpAndSettle();
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.printers.name.input')),
+        'New printer',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.printers.bedSize.input')),
+        '220x220',
+      );
+      await tester.enterText(
+        find.byKey(const ValueKey('settings.printers.wattage.input')),
+        '120',
+      );
+      await tester.tap(
+        find.byKey(const ValueKey('settings.printers.save.button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BatchPrinterAssignmentPage), findsOneWidget);
+      expect(find.text('New printer'), findsOneWidget);
+      expect(notifier.state.batchPrinterId, isNotNull);
+      expect(notifier.state.items.map((item) => item.displayName), [
+        'Benchy',
+        'Cube',
+      ]);
+      expect(
+        notifier.state.itemPrinterAllocations['item-1']?.single.quantity,
+        3,
+      );
+    },
+  );
+
+  testWidgets('free printer quota disables in-batch creation', (tester) async {
+    await tester.pumpApp(const BatchPrinterAssignmentPage(), [
+      batchCostingProvider.overrideWith(() => _FakeBatchCostingNotifier(items)),
+      isPremiumProvider.overrideWithValue(false),
+      printersStreamProvider.overrideWith(
+        (ref) =>
+            Stream.value([printer('p1', 'First'), printer('p2', 'Second')]),
+      ),
+    ]);
+    await tester.pumpAndSettle();
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(BatchPrinterAssignmentPage)),
+    )!;
+    expect(find.text(l10n.printerLimitReachedMessage), findsOneWidget);
+    expect(
+      tester
+          .widget<AppSecondaryButton>(
+            find.byKey(const ValueKey('batch-create-printer')),
+          )
+          .onPressed,
+      isNull,
+    );
   });
 
   testWidgets('per-item mode uses reusable picker', (tester) async {

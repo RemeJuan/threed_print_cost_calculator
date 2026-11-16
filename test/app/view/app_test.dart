@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -206,6 +206,27 @@ void main() {
 
       expect(find.byType(AppPage), findsOneWidget);
       expect(find.byType(RateMyAppBuilder), findsOneWidget);
+    });
+
+    testWidgets('bottom navigation renders for pt-BR device locale', (
+      tester,
+    ) async {
+      tester.binding.platformDispatcher.localesTestValue = const [
+        Locale('pt', 'BR'),
+      ];
+      addTearDown(tester.binding.platformDispatcher.clearLocalesTestValue);
+
+      await pumpRootApp(tester);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BottomNavigationBar), findsOneWidget);
+      expect(
+        Localizations.localeOf(
+          tester.element(find.byType(BottomNavigationBar)),
+        ).languageCode,
+        'pt',
+      );
+      expect(tester.takeException(), isNull);
     });
 
     testWidgets('RateMyAppBuilder present when eligibility threshold met', (

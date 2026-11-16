@@ -1,5 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:threed_print_cost_calculator/batch_costing/batch_gcode_import_page.dart';
@@ -70,6 +70,7 @@ class BatchCostingPageActions {
             quantity: result.quantity,
             printWeightG: result.printWeightG,
             printDuration: result.printDuration,
+            itemLabourMinutes: result.itemLabourMinutes,
           ),
         );
 
@@ -116,6 +117,7 @@ class BatchCostingPageActions {
         initialQuantity: item.quantity,
         initialPrintWeightG: item.printWeightG,
         initialPrintDuration: item.printDuration,
+        initialItemLabourMinutes: item.itemLabourMinutes,
       ),
     );
 
@@ -127,6 +129,7 @@ class BatchCostingPageActions {
       quantity: result.quantity,
       printWeightG: result.printWeightG,
       printDuration: result.printDuration,
+      itemLabourMinutes: result.itemLabourMinutes,
     );
     final cleared = ref
         .read(batchCostingProvider.notifier)

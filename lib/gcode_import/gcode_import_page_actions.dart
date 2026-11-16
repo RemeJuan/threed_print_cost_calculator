@@ -1,5 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -56,6 +56,7 @@ class GCodeImportPageActions {
         hasFilamentUsage:
             result.filamentWeightG != null || result.filamentLengthMm != null,
         hasPreview: result.hasPreviewMetadata,
+        parseStatus: parseStatus,
       ),
     );
     AppAnalytics.safeLog(

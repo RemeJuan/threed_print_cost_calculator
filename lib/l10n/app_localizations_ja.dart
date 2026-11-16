@@ -1,3 +1,7 @@
+// Flutter 3.50's gen-l10n template still references deprecated SDK delegates.
+// Remove this suppression when the generator uses the replacement packages.
+// ignore_for_file: deprecated_member_use
+
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
@@ -83,6 +87,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsAppBarTitle => '設定';
 
   @override
+  String get managePurchasesLabel => '購入を管理';
+
+  @override
+  String get managePurchasesError => '購入管理を開けませんでした。もう一度お試しください。';
+
+  @override
   String get calculatorNavLabel => '計算機';
 
   @override
@@ -165,6 +175,39 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get labourRateLabel => '時給';
+
+  @override
+  String get batchCostingHourlyLabourRateLabel => '作業単価（1時間あたり）';
+
+  @override
+  String get batchCostingSetupLabourMinutesLabel => '準備作業（バッチあたりの分数）';
+
+  @override
+  String get batchCostingItemLabourMinutesLabel => '手作業（1個あたりの分数）';
+
+  @override
+  String get batchCostingSetupLabourCostLabel => '準備作業費';
+
+  @override
+  String get batchCostingTotalLabourCostLabel => '作業費合計';
+
+  @override
+  String get batchCostingItemLabourCostLabel => 'アイテム作業費';
+
+  @override
+  String get batchCostingHandsOnLabourHelp => '手作業の時間のみ。印刷時間は機械の稼働時間です。空欄はゼロ。';
+
+  @override
+  String get batchCostingLabourRateHelp =>
+      'G-codeの印刷時間ではなく、1個あたりの手作業時間（分）を使用します。品目の確認時に入力してください。';
+
+  @override
+  String get batchCostingNoLabourTimeEntered => '作業時間が入力されていません';
+
+  @override
+  String batchCostingSetupLabourCostPreview(String cost) {
+    return '準備作業の費用: $cost';
+  }
 
   @override
   String get labourTimeLabel => '処理時間';

@@ -1,1 +1,1 @@
-Mantenimiento general y correcciones, además de mejores importaciones de G-code.
+Hemos mejorado la compatibilidad de la importación de G-code, incluido el soporte para archivos G-code válidos sin los metadatos esperados.

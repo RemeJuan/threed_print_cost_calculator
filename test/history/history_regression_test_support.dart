@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -536,7 +536,9 @@ Future<bool> tryLoadLegacy({
   );
 
   try {
-    return container.read(calculatorProvider.notifier).loadFromHistory(entry);
+    return await container
+        .read(calculatorProvider.notifier)
+        .loadFromHistory(entry);
   } finally {
     container.dispose();
     await db.close();

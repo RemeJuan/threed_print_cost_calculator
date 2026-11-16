@@ -144,6 +144,11 @@ void main() {
       expect(sheet.rows.length, greaterThanOrEqualTo(2));
       final dataRow = sheet.rows[1];
       expect(cellValue(dataRow[0]), 'Summary Test');
+      expect(cellValue(sheet.rows[0][7]), 'Setup Labour Minutes');
+      expect(cellValue(dataRow[7]), '0');
+      expect(cellValue(sheet.rows[0][8]), 'Setup Labour Cost');
+      expect(cellValue(dataRow[8]), '0');
+      expect(cellValue(dataRow[9]), '0');
     });
 
     test(
@@ -172,6 +177,9 @@ void main() {
         final itemRow = sheet.rows[1];
         expect(cellValue(itemRow[0]), 'Item Test');
         expect(cellValue(itemRow[1]), 'Benchy');
+        expect(headers[9], 'Item Labour Minutes (per unit)');
+        expect(cellValue(itemRow[9]), '0');
+        expect(cellValue(itemRow[10]), '0');
       },
     );
 
@@ -420,6 +428,8 @@ BatchSummaryResult _testBatchSummary() {
         totalWeightG: 100.0,
         totalPrintDuration: const Duration(minutes: 225),
         baseCost: 5.0,
+        electricityCost: 0,
+        labourCost: 0,
         additionalCost: 0,
         pricing: const PricingResult(
           baseCost: 5.0,
@@ -438,6 +448,8 @@ BatchSummaryResult _testBatchSummary() {
         totalWeightG: 150.0,
         totalPrintDuration: const Duration(minutes: 270),
         baseCost: 10.0,
+        electricityCost: 0,
+        labourCost: 0,
         additionalCost: 0,
         pricing: const PricingResult(
           baseCost: 10.0,
@@ -465,6 +477,9 @@ BatchSummaryResult _testBatchSummary() {
       scope: BatchPricingScope.item,
     ),
     finalTotal: 15.0,
+    totalElectricityCost: 0,
+    totalLabourCost: 0,
+    setupLabourCost: 0,
     failureRiskMonetary: 0,
     markupPercentMonetary: 0,
   );
