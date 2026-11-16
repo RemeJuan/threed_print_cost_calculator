@@ -57,7 +57,9 @@ class CustomerViewData {
     setupFee: 0,
     roundingAdjustment: 0,
     items: [
-      CustomerViewLineItem(name: 'Sample print', quantity: 1, total: 42.50),
+      CustomerViewLineItem(name: 'Desk organiser', quantity: 1, total: 24),
+      CustomerViewLineItem(name: 'Cable clips', quantity: 4, total: 10),
+      CustomerViewLineItem(name: 'Phone stand', quantity: 1, total: 8.50),
     ],
   );
 
