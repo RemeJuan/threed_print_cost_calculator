@@ -159,4 +159,27 @@ void main() {
     expect(state.status, GCodeImportStatus.failure);
     expect(state.error, GCodeImportError.readFailed);
   });
+
+  test('validation sniff exception emits readFailed and reaches read failure', () async {
+    final file = GCodePickedFile(
+      name: 'part.gcode',
+      mimeType: 'application/octet-stream',
+      size: 10,
+      readAsBytes: () async => throw Exception('sniff read failed'),
+    );
+    final container = makeContainer(file: file, serviceResult: result);
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+
+    await container
+        .read(gcodeImportControllerProvider.notifier)
+        .parsePickedFile(file, attemptId: 'validation-failure');
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.status, GCodeImportStatus.failure);
+    expect(state.error, GCodeImportError.readFailed);
+    expect(events.single['failure_reason'], GCodeFailureReason.readFailed);
+  });
 }
