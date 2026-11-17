@@ -2,8 +2,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast.dart';
 // ignore: implementation_imports
 import 'package:sembast/src/type.dart';
-import 'package:threed_print_cost_calculator/database/history_record_store.dart';
-import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/database/settings_store_reader.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
@@ -23,13 +21,7 @@ class DataBaseHelpers {
 
   Database get db => ref.read(databaseProvider);
 
-  HistoryRecordStore get _historyStore => HistoryRecordStore(ref);
-
   SettingsStoreReader get _settingsReader => SettingsStoreReader(ref);
-
-  void _markHistoryPagedStateStale() {
-    ref.read(historyPagedProvider.notifier).markStale();
-  }
 
   Future<void> addOrUpdateRecord(String key, String value) async {
     final store = stringMapStoreFactory.store(dbName.name);
@@ -48,24 +40,10 @@ class DataBaseHelpers {
   }
 
   Future<Object?> insertRecord(Map<String, dynamic> data) async {
-    if (dbName == DBName.history) {
-      final key = await _historyStore.insert(data);
-      _markHistoryPagedStateStale();
-      return key;
-    }
-
     return stringMapStoreFactory.store(dbName.name).add(db, data);
   }
 
   Future<void> updateRecord(Object key, Map<String, dynamic> data) async {
-    if (dbName == DBName.history) {
-      final didUpdate = await _historyStore.update(key, data);
-      if (didUpdate) {
-        _markHistoryPagedStateStale();
-      }
-      return;
-    }
-
     final store =
         stringMapStoreFactory.store(dbName.name)
             as StoreRef<Object?, Map<String, Object?>>;
@@ -75,14 +53,6 @@ class DataBaseHelpers {
   // Accept generic Sembast keys (int or String) so callers that use numeric keys
   // (auto-incremented) don't accidentally stringify them and fail to find records.
   Future<void> deleteRecord(Object key) async {
-    if (dbName == DBName.history) {
-      final didDelete = await _historyStore.delete(key);
-      if (didDelete) {
-        _markHistoryPagedStateStale();
-      }
-      return;
-    }
-
     final store =
         stringMapStoreFactory.store(dbName.name)
             as StoreRef<Object?, Map<String, Object?>>;

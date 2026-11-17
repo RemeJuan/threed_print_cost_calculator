@@ -6,6 +6,7 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:sembast/sembast.dart' as sembast;
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
+import 'package:threed_print_cost_calculator/history/history_mutation_boundary.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -124,6 +125,33 @@ void main() {
     expect(state.hasMore, isTrue);
     expect(state.page, 0);
     expect(state.hasLoadedOnce, isTrue);
+  });
+
+  test('deleting a loaded history entry refreshes the visible page', () async {
+    final notifier = container.read(historyPagedProvider.notifier);
+    await notifier.refresh();
+
+    final deletedEntry = container.read(historyPagedProvider).items.first;
+    expect(
+      container
+          .read(historyPagedProvider)
+          .items
+          .any((entry) => entry.key == deletedEntry.key),
+      isTrue,
+    );
+
+    await container
+        .read(historyMutationBoundaryProvider)
+        .delete(deletedEntry.key);
+
+    expect(
+      container
+          .read(historyPagedProvider)
+          .items
+          .any((entry) => entry.key == deletedEntry.key),
+      isFalse,
+    );
+    expect(container.read(historyPagedProvider).isStale, isFalse);
   });
 
   test(

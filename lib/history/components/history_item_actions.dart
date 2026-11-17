@@ -7,10 +7,9 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_upsell_helper.dart';
-import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
-import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
+import 'package:threed_print_cost_calculator/history/history_mutation_boundary.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_providers.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
@@ -127,9 +126,8 @@ class HistoryItemActionsController {
       return;
     }
 
-    final dbHelpers = ref.read(dbHelpersProvider(DBName.history));
     try {
-      await dbHelpers.deleteRecord(dbKey);
+      await ref.read(historyMutationBoundaryProvider).delete(dbKey);
     } catch (_) {
       if (!context.mounted) return;
       BotToast.showText(
@@ -137,7 +135,6 @@ class HistoryItemActionsController {
       );
       return;
     }
-    ref.read(historyPagedProvider.notifier).refresh();
     ref.invalidate(historyRecordsProvider);
   }
 
