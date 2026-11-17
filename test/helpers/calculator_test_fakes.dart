@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/services/calculator_save_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
@@ -73,6 +74,15 @@ class FakeCalculatorHelpers implements CalculatorHelpers {
 
   @override
   Future<void> addOrUpdateRecord(String key, String value) async {}
+}
+
+class FakeCalculatorSaveCoordinator implements CalculatorSaveCoordinator {
+  FakeCalculatorSaveCoordinator();
+
+  HistoryModel? lastSavedPrint;
+
+  @override
+  Ref get ref => throw UnimplementedError();
 
   @override
   Future<void> savePrint(

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/services/calculator_save_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
@@ -11,19 +12,33 @@ import 'package:threed_print_cost_calculator/database/services/material_stock_se
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
+import 'package:threed_print_cost_calculator/purchases/paywall_presenter.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_policy.dart';
+import 'package:threed_print_cost_calculator/purchases/premium_access_providers.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 class _RecordingHistoryRepository extends HistoryRepository {
-  _RecordingHistoryRepository(super.ref, {this.shouldThrow = false});
+  _RecordingHistoryRepository(
+    super.ref, {
+    this.shouldThrow = false,
+    this.count = 0,
+    this.events,
+  });
 
   final bool shouldThrow;
+  int count;
+  final List<String>? events;
   final List<HistoryModel> saved = [];
 
   @override
-  Future<int> countHistory() async => 0;
+  Future<int> countHistory() async {
+    events?.add('count:$count');
+    return count;
+  }
 
   @override
   Future<Object?> saveHistory(HistoryModel model) async {
+    events?.add('save');
     if (shouldThrow) {
       throw Exception('save failed');
     }
@@ -34,18 +49,64 @@ class _RecordingHistoryRepository extends HistoryRepository {
 }
 
 class _RecordingMaterialStockService extends MaterialStockService {
-  _RecordingMaterialStockService(super.ref, {this.shouldThrow = false});
+  _RecordingMaterialStockService(
+    super.ref, {
+    this.shouldThrow = false,
+    this.events,
+  });
 
   final bool shouldThrow;
+  final List<String>? events;
   final List<HistoryModel> deducted = [];
 
   @override
   Future<void> deductForSavedHistory(HistoryModel history) async {
+    events?.add('deduct');
     if (shouldThrow) {
       throw Exception('deduction failed');
     }
 
     deducted.add(history);
+  }
+}
+
+class _RecordingPaywallPresenter implements PaywallPresenter {
+  final List<String> events;
+  _RecordingPaywallPresenter(this.events, {this.onPresent});
+  final void Function()? onPresent;
+
+  String? purchaseSource;
+  String? triggerFeature;
+
+  @override
+  Future<void> present(
+    String offeringId, {
+    required String triggerFeature,
+    required String purchaseSource,
+    String defaultEntryPoint = 'manual',
+    String source = 'unknown',
+    int? launchCount,
+  }) async {
+    events.add('paywall');
+    onPresent?.call();
+    this.purchaseSource = purchaseSource;
+    this.triggerFeature = triggerFeature;
+  }
+}
+
+class _HistoryQuotaPolicy extends DefaultPremiumAccessPolicy {
+  _HistoryQuotaPolicy() : super(isPremium: false);
+
+  final List<int> checkedCounts = [];
+  @override
+  QuotaAccess canSaveHistoryItem(int currentCount) {
+    checkedCounts.add(currentCount);
+    return QuotaAccess(
+      allowed: currentCount == 0,
+      currentCount: currentCount,
+      limit: 0,
+      denyReason: AccessDenyReason.quotaExceeded,
+    );
   }
 }
 
@@ -262,7 +323,7 @@ void main() {
 
     await _pumpToastApp(tester, overrideContainer);
     await overrideContainer
-        .read(calculatorHelpersProvider)
+        .read(calculatorSaveCoordinatorProvider)
         .savePrint(
           _buildHistoryModel(),
           errorMessage: lookupAppLocalizations(
@@ -273,6 +334,7 @@ void main() {
           ).savePrintSuccessMessage,
         );
     await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
     await tester.pump(const Duration(seconds: 3));
 
     expect(historyRepository.saved, isEmpty);
@@ -313,7 +375,7 @@ void main() {
 
       final history = _buildHistoryModel();
       await overrideContainer
-          .read(calculatorHelpersProvider)
+          .read(calculatorSaveCoordinatorProvider)
           .savePrint(
             history,
             errorMessage: lookupAppLocalizations(
@@ -329,6 +391,12 @@ void main() {
       expect(historyRepository.saved, [history]);
       expect(stockService.deducted, isEmpty);
       expect(
+        find.text(
+          lookupAppLocalizations(const Locale('en')).savePrintSuccessMessage,
+        ),
+        findsOneWidget,
+      );
+      expect(
         logSink.events.any(
           (event) =>
               event.level == AppLogLevel.warn &&
@@ -339,4 +407,131 @@ void main() {
       );
     },
   );
+
+  testWidgets('quota denial presents paywall, recounts, then saves in order', (
+    tester,
+  ) async {
+    final events = <String>[];
+    late _RecordingHistoryRepository historyRepository;
+    late _HistoryQuotaPolicy policy;
+    final paywall = _RecordingPaywallPresenter(
+      events,
+      onPresent: () {
+        historyRepository.count = 0;
+      },
+    );
+    final prefs = await SharedPreferences.getInstance();
+    final overrideContainer = ProviderContainer(
+      overrides: [
+        historyRepositoryProvider.overrideWith((ref) {
+          historyRepository = _RecordingHistoryRepository(
+            ref,
+            count: 1,
+            events: events,
+          );
+          return historyRepository;
+        }),
+        premiumAccessPolicyProvider.overrideWith((ref) {
+          policy = _HistoryQuotaPolicy();
+          return policy;
+        }),
+        paywallPresenterProvider.overrideWithValue(paywall),
+        materialStockServiceProvider.overrideWith(
+          (ref) => _RecordingMaterialStockService(ref, events: events),
+        ),
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        isPremiumProvider.overrideWithValue(false),
+      ],
+    );
+    addTearDown(overrideContainer.dispose);
+    await _pumpToastApp(tester, overrideContainer);
+
+    await overrideContainer
+        .read(calculatorSaveCoordinatorProvider)
+        .savePrint(
+          _buildHistoryModel(),
+          errorMessage: lookupAppLocalizations(
+            const Locale('en'),
+          ).savePrintErrorMessage,
+          successMessage: lookupAppLocalizations(
+            const Locale('en'),
+          ).savePrintSuccessMessage,
+        );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    expect(paywall.purchaseSource, 'save_history');
+    expect(paywall.triggerFeature, PremiumFeature.saveToHistory.name);
+    expect(policy.checkedCounts, [1, 0]);
+    expect(events, ['count:1', 'paywall', 'count:0', 'save', 'deduct']);
+    expect(historyRepository.saved, hasLength(1));
+    expect(
+      find.text(
+        lookupAppLocalizations(const Locale('en')).savePrintSuccessMessage,
+      ),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('quota remains exceeded after paywall and skips persistence', (
+    tester,
+  ) async {
+    final events = <String>[];
+    late _RecordingHistoryRepository historyRepository;
+    late _HistoryQuotaPolicy policy;
+    final paywall = _RecordingPaywallPresenter(events);
+    final prefs = await SharedPreferences.getInstance();
+    final overrideContainer = ProviderContainer(
+      overrides: [
+        historyRepositoryProvider.overrideWith((ref) {
+          historyRepository = _RecordingHistoryRepository(
+            ref,
+            count: 1,
+            events: events,
+          );
+          return historyRepository;
+        }),
+        premiumAccessPolicyProvider.overrideWith((ref) {
+          policy = _HistoryQuotaPolicy();
+          return policy;
+        }),
+        paywallPresenterProvider.overrideWithValue(paywall),
+        materialStockServiceProvider.overrideWith(
+          (ref) => _RecordingMaterialStockService(ref, events: events),
+        ),
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        isPremiumProvider.overrideWithValue(false),
+      ],
+    );
+    addTearDown(overrideContainer.dispose);
+    await _pumpToastApp(tester, overrideContainer);
+
+    await overrideContainer
+        .read(calculatorSaveCoordinatorProvider)
+        .savePrint(
+          _buildHistoryModel(),
+          errorMessage: lookupAppLocalizations(
+            const Locale('en'),
+          ).savePrintErrorMessage,
+          successMessage: lookupAppLocalizations(
+            const Locale('en'),
+          ).savePrintSuccessMessage,
+        );
+
+    expect(policy.checkedCounts, [1, 1]);
+    expect(events, ['count:1', 'paywall', 'count:1']);
+    expect(historyRepository.saved, isEmpty);
+    expect(
+      find.text(
+        lookupAppLocalizations(const Locale('en')).savePrintSuccessMessage,
+      ),
+      findsNothing,
+    );
+    expect(
+      find.text(
+        lookupAppLocalizations(const Locale('en')).savePrintErrorMessage,
+      ),
+      findsNothing,
+    );
+  });
 }
