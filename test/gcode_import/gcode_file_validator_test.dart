@@ -2,8 +2,46 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/gcode_import/gcode_file_validator.dart';
+import 'package:threed_print_cost_calculator/gcode_import/gcode_import_file_reader.dart';
+import 'package:threed_print_cost_calculator/gcode_import/model/gcode_import_file.dart';
 
 void main() {
+  test(
+    'cached no-path bytes are read once for size, sniff, and parse input',
+    () async {
+      var reads = 0;
+      final file = cachePickedGCodeBytes(
+        GCodePickedFile(
+          name: 'model.gcode',
+          readAsBytes: () async {
+            reads++;
+            return Uint8List.fromList('; FLAVOR: Marlin\nG1 X1'.codeUnits);
+          },
+        ),
+      );
+      expect(await resolvePickedGCodeFileSize(file), greaterThan(0));
+      expect((await validateGCodeFile(file)).error, isNull);
+      await readPickedGCodeText(file);
+      expect(reads, 1);
+    },
+  );
+
+  test('cached no-path bytes preserve oversized guard', () async {
+    var reads = 0;
+    final file = cachePickedGCodeBytes(
+      GCodePickedFile(
+        name: 'large.gcode',
+        size: maxGCodeImportBytes + 1,
+        readAsBytes: () async {
+          reads++;
+          return Uint8List(0);
+        },
+      ),
+    );
+    expect(await validateGCodeFile(file), same(GCodeValidationResult.tooLarge));
+    expect(reads, 0);
+  });
+
   group('looksTextLike', () {
     test('returns false for empty string', () {
       expect(looksTextLike(''), false);

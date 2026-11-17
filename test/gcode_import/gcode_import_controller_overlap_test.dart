@@ -92,4 +92,45 @@ void main() {
     );
     expect(events, isEmpty);
   });
+
+  test('stale validation failure does not replace or report active attempt', () async {
+    final sniffA = Completer<Uint8List>();
+    final fileA = makeFileAsync(
+      'part-a.gcode',
+      sniffA.future,
+      mimeType: 'application/octet-stream',
+      size: 10,
+    );
+    final container = makeContainer(file: fileA, serviceResult: result);
+    final events = <Map<String, Object?>>[];
+    final originalService = AppAnalytics.service;
+    AppAnalytics.service = CaptureAnalytics(events);
+    addTearDown(() => AppAnalytics.service = originalService);
+    final states = <GCodeImportState>[];
+    container.listen(
+      gcodeImportControllerProvider,
+      (_, next) => states.add(next),
+    );
+    final controller = container.read(gcodeImportControllerProvider.notifier);
+
+    final attemptA = controller.parsePickedFile(fileA, attemptId: 'attempt-a');
+    await Future<void>.delayed(Duration.zero);
+    final attemptB = controller.parsePickedFile(
+      makeFile('part-b.gcode', gcodeBytes()),
+      attemptId: 'attempt-b',
+    );
+    await attemptB;
+
+    sniffA.completeError(Exception('stale sniff failure'));
+    await attemptA;
+
+    final state = container.read(gcodeImportControllerProvider);
+    expect(state.activeAttemptId, 'attempt-b');
+    expect(state.status, GCodeImportStatus.success);
+    expect(
+      states.where((value) => value.status == GCodeImportStatus.failure),
+      isEmpty,
+    );
+    expect(events, isEmpty);
+  });
 }

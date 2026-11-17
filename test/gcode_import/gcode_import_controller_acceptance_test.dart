@@ -20,6 +20,26 @@ void main() {
     );
   });
 
+  test(
+    'reads no-path callback bytes once across the complete import flow',
+    () async {
+      var readCount = 0;
+      final bytes = gcodeBytes();
+      final file = makeFile('part.gcode', bytes, onRead: () => readCount++);
+      final container = makeContainer(file: file, serviceResult: result);
+
+      await container
+          .read(gcodeImportControllerProvider.notifier)
+          .pickAndParse();
+
+      expect(
+        container.read(gcodeImportControllerProvider).status,
+        GCodeImportStatus.success,
+      );
+      expect(readCount, 1);
+    },
+  );
+
   test('accepts .gco files', () async {
     final container = makeContainer(
       file: makeFile('part.gco', gcodeBytes()),
