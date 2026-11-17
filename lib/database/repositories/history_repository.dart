@@ -4,6 +4,7 @@ import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/database_record_mapper.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
+import 'package:threed_print_cost_calculator/history/history_mutation_boundary.dart';
 import 'package:threed_print_cost_calculator/history/model/history_entry.dart';
 import 'package:threed_print_cost_calculator/history/model/history_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -144,9 +145,7 @@ class HistoryRepository {
   }
 
   Future<Object?> saveHistory(HistoryModel model) {
-    return ref
-        .read(dbHelpersProvider(DBName.history))
-        .insertRecord(model.toMap());
+    return ref.read(historyMutationBoundaryProvider).insert(model.toMap());
   }
 
   HistoryEntry? _mapSnapshot(RecordSnapshot<Object?, Object?>? snapshot) {
