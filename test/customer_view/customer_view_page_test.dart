@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/customer_view/customer_view_data.dart';
 import 'package:threed_print_cost_calculator/customer_view/customer_view_page.dart';
@@ -197,15 +196,30 @@ void main() {
     }
   }
 
-  testWidgets('individual visibility preserves total and omits absent values', (tester) async {
-    await tester.pumpApp(const CustomerViewPage(
-      data: CustomerViewData(finalPrice: 42.5, baseCost: 30, filament: 20,
-        electricity: 2.5, risk: 3, labour: 0, setupFee: null, roundingAdjustment: -0.5),
-      settings: InterfaceSettingsModel(customerViewShowMaterial: true,
-        customerViewShowLabour: true, customerViewShowSetupFee: true,
-        customerViewShowRoundingAdjustment: true),
-      currencySettings: _currencySettings,
-    ));
+  testWidgets('individual visibility preserves total and omits absent values', (
+    tester,
+  ) async {
+    await tester.pumpApp(
+      const CustomerViewPage(
+        data: CustomerViewData(
+          finalPrice: 42.5,
+          baseCost: 30,
+          filament: 20,
+          electricity: 2.5,
+          risk: 3,
+          labour: 0,
+          setupFee: null,
+          roundingAdjustment: -0.5,
+        ),
+        settings: InterfaceSettingsModel(
+          customerViewShowMaterial: true,
+          customerViewShowLabour: true,
+          customerViewShowSetupFee: true,
+          customerViewShowRoundingAdjustment: true,
+        ),
+        currencySettings: _currencySettings,
+      ),
+    );
     expect(find.text('Filament'), findsOneWidget);
     expect(find.text('Electricity'), findsNothing);
     expect(find.text('Base cost'), findsNothing);
