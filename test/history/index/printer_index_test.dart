@@ -82,4 +82,35 @@ void main() {
     keys = await helpers.getKeysMatchingPrinter('prusa');
     expect(keys.contains('customKey'), isFalse);
   });
+
+  test(
+    'preserves distinct typed numeric keys through rebuild and removal',
+    () async {
+      await store.record(123).put(db, {'printer': 'Numeric'});
+      await store.record('123').put(db, {'printer': 'Numeric'});
+      await store.record('00123').put(db, {'printer': 'Numeric'});
+      await store.record('-123').put(db, {'printer': 'Numeric'});
+      final helpers = PrinterIndexHelpers.fromContainer(container);
+
+      await helpers.rebuildIndex();
+      expect(
+        await helpers.getKeysMatchingPrinter('numeric'),
+        unorderedEquals([123, '123', '00123', '-123']),
+      );
+
+      await helpers.removeKey('Numeric', 123);
+      expect(
+        await helpers.getKeysMatchingPrinter('numeric'),
+        unorderedEquals(['123', '00123', '-123']),
+      );
+    },
+  );
+
+  test('add and remove preserve key types', () async {
+    final helpers = PrinterIndexHelpers.fromContainer(container);
+    await helpers.addKey('Numeric', 123);
+    await helpers.addKey('Numeric', '123');
+    await helpers.removeKey('Numeric', 123);
+    expect(await helpers.getKeysMatchingPrinter('numeric'), equals(['123']));
+  });
 }
