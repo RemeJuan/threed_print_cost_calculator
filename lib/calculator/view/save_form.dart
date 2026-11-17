@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/services/calculator_save_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/core/analytics/app_analytics.dart';
@@ -194,7 +194,7 @@ class SaveForm extends HookConsumerWidget {
                       pricingUsedOverrides: hasOverrides,
                     );
                     await ref
-                        .read(calculatorHelpersProvider)
+                        .read(calculatorSaveCoordinatorProvider)
                         .savePrint(
                           model,
                           errorMessage: l10n.savePrintErrorMessage,
