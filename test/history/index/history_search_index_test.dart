@@ -61,6 +61,28 @@ void main() {
     expect(indexed.value[kHistorySearchPrinterField], 'prusa mini');
   });
 
+  test('numeric-string keys are coerced to integer keys by query results', () async {
+    final stringKey = '123';
+    const integerKey = 123;
+    await store.record(stringKey).put(db, {
+      'name': 'String Key Widget',
+      'printer': 'String Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+    await store.record(integerKey).put(db, {
+      'name': 'Integer Key Widget',
+      'printer': 'Integer Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+
+    expect(await helpers.getKeysMatchingQuery('string'), [integerKey]);
+    expect(await helpers.getKeysMatchingQuery('integer'), [integerKey]);
+  });
+
   test('query prefixes work without scanning history store', () async {
     final helpers = HistorySearchIndexHelpers.fromContainer(container);
     await helpers.backfillSearchFields();
@@ -231,6 +253,34 @@ void main() {
     expect(results, contains(key));
   });
 
+  test('unusually long tokens expose quadratic substring expansion', () async {
+    final token = List.filled(4, 'abcdefghijklmnopqrstuvwxyz').join();
+    final key = await store.add(db, {
+      'name': token,
+      'printer': '',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+
+    final indexRecords = await stringMapStoreFactory
+        .store(kHistorySearchIndexStoreName)
+        .find(db);
+    final keyEntries = indexRecords.where(
+      (entry) =>
+          (entry.value['keys'] as List?)
+              ?.map((value) => value.toString())
+              .contains(key.toString()) ==
+          true,
+    );
+    // Repeated alphabet cycles produce 2379 distinct substrings, below the
+    // 5460 positional substring count because duplicate values are coalesced.
+    expect(keyEntries.length, 2379);
+    expect(await helpers.getKeysMatchingQuery('uvwxyz'), contains(key));
+  });
+
   test('rebuildIndex preserves late index mutations during rebuild', () async {
     for (var i = 0; i < 70; i++) {
       await store.add(db, {
@@ -263,5 +313,44 @@ void main() {
 
     final results = await helpers.getKeysMatchingQuery('late');
     expect(results, contains(lateKey));
+  });
+
+  test('update interleaved with rebuild is reflected after rebuild', () async {
+    for (var i = 0; i < 70; i++) {
+      await store.add(db, {
+        'name': 'Seed $i',
+        'printer': 'Printer $i',
+        'date': DateTime.now().toIso8601String(),
+      });
+    }
+    final key = await store.add(db, {
+      'name': 'Before Mutation',
+      'printer': 'Old Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    final rebuildFuture = helpers.rebuildIndex();
+    await db.transaction((txn) async {
+      await store.record(key).put(txn, {
+        'name': 'After Mutation',
+        'printer': 'New Printer',
+        'date': DateTime.now().toIso8601String(),
+      });
+      await helpers.updateRecordInTransaction(
+        txn: txn,
+        oldName: 'Before Mutation',
+        oldPrinter: 'Old Printer',
+        newName: 'After Mutation',
+        newPrinter: 'New Printer',
+        recordKey: key,
+      );
+    });
+    await rebuildFuture;
+
+    expect(await helpers.getKeysMatchingQuery('before'), isEmpty);
+    expect(await helpers.getKeysMatchingQuery('after'), contains(key));
+    expect(await helpers.getKeysMatchingQuery('new'), contains(key));
   });
 }
