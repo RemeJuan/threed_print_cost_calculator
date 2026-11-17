@@ -26,7 +26,9 @@ class CalculatorHistoryLoader {
     required HistoryEntry entry,
     required CalculatorState currentState,
     required GeneralSettingsModel settings,
+    bool Function()? isCancelled,
   }) async {
+    bool cancelled() => isCancelled?.call() ?? false;
     final parsedTime = _parseHistoryTime(entry.model.timeHours);
     if (parsedTime == null) return null;
 
@@ -34,13 +36,16 @@ class CalculatorHistoryLoader {
       entry.model.printer,
       settings,
     );
+    if (cancelled()) return null;
     final fallbackMaterial = await _resolveFallbackMaterial();
+    if (cancelled()) return null;
 
     var hasReplacement =
         entry.model.printer.isNotEmpty &&
         resolvedPrinter != null &&
         resolvedPrinter.name != entry.model.printer;
 
+    if (cancelled()) return null;
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final materialUsages = <MaterialUsageInput>[];
 
@@ -66,6 +71,7 @@ class CalculatorHistoryLoader {
           final material = await materialsRepository.getMaterialById(
             usage.materialId,
           );
+          if (cancelled()) return null;
           if (material == null && fallbackMaterial != null) {
             hasReplacement = true;
             resolvedMaterial = fallbackMaterial;
@@ -124,6 +130,7 @@ class CalculatorHistoryLoader {
       settings: settings,
       storedSource: storedSource,
     );
+    if (cancelled()) return null;
 
     final nextState = CalculatorState(
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
