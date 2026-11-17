@@ -56,6 +56,81 @@ void main() {
     await expectLater(store.delete('count'), throwsStateError);
   });
 
+  test('cached preload failure preserves cache and reports error', () async {
+    final errors = <Object>[];
+    final channel = MethodChannel(
+      'plugins.it_nomads.com/flutter_secure_storage',
+    );
+    var fail = false;
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(channel, (call) async {
+          if (call.method == 'readAll') {
+            if (fail) throw PlatformException(code: 'read-failed');
+            return <String, String>{'count': '1'};
+          }
+          return null;
+        });
+    addTearDown(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, null);
+    });
+
+    final cache = CachedPremiumLocalStore(
+      const FlutterSecureStorage(),
+      onError: (error, _) => errors.add(error),
+    );
+    await cache.preload();
+    fail = true;
+    await cache.preload();
+
+    expect(cache.readSync('count'), '1');
+    expect(await cache.readAll(), {'count': '1'});
+    expect(errors, hasLength(1));
+  });
+
+  test(
+    'cached failed write and delete preserve cache and report errors',
+    () async {
+      final errors = <Object>[];
+      final channel = MethodChannel(
+        'plugins.it_nomads.com/flutter_secure_storage',
+      );
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'readAll') return <String, String>{};
+            throw PlatformException(code: '${call.method}-failed');
+          });
+      addTearDown(() {
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(channel, null);
+      });
+
+      final cache = CachedPremiumLocalStore(
+        const FlutterSecureStorage(),
+        onError: (error, _) => errors.add(error),
+      );
+      await cache.preload();
+      await cache.write('count', '1');
+      expect(cache.readSync('count'), isNull);
+
+      // Seed cache through a successful write, then make delete fail.
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'write') return null;
+            if (call.method == 'delete') {
+              throw PlatformException(code: 'delete-failed');
+            }
+            return <String, String>{};
+          });
+      await cache.write('count', '1');
+      await cache.delete('count');
+
+      expect(cache.readSync('count'), '1');
+      expect(await cache.readAll(), {'count': '1'});
+      expect(errors, hasLength(2));
+    },
+  );
+
   test('readAll returns known shared pref keys only', () async {
     await prefs.setString('calculation_count', '1');
     await prefs.setString('other', 'x');
