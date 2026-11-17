@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
-import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
+import 'package:threed_print_cost_calculator/calculator/services/calculator_save_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
 import 'package:threed_print_cost_calculator/calculator/view/calculator_results.dart';
@@ -410,7 +410,7 @@ Future<HistoryModel> captureSavedModel(
   Map<String, PrinterModel> printers = const {},
   Map<String, MaterialModel> materials = const {},
 }) async {
-  final helpers = FakeCalculatorHelpers();
+  final saveCoordinator = FakeCalculatorSaveCoordinator();
 
   final db = await tester
       .pumpApp(SaveForm(data: results, showSave: ValueNotifier<bool>(true)), [
@@ -426,7 +426,7 @@ Future<HistoryModel> captureSavedModel(
         materialsRepositoryProvider.overrideWithValue(
           FakeMaterialsRepository(materials),
         ),
-        calculatorHelpersProvider.overrideWithValue(helpers),
+        calculatorSaveCoordinatorProvider.overrideWithValue(saveCoordinator),
       ]);
 
   try {
@@ -446,7 +446,7 @@ Future<HistoryModel> captureSavedModel(
         ?.call();
     await tester.pump();
 
-    return helpers.lastSavedPrint!;
+    return saveCoordinator.lastSavedPrint!;
   } finally {
     await tester.pumpWidget(const SizedBox.shrink());
     await db.close();
