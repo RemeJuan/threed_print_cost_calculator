@@ -232,6 +232,95 @@ void main() {
     expect(state.isLoading, isFalse);
     expect(state.userId, 'pro-1');
   });
+
+  test(
+    'expired override cleanup failure reports async error and shows free state',
+    () async {
+      final store = _CountingStore({
+        testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01',
+      }, deleteError: StateError('delete failed'));
+      final gateway = _ControllableGateway();
+      late final _NoopTestDataService testDataService;
+      final container = ProviderContainer(
+        overrides: [
+          purchasesGatewayProvider.overrideWithValue(gateway),
+          premiumLocalStoreProvider.overrideWithValue(store),
+          testDataServiceProvider.overrideWith((ref) {
+            testDataService = _NoopTestDataService(ref, store);
+            return testDataService;
+          }),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final asyncErrors = <Object>[];
+      final observed = Completer<void>();
+      runZonedGuarded(
+        () async {
+          container.read(premiumStateProvider);
+          await gateway.waitForFetchCall(1);
+          await gateway.completeFetch(
+            const PremiumState(
+              isPremium: false,
+              isLoading: false,
+              userId: 'free',
+            ),
+          );
+          await Future<void>.delayed(Duration.zero);
+          observed.complete();
+        },
+        (error, _) {
+          asyncErrors.add(error);
+          if (!observed.isCompleted) observed.complete();
+        },
+      );
+      await observed.future;
+
+      expect(testDataService.purgeCalls, greaterThanOrEqualTo(1));
+      expect(container.read(premiumStateProvider).isPremium, isFalse);
+      expect(asyncErrors, hasLength(1));
+      expect(asyncErrors.single, isA<StateError>());
+      expect(asyncErrors.single.toString(), contains('delete failed'));
+    },
+  );
+
+  test(
+    'disposal while expired override cleanup awaits preserves fallback',
+    () async {
+      final deleteStarted = Completer<void>();
+      final releaseDelete = Completer<void>();
+      final store = _CountingStore(
+        {testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01'},
+        deleteStarted: deleteStarted,
+        releaseDelete: releaseDelete,
+      );
+      final gateway = _ControllableGateway();
+      late final _NoopTestDataService testDataService;
+      final container = ProviderContainer(
+        overrides: [
+          purchasesGatewayProvider.overrideWithValue(gateway),
+          premiumLocalStoreProvider.overrideWithValue(store),
+          testDataServiceProvider.overrideWith((ref) {
+            testDataService = _NoopTestDataService(ref, store);
+            return testDataService;
+          }),
+        ],
+      );
+
+      container.read(premiumStateProvider);
+      await gateway.waitForFetchCall(1);
+      await gateway.completeFetch(
+        const PremiumState(isPremium: false, isLoading: false, userId: 'free'),
+      );
+      await deleteStarted.future;
+      expect(container.read(premiumStateProvider).isPremium, isFalse);
+
+      container.dispose();
+      releaseDelete.complete();
+      await Future<void>.delayed(Duration.zero);
+      expect(testDataService.purgeCalls, 1);
+    },
+  );
 }
 
 class _FailingGateway implements PurchasesGateway {
@@ -301,9 +390,17 @@ class _ControllableGateway implements PurchasesGateway {
 }
 
 class _CountingStore implements PremiumLocalStore {
-  _CountingStore(Map<String, String> values) : _values = {...values};
+  _CountingStore(
+    Map<String, String> values, {
+    this.deleteError,
+    this.deleteStarted,
+    this.releaseDelete,
+  }) : _values = {...values};
 
   final Map<String, String> _values;
+  final Object? deleteError;
+  final Completer<void>? deleteStarted;
+  final Completer<void>? releaseDelete;
   int deleteCalls = 0;
 
   @override
@@ -320,6 +417,11 @@ class _CountingStore implements PremiumLocalStore {
   @override
   Future<void> delete(String key) async {
     deleteCalls++;
+    if (deleteStarted case final started?) {
+      if (!started.isCompleted) started.complete();
+    }
+    if (releaseDelete case final release?) await release.future;
+    if (deleteError case final error?) throw error;
     _values.remove(key);
   }
 
