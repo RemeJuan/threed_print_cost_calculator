@@ -3,6 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
+import 'package:threed_print_cost_calculator/database/repositories/history_repository.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void main() {
@@ -59,6 +60,154 @@ void main() {
     );
     expect(indexed.value[kHistorySearchNameField], 'prusa gear');
     expect(indexed.value[kHistorySearchPrinterField], 'prusa mini');
+  });
+
+  test('numeric-string and integer keys retain distinct identity', () async {
+    final stringKey = '123';
+    const integerKey = 123;
+    await store.record(stringKey).put(db, {
+      'name': 'String Key Widget Shared',
+      'printer': 'Shared Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+    await store.record(integerKey).put(db, {
+      'name': 'Integer Key Widget Shared',
+      'printer': 'Shared Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+    await store.record('456').put(db, {
+      'name': 'String Only Widget',
+      'printer': 'Only Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+    await store.record('00123').put(db, {
+      'name': 'Leading Widget',
+      'printer': '',
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+
+    expect(
+      await helpers.getKeysMatchingQuery('widget'),
+      containsAll([stringKey, integerKey, '456', '00123']),
+    );
+    expect(
+      await helpers.getKeysMatchingQuery('printer'),
+      containsAll([stringKey, integerKey]),
+    );
+    expect(await helpers.getKeysMatchingQuery('only'), ['456']);
+    expect(
+      await helpers.getKeysMatchingQuery('shared'),
+      containsAll([stringKey, integerKey]),
+    );
+    expect(await helpers.getKeysMatchingQuery('integer'), [integerKey]);
+    expect(await helpers.getKeysMatchingQuery('leading'), contains('00123'));
+    expect(await helpers.getKeysMatchingQuery('00123'), isEmpty);
+  });
+
+  test('live mixed-type mutations and rebuild preserve key identity', () async {
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    final txnStore = StoreRef<Object?, Map<String, Object?>>('history');
+    await db.transaction((txn) async {
+      await txnStore.record(123).put(txn, {
+        'name': 'Common Old',
+        'printer': '',
+      });
+      await helpers.addRecordInTransaction(
+        txn: txn,
+        recordKey: 123,
+        name: 'Common Old',
+        printer: '',
+      );
+      await txnStore.record('123').put(txn, {
+        'name': 'Common Old',
+        'printer': '',
+      });
+      await helpers.addRecordInTransaction(
+        txn: txn,
+        recordKey: '123',
+        name: 'Common Old',
+        printer: '',
+      );
+    });
+    expect(
+      await helpers.getKeysMatchingQuery('common'),
+      containsAll([123, '123']),
+    );
+    await db.transaction((txn) async {
+      await helpers.updateRecordInTransaction(
+        txn: txn,
+        recordKey: 123,
+        oldName: 'Common Old',
+        oldPrinter: '',
+        newName: 'Integer New',
+        newPrinter: '',
+      );
+      await txnStore.record(123).put(txn, {
+        'name': 'Integer New',
+        'printer': '',
+      });
+      await helpers.updateRecordInTransaction(
+        txn: txn,
+        recordKey: '123',
+        oldName: 'Common Old',
+        oldPrinter: '',
+        newName: 'String New',
+        newPrinter: '',
+      );
+      await txnStore.record('123').put(txn, {
+        'name': 'String New',
+        'printer': '',
+      });
+    });
+    expect(await helpers.getKeysMatchingQuery('integer'), [123]);
+    expect(await helpers.getKeysMatchingQuery('string'), ['123']);
+    await db.transaction((txn) async {
+      await helpers.removeRecordInTransaction(
+        txn: txn,
+        recordKey: 123,
+        name: 'Integer New',
+        printer: '',
+      );
+      await txnStore.record(123).delete(txn);
+    });
+    await helpers.rebuildIndex();
+    expect(await helpers.getKeysMatchingQuery('integer'), isEmpty);
+    expect(await helpers.getKeysMatchingQuery('string'), ['123']);
+  });
+
+  test('repository search count and paging retain both key types', () async {
+    await store.record(123).put(db, {
+      'name': 'Page Match',
+      'printer': '',
+      'date': '2026-01-02',
+    });
+    await store.record('123').put(db, {
+      'name': 'Page Match',
+      'printer': '',
+      'date': '2026-01-01',
+    });
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+    final repository = container.read(historyRepositoryProvider);
+    final page = await repository.getHistoryMatchingQueryPage(
+      query: 'page',
+      limit: 1,
+      offset: 0,
+    );
+    expect(page.totalCount, 2);
+    expect(page.items, hasLength(1));
+    final second = await repository.getHistoryMatchingQueryPage(
+      query: 'page',
+      limit: 1,
+      offset: 1,
+    );
+    expect(second.totalCount, 2);
+    expect(second.items, hasLength(1));
+    expect({page.items.single.key, second.items.single.key}, {123, '123'});
   });
 
   test('query prefixes work without scanning history store', () async {
@@ -231,6 +380,34 @@ void main() {
     expect(results, contains(key));
   });
 
+  test('unusually long tokens expose quadratic substring expansion', () async {
+    final token = List.filled(4, 'abcdefghijklmnopqrstuvwxyz').join();
+    final key = await store.add(db, {
+      'name': token,
+      'printer': '',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    await helpers.rebuildIndex();
+
+    final indexRecords = await stringMapStoreFactory
+        .store(kHistorySearchIndexStoreName)
+        .find(db);
+    final keyEntries = indexRecords.where(
+      (entry) =>
+          (entry.value['keys'] as List?)
+              ?.map((value) => value.toString())
+              .contains(key.toString()) ==
+          true,
+    );
+    // Repeated alphabet cycles produce 2379 distinct substrings, below the
+    // 5460 positional substring count because duplicate values are coalesced.
+    expect(keyEntries.length, 2379);
+    expect(await helpers.getKeysMatchingQuery('uvwxyz'), contains(key));
+  });
+
   test('rebuildIndex preserves late index mutations during rebuild', () async {
     for (var i = 0; i < 70; i++) {
       await store.add(db, {
@@ -263,5 +440,44 @@ void main() {
 
     final results = await helpers.getKeysMatchingQuery('late');
     expect(results, contains(lateKey));
+  });
+
+  test('update interleaved with rebuild is reflected after rebuild', () async {
+    for (var i = 0; i < 70; i++) {
+      await store.add(db, {
+        'name': 'Seed $i',
+        'printer': 'Printer $i',
+        'date': DateTime.now().toIso8601String(),
+      });
+    }
+    final key = await store.add(db, {
+      'name': 'Before Mutation',
+      'printer': 'Old Printer',
+      'date': DateTime.now().toIso8601String(),
+    });
+
+    final helpers = HistorySearchIndexHelpers.fromContainer(container);
+    await helpers.backfillSearchFields();
+    final rebuildFuture = helpers.rebuildIndex();
+    await db.transaction((txn) async {
+      await store.record(key).put(txn, {
+        'name': 'After Mutation',
+        'printer': 'New Printer',
+        'date': DateTime.now().toIso8601String(),
+      });
+      await helpers.updateRecordInTransaction(
+        txn: txn,
+        oldName: 'Before Mutation',
+        oldPrinter: 'Old Printer',
+        newName: 'After Mutation',
+        newPrinter: 'New Printer',
+        recordKey: key,
+      );
+    });
+    await rebuildFuture;
+
+    expect(await helpers.getKeysMatchingQuery('before'), isEmpty);
+    expect(await helpers.getKeysMatchingQuery('after'), contains(key));
+    expect(await helpers.getKeysMatchingQuery('new'), contains(key));
   });
 }

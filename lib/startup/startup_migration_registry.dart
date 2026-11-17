@@ -13,9 +13,9 @@ import 'legacy_history_records_migrator.dart';
 
 const _startupPhaseYield = Duration.zero;
 
-const printerIndexMigrationVersion = 1;
+const printerIndexMigrationVersion = 2;
 const searchFieldBackfillMigrationVersion = 1;
-const historySearchRebuildMigrationVersion = 1;
+const historySearchRebuildMigrationVersion = 2;
 const legacyHistoryMigrationVersion = 1;
 
 const printerIndexMigrationKey = 'startup_migration_printer_index_version';

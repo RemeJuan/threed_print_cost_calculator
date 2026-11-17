@@ -2,12 +2,123 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:threed_print_cost_calculator/shared/constants.dart';
 import 'package:threed_print_cost_calculator/startup.dart';
+import 'package:threed_print_cost_calculator/history/index/history_index_store_names.dart';
+import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
+import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 void main() {
+  test(
+    'v1 search migration rebuilds populated legacy postings to v2',
+    () async {
+      SharedPreferences.setMockInitialValues({
+        historySearchRebuildMigrationKey: 1,
+        printerIndexMigrationKey: 1,
+        searchFieldBackfillMigrationKey: 1,
+        legacyHistoryMigrationKey: 1,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final db = await databaseFactoryMemory.openDatabase(
+        'search_rebuild_v2.db',
+      );
+      addTearDown(() => db.close());
+      final history = StoreRef<Object?, Map<String, Object?>>('history');
+      await history.record(123).put(db, {'name': 'Typed Match', 'printer': ''});
+      await history.record('123').put(db, {
+        'name': 'Typed Match',
+        'printer': '',
+      });
+      final oldIndex = stringMapStoreFactory.store(
+        kHistorySearchIndexStoreName,
+      );
+      await oldIndex.record('searchName:typed').put(db, {
+        'keys': ['123'],
+      });
+      expect(await oldIndex.count(db), greaterThan(0));
+
+      await startupMigration(
+        db,
+        prefs: prefs,
+        migrateLegacyHistoryRecordsFn: (_) async {},
+        reportError: (_) {},
+      );
+      expect(
+        prefs.getInt(historySearchRebuildMigrationKey),
+        historySearchRebuildMigrationVersion,
+      );
+      final container = ProviderContainer(
+        overrides: [databaseProvider.overrideWithValue(db)],
+      );
+      addTearDown(container.dispose);
+      final index = HistorySearchIndexHelpers.fromContainer(container);
+      expect(await index.getKeysMatchingQuery('typed'), equals({123, '123'}));
+      expect(
+        await index.getKeysMatchingQuery('match'),
+        containsAll([123, '123']),
+      );
+      await startupMigration(
+        db,
+        prefs: prefs,
+        migrateLegacyHistoryRecordsFn: (_) async {},
+        reportError: (_) {},
+      );
+      expect(
+        await index.getKeysMatchingQuery('typed'),
+        containsAll([123, '123']),
+      );
+    },
+  );
+
+  test(
+    'v1 printer migration rebuilds populated legacy postings to v2',
+    () async {
+      SharedPreferences.setMockInitialValues({
+        printerIndexMigrationKey: 1,
+        searchFieldBackfillMigrationKey: searchFieldBackfillMigrationVersion,
+        historySearchRebuildMigrationKey: historySearchRebuildMigrationVersion,
+        legacyHistoryMigrationKey: legacyHistoryMigrationVersion,
+      });
+      final prefs = await SharedPreferences.getInstance();
+      final db = await databaseFactoryMemory.openDatabase(
+        'printer_rebuild_v2.db',
+      );
+      addTearDown(() => db.close());
+      final history = StoreRef<Object?, Map<String, Object?>>('history');
+      await history.record(123).put(db, {'printer': 'Mixed'});
+      await history.record('123').put(db, {'printer': 'Mixed'});
+      final oldIndex = stringMapStoreFactory.store(kPrinterIndexStoreName);
+      await oldIndex.record('mixed').put(db, {
+        'keys': ['123'],
+      });
+
+      await startupMigration(
+        db,
+        prefs: prefs,
+        migrateLegacyHistoryRecordsFn: (_) async {},
+        reportError: (_) {},
+      );
+
+      expect(
+        prefs.getInt(printerIndexMigrationKey),
+        printerIndexMigrationVersion,
+      );
+      final container = ProviderContainer(
+        overrides: [databaseProvider.overrideWithValue(db)],
+      );
+      addTearDown(container.dispose);
+      final index = PrinterIndexHelpers.fromContainer(container);
+      expect(
+        await index.getKeysMatchingPrinter('mixed'),
+        unorderedEquals([123, '123']),
+      );
+    },
+  );
+
   test('migrates legacy history records into materialUsages', () async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
