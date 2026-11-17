@@ -53,10 +53,27 @@ class MaterialsRepository {
 
   Future<Object?> saveMaterial(MaterialModel material, {String? id}) async {
     if (id != null) {
-      await ref
-          .read(dbHelpersProvider(DBName.materials))
-          .updateRecord(id, material.toMap());
+      if (material.id != id) {
+        throw ArgumentError.value(
+          material.id,
+          'material.id',
+          'Must match target record ID',
+        );
+      }
+      final store = stringMapStoreFactory.store(DBName.materials.name);
+      final updated = await store.record(id).update(_db, material.toMap());
+      if (updated == null) {
+        throw StateError('Material record does not exist: $id');
+      }
       return id;
+    }
+
+    if (material.id.isNotEmpty) {
+      throw ArgumentError.value(
+        material.id,
+        'material.id',
+        'Must be empty when creating a material',
+      );
     }
 
     return ref
