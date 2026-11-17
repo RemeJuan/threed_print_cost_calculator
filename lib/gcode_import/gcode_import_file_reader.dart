@@ -7,6 +7,20 @@ import 'gcode_import_file_reader_unsupported.dart'
     if (dart.library.io) 'gcode_import_file_reader_io.dart'
     as file_io;
 
+GCodePickedFile cachePickedGCodeBytes(GCodePickedFile file) {
+  if (file.path != null || file.readAsBytes == null) return file;
+  Future<Uint8List>? cached;
+  return GCodePickedFile(
+    name: file.name,
+    originalName: file.originalName,
+    path: file.path,
+    sourceUri: file.sourceUri,
+    mimeType: file.mimeType,
+    size: file.size,
+    readAsBytes: () => cached ??= file.readAsBytesOrThrow(),
+  );
+}
+
 Future<String> readPickedGCodeText(GCodePickedFile file) async {
   if (file.path case final path?) {
     return file_io.readGCodeTextFromPath(path);
