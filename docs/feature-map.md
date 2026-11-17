@@ -30,17 +30,19 @@
   - `lib/calculator/view/components/materials_selection/material_picker.dart` — shared-tokenized material picker sheet with inline add-material CTA
 - Providers/state:
   - `lib/calculator/provider/calculator_notifier.dart` (`calculatorProvider`)
-  - `lib/calculator/provider/calculator_history_loader.dart`
-  - `lib/calculator/provider/calculator_settings_sync.dart`
-  - `lib/calculator/provider/calculator_materials_service.dart`
-  - `lib/calculator/state/calculator_state.dart`
-  - `lib/calculator/state/calculation_results_state.dart`
+   - `lib/calculator/provider/calculator_history_loader.dart`
+   - `lib/calculator/provider/calculator_settings_sync.dart`
+   - `lib/calculator/provider/calculator_materials_service.dart`
+   - `lib/calculator/state/calculator_state.dart`
+   - `lib/calculator/state/calculation_results_state.dart`
+   - Async init, reset, and history load use latest-request precedence; stale or disposed history loads return without applying state or logging through a disposed provider.
 - Presentation gates:
   - `lib/calculator/view/calculator_page.dart` gates printer select, advanced pricing overrides, batch costing entry, and save form by policy and interface state.
   - `lib/calculator/view/calculator_results.dart` gates risk, labour, additional cost, and premium-only pricing rows by policy and active pricing state.
   - `lib/calculator/view/calculator_results.dart` exposes Customer View only when enabled in interface settings; it presents the existing final price and does not save or create a quote.
 - Repositories/services:
   - `lib/database/repositories/calculator_preferences_repository.dart`
+  - `lib/calculator/services/calculator_save_coordinator.dart` — coordinates history quota/premium recheck, persistence, stock deduction, and save feedback for the save form.
   - `lib/settings/services/settings_service.dart`
 - Models:
   - `lib/calculator/model/material_usage_input.dart`
@@ -91,7 +93,8 @@
   - `lib/materials/widgets/materials_page.dart` — materials browser tab (free access with quota limits), shared search bar, search/filter, swipe actions, delete/duplicate wiring; duplicate respects free-tier material cap
   - `lib/materials/widgets/material_card.dart` — list item with swipe-to-reveal actions (Edit/Duplicate/Delete), tap-to-edit
   - `lib/materials/widgets/material_filters.dart`
-  - `lib/materials/csv_import/csv_import_page.dart`
+  - `lib/materials/csv_import/csv_import_page.dart` — CSV file picking, premium gate, import state, persistence, and analytics
+  - `lib/materials/csv_import/csv_import_presentation.dart` — review and result presentation widgets; page supplies apply/return callbacks
   - `lib/materials/csv_import/materials_csv_schema.dart` — canonical materials CSV headers/schema
   - `lib/materials/csv_import/materials_csv_export_service.dart` — repository-backed export service for full-material CSV export
   - `lib/settings/materials/materials.dart` — settings page list (separate, uses `SettingsSlidableItem`)
@@ -115,7 +118,7 @@
   - `lib/settings/providers/materials_notifier.dart` (`materialsProvider`)
   - `lib/settings/state/material_state.dart`
 - Repositories/services:
-  - `lib/database/repositories/materials_repository.dart`
+  - `lib/database/repositories/materials_repository.dart` — creates require an empty model ID and generate a new key; edits require the model ID to match an existing target key, preventing implicit rekeying or silent missing-target updates
   - `lib/database/services/material_stock_service.dart`
   - `lib/materials/csv_import/csv_import_parser.dart` — strict current-schema CSV parser/classifier for create/update import rows
   - `lib/materials/csv_import/csv_import_service.dart` — premium-gated CSV upsert core with create/update split and quota checks on creates only
@@ -155,11 +158,12 @@
 - Providers/state:
   - `lib/history/provider/history_paged_notifier.dart`
   - `lib/history/provider/history_providers.dart`
-  - `lib/history/index/history_search_index.dart`
-  - `lib/history/index/printer_index.dart`
+  - `lib/history/index/history_search_index.dart` — substring postings retain typed Sembast history keys, so numeric-string and integer keys remain distinct through rebuild and mutation
+  - `lib/history/index/printer_index.dart` — printer postings preserve typed history keys across rebuild and mutations; startup migration v2 rewrites legacy postings
 - Repositories/services:
   - `lib/database/repositories/history_repository.dart`
   - `lib/database/history_record_store.dart`
+  - `lib/history/history_mutation_boundary.dart` — history insert/update/delete coordination marks paged state stale after successful writes; generic database helpers do not own history invalidation
 - Models:
   - `lib/history/model/history_entry.dart`
   - `lib/history/model/history_model.dart`
@@ -299,6 +303,8 @@
   - Parser/service now support path-backed streamed line reads for imports, avoiding full-file byte transfer across the Android platform channel.
   - Uses picked filename for validation/error UX instead of cached path aliases.
   - Import flow logs analytics + Crashlytics breadcrumbs for start, metadata resolved, size/type rejection, parse failure, and success.
+  - Size/sniff validation read exceptions report `readFailed` and enter the read-failure state; stale import attempts cannot replace newer results or emit failure telemetry.
+  - Callback-backed picks without paths memoize bytes across size checks, sniffing, and parsing; oversized metadata rejects before invoking the callback. Path-backed imports remain streamed.
   - Preview summary now shows `Preview · {W}×{H}` for thumbnails smaller than 128 px on either axis, `Preview` for larger previews, and `No preview` when absent.
   - Low-resolution previews stay importable; inline thumbnail uses nearest-neighbour rendering on a dark background instead of blocking import.
   - `BatchGCodeImportPage` keeps list rows compact, captures missing weight/duration inline, and opens imported metadata/preview details in a modal sheet instead of inline preview rows.

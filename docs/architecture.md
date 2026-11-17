@@ -41,8 +41,10 @@
   - `calculator_preferences_repository.dart`
 - Settings persist in the Sembast main store via `lib/database/repositories/settings_repository.dart`.
 - Materials, printers, and history use named stores keyed by `DBName` enums/helpers in `lib/database/`.
+- Material IDs are stable Sembast record keys: repository creates generate a new key only from an empty model ID, and edits require a matching existing key. CSV upsert and backup restore use separate identity-preserving paths; rekeying or merging requires explicit reference migration.
 - Batch quote labour inputs live in batch state (setup minutes) and item state (per-unit minutes); saved history snapshots preserve those inputs and the calculated labour breakdown. Missing labour keys in older snapshots read as zero without recomputing their stored totals. CSV/XLSX use distinct labour columns; their existing Setup Fee denotes fixed Additional cost, not setup labour time.
 - Startup migrations run in `lib/startup.dart` after first frame; current startup work rebuilds printer/history indexes and migrates legacy history material data.
+- History search postings retain the original Sembast key type. History search rebuild migration v2 replaces populated legacy string-key postings without changing persisted history record keys; repository paging deduplicates by typed key identity.
 - `SharedPreferences` stores lighter app flags and non-premium preferences; premium overrides and quota-sensitive counters live in `PremiumLocalStore`.
 - `PremiumLocalStore.write` and `PremiumLocalStore.delete` throw `StateError` when SharedPreferences persistence fails; callers must handle those failures.
 - Android Auto Backup rules currently include the app-private root for cloud and device transfer. Keep them unchanged until a destructive backup/restore test verifies which persisted data must survive; classify databases, preferences, secure values, and rebuildable files before narrowing scope.
@@ -55,6 +57,7 @@
 - `PremiumAccessPolicy` centralizes promo visibility and feature/quota access decisions; `premiumAccessPolicyProvider` is the UI/service gate.
 - `premiumLocalStoreProvider` exposes encrypted local storage for premium/quota-sensitive keys. Secure-store preload/write/delete failures are reported through Flutter error reporting but should not abort app startup.
 - Local test override path exists in `PremiumStateNotifier` using `PremiumLocalStore` and `lib/shared/test_tools/test_data_service.dart`.
+- Expired local test overrides fall back to gateway-backed access immediately. Cleanup failures are logged without an unhandled asynchronous error; cleanup retries on a later provider rebuild, not continuously, and disposal suppresses refresh/logging from the pending cleanup.
 - App shell gating happens in `lib/app/app_page.dart`:
   - Materials tab opens for all users; free tier enforcement happens through policy quota limits.
   - History tab visibility depends on `PremiumAccessPolicy` (free users see active limited history, not a teaser).
@@ -70,7 +73,7 @@
 - `AppLogger` (`lib/core/logging/app_logger.dart`) centralizes logging with levels (`debug`, `info`, `warn`, `error`), categories (`db`, `provider`, `ui`, `migration`, `billing`), optional context maps, and error/stackTrace fields.
 - Default sink is `DebugPrintAppLogSink`; tests can override via `appLogSinkProvider` to capture events.
 - Replaces bare `debugPrint` calls across the codebase. Currently adopted in:
-  - `HistoryPagedNotifier`, `HistorySearchIndexHelpers`, `PrinterIndexHelpers` — history index/migration paths
+  - `HistoryPagedNotifier`, `HistorySearchIndexHelpers`, `PrinterIndexHelpers` — history index/migration paths; search and printer postings retain typed Sembast keys, with v2 rebuild migrations for legacy stringified postings
   - `PremiumStateNotifier` — premium fetch error path
   - `BatchQuoteSaveService` — batch quote save failure path
   - `openUrl` (help support) and `openAppStoreForPlatform` (update checker) — URL launch failure fallback
