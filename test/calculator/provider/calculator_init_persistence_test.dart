@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
@@ -17,6 +19,33 @@ class _NoopLogSink extends AppLogSink {
 
   @override
   void log(AppLogEvent event) {}
+}
+
+class _GatedSettingsRepository implements SettingsRepository {
+  _GatedSettingsRepository(this.settings);
+
+  final GeneralSettingsModel settings;
+  final entered = Completer<void>();
+  final release = Completer<void>();
+  bool gateNext = true;
+
+  @override
+  Future<GeneralSettingsModel> getSettings() async {
+    if (gateNext) {
+      gateNext = false;
+      final capturedSettings = settings;
+      entered.complete();
+      await release.future;
+      return capturedSettings;
+    }
+    return settings.copyWith(selectedMaterial: 'reset-marker');
+  }
+
+  @override
+  Stream<GeneralSettingsModel> watchSettings() => Stream.value(settings);
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 void main() {
@@ -166,6 +195,48 @@ void main() {
     expect(state.importedFromGcode, isFalse);
     expect(state.showHistoryLoadReplacementWarning, isFalse);
     expect(state.materialUsages, isEmpty);
+  });
+
+  test('later reset wins over init completing later', () async {
+    final gate = _GatedSettingsRepository(
+      GeneralSettingsModel(
+        electricityCost: '0.32',
+        wattage: '140',
+        activePrinter: '',
+        selectedMaterial: 'init-marker',
+        wearAndTear: '1.5',
+        failureRisk: '7',
+        labourRate: '22',
+      ),
+    );
+    final gatedContainer = ProviderContainer(
+      overrides: [
+        databaseProvider.overrideWithValue(db),
+        settingsRepositoryProvider.overrideWithValue(gate),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ],
+    );
+    addTearDown(gatedContainer.dispose);
+    final notifier = gatedContainer.read(calculatorProvider.notifier);
+    final init = notifier.init();
+    await gate.entered.future;
+    await notifier.resetToDefaults();
+    expect(
+      gatedContainer.read(calculatorProvider).selectedMaterialId,
+      'reset-marker',
+    );
+    expect(gatedContainer.read(calculatorProvider).hasHydratedDefaults, isTrue);
+    gate.release.complete();
+    await init;
+    expect(gatedContainer.read(calculatorProvider).hasHydratedDefaults, isTrue);
+    expect(
+      gatedContainer.read(calculatorProvider).materialUsages,
+      hasLength(0),
+    );
+    expect(
+      gatedContainer.read(calculatorProvider).selectedMaterialId,
+      'reset-marker',
+    );
   });
 
   group('local-only override persistence', () {

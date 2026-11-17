@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
 import 'package:threed_print_cost_calculator/calculator/model/pricing_models.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
@@ -14,6 +17,7 @@ import 'package:threed_print_cost_calculator/settings/model/material_model.dart'
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
 import 'package:threed_print_cost_calculator/shared/components/num_input.dart';
 import 'package:threed_print_cost_calculator/shared/services/electricity_resolver.dart';
+import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
 
 import '../../helpers/helpers.dart';
 import '../../helpers/settings_test_fakes.dart';
@@ -27,9 +31,230 @@ class _ThrowingSaveSettingsRepository extends FakeSettingsRepository {
   }
 }
 
+class _GatedSettingsRepository extends FakeSettingsRepository {
+  _GatedSettingsRepository({required super.initialSettings});
+
+  final entered = Completer<void>();
+  final release = Completer<void>();
+
+  @override
+  Future<GeneralSettingsModel> getSettings() async {
+    if (!entered.isCompleted) entered.complete();
+    await release.future;
+    return super.getSettings();
+  }
+}
+
+class _TwoReadGateRepository extends FakeSettingsRepository {
+  _TwoReadGateRepository({required super.initialSettings});
+  final firstEntered = Completer<void>();
+  final secondEntered = Completer<void>();
+  final firstRelease = Completer<void>();
+  final secondRelease = Completer<void>();
+  int reads = 0;
+
+  @override
+  Future<GeneralSettingsModel> getSettings() async {
+    reads++;
+    if (reads == 1) {
+      firstEntered.complete();
+      await firstRelease.future;
+    } else if (reads == 2) {
+      secondEntered.complete();
+      await secondRelease.future;
+    }
+    return super.getSettings();
+  }
+}
+
 void main() {
   group('CalculatorProvider.loadFromHistory', () {
     setUpAll(setupTest);
+
+    test(
+      'empty history entry does not invalidate pending initialization',
+      () async {
+        final db = await databaseFactoryMemory.openDatabase(
+          'empty_history_init.db',
+        );
+        addTearDown(db.close);
+        final settingsRepository = _GatedSettingsRepository(
+          initialSettings: const GeneralSettingsModel(
+            electricityCost: '0.32',
+            wattage: '180',
+            activePrinter: '',
+            selectedMaterial: '',
+            wearAndTear: '0',
+            failureRisk: '0',
+            labourRate: '0',
+          ),
+        );
+        final container = ProviderContainer(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            settingsRepositoryProvider.overrideWithValue(settingsRepository),
+            printersRepositoryProvider.overrideWithValue(
+              FakePrintersRepository(),
+            ),
+            materialsRepositoryProvider.overrideWithValue(
+              FakeMaterialsRepository(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+        final notifier = container.read(calculatorProvider.notifier);
+        final initialization = notifier.init();
+        await settingsRepository.entered.future;
+
+        final didLoad = await notifier.loadFromHistory(
+          HistoryEntry(
+            key: 'empty',
+            model: HistoryModel(
+              name: 'Empty',
+              totalCost: 0,
+              riskCost: 0,
+              filamentCost: 0,
+              electricityCost: 0,
+              labourCost: 0,
+              date: DateTime.utc(2024),
+              printer: '',
+              material: '',
+              weight: 0,
+              timeHours: '00:00',
+              materialUsages: const [],
+            ),
+          ),
+        );
+        expect(didLoad, isFalse);
+
+        settingsRepository.release.complete();
+        await initialization;
+        expect(container.read(calculatorProvider).hasHydratedDefaults, isTrue);
+      },
+    );
+
+    test('later history load wins when earlier load completes last', () async {
+      final settingsRepository = _TwoReadGateRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '0.32',
+          wattage: '180',
+          activePrinter: '',
+          selectedMaterial: '',
+          wearAndTear: '0',
+          failureRisk: '0',
+          labourRate: '0',
+        ),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepository),
+          printersRepositoryProvider.overrideWithValue(
+            FakePrintersRepository(),
+          ),
+          materialsRepositoryProvider.overrideWithValue(
+            FakeMaterialsRepository(),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      final notifier = container.read(calculatorProvider.notifier);
+      HistoryEntry entry(String id) => HistoryEntry(
+        key: id,
+        model: HistoryModel(
+          name: id,
+          totalCost: 1,
+          riskCost: 0,
+          filamentCost: 1,
+          electricityCost: 0,
+          labourCost: 0,
+          date: DateTime.utc(2024),
+          printer: 'Unknown',
+          material: id,
+          weight: 1,
+          timeHours: '00:01',
+          materialUsages: [
+            {
+              'materialId': id,
+              'materialName': id,
+              'costPerKg': 1,
+              'weightGrams': 1,
+            },
+          ],
+        ),
+      );
+      final first = notifier.loadFromHistory(entry('first'));
+      await settingsRepository.firstEntered.future;
+      final second = notifier.loadFromHistory(entry('second'));
+      await settingsRepository.secondEntered.future;
+      settingsRepository.secondRelease.complete();
+      expect(await second, isTrue);
+      expect(
+        container.read(calculatorProvider).materialUsages.single.materialId,
+        'second',
+      );
+      settingsRepository.firstRelease.complete();
+      expect(await first, isFalse);
+      expect(
+        container.read(calculatorProvider).materialUsages.single.materialId,
+        'second',
+      );
+    });
+
+    test('history load after disposal returns false', () async {
+      final settingsRepository = _GatedSettingsRepository(
+        initialSettings: const GeneralSettingsModel(
+          electricityCost: '0.32',
+          wattage: '180',
+          activePrinter: '',
+          selectedMaterial: '',
+          wearAndTear: '0',
+          failureRisk: '0',
+          labourRate: '0',
+        ),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(settingsRepository),
+          printersRepositoryProvider.overrideWithValue(
+            FakePrintersRepository(),
+          ),
+          materialsRepositoryProvider.overrideWithValue(
+            FakeMaterialsRepository(),
+          ),
+        ],
+      );
+      final notifier = container.read(calculatorProvider.notifier);
+      final operation = notifier.loadFromHistory(
+        HistoryEntry(
+          key: 'gated',
+          model: HistoryModel(
+            name: 'Gated',
+            totalCost: 1,
+            riskCost: 0,
+            filamentCost: 1,
+            electricityCost: 0,
+            labourCost: 0,
+            date: DateTime.utc(2024),
+            printer: 'Unknown',
+            material: 'Unknown',
+            weight: 1,
+            timeHours: '00:01',
+            materialUsages: const [
+              {
+                'materialId': 'missing',
+                'materialName': 'Unknown',
+                'costPerKg': 1,
+                'weightGrams': 1,
+              },
+            ],
+          ),
+        ),
+      );
+      await settingsRepository.entered.future;
+      container.dispose();
+      settingsRepository.release.complete();
+      expect(await operation, isFalse);
+    });
 
     test('restores stored snapshot with single state emission', () async {
       final settingsRepository = FakeSettingsRepository(

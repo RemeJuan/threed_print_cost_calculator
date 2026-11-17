@@ -35,6 +35,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
   StreamSubscription<GeneralSettingsModel>? _settingsSubscription;
   CompletedCostingTrackingCoordinator? _completedCostingTrackingCoordinator;
+  int _lifecycleGeneration = 0;
+  bool _disposed = false;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
 
@@ -44,6 +46,8 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     // when the notifier is disposed. This prevents timers firing after the
     // provider is torn down and avoids memory/resource leaks.
     ref.onDispose(() {
+      _disposed = true;
+      _lifecycleGeneration++;
       _submitDebounce?.cancel();
       _submitDebounce = null;
       _completedCostingTrackingCoordinator?.cancel();
@@ -121,28 +125,34 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   Future<void> init() async {
     if (state.hasHydratedDefaults) return;
+    final generation = ++_lifecycleGeneration;
 
     final settings = await ref.read(settingsServiceProvider).get();
-    state = await ref
+    if (_disposed || generation != _lifecycleGeneration) return;
+    final loadedState = await ref
         .read(calculatorSettingsSyncProvider)
         .load(settings, seedInitialMaterialUsage: true);
+    if (_disposed || generation != _lifecycleGeneration) return;
+    state = loadedState;
   }
 
   Future<void> resetToDefaults() async {
+    final generation = ++_lifecycleGeneration;
     _submitDebounce?.cancel();
     _completedCostingTrackingCoordinator?.cancel();
 
     final settings = await ref.read(settingsServiceProvider).get();
-    state = await ref
+    if (_disposed || generation != _lifecycleGeneration) return;
+    final loadedState = await ref
         .read(calculatorSettingsSyncProvider)
         .load(settings, seedInitialMaterialUsage: false);
+    if (_disposed || generation != _lifecycleGeneration) return;
+    state = loadedState;
     submit();
   }
 
   Future<bool> loadFromHistory(HistoryEntry entry) async {
-    _submitDebounce?.cancel();
-    _completedCostingTrackingCoordinator?.cancel();
-
+    if (_disposed) return false;
     if (entry.model.materialUsages.isEmpty) {
       _logger.warn(
         AppLogCategory.provider,
@@ -152,13 +162,24 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       return false;
     }
 
+    final generation = ++_lifecycleGeneration;
+    _submitDebounce?.cancel();
+    _completedCostingTrackingCoordinator?.cancel();
+
     final settingsService = ref.read(settingsServiceProvider);
 
     try {
       final settings = await settingsService.get();
+      if (_disposed || generation != _lifecycleGeneration) return false;
       final result = await ref
           .read(calculatorHistoryLoaderProvider)
-          .load(entry: entry, currentState: state, settings: settings);
+          .load(
+            entry: entry,
+            currentState: state,
+            settings: settings,
+            isCancelled: () => _disposed || generation != _lifecycleGeneration,
+          );
+      if (_disposed || generation != _lifecycleGeneration) return false;
       if (result == null) {
         _logger.warn(
           AppLogCategory.provider,
@@ -172,7 +193,9 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       }
 
       final materialId = result.selectedMaterialId;
+      if (_disposed || generation != _lifecycleGeneration) return false;
       await settingsService.update((current) {
+        if (_disposed || generation != _lifecycleGeneration) return current;
         var updated = current.copyWith(activePrinter: result.activePrinterId);
         if (materialId != null && materialId.isNotEmpty) {
           updated = updated.copyWith(selectedMaterial: materialId);
@@ -180,9 +203,11 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         return updated;
       });
 
+      if (_disposed || generation != _lifecycleGeneration) return false;
       state = result.state;
       return true;
     } catch (error, stackTrace) {
+      if (_disposed || generation != _lifecycleGeneration) return false;
       _logger.warn(
         AppLogCategory.provider,
         'Failed to load history entry into calculator',
