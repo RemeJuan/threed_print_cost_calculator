@@ -9,14 +9,14 @@ Calculate true 3D print cost—not just filament—with the 3D Print Cost Calcul
 - Printer profiles: up to two in Free; unlimited in Premium.
 - History: up to seven entries in Free, with access to that list; unlimited in Premium.
 - Single-job export and JSON backup and restore in both plans. Premium adds bulk/full history export and batch quote export.
-- Manual batch costing for up to three items per batch in Free. Premium adds unlimited batch costing and batch G-code import.
+- Manual batch costing for up to three items per batch in Free. Premium adds unlimited batch costing, batch G-code import, and hands-on labour costing with setup time once per batch and per-item time scaled by quantity.
 - Premium business pricing controls: labour, failure risk, markup, setup fees, and rounding rules; Premium also adds material import and remaining-filament/stock tracking.
 
 ## Free and Premium
 
 Free includes core print costing, electricity costing, multi-material costing, the stated caps for saved materials, printer profiles, and history, single-job export, JSON backup and restore, manual batch costing for up to three items, and single-print G-code import.
 
-Premium includes everything in Free, with unlimited saved materials, printer profiles, history, and batch costing; bulk/full history export, batch quote export, batch G-code import, material import, business pricing controls, and stock tracking.
+Premium includes everything in Free, with unlimited saved materials, printer profiles, history, and batch costing; bulk/full history export, batch quote export, batch G-code import, hands-on batch labour, material import, business pricing controls, and stock tracking.
 
 ## Get the app
 
