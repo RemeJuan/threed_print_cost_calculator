@@ -24,6 +24,7 @@ class _FakeSettingsRepository implements SettingsRepository {
   final _controller = StreamController<GeneralSettingsModel>.broadcast();
   final savedSettings = <GeneralSettingsModel>[];
   GeneralSettingsModel _settings;
+  bool failSaves = false;
 
   void emit(GeneralSettingsModel settings) {
     _settings = settings;
@@ -41,6 +42,7 @@ class _FakeSettingsRepository implements SettingsRepository {
 
   @override
   Future<void> saveSettings(GeneralSettingsModel settings) async {
+    if (failSaves) throw StateError('save failed');
     _settings = settings;
     savedSettings.add(settings);
   }
@@ -370,6 +372,103 @@ void main() {
         tester.widget<TextFormField>(labourField).controller!.text,
         '27.5',
       );
+    });
+
+    testWidgets('replaces pending debounce with latest input', (tester) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+      final field = _field('settings.workCost.wearAndTear.input');
+      await tester.enterText(field, '0.1');
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.enterText(field, '0.25');
+      await tester.pump(const Duration(milliseconds: 399));
+      expect(repo.savedSettings, isEmpty);
+      await tester.pump(const Duration(milliseconds: 2));
+      await tester.pump();
+
+      expect(repo.savedSettings, hasLength(1));
+      expect(repo.savedSettings.single.wearAndTear, '0.25');
+    });
+
+    testWidgets('external settings update refreshes an unfocused field', (
+      tester,
+    ) async {
+      final repo = _FakeSettingsRepository();
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(_settings(wearAndTear: '0.10'));
+      await tester.pump();
+      repo.emit(_settings(wearAndTear: '0.35'));
+      await tester.pump();
+      await tester.pump();
+
+      expect(
+        tester
+            .widget<TextFormField>(
+              _field('settings.workCost.wearAndTear.input'),
+            )
+            .controller!
+            .text,
+        '0.35',
+      );
+    });
+
+    testWidgets('cancels pending debounce on disposal', (tester) async {
+      final repo = _FakeSettingsRepository();
+      await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+      await tester.enterText(
+        _field('settings.workCost.wearAndTear.input'),
+        '0.4',
+      );
+      await tester.pump(const Duration(milliseconds: 200));
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(repo.savedSettings, isEmpty);
+    });
+
+    testWidgets('contains persistence failures without saving settings', (
+      tester,
+    ) async {
+      final repo = _FakeSettingsRepository()..failSaves = true;
+      final db = await tester.pumpApp(const WorkCostsSettings(), [
+        settingsRepositoryProvider.overrideWithValue(repo),
+        appLogSinkProvider.overrideWithValue(const _NoopLogSink()),
+      ]);
+      addTearDown(db.close);
+      addTearDown(repo.dispose);
+
+      repo.emit(GeneralSettingsModel.initial());
+      await tester.pump();
+      await tester.enterText(
+        _field('settings.workCost.wearAndTear.input'),
+        '0.4',
+      );
+      await tester.pump(const Duration(milliseconds: 401));
+      await tester.pump();
+
+      expect(repo.savedSettings, isEmpty);
+      expect(tester.takeException(), isNull);
     });
   });
 }
