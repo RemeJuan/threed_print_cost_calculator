@@ -86,6 +86,13 @@ class CustomerViewSettingsPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: kAppSpace8),
                 const Divider(height: kAppSpace16 + kAppSpace8),
+                toggle(
+                  l10n.customerViewCostBreakdownLabel,
+                  settings.customerViewShowCostBreakdown,
+                  (v) => service.update(
+                    (s) => s.copyWith(customerViewShowCostBreakdown: v),
+                  ),
+                ),
                 for (final entry in <(String, bool, void Function(bool))>[
                   (
                     l10n.customerViewBaseCostLabel,

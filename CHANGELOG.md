@@ -5,6 +5,7 @@
 
 ### Changed
 - Refined Customer View with a prominent final price, compact grouped breakdowns and layouts adapted for phones and tablets.
+- Customer View cost breakdown can now be enabled or hidden independently; existing per-cost visibility choices remain available.
 
 ### Fixed
 - Updated the email integration to retain Android attachments while the mail app uploads them.

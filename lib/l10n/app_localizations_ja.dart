@@ -39,15 +39,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get customerViewCompanyNameLabel => '事業名';
 
   @override
-  String get customerViewDisplayStyleLabel => '表示スタイル';
-
-  @override
-  String get customerViewDisplaySummaryLabel => '概要';
-
-  @override
-  String get customerViewDisplayBreakdownLabel => '内訳';
-
-  @override
   String get customerViewCostBreakdownLabel => 'コスト内訳を表示';
 
   @override

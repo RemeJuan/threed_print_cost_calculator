@@ -39,15 +39,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get customerViewCompanyNameLabel => 'Bedrijfsnaam';
 
   @override
-  String get customerViewDisplayStyleLabel => 'Weergavestijl';
-
-  @override
-  String get customerViewDisplaySummaryLabel => 'Samenvatting';
-
-  @override
-  String get customerViewDisplayBreakdownLabel => 'Uitsplitsing';
-
-  @override
   String get customerViewCostBreakdownLabel => 'Kostenuitsplitsing tonen';
 
   @override

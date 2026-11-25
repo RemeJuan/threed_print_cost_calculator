@@ -60,7 +60,9 @@ class _CustomerViewPageState extends State<CustomerViewPage> {
     final settings = widget.settings;
     final data = widget.data;
     final price = _format(data.finalPrice);
-    final costLines = _costLines(context, data, settings);
+    final costLines = settings.customerViewShowCostBreakdown
+        ? _costLines(context, data, settings)
+        : const <Widget>[];
     final textTheme = Theme.of(context).textTheme;
     final hasItems =
         settings.customerViewShowItemBreakdown && data.items.isNotEmpty;

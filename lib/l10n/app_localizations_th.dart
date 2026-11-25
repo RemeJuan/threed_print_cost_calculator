@@ -39,15 +39,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get customerViewCompanyNameLabel => 'ชื่อธุรกิจ';
 
   @override
-  String get customerViewDisplayStyleLabel => 'รูปแบบการแสดงผล';
-
-  @override
-  String get customerViewDisplaySummaryLabel => 'สรุป';
-
-  @override
-  String get customerViewDisplayBreakdownLabel => 'รายละเอียด';
-
-  @override
   String get customerViewCostBreakdownLabel => 'แสดงรายละเอียดต้นทุน';
 
   @override

@@ -2,14 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'interface_settings_model.freezed.dart';
 
-enum CustomerViewDisplayStyle { summary, breakdown }
-
 enum CustomerViewExitGesture { singleTap, tripleTap, longPress }
-
-CustomerViewDisplayStyle customerViewDisplayStyleFromStorage(String? value) =>
-    value == 'breakdown'
-    ? CustomerViewDisplayStyle.breakdown
-    : CustomerViewDisplayStyle.summary;
 
 CustomerViewExitGesture customerViewExitGestureFromStorage(String? value) =>
     switch (value) {
@@ -36,8 +29,6 @@ abstract class InterfaceSettingsModel with _$InterfaceSettingsModel {
     @Default('') String customerViewCompanyName,
     @Default(false) bool customerViewShowCostBreakdown,
     @Default(false) bool customerViewShowItemBreakdown,
-    @Default(CustomerViewDisplayStyle.summary)
-    CustomerViewDisplayStyle customerViewDisplayStyle,
     @Default(CustomerViewExitGesture.longPress)
     CustomerViewExitGesture customerViewExitGesture,
     @Default(false) bool customerViewShowBackControl,
@@ -84,9 +75,6 @@ abstract class InterfaceSettingsModel with _$InterfaceSettingsModel {
       customerViewShowItemBreakdown: readBool(
         'customerViewShowItemBreakdown',
         defaultValue: false,
-      ),
-      customerViewDisplayStyle: customerViewDisplayStyleFromStorage(
-        map['customerViewDisplayStyle']?.toString(),
       ),
       customerViewExitGesture: customerViewExitGestureFromStorage(
         map['customerViewExitGesture']?.toString(),
@@ -154,7 +142,6 @@ extension InterfaceSettingsModelX on InterfaceSettingsModel {
     'customerViewCompanyName': customerViewCompanyName,
     'customerViewShowCostBreakdown': customerViewShowCostBreakdown,
     'customerViewShowItemBreakdown': customerViewShowItemBreakdown,
-    'customerViewDisplayStyle': customerViewDisplayStyle.name,
     'customerViewExitGesture': customerViewExitGesture.name,
     'customerViewShowBackControl': customerViewShowBackControl,
     'customerViewShowBaseCost': customerViewShowBaseCost,

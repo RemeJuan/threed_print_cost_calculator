@@ -39,15 +39,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get customerViewCompanyNameLabel => 'Nama bisnis';
 
   @override
-  String get customerViewDisplayStyleLabel => 'Gaya tampilan';
-
-  @override
-  String get customerViewDisplaySummaryLabel => 'Ringkasan';
-
-  @override
-  String get customerViewDisplayBreakdownLabel => 'Rincian';
-
-  @override
   String get customerViewCostBreakdownLabel => 'Tampilkan rincian biaya';
 
   @override

@@ -39,15 +39,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get customerViewCompanyNameLabel => 'Nome do negócio';
 
   @override
-  String get customerViewDisplayStyleLabel => 'Estilo de exibição';
-
-  @override
-  String get customerViewDisplaySummaryLabel => 'Resumo';
-
-  @override
-  String get customerViewDisplayBreakdownLabel => 'Detalhamento';
-
-  @override
   String get customerViewCostBreakdownLabel => 'Mostrar detalhamento de custos';
 
   @override

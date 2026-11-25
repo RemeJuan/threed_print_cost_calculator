@@ -166,24 +166,6 @@ abstract class AppLocalizations {
   /// **'Business name'**
   String get customerViewCompanyNameLabel;
 
-  /// No description provided for @customerViewDisplayStyleLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Display style'**
-  String get customerViewDisplayStyleLabel;
-
-  /// No description provided for @customerViewDisplaySummaryLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Summary'**
-  String get customerViewDisplaySummaryLabel;
-
-  /// No description provided for @customerViewDisplayBreakdownLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Breakdown'**
-  String get customerViewDisplayBreakdownLabel;
-
   /// No description provided for @customerViewCostBreakdownLabel.
   ///
   /// In en, this message translates to:
