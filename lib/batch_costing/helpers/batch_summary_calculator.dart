@@ -40,12 +40,16 @@ class BatchSummaryResult {
     required this.totalPrintDuration,
     required this.items,
     required this.additionalCost,
+    this.baseCost = 0,
     required this.failureRisk,
     required this.markupPercent,
     required this.labourRate,
     required this.finalTotal,
     required this.totalElectricityCost,
+    this.totalMaterialCost = 0,
     required this.totalLabourCost,
+    this.itemAdditionalCost = 0,
+    this.setupFee = 0,
     required this.setupLabourCost,
     required this.failureRiskMonetary,
     required this.markupPercentMonetary,
@@ -57,12 +61,16 @@ class BatchSummaryResult {
   final Duration totalPrintDuration;
   final List<BatchSummaryItemBreakdown> items;
   final num additionalCost;
+  final num baseCost;
   final BatchPricingFieldState failureRisk;
   final BatchPricingFieldState markupPercent;
   final BatchPricingFieldState labourRate;
   final num finalTotal;
   final num totalElectricityCost;
+  final num totalMaterialCost;
   final num totalLabourCost;
+  final num itemAdditionalCost;
+  final num setupFee;
   final num setupLabourCost;
   final num failureRiskMonetary;
   final num markupPercentMonetary;
@@ -97,7 +105,10 @@ class BatchSummaryCalculator {
     var markupPercentMonetary = 0.0;
     var batchSubtotal = 0.0;
     num totalElectricityCost = 0;
+    num totalMaterialCost = 0;
     num totalLabourCost = 0;
+    num totalItemAdditionalCost = 0;
+    num baseCost = 0;
     for (final item in state.items) {
       final itemWeight = item.printWeightG ?? 0;
       final itemDurationMin = item.printDuration?.inMinutes ?? 0;
@@ -116,10 +127,11 @@ class BatchSummaryCalculator {
         hours,
         kwCost,
       );
+      final itemMaterialCost = _itemMaterialCost(state, item, materialsById);
       final itemBaseCost =
-          itemLabourCost +
-          itemElectricityCost +
-          _itemMaterialCost(state, item, materialsById);
+          itemLabourCost + itemElectricityCost + itemMaterialCost;
+      baseCost += itemBaseCost;
+      totalMaterialCost += itemMaterialCost;
       totalElectricityCost += itemElectricityCost;
       totalLabourCost += itemLabourCost;
       if (state.pricing.failureRisk.scope == BatchPricingScope.item) {
@@ -135,6 +147,7 @@ class BatchSummaryCalculator {
         batchAdditionalCost,
         state.pricing,
       );
+      totalItemAdditionalCost += itemAdditionalCost;
       final itemMarkupPercent =
           state.pricing.markupPercent.scope == BatchPricingScope.item
           ? parsedBatchMarkupPercent
@@ -172,6 +185,7 @@ class BatchSummaryCalculator {
     }
 
     final setupLabourCost = state.setupLabourMinutes / 60 * batchLabourRate;
+    baseCost += setupLabourCost;
     batchSubtotal += setupLabourCost;
     totalLabourCost += setupLabourCost;
 
@@ -187,13 +201,14 @@ class BatchSummaryCalculator {
       state.pricing.markupPercent,
       parsedBatchMarkupPercent,
     );
+    final batchSetupFee = _batchScopedSetupFee(
+      state.pricing.additionalCostAmount,
+      batchAdditionalCost,
+    );
     final batchPricing = PricingCalculator.calculate(
       baseCost: batchSubtotal + batchRiskCost,
       markupPercent: batchMarkupPercent,
-      setupFee: _batchScopedSetupFee(
-        state.pricing.additionalCostAmount,
-        batchAdditionalCost,
-      ),
+      setupFee: batchSetupFee,
       roundingMode: PricingRoundingMode.none,
     );
 
@@ -211,12 +226,16 @@ class BatchSummaryCalculator {
       totalPrintDuration: Duration(minutes: totalPrintMinutes),
       items: items,
       additionalCost: batchAdditionalCost,
+      baseCost: baseCost,
       failureRisk: state.pricing.failureRisk,
       markupPercent: state.pricing.markupPercent,
       labourRate: state.pricing.labourRate,
       finalTotal: finalTotal,
       totalElectricityCost: totalElectricityCost,
+      totalMaterialCost: totalMaterialCost,
       totalLabourCost: totalLabourCost,
+      itemAdditionalCost: totalItemAdditionalCost,
+      setupFee: batchSetupFee,
       setupLabourCost: setupLabourCost,
       failureRiskMonetary: failureRiskMonetary,
       markupPercentMonetary: markupPercentMonetary,

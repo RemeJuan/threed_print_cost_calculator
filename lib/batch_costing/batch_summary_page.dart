@@ -112,6 +112,28 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
       materialsById: materialsById,
       kwCost: kwCost,
     );
+    final itemWeightTotal = summary.items.fold<num>(
+      0,
+      (sum, item) => sum + item.pricing.finalPrice,
+    );
+    var allocatedItemTotal = 0.0;
+    final customerItems = <CustomerViewLineItem>[];
+    for (var i = 0; i < summary.items.length; i++) {
+      final item = summary.items[i];
+      final total = i == summary.items.length - 1
+          ? summary.finalTotal - allocatedItemTotal
+          : itemWeightTotal > 0
+          ? item.pricing.finalPrice / itemWeightTotal * summary.finalTotal
+          : summary.finalTotal / summary.items.length;
+      allocatedItemTotal += total;
+      customerItems.add(
+        CustomerViewLineItem(
+          name: item.item.displayName,
+          quantity: item.totalQuantity,
+          total: total,
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppScreenHeader(
@@ -237,18 +259,16 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                     builder: (_) => CustomerViewPage(
                       data: CustomerViewData(
                         finalPrice: summary.finalTotal,
-                        baseCost: summary.items.fold<num>(
-                          0,
-                          (sum, item) => sum + item.baseCost,
-                        ),
-                        items: [
-                          for (final item in summary.items)
-                            CustomerViewLineItem(
-                              name: item.item.displayName,
-                              quantity: item.totalQuantity,
-                              total: item.pricing.finalPrice,
-                            ),
-                        ],
+                        baseCost: summary.baseCost,
+                        electricity: summary.totalElectricityCost,
+                        filament: summary.totalMaterialCost,
+                        risk: summary.failureRiskMonetary,
+                        labour: summary.totalLabourCost,
+                        additionalCost: summary.itemAdditionalCost,
+                        markup: summary.markupPercentMonetary,
+                        setupFee: summary.setupFee,
+                        roundingAdjustment: 0,
+                        items: customerItems,
                       ),
                       settings: interfaceSettings,
                       currencySettings: currencySettings,
