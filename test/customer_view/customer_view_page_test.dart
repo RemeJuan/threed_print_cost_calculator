@@ -1,13 +1,10 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:threed_print_cost_calculator/customer_view/customer_view_data.dart';
 import 'package:threed_print_cost_calculator/customer_view/customer_view_page.dart';
 import 'package:threed_print_cost_calculator/l10n/app_localizations.dart';
 import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
-
-import 'package:threed_print_cost_calculator/shared/theme.dart';
 
 import '../helpers/helpers.dart';
 
@@ -102,7 +99,6 @@ void main() {
           customerViewShowElectricity: true,
           customerViewShowFailureRisk: true,
           customerViewShowLabour: true,
-          customerViewDisplayStyle: CustomerViewDisplayStyle.breakdown,
           customerViewShowBackControl: true,
         ),
         currencySettings: _currencySettings,
@@ -133,7 +129,7 @@ void main() {
           addTearDown(() => tester.binding.setSurfaceSize(null));
           await tester.pumpApp(
             Theme(
-              data: theme(),
+              data: ThemeData(),
               child: MediaQuery(
                 data: MediaQueryData(
                   size: size,
@@ -164,6 +160,7 @@ void main() {
                     customerViewCompanyName:
                         'A long company name for custom printing and design',
                     customerViewShowBaseCost: showDetails,
+                    customerViewShowCostBreakdown: showDetails,
                     customerViewShowElectricity: showDetails,
                     customerViewShowMaterial: showDetails,
                     customerViewShowFailureRisk: showDetails,
@@ -213,6 +210,7 @@ void main() {
           roundingAdjustment: -0.5,
         ),
         settings: InterfaceSettingsModel(
+          customerViewShowCostBreakdown: true,
           customerViewShowMaterial: true,
           customerViewShowLabour: true,
           customerViewShowSetupFee: true,
@@ -243,6 +241,7 @@ void main() {
         CustomerViewPage(
           data: data,
           settings: const InterfaceSettingsModel(
+            customerViewShowCostBreakdown: true,
             customerViewShowItemBreakdown: true,
             customerViewShowMaterial: true,
           ),

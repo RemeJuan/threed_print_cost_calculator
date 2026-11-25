@@ -23,7 +23,6 @@ void main() {
       expect(model.customerViewShowCostBreakdown, isFalse);
       expect(model.customerViewShowItemBreakdown, isFalse);
       expect(model.customerViewShowBackControl, isFalse);
-      expect(model.customerViewDisplayStyle, CustomerViewDisplayStyle.summary);
       expect(model.customerViewExitGesture, CustomerViewExitGesture.longPress);
     },
   );
@@ -34,7 +33,6 @@ void main() {
       customerViewCompanyName: 'Print Co',
       customerViewShowCostBreakdown: true,
       customerViewShowItemBreakdown: true,
-      customerViewDisplayStyle: CustomerViewDisplayStyle.breakdown,
       customerViewExitGesture: CustomerViewExitGesture.tripleTap,
       customerViewShowBackControl: true,
     );
