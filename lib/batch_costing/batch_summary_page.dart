@@ -116,21 +116,38 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
       0,
       (sum, item) => sum + item.pricing.finalPrice,
     );
-    var allocatedItemTotal = 0.0;
+    final finalTotalCents = (summary.finalTotal * 100).round();
+    final exactItemCents = [
+      for (final item in summary.items)
+        itemWeightTotal > 0
+            ? item.pricing.finalPrice / itemWeightTotal * finalTotalCents
+            : finalTotalCents / summary.items.length,
+    ];
+    final allocatedCents = exactItemCents
+        .map((amount) => amount.floor())
+        .toList();
+    var remainingCents =
+        finalTotalCents -
+        allocatedCents.fold<int>(0, (sum, cents) => sum + cents);
+    final remainderOrder = List<int>.generate(summary.items.length, (i) => i)
+      ..sort(
+        (a, b) => (exactItemCents[b] - exactItemCents[b].floor()).compareTo(
+          exactItemCents[a] - exactItemCents[a].floor(),
+        ),
+      );
+    for (final index in remainderOrder) {
+      if (remainingCents == 0) break;
+      allocatedCents[index]++;
+      remainingCents--;
+    }
     final customerItems = <CustomerViewLineItem>[];
     for (var i = 0; i < summary.items.length; i++) {
       final item = summary.items[i];
-      final total = i == summary.items.length - 1
-          ? summary.finalTotal - allocatedItemTotal
-          : itemWeightTotal > 0
-          ? item.pricing.finalPrice / itemWeightTotal * summary.finalTotal
-          : summary.finalTotal / summary.items.length;
-      allocatedItemTotal += total;
       customerItems.add(
         CustomerViewLineItem(
           name: item.item.displayName,
           quantity: item.totalQuantity,
-          total: total,
+          total: allocatedCents[i] / 100,
         ),
       );
     }
