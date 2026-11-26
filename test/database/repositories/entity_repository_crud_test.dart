@@ -54,6 +54,7 @@ void main() {
     );
 
     expect(insertedKey, isNotNull);
+    expect(insertedKey, isA<String>());
     expect(await repo.getMaterials(), hasLength(1));
   });
 

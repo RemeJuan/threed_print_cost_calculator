@@ -76,9 +76,9 @@ class MaterialsRepository {
       );
     }
 
-    return ref
-        .read(dbHelpersProvider(DBName.materials))
-        .insertRecord(material.toMap());
+    return stringMapStoreFactory
+        .store(DBName.materials.name)
+        .add(_db, material.toMap());
   }
 
   Future<Map<String, bool>> existingIds(Set<String> ids) async {
