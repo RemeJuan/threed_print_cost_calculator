@@ -45,6 +45,9 @@ class CustomerViewSettingsPage extends ConsumerWidget {
                   decoration: InputDecoration(
                     labelText: l10n.customerViewCompanyNameLabel,
                   ),
+                  onChanged: (v) => service.update(
+                    (s) => s.copyWith(customerViewCompanyName: v),
+                  ),
                   onFieldSubmitted: (v) => service.update(
                     (s) => s.copyWith(customerViewCompanyName: v.trim()),
                   ),

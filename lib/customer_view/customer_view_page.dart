@@ -7,7 +7,6 @@ import 'package:threed_print_cost_calculator/settings/interface_settings/interfa
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/app_colors.dart';
 import 'package:threed_print_cost_calculator/shared/app_ui_tokens.dart';
-import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/widgets/app_surface_card.dart';
 
 class CustomerViewPage extends StatefulWidget {
@@ -310,10 +309,5 @@ class _CustomerViewPageState extends State<CustomerViewPage> {
     ];
   }
 
-  String _format(num value) => formatCurrencyValue(
-    value,
-    currencySymbol: widget.currencySettings.currencySymbol,
-    currencyPosition: widget.currencySettings.currencyPosition,
-    currencySpacing: widget.currencySettings.currencySpacing,
-  );
+  String _format(num value) => value.toStringAsFixed(2);
 }
