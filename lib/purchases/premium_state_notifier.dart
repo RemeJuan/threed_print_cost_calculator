@@ -153,7 +153,10 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
       try {
         final service = _maybeTestDataService();
         if (service != null) {
-          await service.purge();
+          final result = await service.purge();
+          if (!result.success) {
+            throw result.error ?? StateError('Test data purge failed');
+          }
         } else {
           final store = _store;
           if (store != null) {
