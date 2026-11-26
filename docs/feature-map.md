@@ -105,6 +105,7 @@
     - **Edit**: opens MaterialForm for editing
     - **Duplicate**: copies all material fields, appends localized "Duplicate" suffix to name, saves as new material, shows success snackbar; blocked for free users already at the material cap
     - **Delete**: shows confirmation dialog; on confirm, removes material, clears stale calculator state if it was in use, shows success snackbar
+    - New CSV imports generate string record keys. Delete also resolves integer keys left by older imports without changing their material IDs.
   - One-time inline dismissible banner on first visit introduces swipe actions
   - Settings materials list (non-premium) uses `SettingsSlidableItem` with edit/delete swipe actions
 - Deleting material while in calculator use:

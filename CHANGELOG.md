@@ -8,6 +8,7 @@
 - Customer View cost breakdown can now be enabled or hidden independently; existing per-cost visibility choices remain available.
 
 ### Fixed
+- Fixed deleting materials imported from CSV, including materials imported before the fix.
 - Updated the email integration to retain Android attachments while the mail app uploads them.
 
 ## [3.4.4] - 2026-11-15
