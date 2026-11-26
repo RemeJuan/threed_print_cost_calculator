@@ -54,7 +54,6 @@ Map<String, dynamic> withHistorySearchFields(Map<String, dynamic> data) {
 /// - record key: `<field>:<normalized token or token substring>`
 /// - record value: `{ 'keys': [<typed history record key>...] }`
 class HistorySearchIndexHelpers {
-  static const int _rebuildBatchSize = 64;
   static const int _backfillBatchSize = 32;
 
   Future<void> _rebuildQueue = Future<void>.value();
@@ -190,44 +189,41 @@ class HistorySearchIndexHelpers {
           _rebuildInProgress = true;
           _rebuildDirty = false;
 
-          final map = <String, Set<Object?>>{};
-          final records = await _historyStore.find(_db);
+          await _db.transaction((txn) async {
+            final map = <String, Set<Object?>>{};
+            final records = await _historyStore.find(txn);
+            for (final record in records) {
+              final value = _recordValueMap(
+                record.value,
+                record.key,
+                'history search rebuild',
+              );
+              if (value == null) continue;
+              final searchName =
+                  value[kHistorySearchNameField]?.toString() ??
+                  normalizeHistorySearchValue(value['name']?.toString() ?? '');
+              final searchPrinter =
+                  value[kHistorySearchPrinterField]?.toString() ??
+                  normalizeHistorySearchValue(
+                    value['printer']?.toString() ?? '',
+                  );
+              final recordTokens = _recordTokensByField(
+                name: searchName,
+                printer: searchPrinter,
+              );
 
-          var index = 0;
-          for (final record in records) {
-            if (index > 0 && index % _rebuildBatchSize == 0) {
-              await Future<void>.delayed(Duration.zero);
-            }
-            index++;
-
-            final value = _recordValueMap(
-              record.value,
-              record.key,
-              'history search rebuild',
-            );
-            if (value == null) continue;
-            final searchName =
-                value[kHistorySearchNameField]?.toString() ??
-                normalizeHistorySearchValue(value['name']?.toString() ?? '');
-            final searchPrinter =
-                value[kHistorySearchPrinterField]?.toString() ??
-                normalizeHistorySearchValue(value['printer']?.toString() ?? '');
-            final recordTokens = _recordTokensByField(
-              name: searchName,
-              printer: searchPrinter,
-            );
-
-            final key = record.key;
-            for (final entry in recordTokens.entries) {
-              for (final token in entry.value) {
-                map
-                    .putIfAbsent(_indexKey(entry.key, token), () => <Object?>{})
-                    .add(key);
+              for (final entry in recordTokens.entries) {
+                for (final token in entry.value) {
+                  map
+                      .putIfAbsent(
+                        _indexKey(entry.key, token),
+                        () => <Object?>{},
+                      )
+                      .add(record.key);
+                }
               }
             }
-          }
 
-          await _db.transaction((txn) async {
             final existing = await _indexStore.find(txn);
             for (final entry in existing) {
               await _indexStore.record(entry.key.toString()).delete(txn);

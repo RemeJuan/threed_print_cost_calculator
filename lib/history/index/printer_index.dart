@@ -17,8 +17,6 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 /// - record key: normalized printer name (lowercased, trimmed)
 /// - record value: `Map<String, dynamic>{ 'keys': [<typed recordKey>...] }`
 class PrinterIndexHelpers {
-  static const int _rebuildBatchSize = 64;
-
   // Internal untyped read function to avoid Riverpod generic type issues in
   // tests and builds. We cast results where needed.
   final dynamic Function(dynamic provider) _read;
@@ -64,38 +62,20 @@ class PrinterIndexHelpers {
 
   /// Rebuild the entire index from the history store. This is idempotent.
   Future<void> rebuildIndex() async {
-    final Map<String, List<dynamic>> map = {};
-
-    final records = await _historyStore.find(_db);
-
-    var index = 0;
-    for (final r in records) {
-      if (index > 0 && index % _rebuildBatchSize == 0) {
-        await Future<void>.delayed(Duration.zero);
-      }
-      index++;
-
-      final value = _recordValueMap(r.value, r.key);
-      if (value == null) continue;
-      final printer = (value['printer']?.toString() ?? '').trim();
-      final key = r.key;
-      final norm = _normalize(printer);
-      if (norm.isEmpty) continue;
-      map.putIfAbsent(norm, () => <dynamic>[]).add(key);
-    }
-
-    // rebuild index
-
-    // Perform clear-and-write inside a single transaction so the index is updated atomically.
     await _db.transaction((txn) async {
-      // Clear existing index and write fresh. Ensure keys are treated as strings.
-      final existing = await _indexStore.find(txn);
-      for (final e in existing) {
-        final k = e.key.toString();
-        if (k.isNotEmpty) {
-          await _indexStore.record(k).delete(txn);
-        }
+      final Map<String, List<dynamic>> map = {};
+      final records = await _historyStore.find(txn);
+      for (final record in records) {
+        final value = _recordValueMap(record.value, record.key);
+        if (value == null) continue;
+        final printer = (value['printer']?.toString() ?? '').trim();
+        final norm = _normalize(printer);
+        if (norm.isEmpty) continue;
+        map.putIfAbsent(norm, () => <dynamic>[]).add(record.key);
       }
+
+      // Clear existing index and write fresh. Ensure keys are treated as strings.
+      await _indexStore.delete(txn);
 
       for (final entry in map.entries) {
         final k = entry.key.toString();
