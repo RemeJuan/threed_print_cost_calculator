@@ -133,6 +133,80 @@ void main() {
       },
     );
 
+    test(
+      'history load waits for calculator defaults before restoring state',
+      () async {
+        final db = await databaseFactoryMemory.openDatabase(
+          'history_load_waits_for_init.db',
+        );
+        addTearDown(db.close);
+        final settingsRepository = _GatedSettingsRepository(
+          initialSettings: const GeneralSettingsModel(
+            electricityCost: '0.32',
+            wattage: '180',
+            activePrinter: '',
+            selectedMaterial: '',
+            wearAndTear: '0',
+            failureRisk: '0',
+            labourRate: '0',
+          ),
+        );
+        final container = ProviderContainer(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            settingsRepositoryProvider.overrideWithValue(settingsRepository),
+            printersRepositoryProvider.overrideWithValue(
+              FakePrintersRepository(),
+            ),
+            materialsRepositoryProvider.overrideWithValue(
+              FakeMaterialsRepository(),
+            ),
+          ],
+        );
+        addTearDown(container.dispose);
+        final notifier = container.read(calculatorProvider.notifier);
+        final initialization = notifier.init();
+        await settingsRepository.entered.future;
+        final loading = notifier.loadFromHistory(
+          HistoryEntry(
+            key: 'history',
+            model: HistoryModel(
+              name: 'History',
+              totalCost: 1,
+              riskCost: 0,
+              filamentCost: 1,
+              electricityCost: 0,
+              labourCost: 0,
+              date: DateTime.utc(2024),
+              printer: '',
+              material: 'PLA',
+              weight: 1,
+              timeHours: '00:01',
+              materialUsages: const [
+                {
+                  'materialId': 'missing',
+                  'materialName': 'PLA',
+                  'costPerKg': 1,
+                  'weightGrams': 1,
+                },
+              ],
+            ),
+          ),
+        );
+
+        expect(container.read(calculatorProvider).hasHydratedDefaults, isFalse);
+        settingsRepository.release.complete();
+
+        await initialization;
+        expect(await loading, isTrue);
+        final state = container.read(calculatorProvider);
+        expect(state.hasHydratedDefaults, isTrue);
+        expect(state.kwCost.value, 0.32);
+        expect(state.watt.value, 180);
+        expect(state.materialUsages.single.materialName, 'PLA');
+      },
+    );
+
     test('later history load wins when earlier load completes last', () async {
       final settingsRepository = _TwoReadGateRepository(
         initialSettings: const GeneralSettingsModel(

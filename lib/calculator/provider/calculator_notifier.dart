@@ -35,6 +35,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
   Timer? _submitDebounce;
   StreamSubscription<GeneralSettingsModel>? _settingsSubscription;
   CompletedCostingTrackingCoordinator? _completedCostingTrackingCoordinator;
+  Future<void>? _initialization;
   int _lifecycleGeneration = 0;
   bool _disposed = false;
 
@@ -124,8 +125,21 @@ class CalculatorProvider extends Notifier<CalculatorState> {
     if (shouldSubmit) submit();
   }
 
-  Future<void> init() async {
-    if (state.hasHydratedDefaults) return;
+  Future<void> init() {
+    if (state.hasHydratedDefaults) return Future<void>.value();
+    final pendingInitialization = _initialization;
+    if (pendingInitialization != null) return pendingInitialization;
+    late final Future<void> initialization;
+    initialization = _initialize().whenComplete(() {
+      if (identical(_initialization, initialization)) {
+        _initialization = null;
+      }
+    });
+    _initialization = initialization;
+    return initialization;
+  }
+
+  Future<void> _initialize() async {
     final generation = ++_lifecycleGeneration;
 
     final settings = await ref.read(settingsServiceProvider).get();
@@ -170,6 +184,22 @@ class CalculatorProvider extends Notifier<CalculatorState> {
         int.tryParse(parsedTime[0]) == null ||
         int.tryParse(parsedTime[1]) == null) {
       return false;
+    }
+    final pendingInitialization = _initialization;
+    if (pendingInitialization != null) {
+      try {
+        await pendingInitialization;
+      } catch (error, stackTrace) {
+        _logger.warn(
+          AppLogCategory.provider,
+          'Failed to initialize calculator before loading history',
+          context: {'historyKey': entry.key},
+          error: error,
+          stackTrace: stackTrace,
+        );
+        return false;
+      }
+      if (_disposed || !state.hasHydratedDefaults) return false;
     }
     final generation = ++_lifecycleGeneration;
     _submitDebounce?.cancel();
