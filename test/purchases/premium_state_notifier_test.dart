@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_state_notifier.dart';
 import 'package:threed_print_cost_calculator/purchases/premium_local_store_memory.dart';
@@ -232,6 +233,140 @@ void main() {
     expect(state.isLoading, isFalse);
     expect(state.userId, 'pro-1');
   });
+
+  test(
+    'expired override cleanup failure is logged and shows free state',
+    () async {
+      final store = _CountingStore({
+        testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01',
+      }, deleteError: StateError('delete failed'));
+      final gateway = _ControllableGateway();
+      final logger = _CleanupLogger();
+      late final _NoopTestDataService testDataService;
+      final container = ProviderContainer(
+        overrides: [
+          purchasesGatewayProvider.overrideWithValue(gateway),
+          premiumLocalStoreProvider.overrideWithValue(store),
+          appLoggerProvider.overrideWithValue(logger),
+          testDataServiceProvider.overrideWith((ref) {
+            testDataService = _NoopTestDataService(ref, store);
+            return testDataService;
+          }),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final asyncErrors = <Object>[];
+      await runZonedGuarded(() async {
+        container.read(premiumStateProvider);
+        await gateway.waitForFetchCall(1);
+        await gateway.completeFetch(
+          const PremiumState(
+            isPremium: false,
+            isLoading: false,
+            userId: 'free',
+          ),
+        );
+        await Future<void>.delayed(Duration.zero);
+      }, (error, _) => asyncErrors.add(error));
+
+      expect(testDataService.purgeCalls, 1);
+      final state = container.read(premiumStateProvider);
+      expect(state.isPremium, isFalse);
+      expect(store.deleteCalls, 1);
+      expect(gateway.fetchCalls, 1);
+      expect(logger.cleanupWarnings, 1);
+      expect(logger.lastError.toString(), contains('delete failed'));
+      expect(asyncErrors, isEmpty);
+
+      container.invalidate(premiumStateProvider);
+      container.read(premiumStateProvider);
+      await gateway.waitForFetchCall(2);
+      await Future<void>.delayed(Duration.zero);
+      expect(store.deleteCalls, 2);
+      expect(logger.cleanupWarnings, 2);
+    },
+  );
+
+  test(
+    'disposal while expired override cleanup awaits preserves fallback',
+    () async {
+      final deleteStarted = Completer<void>();
+      final releaseDelete = Completer<void>();
+      final store = _CountingStore(
+        {testPremiumOverrideEnabledOnPreferenceKey: '2000-01-01'},
+        deleteStarted: deleteStarted,
+        releaseDelete: releaseDelete,
+      );
+      final gateway = _ControllableGateway();
+      late final _NoopTestDataService testDataService;
+      final container = ProviderContainer(
+        overrides: [
+          purchasesGatewayProvider.overrideWithValue(gateway),
+          premiumLocalStoreProvider.overrideWithValue(store),
+          testDataServiceProvider.overrideWith((ref) {
+            testDataService = _NoopTestDataService(ref, store);
+            return testDataService;
+          }),
+        ],
+      );
+
+      container.read(premiumStateProvider);
+      await gateway.waitForFetchCall(1);
+      await gateway.completeFetch(
+        const PremiumState(isPremium: false, isLoading: false, userId: 'free'),
+      );
+      await deleteStarted.future;
+      expect(container.read(premiumStateProvider).isPremium, isFalse);
+
+      container.dispose();
+      releaseDelete.complete();
+      await Future<void>.delayed(Duration.zero);
+      expect(testDataService.purgeCalls, 1);
+    },
+  );
+}
+
+class _CleanupLogger implements AppLogger {
+  int cleanupWarnings = 0;
+  Object? lastError;
+
+  @override
+  void debug(
+    AppLogCategory category,
+    String message, {
+    Map<String, Object?> context = const {},
+  }) {}
+
+  @override
+  void error(
+    AppLogCategory category,
+    String message, {
+    Map<String, Object?> context = const {},
+    Object? error,
+    StackTrace? stackTrace,
+  }) {}
+
+  @override
+  void info(
+    AppLogCategory category,
+    String message, {
+    Map<String, Object?> context = const {},
+  }) {}
+
+  @override
+  void warn(
+    AppLogCategory category,
+    String message, {
+    Map<String, Object?> context = const {},
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    if (message.contains('expired override cleanup failed')) {
+      cleanupWarnings++;
+      lastError = error;
+    }
+  }
 }
 
 class _FailingGateway implements PurchasesGateway {
@@ -301,9 +436,17 @@ class _ControllableGateway implements PurchasesGateway {
 }
 
 class _CountingStore implements PremiumLocalStore {
-  _CountingStore(Map<String, String> values) : _values = {...values};
+  _CountingStore(
+    Map<String, String> values, {
+    this.deleteError,
+    this.deleteStarted,
+    this.releaseDelete,
+  }) : _values = {...values};
 
   final Map<String, String> _values;
+  final Object? deleteError;
+  final Completer<void>? deleteStarted;
+  final Completer<void>? releaseDelete;
   int deleteCalls = 0;
 
   @override
@@ -320,6 +463,11 @@ class _CountingStore implements PremiumLocalStore {
   @override
   Future<void> delete(String key) async {
     deleteCalls++;
+    if (deleteStarted case final started?) {
+      if (!started.isCompleted) started.complete();
+    }
+    if (releaseDelete case final release?) await release.future;
+    if (deleteError case final error?) throw error;
     _values.remove(key);
   }
 

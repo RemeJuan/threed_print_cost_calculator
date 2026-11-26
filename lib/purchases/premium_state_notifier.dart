@@ -30,6 +30,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   bool _disposed = false;
   bool _wasUsingLocalOverride = false;
   bool _scheduledExpiredOverrideCleanup = false;
+  bool _expiredOverrideCleanupFailed = false;
   int _fetchToken = 0;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
@@ -45,6 +46,7 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   PremiumState build() {
     ref.watch(appRefreshProvider);
     _disposed = false;
+    _expiredOverrideCleanupFailed = false;
 
     final hasLocalOverride = _hasLocalOverride();
     if (hasLocalOverride) {
@@ -141,7 +143,9 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
   }
 
   void _scheduleExpiredOverrideCleanup() {
-    if (_scheduledExpiredOverrideCleanup) return;
+    if (_scheduledExpiredOverrideCleanup || _expiredOverrideCleanupFailed) {
+      return;
+    }
     _scheduledExpiredOverrideCleanup = true;
 
     () async {
@@ -149,7 +153,10 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
       try {
         final service = _maybeTestDataService();
         if (service != null) {
-          await service.purge();
+          final result = await service.purge();
+          if (!result.success) {
+            throw result.error ?? StateError('Test data purge failed');
+          }
         } else {
           final store = _store;
           if (store != null) {
@@ -157,6 +164,16 @@ class PremiumStateNotifier extends Notifier<PremiumState> {
           }
         }
         shouldRefresh = !_disposed;
+      } catch (e, st) {
+        _expiredOverrideCleanupFailed = true;
+        if (!_disposed) {
+          _logger.warn(
+            AppLogCategory.provider,
+            'premium_state_notifier expired override cleanup failed',
+            error: e,
+            stackTrace: st,
+          );
+        }
       } finally {
         _scheduledExpiredOverrideCleanup = false;
         if (shouldRefresh) {

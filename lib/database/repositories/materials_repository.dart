@@ -53,15 +53,32 @@ class MaterialsRepository {
 
   Future<Object?> saveMaterial(MaterialModel material, {String? id}) async {
     if (id != null) {
-      await ref
-          .read(dbHelpersProvider(DBName.materials))
-          .updateRecord(id, material.toMap());
+      if (material.id != id) {
+        throw ArgumentError.value(
+          material.id,
+          'material.id',
+          'Must match target record ID',
+        );
+      }
+      final store = stringMapStoreFactory.store(DBName.materials.name);
+      final updated = await store.record(id).update(_db, material.toMap());
+      if (updated == null) {
+        throw StateError('Material record does not exist: $id');
+      }
       return id;
     }
 
-    return ref
-        .read(dbHelpersProvider(DBName.materials))
-        .insertRecord(material.toMap());
+    if (material.id.isNotEmpty) {
+      throw ArgumentError.value(
+        material.id,
+        'material.id',
+        'Must be empty when creating a material',
+      );
+    }
+
+    return stringMapStoreFactory
+        .store(DBName.materials.name)
+        .add(_db, material.toMap());
   }
 
   Future<Map<String, bool>> existingIds(Set<String> ids) async {
@@ -85,9 +102,9 @@ class MaterialsRepository {
     var updated = 0;
     final skippedRows = <CsvImportRow>[];
 
-    final store =
-        stringMapStoreFactory.store(DBName.materials.name)
-            as StoreRef<Object?, Map<String, Object?>>;
+    // Keep the String key type when adding; Sembast generates an int for
+    // StoreRef<Object?, ...>.
+    final store = stringMapStoreFactory.store(DBName.materials.name);
 
     await _db.transaction((txn) async {
       for (final row in updates) {
@@ -105,8 +122,8 @@ class MaterialsRepository {
         if (onBeforeWrite != null) {
           await onBeforeWrite(row);
         }
-        final key = await store.add(txn, _toMaterialMap(row));
-        if (key != null) created++;
+        await store.add(txn, _toMaterialMap(row));
+        created++;
       }
     });
 
@@ -118,8 +135,22 @@ class MaterialsRepository {
     );
   }
 
-  Future<void> deleteMaterial(String id) {
-    return ref.read(dbHelpersProvider(DBName.materials)).deleteRecord(id);
+  Future<void> deleteMaterial(String id) async {
+    await _db.transaction((txn) async {
+      if (await _store.record(id).delete(txn) != null) return;
+
+      // Older CSV imports generated int keys; the model exposes their
+      // decimal representation as its ID. Prefer an exact String key.
+      final legacyKey = int.tryParse(id);
+      if (legacyKey != null &&
+          legacyKey.toString() == id &&
+          await _store.record(legacyKey).delete(txn) != null) {
+        return;
+      }
+      // A stale row or repeated delete is already absent; match the previous
+      // repository's idempotent delete behavior.
+      return;
+    });
   }
 
   MaterialModel? _mapSnapshot(RecordSnapshot<Object?, Object?>? snapshot) {

@@ -54,8 +54,83 @@ void main() {
     );
 
     expect(insertedKey, isNotNull);
+    expect(insertedKey, isA<String>());
     expect(await repo.getMaterials(), hasLength(1));
   });
+
+  test('materials repository rejects create with nonempty ID', () async {
+    final repo = container.read(materialsRepositoryProvider);
+
+    await expectLater(
+      repo.saveMaterial(
+        const MaterialModel(
+          id: 'existing-id',
+          name: 'PLA',
+          cost: '25',
+          color: 'Red',
+          weight: '1000',
+          archived: false,
+        ),
+      ),
+      throwsArgumentError,
+    );
+    expect(await repo.getMaterials(), isEmpty);
+  });
+
+  test(
+    'materials repository rejects mismatched and missing edit targets',
+    () async {
+      final repo = container.read(materialsRepositoryProvider);
+      final store = stringMapStoreFactory.store('materials');
+      await store.record('material-1').put(db, {
+        'name': 'PLA',
+        'cost': '25',
+        'color': 'Red',
+        'weight': '1000',
+        'archived': false,
+      });
+      await store.record('material-2').put(db, {
+        'name': 'PETG',
+        'cost': '30',
+        'color': 'Blue',
+        'weight': '900',
+        'archived': false,
+      });
+
+      await expectLater(
+        repo.saveMaterial(
+          const MaterialModel(
+            id: 'material-2',
+            name: 'Overwritten',
+            cost: '1',
+            color: 'Black',
+            weight: '1',
+            archived: false,
+          ),
+          id: 'material-1',
+        ),
+        throwsArgumentError,
+      );
+      await expectLater(
+        repo.saveMaterial(
+          const MaterialModel(
+            id: 'missing',
+            name: 'Missing',
+            cost: '1',
+            color: 'Black',
+            weight: '1',
+            archived: false,
+          ),
+          id: 'missing',
+        ),
+        throwsStateError,
+      );
+
+      expect((await repo.getMaterialById('material-1'))!.name, 'PLA');
+      expect((await repo.getMaterialById('material-2'))!.name, 'PETG');
+      expect(await repo.getMaterialById('missing'), isNull);
+    },
+  );
 
   test(
     'materials repository maps legacy records with tracking disabled by default',

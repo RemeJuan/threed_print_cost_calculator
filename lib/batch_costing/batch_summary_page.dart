@@ -1,6 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:threed_print_cost_calculator/batch_costing/model/batch_costing_item.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_data.dart';
+import 'package:threed_print_cost_calculator/customer_view/customer_view_page.dart';
 import 'package:threed_print_cost_calculator/batch_costing/providers/batch_costing_notifier.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_flow_reset.dart';
 import 'package:threed_print_cost_calculator/batch_costing/helpers/batch_pricing_formatter.dart';
@@ -15,6 +17,7 @@ import 'package:threed_print_cost_calculator/database/repositories/settings_repo
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/material_model.dart';
 import 'package:threed_print_cost_calculator/settings/model/printer_model.dart';
+import 'package:threed_print_cost_calculator/settings/interface_settings/interface_settings_repository.dart';
 import 'package:threed_print_cost_calculator/shared/utils/format_utils.dart';
 import 'package:threed_print_cost_calculator/shared/utils/number_parsing.dart';
 import 'package:threed_print_cost_calculator/shared/theme.dart';
@@ -88,6 +91,7 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(batchCostingProvider);
+    final interfaceSettings = ref.watch(interfaceSettingsProvider);
     if (state.items.isEmpty) {
       return _emptyState(context, l10n);
     }
@@ -108,6 +112,45 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
       materialsById: materialsById,
       kwCost: kwCost,
     );
+    final itemWeightTotal = summary.items.fold<num>(
+      0,
+      (sum, item) => sum + item.pricing.finalPrice,
+    );
+    final finalTotalCents = (summary.finalTotal * 100).round();
+    final exactItemCents = [
+      for (final item in summary.items)
+        itemWeightTotal > 0
+            ? item.pricing.finalPrice / itemWeightTotal * finalTotalCents
+            : finalTotalCents / summary.items.length,
+    ];
+    final allocatedCents = exactItemCents
+        .map((amount) => amount.floor())
+        .toList();
+    var remainingCents =
+        finalTotalCents -
+        allocatedCents.fold<int>(0, (sum, cents) => sum + cents);
+    final remainderOrder = List<int>.generate(summary.items.length, (i) => i)
+      ..sort(
+        (a, b) => (exactItemCents[b] - exactItemCents[b].floor()).compareTo(
+          exactItemCents[a] - exactItemCents[a].floor(),
+        ),
+      );
+    for (final index in remainderOrder) {
+      if (remainingCents == 0) break;
+      allocatedCents[index]++;
+      remainingCents--;
+    }
+    final customerItems = <CustomerViewLineItem>[];
+    for (var i = 0; i < summary.items.length; i++) {
+      final item = summary.items[i];
+      customerItems.add(
+        CustomerViewLineItem(
+          name: item.item.displayName,
+          quantity: item.totalQuantity,
+          total: allocatedCents[i] / 100,
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppScreenHeader(
@@ -223,6 +266,37 @@ class _BatchSummaryPageState extends ConsumerState<BatchSummaryPage> {
                   currencySettings,
                 ),
               ),
+            if (interfaceSettings.customerViewEnabled) ...[
+              AppSecondaryButton(
+                key: const ValueKey<String>(
+                  'batch-costing-summary.customer-view.button',
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => CustomerViewPage(
+                      data: CustomerViewData(
+                        finalPrice: summary.finalTotal,
+                        baseCost: summary.baseCost,
+                        electricity: summary.totalElectricityCost,
+                        filament: summary.totalMaterialCost,
+                        risk: summary.failureRiskMonetary,
+                        labour: summary.totalLabourCost,
+                        additionalCost: summary.itemAdditionalCost,
+                        markup: summary.markupPercentMonetary,
+                        setupFee: summary.setupFee,
+                        roundingAdjustment: 0,
+                        items: customerItems,
+                      ),
+                      settings: interfaceSettings,
+                      currencySettings: currencySettings,
+                    ),
+                  ),
+                ),
+                label: l10n.customerViewOpenButton,
+                icon: const Icon(Icons.visibility_outlined),
+              ),
+              const SizedBox(height: 12),
+            ],
             const SizedBox(height: 24),
             _sectionTitle(context, l10n.batchCostingSummaryItemsTitle),
             const SizedBox(height: 8),

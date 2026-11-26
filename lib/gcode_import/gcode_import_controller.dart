@@ -52,6 +52,7 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     GCodePickedFile pickedFile, {
     required String attemptId,
   }) async {
+    pickedFile = cachePickedGCodeBytes(pickedFile);
     state = GCodeImportState.loading(
       attemptId: attemptId,
       selectedFileName: pickedFile.name,
@@ -143,7 +144,45 @@ class GCodeImportController extends Notifier<GCodeImportState> {
     }
 
     final fileSizeBytes = fileSize ?? 0;
-    final validation = await validateGCodeFile(pickedFile);
+    late final GCodeValidationResult validation;
+    try {
+      validation = await validateGCodeFile(pickedFile);
+    } catch (error, stackTrace) {
+      if (!_isActiveAttempt(attemptId)) return;
+      await captureGCodeImportFailure(
+        stage: 'validation',
+        error: error,
+        stackTrace: stackTrace,
+        file: pickedFile,
+        category: GCodeFailureReason.readFailed,
+      );
+      if (!_isActiveAttempt(attemptId)) return;
+      logGCodeImportBreadcrumb(
+        'validation_failed',
+        fileName: pickedFile.name,
+        originalFileName: pickedFile.originalName,
+        mimeType: pickedFile.mimeType,
+        fileSizeBytes: fileSizeBytes,
+        reason: GCodeFailureReason.readFailed,
+      );
+      AppAnalytics.safeLog(
+        () => AppAnalytics.gcodeParseFailed(
+          attemptId: attemptId,
+          slicer: 'unknown',
+          hasPreview: false,
+          fileSizeBytes: fileSizeBytes,
+          failureReason: GCodeFailureReason.readFailed,
+        ),
+      );
+      state = GCodeImportState.failure(
+        attemptId: attemptId,
+        selectedFileName: pickedFile.name,
+        selectedFilePath: pickedFile.path,
+        selectedFileSizeBytes: fileSizeBytes,
+        error: GCodeImportError.readFailed,
+      );
+      return;
+    }
     if (!_isActiveAttempt(attemptId)) return;
     if (validation.error != null) {
       final error = validation.error!;

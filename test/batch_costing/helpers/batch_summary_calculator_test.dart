@@ -87,9 +87,42 @@ void main() {
     );
     expect(summary.setupLabourCost, 30);
     expect(summary.totalLabourCost, 30);
+    expect(summary.baseCost, 30);
     expect(summary.failureRiskMonetary, 3);
     expect(summary.markupPercentMonetary, 6.6);
     expect(summary.finalTotal, closeTo(39.6, 0.0001));
+  });
+
+  test('exposes customer-view cost components across item and batch scope', () {
+    final summary = BatchSummaryCalculator.calculate(
+      BatchCostingState(
+        items: [
+          item(
+            quantity: 2,
+          ).copyWith(itemLabourMinutes: 30, materialId: 'mat-1'),
+        ],
+        setupLabourMinutes: 15,
+        pricing: const BatchPricingState(
+          labourRate: BatchPricingFieldState(value: '60'),
+          failureRisk: BatchPricingFieldState(value: '10'),
+          markupPercent: BatchPricingFieldState(value: '20'),
+          additionalCostAmount: BatchPricingFieldState(
+            value: '4',
+            scope: BatchPricingScope.batch,
+          ),
+        ),
+      ),
+      materialsById: {'mat-1': pla},
+    );
+
+    expect(summary.baseCost, 75.4);
+    expect(summary.totalLabourCost, 75);
+    expect(summary.totalElectricityCost, 0);
+    expect(summary.totalMaterialCost, closeTo(0.4, 0.0001));
+    expect(summary.itemAdditionalCost, 0);
+    expect(summary.setupFee, 4);
+    expect(summary.failureRiskMonetary, closeTo(6.04, 0.0001));
+    expect(summary.finalTotal, greaterThan(summary.baseCost));
   });
 
   test('quantity greater than 1 multiplies totals', () {

@@ -1,7 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:threed_print_cost_calculator/calculator/model/material_usage_input.dart';
-import 'package:threed_print_cost_calculator/calculator/helpers/calculator_helpers.dart';
+import 'package:threed_print_cost_calculator/calculator/services/calculator_save_coordinator.dart';
 import 'package:threed_print_cost_calculator/calculator/provider/calculator_notifier.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculation_results_state.dart';
 import 'package:threed_print_cost_calculator/calculator/state/calculator_state.dart';
@@ -127,7 +128,9 @@ void main() {
       settingsRepositoryProvider.overrideWithValue(settingsRepo),
       printersRepositoryProvider.overrideWithValue(printersRepo),
       materialsRepositoryProvider.overrideWithValue(materialsRepo),
-      calculatorHelpersProvider.overrideWithValue(helpers),
+      calculatorSaveCoordinatorProvider.overrideWithValue(
+        _CapturingCalculatorSaveCoordinator(helpers),
+      ),
     ]);
 
     await tester.pumpAndSettle();
@@ -213,7 +216,9 @@ void main() {
         materialsRepositoryProvider.overrideWithValue(
           FakeMaterialsRepository(),
         ),
-        calculatorHelpersProvider.overrideWithValue(helpers),
+        calculatorSaveCoordinatorProvider.overrideWithValue(
+          _CapturingCalculatorSaveCoordinator(helpers),
+        ),
       ],
     );
 
@@ -307,7 +312,9 @@ void main() {
         settingsRepositoryProvider.overrideWithValue(settingsRepo),
         printersRepositoryProvider.overrideWithValue(printersRepo),
         materialsRepositoryProvider.overrideWithValue(materialsRepo),
-        calculatorHelpersProvider.overrideWithValue(helpers),
+        calculatorSaveCoordinatorProvider.overrideWithValue(
+          _CapturingCalculatorSaveCoordinator(helpers),
+        ),
       ]);
 
       await tester.pumpAndSettle();
@@ -384,7 +391,9 @@ void main() {
         materialsRepositoryProvider.overrideWithValue(
           FakeMaterialsRepository(),
         ),
-        calculatorHelpersProvider.overrideWithValue(helpers),
+        calculatorSaveCoordinatorProvider.overrideWithValue(
+          _CapturingCalculatorSaveCoordinator(helpers),
+        ),
       ],
     );
     await tester.pumpAndSettle();
@@ -440,7 +449,9 @@ void main() {
         settingsRepositoryProvider.overrideWithValue(settingsRepo),
         printersRepositoryProvider.overrideWithValue(printersRepo),
         materialsRepositoryProvider.overrideWithValue(materialsRepo),
-        calculatorHelpersProvider.overrideWithValue(helpers),
+        calculatorSaveCoordinatorProvider.overrideWithValue(
+          _CapturingCalculatorSaveCoordinator(helpers),
+        ),
       ],
     );
     await tester.pumpAndSettle();
@@ -506,7 +517,9 @@ void main() {
         settingsRepositoryProvider.overrideWithValue(settingsRepo),
         printersRepositoryProvider.overrideWithValue(printersRepo),
         materialsRepositoryProvider.overrideWithValue(materialsRepo),
-        calculatorHelpersProvider.overrideWithValue(helpers),
+        calculatorSaveCoordinatorProvider.overrideWithValue(
+          _CapturingCalculatorSaveCoordinator(helpers),
+        ),
       ],
     );
     await tester.pumpAndSettle();
@@ -536,4 +549,22 @@ class HistoryModelCapture {
   HistoryModelCapture(this.model);
 
   final HistoryModel? model;
+}
+
+class _CapturingCalculatorSaveCoordinator implements CalculatorSaveCoordinator {
+  _CapturingCalculatorSaveCoordinator(this.helpers);
+
+  final FakeCalculatorHelpers helpers;
+
+  @override
+  Ref get ref => throw UnimplementedError();
+
+  @override
+  Future<void> savePrint(
+    HistoryModel value, {
+    required String errorMessage,
+    required String successMessage,
+  }) async {
+    helpers.lastSavedPrint = value;
+  }
 }

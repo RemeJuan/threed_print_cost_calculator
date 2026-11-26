@@ -3,7 +3,12 @@
 ### Added
 - Added hands-on labour costing for batch quotes, with setup time once per batch and per-item time scaled by quantity. Labour breakdowns appear in saved history and exports.
 
+### Changed
+- Refined Customer View with a prominent final price, compact grouped breakdowns and layouts adapted for phones and tablets.
+- Customer View cost breakdown can now be enabled or hidden independently; existing per-cost visibility choices remain available.
+
 ### Fixed
+- Fixed deleting materials imported from CSV, including materials imported before the fix.
 - Updated the email integration to retain Android attachments while the mail app uploads them.
 
 ## [3.4.4] - 2026-11-15

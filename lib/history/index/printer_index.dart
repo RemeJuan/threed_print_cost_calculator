@@ -15,10 +15,8 @@ import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart
 /// Index store structure:
 /// - store name: 'printer_index'
 /// - record key: normalized printer name (lowercased, trimmed)
-/// - record value: `Map<String, dynamic>{ 'keys': [<recordKey>...] }`
+/// - record value: `Map<String, dynamic>{ 'keys': [<typed recordKey>...] }`
 class PrinterIndexHelpers {
-  static const int _rebuildBatchSize = 64;
-
   // Internal untyped read function to avoid Riverpod generic type issues in
   // tests and builds. We cast results where needed.
   final dynamic Function(dynamic provider) _read;
@@ -64,39 +62,20 @@ class PrinterIndexHelpers {
 
   /// Rebuild the entire index from the history store. This is idempotent.
   Future<void> rebuildIndex() async {
-    final Map<String, List<String>> map = {};
-
-    final records = await _historyStore.find(_db);
-
-    var index = 0;
-    for (final r in records) {
-      if (index > 0 && index % _rebuildBatchSize == 0) {
-        await Future<void>.delayed(Duration.zero);
-      }
-      index++;
-
-      final value = _recordValueMap(r.value, r.key);
-      if (value == null) continue;
-      final printer = (value['printer']?.toString() ?? '').trim();
-      final key = r.key;
-      final norm = _normalize(printer);
-      if (norm.isEmpty) continue;
-      // Store keys as strings for consistent indexing
-      map.putIfAbsent(norm, () => <String>[]).add(key.toString());
-    }
-
-    // rebuild index
-
-    // Perform clear-and-write inside a single transaction so the index is updated atomically.
     await _db.transaction((txn) async {
-      // Clear existing index and write fresh. Ensure keys are treated as strings.
-      final existing = await _indexStore.find(txn);
-      for (final e in existing) {
-        final k = e.key.toString();
-        if (k.isNotEmpty) {
-          await _indexStore.record(k).delete(txn);
-        }
+      final Map<String, List<dynamic>> map = {};
+      final records = await _historyStore.find(txn);
+      for (final record in records) {
+        final value = _recordValueMap(record.value, record.key);
+        if (value == null) continue;
+        final printer = (value['printer']?.toString() ?? '').trim();
+        final norm = _normalize(printer);
+        if (norm.isEmpty) continue;
+        map.putIfAbsent(norm, () => <dynamic>[]).add(record.key);
       }
+
+      // Clear existing index and write fresh. Ensure keys are treated as strings.
+      await _indexStore.delete(txn);
 
       for (final entry in map.entries) {
         final k = entry.key.toString();
@@ -123,15 +102,12 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
-    final recordKeyStr = recordKey.toString();
     final existing =
         await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
-    final keys = <String>[
-      ...?(existing?['keys'] as List?)?.map((k) => k.toString()),
-    ];
+    final keys = <dynamic>[...?existing?['keys'] as List?];
 
-    if (!keys.contains(recordKeyStr)) {
-      keys.add(recordKeyStr);
+    if (!keys.contains(recordKey)) {
+      keys.add(recordKey);
       await _indexStore.record(norm).put(txn, {'keys': keys});
     }
   }
@@ -154,29 +130,18 @@ class PrinterIndexHelpers {
     final norm = _normalize(printer);
     if (norm.isEmpty) return;
 
-    final recordKeyStr = recordKey.toString();
     final existing =
         await _indexStore.record(norm).get(txn) as Map<String, dynamic>?;
     if (existing == null) return;
 
-    final keys = <String>[
-      ...?(existing['keys'] as List?)?.map((k) => k.toString()),
-    ];
-    keys.removeWhere((k) => k == recordKeyStr);
+    final keys = <dynamic>[...?existing['keys'] as List?];
+    keys.removeWhere((k) => k == recordKey);
 
     if (keys.isEmpty) {
       await _indexStore.record(norm).delete(txn);
     } else {
       await _indexStore.record(norm).put(txn, {'keys': keys});
     }
-  }
-
-  /// Helper to convert a stored string key back to original typed key when possible.
-  dynamic _typedKey(String s) {
-    // If looks like an integer (positive/negative), parse to int; otherwise return string
-    final intRegex = RegExp(r'^-?\d+$');
-    if (intRegex.hasMatch(s)) return int.parse(s);
-    return s;
   }
 
   /// Return all record keys that belong to any printer whose normalized
@@ -186,21 +151,20 @@ class PrinterIndexHelpers {
     if (q.isEmpty) return [];
 
     final all = await _indexStore.find(_db);
-    final matches = <String>{};
+    final matches = <dynamic>{};
 
     for (final e in all) {
       final k = e.key;
       if (k.contains(q)) {
         final value = e.value as Map<String, dynamic>;
         final keys = (value['keys'] as List?) ?? [];
-        matches.addAll(keys.map((k) => k.toString()));
+        matches.addAll(keys);
       }
     }
 
     // matched keys
 
-    // Convert stored string keys back to typed keys where appropriate
-    return matches.map((s) => _typedKey(s)).toList();
+    return matches.toList();
   }
 
   /// Helper: get all indexed printers (normalized)

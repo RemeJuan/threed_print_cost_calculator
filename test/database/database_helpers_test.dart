@@ -4,6 +4,7 @@ import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/history/index/history_search_index.dart';
 import 'package:threed_print_cost_calculator/history/index/printer_index.dart';
+import 'package:threed_print_cost_calculator/history/history_mutation_boundary.dart';
 import 'package:threed_print_cost_calculator/history/provider/history_paged_notifier.dart';
 import 'package:threed_print_cost_calculator/settings/model/general_settings_model.dart';
 import 'package:threed_print_cost_calculator/shared/providers/app_providers.dart';
@@ -31,8 +32,7 @@ void main() {
   test(
     'deleteRecord removes history records keyed by int and updates indexes',
     () async {
-      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
-      final key = await dbHelpers.insertRecord({
+      final key = await container.read(historyMutationBoundaryProvider).insert({
         'name': 'Delete Me',
         'printer': 'Prusa MK4',
         'date': DateTime.now().toUtc().toIso8601String(),
@@ -59,7 +59,7 @@ void main() {
       await container.read(historyPagedProvider.notifier).refreshIfNeeded();
       expect(container.read(historyPagedProvider).isStale, isFalse);
 
-      await dbHelpers.deleteRecord(resolvedKey);
+      await container.read(historyMutationBoundaryProvider).delete(resolvedKey);
 
       final deletedRecord = await historyStore.record(resolvedKey).get(db);
       expect(deletedRecord, isNull);
@@ -68,16 +68,28 @@ void main() {
       searchKeys = await searchIndex.getKeysMatchingQuery('delete');
       expect(printerKeys, isNot(contains(resolvedKey)));
       expect(searchKeys, isNot(contains(resolvedKey)));
-      expect(container.read(historyPagedProvider).isStale, isTrue);
+      expect(container.read(historyPagedProvider).isStale, isFalse);
+      expect(container.read(historyPagedProvider).items, isEmpty);
+    },
+  );
+
+  test(
+    'generic database helper writes do not invalidate history paging',
+    () async {
+      final helpers = container.read(dbHelpersProvider(DBName.materials));
+      await container.read(historyPagedProvider.notifier).refreshIfNeeded();
+      expect(container.read(historyPagedProvider).isStale, isFalse);
+
+      await helpers.insertRecord({'name': 'Unrelated material'});
+      expect(container.read(historyPagedProvider).isStale, isFalse);
     },
   );
 
   test('updateRecord keeps history indexes in sync', () async {
-    final dbHelpers = container.read(dbHelpersProvider(DBName.history));
     final printerIndex = PrinterIndexHelpers.fromContainer(container);
     final searchIndex = HistorySearchIndexHelpers.fromContainer(container);
 
-    final key = await dbHelpers.insertRecord({
+    final key = await container.read(historyMutationBoundaryProvider).insert({
       'name': 'Old Benchy',
       'printer': 'Prusa MK4',
       'date': DateTime(2024, 1, 1).toIso8601String(),
@@ -96,7 +108,7 @@ void main() {
     await container.read(historyPagedProvider.notifier).refreshIfNeeded();
     expect(container.read(historyPagedProvider).isStale, isFalse);
 
-    await dbHelpers.updateRecord(resolvedKey, {
+    await container.read(historyMutationBoundaryProvider).update(resolvedKey, {
       'name': 'Updated Benchy',
       'printer': 'Bambu X1C',
     });
@@ -119,12 +131,12 @@ void main() {
   test(
     'updateRecord for missing history key does not mark paged state stale',
     () async {
-      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
-
       await container.read(historyPagedProvider.notifier).refreshIfNeeded();
       expect(container.read(historyPagedProvider).isStale, isFalse);
 
-      await dbHelpers.updateRecord(999999, {'name': 'Missing'});
+      await container.read(historyMutationBoundaryProvider).update(999999, {
+        'name': 'Missing',
+      });
 
       expect(container.read(historyPagedProvider).isStale, isFalse);
     },
@@ -193,7 +205,6 @@ void main() {
   test(
     'insertRecord updates history indexes and marks paged state stale',
     () async {
-      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
       final notifier = container.read(historyPagedProvider.notifier);
       final printerIndex = PrinterIndexHelpers.fromContainer(container);
       final searchIndex = HistorySearchIndexHelpers.fromContainer(container);
@@ -201,7 +212,7 @@ void main() {
       await notifier.refreshIfNeeded();
       expect(container.read(historyPagedProvider).isStale, isFalse);
 
-      final key = await dbHelpers.insertRecord({
+      final key = await container.read(historyMutationBoundaryProvider).insert({
         'name': 'Newest Print',
         'printer': 'Prusa MK4',
         'date': DateTime.now().toUtc().toIso8601String(),
@@ -232,12 +243,10 @@ void main() {
   test(
     'deleteRecord for missing history key does not mark paged state stale',
     () async {
-      final dbHelpers = container.read(dbHelpersProvider(DBName.history));
-
       await container.read(historyPagedProvider.notifier).refreshIfNeeded();
       expect(container.read(historyPagedProvider).isStale, isFalse);
 
-      await dbHelpers.deleteRecord(999999);
+      await container.read(historyMutationBoundaryProvider).delete(999999);
 
       expect(container.read(historyPagedProvider).isStale, isFalse);
     },

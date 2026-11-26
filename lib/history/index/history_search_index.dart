@@ -52,9 +52,8 @@ Map<String, dynamic> withHistorySearchFields(Map<String, dynamic> data) {
 /// Index store structure:
 /// - store name: `history_search_index`
 /// - record key: `<field>:<normalized token or token substring>`
-/// - record value: `{ 'keys': [<historyRecordKeyAsString>...] }`
+/// - record value: `{ 'keys': [<typed history record key>...] }`
 class HistorySearchIndexHelpers {
-  static const int _rebuildBatchSize = 64;
   static const int _backfillBatchSize = 32;
 
   Future<void> _rebuildQueue = Future<void>.value();
@@ -140,16 +139,16 @@ class HistorySearchIndexHelpers {
     return Map<String, dynamic>.from(value);
   }
 
-  List<String> _keysFromIndexValue(Map<String, dynamic>? value) {
+  List<Object?> _keysFromIndexValue(Map<String, dynamic>? value) {
     final raw = value?['keys'];
-    if (raw is! List) return <String>[];
-    return raw.map((entry) => entry.toString()).toList();
+    if (raw is! List) return <Object?>[];
+    return raw.cast<Object?>().toList();
   }
 
   Future<void> _addTokens({
     required Transaction txn,
     required Set<String> tokens,
-    required String recordKey,
+    required Object? recordKey,
   }) async {
     for (final token in tokens) {
       final existing =
@@ -165,7 +164,7 @@ class HistorySearchIndexHelpers {
   Future<void> _removeTokens({
     required Transaction txn,
     required Set<String> tokens,
-    required String recordKey,
+    required Object? recordKey,
   }) async {
     for (final token in tokens) {
       final existing =
@@ -190,44 +189,41 @@ class HistorySearchIndexHelpers {
           _rebuildInProgress = true;
           _rebuildDirty = false;
 
-          final map = <String, Set<String>>{};
-          final records = await _historyStore.find(_db);
+          await _db.transaction((txn) async {
+            final map = <String, Set<Object?>>{};
+            final records = await _historyStore.find(txn);
+            for (final record in records) {
+              final value = _recordValueMap(
+                record.value,
+                record.key,
+                'history search rebuild',
+              );
+              if (value == null) continue;
+              final searchName =
+                  value[kHistorySearchNameField]?.toString() ??
+                  normalizeHistorySearchValue(value['name']?.toString() ?? '');
+              final searchPrinter =
+                  value[kHistorySearchPrinterField]?.toString() ??
+                  normalizeHistorySearchValue(
+                    value['printer']?.toString() ?? '',
+                  );
+              final recordTokens = _recordTokensByField(
+                name: searchName,
+                printer: searchPrinter,
+              );
 
-          var index = 0;
-          for (final record in records) {
-            if (index > 0 && index % _rebuildBatchSize == 0) {
-              await Future<void>.delayed(Duration.zero);
-            }
-            index++;
-
-            final value = _recordValueMap(
-              record.value,
-              record.key,
-              'history search rebuild',
-            );
-            if (value == null) continue;
-            final searchName =
-                value[kHistorySearchNameField]?.toString() ??
-                normalizeHistorySearchValue(value['name']?.toString() ?? '');
-            final searchPrinter =
-                value[kHistorySearchPrinterField]?.toString() ??
-                normalizeHistorySearchValue(value['printer']?.toString() ?? '');
-            final recordTokens = _recordTokensByField(
-              name: searchName,
-              printer: searchPrinter,
-            );
-
-            final key = record.key.toString();
-            for (final entry in recordTokens.entries) {
-              for (final token in entry.value) {
-                map
-                    .putIfAbsent(_indexKey(entry.key, token), () => <String>{})
-                    .add(key);
+              for (final entry in recordTokens.entries) {
+                for (final token in entry.value) {
+                  map
+                      .putIfAbsent(
+                        _indexKey(entry.key, token),
+                        () => <Object?>{},
+                      )
+                      .add(record.key);
+                }
               }
             }
-          }
 
-          await _db.transaction((txn) async {
             final existing = await _indexStore.find(txn);
             for (final entry in existing) {
               await _indexStore.record(entry.key.toString()).delete(txn);
@@ -267,7 +263,7 @@ class HistorySearchIndexHelpers {
       await _addTokens(
         txn: txn,
         tokens: entry.value.map((token) => _indexKey(entry.key, token)).toSet(),
-        recordKey: recordKey.toString(),
+        recordKey: recordKey as Object?,
       );
     }
   }
@@ -284,7 +280,7 @@ class HistorySearchIndexHelpers {
 
     final oldTokens = _recordTokensByField(name: oldName, printer: oldPrinter);
     final newTokens = _recordTokensByField(name: newName, printer: newPrinter);
-    final key = recordKey.toString();
+    final key = recordKey as Object?;
 
     for (final entry in oldTokens.entries) {
       if (entry.value.isEmpty) continue;
@@ -321,7 +317,7 @@ class HistorySearchIndexHelpers {
       await _removeTokens(
         txn: txn,
         tokens: entry.value.map((token) => _indexKey(entry.key, token)).toSet(),
-        recordKey: recordKey.toString(),
+        recordKey: recordKey as Object?,
       );
     }
   }
@@ -384,24 +380,16 @@ class HistorySearchIndexHelpers {
     return historyCount > 0;
   }
 
-  dynamic _typedKey(String value) {
-    final intRegex = RegExp(r'^-?\d+$');
-    if (intRegex.hasMatch(value)) return int.parse(value);
-    return value;
-  }
-
   Future<List<dynamic>> _queryField(String field, String query) async {
     final tokens = _queryTokens(query);
     if (tokens.isEmpty) return const <dynamic>[];
 
-    Set<String>? intersection;
+    Set<Object?>? intersection;
     for (final token in tokens) {
       final value =
           await _indexStore.record(_indexKey(field, token)).get(_db)
               as Map<String, dynamic>?;
-      final keys = ((value?['keys'] as List?) ?? <Object?>[])
-          .map((k) => k.toString())
-          .toSet();
+      final keys = ((value?['keys'] as List?) ?? <Object?>[]).toSet();
       if (keys.isEmpty) {
         return const <dynamic>[];
       }
@@ -417,7 +405,7 @@ class HistorySearchIndexHelpers {
       }
     }
 
-    return (intersection ?? const <String>{}).map(_typedKey).toList();
+    return (intersection ?? const <Object?>{}).toList();
   }
 
   /// Returns history record keys that match all normalized query terms.
@@ -442,9 +430,9 @@ class HistorySearchIndexHelpers {
     final printerKeys = await _queryField(kHistorySearchPrinterField, query);
 
     final merged = <dynamic>[];
-    final seen = <String>{};
+    final seen = <Object?>{};
     for (final key in [...nameKeys, ...printerKeys]) {
-      if (seen.add(key.toString())) {
+      if (seen.add(key)) {
         merged.add(key);
       }
     }

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sembast/sembast_memory.dart';
 import 'package:threed_print_cost_calculator/core/logging/app_logger.dart';
+import 'package:threed_print_cost_calculator/database/database_helpers.dart';
 import 'package:threed_print_cost_calculator/database/repositories/materials_repository.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_parser.dart';
 import 'package:threed_print_cost_calculator/materials/csv_import/csv_import_service.dart';
@@ -111,6 +112,26 @@ void main() {
     expect(classified.rows[2].kind, CsvImportRowKind.invalid);
   });
 
+  test('deletes only the selected legacy CSV material', () async {
+    final repo = container.read(materialsRepositoryProvider);
+    final store = intMapStoreFactory.store(DBName.materials.name);
+    final selected = await store.add(db, {'name': 'Legacy PLA'});
+    final survivor = await store.add(db, {'name': 'Legacy PETG'});
+    final selectedId = (await repo.getMaterials())
+        .singleWhere((material) => material.name == 'Legacy PLA')
+        .id;
+    expect(selectedId, selected.toString());
+
+    await repo.deleteMaterial(selectedId);
+
+    expect(await store.record(selected).get(db), isNull);
+    expect(await store.record(survivor).get(db), {'name': 'Legacy PETG'});
+    expect((await repo.getMaterials()).map((material) => material.name), [
+      'Legacy PETG',
+    ]);
+    await repo.deleteMaterial(selectedId);
+  });
+
   test(
     'create foreign ids gets local id and quota counts creates only',
     () async {
@@ -125,6 +146,11 @@ void main() {
       final materials = await repo.getMaterials();
       expect(materials, hasLength(2));
       expect(materials.every((m) => m.id.isNotEmpty), isTrue);
+      final store = StoreRef<Object?, Object?>(DBName.materials.name);
+      expect(
+        (await store.find(db)).map((record) => record.key),
+        everyElement(isA<String>()),
+      );
     },
   );
 

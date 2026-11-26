@@ -26,7 +26,9 @@ class CalculatorHistoryLoader {
     required HistoryEntry entry,
     required CalculatorState currentState,
     required GeneralSettingsModel settings,
+    bool Function()? isCancelled,
   }) async {
+    bool cancelled() => isCancelled?.call() ?? false;
     final parsedTime = _parseHistoryTime(entry.model.timeHours);
     if (parsedTime == null) return null;
 
@@ -34,13 +36,16 @@ class CalculatorHistoryLoader {
       entry.model.printer,
       settings,
     );
+    if (cancelled()) return null;
     final fallbackMaterial = await _resolveFallbackMaterial();
+    if (cancelled()) return null;
 
     var hasReplacement =
         entry.model.printer.isNotEmpty &&
         resolvedPrinter != null &&
         resolvedPrinter.name != entry.model.printer;
 
+    if (cancelled()) return null;
     final materialsRepository = ref.read(materialsRepositoryProvider);
     final materialUsages = <MaterialUsageInput>[];
 
@@ -66,6 +71,7 @@ class CalculatorHistoryLoader {
           final material = await materialsRepository.getMaterialById(
             usage.materialId,
           );
+          if (cancelled()) return null;
           if (material == null && fallbackMaterial != null) {
             hasReplacement = true;
             resolvedMaterial = fallbackMaterial;
@@ -124,6 +130,21 @@ class CalculatorHistoryLoader {
       settings: settings,
       storedSource: storedSource,
     );
+    if (cancelled()) return null;
+
+    final baselineWearAndTear =
+        currentState.baselineWearAndTear ??
+        tryParseLocalizedNum(settings.wearAndTear);
+    final baselineFailureRisk =
+        currentState.baselineFailureRisk ??
+        tryParseLocalizedNum(settings.failureRisk);
+    final baselineLabourRate =
+        currentState.baselineLabourRate ??
+        tryParseLocalizedNum(settings.labourRate);
+    final baselineLabourTime = currentState.baselineLabourTime;
+    final electricityCost = currentState.hasHydratedDefaults
+        ? currentState.kwCost.value
+        : (tryParseLocalizedNum(settings.electricityCost) ?? 0);
 
     final nextState = CalculatorState(
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
@@ -132,7 +153,7 @@ class CalculatorHistoryLoader {
           : '',
       watt: NumberInput.dirty(value: resolvedWattage),
       wattageSource: storedSource,
-      kwCost: currentState.kwCost,
+      kwCost: NumberInput.dirty(value: electricityCost),
       printWeight: NumberInput.dirty(value: entry.model.weight),
       materialUsages: materialUsages,
       hours: NumberInput.dirty(value: parsedTime.hours),
@@ -144,10 +165,10 @@ class CalculatorHistoryLoader {
         value: entry.model.additionalCostAmount,
       ),
       additionalCostNote: entry.model.additionalCostNote,
-      wearAndTear: NumberInput.dirty(value: currentState.baselineWearAndTear),
-      failureRisk: NumberInput.dirty(value: currentState.baselineFailureRisk),
-      labourRate: NumberInput.dirty(value: currentState.baselineLabourRate),
-      labourTime: NumberInput.dirty(value: currentState.baselineLabourTime),
+      wearAndTear: NumberInput.dirty(value: baselineWearAndTear),
+      failureRisk: NumberInput.dirty(value: baselineFailureRisk),
+      labourRate: NumberInput.dirty(value: baselineLabourRate),
+      labourTime: NumberInput.dirty(value: baselineLabourTime),
       markupPercent: NumberInput.dirty(value: markupPercent),
       markupPercentOverridden: true,
       setupFee: NumberInput.dirty(value: setupFee),
@@ -164,10 +185,10 @@ class CalculatorHistoryLoader {
       showHistoryLoadReplacementWarning: hasReplacement,
       importedFromGcode: entry.model.importedFromGcode,
       hasHydratedDefaults: true,
-      baselineWearAndTear: currentState.baselineWearAndTear,
-      baselineFailureRisk: currentState.baselineFailureRisk,
-      baselineLabourRate: currentState.baselineLabourRate,
-      baselineLabourTime: currentState.baselineLabourTime,
+      baselineWearAndTear: baselineWearAndTear,
+      baselineFailureRisk: baselineFailureRisk,
+      baselineLabourRate: baselineLabourRate,
+      baselineLabourTime: baselineLabourTime,
       baselineMarkupPercent: markupPercent,
       baselineSetupFee: setupFee,
       baselineRoundingMode: roundingMode,
