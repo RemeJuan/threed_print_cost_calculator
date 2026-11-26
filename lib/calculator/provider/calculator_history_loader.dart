@@ -132,6 +132,20 @@ class CalculatorHistoryLoader {
     );
     if (cancelled()) return null;
 
+    final baselineWearAndTear =
+        currentState.baselineWearAndTear ??
+        tryParseLocalizedNum(settings.wearAndTear);
+    final baselineFailureRisk =
+        currentState.baselineFailureRisk ??
+        tryParseLocalizedNum(settings.failureRisk);
+    final baselineLabourRate =
+        currentState.baselineLabourRate ??
+        tryParseLocalizedNum(settings.labourRate);
+    final baselineLabourTime = currentState.baselineLabourTime;
+    final electricityCost = currentState.hasHydratedDefaults
+        ? currentState.kwCost.value
+        : (tryParseLocalizedNum(settings.electricityCost) ?? 0);
+
     final nextState = CalculatorState(
       activePrinterId: resolvedPrinter?.id ?? settings.activePrinter,
       selectedMaterialId: materialUsages.isNotEmpty
@@ -139,7 +153,7 @@ class CalculatorHistoryLoader {
           : '',
       watt: NumberInput.dirty(value: resolvedWattage),
       wattageSource: storedSource,
-      kwCost: currentState.kwCost,
+      kwCost: NumberInput.dirty(value: electricityCost),
       printWeight: NumberInput.dirty(value: entry.model.weight),
       materialUsages: materialUsages,
       hours: NumberInput.dirty(value: parsedTime.hours),
@@ -151,10 +165,10 @@ class CalculatorHistoryLoader {
         value: entry.model.additionalCostAmount,
       ),
       additionalCostNote: entry.model.additionalCostNote,
-      wearAndTear: NumberInput.dirty(value: currentState.baselineWearAndTear),
-      failureRisk: NumberInput.dirty(value: currentState.baselineFailureRisk),
-      labourRate: NumberInput.dirty(value: currentState.baselineLabourRate),
-      labourTime: NumberInput.dirty(value: currentState.baselineLabourTime),
+      wearAndTear: NumberInput.dirty(value: baselineWearAndTear),
+      failureRisk: NumberInput.dirty(value: baselineFailureRisk),
+      labourRate: NumberInput.dirty(value: baselineLabourRate),
+      labourTime: NumberInput.dirty(value: baselineLabourTime),
       markupPercent: NumberInput.dirty(value: markupPercent),
       markupPercentOverridden: true,
       setupFee: NumberInput.dirty(value: setupFee),
@@ -171,10 +185,10 @@ class CalculatorHistoryLoader {
       showHistoryLoadReplacementWarning: hasReplacement,
       importedFromGcode: entry.model.importedFromGcode,
       hasHydratedDefaults: true,
-      baselineWearAndTear: currentState.baselineWearAndTear,
-      baselineFailureRisk: currentState.baselineFailureRisk,
-      baselineLabourRate: currentState.baselineLabourRate,
-      baselineLabourTime: currentState.baselineLabourTime,
+      baselineWearAndTear: baselineWearAndTear,
+      baselineFailureRisk: baselineFailureRisk,
+      baselineLabourRate: baselineLabourRate,
+      baselineLabourTime: baselineLabourTime,
       baselineMarkupPercent: markupPercent,
       baselineSetupFee: setupFee,
       baselineRoundingMode: roundingMode,
