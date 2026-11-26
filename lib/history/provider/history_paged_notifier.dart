@@ -10,6 +10,7 @@ export 'history_paged_state.dart';
 // Notifier that manages paged history loading and query changes.
 class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
   int _loadGeneration = 0;
+  int _staleGeneration = 0;
 
   AppLogger get _logger => ref.read(appLoggerProvider);
 
@@ -36,6 +37,7 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
   }
 
   void markStale() {
+    _staleGeneration++;
     state = state.markStale();
   }
 
@@ -58,6 +60,7 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
   }
 
   Future<void> _loadPage({required bool reset, required int generation}) async {
+    final staleGeneration = _staleGeneration;
     try {
       state = state.startLoading();
       final request = await fetchHistoryPagedPage(
@@ -68,6 +71,10 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         currentPage: state.page,
       );
       if (generation != _loadGeneration) return;
+      if (staleGeneration != _staleGeneration) {
+        await _resetAndLoad();
+        return;
+      }
       _applyPageResult(reset: reset, request: request);
     } catch (e, st) {
       logHistoryPagedLoadFailure(
@@ -79,6 +86,10 @@ class HistoryPagedNotifier extends Notifier<HistoryPagedState> {
         query: state.query,
       );
       if (generation != _loadGeneration) return;
+      if (staleGeneration != _staleGeneration) {
+        await _resetAndLoad();
+        return;
+      }
       state = state.fail(e);
     }
   }
