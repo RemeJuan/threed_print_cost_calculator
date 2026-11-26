@@ -42,6 +42,7 @@ class CalculatorProvider extends Notifier<CalculatorState> {
 
   @override
   CalculatorState build() {
+    _disposed = false;
     // Register a disposal callback so any pending submit timer is cancelled
     // when the notifier is disposed. This prevents timers firing after the
     // provider is torn down and avoids memory/resource leaks.
@@ -162,6 +163,14 @@ class CalculatorProvider extends Notifier<CalculatorState> {
       return false;
     }
 
+    // Reject malformed entries before advancing the lifecycle generation, so
+    // an invalid history selection cannot cancel calculator initialization.
+    final parsedTime = entry.model.timeHours.split(':');
+    if (parsedTime.length != 2 ||
+        int.tryParse(parsedTime[0]) == null ||
+        int.tryParse(parsedTime[1]) == null) {
+      return false;
+    }
     final generation = ++_lifecycleGeneration;
     _submitDebounce?.cancel();
     _completedCostingTrackingCoordinator?.cancel();
